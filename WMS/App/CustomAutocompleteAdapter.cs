@@ -18,11 +18,11 @@ public class CustomAutoCompleteAdapter<T> : ArrayAdapter<T>
         View view = convertView;
         if (view == null)
         {
-            view = inflater.Inflate(Scanner.Resource.Layout.custom_dropdown_item, null, false);
+            view = inflater.Inflate(WMS.Resource.Layout.custom_dropdown_item, null, false);
         }
 
         // Customize the appearance of the dropdown item here
-        TextView text = view.FindViewById<TextView>(Scanner.Resource.Id.textValue);
+        TextView text = view.FindViewById<TextView>(WMS.Resource.Id.textValue);
         text.Text = GetItem(position).ToString();
    
         return view;

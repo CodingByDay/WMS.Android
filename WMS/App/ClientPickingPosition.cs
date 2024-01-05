@@ -12,6 +12,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Runtime.Serialization;
 using System.Text;
 using static Java.Util.Jar.Attributes;
+using System.Text.Json;
 
 namespace WMS.App
 {
@@ -76,22 +77,13 @@ namespace WMS.App
         // Helper method to serialize an object to a byte array
         public static byte[] Serialize(object obj)
         {
-            using (MemoryStream memoryStream = new MemoryStream())
-            {
-                IFormatter formatter = new BinaryFormatter();
-                formatter.Serialize(memoryStream, obj);
-                return memoryStream.ToArray();
-            }
+            return JsonSerializer.SerializeToUtf8Bytes(obj);
         }
 
         // Helper method to deserialize a byte array to an object
         public static T Deserialize<T>(byte[] data)
         {
-            using (MemoryStream memoryStream = new MemoryStream(data))
-            {
-                IFormatter formatter = new BinaryFormatter();
-                return (T)formatter.Deserialize(memoryStream);
-            }
+            return JsonSerializer.Deserialize<T>(data);
         }
 
 

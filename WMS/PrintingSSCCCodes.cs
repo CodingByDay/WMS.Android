@@ -13,6 +13,7 @@ using Android.Views;
 using Android.Widget;
 using Microsoft.AppCenter.Crashes;
 using WMS.App;
+using WMS.Printing;
 
 using TrendNET.WMS.Core.Data;
 

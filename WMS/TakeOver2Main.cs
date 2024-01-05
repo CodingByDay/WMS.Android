@@ -15,6 +15,7 @@ using Android.Widget;
 using BarCode2D_Receiver;
 using Microsoft.AppCenter.Crashes;
 using WMS.App;
+using WMS.Printing;
 
 using TrendNET.WMS.Core.Data;
 using TrendNET.WMS.Device.App;
