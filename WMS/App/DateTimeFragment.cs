@@ -2,7 +2,7 @@
 using Android.OS;
 using Android.Util;
 using Android.Widget;
-using System;
+using Stream = Android.Media.Stream;
 
 public class DatePickerFragment : DialogFragment,
                                   DatePickerDialog.IOnDateSetListener

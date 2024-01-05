@@ -6,7 +6,7 @@ using Android.Views;
 using TrendNET.WMS.Device.Services;
 using Android.Net;
 using System.Net;
-using System;
+using Stream = Android.Media.Stream;
 using Android.Util;
 using Android.Content;
 using Plugin.Settings.Abstractions;
@@ -22,15 +22,14 @@ using Microsoft.AppCenter;//////////
 using Microsoft.AppCenter.Analytics;
 using Microsoft.AppCenter.Crashes;
 using static Android.App.ActionBar;
-using Scanner.App;
 using Microsoft.AppCenter.Distribute;
 using Uri = System.Uri;
 using System.Threading.Tasks;
-using Scanner.Caching;
-using Scanner.Background;
 using AlertDialog = Android.App.AlertDialog;
 using Aspose.Words.Tables;
 using Android.Bluetooth;
+using AndroidX.AppCompat.App;
+using WMS.App;
 
 namespace WMS
 {

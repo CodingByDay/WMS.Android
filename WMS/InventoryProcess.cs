@@ -18,14 +18,17 @@ using BarCode2D_Receiver;
 using Microsoft.AppCenter.Analytics;
 using Microsoft.AppCenter.Crashes;
 using Newtonsoft.Json;
-using Scanner.App;
-using Scanner.Printing;
+using WMS.App;
+
 using TrendNET.WMS.Core.Data;
 using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
 using Xamarin.Essentials;
 using static Android.App.DownloadManager;
 using WebApp = TrendNET.WMS.Device.Services.WebApp;
+using WMS.Printing;
+using Timer = System.Timers.Timer;
+using Stream = Android.Media.Stream;
 
 namespace WMS
 {

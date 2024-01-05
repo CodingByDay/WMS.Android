@@ -265,6 +265,11 @@
     <Folder Include="Resources\drawable\" />
     <Folder Include="Resources\NewFolder\" />
   </ItemGroup>
+  <ItemGroup>
+    <Reference Include="DeviceAPI">
+      <HintPath>..\..\WMS stabile\WMS.Android.Production\ScannerQR\bin\Debug\DeviceAPI.dll</HintPath>
+    </Reference>
+  </ItemGroup>
 
 	
 

@@ -1,4 +1,4 @@
-﻿using System;
+﻿using Stream = Android.Media.Stream;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,13 +13,13 @@ using TrendNET.WMS.Core.Data;
 using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
 using WebApp = TrendNET.WMS.Device.Services.WebApp;
-
+using WMS.App;
 using static Android.App.ActionBar;
-using Scanner.App;
+using WMS.App;
 using System.ComponentModel;
 using Android.Net;
 using Microsoft.AppCenter.Crashes;
-using Android.Support.Percent;
+
 using AndroidX.PercentLayout.Widget;
 using PercentRelativeLayout = AndroidX.PercentLayout.Widget.PercentRelativeLayout;
 

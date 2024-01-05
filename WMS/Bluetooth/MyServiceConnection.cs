@@ -1,8 +1,7 @@
 ﻿// MyServiceConnection.cs
 using Android.Content;
 using Android.OS;
-using Scanner;
-
+using WMS;
 public class MyServiceConnection : Java.Lang.Object, IServiceConnection
 {
     private IssuedGoodsIdentEntryWithTrail activityIssuedGoods;

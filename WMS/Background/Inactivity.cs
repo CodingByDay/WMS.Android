@@ -4,13 +4,13 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-using Scanner.App;
-using System;
+using WMS.App;
+using Stream = Android.Media.Stream;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Timers;
-
+using Timer = System.Timers.Timer;
 namespace WMS.Background
 {
     [Service]

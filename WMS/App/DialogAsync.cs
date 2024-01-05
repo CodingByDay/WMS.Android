@@ -1,6 +1,6 @@
 ﻿using Android.App;
 using Android.Content;
-using System;
+using Stream = Android.Media.Stream;
 using System.Threading.Tasks;
 
 public class DialogAsync : Java.Lang.Object, IDialogInterfaceOnClickListener, IDialogInterfaceOnCancelListener

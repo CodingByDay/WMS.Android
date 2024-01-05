@@ -1,4 +1,4 @@
-﻿using System;
+﻿using Stream = Android.Media.Stream;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,8 +17,8 @@ using BarCode2D_Receiver;
 using Com.Barcode;
 using Microsoft.AppCenter.Crashes;
 using Newtonsoft.Json;
-using Scanner;
-using Scanner.App;
+
+using WMS.App;
 using TrendNET.WMS.Core.Data;
 using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
@@ -729,7 +729,7 @@ namespace WMS
             btSaveOrUpdate.Click += BtSaveOrUpdate_Click;
             button3.LongClick += Button3_LongClick;
             lbIdentName = FindViewById<EditText>(Resource.Id.lbIdentName);
-            soundPool = new SoundPool(10, Stream.Music, 0);
+            soundPool = new SoundPool(10, Android.Media.Stream.Music, 0);
             soundPoolId = soundPool.Load(this, Resource.Drawable.beep, 1);
             Barcode2D barcode2D = new Barcode2D();
             barcode2D.open(this, this);

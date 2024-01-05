@@ -10,7 +10,7 @@ using Android.Views.InputMethods;
 using Android.Widget;
 using Java.Lang;
 using Microsoft.AppCenter.Crashes;
-using System;
+using Stream = Android.Media.Stream;
 using TrendNET.WMS.Device.App;
 using static Android.Widget.AdapterView;
 using static Java.IO.ObjectInputStream;

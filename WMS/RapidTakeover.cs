@@ -6,14 +6,14 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Microsoft.AppCenter.Crashes;
-using Scanner.App;
-using System;
+using Stream = Android.Media.Stream;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using TrendNET.WMS.Core.Data;
 using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
+using WMS.App;
 using WebApp = TrendNET.WMS.Device.Services.WebApp;
 
 namespace WMS

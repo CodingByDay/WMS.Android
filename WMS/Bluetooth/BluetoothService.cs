@@ -7,7 +7,7 @@ using Java.IO;
 using Java.Util;
 using Java.Util.Logging;
 using Microsoft.SqlServer.Server;
-using System;
+using Stream = Android.Media.Stream;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;

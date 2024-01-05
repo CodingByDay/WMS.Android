@@ -1,4 +1,4 @@
-﻿using System;
+﻿using Stream = Android.Media.Stream;
 
 using Android.Content;
 using Android.Graphics;

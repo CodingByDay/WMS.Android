@@ -12,8 +12,8 @@ using BarCode2D_Receiver;
 
 using Microsoft.AppCenter.Crashes;
 using Newtonsoft.Json;
-using Scanner.App;
-using System;
+using WMS.App;
+using Stream = Android.Media.Stream;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;

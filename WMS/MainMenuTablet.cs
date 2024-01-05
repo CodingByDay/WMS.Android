@@ -7,15 +7,15 @@ using Android.Views;
 using Android.Widget;
 using Microsoft.AppCenter.Analytics;
 using Microsoft.AppCenter.Crashes;
-using Scanner.App;
-using Scanner.Caching;
-using System;
+using WMS.App;
+using Stream = Android.Media.Stream;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TrendNET.WMS.Device.Services;
 using Xamarin.Essentials;
+using WMS.Caching;
 
 namespace WMS
 {

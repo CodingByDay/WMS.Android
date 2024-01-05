@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
 using System.Net;
 using System.Collections.Generic;
@@ -8,11 +7,10 @@ using System.Threading;
  
 
 using TrendNET.WMS.Device.App;
-using Scanner.App;
 using Microsoft.AppCenter.Crashes;
 using Microsoft.AppCenter.Analytics;
 using Android.Net;
-using Android.Support.V7.App;
+using WMS.App;
 
 namespace TrendNET.WMS.Device.Services
 {

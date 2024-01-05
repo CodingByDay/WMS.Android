@@ -1,4 +1,4 @@
-﻿using System;
+﻿using Stream = Android.Media.Stream;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Linq;
@@ -20,7 +20,7 @@ using BarCode2D_Receiver;
 using Java.Util.Functions;
 using Microsoft.AppCenter.Crashes;
 using Newtonsoft.Json;
-using Scanner.App;
+using WMS.App;
 using TrendNET.WMS.Core.Data;
 using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;

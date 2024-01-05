@@ -1,4 +1,4 @@
-﻿using System;
+﻿using Stream = Android.Media.Stream;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,7 +15,7 @@ using Android.Widget;
 using BarCode2D_Receiver;
 using Java.Lang;
 using Microsoft.AppCenter.Crashes;
-using Scanner.App;
+using WMS.App;
 using Exception = System.Exception;
 
 namespace WMS

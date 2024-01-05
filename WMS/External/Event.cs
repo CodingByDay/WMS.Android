@@ -6,7 +6,7 @@ using Android.Views;
 using Android.Widget;
 using Java.Util.Functions;
 using Newtonsoft.Json;
-using System;
+using Stream = Android.Media.Stream;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;

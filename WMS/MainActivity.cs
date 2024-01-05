@@ -5,7 +5,7 @@ using Android.Widget;
 using Android.Views;
 using Android.Net;
 using System.Net;
-using System;
+using Stream = Android.Media.Stream;
 using Android.Util;
 using Android.Content;
 using Plugin.Settings.Abstractions;
@@ -25,9 +25,9 @@ using System.Diagnostics;
 using AndroidX.AppCompat.App;
 using Android;
 using TrendNET.WMS.Device.Services;
-using Scanner.App;
-using Scanner;
-using Scanner.Background;
+using WMS.App;
+using WMS.Background;
+
 
 namespace WMS
 {

@@ -1,11 +1,11 @@
-﻿using System;
+﻿using Stream = Android.Media.Stream;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.AppCenter.Crashes;
-using Scanner.App;
+using WMS.App;
 namespace TrendNET.WMS.Device.App
 {
     public class WebApp

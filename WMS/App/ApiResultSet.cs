@@ -1,6 +1,6 @@
 ﻿using Microsoft.AppCenter.Analytics;
 using Microsoft.AppCenter.Crashes;
-using System;
+using Stream = Android.Media.Stream;
 using System.Collections;
 using System.Collections.Generic;
 using TrendNET.WMS.Core.Data;

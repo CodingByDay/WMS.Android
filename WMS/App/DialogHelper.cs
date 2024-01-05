@@ -1,7 +1,7 @@
 ﻿using Android.App;
 using Android.Content;
 using Microsoft.AppCenter.Crashes;
-using System;
+using Stream = Android.Media.Stream;
 
 public static class DialogHelper
 {

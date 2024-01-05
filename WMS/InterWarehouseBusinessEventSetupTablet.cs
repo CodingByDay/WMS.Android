@@ -1,4 +1,4 @@
-﻿using System;
+﻿using Stream = Android.Media.Stream;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,7 +12,7 @@ using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Core.Data;
 using TrendNET.WMS.Device.Services;
 using static Android.Widget.AdapterView;
-using Scanner.App;
+using WMS.App;
 using Android.Net;
 using Microsoft.AppCenter.Crashes;
 /// <summary>

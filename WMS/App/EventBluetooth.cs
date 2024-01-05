@@ -1,5 +1,5 @@
 ﻿using Newtonsoft.Json;
-using Scanner.App;
+using WMS.App;
 using System.Collections.Generic;
 
 public class EventBluetooth
