@@ -14,7 +14,7 @@ using Plugin.Settings;
 using Plugin.Settings.Abstractions;
 using TrendNET.WMS.Core.Data;
 
-namespace Scanner.App
+namespace WMS.App
 {
     class settings
     {

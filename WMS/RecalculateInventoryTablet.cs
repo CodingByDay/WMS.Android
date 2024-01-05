@@ -16,7 +16,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TrendNET.WMS.Device.Services;
 
-namespace Scanner
+namespace WMS
 {
     [Activity(Label = "RecalculateInventoryTablet", ScreenOrientation = Android.Content.PM.ScreenOrientation.Landscape)]
     public class RecalculateInventoryTablet : Activity, IBarcodeResult

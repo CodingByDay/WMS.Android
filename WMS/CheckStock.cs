@@ -20,7 +20,7 @@ using System.Threading.Tasks;
 using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
 
-namespace Scanner
+namespace WMS
 {
     [Activity(Label = "CheckStock", ScreenOrientation = ScreenOrientation.Portrait, NoHistory = true)]
     public class CheckStock : Activity, IBarcodeResult

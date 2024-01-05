@@ -30,7 +30,7 @@ using static Android.Graphics.Paint;
 using static Android.Icu.Text.Transliterator;
 using WebApp = TrendNET.WMS.Device.Services.WebApp;
 
-namespace Scanner
+namespace WMS
 {
     [Activity(Label = "IssuedGoodsSerialOrSSCCEntryClientPicking", ScreenOrientation = ScreenOrientation.Portrait)]
     public class IssuedGoodsSerialOrSSCCEntryClientPicking : Activity, IBarcodeResult

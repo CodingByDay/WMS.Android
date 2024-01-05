@@ -27,7 +27,7 @@ using Xamarin.Essentials;
 using static Android.App.DownloadManager;
 using WebApp = TrendNET.WMS.Device.Services.WebApp;
 
-namespace Scanner
+namespace WMS
 {
     [Activity(Label = "InventoryProcess", ScreenOrientation = ScreenOrientation.Portrait)]
     public class InventoryProcess : Activity, IBarcodeResult

@@ -16,7 +16,7 @@ using TrendNET.WMS.Device.Services;
 using Xamarin.Essentials;
 using static BluetoothService;
 
-namespace Scanner
+namespace WMS
 {
     [Activity(Label = "Settings", WindowSoftInputMode = SoftInput.AdjustResize)]
     public class Settings : Activity

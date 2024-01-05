@@ -25,7 +25,7 @@ using TrendNET.WMS.Core.Data;
 using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
 
-namespace Scanner
+namespace WMS
 {
     [Activity(Label = "TakeOverIdentEntry", ScreenOrientation = ScreenOrientation.Portrait)]
     public class TakeOverIdentEntry : Activity, IBarcodeResult

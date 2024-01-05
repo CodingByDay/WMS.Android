@@ -26,7 +26,7 @@ using static Android.App.ActionBar;
 using static Android.App.DownloadManager;
 using WebApp = TrendNET.WMS.Device.Services.WebApp;
 
-namespace Scanner
+namespace WMS
 {
     [Activity(Label = "InterWarehouseSerialOrSSCCEntry", ScreenOrientation = ScreenOrientation.Portrait)]
     public class InterWarehouseSerialOrSSCCEntry : Activity, IBarcodeResult

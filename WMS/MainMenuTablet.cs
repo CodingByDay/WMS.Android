@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 using TrendNET.WMS.Device.Services;
 using Xamarin.Essentials;
 
-namespace Scanner
+namespace WMS
 {
     [Activity(Label = "MainMenuTablet", ScreenOrientation = Android.Content.PM.ScreenOrientation.Landscape)]
     public class MainMenuTablet : Activity

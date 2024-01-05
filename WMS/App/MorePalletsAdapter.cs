@@ -10,7 +10,7 @@ using System.Linq;
 using System.Runtime.Remoting.Messaging;
 using System.Text;
 
-namespace Scanner.App
+namespace WMS.App
 {
 
     class MorePalletsAdapter : BaseAdapter

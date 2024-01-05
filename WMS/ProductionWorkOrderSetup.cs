@@ -20,7 +20,7 @@ using TrendNET.WMS.Core.Data;
 using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
 
-namespace Scanner
+namespace WMS
 {
     [Activity(Label = "ProductionWorkOrderSetup", ScreenOrientation = ScreenOrientation.Portrait)]
     public class ProductionWorkOrderSetup : Activity, IBarcodeResult

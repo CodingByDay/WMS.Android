@@ -12,7 +12,7 @@ using Android.Widget;
 using Java.Lang;
 using Exception = Java.Lang.Exception;
 
-namespace Scanner.App
+namespace WMS.App
 {
    public class adapter : BaseAdapter
     {

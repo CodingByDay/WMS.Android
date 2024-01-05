@@ -1,6 +1,5 @@
 ﻿using Android.App;
 using Android.OS;
-using Android.Support.V7.App;
 using Android.Runtime;
 using Android.Widget;
 using Android.Views;
@@ -33,7 +32,7 @@ using AlertDialog = Android.App.AlertDialog;
 using Aspose.Words.Tables;
 using Android.Bluetooth;
 
-namespace Scanner
+namespace WMS
 {
     [Activity(Label = "WMS", Theme = "@style/AppTheme", MainLauncher = false, Icon = "@drawable/barcode", NoHistory = true)]
     public class BluetoothConnection : AppCompatActivity

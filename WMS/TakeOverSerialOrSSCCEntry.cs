@@ -22,7 +22,7 @@ using TrendNET.WMS.Device.Services;
 using static Android.App.ActionBar;
 using WebApp = TrendNET.WMS.Device.Services.WebApp;
 
-namespace Scanner
+namespace WMS
 {
     [Activity(Label = "TakeOverSerialOrSSCCEntry", ScreenOrientation = ScreenOrientation.Portrait)]
     public class TakeOverSerialOrSSCCEntry : Activity, IBarcodeResult

@@ -20,7 +20,7 @@ using TrendNET.WMS.Device.Services;
 
 using Exception = System.Exception;
 
-namespace Scanner
+namespace WMS
 {
     [Activity(Label = "IssuedGoodsBusinessEventSetupTablet", ScreenOrientation = Android.Content.PM.ScreenOrientation.Landscape)]
     public class IssuedGoodsBusinessEventSetupTablet : Activity,  IDialogInterfaceOnClickListener

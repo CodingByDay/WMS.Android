@@ -19,7 +19,7 @@ using TrendNET.WMS.Device.Services;
 using static Android.App.ActionBar;
 using WebApp = TrendNET.WMS.Device.Services.WebApp;
 
-namespace Scanner
+namespace WMS
 {
     [Activity(Label = "ProductionEnteredPositionsView", ScreenOrientation = ScreenOrientation.Portrait)]
     public class ProductionEnteredPositionsView : Activity

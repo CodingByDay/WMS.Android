@@ -13,7 +13,7 @@ using System.Runtime.Serialization;
 using System.Text;
 using static Java.Util.Jar.Attributes;
 
-namespace Scanner.App
+namespace WMS.App
 {
     [Serializable]
     public class ClientPickingPosition

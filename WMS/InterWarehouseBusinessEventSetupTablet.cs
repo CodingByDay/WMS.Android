@@ -19,7 +19,7 @@ using Microsoft.AppCenter.Crashes;
 /// 
 /// </summary>
 
-namespace Scanner
+namespace WMS
 {
     [Activity(Label = "InterWarehouseBusinessEventSetupTablet", ScreenOrientation =Android.Content.PM.ScreenOrientation.Landscape)]
     public class InterWarehouseBusinessEventSetupTablet : Activity

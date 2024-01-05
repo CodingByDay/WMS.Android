@@ -15,7 +15,7 @@ using System.Linq;
 using System.Text;
 using TrendNET.WMS.Device.Services;
 
-namespace Scanner
+namespace WMS
 {
     [Activity(Label = "WrappingPalletTablet")]
     public class WrappingPalletTablet : Activity, IBarcodeResult

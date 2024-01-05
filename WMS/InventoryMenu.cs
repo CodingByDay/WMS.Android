@@ -15,7 +15,7 @@ using Microsoft.AppCenter.Crashes;
 using Scanner.App;
 using TrendNET.WMS.Device.Services;
 
-namespace Scanner
+namespace WMS
 {
     [Activity(Label = "InventoryMenu")]
     public class InventoryMenu : Activity

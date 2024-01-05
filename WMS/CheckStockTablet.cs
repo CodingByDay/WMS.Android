@@ -22,7 +22,7 @@ using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
 using static Android.App.ActionBar;
 
-namespace Scanner
+namespace WMS
 {
     [Activity(Label = "CheckStockTablet", ScreenOrientation = Android.Content.PM.ScreenOrientation.Landscape)]
     public class CheckStockTablet : Activity, IBarcodeResult

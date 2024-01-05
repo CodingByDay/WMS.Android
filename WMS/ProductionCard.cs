@@ -19,7 +19,7 @@ using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
 using static Android.App.ActionBar;
 
-namespace Scanner
+namespace WMS
 {
     [Activity(Label = "ProductionCard", ScreenOrientation = ScreenOrientation.Portrait)]
     public class ProductionCard : Activity

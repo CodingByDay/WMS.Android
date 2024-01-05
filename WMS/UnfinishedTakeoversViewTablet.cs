@@ -23,7 +23,7 @@ using Android.Support.Percent;
 using AndroidX.PercentLayout.Widget;
 using PercentRelativeLayout = AndroidX.PercentLayout.Widget.PercentRelativeLayout;
 
-namespace Scanner
+namespace WMS
 {
     [Activity(Label = "UnfinishedTakeoversViewTablet", ScreenOrientation = Android.Content.PM.ScreenOrientation.Landscape)]
     public class UnfinishedTakeoversViewTablet : Activity, INotifyPropertyChanged, ISwipeListener

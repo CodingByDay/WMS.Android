@@ -20,7 +20,7 @@ using TrendNET.WMS.Core.Data;
 using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
 
-namespace Scanner
+namespace WMS
 {
     [Activity(Label = "TakeOver2Main", ScreenOrientation = ScreenOrientation.Portrait)]
     public class TakeOver2Main : Activity, IBarcodeResult

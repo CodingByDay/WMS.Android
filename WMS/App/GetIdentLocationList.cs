@@ -11,7 +11,7 @@ using System.Linq;
 using System.Text;
 using TrendNET.WMS.Device.Services;
 
-namespace Scanner.App
+namespace WMS.App
 {
    public static class GetIdentLocationList
     {

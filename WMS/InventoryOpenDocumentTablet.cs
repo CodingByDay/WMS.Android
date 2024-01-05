@@ -17,7 +17,7 @@ using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
 using WebApp = TrendNET.WMS.Device.Services.WebApp;
 
-namespace Scanner
+namespace WMS
 {
     [Activity(Label = "InventoryOpenDocumentTablet", ScreenOrientation = Android.Content.PM.ScreenOrientation.Landscape)]
     public class InventoryOpenDocumentTablet : Activity

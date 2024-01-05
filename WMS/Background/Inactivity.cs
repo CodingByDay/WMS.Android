@@ -11,7 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Timers;
 
-namespace Scanner.Background
+namespace WMS.Background
 {
     [Service]
     public class Inactivity : Service

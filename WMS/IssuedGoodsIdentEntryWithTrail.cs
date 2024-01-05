@@ -30,7 +30,7 @@ using static BluetoothService;
 using static EventBluetooth;
 using Exception = System.Exception;
 
-namespace Scanner
+namespace WMS
 {
 
 

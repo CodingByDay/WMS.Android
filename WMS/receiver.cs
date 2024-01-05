@@ -18,7 +18,7 @@ using Microsoft.AppCenter.Crashes;
 using Scanner.App;
 using Exception = System.Exception;
 
-namespace Scanner
+namespace WMS
 {
     [Activity(Label = "receiver")]
     public class receiver : Activity, IBarcodeResult

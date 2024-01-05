@@ -24,7 +24,7 @@ using TrendNET.WMS.Device.Services;
 using static Android.Renderscripts.ScriptGroup;
 using WebApp = TrendNET.WMS.Device.Services.WebApp;
 
-namespace Scanner
+namespace WMS
 {
     [Activity(Label = "ClientPicking", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
     public class ClientPicking : Activity, IBarcodeResult

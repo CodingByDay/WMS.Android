@@ -22,7 +22,7 @@ using Android.Graphics;
 using Android.Net;
 using Microsoft.AppCenter.Crashes;
 
-namespace Scanner
+namespace WMS
 {
     [Activity(Label = "UnfinishedTakeoversView", ScreenOrientation = ScreenOrientation.Portrait)]
     public class UnfinishedTakeoversView : Activity, ISwipeListener

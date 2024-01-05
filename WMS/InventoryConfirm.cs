@@ -18,7 +18,7 @@ using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
 using WebApp = TrendNET.WMS.Device.Services.WebApp;
 
-namespace Scanner
+namespace WMS
 {
     [Activity(Label = "InventoryConfirm", ScreenOrientation = ScreenOrientation.Portrait)]
     public class InventoryConfirm : Activity

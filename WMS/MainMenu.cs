@@ -21,7 +21,7 @@ using TrendNET.WMS.Device.Services;
 using Xamarin.Essentials;
 using static Android.App.ActionBar;
 
-namespace Scanner
+namespace WMS
 {
     [Activity(Label = "MainMenu", ScreenOrientation = ScreenOrientation.Portrait)]
     public class MainMenu : Activity

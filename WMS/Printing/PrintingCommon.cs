@@ -12,7 +12,7 @@ using Android.Widget;
 using TrendNET.WMS.Core.Data;
 using TrendNET.WMS.Device.Services;
 
-namespace Scanner.Printing
+namespace WMS.Printing
 {
     class PrintingCommon
     {

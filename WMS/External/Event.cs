@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 using TrendNET.WMS.Device.Services;
 using Xamarin.Essentials;
 
-namespace Scanner.External
+namespace WMS.External
 {
     public class Event
     {

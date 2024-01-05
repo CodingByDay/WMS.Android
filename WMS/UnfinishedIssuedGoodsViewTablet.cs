@@ -18,7 +18,7 @@ using TrendNET.WMS.Device.Services;
 using static Android.App.ActionBar;
 using WebApp = TrendNET.WMS.Device.Services.WebApp;
 
-namespace Scanner
+namespace WMS
 {
     [Activity(Label = "UnfinishedIssuedGoodsViewTablet", ScreenOrientation = Android.Content.PM.ScreenOrientation.Landscape)]
     public class UnfinishedIssuedGoodsViewTablet : Activity, ISwipeListener

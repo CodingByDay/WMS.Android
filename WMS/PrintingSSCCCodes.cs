@@ -16,7 +16,7 @@ using Scanner.App;
 using Scanner.Printing;
 using TrendNET.WMS.Core.Data;
 
-namespace Scanner
+namespace WMS
 {
     [Activity(Label = "PrintingSSCCCodes", ScreenOrientation = ScreenOrientation.Portrait)]
     public class PrintingSSCCCodes : Activity

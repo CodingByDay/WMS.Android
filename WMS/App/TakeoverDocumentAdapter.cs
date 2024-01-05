@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Scanner.App
+namespace WMS.App
 {
 
     class TakeoverDocumentAdapter : BaseAdapter

@@ -12,7 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Scanner
+namespace WMS
 {
     [Activity(Label = "MenuPalletsTablet", ScreenOrientation = Android.Content.PM.ScreenOrientation.Landscape)]
     public class MenuPalletsTablet : Activity

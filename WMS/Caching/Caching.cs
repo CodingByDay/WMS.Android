@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 using TrendNET.WMS.Device.Services;
 using Xamarin.Essentials;
 
-namespace Scanner.Caching
+namespace WMS.Caching
 {
     internal static class Caching
     {

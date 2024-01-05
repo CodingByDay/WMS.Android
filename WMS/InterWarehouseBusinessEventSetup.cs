@@ -20,7 +20,7 @@ using Microsoft.AppCenter.Crashes;
 /// 
 /// </summary>
 
-namespace Scanner
+namespace WMS
 {
     [Activity(Label = "InterWarehouseBusinessEventSetup", ScreenOrientation = ScreenOrientation.Portrait)]
     public class InterWarehouseBusinessEventSetup : Activity

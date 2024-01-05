@@ -15,7 +15,7 @@ using Scanner.App;
 using Scanner.Printing;
 using TrendNET.WMS.Core.Data;
 
-namespace Scanner
+namespace WMS
 {
     [Activity(Label = "PrintingSSCCCodesTablet", ScreenOrientation = Android.Content.PM.ScreenOrientation.Landscape)]
     public class PrintingSSCCCodesTablet : Activity

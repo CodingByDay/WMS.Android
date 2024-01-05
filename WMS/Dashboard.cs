@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Scanner
+namespace WMS
 {
     [Activity(Label = "Dashboard")]
     public class Dashboard : Activity

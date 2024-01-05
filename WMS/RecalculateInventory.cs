@@ -18,7 +18,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TrendNET.WMS.Device.Services;
 
-namespace Scanner
+namespace WMS
 {
     [Activity(Label = "RecalculateInventory")]
     public class RecalculateInventory : Activity, IBarcodeResult

@@ -14,7 +14,7 @@ using Android.Views;
 using Android.Widget;
 using Java.IO;
 
-namespace Scanner.App
+namespace WMS.App
 {
     [Serializable]
     public class Trail: Java.Lang.Object, Java.IO.ISerializable

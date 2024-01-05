@@ -3,7 +3,7 @@ using Android.Content;
 using Android.Net;
 using Android.OS;
 using Android.Runtime;
-using Android.Support.V7.App;
+
 using Android.Views;
 using Android.Widget;
 using System;
@@ -19,7 +19,7 @@ using Java.Net;
 using Xamarin.Essentials;
 using System.Runtime.CompilerServices;
 
-namespace Scanner.App
+namespace WMS.App
 {
     public static class LoaderManifest
     {

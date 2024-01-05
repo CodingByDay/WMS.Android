@@ -14,7 +14,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TrendNET.WMS.Device.Services;
 
-namespace Scanner.Caching
+namespace WMS.Caching
 {
     [Service(Exported = true)]
     public class CachingService : Service

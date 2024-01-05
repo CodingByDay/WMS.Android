@@ -23,7 +23,7 @@ using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
 
 
-namespace Scanner
+namespace WMS
 {
     [Activity(Label = "IssuedGoodsBusinessEventSetup", ScreenOrientation = ScreenOrientation.Portrait)]
     public class IssuedGoodsBusinessEventSetup : Activity, IDialogInterfaceOnClickListener

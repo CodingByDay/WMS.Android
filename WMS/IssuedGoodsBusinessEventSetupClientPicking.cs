@@ -24,7 +24,7 @@ using TrendNET.WMS.Device.Services;
 using static Android.Content.ClipData;
 using Android.Speech.Tts;
 
-namespace Scanner
+namespace WMS
 {
     [Activity(Label = "IssuedGoodsBusinessEventSetupClientPicking", ScreenOrientation = ScreenOrientation.Portrait)]
     public class IssuedGoodsBusinessEventSetupClientPicking : Activity, IDialogInterfaceOnClickListener
