@@ -19,10 +19,10 @@ using TrendNET.WMS.Device.Services;
 using static Android.App.ActionBar;
 using WebApp = TrendNET.WMS.Device.Services.WebApp;
 
-namespace WMS
+using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS
 {
     [Activity(Label = "InterWarehouseEnteredPositionsView", ScreenOrientation = ScreenOrientation.Portrait)]
-    public class InterWarehouseEnteredPositionsView : Activity
+    public class InterWarehouseEnteredPositionsView : AppCompatActivity
     {
         private EditText tbIdent;
         private EditText tbSSCC;

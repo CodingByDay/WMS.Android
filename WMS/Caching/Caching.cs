@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 using TrendNET.WMS.Device.Services;
 using Xamarin.Essentials;
 
-namespace WMS.Caching
+using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS.Caching
 {
     internal static class Caching
     {

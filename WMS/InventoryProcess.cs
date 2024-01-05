@@ -30,10 +30,10 @@ using WMS.Printing;
 using Timer = System.Timers.Timer;
 using Stream = Android.Media.Stream;
 
-namespace WMS
+using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS
 {
     [Activity(Label = "InventoryProcess", ScreenOrientation = ScreenOrientation.Portrait)]
-    public class InventoryProcess : Activity, IBarcodeResult
+    public class InventoryProcess : AppCompatActivity, IBarcodeResult
     {
         private Spinner cbWarehouse;
         private EditText tbLocation;

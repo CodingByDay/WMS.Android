@@ -21,10 +21,10 @@ using TrendNET.WMS.Core.Data;
 using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
 
-namespace WMS
+using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS
 {
     [Activity(Label = "IssuedGoodsIdentEntry", ScreenOrientation = ScreenOrientation.Portrait)]
-    public class IssuedGoodsIdentEntry : Activity, IBarcodeResult
+    public class IssuedGoodsIdentEntry : AppCompatActivity, IBarcodeResult
     {
         private CustomAutoCompleteTextView tbIdent;
         private EditText tbNaziv;

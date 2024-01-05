@@ -15,10 +15,10 @@ using TrendNET.WMS.Core.Data;
 using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
 
-namespace WMS
+using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS
 {
     [Activity(Label = "MorePallets")]
-    public class MorePalletsClass : Activity, IBarcodeResult
+    public class MorePalletsClass : AppCompatActivity, IBarcodeResult
     {
         //lvCardMore
         //btConfirm

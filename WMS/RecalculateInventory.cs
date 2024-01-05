@@ -18,10 +18,10 @@ using System.Text;
 using System.Threading.Tasks;
 using TrendNET.WMS.Device.Services;
 
-namespace WMS
+using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS
 {
     [Activity(Label = "RecalculateInventory")]
-    public class RecalculateInventory : Activity, IBarcodeResult
+    public class RecalculateInventory : AppCompatActivity, IBarcodeResult
     {
 
         private EditText ident;

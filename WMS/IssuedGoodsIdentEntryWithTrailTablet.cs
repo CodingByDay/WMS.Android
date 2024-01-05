@@ -18,12 +18,12 @@ using TrendNET.WMS.Core.Data;
 using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
 
-namespace WMS
+using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS
 {
 
 
     [Activity(Label = "IssuedGoodsIdentEntryWithTrailTablet", ScreenOrientation = Android.Content.PM.ScreenOrientation.Landscape)]
-    public class IssuedGoodsIdentEntryWithTrailTablet : Activity, IBarcodeResult
+    public class IssuedGoodsIdentEntryWithTrailTablet : AppCompatActivity, IBarcodeResult
     {
 
         private NameValueObject moveHead = (NameValueObject)InUseObjects.Get("MoveHead");

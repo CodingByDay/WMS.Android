@@ -19,11 +19,15 @@ using System.Linq;
 using System.Threading.Tasks;
 using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
+using AndroidX.AppCompat.App;
+using AlertDialog = Android.App.AlertDialog;
+
+using AndroidX.AppCompat.App;
 
 namespace WMS
 {
     [Activity(Label = "CheckStock", ScreenOrientation = ScreenOrientation.Portrait, NoHistory = true)]
-    public class CheckStock : Activity, IBarcodeResult
+    public class CheckStock : AppCompatActivity, IBarcodeResult
     {
         private CustomAutoCompleteTextView cbWarehouses;
         private CustomAutoCompleteTextView tbLocation;

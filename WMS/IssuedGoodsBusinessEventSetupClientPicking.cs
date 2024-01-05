@@ -24,10 +24,10 @@ using TrendNET.WMS.Device.Services;
 using static Android.Content.ClipData;
 using Android.Speech.Tts;
 
-namespace WMS
+using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS
 {
     [Activity(Label = "IssuedGoodsBusinessEventSetupClientPicking", ScreenOrientation = ScreenOrientation.Portrait)]
-    public class IssuedGoodsBusinessEventSetupClientPicking : Activity, IDialogInterfaceOnClickListener
+    public class IssuedGoodsBusinessEventSetupClientPicking : AppCompatActivity, IDialogInterfaceOnClickListener
     {
         private int initial = 0;
         private CustomAutoCompleteTextView cbDocType;

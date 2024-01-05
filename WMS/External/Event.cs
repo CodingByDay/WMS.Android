@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 using TrendNET.WMS.Device.Services;
 using Xamarin.Essentials;
 
-namespace WMS.External
+using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS.External
 {
     public class Event
     {

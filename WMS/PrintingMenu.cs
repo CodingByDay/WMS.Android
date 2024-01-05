@@ -15,10 +15,10 @@ using Microsoft.AppCenter.Crashes;
 using WMS.App;
 using TrendNET.WMS.Device.Services;
 
-namespace WMS
+using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS
 {
     [Activity(Label = "PrintingMenu")]
-    public class PrintingMenu : Activity
+    public class PrintingMenu : AppCompatActivity
     {
         public static string target = App.settings.device;
         public bool result = Services.isTablet(target); /* Is the device tablet. */

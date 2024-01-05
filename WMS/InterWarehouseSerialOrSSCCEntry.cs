@@ -26,10 +26,10 @@ using static Android.App.ActionBar;
 using static Android.App.DownloadManager;
 using WebApp = TrendNET.WMS.Device.Services.WebApp;
 
-namespace WMS
+using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS
 {
     [Activity(Label = "InterWarehouseSerialOrSSCCEntry", ScreenOrientation = ScreenOrientation.Portrait)]
-    public class InterWarehouseSerialOrSSCCEntry : Activity, IBarcodeResult
+    public class InterWarehouseSerialOrSSCCEntry : AppCompatActivity, IBarcodeResult
     {
         public string barcode;
         private EditText tbIdent;

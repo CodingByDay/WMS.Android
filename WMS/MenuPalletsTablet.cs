@@ -12,10 +12,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace WMS
+using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS
 {
     [Activity(Label = "MenuPalletsTablet", ScreenOrientation = Android.Content.PM.ScreenOrientation.Landscape)]
-    public class MenuPalletsTablet : Activity
+    public class MenuPalletsTablet : AppCompatActivity
     {
         private Button shipped;
         private Button wrapped;

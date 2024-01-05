@@ -9,10 +9,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace WMS
+using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS
 {
     [Activity(Label = "Dashboard")]
-    public class Dashboard : Activity
+    public class Dashboard : AppCompatActivity
     {
         protected override void OnCreate(Bundle savedInstanceState)
         {

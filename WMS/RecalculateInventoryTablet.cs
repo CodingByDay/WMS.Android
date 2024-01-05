@@ -16,10 +16,10 @@ using System.Text;
 using System.Threading.Tasks;
 using TrendNET.WMS.Device.Services;
 
-namespace WMS
+using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS
 {
     [Activity(Label = "RecalculateInventoryTablet", ScreenOrientation = Android.Content.PM.ScreenOrientation.Landscape)]
-    public class RecalculateInventoryTablet : Activity, IBarcodeResult
+    public class RecalculateInventoryTablet : AppCompatActivity, IBarcodeResult
     {
 
         private EditText ident;

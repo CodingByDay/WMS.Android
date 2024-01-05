@@ -21,6 +21,7 @@ using Microsoft.AppCenter.Crashes;
 using Microsoft.SqlServer.Server;
 using Newtonsoft.Json;
 using WMS.App;
+using AlertDialog = Android.App.AlertDialog;
 
 using TrendNET.WMS.Core.Data;
 using TrendNET.WMS.Device.App;
@@ -29,12 +30,14 @@ using static BluetoothService;
 using static EventBluetooth;
 using Exception = System.Exception;
 
+using AndroidX.AppCompat.App;
+
 namespace WMS
 {
 
 
     [Activity(Label = "IssuedGoodsIdentEntryWithTrail")]
-    public class IssuedGoodsIdentEntryWithTrail : Activity, IBarcodeResult
+    public class IssuedGoodsIdentEntryWithTrail : AppCompatActivity, IBarcodeResult
     {
 
         private NameValueObject moveHead = (NameValueObject)InUseObjects.Get("MoveHead");

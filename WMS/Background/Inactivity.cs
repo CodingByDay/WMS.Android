@@ -11,7 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Timers;
 using Timer = System.Timers.Timer;
-namespace WMS.Background
+using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS.Background
 {
     [Service]
     public class Inactivity : Service

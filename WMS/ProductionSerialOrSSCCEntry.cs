@@ -21,10 +21,10 @@ using TrendNET.WMS.Device.Services;
 using static Android.App.ActionBar;
 using WebApp = TrendNET.WMS.Device.Services.WebApp;
 
-namespace WMS
+using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS
 {
     [Activity(Label = "ProductionSerialOrSSCCEntry", ScreenOrientation = ScreenOrientation.Portrait)]
-    public class ProductionSerialOrSSCCEntry : Activity, IBarcodeResult
+    public class ProductionSerialOrSSCCEntry : AppCompatActivity, IBarcodeResult
     {
         private NameValueObject moveHead = (NameValueObject)InUseObjects.Get("MoveHead");
         private NameValueObject moveItem = (NameValueObject)InUseObjects.Get("MoveItem");

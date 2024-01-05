@@ -18,10 +18,10 @@ using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
 using WebApp = TrendNET.WMS.Device.Services.WebApp;
 
-namespace WMS
+using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS
 {
     [Activity(Label = "InventoryOpenDocument", ScreenOrientation = ScreenOrientation.Portrait)]
-    public class InventoryOpenDocument : Activity
+    public class InventoryOpenDocument : AppCompatActivity
     {
         private Spinner cbWarehouse;
         private EditText dtDate;

@@ -16,10 +16,10 @@ using System.Text;
 using System.Threading.Tasks;
 using TrendNET.WMS.Device.Services;
 
-namespace WMS
+using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS
 {
     [Activity(Label = "ShippingPalletTablet")]
-    public class ShippingPalletTablet : Activity, IBarcodeResult
+    public class ShippingPalletTablet : AppCompatActivity, IBarcodeResult
     {
         private EditText pallet;
         private EditText machine;

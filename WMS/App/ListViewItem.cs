@@ -10,7 +10,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 
-namespace WMS.App
+using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS.App
 {
   public class ListViewItem
     {

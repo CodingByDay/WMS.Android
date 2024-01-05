@@ -23,10 +23,10 @@ using Microsoft.AppCenter.Crashes;
 using AndroidX.PercentLayout.Widget;
 using PercentRelativeLayout = AndroidX.PercentLayout.Widget.PercentRelativeLayout;
 
-namespace WMS
+using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS
 {
     [Activity(Label = "UnfinishedTakeoversViewTablet", ScreenOrientation = Android.Content.PM.ScreenOrientation.Landscape)]
-    public class UnfinishedTakeoversViewTablet : Activity, INotifyPropertyChanged, ISwipeListener
+    public class UnfinishedTakeoversViewTablet : AppCompatActivity, INotifyPropertyChanged, ISwipeListener
     {
         private EditText tbBusEvent;
         private EditText tbOrder;

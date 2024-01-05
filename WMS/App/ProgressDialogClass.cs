@@ -10,7 +10,7 @@ using System.Linq;
 using System.Text;
 using static Android.App.ActionBar;
 
-namespace WMS.App
+using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS.App
 {
     public class ProgressDialogClass
     {

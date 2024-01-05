@@ -27,10 +27,10 @@ using static Android.App.DownloadManager;
 using static Android.Provider.CalendarContract;
 using WebApp = TrendNET.WMS.Device.Services.WebApp;
 
-namespace WMS
+using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS
 {
     [Activity(Label = "InterWarehouseSerialOrSSCCEntryTablet", ScreenOrientation = Android.Content.PM.ScreenOrientation.Landscape)]
-    public class InterWarehouseSerialOrSSCCEntryTablet : Activity
+    public class InterWarehouseSerialOrSSCCEntryTablet : AppCompatActivity
     {
         public string barcode;
         // Definitions

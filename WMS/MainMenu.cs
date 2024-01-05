@@ -21,10 +21,12 @@ using Xamarin.Essentials;
 using static Android.App.ActionBar;
 using WMS.Caching;
 
+using AndroidX.AppCompat.App;
+using AlertDialog = Android.App.AlertDialog;
 namespace WMS
 {
-    [Activity(Label = "MainMenu", ScreenOrientation = ScreenOrientation.Portrait)]
-    public class MainMenu : Activity
+    [Activity(Label = "MainMenu", Theme = "@style/AppTheme", ScreenOrientation = ScreenOrientation.Portrait)]
+    public class MainMenu : AppCompatActivity
     {
         private List<Button> buttons = new List<Button>();
         public static string IDdevice;

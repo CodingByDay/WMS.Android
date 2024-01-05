@@ -22,11 +22,14 @@ using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
 using static Android.App.ActionBar;
 using WebApp = TrendNET.WMS.Device.Services.WebApp;
+using AlertDialog = Android.App.AlertDialog;
+
+using AndroidX.AppCompat.App;
 
 namespace WMS
 {
     [Activity(Label = "IssuedGoodsSerialOrSSCCEntryTablet", ScreenOrientation = Android.Content.PM.ScreenOrientation.Landscape)]
-    public class IssuedGoodsSerialOrSSCCEntryTablet : Activity, IBarcodeResult
+    public class IssuedGoodsSerialOrSSCCEntryTablet : AppCompatActivity, IBarcodeResult
     {
         private EditText tbIdent;
         private EditText tbSSCC;

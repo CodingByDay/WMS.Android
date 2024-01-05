@@ -20,10 +20,10 @@ using TrendNET.WMS.Device.Services;
 using static Android.App.ActionBar;
 using WebApp = TrendNET.WMS.Device.Services.WebApp;
 
-namespace WMS
+using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS
 {
     [Activity(Label = "IssuedGoodsEnteredPositionsView", ScreenOrientation = ScreenOrientation.Portrait)]
-    public class IssuedGoodsEnteredPositionsView : Activity
+    public class IssuedGoodsEnteredPositionsView : AppCompatActivity
     {
         private int displayedPosition = 0;
         private NameValueObject moveHead = (NameValueObject)InUseObjects.Get("MoveHead");

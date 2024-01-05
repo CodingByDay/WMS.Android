@@ -14,7 +14,7 @@ using System.Text;
 using static Java.Util.Jar.Attributes;
 using System.Text.Json;
 
-namespace WMS.App
+using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS.App
 {
     [Serializable]
     public class ClientPickingPosition

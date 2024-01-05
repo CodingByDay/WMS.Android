@@ -19,10 +19,10 @@ using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
 using WebApp = TrendNET.WMS.Device.Services.WebApp;
 
-namespace WMS
+using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS
 {
     [Activity(Label = "PickingMenu", ScreenOrientation = Android.Content.PM.ScreenOrientation.Landscape)]
-    public class PickingMenuTablet : Activity
+    public class PickingMenuTablet : AppCompatActivity
     {
         private Button ident;
         private Button order;

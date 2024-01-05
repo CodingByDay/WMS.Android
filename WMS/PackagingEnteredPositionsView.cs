@@ -18,11 +18,14 @@ using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
 using static Android.App.ActionBar;
 using WebApp = TrendNET.WMS.Device.Services.WebApp;
+using AlertDialog = Android.App.AlertDialog;
+
+using AndroidX.AppCompat.App;
 
 namespace WMS
 {
     [Activity(Label = "PackagingEnteredPositionsView", ScreenOrientation = ScreenOrientation.Portrait)]
-    public class PackagingEnteredPositionsView : Activity
+    public class PackagingEnteredPositionsView : AppCompatActivity
 
     {    
         private Dialog popupDialog;

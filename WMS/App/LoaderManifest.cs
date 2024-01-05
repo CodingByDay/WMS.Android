@@ -19,7 +19,7 @@ using Java.Net;
 using Xamarin.Essentials;
 using System.Runtime.CompilerServices;
 
-namespace WMS.App
+using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS.App
 {
     public static class LoaderManifest
     {

@@ -19,10 +19,10 @@ using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
 using static Android.App.ActionBar;
 
-namespace WMS
+using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS
 {
     [Activity(Label = "ProductionPaletteTablet", ScreenOrientation = Android.Content.PM.ScreenOrientation.Landscape)]
-    public class ProductionPaletteTablet : Activity, IBarcodeResult
+    public class ProductionPaletteTablet : AppCompatActivity, IBarcodeResult
 
     {
         private EditText tbWorkOrder;

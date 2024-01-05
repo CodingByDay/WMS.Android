@@ -29,6 +29,8 @@ using WMS.App;
 using WMS.Background;
 
 
+using AndroidX.AppCompat.App;
+
 namespace WMS
 {
     [Activity(Label = "WMS", Theme = "@style/AppTheme", MainLauncher = true, Icon = "@drawable/barcode", NoHistory = true)]

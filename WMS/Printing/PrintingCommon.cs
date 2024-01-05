@@ -12,7 +12,7 @@ using Android.Widget;
 using TrendNET.WMS.Core.Data;
 using TrendNET.WMS.Device.Services;
 
-namespace WMS.Printing
+using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS.Printing
 {
     class PrintingCommon
     {

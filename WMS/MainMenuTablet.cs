@@ -17,10 +17,10 @@ using TrendNET.WMS.Device.Services;
 using Xamarin.Essentials;
 using WMS.Caching;
 
-namespace WMS
+using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS
 {
     [Activity(Label = "MainMenuTablet", ScreenOrientation = Android.Content.PM.ScreenOrientation.Landscape)]
-    public class MainMenuTablet : Activity
+    public class MainMenuTablet : AppCompatActivity
     {
 
         public static string IDdevice;

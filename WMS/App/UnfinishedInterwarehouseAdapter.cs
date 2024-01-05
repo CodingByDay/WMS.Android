@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace WMS.App 
+using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS.App 
 { 
 
     class UnfinishedInterwarehouseAdapter : BaseAdapter

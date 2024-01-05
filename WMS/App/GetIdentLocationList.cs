@@ -11,7 +11,7 @@ using System.Linq;
 using System.Text;
 using TrendNET.WMS.Device.Services;
 
-namespace WMS.App
+using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS.App
 {
    public static class GetIdentLocationList
     {

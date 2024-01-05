@@ -25,10 +25,10 @@ using TrendNET.WMS.Core.Data;
 using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
 
-namespace WMS
+using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS
 {
     [Activity(Label = "TakeOverIdentEntry", ScreenOrientation = ScreenOrientation.Portrait)]
-    public class TakeOverIdentEntry : Activity, IBarcodeResult
+    public class TakeOverIdentEntry : AppCompatActivity, IBarcodeResult
 
     {
         private NameValueObject moveHead = (NameValueObject)InUseObjects.Get("MoveHead");

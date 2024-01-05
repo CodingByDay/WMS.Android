@@ -29,10 +29,12 @@ using static Android.Graphics.Paint;
 using static Android.Icu.Text.Transliterator;
 using WebApp = TrendNET.WMS.Device.Services.WebApp;
 
+using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;
+
 namespace WMS
 {
     [Activity(Label = "IssuedGoodsSerialOrSSCCEntry", ScreenOrientation = ScreenOrientation.Portrait)]
-    public class IssuedGoodsSerialOrSSCCEntry : Activity, IBarcodeResult
+    public class IssuedGoodsSerialOrSSCCEntry : AppCompatActivity, IBarcodeResult
     {
       
         private EditText tbIdent;

@@ -23,10 +23,10 @@ using TrendNET.WMS.Device.Services;
 using static Android.App.ActionBar;
 using WebApp = TrendNET.WMS.Device.Services.WebApp;
 
-namespace WMS
+using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS
 {
     [Activity(Label = "TakeOverSerialOrSSCCEntryTablet", ScreenOrientation = Android.Content.PM.ScreenOrientation.Landscape)]
-    public class TakeOverSerialOrSSCCEntryTablet : Activity, IBarcodeResult
+    public class TakeOverSerialOrSSCCEntryTablet : AppCompatActivity, IBarcodeResult
     {
         private NameValueObject openIdent = (NameValueObject)InUseObjects.Get("OpenIdent");
         private NameValueObject openOrder = (NameValueObject)InUseObjects.Get("OpenOrder");

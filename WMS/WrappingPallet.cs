@@ -16,10 +16,10 @@ using System.Text;
 using System.Threading.Tasks;
 using TrendNET.WMS.Device.Services;
 
-namespace WMS
+using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS
 {
     [Activity(Label = "WrappingPallet")]
-    public class WrappingPallet : Activity, IBarcodeResult
+    public class WrappingPallet : AppCompatActivity, IBarcodeResult
     {
         private EditText pallet;
         private Button btConfirm;

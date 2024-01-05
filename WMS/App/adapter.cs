@@ -12,7 +12,7 @@ using Android.Widget;
 using Java.Lang;
 using Exception = Java.Lang.Exception;
 
-namespace WMS.App
+using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS.App
 {
    public class adapter : BaseAdapter
     {

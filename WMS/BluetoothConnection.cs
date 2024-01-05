@@ -31,6 +31,11 @@ using Android.Bluetooth;
 using AndroidX.AppCompat.App;
 using WMS.App;
 
+using AndroidX.AppCompat.App;
+
+
+
+
 namespace WMS
 {
     [Activity(Label = "WMS", Theme = "@style/AppTheme", MainLauncher = false, Icon = "@drawable/barcode", NoHistory = true)]

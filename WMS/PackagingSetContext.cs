@@ -19,10 +19,10 @@ using TrendNET.WMS.Core.Data;
 using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
 
-namespace WMS
+using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS
 {
     [Activity(Label = "PackagingSetContext", ScreenOrientation = ScreenOrientation.Portrait)]
-    public class PackagingSetContext : Activity, IBarcodeResult
+    public class PackagingSetContext : AppCompatActivity, IBarcodeResult
     {
         private Spinner cbWarehouse;
         private EditText tbLocation;

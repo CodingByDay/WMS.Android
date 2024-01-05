@@ -17,11 +17,14 @@ using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
 using static Android.App.ActionBar;
 using WebApp = TrendNET.WMS.Device.Services.WebApp;
+using AlertDialog = Android.App.AlertDialog;
+
+using AndroidX.AppCompat.App;
 
 namespace WMS
 {
     [Activity(Label = "ProductionEnteredPositionsViewTablet", ScreenOrientation = Android.Content.PM.ScreenOrientation.Landscape)]
-    public class ProductionEnteredPositionsViewTablet : Activity
+    public class ProductionEnteredPositionsViewTablet : AppCompatActivity
     {
         private TextView lbInfo;
 

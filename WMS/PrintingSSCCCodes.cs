@@ -17,10 +17,10 @@ using WMS.Printing;
 
 using TrendNET.WMS.Core.Data;
 
-namespace WMS
+using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS
 {
     [Activity(Label = "PrintingSSCCCodes", ScreenOrientation = ScreenOrientation.Portrait)]
-    public class PrintingSSCCCodes : Activity
+    public class PrintingSSCCCodes : AppCompatActivity
     {
         private EditText tbNum;
         private Button button1;

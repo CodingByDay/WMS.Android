@@ -22,10 +22,10 @@ using WMS.App;
 using Android.Net;
 using Microsoft.AppCenter.Crashes;
 
-namespace WMS
+using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS
 {
     [Activity(Label = "UnfinishedTakeoversView", ScreenOrientation = ScreenOrientation.Portrait)]
-    public class UnfinishedTakeoversView : Activity, ISwipeListener
+    public class UnfinishedTakeoversView : AppCompatActivity, ISwipeListener
     {
         private EditText tbBusEvent;
         private EditText tbOrder;

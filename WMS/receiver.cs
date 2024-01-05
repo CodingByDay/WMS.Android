@@ -18,10 +18,10 @@ using Microsoft.AppCenter.Crashes;
 using WMS.App;
 using Exception = System.Exception;
 
-namespace WMS
+using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS
 {
     [Activity(Label = "receiver")]
-    public class receiver : Activity, IBarcodeResult
+    public class receiver : AppCompatActivity, IBarcodeResult
     {
         Barcode2D barcode2D = new Barcode2D();
         Button btn1;

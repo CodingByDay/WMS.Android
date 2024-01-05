@@ -23,10 +23,10 @@ using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
 
 
-namespace WMS
+using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS
 {
     [Activity(Label = "IssuedGoodsBusinessEventSetup", ScreenOrientation = ScreenOrientation.Portrait)]
-    public class IssuedGoodsBusinessEventSetup : Activity, IDialogInterfaceOnClickListener
+    public class IssuedGoodsBusinessEventSetup : AppCompatActivity, IDialogInterfaceOnClickListener
     {
         private int initial = 0;
         private CustomAutoCompleteTextView cbDocType;

@@ -19,10 +19,10 @@ using TrendNET.WMS.Device.Services;
 using static Android.App.ActionBar;
 using WebApp = TrendNET.WMS.Device.Services.WebApp;
 
-namespace WMS
+using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS
 {
     [Activity(Label = "UnfinishedIssuedGoodsView", ScreenOrientation = ScreenOrientation.Landscape)]
-    public class IssuedGoodsBusinessEventSetupClientPickingTablet : Activity
+    public class IssuedGoodsBusinessEventSetupClientPickingTablet : AppCompatActivity
     {
             private int initial = 0;
             private CustomAutoCompleteTextView cbDocType;

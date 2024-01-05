@@ -15,11 +15,20 @@ using System.Text;
 using TrendNET.WMS.Device.Services;
 using Xamarin.Essentials;
 using static BluetoothService;
+using AndroidX.AppCompat.App;
+
+using AlertDialog = Android.App.AlertDialog;
+
+using AndroidX.AppCompat.App;
+
+
+
+
 
 namespace WMS
 {
     [Activity(Label = "Settings", WindowSoftInputMode = SoftInput.AdjustResize)]
-    public class Settings : Activity
+    public class Settings : AppCompatActivity
     {
         private EditText ID;
         private EditText rootURL;

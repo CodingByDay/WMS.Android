@@ -15,10 +15,10 @@ using Microsoft.AppCenter.Crashes;
 using WMS.App;
 using TrendNET.WMS.Device.Services;
 
-namespace WMS
+using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS
 {
     [Activity(Label = "InventoryMenu")]
-    public class InventoryMenu : Activity
+    public class InventoryMenu : AppCompatActivity
     {
 
 

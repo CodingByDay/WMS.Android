@@ -21,10 +21,10 @@ using TrendNET.WMS.Core.Data;
 using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
 
-namespace WMS
+using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS
 {
     [Activity(Label = "TakeOver2Main", ScreenOrientation = ScreenOrientation.Portrait)]
-    public class TakeOver2Main : Activity, IBarcodeResult
+    public class TakeOver2Main : AppCompatActivity, IBarcodeResult
     {
         SoundPool soundPool;
         int soundPoolId;

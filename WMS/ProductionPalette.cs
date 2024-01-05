@@ -17,11 +17,16 @@ using TrendNET.WMS.Core.Data;
 using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
 using static Android.App.ActionBar;
+using AlertDialog = Android.App.AlertDialog;
+
+using AndroidX.AppCompat.App;
+
+
 
 namespace WMS
 {
     [Activity(Label = "ProductionPalette", ScreenOrientation = ScreenOrientation.Portrait)]
-    public class ProductionPalette : Activity, IBarcodeResult
+    public class ProductionPalette : AppCompatActivity, IBarcodeResult
 
     {
         private EditText tbCard;

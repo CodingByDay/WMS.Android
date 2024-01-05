@@ -14,7 +14,7 @@ using Plugin.Settings;
 using Plugin.Settings.Abstractions;
 using TrendNET.WMS.Core.Data;
 
-namespace WMS.App
+using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS.App
 {
     class settings
     {

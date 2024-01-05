@@ -23,11 +23,16 @@ using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
 using static Android.Renderscripts.ScriptGroup;
 using WebApp = TrendNET.WMS.Device.Services.WebApp;
+using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;
+
+using AndroidX.AppCompat.App;
+
+
 
 namespace WMS
 {
     [Activity(Label = "ClientPicking", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
-    public class ClientPicking : Activity, IBarcodeResult
+    public class ClientPicking : AppCompatActivity, IBarcodeResult
     {
 
         private NameValueObject moveHead = (NameValueObject)InUseObjects.Get("MoveHead");

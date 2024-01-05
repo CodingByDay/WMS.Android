@@ -18,10 +18,10 @@ using TrendNET.WMS.Device.Services;
 using static Android.App.ActionBar;
 using WebApp = TrendNET.WMS.Device.Services.WebApp;
 
-namespace WMS
+using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS
 {
     [Activity(Label = "UnfinishedIssuedGoodsViewTablet", ScreenOrientation = Android.Content.PM.ScreenOrientation.Landscape)]
-    public class UnfinishedIssuedGoodsViewTablet : Activity, ISwipeListener
+    public class UnfinishedIssuedGoodsViewTablet : AppCompatActivity, ISwipeListener
     {
 
         private TextView lbInfo;

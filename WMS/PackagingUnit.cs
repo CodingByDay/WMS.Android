@@ -19,11 +19,14 @@ using TrendNET.WMS.Core.Data;
 using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
 using WebApp = TrendNET.WMS.Device.Services.WebApp;
+using AlertDialog = Android.App.AlertDialog;
+
+using AndroidX.AppCompat.App;
 
 namespace WMS
 {
     [Activity(Label = "PackagingUnit", ScreenOrientation = ScreenOrientation.Portrait)]
-    public class PackagingUnit : Activity, IBarcodeResult
+    public class PackagingUnit : AppCompatActivity, IBarcodeResult
     {
 
         private NameValueObject stock = null;

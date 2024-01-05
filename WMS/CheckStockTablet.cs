@@ -10,6 +10,7 @@ using Android.Views;
 using Android.Widget;
 using BarCode2D_Receiver;
 using Com.Jsibbold.Zoomage;
+using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;
 
 using Microsoft.AppCenter.Crashes;
 using Newtonsoft.Json;
@@ -22,10 +23,12 @@ using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
 using static Android.App.ActionBar;
 
+using AndroidX.AppCompat.App;
+
 namespace WMS
 {
     [Activity(Label = "CheckStockTablet", ScreenOrientation = Android.Content.PM.ScreenOrientation.Landscape)]
-    public class CheckStockTablet : Activity, IBarcodeResult
+    public class CheckStockTablet : AppCompatActivity, IBarcodeResult
     {
         private CustomAutoCompleteTextView cbWarehouses;
         private CustomAutoCompleteTextView tbLocation;

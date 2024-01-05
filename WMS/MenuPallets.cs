@@ -12,10 +12,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace WMS
+using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS
 {
     [Activity(Label = "MenuPallets")]
-    public class MenuPallets : Activity
+    public class MenuPallets : AppCompatActivity
     {
         private Button shipped;
         private Button wrapped;

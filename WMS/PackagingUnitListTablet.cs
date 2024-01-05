@@ -20,10 +20,10 @@ using TrendNET.WMS.Device.Services;
 using static Android.App.ActionBar;
 using WebApp = TrendNET.WMS.Device.Services.WebApp;
 
-namespace WMS
+using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS
 {
     [Activity(Label = "PackagingUnitListTablet", ScreenOrientation = Android.Content.PM.ScreenOrientation.Landscape)]
-    public class PackagingUnitListTablet : Activity
+    public class PackagingUnitListTablet : AppCompatActivity
 
     {
         private TextView lbInfo;

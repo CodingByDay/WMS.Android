@@ -9,11 +9,15 @@ using Stream = Android.Media.Stream;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using AndroidX.AppCompat.App;
+using AlertDialog = Android.App.AlertDialog;
+
+using AndroidX.AppCompat.App;
 
 namespace WMS
 {
     [Activity(Label = "choiceProduction")]
-    public class Choice : Activity
+    public class Choice : AppCompatActivity
     {
         private Button production;
         private Button rapid;

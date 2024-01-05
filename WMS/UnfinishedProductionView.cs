@@ -19,10 +19,10 @@ using TrendNET.WMS.Device.Services;
 using static Android.App.ActionBar;
 using WebApp = TrendNET.WMS.Device.Services.WebApp;
 
-namespace WMS
+using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS
 {
     [Activity(Label = "UnfinishedProductionView", ScreenOrientation = ScreenOrientation.Portrait)]
-    public class UnfinishedProductionView : Activity, ISwipeListener
+    public class UnfinishedProductionView : AppCompatActivity, ISwipeListener
 
 
 
