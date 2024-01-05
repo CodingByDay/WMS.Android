@@ -240,6 +240,7 @@
     <None Remove="Resources\layout\YesNoGeneric.xml" />
     <None Remove="Resources\layout\YesNoPopUp.xml" />
     <None Remove="Resources\layout\YesNoProductionCard.xml" />
+    <None Remove="Resources\raw\beep.wav" />
     <None Remove="Resources\values\colors.xml" />
     <None Remove="Resources\values\styles.xml" />
   </ItemGroup>

@@ -127,7 +127,7 @@ namespace WMS
             button2 = FindViewById<Button>(Resource.Id.button2);
             tbNumberOfCopies = FindViewById<EditText>(Resource.Id.tbNumberOfCopies);
             soundPool = new SoundPool(10, Stream.Music, 0);
-            soundPoolId = soundPool.Load(this, Resource.Drawable.beep, 1);
+            soundPoolId = soundPool.Load(this, Resource.Raw.beep, 1);
             color();
             Barcode2D barcode2D = new Barcode2D();
             barcode2D.open(this, this);

@@ -514,7 +514,7 @@ namespace WMS
             listData.Adapter = adapter;
             listData.ItemClick += ListData_ItemClick;
             soundPool = new SoundPool(10, Stream.Music, 0);
-            soundPoolId = soundPool.Load(this, Resource.Drawable.beep, 1);
+            soundPoolId = soundPool.Load(this, Resource.Raw.beep, 1);
             color();
             imagePNG = FindViewById<ImageView>(Resource.Id.imagePNG);
             tbSSCC.RequestFocus();

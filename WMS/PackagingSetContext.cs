@@ -80,7 +80,7 @@ namespace WMS
             btExit.Click += BtExit_Click;
             cbWarehouse.ItemSelected += CbWarehouse_ItemSelected;
             soundPool = new SoundPool(10, Stream.Music, 0);
-            soundPoolId = soundPool.Load(this, Resource.Drawable.beep, 1);
+            soundPoolId = soundPool.Load(this, Resource.Raw.beep, 1);
             Barcode2D barcode2D = new Barcode2D();
             barcode2D.open(this, this);
 

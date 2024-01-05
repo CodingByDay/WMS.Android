@@ -784,7 +784,7 @@ namespace WMS
             imagePNG.Visibility = ViewStates.Invisible;
             lbIdentName = FindViewById<EditText>(Resource.Id.lbIdentName);
             soundPool = new SoundPool(10, Stream.Music, 0);
-            soundPoolId = soundPool.Load(this, Resource.Drawable.beep, 1);  
+            soundPoolId = soundPool.Load(this, Resource.Raw.beep, 1);  
             tbLocation.SetSelectAllOnFocus(true);
             tbSSCC.SetSelectAllOnFocus(true);
             btMorePallets = FindViewById<Button>(Resource.Id.btMorePallets);

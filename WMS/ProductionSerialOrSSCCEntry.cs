@@ -492,7 +492,7 @@ namespace WMS
             tbUnits.InputType = Android.Text.InputTypes.ClassNumber;
 
             soundPool = new SoundPool(10, Stream.Music, 0);
-            soundPoolId = soundPool.Load(this, Resource.Drawable.beep, 1);
+            soundPoolId = soundPool.Load(this, Resource.Raw.beep, 1);
             color();
             tbSSCC.RequestFocus();
             btSaveOrUpdate.Click += BtSaveOrUpdate_Click;

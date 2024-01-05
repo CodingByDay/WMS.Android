@@ -145,7 +145,7 @@ namespace WMS
             spinnerIdent = FindViewById<Spinner>(Resource.Id.spinnerIdent);
             spinnerIdent.ItemSelected += SpinnerIdent_ItemSelected;
             spinnerLocation = FindViewById<Spinner>(Resource.Id.spinnerLocation);
-            soundPoolId = soundPool.Load(this, Resource.Drawable.beep, 1);
+            soundPoolId = soundPool.Load(this, Resource.Raw.beep, 1);
             color();
             Barcode2D barcode2D = new Barcode2D();
             barcode2D.open(this, this);

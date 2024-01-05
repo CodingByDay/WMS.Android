@@ -72,7 +72,7 @@ namespace WMS
             _customToolbar.SetNavigationIcon(settings.RootURL + "/Services/Logo");
             // sound library
             soundPool = new SoundPool(10, Stream.Music, 0);
-            soundPoolId = soundPool.Load(this, Resource.Drawable.beep, 1);
+            soundPoolId = soundPool.Load(this, Resource.Raw.beep, 1);
             // button next
             tbWorkOrder = FindViewById<EditText>(Resource.Id.tbWorkOrder);
             tbOpenQty = FindViewById<EditText>(Resource.Id.tbOpenQty);

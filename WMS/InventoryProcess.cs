@@ -98,7 +98,7 @@ namespace WMS
             lbPacking = FindViewById<TextView>(Resource.Id.lbPacking);
             tbTitle.Focusable= false;
             soundPool = new SoundPool(10, Stream.Music, 0);
-            soundPoolId = soundPool.Load(this, Resource.Drawable.beep, 1);
+            soundPoolId = soundPool.Load(this, Resource.Raw.beep, 1);
             cbWarehouse.ItemSelected += CbWarehouse_ItemSelected;
             btPrint.Click += BtPrint_Click;
             button1.Click += Button1_Click;
