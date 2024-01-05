@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.percentlayout.widget.PercentRelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/test"
+        android:layout_toRightOf="@id/app"
+        android:layout_below="@id/text"
+        />
+
+
+    
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/test"
+      
+        android:layout_toRightOf="@id/app"
+        android:id="@+id/listView1"
+        />
+   
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+
+        android:layout_toRightOf="@id/app"
+      
+        android:weightSum="5"
+        android:id="@+id/text"
+        android:paddingTop="5dp">
+
+        <TextView
+
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:layout_marginRight="28.0dp"
+            android:id="@+id/ident"
+            android:layout_width="match_parent" />
+
+        <TextView
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:layout_width="match_parent"
+            android:layout_marginRight="28.0dp"
+            android:id="@+id/name" />
+
+        <TextView
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:layout_width="match_parent"
+            android:layout_marginRight="28.0dp"
+            android:id="@+id/quantity" />
+        <TextView
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:layout_width="match_parent"
+            android:layout_marginRight="28.0dp"
+            android:id="@+id/position" />
+
+
+        <TextView
+            android:textSize="18dp"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:textStyle="bold"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:layout_marginRight="28.0dp"
+            android:id="@+id/serial" />
+
+
+
+     
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_widthPercent="30%"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:id="@+id/app"
+        tools:context=".LinearLayout"
+        android:foregroundGravity="center">
+
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="189.5dp"
+        android:paddingLeft="10dp"
+        android:paddingTop="5dp"
+        android:text=""
+        android:layout_marginRight="28.5dp" />
+
+    
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="5dp">
+
+        <TextView
+            android:textStyle="bold"
+            android:layout_width="66.0dp"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:text="Paleta"
+            android:layout_marginRight="28.5dp" />
+
+        <EditText
+            android:textStyle="bold"
+            android:singleLine="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.50"
+            android:layout_marginLeft="40dp"
+            android:paddingTop="5dp"
+            android:id="@+id/pallet" />
+
+
+    </LinearLayout>
+    <TextView
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:paddingTop="5dp"
+        android:layout_marginRight="28.5dp" />
+    <Button
+        android:background="@drawable/nicelookingbutton"
+        android:text="Potrdi-F2"
+        android:layout_width="200dp"
+        android:layout_height="70.0dp"
+        android:drawableLeft="@drawable/confirmation"
+        android:textSize="18dp"
+        android:layout_gravity="center_horizontal"
+        android:paddingLeft="10dp"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/btConfirm"
+             />
+</LinearLayout>
+
+
+
+
+
+  
+
+
+ 
+
+
+
+    </LinearLayout>
+
+
+
+
+
+
+
+
+
+</androidx.percentlayout.widget.PercentRelativeLayout>

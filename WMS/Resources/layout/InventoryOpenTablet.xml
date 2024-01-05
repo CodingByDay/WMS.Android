@@ -1,0 +1,346 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.percentlayout.widget.PercentRelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    		 <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_widthPercent="100%"
+        android:layout_gravity="center"
+        android:orientation="horizontal"
+        >
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar" />
+      </LinearLayout>
+
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/test"
+        android:layout_toRightOf="@id/app"
+        android:layout_below="@id/text"
+        />
+
+
+    
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/test"
+      
+        android:layout_toRightOf="@id/app"
+        android:id="@+id/listView1"
+        />
+   
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="60dp"
+        android:layout_toRightOf="@id/app"
+      
+        android:weightSum="5"
+        android:id="@+id/text"
+        android:paddingTop="5dp">
+
+        <TextView
+
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:layout_marginRight="28.0dp"
+            android:id="@+id/ident"
+            android:layout_width="match_parent" />
+
+        <TextView
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:layout_width="match_parent"
+            android:layout_marginRight="28.0dp"
+            android:id="@+id/name" />
+
+        <TextView
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:layout_width="match_parent"
+            android:layout_marginRight="28.0dp"
+            android:id="@+id/quantity" />
+        <TextView
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:layout_width="match_parent"
+            android:layout_marginRight="28.0dp"
+            android:id="@+id/position" />
+
+
+        <TextView
+            android:textSize="18dp"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:textStyle="bold"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:layout_marginRight="28.0dp"
+            android:id="@+id/serial" />
+
+
+
+     
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_widthPercent="30%"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:id="@+id/app"
+        tools:context=".LinearLayout"
+        android:layout_marginTop="70dp"
+        android:foregroundGravity="center">
+
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+
+        android:orientation="horizontal"
+        android:layout_height="30dp" 
+        android:paddingTop="5dp"
+        android:gravity="bottom">
+
+        <TextView
+            android:textStyle="bold"
+            android:textSize="18dp"                 
+            android:layout_width="0dp"
+            android:id="@+id/warehouseLabel"
+            android:layout_height="match_parent" 
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:text="Skladišče"
+            android:layout_weight="5" /> 
+
+        <Spinner
+            android:layout_width="0dp"
+            android:layout_height="match_parent" 
+            android:id="@+id/cbWarehouse"
+            android:layout_weight="1" /> 
+
+    </LinearLayout>
+     <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="5dp">
+
+        <TextView
+            android:textStyle="bold"
+            android:textSize="18dp"    
+            android:layout_width="125.5dp"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:text="Datum inv."
+            android:layout_marginRight="0.0dp" />
+
+        <EditText
+ android:textStyle="bold"
+  android:singleLine="true"
+  android:layout_width="match_parent"
+  android:layout_height="35dp"
+  android:layout_weight="0.50"
+  android:paddingTop="5dp"
+  android:background="@drawable/editText_bg_grey"
+  android:layout_marginRight="2dp"  
+  android:textSize="18dp"
+            android:id="@+id/dtInventory"/>
+
+        <Button
+            android:text="Izberi"
+android:textSize="20dp"
+android:paddingLeft="0dp"
+android:layout_width="80dp"
+android:layout_height="35dp"
+android:background="@color/rikoMain"
+android:textColor="@color/white"
+android:layout_marginLeft="2dp"
+android:layout_marginRight="2dp"
+            android:id="@+id/btChoose" />
+
+
+    </LinearLayout>
+     <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="5dp">
+
+        <TextView
+            android:textStyle="bold"
+            android:textSize="18dp"    
+            android:layout_width="125.5dp"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:text="Št. popisov" />
+
+        <EditText
+      android:textStyle="bold"
+  android:singleLine="true"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:layout_weight="0.50"
+  android:paddingTop="5dp"
+  android:background="@drawable/editText_bg_grey"
+  android:layout_marginRight="2dp"  
+  android:textSize="18dp"
+            android:id="@+id/tbItems" />
+
+
+    </LinearLayout>
+     <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="5dp">
+
+        <TextView
+            android:textStyle="bold"
+            android:textSize="18dp"    
+            android:layout_width="125.5dp"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:text="Potrdil" />
+
+        <EditText
+         android:textStyle="bold"
+  android:singleLine="true"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:layout_weight="0.50"
+  android:paddingTop="5dp"
+  android:background="@drawable/editText_bg_grey"
+  android:layout_marginRight="2dp"  
+  android:textSize="18dp"
+            android:id="@+id/tbConfirmedBy" />
+
+
+    </LinearLayout>
+     <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="5dp">
+
+        <TextView
+            android:textStyle="bold"
+            android:textSize="20dp"    
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:text="Datum potrditve" />
+
+        <EditText
+        android:textStyle="bold"
+  android:singleLine="true"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:layout_weight="0.50"
+  android:paddingTop="5dp"
+  android:background="@drawable/editText_bg_grey"
+  android:layout_marginRight="2dp"  
+  android:textSize="18dp"
+            android:id="@+id/tbConfirmationDate" />
+
+
+    </LinearLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="190.0dp"
+        android:paddingLeft="10dp"
+        android:paddingTop="5dp"/>
+           <TextView
+
+        android:layout_height="0dip"
+        android:layout_width="fill_parent"
+        android:layout_weight="1" />
+  <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="2"
+            android:layout_marginBottom="4dp"
+        android:paddingTop="5dp">
+
+            <Button
+                
+             
+                android:text="Potrdi"
+                android:drawableLeft="@drawable/confirmation_white"
+               android:layout_weight="1"
+android:textSize="20dp"
+android:paddingLeft="10dp"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:background="@color/rikoMain"
+android:textColor="@color/white"
+android:layout_marginLeft="4dp"
+android:layout_marginRight="2dp"
+                android:id="@+id/btOpen" />
+
+            <Button
+              
+               
+                android:text="Izhod"
+                android:drawableLeft="@drawable/logout_white"
+               android:layout_weight="1"
+android:textSize="20dp"
+android:paddingLeft="10dp"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:background="@color/rikoMain"
+android:textColor="@color/white"
+android:layout_marginLeft="2dp"
+android:layout_marginRight="2dp"
+                android:id="@+id/button2" />
+
+
+    </LinearLayout>
+ 
+
+
+
+    </LinearLayout>
+
+
+
+
+
+
+
+
+
+</androidx.percentlayout.widget.PercentRelativeLayout>

@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:layout_gravity="center"
+    android:orientation="vertical"
+    tools:context=".LinearLayout"
+    android:foregroundGravity="center">
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginBottom="0dp"
+        android:gravity="center_vertical"
+        android:weightSum="6"
+
+   >
+
+
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="65dp"
+            android:layout_marginRight="5.0dp"
+            android:layout_marginLeft="5.0dp"
+            android:gravity="center_vertical"
+            android:layout_marginTop="3dp"
+            android:weightSum="2"
+            android:orientation="horizontal"
+            >
+
+            <Button
+                android:bottomLeftRadius="7dp"
+                android:bottomRightRadius="7dp"
+                android:topLeftRadius="7dp"
+                android:topRightRadius="7dp"
+                android:layout_width="165.0dp"
+                android:layout_height="match_parent"
+                android:background="@color/rikoMain"
+                android:drawableLeft="@drawable/takeover_white"
+                android:paddingBottom="5dp"
+                android:textSize="14dp"
+                android:textStyle="bold"
+                android:layout_weight="1"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:paddingTop="8dp"
+                android:text="   Prevz. blaga-F1"
+                android:layout_marginBottom="3dp"
+                android:textColor="#ffffff"
+                android:id="@+id/goodsTakeOver" />
+            <Button
+                android:layout_weight="1"
+                android:bottomLeftRadius="7dp"
+                android:bottomRightRadius="7dp"
+                android:topLeftRadius="7dp"
+                android:topRightRadius="7dp"
+                android:layout_width="165.0dp"
+                android:layout_height="match_parent"
+                android:background="@color/rikoMain"
+                android:drawableLeft="@drawable/warehouse_white"
+                android:paddingBottom="5dp"
+                android:paddingLeft="20dp"
+                android:textSize="14dp"
+                android:textStyle="bold"
+                android:paddingRight="20dp"
+                android:paddingTop="8dp"
+                android:text="Medsk.-F2"
+                android:layout_marginBottom="3dp"
+                android:textColor="#ffffff"
+                android:layout_marginLeft="6.0dp"
+                android:layout_marginRight="6.0dp"
+                android:id="@+id/goodsInterWarehouse"
+                android:drawablePadding="8dp"/>
+
+
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:weightSum="2"
+            android:layout_width="fill_parent"
+            android:layout_height="65dp"
+            android:layout_marginRight="5.0dp"
+            android:layout_marginLeft="5.0dp"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <Button
+                android:layout_weight="1"
+                android:bottomLeftRadius="7dp"
+                android:bottomRightRadius="7dp"
+                android:topLeftRadius="7dp"
+                android:topRightRadius="7dp"
+                android:layout_width="165.0dp"
+                android:layout_height="match_parent"
+                android:background="@color/rikoMain"
+                android:drawableLeft="@drawable/factory_white"
+                android:paddingBottom="5dp"
+                android:textSize="14dp"
+                android:textStyle="bold"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:paddingTop="8dp"
+                android:text="Prevz. iz proizv.-f3"
+                android:layout_marginBottom="5dp"
+                android:textColor="#ffffff"
+                android:id="@+id/goodsProduction" />
+            <Button
+                android:layout_weight="1"
+                android:bottomLeftRadius="7dp"
+                android:bottomRightRadius="7dp"
+                android:topLeftRadius="7dp"
+                android:topRightRadius="7dp"
+                android:layout_width="165.0dp"
+                android:layout_height="match_parent"
+                android:background="@color/rikoMain"
+                android:drawableLeft="@drawable/shipped_white"
+                android:paddingBottom="5dp"
+                android:paddingLeft="20dp"
+                android:textSize="14dp"
+                android:textStyle="bold"
+                android:paddingRight="20dp"
+                android:paddingTop="8dp"
+                android:text="Odprema blaga - F4"
+                android:layout_marginBottom="5dp"
+                android:textColor="#ffffff"
+                android:layout_marginLeft="6.0dp"
+                android:layout_marginRight="6.0dp"
+                android:id="@+id/goodsIssued"  />
+
+
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:weightSum="2"
+            android:layout_width="fill_parent"
+            android:layout_height="65dp"
+            android:layout_marginRight="5.0dp"
+            android:layout_marginLeft="5.0dp"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <Button
+                android:layout_weight="1"
+                android:bottomLeftRadius="7dp"
+                android:bottomRightRadius="7dp"
+                android:topLeftRadius="7dp"
+                android:topRightRadius="7dp"
+                android:layout_width="165.0dp"
+                android:layout_height="match_parent"
+                android:background="@color/rikoMain"
+                android:drawableLeft="@drawable/packaging_white"
+                android:paddingBottom="5dp"
+                android:textSize="14dp"
+                android:textStyle="bold"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:paddingTop="8dp"
+                android:text="Pakir.- f5"
+                android:layout_marginBottom="5dp"
+                android:textColor="#ffffff"
+                android:id="@+id/goodsPackaging"
+                android:drawablePadding="8dp"/>
+            <Button
+                android:layout_weight="1"
+                android:bottomLeftRadius="7dp"
+                android:bottomRightRadius="7dp"
+                android:topLeftRadius="7dp"
+                android:topRightRadius="7dp"
+                android:layout_width="165.0dp"
+                android:layout_height="match_parent"
+                android:background="@color/rikoMain"
+                android:drawableLeft="@drawable/printer_white"
+                android:paddingBottom="5dp"
+                android:paddingLeft="20dp"
+                android:textSize="14dp"
+                android:textStyle="bold"
+                android:paddingRight="20dp"
+                android:paddingTop="8dp"
+                android:text="Tisk. - f6"
+                android:layout_marginBottom="5dp"
+                android:textColor="#ffffff"
+                android:layout_marginLeft="6.0dp"
+                android:layout_marginRight="6.0dp"
+                android:id="@+id/btnPrint" />
+
+
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:weightSum="2"
+            android:layout_width="fill_parent"
+            android:layout_height="65dp"
+            android:gravity="center_horizontal"
+            android:layout_marginRight="5.0dp"
+            android:layout_marginLeft="5.0dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:layout_weight="1"
+                android:bottomLeftRadius="7dp"
+                android:bottomRightRadius="7dp"
+                android:topLeftRadius="7dp"
+                android:topRightRadius="7dp"
+                android:layout_width="165.0dp"
+                android:layout_height="match_parent"
+                android:background="@color/rikoMain"
+                android:drawableLeft="@drawable/inventory_white"
+                android:paddingBottom="5dp"
+                android:textSize="14dp"
+                android:textStyle="bold"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:paddingTop="8dp"
+                android:text="Inven.- f7"
+                android:layout_marginBottom="5dp"
+                android:textColor="#ffffff"
+                android:id="@+id/btnInventory"
+                android:drawablePadding="6dp"/>
+            <Button
+                android:layout_weight="1"
+                android:bottomLeftRadius="7dp"
+                android:bottomRightRadius="7dp"
+                android:topLeftRadius="7dp"
+                android:topRightRadius="7dp"
+                android:layout_width="165.0dp"
+                android:layout_height="match_parent"
+                android:background="@color/rikoMain"
+                android:drawableLeft="@drawable/location_white"
+                android:paddingBottom="5dp"
+                android:paddingLeft="20dp"
+                android:textSize="14dp"
+                android:textStyle="bold"
+                android:paddingRight="20dp"
+                android:paddingTop="8dp"
+                android:text="Zaloga-f8"
+                android:layout_marginBottom="5dp"
+                android:textColor="#ffffff"
+                android:layout_marginLeft="6.0dp"
+                android:layout_marginRight="6.0dp"
+                android:id="@+id/btCheckStock" />
+
+
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:weightSum="2"
+            android:layout_width="fill_parent"
+            android:layout_height="65dp"
+            android:gravity="center_horizontal"
+            android:layout_marginRight="5.0dp"
+            android:layout_marginLeft="5.0dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:layout_weight="1"
+                android:bottomLeftRadius="7dp"
+                android:bottomRightRadius="7dp"
+                android:topLeftRadius="7dp"
+                android:topRightRadius="7dp"
+                android:layout_width="165.0dp"
+                android:layout_height="match_parent"
+                android:background="@color/rikoMain"
+                android:drawableLeft="@drawable/order_white"
+                android:paddingBottom="5dp"
+                android:textSize="14dp"
+                android:textStyle="bold"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:paddingTop="8dp"
+                android:text="Palete"
+                android:layout_marginBottom="5dp"
+                android:textColor="#ffffff"
+                android:id="@+id/PalletsMenu" />
+            <Button
+                android:layout_weight="1"
+                android:bottomLeftRadius="7dp"
+                android:bottomRightRadius="7dp"
+                android:topLeftRadius="7dp"
+                android:topRightRadius="7dp"
+                android:layout_width="165.0dp"
+                android:layout_height="match_parent"
+                android:background="@color/rikoMain"
+                android:drawableLeft="@drawable/discount_white"
+                android:paddingBottom="5dp"
+                android:paddingLeft="20dp"
+                android:textSize="14dp"
+                android:textStyle="bold"
+                android:paddingRight="20dp"
+                android:paddingTop="8dp"
+                android:text="Preračun"
+                android:layout_marginBottom="5dp"
+                android:textColor="#ffffff"
+                android:layout_marginLeft="6.0dp"
+                android:layout_marginRight="6.0dp"
+                android:id="@+id/btRecalculate" />
+
+       </LinearLayout>
+
+        <Button
+            android:paddingLeft="10dp"
+            android:bottomLeftRadius="7dp"
+            android:bottomRightRadius="7dp"
+            android:topLeftRadius="7dp"
+            android:topRightRadius="7dp"
+            android:text="Odjava"
+            android:layout_width="match_parent"
+            android:layout_height="65dp"
+            android:id="@+id/logout"
+            android:textSize="14dp"
+            android:textStyle="bold"
+            android:layout_marginLeft="5.0dp"
+            android:drawableLeft="@drawable/logout_white"
+            android:paddingRight="10dp"
+            android:layout_marginRight="10.0dp"
+            android:background="@color/rikoMain"
+            android:textColor="@color/white"/>
+
+    </LinearLayout>
+</LinearLayout>

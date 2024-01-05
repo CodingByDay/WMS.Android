@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.percentlayout.widget.PercentRelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_widthPercent="100%"
+        android:layout_gravity="center"
+        android:orientation="horizontal"
+        >
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/toolbar" />
+    </LinearLayout>
+
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/test"
+        android:layout_toRightOf="@id/app"
+        android:layout_below="@id/text"
+        />
+
+
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/test"
+        android:layout_toRightOf="@id/app"
+        android:id="@+id/listView1"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="60dp"
+        android:layout_toRightOf="@id/app"
+        android:weightSum="5"
+        android:id="@+id/text"
+        android:paddingTop="5dp">
+
+        <TextView
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:layout_marginRight="28.0dp"
+            android:id="@+id/ident"
+            android:layout_width="match_parent" />
+
+        <TextView
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:layout_width="match_parent"
+            android:layout_marginRight="28.0dp"
+            android:id="@+id/name" />
+
+        <TextView
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:layout_width="match_parent"
+            android:layout_marginRight="28.0dp"
+            android:id="@+id/quantity" />
+        <TextView
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:layout_width="match_parent"
+            android:layout_marginRight="28.0dp"
+            android:id="@+id/position" />
+
+
+        <TextView
+            android:textSize="18dp"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:textStyle="bold"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:layout_marginRight="28.0dp"
+            android:id="@+id/serial" />
+
+
+
+
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_widthPercent="30%"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:id="@+id/app"
+        android:layout_marginTop="70dp"
+        tools:context=".LinearLayout"
+        android:foregroundGravity="center">
+
+        <TextView
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:text="Posl. dog."
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_width="match_parent"
+            android:layout_height="33.0dp"
+            android:minWidth="25dp"
+            android:layout_marginLeft="10dp"
+            android:minHeight="25dp"
+            android:id="@+id/textView1" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="0dp"
+            android:background="@drawable/edittext_bg_grey">
+
+            <CustomAutoCompleteTextView
+                android:singleLine="true"
+                android:spinnerMode="dialog"
+                android:layout_width="match_parent"
+                android:layout_height="53.0dp"
+                android:id="@+id/cbDocType" />
+        </RelativeLayout>
+        <TextView
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_width="match_parent"
+            android:layout_height="38.0dp"
+            android:layout_marginLeft="10dp"
+            android:id="@+id/textView2"
+            android:text="Skladišče" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="0dp"
+            android:background="@drawable/edittext_bg_grey">
+
+            <CustomAutoCompleteTextView
+                android:singleLine="true"
+                android:spinnerMode="dialog"
+                android:layout_width="match_parent"
+                android:layout_height="53.0dp"
+                android:id="@+id/cbWarehouse" />
+        </RelativeLayout>
+        <TextView
+            android:text="...."
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_width="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/lbExtra" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/rlExtra"
+            android:padding="0dp"
+            android:background="@drawable/edittext_bg_grey">
+
+            <CustomAutoCompleteTextView
+                android:singleLine="true"
+                android:spinnerMode="dialog"
+                android:layout_width="match_parent"
+                android:layout_height="53.0dp"
+                android:id="@+id/cbExtra" />
+        </RelativeLayout>
+
+        <TextView
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_width="match_parent"
+            android:layout_height="122.5dp"
+            android:id="@+id/textView4"
+            android:layout_marginBottom="0.0dp" />
+        <TextView
+            android:layout_height="0dip"
+            android:layout_width="fill_parent"
+            android:layout_weight="1" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="2"
+            android:paddingTop="5dp">
+
+            <Button
+                android:text="Potrdi"
+                android:drawableLeft="@drawable/confirmation_white"
+                android:layout_weight="1"
+                android:textSize="20dp"
+                android:paddingLeft="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/rikoMain"
+                android:textColor="@color/white"
+                android:layout_marginLeft="4dp"
+                android:layout_marginRight="2dp"
+                android:id="@+id/btnOrder" />
+
+            <Button
+                android:text="Brez"
+                android:drawableLeft="@drawable/order_white"
+                android:layout_weight="1"
+                android:textSize="20dp"
+                android:paddingLeft="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/rikoMain"
+                android:textColor="@color/white"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                android:id="@+id/btnOrderMode" />
+
+
+        </LinearLayout>
+        <Button
+            android:background="@color/rikoMain"
+            android:text="Izhod "
+            android:layout_width="match_parent"
+            android:layout_height="55.0dp"
+            android:textSize="20dp"
+            android:textColor="@color/white"
+            android:drawableLeft="@drawable/logout_white"
+            android:paddingLeft="10dp"
+            android:id="@+id/btnLogout"
+            android:layout_marginTop="4.0dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginBottom="4dp"/>
+    </LinearLayout>
+
+
+
+
+
+
+
+
+
+</androidx.percentlayout.widget.PercentRelativeLayout>

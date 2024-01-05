@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:gravity="center_vertical"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="137.5dp"
+        android:id="@+id/bin"
+        android:src="@drawable/icon9"
+        android:contentDescription=""
+        android:layout_marginRight="0.0dp"
+        android:layout_marginLeft="22.0dp" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="40.5dp"
+        android:layout_gravity="center"
+        android:paddingLeft="10dp"
+        android:paddingTop="5dp"
+        android:layout_marginTop="0.0dp"
+        android:textStyle="bold|italic" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="65.0dp"
+        android:layout_gravity="center"
+        android:paddingLeft="10dp"
+        android:paddingTop="5dp"
+        android:text="Izpisanih je bilo zadostno št etiket. Želite zamenjati serijsko št.?"
+        android:layout_marginTop="0.0dp"
+        android:textStyle="bold|italic"
+        android:textSize="18dp" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="2"
+        android:layout_marginBottom="20dp"
+        android:paddingTop="5dp">
+
+        <Button
+            android:layout_weight="1"
+            android:background="@color/rikoMain"
+            android:textColor="#ffffff"
+            android:text="Da"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/btnYes" 
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="2dp"/>
+
+        <Button
+            android:layout_weight="1"
+             android:background="@color/rikoMain"
+            android:textColor="#ffffff"
+            android:text="Ne"
+            android:layout_width="match_parent"
+            android:layout_height="81.5dp"
+            android:id="@+id/btnNo"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="4dp"/>
+
+
+    </LinearLayout>
+
+</LinearLayout>

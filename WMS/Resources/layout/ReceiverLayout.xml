@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:minWidth="25dp"
+    android:minHeight="25dp">
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar" />
+    <LinearLayout
+        android:orientation="vertical"
+        android:minWidth="25dp"
+        android:minHeight="25dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/linearLayout1">
+        <TextView
+            android:text="Show msg"
+            android:layout_width="match_parent"
+            android:layout_height="400.7dp"
+            android:id="@+id/textView1" />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/linearLayout2">
+            <Button
+                android:layout_weight="1"
+                android:textSize="20dp"
+                android:paddingLeft="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/rikoMain"
+                android:textColor="@color/white"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                android:text="Skeniraj"
+                android:id="@+id/button1"
+         />
+            <Button
+                android:text="Vredu"
+                android:id="@+id/btnOkay"
+                android:layout_weight="1"
+                android:textSize="20dp"
+                android:paddingLeft="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/rikoMain"
+                android:textColor="@color/white"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

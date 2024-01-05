@@ -1,0 +1,421 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.percentlayout.widget.PercentRelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/test"
+        android:layout_toRightOf="@id/app"
+        android:layout_below="@id/text"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+
+        android:layout_toRightOf="@id/app"
+      
+        android:weightSum="5"
+        android:id="@+id/text"
+        android:paddingTop="5dp">
+
+        <TextView
+            android:textSize="16dp" 
+            android:textStyle="bold"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:text="Ident"
+            android:layout_marginRight="28.0dp"
+            android:id="@+id/ident"
+            android:layout_width="match_parent" />
+
+        <TextView
+            android:textSize="16dp"
+            android:textStyle="bold"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:text="Serij. štev."
+            android:layout_width="match_parent"
+            android:layout_marginRight="28.0dp"
+            android:id="@+id/name" />
+
+        <TextView
+            android:textSize="16dp"
+            android:textStyle="bold"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:text="Lokacija"
+            android:layout_width="match_parent"
+            android:layout_marginRight="28.0dp"
+            android:id="@+id/quantity" />
+        <TextView
+            android:textSize="16dp"
+            android:textStyle="bold"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:text="Količina na lokaciji"
+            android:layout_width="match_parent"
+            android:layout_marginRight="28.0dp"
+            android:id="@+id/position" />
+
+
+        <TextView
+            android:textSize="16dp"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:textStyle="bold"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:text="Zasedenost(%)"
+            android:layout_marginRight="28.0dp"
+            android:id="@+id/serial" />
+
+
+
+     
+
+    </LinearLayout>
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/test"
+        android:layout_toRightOf="@id/app"
+        android:id="@+id/listData"
+        android:listSelector="@android:color/holo_blue_light"
+        android:choiceMode="singleChoice" 
+        
+        />
+   
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+
+        android:layout_toRightOf="@id/app"
+      
+        android:weightSum="3"
+        android:id="@+id/text"
+        android:paddingTop="5dp">
+
+        <TextView
+            android:textSize="16dp"
+            android:textStyle="bold"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:layout_marginRight="28.0dp"
+            android:id="@+id/ident"
+            android:layout_width="match_parent" />
+        <TextView
+            android:textSize="16dp"
+            android:textStyle="bold"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:layout_marginRight="28.0dp"
+            android:id="@+id/location"
+            android:layout_width="match_parent" />
+        <TextView
+            android:textSize="16dp"
+            android:textStyle="bold"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:layout_marginRight="28.0dp"
+            android:id="@+id/Količina"
+            android:layout_width="match_parent" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_widthPercent="30%"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:id="@+id/app"
+        tools:context=".LinearLayout"
+        android:foregroundGravity="center">
+
+  
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:paddingLeft="10dp"
+        android:paddingTop="5dp"
+        android:text="Hitri prevzem." />
+  
+
+    
+
+      
+        
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="5dp"
+                                     >
+
+            <TextView
+                android:textSize="16dp"
+                android:textStyle="bold"
+                android:singleLine="true"
+                android:layout_width="97.5dp"
+                android:layout_height="wrap_content"
+                android:text="Ident"
+                android:paddingTop="5dp"
+                android:paddingLeft="10dp"
+                android:id="@+id/Idents" />
+
+            <EditText
+                android:textSize="16dp"
+                android:textStyle="bold"
+                android:singleLine="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="40dp"
+                android:layout_weight="0.50"
+                android:paddingTop="5dp"
+                android:id="@+id/tbIdent" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="5dp">
+
+            <TextView
+                android:textSize="16dp"
+                android:textStyle="bold"
+                android:singleLine="true"
+                android:layout_width="97.5dp"
+                android:layout_height="wrap_content"
+                android:text="SCCC"
+                android:paddingTop="5dp"
+                android:paddingLeft="10dp"
+                android:id="@+id/textView1" />
+
+            <EditText
+                    android:textSize="16dp"
+                    android:textStyle="bold"
+                    android:singleLine="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginLeft="40dp"
+                    android:layout_weight="0.50"
+                    android:paddingTop="5dp"
+                    android:id="@+id/tbSSCC" />
+
+
+    </LinearLayout>
+           <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="5dp"
+                                     >
+
+            <TextView
+                android:textSize="16dp"
+                android:textStyle="bold"
+                android:singleLine="true"
+                android:layout_width="97.5dp"
+                android:layout_height="wrap_content"
+                android:text="Lokacija"
+                android:paddingTop="5dp"
+                android:paddingLeft="10dp"
+                android:id="@+id/receiveLocation" />
+
+        <EditText
+            android:textSize="16dp"
+            android:textStyle="bold"
+            android:singleLine="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="40dp"
+            android:layout_weight="0.50"
+            android:paddingTop="5dp"
+            android:id="@+id/tbReceiveLocation" />
+
+
+    </LinearLayout>
+           <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="5dp"
+                                     >
+
+            <TextView
+                android:textSize="16dp"
+                android:textStyle="bold"
+                android:singleLine="true"
+                android:layout_width="97.5dp"
+                android:layout_height="wrap_content"
+                android:text="Zaloga"
+                android:paddingTop="5dp"
+                android:paddingLeft="10dp"
+                android:id="@+id/tbStock" />
+
+        <EditText
+            android:textSize="16dp"
+            android:textStyle="bold"
+            android:singleLine="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="40dp"
+            android:layout_weight="0.50"
+            android:paddingTop="5dp"
+            android:id="@+id/tbRealStock" />
+
+
+    </LinearLayout>
+          <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="5dp">
+
+            <TextView
+                android:textSize="16dp"
+                android:textStyle="bold"
+                android:singleLine="true"
+                android:layout_width="91.0dp"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dp"
+                android:paddingTop="5dp"
+                android:text="Skladišče"
+                android:layout_marginRight="27.0dp" />
+        <Spinner
+            android:spinnerMode="dialog"
+            android:layout_width="match_parent"
+            android:layout_height="41.0dp"
+            android:id="@+id/cbWarehouses"
+            android:gravity="center"
+            android:layout_marginLeft="22.5dp"
+            android:layout_marginRight="27.0dp"
+           />
+
+
+    </LinearLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:paddingTop="5dp"/>
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="5dp">
+
+            <TextView
+                android:textSize="16dp"
+                android:textStyle="bold"
+                android:layout_width="100.0dp"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dp"
+                android:paddingTop="5dp"
+                android:text="Prejeto" />
+
+        <EditText
+            android:textSize="16dp"
+            android:textStyle="bold"
+            android:singleLine="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.50"
+            android:layout_marginLeft="40dp"
+            android:paddingTop="5dp"
+            android:id="@+id/tbLocation" />
+
+
+    </LinearLayout>
+    <TextView
+        android:layout_width="95.5dp"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:paddingTop="5dp"/>
+        <TextView
+            android:textStyle="bold"
+            android:layout_width="296.0dp"
+            android:layout_height="188.0dp"
+            android:layout_gravity="center"
+            android:textAlignment="center"
+            android:textSize="30dp"
+            android:textColor="@android:color/black"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:id="@+id/lbStock"
+            android:foregroundGravity="center"
+            android:gravity="center" />
+
+ <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="2"
+        android:paddingTop="5dp">
+
+            <Button
+                android:textSize="20dp"
+                android:background="@drawable/nicelookingbutton"
+                android:text="Potrdi"
+                android:layout_weight="1"
+                android:drawableLeft="@drawable/confirmation"
+                android:paddingLeft="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="70.0dp"
+                android:id="@+id/btConfirm" />
+
+            <Button
+                android:textSize="20dp"
+                android:background="@drawable/nicelookingbutton"
+                android:text="Izhod"
+                android:layout_weight="1"
+                android:drawableLeft="@drawable/logout"
+                android:paddingLeft="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="70.0dp"
+                android:id="@+id/btLogout" />
+
+
+    </LinearLayout>
+    
+
+
+</LinearLayout>
+
+
+
+
+</androidx.percentlayout.widget.PercentRelativeLayout>

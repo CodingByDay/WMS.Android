@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+
+     <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="5dp">
+
+        <TextView
+            android:textStyle="bold"
+            android:textSize="16dp"
+            android:layout_weight="20"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:text="Ident"
+            android:layout_marginRight="28.0dp"
+            android:id="@+id/Ident" />
+
+
+        <TextView
+            android:textStyle="bold"
+            android:textSize="16dp"
+            android:layout_weight="20"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:text="SerialNumber"
+            android:layout_marginRight="28.0dp"
+            android:id="@+id/SerialNumber" />
+
+
+        
+        <TextView
+            android:textStyle="bold"
+            android:textSize="16dp"
+            android:layout_weight="20"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:text="Location"
+            android:layout_marginRight="28.0dp"
+            android:id="@+id/Location" />
+       
+        
+        <TextView
+            android:textStyle="bold"
+            android:textSize="16dp"
+            android:layout_weight="20"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:text="Qty"
+            android:layout_marginRight="28.0dp"
+            android:id="@+id/Qty" />
+
+
+        
+        <TextView
+            android:textStyle="bold"
+            android:textSize="16dp"
+            android:layout_weight="20"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:text="Filled"
+            android:layout_marginRight="28.0dp"
+            android:id="@+id/Filled" />
+
+
+    </LinearLayout>
+
+</LinearLayout>

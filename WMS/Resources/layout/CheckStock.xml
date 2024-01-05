@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:layout_gravity="center"
+    android:orientation="vertical"
+    tools:context=".LinearLayout"
+    android:foregroundGravity="center"
+    >
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar" />
+
+    <TextView
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:paddingLeft="10dp"
+        android:paddingTop="15dp"
+        android:paddingBottom="10dp"
+        android:text="Pregled zaloge na lokaciji"
+        android:textColor="@color/rikoMain"/>
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="5dp">
+
+        <TextView
+            android:text="Skladišče"
+            android:textStyle="bold"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:gravity="bottom"
+            android:paddingLeft="4dp"
+            android:paddingTop="4dp" />
+        <CustomAutoCompleteTextView
+            android:spinnerMode="dialog"
+            android:layout_width="match_parent"
+            android:layout_height="41.0dp"
+            android:id="@+id/cbWarehouses"
+            android:gravity="center"
+            android:layout_marginLeft="22.5dp"
+            android:layout_marginRight="0dp"
+           />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="5dp"
+                                     >
+
+        <TextView
+            android:textStyle="bold"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:gravity="bottom"
+            android:paddingLeft="4dp"
+            android:paddingTop="4dp"
+            android:text="Lokacija"
+            android:id="@+id/textView1" />
+
+        <CustomAutoCompleteTextView
+            android:textStyle="bold"
+            android:singleLine="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="40dp"
+            android:layout_weight="0.50"
+            android:paddingTop="5dp"
+            android:id="@+id/tbLocation"
+            android:background="@drawable/editText_bg_grey"/>
+
+
+    </LinearLayout>
+  
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="5dp">
+
+        <TextView
+            android:textStyle="bold"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:gravity="bottom"
+            android:paddingLeft="4dp"
+            android:paddingTop="4dp"
+            android:text="Ident" />
+
+        <CustomAutoCompleteTextView
+            android:textStyle="bold"
+            android:singleLine="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.50"
+            android:layout_marginLeft="40dp"
+            android:paddingTop="5dp"
+            android:id="@+id/tbIdent"
+            android:background="@drawable/editText_bg_grey"/>
+        
+
+
+
+    </LinearLayout>
+    <TextView
+        android:textStyle="bold"
+        android:layout_width="95.5dp"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:paddingTop="5dp"/>
+    <TextView
+        android:textStyle="bold"
+        android:layout_height="0dip"
+        android:layout_weight="1"
+        android:layout_width="296.0dp"
+        android:layout_gravity="center"
+        android:textAlignment="center"
+        android:textSize="30dp"
+        android:textColor="@color/rikoMain"
+        android:paddingLeft="10dp"
+        android:paddingTop="5dp"
+        android:id="@+id/lbStock"
+        android:foregroundGravity="center"
+        android:gravity="center"
+        android:background="@color/rikoLightGrey"/>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:weightSum="1"
+        android:paddingTop="5dp"
+        android:layout_marginBottom="1dp">
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:weightSum="2"
+            android:paddingTop="5dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginBottom="3dp">
+
+            <Button
+                android:textSize="16dp"
+                android:layout_weight="1"
+                android:background="@color/rikoMain"
+                android:textColor="@color/white"
+                android:text="Prikaži - F2"
+                android:paddingLeft="10dp"
+                android:drawableLeft="@drawable/inventory_white"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/btShowStock"
+                android:layout_marginRight="2dp"    
+                />
+
+            <Button
+                android:textSize="16dp"
+                android:background="@color/rikoMain"
+                android:textColor="@color/white"
+                android:text="Izhod - f8"
+                android:layout_weight="1"
+                android:drawableLeft="@drawable/logout_white"
+                android:paddingLeft="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/button1"
+                android:layout_marginLeft="2dp"    />
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

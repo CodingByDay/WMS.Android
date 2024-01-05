@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:text=""
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_width="match_parent"
+        android:layout_height="263.0dp"
+        android:id="@+id/textView1" />
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="5.0dp"
+        android:layout_marginLeft="5.0dp"
+        android:gravity="center_vertical"
+        android:layout_marginTop="20dp"
+        android:weightSum="2"
+        android:orientation="horizontal">
+
+        <Button
+            android:bottomLeftRadius="7dp"
+            android:bottomRightRadius="7dp"
+            android:topLeftRadius="7dp"
+            android:topRightRadius="7dp"
+            android:layout_width="165.0dp"
+            android:layout_height="89.0dp"
+            android:background="@color/rikoMain"
+            android:drawableLeft="@drawable/wholesale_white"
+            android:paddingBottom="5dp"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:layout_weight="1"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:paddingTop="8dp"
+            android:text="Dostava palete"
+            android:layout_marginBottom="5dp"
+            android:textColor="@color/colorWhiteBg"
+            android:id="@+id/shipped" />
+        <Button
+            android:layout_weight="1"
+            android:bottomLeftRadius="7dp"
+            android:bottomRightRadius="7dp"
+            android:topLeftRadius="7dp"
+            android:topRightRadius="7dp"
+            android:layout_width="165.0dp"
+            android:layout_height="89.0dp"
+            android:background="@color/rikoMain"
+            android:drawableLeft="@drawable/note_white"
+            android:paddingBottom="5dp"
+            android:paddingLeft="20dp"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:paddingRight="20dp"
+            android:paddingTop="8dp"
+            android:text="Zavijanje palete"
+            android:layout_marginBottom="5dp"
+            android:textColor="@color/colorWhiteBg"
+            android:layout_marginLeft="6.0dp"
+            android:layout_marginRight="6.0dp"
+            android:id="@+id/wrapped" />
+
+
+
+
+    </LinearLayout>
+
+
+</LinearLayout>

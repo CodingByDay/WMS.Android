@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:layout_gravity="center"
+    android:orientation="vertical"
+    tools:context=".LinearLayout"
+    android:foregroundGravity="center">
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar" />
+
+    <TextView
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:paddingLeft="10dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:textColor="@color/rikoMain"
+        android:text="Vnešene pozicije na naročilu"
+        android:id="@+id/lbInfo" />
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="4dp">
+
+        <TextView
+            android:textStyle="bold"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:gravity="bottom"
+            android:paddingLeft="4dp"
+            android:paddingTop="4dp"
+            android:text="Ident" />
+
+        <EditText
+            android:textStyle="bold"
+            android:singleLine="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.50"
+            android:paddingTop="5dp"
+            android:background="@drawable/editText_bg_grey"
+            android:layout_marginRight="2dp"
+            android:id="@+id/tbIdent" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="4dp"
+                                     >
+
+        <TextView
+            android:textStyle="bold"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:gravity="bottom"
+            android:paddingLeft="4dp"
+            android:paddingTop="4dp"
+            android:text="SSCC koda"
+            android:id="@+id/textView1" />
+
+        <EditText
+            android:textStyle="bold"
+            android:singleLine="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.50"
+            android:paddingTop="5dp"
+            android:background="@drawable/editText_bg_grey"
+            android:layout_marginRight="2dp"
+            android:id="@+id/tbSSCC" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="4dp">
+
+        <TextView
+            android:textStyle="bold"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:gravity="bottom"
+            android:paddingLeft="4dp"
+            android:paddingTop="4dp"
+            android:text="Serijska št."/>
+
+        <EditText
+            android:textStyle="bold"
+            android:singleLine="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.50"
+            android:paddingTop="4dp"
+            android:background="@drawable/editText_bg_grey"
+            android:layout_marginRight="2dp"
+            android:id="@+id/tbSerialNumber" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="5dp"
+                                     >
+
+        <TextView
+            android:textStyle="bold"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:gravity="bottom"
+            android:paddingLeft="4dp"
+            android:paddingTop="4dp"
+            android:text="Količina"/>
+
+        <EditText
+            android:textStyle="bold"
+            android:singleLine="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.50"
+            android:paddingTop="4dp"
+            android:background="@drawable/editText_bg_grey"
+            android:layout_marginRight="2dp"
+            android:id="@+id/tbQty"
+        />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="5dp">
+
+        <TextView
+            android:textStyle="bold"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:gravity="bottom"
+            android:paddingLeft="4dp"
+            android:paddingTop="4dp"
+            android:text="Lokacija" />
+
+        <EditText
+            android:textStyle="bold"
+            android:singleLine="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.50"
+            android:paddingTop="4dp"
+            android:background="@drawable/editText_bg_grey"
+            android:layout_marginRight="2dp"
+            android:id="@+id/tbLocation" />
+
+
+
+    </LinearLayout>
+
+
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="4dp">
+
+        <TextView
+            android:textStyle="bold"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:gravity="bottom"
+            android:paddingLeft="4dp"
+            android:paddingTop="4dp"
+            android:text="Kreiral" />
+
+        <EditText
+            android:textStyle="bold"
+            android:singleLine="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.50"
+            android:paddingTop="5dp"
+            android:background="@drawable/editText_bg_grey"
+            android:layout_marginRight="2dp"
+            android:id="@+id/tbCreatedBy" />
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_height="0dip"
+        android:layout_width="fill_parent"
+        android:layout_weight="1" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:weightSum="3"
+        android:paddingTop="5dp">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:weightSum="2"
+            android:paddingTop="5dp">
+
+            <Button
+              
+                android:text="Nasled. - F1"
+                android:drawableLeft="@drawable/next_white"
+                android:layout_weight="1"
+                android:textSize="20dp"
+                android:paddingLeft="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/rikoMain"
+                android:textColor="@color/white"
+                android:layout_marginLeft="4dp"
+                android:layout_marginRight="2dp"
+                android:id="@+id/btNext" />
+
+            <Button
+                android:layout_weight="1"
+                android:textSize="20dp"
+                android:paddingLeft="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/rikoMain"
+                android:textColor="@color/white"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="4dp"
+                android:text="uredi - F2"
+                android:drawableLeft="@drawable/fix_white"
+                android:id="@+id/btUpdate" />
+
+
+        </LinearLayout>
+
+
+
+
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:weightSum="2"
+            android:paddingTop="4dp"
+            android:layout_marginBottom="4dp">
+
+            <Button
+                android:layout_weight="1"
+                android:textSize="20dp"
+                android:paddingLeft="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/rikoMain"
+                android:textColor="@color/white"
+                android:layout_marginLeft="4dp"
+                android:layout_marginRight="2dp"
+                android:text="Kreiraj - F3"
+                android:drawableLeft="@drawable/newitem_white"
+                android:id="@+id/button4" />
+
+            <Button
+                android:layout_weight="1"
+                android:textSize="20dp"
+                android:paddingLeft="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/rikoMain"
+                android:textColor="@color/white"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="4dp"
+                android:text="Zaklj. - F4"
+                android:drawableLeft="@drawable/confirmation_white"
+                android:id="@+id/btFinish" />
+
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:weightSum="2"
+            android:orientation="horizontal"
+            android:layout_marginBottom="4dp">
+
+            <Button
+                android:layout_weight="1"
+                android:textSize="20dp"
+                android:paddingLeft="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/rikoMain"
+                android:textColor="@color/white"
+                android:layout_marginLeft="4dp"
+                android:layout_marginRight="2dp"
+                android:text="Izbriši - F5"
+                android:drawableLeft="@drawable/delete_white"
+                android:id="@+id/btDelete" />
+
+            <Button
+                android:layout_weight="1"
+                android:textSize="20dp"
+                android:paddingLeft="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/rikoMain"
+                android:textColor="@color/white"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="4dp"
+                android:text="Izhod - F8"
+                android:drawableLeft="@drawable/logout_white"
+                android:id="@+id/button5" />
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+</LinearLayout>

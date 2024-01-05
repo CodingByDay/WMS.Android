@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:layout_gravity="center"
+    android:orientation="vertical"
+    tools:context=".LinearLayout"
+    android:foregroundGravity="center">
+ 
+    
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+
+        android:weightSum="1"
+        android:paddingTop="5dp">
+
+
+
+
+
+          <EditText
+            android:textStyle="bold"
+            android:singleLine="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.50"
+            android:layout_marginLeft="0.0dp"
+            android:paddingTop="5dp"
+            android:id="@+id/tbDeviceName"
+            android:layout_marginRight="1.0dp" />
+
+
+
+
+
+ <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        android:weightSum="2"
+        android:paddingTop="5dp">
+
+        <Button
+            android:textSize="16dp"
+            android:background="@drawable/nicelookingbutton"
+            android:text="Poveži napravo - F1"
+            android:drawableLeft="@drawable/focus"
+            android:paddingLeft="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/btShowStock" />
+
+       
+
+
+    </LinearLayout>
+    
+</LinearLayout>
+
+</LinearLayout>

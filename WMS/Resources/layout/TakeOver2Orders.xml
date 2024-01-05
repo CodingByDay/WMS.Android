@@ -1,0 +1,378 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar" />
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="5dp"
+                                     >
+
+        <TextView
+            android:textStyle="bold"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:gravity="bottom"
+            android:paddingLeft="4dp"
+            android:paddingTop="4dp"
+            android:text="Ident"
+            android:id="@+id/textView1"
+         />
+
+        <EditText
+            android:textStyle="bold"
+            android:singleLine="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.50"
+            android:paddingTop="5dp"
+            android:background="@drawable/editText_bg_grey"
+            android:layout_marginRight="2dp"
+            android:id="@+id/tbIdent" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="4dp"
+                                     >
+
+        <TextView
+            android:textStyle="bold"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:gravity="bottom"
+            android:paddingLeft="4dp"
+            android:paddingTop="4dp"
+            android:text="Naziv"
+            android:id="@+id/textView21"
+            />
+
+        <EditText
+            android:textStyle="bold"
+            android:singleLine="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.50"
+            android:paddingTop="5dp"
+            android:background="@drawable/editText_bg_grey"
+            android:layout_marginRight="2dp"
+            android:id="@+id/tbNaziv" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="4dp"
+                                     >
+
+        <TextView
+            android:textStyle="bold"
+            android:layout_width="140dp"
+            android:layout_height="match_parent"
+            android:gravity="bottom"
+            android:paddingLeft="4dp"
+            android:paddingTop="4dp"
+            android:text="Količina prevzema"
+            android:id="@+id/textView31"
+            />
+
+        <EditText
+            android:textStyle="bold"
+            android:singleLine="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.50"
+            android:paddingTop="5dp"
+            android:background="@drawable/editText_bg_grey"
+            android:layout_marginRight="2dp"
+            android:id="@+id/tbKolicinaPrevzema" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="4dp"
+                                     >
+
+        <TextView
+            android:textStyle="bold"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:gravity="bottom"
+            android:paddingLeft="4dp"
+            android:paddingTop="4dp"
+            android:text="Naročilo"
+            android:id="@+id/lblOrder"
+         />
+
+        <EditText
+            android:textStyle="bold"
+            android:singleLine="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.50"
+            android:paddingTop="5dp"
+            android:background="@drawable/editText_bg_grey"
+            android:layout_marginRight="2dp"
+            android:id="@+id/tbNarocilo" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="4dp"
+                                     >
+
+        <TextView
+            android:textStyle="bold"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:gravity="bottom"
+            android:paddingLeft="4dp"
+            android:paddingTop="4dp"
+            android:text="Kupec"
+            android:id="@+id/textView12"
+           />
+
+        <EditText
+            android:textStyle="bold"
+            android:singleLine="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.50"
+            android:paddingTop="5dp"
+            android:background="@drawable/editText_bg_grey"
+            android:layout_marginRight="2dp"
+            android:id="@+id/tbKupec" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="4dp"
+                                     >
+
+        <TextView
+            android:textStyle="bold"
+            android:layout_width="120dp"
+            android:layout_height="match_parent"
+            android:gravity="bottom"
+            android:paddingLeft="4dp"
+            android:paddingTop="4dp"
+            android:text="Datum dostave"
+            android:id="@+id/textView13"
+            />
+
+        <EditText
+            android:textStyle="bold"
+            android:singleLine="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.50"
+            android:paddingTop="5dp"
+            android:background="@drawable/editText_bg_grey"
+            android:layout_marginRight="2dp"
+            android:id="@+id/tbDatumDostave" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="40.5dp"
+        android:orientation="horizontal"
+        android:paddingTop="5dp"
+                                     >
+
+        <TextView
+            android:textStyle="bold"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:gravity="bottom"
+            android:paddingLeft="4dp"
+            android:paddingTop="4dp"
+            android:text="Kol. odp. /"
+            android:id="@+id/textView132"
+        />
+
+        <EditText
+            android:singleLine="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="40dp"
+            android:layout_weight="0.50"
+            android:paddingTop="5dp"
+            android:id="@+id/tbKolicinaOdprta" />
+        <EditText
+            android:singleLine="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="40dp"
+            android:layout_weight="0.50"
+            android:paddingTop="5dp"
+            android:id="@+id/tbKolicinaPrevzetaDoSedaj" />
+        <EditText
+            android:singleLine="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="40dp"
+            android:layout_weight="0.50"
+            android:paddingTop="5dp"
+            android:id="@+id/tbKolicinaPrevzetaNova" />
+
+    </LinearLayout>
+
+
+    <TextView
+        android:layout_height="0dip"
+        android:layout_width="fill_parent"
+        android:layout_weight="1" />
+
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:weightSum="3"
+        android:paddingTop="5dp">
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:weightSum="2"
+            android:paddingTop="5dp">
+
+            <Button
+                android:layout_weight="1"
+                android:textSize="20dp"
+                android:paddingLeft="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/rikoMain"
+                android:textColor="@color/white"
+                android:layout_marginLeft="4dp"
+                android:layout_marginRight="2dp"
+                android:text="nasled. - f2"
+                android:drawableLeft="@drawable/next_white"
+                android:id="@+id/button1" />
+
+            <Button
+                android:layout_weight="1"
+                android:textSize="20dp"
+                android:paddingLeft="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/rikoMain"
+                android:textColor="@color/white"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="4dp"
+                android:text="prejšn. - f3"
+                android:drawableLeft="@drawable/left_white"
+                android:id="@+id/button2" />
+
+
+        </LinearLayout>
+
+
+
+
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:weightSum="2"
+            android:paddingTop="4dp">
+
+            <Button
+                android:layout_weight="1"
+                android:textSize="20dp"
+                android:paddingLeft="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/rikoMain"
+                android:textColor="@color/white"
+                android:layout_marginLeft="4dp"
+                android:layout_marginRight="2dp"
+                android:text="natisni - f4"
+                android:drawableLeft="@drawable/sticker_white"
+                android:id="@+id/button3" />
+
+            <Button
+                android:layout_weight="1"
+                android:textSize="20dp"
+                android:paddingLeft="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/rikoMain"
+                android:textColor="@color/white"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="4dp"
+                android:text="tiskaj - f5"
+                android:drawableLeft="@drawable/printer_white"
+                android:id="@+id/button4" />
+
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:weightSum="2"
+            android:layout_width="fill_parent"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:paddingTop="4dp"
+            android:layout_marginBottom="4dp">
+
+            <Button
+                android:layout_weight="1"
+                android:textSize="20dp"
+                android:paddingLeft="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/rikoMain"
+                android:textColor="@color/white"
+                android:layout_marginLeft="4dp"
+                android:layout_marginRight="2dp"
+                android:text="n. ident - f6"
+                android:drawableLeft="@drawable/ident_white"
+                android:id="@+id/button5" />
+
+            <Button
+                android:layout_weight="1"
+                android:textSize="20dp"
+                android:paddingLeft="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/rikoMain"
+                android:textColor="@color/white"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="4dp"
+                android:text="Izhod - F8"
+                android:drawableLeft="@drawable/logout_white"
+                android:id="@+id/button6" />
+
+
+
+
+        </LinearLayout>
+    </LinearLayout>
+
+
+</LinearLayout>

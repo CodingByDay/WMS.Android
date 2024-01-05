@@ -1,0 +1,472 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.percentlayout.widget.PercentRelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_widthPercent="100%"
+        android:layout_gravity="center"
+        android:orientation="horizontal"
+        >
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/toolbar" />
+    </LinearLayout>
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/test"
+        android:layout_toRightOf="@id/app"
+        android:layout_below="@id/text"
+        />
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/test"
+        android:layout_toRightOf="@id/app"
+        android:id="@+id/listData"
+        android:choiceMode="singleChoice"
+        android:listSelector="@android:color/holo_blue_light" 
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="60dp"
+        android:layout_toRightOf="@id/app"
+        android:weightSum="5"
+        android:id="@+id/text"
+        android:paddingTop="5dp">
+
+        <TextView
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:layout_marginRight="28.0dp"
+            android:id="@+id/ident"
+            android:layout_width="match_parent"
+            android:text="Ident" />
+
+        <TextView
+            android:text="SSCC"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:layout_width="match_parent"
+            android:layout_marginRight="28.0dp"
+            android:id="@+id/sscc" />
+
+        <TextView
+            android:text="Serijska"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:layout_width="match_parent"
+            android:layout_marginRight="28.0dp"
+            android:id="@+id/serial" />
+
+        <TextView
+            android:text="Količina"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:layout_width="match_parent"
+            android:layout_marginRight="28.0dp"
+            android:id="@+id/quantity" />
+
+        <TextView
+            android:text="Lokacija"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:layout_width="match_parent"
+            android:layout_marginRight="28.0dp"
+            android:id="@+id/location" />
+
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_widthPercent="30%"
+        android:layout_gravity="center"
+        android:layout_marginTop="70dp"
+        android:orientation="vertical"
+        android:id="@+id/app"
+        tools:context=".LinearLayout"
+        android:foregroundGravity="center">
+
+        <TextView
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textColor="@color/rikoMain"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:text="Prevzem od dobavitelja" />
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="5dp">
+
+            <TextView
+                android:textSize="18dp"
+                android:textStyle="bold"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dp"
+                android:paddingTop="5dp"
+                android:text="Ident" />
+
+            <EditText
+                android:id="@+id/tbIdent"
+                android:textStyle="bold"
+                android:singleLine="true"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.50"
+                android:paddingTop="5dp"
+                android:background="@drawable/editText_bg_grey"
+                android:layout_marginRight="2dp"
+                android:textSize="18dp" />
+
+
+
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="5dp"
+                                     >
+
+            <TextView
+                android:textSize="18dp"
+                android:textStyle="bold"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:text="SSCC "
+                android:paddingTop="5dp"
+                android:paddingLeft="10dp"
+                android:id="@+id/textView1"
+                />
+
+            <EditText
+                android:textStyle="bold"
+                android:singleLine="true"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.50"
+                android:paddingTop="5dp"
+                android:background="@drawable/editText_bg_grey"
+                android:layout_marginRight="2dp"
+                android:textSize="18dp"
+                android:id="@+id/tbSSCC" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="5dp">
+
+            <TextView
+                android:textSize="18dp"
+                android:textStyle="bold"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dp"
+                android:paddingTop="5dp"
+                android:text="Serijska "
+                />
+
+            <EditText
+                android:textStyle="bold"
+                android:singleLine="true"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.50"
+                android:paddingTop="5dp"
+                android:background="@drawable/editText_bg_grey"
+                android:layout_marginRight="2dp"
+                android:textSize="18dp"
+                android:id="@+id/tbSerialNum" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="5dp"
+                                     >
+
+            <TextView
+                android:textSize="18dp"
+                android:textStyle="bold"
+                android:singleLine="true"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:text="Lokacija"
+                android:paddingTop="5dp"
+                android:paddingLeft="10dp"
+                android:layout_marginRight="0.0dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="0dp"
+                android:background="@drawable/edittext_bg_aqua"
+                android:orientation="horizontal"
+        >
+                <EditText
+                    android:textStyle="bold"
+                    android:singleLine="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.50"
+                    android:paddingTop="5dp"
+                    android:background="@drawable/editText_bg_grey"
+                    android:layout_marginRight="2dp"
+                    android:textSize="18dp"
+                    android:id="@+id/tbLocation" />
+
+                <Spinner
+                    android:layout_width="60.0dp"
+                    android:layout_height="match_parent"
+                    android:id="@+id/spLocation" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="5dp">
+
+            <TextView
+                android:textSize="18dp"
+                android:textStyle="bold"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dp"
+                android:paddingTop="5dp"
+                android:text="Količina"
+                android:id="@+id/lbQty" />
+
+            <EditText
+                android:textStyle="bold"
+                android:singleLine="true"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.50"
+                android:paddingTop="5dp"
+                android:background="@drawable/editText_bg_grey"
+                android:layout_marginRight="2dp"
+                android:textSize="18dp"
+                android:id="@+id/tbPacking" />
+
+            <Button
+                android:text="-(F1)"
+                android:layout_width="74.0dp"
+                android:layout_height="33dp"
+                android:id="@+id/button1"
+                android:layout_marginTop="-5dp"
+                android:background="@color/rikoMain"
+                android:textColor="@color/white"
+                android:layout_marginLeft="4dp"
+             />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="5dp">
+
+            <TextView
+                android:textSize="18dp"
+                android:textStyle="bold"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dp"
+                android:paddingTop="5dp"
+                android:text="Št. enot"
+                android:layout_marginRight="0.0dp"
+                android:id="@+id/lbUnits" />
+
+            <EditText
+                android:textStyle="bold"
+                android:singleLine="true"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.50"
+                android:paddingTop="5dp"
+                android:background="@drawable/editText_bg_grey"
+                android:layout_marginRight="2dp"
+                android:textSize="18dp"
+                android:id="@+id/tbUnits" />
+
+
+        </LinearLayout>
+
+
+        <TextView
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="0.0dp"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:layout_marginRight="24.5dp"
+            android:id="@+id/lbUnitss" />
+        <com.jsibbold.zoomage.ZoomageView
+            android:src="@android:drawable/ic_menu_gallery"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:id="@+id/warehousePNG" />
+        <TextView
+            android:layout_height="0dip"
+            android:layout_width="fill_parent"
+            android:layout_weight="1" />
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="2"
+            android:layout_marginLeft="2dp"
+            android:paddingTop="5dp">
+
+            <Button
+                android:text="serijska"
+                android:drawableLeft="@drawable/newitem_white"
+                android:id="@+id/btSaveOrUpdate"
+                android:layout_weight="1"
+                android:textSize="20dp"
+                android:paddingLeft="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/rikoMain"
+                android:textColor="@color/white"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp" />
+
+            <Button
+                android:text="kreiraj"
+                android:drawableLeft="@drawable/newitem_white"
+                android:id="@+id/button4"
+                android:layout_weight="1"
+                android:textSize="20dp"
+                android:paddingLeft="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/rikoMain"
+                android:textColor="@color/white"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp" />
+
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:weightSum="2"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginLeft="2dp"
+            android:layout_marginBottom="4dp"
+            android:paddingTop="4dp">
+
+            <Button
+                android:text="Zaključi"
+                android:layout_weight="1"
+                android:textSize="20dp"
+                android:paddingLeft="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/rikoMain"
+                android:textColor="@color/white"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                android:drawableLeft="@drawable/shipped_white"
+                android:id="@+id/button6" />
+
+            <Button
+                android:text="pregled"
+                android:drawableLeft="@drawable/focus_white"
+                android:id="@+id/button5"
+                android:layout_weight="1"
+                android:textSize="20dp"
+                android:paddingLeft="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/rikoMain"
+                android:textColor="@color/white"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"/>
+
+
+        </LinearLayout>
+
+
+        <Button
+            android:text="Izhod"
+            android:drawableLeft="@drawable/logout_white"
+            android:id="@+id/button7"
+            android:textSize="20dp"
+            android:paddingLeft="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:background="@color/rikoMain"
+            android:textColor="@color/white"
+            android:layout_marginLeft="4dp"
+            android:layout_marginBottom="4dp"
+            android:layout_marginRight="2dp" />
+
+
+
+    </LinearLayout>
+
+
+
+
+
+
+
+
+
+</androidx.percentlayout.widget.PercentRelativeLayout>

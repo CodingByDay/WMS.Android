@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:gravity="center_vertical"
+    android:layout_height="match_parent">
+
+
+    <ImageView
+        android:layout_marginTop="20dp"       
+        android:layout_width="match_parent"
+        android:layout_height="137.5dp"
+        android:id="@+id/bin"
+        android:src="@drawable/bin"
+        android:contentDescription=""
+        android:layout_marginRight="0.0dp"
+        android:layout_marginLeft="22.0dp" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="40.5dp"
+        android:layout_gravity="center"
+        android:paddingLeft="10dp"
+        android:paddingTop="5dp"
+        android:layout_marginTop="0.0dp"
+        android:textStyle="bold|italic" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="65.0dp"
+        android:layout_gravity="center"
+        android:paddingLeft="10dp"
+        android:paddingTop="5dp"
+        android:text="Ali želite odstraniti karton?"
+        android:layout_marginTop="0.0dp"
+        android:textStyle="bold|italic"
+        android:textSize="18dp" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:weightSum="2"
+        android:orientation="horizontal"
+        android:paddingTop="5dp">
+
+        <Button
+            android:background="@color/rikoMain"
+            android:textColor="#ffffff"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="2dp"
+            android:text="Da"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:id="@+id/btnYes" />
+
+        <Button
+            android:layout_weight="1"
+            android:background="@color/rikoMain"
+            android:layout_marginRight="4dp"
+            android:layout_marginLeft="2dp"
+            android:textColor="#ffffff"
+            android:text="Ne"
+            android:layout_width="match_parent"
+            android:layout_height="81.5dp"
+            android:id="@+id/btnNo" />
+
+
+    </LinearLayout>
+
+</LinearLayout>

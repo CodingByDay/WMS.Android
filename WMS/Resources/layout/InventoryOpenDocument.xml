@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar" />
+    <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:paddingTop="5dp">
+
+      <TextView
+            android:textStyle="bold"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:layout_weight="1" 
+            android:text="Skladišče"
+        />
+
+    <Spinner
+        android:spinnerMode="dialog"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/cbWarehouse"
+        android:layout_weight="5" /> 
+</LinearLayout>
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="5dp"
+        android:layout_marginRight="2dp">
+
+        <TextView
+            android:textStyle="bold"
+            android:layout_width="130.0dp"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:text="Datum inventure."
+            android:layout_marginTop="15dp"/>
+
+        <EditText
+            android:textStyle="bold"
+            android:singleLine="true"
+            android:background="@drawable/edittextbottomline"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="0.50"
+            android:paddingTop="5dp"
+            android:id="@+id/dtDate"
+            android:layout_marginRight="4dp"/>
+
+        <Button
+            android:text="Izberi"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/select"
+            android:background="@color/rikoMain"
+            android:textColor="@color/white"/>
+
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_height="0dip"
+        android:layout_width="fill_parent"
+        android:layout_weight="1" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:weightSum="1"
+        android:paddingTop="5dp">
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:weightSum="2"
+            android:paddingTop="5dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginBottom="3dp">
+
+            <Button
+                android:textSize="20dp"
+                android:text="Potrdi - f3"
+                android:drawableLeft="@drawable/confirmation_white"
+                android:paddingLeft="10dp"
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:id="@+id/confirm"
+                android:background="@color/rikoMain"
+                android:textColor="@color/white"
+                android:layout_marginRight="2dp"/>
+
+            <Button
+                android:textSize="20dp"
+                android:text="Izhod - f8"
+                android:layout_weight="1"
+                android:drawableLeft="@drawable/logout_white"
+                android:paddingLeft="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/logout"
+                android:background="@color/rikoMain"
+                android:textColor="@color/white"
+                android:layout_marginLeft="2dp"/>
+
+
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

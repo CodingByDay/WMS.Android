@@ -1,0 +1,441 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_marginBottom="20dp"
+    android:gravity="top"
+   >
+
+
+
+    <LinearLayout
+        android:layout_width="1182.0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="300.0dp"
+        android:layout_marginLeft="50.0dp"
+        android:gravity="center_vertical"
+        android:layout_marginTop="20dp"
+        android:weightSum="2"
+        android:orientation="horizontal">
+
+        <Button
+            android:bottomLeftRadius="7dp"
+            android:bottomRightRadius="7dp"
+            android:topLeftRadius="7dp"
+            android:topRightRadius="7dp"
+            android:layout_width="251.0dp"
+            android:layout_height="73.0dp"
+            android:background="@color/rikoMain"
+            android:drawableLeft="@drawable/clock_white"
+            android:paddingBottom="5dp"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:layout_weight="1"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:paddingTop="8dp"
+            android:text="   Hitri prevzem"
+            android:layout_marginBottom="5dp"
+            android:foregroundGravity="left"
+            android:textColor="@color/colorWhiteBg"
+            android:id="@+id/rapidTakeover" />
+        <TextView
+            android:layout_width="500.0dp"
+            android:layout_height="1dp"/>
+        <Button
+            android:bottomLeftRadius="7dp"
+            android:bottomRightRadius="7dp"
+            android:topLeftRadius="7dp"
+            android:topRightRadius="7dp"
+            android:layout_width="wrap_content"
+            android:layout_height="73.0dp"
+            android:drawableLeft="@drawable/logout_white"
+            android:paddingBottom="5dp"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:layout_weight="1"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:paddingTop="8dp"
+            android:text="   Odjava"
+            android:layout_marginBottom="5dp"
+            android:textColor="@color/colorWhiteBg"
+            android:background="@color/rikoMain"
+            android:id="@+id/logout"
+            android:layout_marginLeft="214.0dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="5.0dp"
+        android:layout_marginLeft="5.0dp"
+        android:gravity="center_vertical"
+        android:layout_marginTop="20dp"
+        android:weightSum="2"
+        android:orientation="horizontal">
+
+        <Button
+            android:bottomLeftRadius="7dp"
+            android:bottomRightRadius="7dp"
+            android:topLeftRadius="7dp"
+            android:topRightRadius="7dp"
+            android:layout_width="165.0dp"
+            android:layout_height="73.0dp"
+            android:background="@color/rikoMain"
+            android:drawableLeft="@drawable/takeover_white"
+            android:paddingBottom="5dp"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:layout_weight="1"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:paddingTop="8dp"
+            android:text="   Prevz. blaga"
+            android:layout_marginBottom="5dp"
+            android:textColor="@color/colorWhiteBg"
+            android:id="@+id/goodsTakeOver" />
+        <Button
+            android:layout_weight="1"
+            android:bottomLeftRadius="7dp"
+            android:bottomRightRadius="7dp"
+            android:topLeftRadius="7dp"
+            android:topRightRadius="7dp"
+            android:layout_width="165.0dp"
+            android:layout_height="73.0dp"
+            android:background="@color/rikoMain"
+            android:drawableLeft="@drawable/warehouse_white"
+            android:paddingBottom="5dp"
+            android:paddingLeft="20dp"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:paddingRight="20dp"
+            android:paddingTop="8dp"
+            android:text="MEDSK."
+            android:layout_marginBottom="5dp"
+            android:textColor="@color/colorWhiteBg"
+            android:layout_marginLeft="6.0dp"
+            android:layout_marginRight="6.0dp"
+            android:id="@+id/goodsInterWarehouse" />
+
+
+
+
+    </LinearLayout>
+    <LinearLayout
+        android:weightSum="2"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="5.0dp"
+        android:layout_marginLeft="5.0dp"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <Button
+            android:layout_weight="1"
+            android:bottomLeftRadius="7dp"
+            android:bottomRightRadius="7dp"
+            android:topLeftRadius="7dp"
+            android:topRightRadius="7dp"
+            android:layout_width="165.0dp"
+            android:layout_height="73.0dp"
+            android:background="@color/rikoMain"
+            android:drawableLeft="@drawable/factory_white"
+            android:paddingBottom="5dp"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:paddingTop="8dp"
+            android:text="Prevz. iz proizv."
+            android:layout_marginBottom="5dp"
+            android:textColor="@color/colorWhiteBg"
+            android:id="@+id/goodsProduction" />
+        <Button
+            android:layout_weight="1"
+            android:bottomLeftRadius="7dp"
+            android:bottomRightRadius="7dp"
+            android:topLeftRadius="7dp"
+            android:topRightRadius="7dp"
+            android:layout_width="165.0dp"
+            android:layout_height="73.0dp"
+            android:background="@color/rikoMain"
+            android:drawableLeft="@drawable/shipped_white"
+            android:paddingBottom="5dp"
+            android:paddingLeft="20dp"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:paddingRight="20dp"
+            android:paddingTop="8dp"
+            android:text="Odprema blaga"
+            android:layout_marginBottom="5dp"
+            android:textColor="@color/colorWhiteBg"
+            android:layout_marginLeft="6.0dp"
+            android:layout_marginRight="6.0dp"
+            android:id="@+id/goodsIssued"  />
+
+
+
+
+    </LinearLayout>
+    <LinearLayout
+        android:weightSum="2"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="5.0dp"
+        android:layout_marginLeft="5.0dp"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <Button
+            android:layout_weight="1"
+            android:bottomLeftRadius="7dp"
+            android:bottomRightRadius="7dp"
+            android:topLeftRadius="7dp"
+            android:topRightRadius="7dp"
+            android:layout_width="165.0dp"
+            android:layout_height="73.0dp"
+            android:background="@color/rikoMain"
+            android:drawableLeft="@drawable/packaging_white"
+            android:paddingBottom="5dp"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:paddingTop="8dp"
+            android:text="Pakiranje"
+            android:layout_marginBottom="5dp"
+            android:textColor="@color/colorWhiteBg"
+            android:id="@+id/goodsPackaging" />
+        <Button
+            android:layout_weight="1"
+            android:bottomLeftRadius="7dp"
+            android:bottomRightRadius="7dp"
+            android:topLeftRadius="7dp"
+            android:topRightRadius="7dp"
+            android:layout_width="165.0dp"
+            android:layout_height="73.0dp"
+            android:background="@color/rikoMain"
+            android:drawableLeft="@drawable/printer_white"
+            android:paddingBottom="5dp"
+            android:paddingLeft="20dp"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:paddingRight="20dp"
+            android:paddingTop="8dp"
+            android:text="Tiskanje"
+            android:layout_marginBottom="5dp"
+            android:textColor="@color/colorWhiteBg"
+            android:layout_marginLeft="6.0dp"
+            android:layout_marginRight="6.0dp"
+            android:id="@+id/btnPrint" />
+
+
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:weightSum="2"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:layout_marginRight="5.0dp"
+        android:layout_marginLeft="5.0dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:layout_weight="1"
+            android:bottomLeftRadius="7dp"
+            android:bottomRightRadius="7dp"
+            android:topLeftRadius="7dp"
+            android:topRightRadius="7dp"
+            android:layout_width="165.0dp"
+            android:layout_height="73.0dp"
+            android:background="@color/rikoMain"
+            android:drawableLeft="@drawable/inventory_white"
+            android:paddingBottom="5dp"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:paddingTop="8dp"
+            android:text="Inventura"
+            android:layout_marginBottom="5dp"
+            android:textColor="@color/colorWhiteBg"
+            android:id="@+id/btnInventory" />
+        <Button
+            android:layout_weight="1"
+            android:bottomLeftRadius="7dp"
+            android:bottomRightRadius="7dp"
+            android:topLeftRadius="7dp"
+            android:topRightRadius="7dp"
+            android:layout_width="165.0dp"
+            android:layout_height="73.0dp"
+            android:background="@color/rikoMain"
+            android:drawableLeft="@drawable/location_white"
+            android:paddingBottom="5dp"
+            android:paddingLeft="20dp"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:paddingRight="20dp"
+            android:paddingTop="8dp"
+            android:text="Zaloga"
+            android:layout_marginBottom="5dp"
+            android:textColor="@color/colorWhiteBg"
+            android:layout_marginLeft="6.0dp"
+            android:layout_marginRight="6.0dp"
+            android:id="@+id/btCheckStock" />
+
+
+
+
+    </LinearLayout>
+    <LinearLayout
+        android:weightSum="2"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:layout_marginRight="5.0dp"
+        android:layout_marginLeft="5.0dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:layout_weight="1"
+            android:bottomLeftRadius="7dp"
+            android:bottomRightRadius="7dp"
+            android:topLeftRadius="7dp"
+            android:topRightRadius="7dp"
+            android:layout_width="165.0dp"
+            android:layout_height="73.0dp"
+            android:background="@color/rikoMain"
+            android:drawableLeft="@drawable/wholesale_white"
+            android:paddingBottom="5dp"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:paddingTop="8dp"
+            android:text="Palete"
+            android:layout_marginBottom="5dp"
+            android:textColor="@color/colorWhiteBg"
+            android:id="@+id/PalletsMenu" />
+        <Button
+            android:layout_weight="1"
+            android:bottomLeftRadius="7dp"
+            android:bottomRightRadius="7dp"
+            android:topLeftRadius="7dp"
+            android:topRightRadius="7dp"
+            android:layout_width="165.0dp"
+            android:layout_height="73.0dp"
+            android:background="@color/rikoMain"
+            android:drawableLeft="@drawable/discount_white"
+            android:paddingBottom="5dp"
+            android:paddingLeft="20dp"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:paddingRight="20dp"
+            android:paddingTop="8dp"
+            android:text="Preračun"
+            android:layout_marginBottom="5dp"
+            android:textColor="@color/colorWhiteBg"
+            android:layout_marginLeft="6.0dp"
+            android:layout_marginRight="6.0dp"
+            android:id="@+id/btRecalculate" />
+
+
+
+
+    </LinearLayout>
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40.0dp"
+        android:orientation="horizontal"
+        android:layout_toRightOf="@id/app"
+        android:weightSum="5"
+        android:id="@+id/text"
+        android:paddingTop="5dp">
+
+
+        <TextView
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:text="Naziv"
+            android:layout_width="match_parent"
+            android:layout_marginRight="28.0dp"
+            android:id="@+id/name" />
+
+        <TextView
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:text="Ident"
+            android:layout_width="match_parent"
+            android:layout_marginRight="28.0dp"
+            android:id="@+id/ident" />
+
+        <TextView
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:text="Lokacija"
+            android:layout_width="match_parent"
+            android:layout_marginRight="28.0dp"
+            android:id="@+id/location" />
+
+
+        <TextView
+            android:textSize="18dp"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:textStyle="bold"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:text="SSCC"
+            android:layout_marginRight="28.0dp"
+            android:id="@+id/sscc" />
+
+
+
+        <TextView
+            android:textSize="18dp"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:textStyle="bold"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:text="Serijska"
+            android:layout_marginRight="28.0dp"
+            android:id="@+id/serial" />
+
+    </LinearLayout>
+    <ListView
+        android:minWidth="25dp"
+        android:minHeight="25dp"
+        android:layout_width="match_parent"
+        android:layout_height="552.0dp"
+        android:id="@+id/rapidListview"
+        android:listSelector="@android:color/holo_blue_light"
+        android:choiceMode="singleChoice" />
+
+
+
+</LinearLayout>

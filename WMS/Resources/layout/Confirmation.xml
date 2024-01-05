@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:gravity="center_vertical"
+    android:layout_height="match_parent"
+    android:paddingTop="20dp"
+    android:paddingBottom="20dp">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="167.5dp"
+        android:id="@+id/bin"
+        android:src="@drawable/finish"
+        android:contentDescription=""
+        android:layout_marginRight="0.0dp"
+        android:layout_marginLeft="22.0dp" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="40.5dp"
+        android:layout_gravity="center"
+        android:paddingLeft="10dp"
+        android:paddingTop="5dp"
+        android:layout_marginTop="0.0dp"
+        android:textStyle="bold|italic" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="65.0dp"
+        android:layout_gravity="center"
+        android:paddingLeft="10dp"
+        android:paddingTop="5dp"
+        android:text="Ali res želite zaključiti?"
+        android:layout_marginTop="0.0dp"
+        android:textStyle="bold|italic"
+        android:textColor="@color/rikoMain"
+        android:textSize="18dp" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="2"
+        android:orientation="horizontal"
+        android:paddingTop="5dp"
+        android:layout_marginRight="5.0dp"
+        android:layout_marginLeft="5.0dp">
+
+
+
+        <Button
+            android:layout_weight="1"
+            android:bottomLeftRadius="7dp"
+            android:bottomRightRadius="7dp"
+            android:topLeftRadius="7dp"
+            android:topRightRadius="7dp"
+            android:layout_width="match_parent"
+            android:layout_height="89.0dp"
+            android:background="@color/rikoMain"
+            android:textColorLink="#ffffff"
+            android:paddingBottom="5dp"
+            android:paddingLeft="20dp"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            android:paddingRight="20dp"
+            android:paddingTop="8dp"
+            android:text="NE"
+            android:layout_marginBottom="5dp"
+            android:textColor="#ffffff"
+            android:layout_marginLeft="6.0dp"
+            android:id="@+id/btnNo" />
+        <Button
+            android:layout_weight="1"
+            android:bottomLeftRadius="7dp"
+            android:bottomRightRadius="7dp"
+            android:topLeftRadius="7dp"
+            android:topRightRadius="7dp"
+            android:layout_width="match_parent"
+            android:layout_height="89.0dp"
+            android:background="@color/rikoMain"
+            android:textColorLink="#ffffff"
+            android:paddingBottom="5dp"
+            android:paddingLeft="20dp"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            android:paddingRight="20dp"
+            android:paddingTop="8dp"
+            android:text="DA"
+            android:layout_marginBottom="5dp"
+            android:textColor="#ffffff"
+            android:layout_marginLeft="6.0dp"
+            android:layout_marginRight="6.0dp"
+            android:id="@+id/btnYes" />
+
+    </LinearLayout>
+
+</LinearLayout>

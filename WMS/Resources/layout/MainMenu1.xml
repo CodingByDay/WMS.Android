@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:text="Blagovni promet"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minWidth="25dp"
+        android:minHeight="25dp"
+        android:id="@+id/label"
+        android:layout_marginBottom="17.0dp"
+        android:gravity="center" />
+    <Button
+        android:text="Prevzem blaga-f1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/goodsTakeOver" />
+    <Button
+        android:text="Medskladiščnica-f2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/goodsInterWarehouse" />
+    <Button
+        android:text="Prevzem iz proizvodnje-f3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/goodsProduction" />
+    <Button
+        android:text="Odprema blaga-f4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/goodsIssued" />
+    <Button
+        android:text="Pakiranje-f5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/goodsPackaging" />
+    <TextView
+        android:text="Dodatne funkcije"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/label2"
+        android:gravity="center" />
+    <Button
+        android:text="Tiskanje-f6"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnPrint" />
+    <Button
+        android:text="Inventura-f7"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnInventory" />
+    <Button
+        android:text="Pregled zaloge na lokaciji-f8"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/btCheckStock" />
+    <TextView
+        android:text="Odjava"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView2"
+        android:gravity="center" />
+    <Button
+        android:text="Odjava"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/logout" />
+
+</LinearLayout>

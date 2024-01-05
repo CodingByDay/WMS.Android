@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar" />
+    <TextView
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:layout_width="match_parent"
+        android:layout_height="100.0dp"
+        android:id="@+id/textView1" />
+    <TextView
+        android:layout_height="0dip"
+        android:layout_width="fill_parent"
+        android:layout_weight="1" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="5.0dp"
+        android:layout_marginLeft="5.0dp"
+        android:gravity="center_vertical"
+        android:layout_marginTop="20dp"
+        android:weightSum="2"
+        android:orientation="vertical">
+
+        <Button
+            android:bottomLeftRadius="0dp"
+            android:bottomRightRadius="0dp"
+            android:topLeftRadius="0dp"
+            android:topRightRadius="0dp"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@color/rikoMain"
+            android:drawableLeft="@drawable/factory_white"
+            android:paddingBottom="5dp"
+            android:textSize="13dp"
+            android:textStyle="bold"
+            android:drawablePadding="20dp"
+            android:textColor="#ffffff"
+            android:layout_weight="1"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:paddingTop="8dp"
+            android:text="Prevzem - F2"
+            android:layout_marginBottom="5dp"
+            android:id="@+id/production" />
+        <Button
+            android:layout_weight="1"
+            android:bottomLeftRadius="0dp"
+            android:bottomRightRadius="0dp"
+            android:topLeftRadius="0dp"
+            android:topRightRadius="0dp"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@color/rikoMain"
+            android:drawableLeft="@drawable/clock_white"
+            android:textColorLink="#ffffff"
+            android:paddingBottom="5dp"
+            android:paddingLeft="20dp"
+            android:textSize="13dp"
+            android:textStyle="bold"
+            android:paddingRight="20dp"
+            android:paddingTop="8dp"
+            android:text="Hitri prevzem- F3"
+            android:layout_marginBottom="5dp"
+            android:textColor="#ffffff"
+            android:id="@+id/rapid" />
+
+
+
+
+    </LinearLayout>
+
+
+
+
+
+
+
+</LinearLayout>

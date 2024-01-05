@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar" />
+    <TextView
+        android:textStyle="bold"
+        android:text="Posl dog"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/label1"
+        android:gravity="center"
+        android:layout_marginTop="15dp
+        "/>
+    <CustomAutoCompleteTextView
+        android:layout_width="match_parent"
+        android:layout_height="42.5dp"
+        android:id="@+id/cbDocType"
+        android:gravity="center"
+        android:spinnerMode="dialog" />
+    <TextView
+        android:textStyle="bold"
+        android:text="Skladišče"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_width="match_parent"
+        android:layout_height="39.0dp"
+        android:id="@+id/label2"
+        android:gravity="center" />
+    <CustomAutoCompleteTextView
+        android:layout_width="match_parent"
+        android:layout_height="41.0dp"
+        android:id="@+id/cbWarehouse"
+        android:gravity="center"
+        android:spinnerMode="dialog" />
+    <TextView
+        android:textStyle="bold"
+        android:text="Subjekt"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_width="match_parent"
+        android:layout_height="46.5dp"
+        android:id="@+id/lbSubject"
+        android:gravity="center" />
+    <CustomAutoCompleteTextView
+        android:layout_width="match_parent"
+        android:layout_height="48.0dp"
+        android:id="@+id/cbSubject"
+        android:layout_marginBottom="14.5dp"
+        android:gravity="center"
+        android:spinnerMode="dialog" />
+    <TextView
+        android:layout_height="0dip"
+        android:layout_width="fill_parent"
+        android:layout_weight="1" />
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:weightSum="2"
+        android:paddingTop="0dp">
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:weightSum="2"
+            android:layout_weight="1"
+            android:paddingTop="5dp">
+
+            <Button
+                android:layout_weight="1"
+                android:textSize="20dp"
+                android:paddingLeft="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/rikoMain"
+                android:textColor="@color/white"
+                android:layout_marginLeft="4dp"
+                android:layout_marginRight="2dp"
+                android:text="potrdi - f2"
+                android:drawableLeft="@drawable/confirmation_white"
+                android:id="@+id/btnOrder" />
+
+            <Button
+                android:layout_weight="1"
+                android:textSize="20dp"
+                android:paddingLeft="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/rikoMain"
+                android:textColor="@color/white"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="4dp"
+                android:text="Brez - f3"
+                android:drawableLeft="@drawable/newitem_white"
+                android:id="@+id/btnOrderMode"
+          />
+
+
+        </LinearLayout>
+        <Button
+            android:layout_weight="1"
+            android:textSize="20dp"
+            android:paddingLeft="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/rikoMain"
+            android:textColor="@color/white"
+            android:layout_marginLeft="4dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
+            android:layout_marginRight="4dp"
+            android:text="izhod - f8"
+            android:id="@+id/btnLogout"
+            android:drawableLeft="@drawable/logout_white"
+   
+        />
+    </LinearLayout>
+
+</LinearLayout>
