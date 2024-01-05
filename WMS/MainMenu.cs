@@ -57,6 +57,7 @@ namespace WMS
             AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
             var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
             _customToolbar.SetNavigationIcon(settings.RootURL + "/Services/Logo");
+     
             var flag = Services.isTablet(App.settings.device);
             if (MainActivity.isValid == true)
             {
@@ -65,6 +66,7 @@ namespace WMS
                 MainActivity.isValid = false;
                 MainActivity.progressBar1.Visibility = ViewStates.Invisible;
             }
+
             string error2;
             IDdevice = settings.ID;
             target = settings.device;
