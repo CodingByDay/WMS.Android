@@ -34,12 +34,14 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            // Create your application here
-            SetContentView(Resource.Layout.PickingMenu);      
+            SetTheme(Resource.Style.AppTheme_NoActionBar);
+            SetContentView(Resource.Layout.PickingMenu);
             AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
             var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
             _customToolbar.SetNavigationIcon(settings.RootURL + "/Services/Logo");
-            // Fields
+            SetSupportActionBar(_customToolbar._toolbar);
+            SupportActionBar.SetDisplayShowTitleEnabled(false);
+
             isMobile = !settings.tablet;
             ident = FindViewById<Button>(Resource.Id.ident);
             order = FindViewById<Button>(Resource.Id.order);

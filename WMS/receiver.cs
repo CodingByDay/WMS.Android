@@ -49,7 +49,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
-
+            SetTheme(Resource.Style.AppTheme_NoActionBar);
             // Create your application here
             soundPool = new SoundPool(10, Stream.Music, 0);
             soundPoolId = soundPool.Load(this, Resource.Raw.beep, 1);
@@ -58,6 +58,8 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
             var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
             _customToolbar.SetNavigationIcon(settings.RootURL + "/Services/Logo");
+            SetSupportActionBar(_customToolbar._toolbar);
+            SupportActionBar.SetDisplayShowTitleEnabled(false);
             tv = FindViewById<TextView>(Resource.Id.textView1);
             btn1 = FindViewById<Button>(Resource.Id.button1);
             btnOkay = FindViewById<Button>(Resource.Id.btnOkay);

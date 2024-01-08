@@ -61,11 +61,14 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
         protected async override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
+            SetTheme(Resource.Style.AppTheme_NoActionBar);
             // Create your application here
             SetContentView(Resource.Layout.InventoryProcessTablet);
             AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
             var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
             _customToolbar.SetNavigationIcon(settings.RootURL + "/Services/Logo");
+            SetSupportActionBar(_customToolbar._toolbar);
+            SupportActionBar.SetDisplayShowTitleEnabled(false);
             cbWarehouse = FindViewById<Spinner>(Resource.Id.cbWarehouse);
             tbLocation = FindViewById<EditText>(Resource.Id.tbLocation);
             tbIdent = FindViewById<EditText>(Resource.Id.tbIdent);

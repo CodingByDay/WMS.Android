@@ -34,6 +34,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
+            SetTheme(Resource.Style.AppTheme_NoActionBar);
             ChangeTheOrientation();
             // Create your application here
             SetContentView(Resource.Layout.InventoryMenu);
