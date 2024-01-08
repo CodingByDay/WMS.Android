@@ -25,7 +25,7 @@ using AndroidX.AppCompat.App;
 using AlertDialog = Android.App.AlertDialog;
 namespace WMS
 {
-    [Activity(Label = "MainMenu", Theme = "@style/AppTheme", ScreenOrientation = ScreenOrientation.Portrait)]
+    [Activity(Label = "MainMenu", ScreenOrientation = ScreenOrientation.Portrait)]
     public class MainMenu : AppCompatActivity
     {
         private List<Button> buttons = new List<Button>();
@@ -52,12 +52,16 @@ namespace WMS
         {
            
             base.OnCreate(savedInstanceState);
+            SetTheme(Resource.Style.AppTheme_NoActionBar);
+
             HelpfulMethods.releaseLock();
             SetContentView(Resource.Layout.MainMenu);
             AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
             var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
             _customToolbar.SetNavigationIcon(settings.RootURL + "/Services/Logo");
-     
+            
+            SetSupportActionBar(_customToolbar._toolbar);
+            SupportActionBar.SetDisplayShowTitleEnabled(false);
             var flag = Services.isTablet(App.settings.device);
             if (MainActivity.isValid == true)
             {
@@ -187,8 +191,7 @@ namespace WMS
 
         private void BtnOkRestart_Click(object sender, EventArgs e)
         {
-            System.Diagnostics.Process.GetCurrentProcess().Kill();
-          
+            System.Diagnostics.Process.GetCurrentProcess().Kill();      
         }
 
      
@@ -198,9 +201,7 @@ namespace WMS
         private void BtRecalculate_Click(object sender, EventArgs e)
         {
 
-            StartActivity(typeof(RecalculateInventory));
-      
-            
+            StartActivity(typeof(RecalculateInventory));                
         }
 
         private void HideDisabled(List<Button> buttons)

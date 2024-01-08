@@ -38,7 +38,7 @@ using AndroidX.AppCompat.App;
 
 namespace WMS
 {
-    [Activity(Label = "WMS", Theme = "@style/AppTheme", MainLauncher = false, Icon = "@drawable/barcode", NoHistory = true)]
+    [Activity(Label = "WMS", MainLauncher = false, Icon = "@drawable/barcode", NoHistory = true)]
     public class BluetoothConnection : AppCompatActivity
     {
 
@@ -53,6 +53,7 @@ namespace WMS
         protected override void OnCreate(Bundle savedInstanceState)
         {      
             base.OnCreate(savedInstanceState);
+            SetTheme(Resource.Style.AppTheme_NoActionBar);
             SetContentView(Resource.Layout.BluetoothConnection);
             deviceName = FindViewById<EditText>(Resource.Id.tbDeviceName);
             makeConnection = FindViewById<Button>(Resource.Id.btShowStock);

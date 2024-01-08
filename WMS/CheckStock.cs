@@ -176,15 +176,14 @@ namespace WMS
         {
 
             base.OnCreate(savedInstanceState);
-            
+            SetTheme(Resource.Style.AppTheme_NoActionBar);
             // Create your application here.
             SetContentView(Resource.Layout.CheckStock);
             AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
-
-            // Initialize the custom toolbar with the ImageView ID
             var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
-            // Set the navigation icon with the URL
             _customToolbar.SetNavigationIcon(settings.RootURL + "/Services/Logo");
+            SetSupportActionBar(_customToolbar._toolbar);
+            SupportActionBar.SetDisplayShowTitleEnabled(false);
 
 
             cbWarehouses = FindViewById<CustomAutoCompleteTextView>(Resource.Id.cbWarehouses);       

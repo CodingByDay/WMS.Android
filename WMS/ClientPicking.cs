@@ -67,11 +67,13 @@ namespace WMS
         protected async override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
+            SetTheme(Resource.Style.AppTheme_NoActionBar);
             SetContentView(Resource.Layout.ClientPicking);
-            // Fields
             AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
             var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
             _customToolbar.SetNavigationIcon(settings.RootURL + "/Services/Logo");
+            SetSupportActionBar(_customToolbar._toolbar);
+            SupportActionBar.SetDisplayShowTitleEnabled(false);
             ivTrail = FindViewById<ListView>(Resource.Id.ivTrail);
             tbClient = FindViewById<EditText>(Resource.Id.tbClient);
             tbIdentFilter = FindViewById<EditText>(Resource.Id.tbIdentFilter);

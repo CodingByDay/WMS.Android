@@ -30,6 +30,7 @@ using WMS.Background;
 
 
 using AndroidX.AppCompat.App;
+using FFImageLoading;
 
 namespace WMS
 {
@@ -187,26 +188,22 @@ namespace WMS
             settings.login = false;
 
         }
-        private void GetLogo()
+        private async Task GetLogo()
         {
             try
             {
-                if (Picasso.Get() == null)
-                {
-                    Picasso.Builder builder = new Picasso.Builder(this);
-                    builder.LoggingEnabled(true);
-                    Picasso picasso = builder.Build();
-                    Picasso.SetSingletonInstance(picasso);
-                }
                 var url = settings.RootURL + "/Services/Logo";
-                Picasso.Get().Load(url).Into(img);
-                Picasso.With(this).Invalidate(url);
+
+
+                // Load the image using FFImageLoading
+                await ImageService.Instance
+                    .LoadUrl(url)
+                    .IntoAsync(img);
             }
-            catch
+            catch (Exception ex)
             {
-                var url = settings.RootURL + "/Services/Logo";
-                Picasso.Get().Load(url).Into(img);
-                Picasso.With(this).Invalidate(url);
+                // Handle exceptions if the image loading fails
+                Console.WriteLine("Error loading image: " + ex.Message);
             }
         }
 

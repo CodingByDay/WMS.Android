@@ -5,7 +5,7 @@ using Square.Picasso;
 public class CustomToolbar
 {
     private readonly Activity _activity;
-    private readonly AndroidX.AppCompat.Widget.Toolbar _toolbar;
+    public readonly AndroidX.AppCompat.Widget.Toolbar _toolbar;
     private readonly int _navIconImageViewId;
 
     public CustomToolbar(Activity activity, AndroidX.AppCompat.Widget.Toolbar toolbar, int navIconImageViewId)

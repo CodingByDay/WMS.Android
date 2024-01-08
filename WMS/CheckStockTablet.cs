@@ -192,12 +192,14 @@ namespace WMS
         protected async override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-
+            SetTheme(Resource.Style.AppTheme_NoActionBar);
             // Create your application here.
             SetContentView(Resource.Layout.CheckStockTablet);
             AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
             var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
             _customToolbar.SetNavigationIcon(settings.RootURL + "/Services/Logo");
+            SetSupportActionBar(_customToolbar._toolbar);
+            SupportActionBar.SetDisplayShowTitleEnabled(false);
             cbWarehouses = FindViewById<CustomAutoCompleteTextView>(Resource.Id.cbWarehouses);
             tbLocation = FindViewById<CustomAutoCompleteTextView>(Resource.Id.tbLocation);
             tbIdent = FindViewById<CustomAutoCompleteTextView>(Resource.Id.tbIdent);
