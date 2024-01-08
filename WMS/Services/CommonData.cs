@@ -1,17 +1,10 @@
-﻿using Stream = Android.Media.Stream;
-using System.Linq;
-using System.Collections.Generic;
-using System.Text;
+﻿using Microsoft.AppCenter.Crashes;
 using TrendNET.WMS.Core.Data;
-using TrendNET.WMS.Device.Services;
-using Android.Widget;
-using Microsoft.AppCenter.Crashes;
 
 namespace TrendNET.WMS.Device.Services
 {
     public class CommonData
     {
-    
         public static string Version = "1.0.73f";
         private static Dictionary<string, NameValueObjectList> warehouses = new Dictionary<string, NameValueObjectList>();
         private static NameValueObjectList shifts = null;
@@ -23,11 +16,14 @@ namespace TrendNET.WMS.Device.Services
         private static Dictionary<string, string> settings = new Dictionary<string, string>();
 
         private static string qtyPicture = null;
-        public static string GetQtyPicture () {
-            if (qtyPicture == null) {
-                var digStr = GetSetting ("QtyDigits");
+
+        public static string GetQtyPicture()
+        {
+            if (qtyPicture == null)
+            {
+                var digStr = GetSetting("QtyDigits");
                 if (string.IsNullOrEmpty(digStr)) { digStr = "2"; }
-                var digits = Convert.ToInt32 (digStr);
+                var digits = Convert.ToInt32(digStr);
                 qtyPicture = "###,###,##0.";
                 for (int i = 1; i <= digits; i++) { qtyPicture += "0"; }
             }
@@ -64,8 +60,6 @@ namespace TrendNET.WMS.Device.Services
 
         public static string GetNextSSCC()
         {
-       
-          
             try
             {
                 string error;
@@ -80,11 +74,11 @@ namespace TrendNET.WMS.Device.Services
                     if (string.IsNullOrEmpty(sscc))
                     {
                         return string.Empty;
-
                     }
                     return sscc;
                 }
-            } catch
+            }
+            catch
             {
                 return string.Empty;
             }
@@ -97,27 +91,23 @@ namespace TrendNET.WMS.Device.Services
                 .FirstOrDefault(x => x.GetString("Subject") == warehouse);
             if (wh == null)
             {
-
-
-                
-
-
             }
             return wh;
         }
+
         public static NameValueObjectList ListWarehouses()
         {
             var userID = Services.UserID().ToString();
             if (warehouses.ContainsKey(userID))
             {
                 return warehouses[userID];
-            }         
+            }
             try
-            {               
+            {
                 string error;
                 var whs = Services.GetObjectList("wh", out error, userID);
                 if (whs == null)
-                {                         
+                {
                     return null;
                 }
                 warehouses.Add(userID, whs);
@@ -125,14 +115,10 @@ namespace TrendNET.WMS.Device.Services
             }
             catch (Exception err)
             {
-
                 Crashes.TrackError(err);
                 return null;
-
             }
         }
-     
-      
 
         public static NameValueObjectList ListSubjects()
         {
@@ -145,7 +131,7 @@ namespace TrendNET.WMS.Device.Services
                     return null;
                 }
             }
-            catch(Exception e) 
+            catch (Exception e)
             {
                 Crashes.TrackError(e);
             }
@@ -157,13 +143,13 @@ namespace TrendNET.WMS.Device.Services
             string error;
             subjects = Services.GetObjectList("surl", out error, "");
             try
-            {                          
+            {
                 if (subjects == null)
                 {
                     return null;
                 }
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 Crashes.TrackError(ex);
             }
@@ -175,18 +161,19 @@ namespace TrendNET.WMS.Device.Services
             var key = warehouse + "|" + location;
             if (locations.ContainsKey(key))
             {
-                return locations [key];
+                return locations[key];
             }
             try
             {
                 string error;
                 var loc = Services.GetObject("lo", key, out error);
-                if (loc != null) {             
-                   locations[key] = true;                              
+                if (loc != null)
+                {
+                    locations[key] = true;
                 }
                 return loc != null;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Crashes.TrackError(e);
                 return false;
@@ -198,7 +185,7 @@ namespace TrendNET.WMS.Device.Services
             if (docTypes.ContainsKey(pars))
             {
                 return docTypes[pars];
-            } 
+            }
             try
             {
                 string error;
@@ -212,10 +199,8 @@ namespace TrendNET.WMS.Device.Services
             }
             catch (Exception err)
             {
-
                 Crashes.TrackError(err);
                 return null;
-
             }
         }
 
@@ -226,15 +211,12 @@ namespace TrendNET.WMS.Device.Services
                 return idents[ident];
             }
 
-       
             try
             {
-
                 string error;
                 var openIdent = Services.GetObject("id", ident, out error);
                 if (openIdent == null)
                 {
-
                     return null;
                 }
                 else
@@ -252,7 +234,7 @@ namespace TrendNET.WMS.Device.Services
                     return openIdent;
                 }
             }
-            catch(Exception e) 
+            catch (Exception e)
             {
                 return null;
             }

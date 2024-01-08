@@ -18,10 +18,6 @@
             layout="@layout/toolbar" />
     </LinearLayout>
 
-
-
-
-
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -29,9 +25,6 @@
         android:layout_toRightOf="@id/app"
         android:id="@+id/listData"
         />
-
-
-
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -79,7 +72,6 @@
             android:layout_marginRight="28.0dp"
             android:id="@+id/Number" />
 
-
         <TextView
             android:layout_weight="1"
             android:layout_width="match_parent"
@@ -92,7 +84,6 @@
             android:layout_marginRight="28.0dp"
             android:id="@+id/sscc" />
 
-
         <TextView
             android:layout_weight="1"
             android:layout_width="match_parent"
@@ -104,9 +95,6 @@
             android:text="Serijska številka"
             android:layout_marginRight="28.0dp"
             android:id="@+id/location" />
-
-
-
 
         <TextView
             android:layout_weight="1"
@@ -131,8 +119,6 @@
         android:layout_marginTop="70dp"
         tools:context=".LinearLayout"
         android:foregroundGravity="center">
-
-
 
         <TextView
             android:layout_width="wrap_content"
@@ -171,7 +157,6 @@
                 android:layout_marginRight="2dp"
                 android:textSize="18dp"
                 android:id="@+id/tbIdent" />
-
 
         </LinearLayout>
 
@@ -234,7 +219,6 @@
                 android:textSize="18dp"
                 android:id="@+id/tbSerialNo" />
 
-
         </LinearLayout>
 
         <LinearLayout
@@ -295,11 +279,7 @@
                 android:textSize="18dp"
                 android:id="@+id/tbLocation" />
 
-
-
         </LinearLayout>
-
-
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -372,12 +352,7 @@
                 android:layout_marginRight="2dp"
                 android:id="@+id/btUpdate" />
 
-
         </LinearLayout>
-
-
-
-
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -415,9 +390,7 @@
                 android:layout_marginRight="2dp"
                 android:id="@+id/btCreate" />
 
-
         </LinearLayout>
-
 
         <Button
             android:text="Izhod "
@@ -434,14 +407,7 @@
             android:drawableLeft="@drawable/logout_white"
             android:id="@+id/btLogout"/>
 
-
-
-
-
-
     </LinearLayout>
-
-
 
     <TextView
         android:layout_width="match_parent"
@@ -450,11 +416,5 @@
         android:layout_toRightOf="@id/app"
         android:layout_below="@id/text"
         />
-
-
-
-
-
-
 
 </androidx.percentlayout.widget.PercentRelativeLayout>

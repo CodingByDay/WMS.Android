@@ -1,25 +1,7 @@
-﻿using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using Java.Util.Functions;
-using Newtonsoft.Json;
-using Stream = Android.Media.Stream;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TrendNET.WMS.Device.Services;
-using Xamarin.Essentials;
-
-using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS.External
+﻿namespace WMS.External
 {
     public class Event
     {
-
         /// <summary>
         ///  Tale objekt bo serializiran in poslan na AR očala v obliki json.
         /// </summary>
@@ -50,6 +32,3 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
         public bool isRefreshCallback { get; set; } // Če je true ponovno naložiti positions array
     }
 }
-
-
-

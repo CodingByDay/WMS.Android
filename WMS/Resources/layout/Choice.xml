@@ -69,15 +69,6 @@
             android:textColor="#ffffff"
             android:id="@+id/rapid" />
 
-
-
-
     </LinearLayout>
-
-
-
-
-
-
 
 </LinearLayout>

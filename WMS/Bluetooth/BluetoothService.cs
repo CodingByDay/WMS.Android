@@ -1,16 +1,7 @@
-﻿using Android.App;
-using Android.Bluetooth;
+﻿using Android.Bluetooth;
 using Android.Content;
 using Android.OS;
-using Android.Widget;
-using Java.IO;
 using Java.Util;
-using Java.Util.Logging;
-using Microsoft.SqlServer.Server;
-
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 using Handler = Android.OS.Handler;
 
 [Service]
@@ -25,7 +16,6 @@ public class BluetoothService : Service
     BluetoothDevice targetDevice;
     BluetoothSocket socket;
     public static bool running = false;
-
 
     private MyBinder binder;
     private Handler handler;
@@ -77,7 +67,6 @@ public class BluetoothService : Service
     }
     void ConnectToDevice()
     {
-
         if (!running)
         {
             try
@@ -88,7 +77,6 @@ public class BluetoothService : Service
 
                 if (!adapter.IsEnabled)
                     return;
-
 
                 BluetoothDevice device = (from bd in adapter.BondedDevices
                                           where bd.Name == "AMS"
@@ -108,7 +96,6 @@ public class BluetoothService : Service
             }
         }
     }
-
 
     public void sendObject(String data)
     {
@@ -159,6 +146,4 @@ public class BluetoothService : Service
             bluetoothSocket = null;
         }
     }
-
-
 }

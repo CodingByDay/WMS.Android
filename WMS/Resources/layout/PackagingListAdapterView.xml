@@ -4,8 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
-
      <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -38,8 +36,6 @@
             android:layout_marginRight="28.0dp"
             android:id="@+id/Name" />
 
-
-        
         <TextView
             android:textSize="16dp"
             android:textStyle="bold"
@@ -64,7 +60,7 @@
             android:text="Naročeno"
             android:layout_marginRight="28.0dp"
             android:id="@+id/Position" />
-        
+
         <TextView
             android:textSize="16dp"
             android:textStyle="bold"
@@ -78,8 +74,6 @@
             android:layout_marginRight="28.0dp"
             android:id="@+id/SerialNumber" />
 
-
-
           <TextView
             android:textSize="16dp"
            android:textStyle="bold"
@@ -92,7 +86,6 @@
             android:text="Prejeto"
             android:layout_marginRight="28.0dp"
             android:id="@+id/SSCC" />
-
 
     </LinearLayout>
 

@@ -1,11 +1,8 @@
-﻿using Android.App;
-using Android.Content;
+﻿using Android.Content;
 using Microsoft.AppCenter.Crashes;
-using Stream = Android.Media.Stream;
 
 public static class DialogHelper
 {
-
     public static void ShowDialogError(Activity activity, Context context, string error)
     {
         try
@@ -22,7 +19,8 @@ public static class DialogHelper
                 Dialog dialog = alert.Create();
                 dialog.Show();
             });
-        } catch (Exception e)
+        }
+        catch (Exception e)
         {
             Crashes.TrackError(e);
         }
@@ -44,12 +42,10 @@ public static class DialogHelper
                 Dialog dialog = alert.Create();
                 dialog.Show();
             });
-        } catch (Exception e)
+        }
+        catch (Exception e)
         {
             Crashes.TrackError(e);
         }
     }
-
-
-
 }

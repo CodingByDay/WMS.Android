@@ -1,27 +1,14 @@
-﻿using Stream = Android.Media.Stream;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using TrendNET.WMS.Core.Data;
+﻿using TrendNET.WMS.Core.Data;
 using TrendNET.WMS.Device.Services;
 
-using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS.Printing
+namespace WMS.Printing
 {
-    class PrintingCommon
+    internal class PrintingCommon
     {
-
         public static void SetNVOCommonData(ref NameValueObject nvo)
         {
             nvo.SetInt("UserID", Services.UserID());
             nvo.SetString("DeviceID", App.settings.ID);
-
         }
 
         public static void SendToServer(NameValueObject nvo)
@@ -32,7 +19,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             {
                 if (error == "OK!")
                 {
-                   string toast = string.Format("Podatki poslati na tiskalnik.");
+                    string toast = string.Format("Podatki poslati na tiskalnik.");
                 }
                 else
                 {

@@ -17,9 +17,6 @@
             layout="@layout/toolbar" />
     </LinearLayout>
 
-
-
-
     <TextView
         android:textStyle="bold"
         android:textSize="18dp"
@@ -31,8 +28,6 @@
 
         />
 
-
-
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -40,7 +35,7 @@
         android:layout_toRightOf="@id/app"
         android:id="@+id/listData"
         android:listSelector="@android:color/holo_blue_light"
-        android:choiceMode="singleChoice" 
+        android:choiceMode="singleChoice"
         />
 
     <LinearLayout
@@ -100,7 +95,6 @@
             android:layout_marginRight="28.0dp"
             android:id="@+id/position" />
 
-
         <TextView
             android:textSize="18dp"
             android:layout_weight="1"
@@ -112,8 +106,6 @@
             android:text="Serijska"
             android:layout_marginRight="28.0dp"
             android:id="@+id/serial" />
-
-
 
         <TextView
             android:textSize="18dp"
@@ -177,7 +169,6 @@
                 android:layout_marginRight="2dp"
                 android:id="@+id/tbIdent" />
 
-
         </LinearLayout>
 
         <LinearLayout
@@ -235,7 +226,6 @@
                 android:layout_marginRight="2dp"
                 android:id="@+id/tbSerialNumber" />
 
-
         </LinearLayout>
 
         <LinearLayout
@@ -292,7 +282,6 @@
                 android:layout_marginRight="2dp"
                 android:id="@+id/tbLocation" />
 
-
         </LinearLayout>
         <LinearLayout
             android:layout_width="fill_parent"
@@ -320,9 +309,7 @@
                 android:layout_marginRight="2dp"
                 android:id="@+id/tbCreatedBy" />
 
-
         </LinearLayout>
-
 
         <TextView
             android:layout_width="91.0dp"
@@ -368,12 +355,7 @@
                 android:layout_marginRight="2dp"
                 android:id="@+id/btUpdate" />
 
-
         </LinearLayout>
-
-
-
-
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -410,9 +392,7 @@
                 android:layout_marginRight="2dp"
                 android:id="@+id/btFinish" />
 
-
         </LinearLayout>
-
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -450,18 +430,8 @@
                 android:drawableLeft="@drawable/logout_white"
                 android:id="@+id/button5" />
 
-
         </LinearLayout>
 
-
     </LinearLayout>
-
-
-
-
-
-
-
-
 
 </androidx.percentlayout.widget.PercentRelativeLayout>

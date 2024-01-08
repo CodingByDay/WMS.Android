@@ -5,10 +5,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-
-
      <com.jsibbold.zoomage.ZoomageView
-   
+
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/image"
@@ -22,11 +20,7 @@
         app:zoomage_translatable="true"
         app:zoomage_minScale="0.6"
         app:zoomage_maxScale="8"
-        
+
      />
-  
-
-        
-
 
 </RelativeLayout>

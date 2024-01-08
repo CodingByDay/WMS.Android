@@ -17,8 +17,6 @@
             layout="@layout/toolbar" />
     </LinearLayout>
 
-
-
     <TextView
         android:textStyle="bold"
         android:textSize="18dp"
@@ -29,8 +27,6 @@
         android:layout_below="@id/text"
         />
 
-
-
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -38,7 +34,7 @@
         android:layout_toRightOf="@id/app"
         android:id="@+id/listData"
         android:listSelector="@android:color/holo_blue_light"
-        android:choiceMode="singleChoice" 
+        android:choiceMode="singleChoice"
         />
 
     <LinearLayout
@@ -87,10 +83,6 @@
             android:layout_marginRight="28.0dp"
             android:id="@+id/quantity" />
 
-
-
-
-
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -132,7 +124,6 @@
                 android:id="@+id/tbIdent"
              />
 
-
             <EditText
                 android:textSize="18dp"
                 android:textStyle="bold"
@@ -146,7 +137,6 @@
                 android:layout_marginLeft="4.0dp"
                 android:id="@+id/lbIdentName"
              />
-
 
         </LinearLayout>
 
@@ -219,7 +209,6 @@
                 android:layout_marginRight="2dp"
                 android:textSize="18dp"
                 android:id="@+id/tbSerialNum" />
-
 
         </LinearLayout>
 
@@ -304,7 +293,6 @@
                     android:id="@+id/spReceive" />
             </LinearLayout>
 
-
         </LinearLayout>
 
         <LinearLayout
@@ -375,11 +363,7 @@
                 android:textSize="18dp"
                 android:id="@+id/tbUnits" />
 
-
         </LinearLayout>
-
-
-
 
         <TextView
             android:layout_width="111.0dp"
@@ -394,7 +378,6 @@
             android:orientation="vertical"
             android:weightSum="2"
             android:paddingTop="5dp">
-
 
             <com.jsibbold.zoomage.ZoomageView
                 android:src="@android:drawable/ic_menu_gallery"
@@ -441,9 +424,7 @@
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp" />
 
-
         </LinearLayout>
-
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -480,7 +461,6 @@
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp" />
 
-
         </LinearLayout>
         <Button
             android:text="Izhod "
@@ -498,17 +478,6 @@
             android:layout_marginBottom="4dp"
             />
 
-
-
-
     </LinearLayout>
-
-
-
-
-
-
-
-
 
 </androidx.percentlayout.widget.PercentRelativeLayout>

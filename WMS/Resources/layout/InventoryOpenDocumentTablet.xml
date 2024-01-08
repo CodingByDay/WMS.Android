@@ -17,9 +17,6 @@
             layout="@layout/toolbar" />
     </LinearLayout>
 
-
-
-
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -27,8 +24,6 @@
         android:layout_toRightOf="@id/app"
         android:layout_below="@id/text"
         />
-
-
 
     <ListView
         android:layout_width="match_parent"
@@ -91,7 +86,6 @@
             android:layout_marginRight="28.0dp"
             android:id="@+id/position" />
 
-
         <TextView
             android:textSize="18dp"
             android:layout_weight="1"
@@ -102,10 +96,6 @@
             android:paddingTop="5dp"
             android:layout_marginRight="28.0dp"
             android:id="@+id/serial" />
-
-
-
-
 
     </LinearLayout>
     <LinearLayout
@@ -119,8 +109,6 @@
         tools:context=".LinearLayout"
         android:foregroundGravity="center">
 
-
-        
        <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -139,13 +127,12 @@
                 android:paddingLeft="10dp"
                 android:id="@+id/textView1" />
 
-
     <Spinner
         android:spinnerMode="dialog"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:id="@+id/cbWarehouse"
-        android:layout_weight="5" /> 
+        android:layout_weight="5" />
 </LinearLayout>
         <LinearLayout
             android:layout_width="fill_parent"
@@ -185,7 +172,6 @@
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"/>
 
-
         </LinearLayout>
         <LinearLayout
             android:layout_width="fill_parent"
@@ -198,7 +184,6 @@
                 android:layout_height="302.0dp"
                 android:paddingLeft="10dp"
                 android:paddingTop="5dp"/>
-
 
         </LinearLayout>
         <TextView
@@ -241,16 +226,7 @@
                 android:layout_marginRight="2dp"
                 android:id="@+id/logout" />
 
-
         </LinearLayout>
     </LinearLayout>
-
-
-
-
-
-
-
-
 
 </androidx.percentlayout.widget.PercentRelativeLayout>

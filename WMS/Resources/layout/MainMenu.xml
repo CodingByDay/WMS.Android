@@ -23,8 +23,6 @@
 
    >
 
-
-
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="65dp"
@@ -80,9 +78,6 @@
                 android:id="@+id/goodsInterWarehouse"
                 android:drawablePadding="8dp"/>
 
-
-
-
         </LinearLayout>
         <LinearLayout
             android:weightSum="2"
@@ -135,9 +130,6 @@
                 android:layout_marginLeft="6.0dp"
                 android:layout_marginRight="6.0dp"
                 android:id="@+id/goodsIssued"  />
-
-
-
 
         </LinearLayout>
         <LinearLayout
@@ -193,9 +185,6 @@
                 android:layout_marginRight="6.0dp"
                 android:id="@+id/btnPrint" />
 
-
-
-
         </LinearLayout>
 
         <LinearLayout
@@ -250,9 +239,6 @@
                 android:layout_marginLeft="6.0dp"
                 android:layout_marginRight="6.0dp"
                 android:id="@+id/btCheckStock" />
-
-
-
 
         </LinearLayout>
         <LinearLayout

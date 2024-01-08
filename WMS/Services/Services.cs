@@ -1,23 +1,14 @@
-﻿using Stream = Android.Media.Stream;
-using System.IO;
-using System.Linq;
-using System.Collections.Generic;
-using System.Text;
+﻿using Microsoft.AppCenter.Analytics;
+using Microsoft.AppCenter.Crashes;
+using Newtonsoft.Json;
 using System.Net;
-using System.Xml.Serialization;
-
+using System.Text;
 using TrendNET.WMS.Core.Data;
 using TrendNET.WMS.Device.App;
 using WMS.App;
-using Java.Nio;
-using Microsoft.AppCenter.Crashes;
-using Microsoft.AppCenter.Analytics;
-using Newtonsoft.Json;
 
 namespace TrendNET.WMS.Device.Services
 {
-
-    
     public class Services
     {
         public static List<NameValue> UserInfo = new List<NameValue>();
@@ -48,8 +39,7 @@ namespace TrendNET.WMS.Device.Services
         /// <returns>Android.Graphics.Bitmap image</returns>
         public static Android.Graphics.Bitmap GetImageFromServer(string warehouse)
         {
-
-            using(WebClient wc = new WebClient())
+            using (WebClient wc = new WebClient())
             {
                 var webApp = settings.RootURL;
                 try
@@ -57,25 +47,20 @@ namespace TrendNET.WMS.Device.Services
                     using (WebClient webClient = new WebClient())
                     {
                         image = wc.DownloadData(webApp + "/Services/Image/?wh=" + warehouse);
-                        
+
                         Android.Graphics.Bitmap bitmapImage = Android.Graphics.BitmapFactory.DecodeByteArray(image, 0, image.Length, null);
                         return bitmapImage;
                     }
                 }
                 catch (System.Net.WebException)
                 {
-                    return null; 
-                } 
+                    return null;
+                }
             }
-         
-       
-          
         }
-
 
         public static Android.Graphics.Bitmap GetImageFromServerIdent(string warehouse, string ident)
         {
-
             using (WebClient wc = new WebClient())
             {
                 var webApp = settings.RootURL;
@@ -94,14 +79,10 @@ namespace TrendNET.WMS.Device.Services
                     return null;
                 }
             }
-
-
-
         }
+
         public static bool isTablet(string target)
         {
-
-      
             if (target == "TABLET")
             {
                 return true;
@@ -110,17 +91,7 @@ namespace TrendNET.WMS.Device.Services
             {
                 return false;
             }
-
-
-          
-
-
         }
-
-
-
-
-
 
         public static bool HasPermission(string perm, string minLevel)
         {
@@ -135,7 +106,8 @@ namespace TrendNET.WMS.Device.Services
                 }
                 else
                 {
-                    if (string.IsNullOrEmpty(item.StringValue) || (item.StringValue == "0")) {
+                    if (string.IsNullOrEmpty(item.StringValue) || (item.StringValue == "0"))
+                    {
                         Analytics.TrackEvent("Permissions are 0");
                         return false;
                     }
@@ -151,10 +123,14 @@ namespace TrendNET.WMS.Device.Services
             }
         }
 
+        public static int UserID()
+        { return (int)UserInfo.First(x => x.Name == "UserID").IntValue; }
 
-        public static int UserID () { return (int) UserInfo.First(x => x.Name == "UserID").IntValue; }
-        public static string UserName() { return (string) UserInfo.First(x => x.Name == "FullName").StringValue; }
-        public static string DeviceUser() { return settings.ID + "|" + UserID ().ToString(); }
+        public static string UserName()
+        { return (string)UserInfo.First(x => x.Name == "FullName").StringValue; }
+
+        public static string DeviceUser()
+        { return settings.ID + "|" + UserID().ToString(); }
 
         private static List<string> obtainedLocks = new List<string>();
 
@@ -162,54 +138,45 @@ namespace TrendNET.WMS.Device.Services
         {
             if (obtainedLocks.Count > 0)
             {
-             
                 try
                 {
-
                     string error;
                     obtainedLocks.ForEach(l => WebApp.Get("mode=releaseLock&lockID=" + l, out error));
                     obtainedLocks.Clear();
                 }
                 catch (Exception err)
                 {
-
                     Crashes.TrackError(err);
                     return;
-
                 }
             }
         }
 
-        public static bool TryLock (string lockID, out string error) {
+        public static bool TryLock(string lockID, out string error)
+        {
             if (obtainedLocks.FirstOrDefault(x => x == lockID) != null) { error = "OK!"; return true; }
 
-
-  
-
-
-                var obj = new NameValueObject("Lock");
-                obj.SetString("LockID", lockID);
-                obj.SetString("LockInfo", UserName());
-                obj.SetInt("Locker", UserID());
-                var serObj = CompactSerializer.Serialize<NameValueObject>(obj);
-                if (WebApp.Post("mode=tryLock", serObj, out error))
+            var obj = new NameValueObject("Lock");
+            obj.SetString("LockID", lockID);
+            obj.SetString("LockInfo", UserName());
+            obj.SetInt("Locker", UserID());
+            var serObj = CompactSerializer.Serialize<NameValueObject>(obj);
+            if (WebApp.Post("mode=tryLock", serObj, out error))
+            {
+                if (error == "OK!")
                 {
-                    if (error == "OK!")
-                    {
-                        obtainedLocks.Add(lockID);
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
+                    obtainedLocks.Add(lockID);
+                    return true;
                 }
                 else
                 {
                     return false;
                 }
-            
-            
+            }
+            else
+            {
+                return false;
+            }
         }
 
         public static bool IsValidUser(string password, out string error)
@@ -219,7 +186,7 @@ namespace TrendNET.WMS.Device.Services
             {
                 try
                 {
-                    var nvl = CompactSerializer.Deserialize<NameValueList> (result);
+                    var nvl = CompactSerializer.Deserialize<NameValueList>(result);
                     if (nvl.Get("Success").BoolValue == true)
                     {
                         nvl.Items.ForEach(nv => UserInfo.Add(nv));
@@ -234,7 +201,7 @@ namespace TrendNET.WMS.Device.Services
                 }
                 catch (Exception ex)
                 {
-                    error = "Napaka pri tolmačenju odziva web strežnika: " + ex.Message;                  
+                    error = "Napaka pri tolmačenju odziva web strežnika: " + ex.Message;
                     return false;
                 }
             }
@@ -249,8 +216,6 @@ namespace TrendNET.WMS.Device.Services
         {
             public string SQL { get; set; }
         }
-
-
 
         public static ApiResultSet GetObjectListBySql(string sql)
         {
@@ -288,11 +253,9 @@ namespace TrendNET.WMS.Device.Services
             }
         }
 
-
-
         public static NameValueObjectList GetObjectList(string table, out string error, string pars)
         {
-            if(table == "str")
+            if (table == "str")
             {
                 var stop = true;
             }
@@ -310,7 +273,7 @@ namespace TrendNET.WMS.Device.Services
                 catch (Exception ex)
                 {
                     error = "Napaka pri tolmačenju odziva web strežnika: " + ex.Message;
-                    
+
                     return null;
                 }
             }
@@ -320,7 +283,6 @@ namespace TrendNET.WMS.Device.Services
                 return null;
             }
         }
-
 
         public static List<string> GetObjectSingularList(string table, out string error, string pars)
         {
@@ -349,8 +311,6 @@ namespace TrendNET.WMS.Device.Services
             }
         }
 
-
-
         public static NameValueObject GetObject(string table, string id, out string error)
         {
             string result;
@@ -367,7 +327,7 @@ namespace TrendNET.WMS.Device.Services
                 catch (Exception ex)
                 {
                     error = "Napaka pri tolmačenju odziva web strežnika: " + ex.Message;
-                    
+
                     return null;
                 }
             }
@@ -382,7 +342,7 @@ namespace TrendNET.WMS.Device.Services
         {
             string result;
             var startedAt = DateTime.Now;
-            var serData = CompactSerializer.Serialize <NameValueObject> (data);
+            var serData = CompactSerializer.Serialize<NameValueObject>(data);
             Log.Write(new LogEntry("END REQUEST: [Device/SerializeObject];" + (DateTime.Now - startedAt).TotalMilliseconds.ToString()));
             if (WebApp.Post("mode=setObj&table=" + table, serData, out result))
             {
@@ -393,13 +353,12 @@ namespace TrendNET.WMS.Device.Services
                     Log.Write(new LogEntry("END REQUEST: [Device/DeserializeObject];" + (DateTime.Now - startedAt).TotalMilliseconds.ToString()));
                     error = nvo == null ? "Zapis objekta ni uspel!" : "";
 
-         
                     return nvo;
                 }
                 catch (Exception ex)
                 {
                     error = "Napaka pri tolmačenju odziva web strežnika: " + ex.Message;
-                 
+
                     return null;
                 }
             }
@@ -416,7 +375,7 @@ namespace TrendNET.WMS.Device.Services
             while (ex.InnerException != null)
             {
                 ex = ex.InnerException;
-               
+
                 data += " --- " + ex.ToString();
             }
 
@@ -432,6 +391,7 @@ namespace TrendNET.WMS.Device.Services
 
         public static object reportLock = new object();
         public static string instanceInfo = Guid.NewGuid().ToString().Split('-')[0];
+
         public static void ReportData(string data)
         {
             lock (reportLock)

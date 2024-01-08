@@ -28,7 +28,7 @@
         android:textSize="20dp"
         android:layout_width="match_parent"
         android:layout_height="70.0dp"
-        android:id="@+id/btConfirm" 
+        android:id="@+id/btConfirm"
         android:layout_marginLeft="4dp"
         android:layout_marginRight="4dp"/>
 

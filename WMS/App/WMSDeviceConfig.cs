@@ -1,19 +1,5 @@
-﻿using Stream = Android.Media.Stream;
-using System.IO;
-using System.Linq;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Text;
-
-using TrendNET.WMS.Core.Data;
-using TrendNET.WMS.Device.Services;
-using Android.Content.Res;
-
-namespace TrendNET.WMS.Device.App
+﻿namespace TrendNET.WMS.Device.App
 {
-
-    
-
     public class WMSDeviceConfigItem
     {
         public string Key;
@@ -26,7 +12,6 @@ namespace TrendNET.WMS.Device.App
 
         public static string ExePath()
         {
-            
             string exeFile = System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase;
             if (exeFile.StartsWith("file:///"))
                 exeFile = exeFile.Substring("file:///".Length);
@@ -39,21 +24,23 @@ namespace TrendNET.WMS.Device.App
             if (config == null)
             {
                 config = new List<WMSDeviceConfigItem>();
-               var stream =  Android.App.Application.Context.Assets.Open("WMS.config.txt");
+                var stream = Android.App.Application.Context.Assets.Open("WMS.config.txt");
                 using (var sr = new StreamReader(stream))
                 {
                     while (!sr.EndOfStream)
                     {
                         var line = sr.ReadLine();
-                        if (line != null) {
-                            line = line.Trim ();
-                            if (!string.IsNullOrEmpty (line)) {
+                        if (line != null)
+                        {
+                            line = line.Trim();
+                            if (!string.IsNullOrEmpty(line))
+                            {
                                 var colonPos = line.IndexOf(':');
                                 if (colonPos >= 0)
                                 {
-                                    var key = line.Substring(0, colonPos).Trim ();
-                                    var value = line.Substring(colonPos + 1).Trim ();
-                                    config.Add (new WMSDeviceConfigItem { Key = key, Value = value });
+                                    var key = line.Substring(0, colonPos).Trim();
+                                    var value = line.Substring(colonPos + 1).Trim();
+                                    config.Add(new WMSDeviceConfigItem { Key = key, Value = value });
                                 }
                             }
                         }
@@ -113,7 +100,6 @@ namespace TrendNET.WMS.Device.App
             }
             catch (Exception ex)
             {
-              
             }
         }
 

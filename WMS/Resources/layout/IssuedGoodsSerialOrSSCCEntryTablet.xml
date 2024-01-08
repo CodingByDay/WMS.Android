@@ -17,9 +17,6 @@
             layout="@layout/toolbar" />
     </LinearLayout>
 
-
-
-
     <TextView
         android:textSize="18dp"
         android:textStyle="bold"
@@ -29,8 +26,6 @@
         android:layout_toRightOf="@id/app"
         android:layout_below="@id/text"
         />
-
-
 
     <ListView
         android:layout_width="match_parent"
@@ -86,8 +81,6 @@
             android:layout_marginRight="28.0dp"
             android:id="@+id/quantity" />
 
-
-
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -99,8 +92,6 @@
         android:id="@+id/app"
         tools:context=".LinearLayout"
         android:foregroundGravity="center">
-
-
 
           <LinearLayout
         android:layout_width="fill_parent"
@@ -128,7 +119,6 @@
             android:background="@drawable/editText_bg_grey"
             android:layout_marginRight="2dp"
             android:id="@+id/tbIdent" />
-
 
     </LinearLayout>
 
@@ -171,7 +161,7 @@
                 android:textColor="@color/white"
                 android:layout_marginLeft="4dp"
                 android:layout_marginBottom="4dp"
-                android:id="@+id/btMorePallets" />     
+                android:id="@+id/btMorePallets" />
 
     </LinearLayout>
     <LinearLayout
@@ -199,7 +189,6 @@
             android:background="@drawable/editText_bg_grey"
             android:layout_marginRight="2dp"
             android:id="@+id/tbSerialNum" />
-
 
     </LinearLayout>
 
@@ -288,7 +277,6 @@
             android:text="Št. enot"
             android:id="@+id/lbUnits" />
 
-
         <EditText
             android:textStyle="bold"
             android:singleLine="true"
@@ -300,10 +288,7 @@
             android:layout_marginRight="2dp"
             android:id="@+id/tbUnits" />
 
-
     </LinearLayout>
-
-
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -332,9 +317,8 @@
             android:layout_marginRight="2dp"
             android:id="@+id/tbPalette" />
 
-
     </LinearLayout>
-    
+
     <TextView
         android:layout_height="0dip"
         android:layout_width="fill_parent"
@@ -351,7 +335,6 @@
     android:orientation="vertical"
     android:weightSum="2"
     android:paddingTop="5dp">
-
 
             <com.jsibbold.zoomage.ZoomageView
                 android:src="@android:drawable/ic_menu_gallery"
@@ -399,9 +382,7 @@
                 android:id="@+id/button4"
                 />
 
-
         </LinearLayout>
-
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -441,7 +422,6 @@
                 android:id="@+id/button5"
                 />
 
-
         </LinearLayout>
             <Button
                 android:layout_weight="1"
@@ -460,16 +440,6 @@
        />
     </LinearLayout>
 
-
-
     </LinearLayout>
-
-
-
-
-
-
-
-
 
 </androidx.percentlayout.widget.PercentRelativeLayout>

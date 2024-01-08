@@ -1,22 +1,16 @@
 ﻿// Define a custom GestureDetector.SimpleOnGestureListenerusing Android.App;
-using Android.App;
 using Android.Views;
-using Android.Widget;
 
-class GestureListener : GestureDetector.SimpleOnGestureListener, View.IOnTouchListener
+internal class GestureListener : GestureDetector.SimpleOnGestureListener, View.IOnTouchListener
 {
-  
-        private static readonly int SWIPE_THRESHOLD = 5;  // Adjust this value for sensitivity
-        private static readonly int SWIPE_VELOCITY_THRESHOLD = 5;  // Adjust this value for sensitivity
-        private ISwipeListener swipeListener;
+    private static readonly int SWIPE_THRESHOLD = 5;  // Adjust this value for sensitivity
+    private static readonly int SWIPE_VELOCITY_THRESHOLD = 5;  // Adjust this value for sensitivity
+    private ISwipeListener swipeListener;
 
-        public GestureListener(ISwipeListener listener)
-        {
-            swipeListener = listener;
-        }
-
-
-
+    public GestureListener(ISwipeListener listener)
+    {
+        swipeListener = listener;
+    }
 
     public bool OnTouch(View v, MotionEvent e)
     {
@@ -47,8 +41,4 @@ class GestureListener : GestureDetector.SimpleOnGestureListener, View.IOnTouchLi
 
         return true;
     }
-
-
-
-
 }

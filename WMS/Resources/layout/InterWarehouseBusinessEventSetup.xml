@@ -25,7 +25,7 @@
         android:id="@+id/cbDocType"
         android:gravity="center"
         android:spinnerMode="dialog"
-        
+
         />
 
     <TextView
@@ -112,10 +112,8 @@
                 android:layout_marginLeft="2dp"
                 android:textColor="@color/white"/>
 
-
         </LinearLayout>
 
     </LinearLayout>
-
 
 </LinearLayout>

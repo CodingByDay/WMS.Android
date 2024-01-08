@@ -62,7 +62,6 @@
             android:layout_marginLeft="2.0dp"
             android:layout_marginRight="4.0dp" />
 
-
     </LinearLayout>
 
 </LinearLayout>

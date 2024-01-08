@@ -1,7 +1,5 @@
 ﻿using Android.Content;
 using Android.Views;
-using Android.Widget;
-using System.Collections.Generic;
 
 public class CustomAutoCompleteAdapter<T> : ArrayAdapter<T>
 {
@@ -24,7 +22,7 @@ public class CustomAutoCompleteAdapter<T> : ArrayAdapter<T>
         // Customize the appearance of the dropdown item here
         TextView text = view.FindViewById<TextView>(WMS.Resource.Id.textValue);
         text.Text = GetItem(position).ToString();
-   
+
         return view;
     }
 }

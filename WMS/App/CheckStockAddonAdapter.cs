@@ -1,29 +1,18 @@
-﻿using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Util;
+﻿using Android.Content;
 using Android.Views;
-using Android.Widget;
-using Stream = Android.Media.Stream;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS.App
+namespace WMS.App
 {
-
-    class CheckStockAddonAdapter : BaseAdapter
+    internal class CheckStockAddonAdapter : BaseAdapter
     {
         public List<CheckStockAddonList> sList;
         private Context sContext;
+
         public CheckStockAddonAdapter(Context context, List<CheckStockAddonList> list)
         {
             sList = list;
             sContext = context;
         }
-
-
 
         public override int Count
         {
@@ -42,6 +31,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
         {
             return position;
         }
+
         public override View GetView(int position, View convertView, ViewGroup parent)
         {
             View row = convertView;
@@ -62,22 +52,13 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 TextView Quantity = row.FindViewById<TextView>(Resource.Id.Quantity);
                 Quantity.Text = sList[position].Quantity;
                 Quantity.SetTextColor(Android.Graphics.Color.Black);
-
-
-
             }
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine(ex.Message);
             }
 
-       
             return row;
-
         }
-
-
- 
-
     }
 }

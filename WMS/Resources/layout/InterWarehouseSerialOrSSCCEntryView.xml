@@ -4,8 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
-
      <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -24,7 +22,6 @@
             android:layout_marginRight="28.0dp"
             android:id="@+id/Ident" />
 
-
         <TextView
             android:textStyle="bold"
             android:textSize="16dp"
@@ -37,8 +34,6 @@
             android:layout_marginRight="28.0dp"
             android:id="@+id/SerialNumber" />
 
-
-        
         <TextView
             android:textStyle="bold"
             android:textSize="16dp"
@@ -50,8 +45,7 @@
             android:text="Location"
             android:layout_marginRight="28.0dp"
             android:id="@+id/Location" />
-       
-        
+
         <TextView
             android:textStyle="bold"
             android:textSize="16dp"
@@ -64,8 +58,6 @@
             android:layout_marginRight="28.0dp"
             android:id="@+id/Qty" />
 
-
-        
         <TextView
             android:textStyle="bold"
             android:textSize="16dp"
@@ -77,7 +69,6 @@
             android:text="Filled"
             android:layout_marginRight="28.0dp"
             android:id="@+id/Filled" />
-
 
     </LinearLayout>
 

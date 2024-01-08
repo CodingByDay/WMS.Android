@@ -15,15 +15,19 @@ using System.Linq;
 using System.Text;
 using TrendNET.WMS.Device.Services;
 
-using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS
+using AndroidX.AppCompat.App;
+using AlertDialog = Android.App.AlertDialog;
+
+namespace WMS
 {
     [Activity(Label = "WrappingPalletTablet")]
     public class WrappingPalletTablet : AppCompatActivity, IBarcodeResult
     {
         private EditText pallet;
         private Button btConfirm;
-        SoundPool soundPool;
-        int soundPoolId;
+        private SoundPool soundPool;
+        private int soundPoolId;
+
         public void GetBarcode(string barcode)
         {
             if (pallet.HasFocus)
@@ -39,10 +43,12 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 }
             }
         }
+
         private void Sound()
         {
             soundPool.Play(soundPoolId, 1, 1, 0, 0, 1);
         }
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -68,17 +74,17 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             Application.Context.RegisterReceiver(_broadcastReceiver,
             new IntentFilter(ConnectivityManager.ConnectivityAction));
         }
+
         public bool IsOnline()
         {
             var cm = (ConnectivityManager)GetSystemService(ConnectivityService);
             return cm.ActiveNetworkInfo == null ? false : cm.ActiveNetworkInfo.IsConnected;
-
         }
+
         private void OnNetworkStatusChanged(object sender, EventArgs e)
         {
             if (IsOnline())
             {
-                
                 try
                 {
                     LoaderManifest.LoaderManifestLoopStop(this);
@@ -118,7 +124,6 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             {
                 Toast.MakeText(this, $"Napaka pri dostopu do web aplikacije. {result}", ToastLength.Long).Show();
             }
-
         }
     }
 }

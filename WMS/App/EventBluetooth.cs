@@ -1,19 +1,16 @@
-﻿using Newtonsoft.Json;
-using WMS.App;
-using System.Collections.Generic;
+﻿using WMS.App;
 
 public class EventBluetooth
 {
-
     /// <summary>
     ///  Tale objekt bo serializiran in poslan na AR očala v obliki json.
     /// </summary>
-    /// 
+    ///
 
     public EventBluetooth()
     {
-
     }
+
     public enum EventType
     {
         TakeoverList, // Prevzem blaga seznam
@@ -31,9 +28,6 @@ public class EventBluetooth
     public EventType eventType { get; set; } // switch (eventType)
     public bool isRefreshCallback { get; set; } // Če je true ponovno naložiti positions array
 
-
-
-
     public class Position
     {
         public string Ident { get; set; }
@@ -42,7 +36,4 @@ public class EventBluetooth
         public string Name { get; set; }
         public string Key { get; set; }
     }
-
-
-
 }

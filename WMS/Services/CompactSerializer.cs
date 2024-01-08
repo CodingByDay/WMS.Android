@@ -1,8 +1,4 @@
-﻿using Stream = Android.Media.Stream;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
+﻿using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
 
@@ -34,7 +30,7 @@ namespace TrendNET.WMS.Core.Data
                     serializer = new XmlSerializer(typeof(T));
                     serializers.Add(typeof(T), serializer);
                 }
-                
+
                 XmlWriterSettings settings = new XmlWriterSettings();
                 settings.Encoding = new UTF8Encoding(false, false);
                 settings.Indent = false;
@@ -54,9 +50,6 @@ namespace TrendNET.WMS.Core.Data
             }
         }
 
-
-
-
         public static T Deserialize<T>(string xml)
         {
             var startedAt = DateTime.Now;
@@ -70,11 +63,13 @@ namespace TrendNET.WMS.Core.Data
                 XmlSerializer serializer;
                 if (serializers.ContainsKey(typeof(T)))
                 {
-                    serializer = serializers [typeof(T)];
-                } else {
+                    serializer = serializers[typeof(T)];
+                }
+                else
+                {
                     serializer = new XmlSerializer(typeof(T));
-                    serializers.Add (typeof(T), serializer);
-                }                 
+                    serializers.Add(typeof(T), serializer);
+                }
 
                 XmlReaderSettings settings = new XmlReaderSettings();
                 settings.CheckCharacters = false;
@@ -85,7 +80,7 @@ namespace TrendNET.WMS.Core.Data
                         return (T)serializer.Deserialize(xmlReader);
                     }
                 }
-            } 
+            }
             finally
             {
                 Log.Write(new LogEntry("END REQUEST: [Device/CompactSerializer.Deserialize];" + (DateTime.Now - startedAt).TotalMilliseconds.ToString()));

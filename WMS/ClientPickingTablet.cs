@@ -1,35 +1,22 @@
-﻿using Stream = Android.Media.Stream;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
+﻿using Android.Content;
 using Android.Media;
-using Android.Net;
-using Android.OS;
-using Android.Runtime;
 using Android.Text;
 using Android.Views;
-using Android.Widget;
+using AndroidX.AppCompat.App;
 using BarCode2D_Receiver;
-using Java.Util.Concurrent;
 using Microsoft.AppCenter.Crashes;
-using WMS.App;
 using TrendNET.WMS.Core.Data;
 using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
-using WebApp = TrendNET.WMS.Device.Services.WebApp;
-using AndroidX.AppCompat.App;
+using WMS.App;
 using AlertDialog = Android.App.AlertDialog;
-
+using Stream = Android.Media.Stream;
 
 namespace WMS
 {
     [Activity(Label = "ClientPicking", ScreenOrientation = Android.Content.PM.ScreenOrientation.Landscape)]
     public class ClientPickingTablet : AppCompatActivity, IBarcodeResult
     {
-
         private NameValueObject moveHead = (NameValueObject)InUseObjects.Get("MoveHead");
         private NameValueObject openOrder = (NameValueObject)InUseObjects.Get("OpenOrder");
         private ClientPickingAdapter adapter;
@@ -40,8 +27,8 @@ namespace WMS
         private EditText tbClient;
         private EditText tbIdentFilter;
         private EditText tbLocationFilter;
-        SoundPool soundPool;
-        int soundPoolId;
+        private SoundPool soundPool;
+        private int soundPoolId;
         private MyOnItemLongClickListener listener;
         private ClientPickingPosition chosen;
         /*
@@ -118,7 +105,6 @@ namespace WMS
                     RunOnUiThread(() =>
                     {
                         Toast.MakeText(this, "Ta izdelek ni mogoče izdati ker nima zalogo.", ToastLength.Long).Show();
-
                     });
                     return;
                 }
@@ -126,7 +112,6 @@ namespace WMS
                 {
                     InUseObjects.Set("OpenOrder", data.Items.ElementAt(adapter.returnSelected().originalIndex));
                 }
-
             }
             else
             {
@@ -139,7 +124,6 @@ namespace WMS
             }
             if (SaveMoveHead())
             {
-
                 var obj = adapter.returnSelected();
                 var ident = obj.Ident;
                 var qty = obj.Quantity;
@@ -149,7 +133,6 @@ namespace WMS
                 i.PutExtra("selected", ClientPickingPosition.Serialize(obj));
                 StartActivity(i);
                 this.Finish();
-
             }
         }
 
@@ -166,7 +149,6 @@ namespace WMS
             string error;
             try
             {
-
                 var openIdent = Services.GetObject("id", ident, out error);
                 if (openIdent == null)
                 {
@@ -178,14 +160,11 @@ namespace WMS
             }
             catch (Exception err)
             {
-
                 Crashes.TrackError(err);
-
             }
 
             if (!moveHead.GetBool("Saved"))
             {
-
                 try
                 {
                     var test = openOrder.GetString("No");
@@ -218,10 +197,8 @@ namespace WMS
                 }
                 catch (Exception err)
                 {
-
                     Crashes.TrackError(err);
                     return false;
-
                 }
             }
             else
@@ -252,7 +229,6 @@ namespace WMS
             return oodtw;
         }
 
-
         private void SetUpScanningFields()
         {
             tbIdentFilter.SetBackgroundColor(Android.Graphics.Color.Aqua);
@@ -275,7 +251,6 @@ namespace WMS
                 data.Items = dataParameter.Items.Where(x => x.GetString("Receiver") == moveHead.GetString("Receiver")).ToList();
                 data.Items.ForEach(i =>
                 {
-
                     var ident = i.GetString("Ident");
                     var location = i.GetString("Location");
                     var name = i.GetString("Name");
@@ -314,7 +289,6 @@ namespace WMS
                     else if (change.locationQty.Count == 1)
                     {
                         change.Location = change.locationQty.ElementAt(0).Key;
-
                     }
                     else if (change.locationQty.Count > 2)
                     {
@@ -326,9 +300,9 @@ namespace WMS
                 adapter.Filter(positions, true, string.Empty, false);
                 listener = new MyOnItemLongClickListener(this, adapter.returnData(), adapter);
                 ivTrail.OnItemLongClickListener = listener;
-
             }
         }
+
         private void Sound()
         {
             soundPool.Play(soundPoolId, 1, 1, 0, 0, 1);
@@ -345,6 +319,7 @@ namespace WMS
             adapter.Filter(positions, true, tbIdentFilter.Text, true);
             listener.updateData(adapter.returnData());
         }
+
         public void GetBarcode(string barcode)
         {
             if (barcode != "Scan fail" && barcode != "")
@@ -373,14 +348,12 @@ namespace WMS
             listener.updateData(adapter.returnData());
         }
 
-
-        // Class for handling long click 
+        // Class for handling long click
         public class MyOnItemLongClickListener : Java.Lang.Object, AdapterView.IOnItemLongClickListener
         {
             public Context context_;
             public List<ClientPickingPosition> data_;
             public ClientPickingAdapter adapter_;
-
 
             public void updateData(List<ClientPickingPosition> data)
             {

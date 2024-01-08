@@ -6,10 +6,6 @@
     android:layout_height="match_parent"
     android:background="@color/white_bg">
 
-
-
-
-
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="fill_parent"
@@ -29,11 +25,9 @@
                 android:foregroundGravity="center"
                 android:layout_width="150dp"
                 android:layout_height="75dp"
-                android:id="@+id/imglogo" 
+                android:id="@+id/imglogo"
                 />
         </LinearLayout>
-
-       
 
         <LinearLayout
 
@@ -53,7 +47,6 @@
                 android:visibility="visible"
                 android:background="@color/rikoMain"
                 android:layout_marginBottom="30dp"/>
-
 
             <TextView
                 android:layout_width="match_parent"
@@ -75,8 +68,6 @@
                 android:hint="Geslo"
                 android:layout_marginLeft="30dp"
                 android:layout_marginRight="30dp" />
-
-
 
             <ProgressBar
                 android:layout_width="match_parent"

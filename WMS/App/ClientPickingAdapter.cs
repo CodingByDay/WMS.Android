@@ -1,22 +1,14 @@
-﻿using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
+﻿using Android.Content;
 using Android.Views;
-using Android.Widget;
-using Stream = Android.Media.Stream;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS.App
+namespace WMS.App
 {
-
     public class ClientPickingAdapter : BaseAdapter
     {
         public List<ClientPickingPosition> sList;
         private Context sContext;
         private ClientPickingPosition selected;
+
         public ClientPickingAdapter(Context context, List<ClientPickingPosition> list)
         {
             sList = list;
@@ -82,6 +74,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
         {
             return position;
         }
+
         public override View GetView(int position, View convertView, ViewGroup parent)
         {
             View row = convertView;
@@ -92,10 +85,8 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                     row = LayoutInflater.From(sContext).Inflate(Resource.Layout.ClientPickingRow, null, false);
                 }
 
-
                 TextView Ident = row.FindViewById<TextView>(Resource.Id.Ident);
                 Ident.Text = sList[position].Ident;
- 
 
                 TextView Location = row.FindViewById<TextView>(Resource.Id.Location);
                 Location.Text = sList[position].Location;
@@ -105,23 +96,13 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
 
                 TextView Order = row.FindViewById<TextView>(Resource.Id.Order);
                 Order.Text = sList[position].Order;
-
-
-
-
             }
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine(ex.Message);
             }
 
-
             return row;
-
         }
-
-
-
-
     }
 }

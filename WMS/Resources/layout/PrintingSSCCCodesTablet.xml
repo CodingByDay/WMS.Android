@@ -17,8 +17,6 @@
             layout="@layout/toolbar" />
     </LinearLayout>
 
-
-
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -26,8 +24,6 @@
         android:layout_toRightOf="@id/app"
         android:layout_below="@id/text"
         />
-
-
 
     <ListView
         android:layout_width="match_parent"
@@ -90,7 +86,6 @@
             android:layout_marginRight="28.0dp"
             android:id="@+id/position" />
 
-
         <TextView
             android:layout_weight="1"
             android:layout_width="match_parent"
@@ -101,8 +96,6 @@
             android:paddingTop="5dp"
             android:layout_marginRight="28.0dp"
             android:id="@+id/serial" />
-
-
 
         <TextView
             android:textSize="18dp"
@@ -165,14 +158,11 @@
                 android:textSize="18dp"
                 android:id="@+id/tbNum" />
 
-
         </LinearLayout>
         <TextView
             android:layout_height="0dip"
             android:layout_width="fill_parent"
             android:layout_weight="1" />
-
-
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -211,17 +201,8 @@
                 android:layout_marginRight="2dp"
                 android:id="@+id/button2" />
 
-
         </LinearLayout>
 
     </LinearLayout>
-
-
-
-
-
-
-
-
 
 </androidx.percentlayout.widget.PercentRelativeLayout>

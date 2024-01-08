@@ -1,16 +1,6 @@
-﻿using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using Stream = Android.Media.Stream;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using static Android.App.ActionBar;
+﻿using Android.Content;
 
-using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS.App
+namespace WMS.App
 {
     public class ProgressDialogClass
     {
@@ -31,21 +21,20 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 dialogSync.SetMessage(message);
                 dialogSync.SetCancelable(false);
                 dialogSync.Show();
-            } catch
+            }
+            catch
             {
             }
         }
-
-
-        
 
         public void StopDialogSync()
         {
             try
             {
                 dialogSync.Dismiss();
-            } catch {
-
+            }
+            catch
+            {
                 return;
             }
         }

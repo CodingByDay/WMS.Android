@@ -235,12 +235,10 @@
 
     </LinearLayout>
 
-
     <TextView
         android:layout_height="0dip"
         android:layout_width="fill_parent"
         android:layout_weight="1" />
-
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -284,12 +282,7 @@
                 android:drawableLeft="@drawable/left_white"
                 android:id="@+id/button2" />
 
-
         </LinearLayout>
-
-
-
-
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -327,9 +320,7 @@
                 android:drawableLeft="@drawable/printer_white"
                 android:id="@+id/button4" />
 
-
         </LinearLayout>
-
 
         <LinearLayout
             android:weightSum="2"
@@ -368,11 +359,7 @@
                 android:drawableLeft="@drawable/logout_white"
                 android:id="@+id/button6" />
 
-
-
-
         </LinearLayout>
     </LinearLayout>
-
 
 </LinearLayout>

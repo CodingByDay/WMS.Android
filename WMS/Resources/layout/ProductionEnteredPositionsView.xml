@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
@@ -49,7 +48,6 @@
             android:background="@drawable/editText_bg_grey"
             android:layout_marginRight="2dp"
             android:id="@+id/tbSSCC" />
-
 
     </LinearLayout>
 
@@ -109,7 +107,6 @@
             android:layout_marginRight="2dp"
             android:id="@+id/tbQty" />
 
-
     </LinearLayout>
 
     <LinearLayout
@@ -118,7 +115,6 @@
         android:orientation="horizontal"
         android:paddingTop="5dp"
                                      >
-
 
         <TextView
             android:textStyle="bold"
@@ -168,11 +164,7 @@
             android:layout_marginRight="2dp"
             android:id="@+id/tbCreatedBy" />
 
-
-
     </LinearLayout>
-
-
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -212,8 +204,6 @@
         android:weightSum="3"
         android:paddingTop="5dp">
 
-
-
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_weight="1"
@@ -250,12 +240,7 @@
                 android:drawableLeft="@drawable/fix_white"
                 android:id="@+id/btUpdate" />
 
-
         </LinearLayout>
-
-
-
-
 
         <LinearLayout
             android:weightSum="2"
@@ -293,9 +278,7 @@
                 android:drawableLeft="@drawable/confirmation_white"
                 android:id="@+id/btFinish" />
 
-
         </LinearLayout>
-
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -333,7 +316,6 @@
                 android:text="Izhod - F8"
                 android:drawableLeft="@drawable/logout_white"
                 android:id="@+id/button5" />
-
 
         </LinearLayout>
     </LinearLayout>

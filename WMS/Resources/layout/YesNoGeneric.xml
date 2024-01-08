@@ -6,9 +6,8 @@
     android:gravity="center_vertical"
     android:layout_height="match_parent">
 
-
     <ImageView
-        android:layout_marginTop="20dp"       
+        android:layout_marginTop="20dp"
         android:layout_width="match_parent"
         android:layout_height="137.5dp"
         android:id="@+id/bin"
@@ -64,7 +63,6 @@
             android:layout_width="match_parent"
             android:layout_height="81.5dp"
             android:id="@+id/btnNo" />
-
 
     </LinearLayout>
 

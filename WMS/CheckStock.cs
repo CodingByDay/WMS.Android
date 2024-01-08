@@ -1,28 +1,17 @@
-﻿using Android.App;
-using Android.Content;
+﻿using Android.Content;
 using Android.Content.PM;
 using Android.Media;
 using Android.Net;
-using Android.OS;
-using Android.OS.Storage;
 using Android.Preferences;
 using Android.Views;
-using Android.Widget;
+using AndroidX.AppCompat.App;
 using BarCode2D_Receiver;
-
 using Microsoft.AppCenter.Crashes;
 using Newtonsoft.Json;
-using WMS.App;
-using Stream = Android.Media.Stream;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
-using AndroidX.AppCompat.App;
-using AlertDialog = Android.App.AlertDialog;
-
-using AndroidX.AppCompat.App;
+using WMS.App;
+using Stream = Android.Media.Stream;
 
 namespace WMS
 {
@@ -34,8 +23,8 @@ namespace WMS
         private CustomAutoCompleteTextView tbIdent;
         private Button btShowStock;
         private Button button1;
-        SoundPool soundPool;
-        int soundPoolId;
+        private SoundPool soundPool;
+        private int soundPoolId;
         private TextView lbStock;
         private List<ComboBoxItem> spinnerAdapterList = new List<ComboBoxItem>();
         private int temporaryPositionWarehouse;
@@ -58,14 +47,14 @@ namespace WMS
                 Sound();
                 tbIdent.Text = barcode;
                 ProcessStock();
-
-            } else if (tbLocation.HasFocus)
+            }
+            else if (tbLocation.HasFocus)
             {
                 Sound();
                 tbLocation.Text = barcode;
             }
         }
-              
+
         private string LoadStockFromStockSerialNo(string warehouse, string location, string ident)
         {
             try
@@ -74,7 +63,6 @@ namespace WMS
                 var stock = Services.GetObjectList("str", out error, warehouse + "|" + location + "|" + ident);
                 if (stock == null)
                 {
-
                     string WebError = string.Format("Napaka pri preverjanju zaloge." + error);
                     DialogHelper.ShowDialogError(this, this, WebError);
 
@@ -87,13 +75,10 @@ namespace WMS
             }
             catch (Exception err)
             {
-
                 Crashes.TrackError(err);
                 return "";
-
             }
         }
-
 
         private void ProcessStock()
         {
@@ -103,7 +88,7 @@ namespace WMS
                 string WebError = string.Format("Skladišče ni izbrano.");
                 DialogHelper.ShowDialogError(this, this, WebError);
 
-             //   Toast.MakeText(this, WebError, ToastLength.Long).Show(); tbIdent.Text = "";
+                //   Toast.MakeText(this, WebError, ToastLength.Long).Show(); tbIdent.Text = "";
                 return;
             }
 
@@ -131,13 +116,13 @@ namespace WMS
             isEmptyStock();
         }
 
-
         private void isEmptyStock()
-        { 
-            if(stock != "")
+        {
+            if (stock != "")
             {
                 lbStock.SetBackgroundColor(Android.Graphics.Color.Green);
-            } else
+            }
+            else
             {
                 lbStock.SetBackgroundColor(Android.Graphics.Color.Red);
             }
@@ -145,7 +130,6 @@ namespace WMS
 
         private void color()
         {
-
             tbIdent.SetBackgroundColor(Android.Graphics.Color.Aqua);
             tbLocation.SetBackgroundColor(Android.Graphics.Color.Aqua);
         }
@@ -167,14 +151,13 @@ namespace WMS
                 case Keycode.F8:
                     Button1_Click(this, null);
                     break;
-                // return true;
-
+                    // return true;
             }
             return base.OnKeyDown(keyCode, e);
         }
-        protected async override void OnCreate(Bundle savedInstanceState)
-        {
 
+        protected override async void OnCreate(Bundle savedInstanceState)
+        {
             base.OnCreate(savedInstanceState);
             SetTheme(Resource.Style.AppTheme_NoActionBar);
             // Create your application here.
@@ -185,18 +168,16 @@ namespace WMS
             SetSupportActionBar(_customToolbar._toolbar);
             SupportActionBar.SetDisplayShowTitleEnabled(false);
 
-
-            cbWarehouses = FindViewById<CustomAutoCompleteTextView>(Resource.Id.cbWarehouses);       
+            cbWarehouses = FindViewById<CustomAutoCompleteTextView>(Resource.Id.cbWarehouses);
             tbLocation = FindViewById<CustomAutoCompleteTextView>(Resource.Id.tbLocation);
             tbIdent = FindViewById<CustomAutoCompleteTextView>(Resource.Id.tbIdent);
-
 
             btShowStock = FindViewById<Button>(Resource.Id.btShowStock);
             btShowStock.Click += BtShowStock_Click;
             button1 = FindViewById<Button>(Resource.Id.button1);
             button1.Click += Button1_Click;
             lbStock = FindViewById<TextView>(Resource.Id.lbStock);
-      
+
             color();
             soundPool = new SoundPool(10, Stream.Music, 0);
             soundPoolId = soundPool.Load(this, Resource.Raw.beep, 1);
@@ -243,31 +224,23 @@ namespace WMS
                 tbLocation.Adapter = DataAdapterLocation;
             }
 
-
-         
             var _broadcastReceiver = new NetworkStatusBroadcastReceiver();
             _broadcastReceiver.ConnectionStatusChanged += OnNetworkStatusChanged;
             Application.Context.RegisterReceiver(_broadcastReceiver,
             new IntentFilter(ConnectivityManager.ConnectivityAction));
 
-
-
             cbWarehouses.ItemClick += CbWarehouses_ItemClick;
             tbLocation.ItemClick += TbLocation_ItemClick;
-
         }
 
         private void TbLocation_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
         {
-           
         }
 
         private async void CbWarehouses_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
         {
-
             if (e.Position != 0)
             {
-
                 temporaryPositionWarehouse = e.Position;
             }
             await GetLocationsForGivenWarehouse(spinnerAdapterList.ElementAt(temporaryPositionWarehouse).Text);
@@ -297,19 +270,16 @@ namespace WMS
                 .ToList();
         }
 
-
         public bool IsOnline()
         {
             var cm = (ConnectivityManager)GetSystemService(ConnectivityService);
             return cm.ActiveNetworkInfo == null ? false : cm.ActiveNetworkInfo.IsConnected;
-
         }
 
         private void OnNetworkStatusChanged(object sender, EventArgs e)
         {
             if (IsOnline())
             {
-                
                 try
                 {
                     LoaderManifest.LoaderManifestLoopStop(this);
@@ -324,6 +294,7 @@ namespace WMS
                 LoaderManifest.LoaderManifestLoop(this);
             }
         }
+
         private void SpinnerLocation_ItemSelected(object sender, AdapterView.ItemSelectedEventArgs e)
         {
             if (!initial)
@@ -336,18 +307,17 @@ namespace WMS
                 initial = false;
             }
         }
+
         private void SpinnerIdent_ItemSelected(object sender, AdapterView.ItemSelectedEventArgs e)
         {
             tbIdent.Text = identData.ElementAt(e.Position);
         }
 
-    
         public override void OnBackPressed()
         {
             HelpfulMethods.releaseLock();
             base.OnBackPressed();
         }
-
 
         private void Button1_Click(object sender, System.EventArgs e)
         {
@@ -358,6 +328,7 @@ namespace WMS
         {
             ProcessStock();
         }
+
         private async Task GetLocationsForGivenWarehouse(string warehouse)
         {
             await Task.Run(() =>
@@ -374,7 +345,6 @@ namespace WMS
                 {
                     // Toast.MakeText(this, "Prišlo je do napake", ToastLength.Long).Show();
                     DialogHelper.ShowDialogError(this, this, "Prišlo je do napake");
-
                 }
                 else
                 {
@@ -387,6 +357,7 @@ namespace WMS
                 }
             });
         }
+
         private async void CbWarehouses_ItemSelected(object sender, AdapterView.ItemSelectedEventArgs e)
         {
             Spinner spinner = (Spinner)sender;
@@ -403,7 +374,6 @@ namespace WMS
             Android.Resource.Layout.SimpleSpinnerItem, locationData);
             tbLocation.Adapter = null;
             tbLocation.Adapter = DataAdapterLocation;
-
         }
     }
 }

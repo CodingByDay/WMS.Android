@@ -1,20 +1,7 @@
-﻿using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using Stream = Android.Media.Stream;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Runtime.Serialization;
-using System.Text;
-using static Java.Util.Jar.Attributes;
+﻿using System.Runtime.Serialization;
 using System.Text.Json;
 
-using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS.App
+namespace WMS.App
 {
     [Serializable]
     public class ClientPickingPosition
@@ -28,23 +15,17 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
         public int originalIndex { get; set; }
         public Dictionary<string, double> locationQty { get; set; } = new Dictionary<string, double>();
 
-
-
-
         public void recalculatePickingPositions()
         {
             // change property locatioQty //
-            // 
+            //
         }
-
-
 
         /// <summary>
         ///  Empty constructor.
         /// </summary>
         public ClientPickingPosition()
         {
-
         }
 
         public ClientPickingPosition(SerializationInfo info, StreamingContext context)
@@ -58,8 +39,6 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             locationQty = (Dictionary<string, double>)info.GetValue("locationQty", typeof(Dictionary<string, double>));
             originalIndex = info.GetInt32("originalIndex");
         }
-
- 
 
         // Method to perform serialization
         public void GetObjectData(SerializationInfo info, StreamingContext context)
@@ -85,7 +64,5 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
         {
             return JsonSerializer.Deserialize<T>(data);
         }
-
-
     }
 }

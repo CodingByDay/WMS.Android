@@ -1,25 +1,7 @@
-﻿using Android.App;
-using Android.Content;
+﻿using Android.Content;
 using Android.Net;
-using Android.OS;
-using Android.Runtime;
 
-using Android.Views;
-using Android.Widget;
-using Stream = Android.Media.Stream;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using Android.Content;
-using Android.Net;
-using Android.Telephony;
-using Java.IO;
-using Java.Net;
-using Xamarin.Essentials;
-using System.Runtime.CompilerServices;
-
-using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS.App
+namespace WMS.App
 {
     public static class LoaderManifest
     {
@@ -30,15 +12,13 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
         {
             progress = new ProgressDialogClass();
             progress.ShowDialogSync(context, "Ni internetne povezave... Povezovanje...");
-                   
         }
+
         public static void LoaderManifestLoopResources(Context context)
         {
             progress = new ProgressDialogClass();
             progress.ShowDialogSync(context, "Pridobivamo resurse, počakajte.");
-
         }
-
 
         public static void destroy()
         {
@@ -54,6 +34,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 return;
             }
         }
+
         public static void LoaderManifestLoopStop(Context context)
         {
             try
@@ -62,7 +43,8 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 {
                     progress.StopDialogSync();
                 }
-            } catch
+            }
+            catch
             {
                 return;
             }
@@ -79,13 +61,11 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
 	     * @param context
 	     * @return
 	     */
+
         public static bool IsConnected(Context context)
         {
             NetworkInfo info = GetNetworkInfo(context);
             return (info != null && info.IsConnected);
         }
-
-
-       
     }
 }

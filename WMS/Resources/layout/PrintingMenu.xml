@@ -26,7 +26,6 @@
         android:layout_width="fill_parent"
         android:layout_weight="1" />
 
-
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -75,15 +74,8 @@
                 android:textColor="#ffffff"
                 android:id="@+id/button2" />
 
-
-
-
         </LinearLayout>
 
-
-      
-
-      
         <Button
             android:bottomLeftRadius="7dp"
             android:bottomRightRadius="7dp"

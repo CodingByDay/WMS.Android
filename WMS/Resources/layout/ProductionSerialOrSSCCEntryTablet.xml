@@ -17,8 +17,6 @@
             layout="@layout/toolbar" />
     </LinearLayout>
 
-
-
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -27,8 +25,6 @@
         android:layout_below="@id/text"
         />
 
-
-
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -36,7 +32,7 @@
         android:layout_toRightOf="@id/app"
         android:id="@+id/listData"
         android:listSelector="@android:drawable/screen_background_dark_transparent"
-        android:choiceMode="singleChoice" 
+        android:choiceMode="singleChoice"
         />
 
     <LinearLayout
@@ -97,8 +93,6 @@
             android:layout_marginRight="28.0dp"
             android:id="@+id/quantity" />
 
-
-
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -147,7 +141,6 @@
                 android:layout_marginRight="2dp"
                 android:textSize="18dp"
                 android:id="@+id/tbIdent" />
-
 
         </LinearLayout>
 
@@ -208,7 +201,6 @@
                 android:textSize="18dp"
                 android:id="@+id/tbSerialNum" />
 
-
         </LinearLayout>
 
         <LinearLayout
@@ -235,7 +227,6 @@
                 android:orientation="horizontal"
         >
 
-
                 <EditText
                     android:textStyle="bold"
                     android:singleLine="true"
@@ -248,14 +239,12 @@
                     android:textSize="18dp"
                     android:id="@+id/tbLocation" />
 
-
                 <Spinner
                     android:layout_width="62.0dp"
                     android:layout_height="match_parent"
                     android:id="@+id/spLocation" />
             </LinearLayout>
         </LinearLayout>
-
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -325,7 +314,6 @@
                 android:textSize="18dp"
                 android:id="@+id/tbUnits" />
 
-
         </LinearLayout>
         <TextView
             android:layout_width="wrap_content"
@@ -377,7 +365,6 @@
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"/>
 
-
         </LinearLayout>
         <LinearLayout
             android:layout_width="fill_parent"
@@ -416,20 +403,8 @@
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp" />
 
-
         </LinearLayout>
 
-
-
-
     </LinearLayout>
-
-
-
-
-
-
-
-
 
 </androidx.percentlayout.widget.PercentRelativeLayout>

@@ -1,28 +1,9 @@
-﻿using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using Newtonsoft.Json;
-using Stream = Android.Media.Stream;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TrendNET.WMS.Device.Services;
+﻿using Newtonsoft.Json;
 using Xamarin.Essentials;
-
-using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS.Caching
+namespace WMS.Caching
 {
     internal static class Caching
     {
-
-
-
-
-
-
         public static List<string> SavedList
         {
             get
@@ -37,17 +18,14 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             }
         }
 
-        static T Deserialize<T>(string serializedObject) {
-
-
-            if (serializedObject != null) {
+        static T Deserialize<T>(string serializedObject)
+        {
+            if (serializedObject != null)
+            {
                 return JsonConvert.DeserializeObject<T>(serializedObject);
-
-
-           }
+            }
             return default(T);
-
-        } 
+        }
 
         static string Serialize<T>(T objectToSerialize) => JsonConvert.SerializeObject(objectToSerialize);
     }

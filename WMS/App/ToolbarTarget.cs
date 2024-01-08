@@ -1,5 +1,4 @@
 ﻿using Android.Graphics;
-using Android.Widget;
 using Square.Picasso;
 using static _Microsoft.Android.Resource.Designer.Resource;
 
@@ -12,7 +11,8 @@ public class DrawableTarget : Java.Lang.Object, ITarget
         _imageView = imageView;
     }
 
-    public void OnBitmapFailed(Drawable errorDrawable) { }
+    public void OnBitmapFailed(Drawable errorDrawable)
+    { }
 
     public void OnBitmapFailed(Java.Lang.Exception errorDrawable, Android.Graphics.Drawables.Drawable p1)
     {
@@ -24,7 +24,8 @@ public class DrawableTarget : Java.Lang.Object, ITarget
         _imageView.SetImageBitmap(bitmap);
     }
 
-    public void OnPrepareLoad(Drawable placeHolderDrawable) { }
+    public void OnPrepareLoad(Drawable placeHolderDrawable)
+    { }
 
     public void OnPrepareLoad(Android.Graphics.Drawables.Drawable placeHolderDrawable)
     {

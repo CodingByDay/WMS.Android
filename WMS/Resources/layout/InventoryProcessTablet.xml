@@ -17,8 +17,6 @@
             layout="@layout/toolbar" />
     </LinearLayout>
 
-
-
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -26,8 +24,6 @@
         android:layout_toRightOf="@id/app"
         android:layout_below="@id/text"
         />
-
-
 
     <ListView
         android:layout_width="match_parent"
@@ -90,7 +86,6 @@
             android:layout_marginRight="28.0dp"
             android:id="@+id/position" />
 
-
         <TextView
             android:textSize="18dp"
             android:layout_weight="1"
@@ -101,10 +96,6 @@
             android:paddingTop="5dp"
             android:layout_marginRight="28.0dp"
             android:id="@+id/serial" />
-
-
-
-
 
     </LinearLayout>
     <LinearLayout
@@ -118,30 +109,29 @@
         tools:context=".LinearLayout"
         android:foregroundGravity="center">
 
-
     <LinearLayout
         android:layout_width="fill_parent"
         android:orientation="horizontal"
-        android:layout_height="30dp" 
+        android:layout_height="30dp"
         android:paddingTop="5dp"
         android:gravity="bottom">
 
         <TextView
-            android:textStyle="bold"              
+            android:textStyle="bold"
             android:layout_width="0dp"
             android:id="@+id/warehouseLabel"
-            android:layout_height="match_parent" 
+            android:layout_height="match_parent"
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
             android:textSize="18dp"
             android:text="Skladišče"
-            android:layout_weight="5" /> 
+            android:layout_weight="5" />
 
         <Spinner
             android:layout_width="0dp"
-            android:layout_height="match_parent" 
+            android:layout_height="match_parent"
             android:id="@+id/cbWarehouse"
-            android:layout_weight="1" /> 
+            android:layout_weight="1" />
 
     </LinearLayout>
         <LinearLayout
@@ -219,7 +209,6 @@
                     android:textSize="18dp"
                     android:id="@+id/tbIdent" />
 
-
             </LinearLayout>
 
         </LinearLayout>
@@ -283,11 +272,7 @@
                 android:textSize="18dp"
                 android:id="@+id/tbSSCC" />
 
-
-
         </LinearLayout>
-
-
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -427,7 +412,6 @@
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp" />
 
-
         </LinearLayout>
         <LinearLayout
             android:layout_width="fill_parent"
@@ -465,19 +449,10 @@
                 android:text="izhod"
                 android:drawableLeft="@drawable/logout_white"
                 android:id="@+id/button2"
-               
-                />
 
+                />
 
         </LinearLayout>
     </LinearLayout>
-
-
-
-
-
-
-
-
 
 </androidx.percentlayout.widget.PercentRelativeLayout>

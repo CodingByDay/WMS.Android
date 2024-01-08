@@ -17,8 +17,6 @@
             layout="@layout/toolbar" />
     </LinearLayout>
 
-
-
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -26,8 +24,6 @@
         android:layout_toRightOf="@id/app"
         android:layout_below="@id/text"
         />
-
-
 
     <ListView
         android:layout_width="match_parent"
@@ -90,7 +86,6 @@
             android:layout_marginRight="28.0dp"
             android:id="@+id/position" />
 
-
         <TextView
             android:textSize="18dp"
             android:layout_weight="1"
@@ -102,10 +97,6 @@
             android:layout_marginRight="28.0dp"
             android:id="@+id/serial" />
 
-
-
-
-
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -116,7 +107,6 @@
         android:id="@+id/app"
         tools:context=".LinearLayout"
         android:foregroundGravity="center">
-
 
         <TextView
             android:textStyle="bold"
@@ -156,7 +146,6 @@
                 android:textSize="18dp"
                 android:id="@+id/pallet" />
 
-
         </LinearLayout>
         <LinearLayout
             android:layout_width="fill_parent"
@@ -186,7 +175,6 @@
                 android:textSize="18dp"
                 android:id="@+id/machine" />
 
-
         </LinearLayout>
         <TextView
             android:layout_height="0dip"
@@ -206,8 +194,5 @@
             android:id="@+id/btConfirm"
              />
     </LinearLayout>
-
-
-
 
 </androidx.percentlayout.widget.PercentRelativeLayout>

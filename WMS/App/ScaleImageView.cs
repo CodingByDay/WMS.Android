@@ -1,17 +1,14 @@
-﻿using Stream = Android.Media.Stream;
-
-using Android.Content;
+﻿using Android.Content;
 using Android.Graphics;
 using Android.Util;
 using Android.Views;
-using Android.Widget;
 
 namespace MonoDroidToolkit
 {
-
     public class ScaleImageViewGestureDetector : GestureDetector.SimpleOnGestureListener
     {
         private readonly ScaleImageView scaleImageView;
+
         public ScaleImageViewGestureDetector(ScaleImageView imageView)
         {
             scaleImageView = imageView;
@@ -128,8 +125,6 @@ namespace MonoDroidToolkit
             matrix.GetValues(matrixValues);
             return matrixValues[whichValue];
         }
-
-
 
         public float Scale
         {
@@ -281,6 +276,7 @@ namespace MonoDroidToolkit
                         }
                     }
                     break;
+
                 case MotionEventActions.Up:
                 case MotionEventActions.Pointer1Up:
                 case MotionEventActions.Pointer2Up:

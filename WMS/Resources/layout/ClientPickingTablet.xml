@@ -13,14 +13,10 @@
         android:orientation="horizontal"
         >
 
-
     <include
             android:id="@+id/toolbar"
             layout="@layout/toolbar" />
     </LinearLayout>
-
-
-
 
     <TextView
         android:textStyle="bold"
@@ -32,8 +28,6 @@
         android:layout_below="@id/text"
         />
 
-
-
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -41,7 +35,7 @@
         android:layout_toRightOf="@id/app"
         android:id="@+id/listData"
         android:listSelector="@android:color/holo_blue_light"
-        android:choiceMode="singleChoice" 
+        android:choiceMode="singleChoice"
         />
 
     <LinearLayout
@@ -101,7 +95,6 @@
             android:layout_marginRight="28.0dp"
             android:id="@+id/position" />
 
-
         <TextView
             android:textSize="18dp"
             android:layout_weight="1"
@@ -113,8 +106,6 @@
             android:text="Serijska"
             android:layout_marginRight="28.0dp"
             android:id="@+id/serial" />
-
-
 
         <TextView
             android:textSize="18dp"
@@ -140,17 +131,13 @@
         android:foregroundGravity="center"
         android:layout_marginTop="70dp">
 
-        
-      
-
- 
     <LinearLayout
           android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="2dp"
         android:orientation="horizontal"
         android:paddingTop="5dp"
-        
+
         >
 
         <TextView
@@ -162,8 +149,8 @@
             android:layout_height="match_parent"
             android:gravity="bottom"
             android:paddingLeft="4dp"
-            android:paddingTop="4dp"/>      
-            
+            android:paddingTop="4dp"/>
+
         <EditText
 
             android:id="@+id/tbClient"
@@ -177,9 +164,6 @@
             android:layout_marginRight="2dp"
             />
 
-     
-
-
     </LinearLayout>
 
     <LinearLayout
@@ -189,7 +173,7 @@
           android:paddingTop="2dp">
 
         <TextView
-            
+
             android:text="Ident ali 2D"
             android:textStyle="bold"
             android:layout_width="115dp"
@@ -208,7 +192,6 @@
             android:background="@drawable/editText_bg_grey"
             android:layout_marginRight="2dp"
             android:id="@+id/tbIdentFilter" />
-
 
     </LinearLayout>
 
@@ -232,12 +215,11 @@
             android:singleLine="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/tbLocationFilter" 
+            android:id="@+id/tbLocationFilter"
             android:layout_weight="0.50"
             android:paddingTop="5dp"
             android:background="@drawable/editText_bg_grey"
             android:layout_marginRight="2dp" />
-
 
     </LinearLayout>
     <LinearLayout
@@ -282,7 +264,6 @@
             android:layout_marginRight="28.0dp"
             android:id="@+id/Qty" />
 
-
         <TextView
             android:textStyle="bold"
             android:layout_weight="25"
@@ -295,11 +276,7 @@
             android:layout_marginRight="28.0dp"
             android:id="@+id/Name" />
 
-
-
-
     </LinearLayout>
-
 
     <ListView
         android:background="?android:attr/activatedBackgroundIndicator"
@@ -308,7 +285,7 @@
         android:id="@+id/ivTrail"
         android:layout_height="0dip"
         android:layout_weight="1"
-        android:listSelector="@android:drawable/screen_background_dark_transparent"  
+        android:listSelector="@android:drawable/screen_background_dark_transparent"
         />
 
     <LinearLayout
@@ -354,7 +331,6 @@
                 android:layout_height="match_parent"
                 android:id="@+id/btDisplayPositions" />
 
-
         </LinearLayout>
 
          <LinearLayout
@@ -367,7 +343,7 @@
             android:paddingTop="4dp">
 
          <Button
-                
+
             android:layout_weight="1"
 
             android:background="@color/rikoMain"
@@ -399,25 +375,8 @@
             android:layout_marginTop="0.0dp" />
         </LinearLayout>
 
-
-
     </LinearLayout>
 
-
-
-
-
-
-
-
     </LinearLayout>
-
-
-
-
-
-
-
-
 
 </androidx.percentlayout.widget.PercentRelativeLayout>

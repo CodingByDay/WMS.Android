@@ -8,8 +8,6 @@
     android:gravity="top"
    >
 
-
-
     <LinearLayout
         android:layout_width="1182.0dp"
         android:layout_height="wrap_content"
@@ -121,9 +119,6 @@
             android:layout_marginRight="6.0dp"
             android:id="@+id/goodsInterWarehouse" />
 
-
-
-
     </LinearLayout>
     <LinearLayout
         android:weightSum="2"
@@ -177,9 +172,6 @@
             android:layout_marginRight="6.0dp"
             android:id="@+id/goodsIssued"  />
 
-
-
-
     </LinearLayout>
     <LinearLayout
         android:weightSum="2"
@@ -232,9 +224,6 @@
             android:layout_marginLeft="6.0dp"
             android:layout_marginRight="6.0dp"
             android:id="@+id/btnPrint" />
-
-
-
 
     </LinearLayout>
 
@@ -290,9 +279,6 @@
             android:layout_marginRight="6.0dp"
             android:id="@+id/btCheckStock" />
 
-
-
-
     </LinearLayout>
     <LinearLayout
         android:weightSum="2"
@@ -346,12 +332,7 @@
             android:layout_marginRight="6.0dp"
             android:id="@+id/btRecalculate" />
 
-
-
-
     </LinearLayout>
-
-
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -361,7 +342,6 @@
         android:weightSum="5"
         android:id="@+id/text"
         android:paddingTop="5dp">
-
 
         <TextView
             android:textSize="18dp"
@@ -399,7 +379,6 @@
             android:layout_marginRight="28.0dp"
             android:id="@+id/location" />
 
-
         <TextView
             android:textSize="18dp"
             android:layout_weight="1"
@@ -411,8 +390,6 @@
             android:text="SSCC"
             android:layout_marginRight="28.0dp"
             android:id="@+id/sscc" />
-
-
 
         <TextView
             android:textSize="18dp"
@@ -435,7 +412,5 @@
         android:id="@+id/rapidListview"
         android:listSelector="@android:color/holo_blue_light"
         android:choiceMode="singleChoice" />
-
-
 
 </LinearLayout>

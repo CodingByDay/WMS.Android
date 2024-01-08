@@ -1,44 +1,30 @@
-using Stream = Android.Media.Stream;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
 using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
 
 using Com.Barcode;
-using Android.Media;
 
 namespace BarCode2D_Receiver
 {
-   public class Barcode2D
+    public class Barcode2D
     {
-        String TAG = "Barcode2D";
-        BarcodeUtility barcodeUtility = null;
-        BarcodeDataReceiver barcodeDataReceiver = null;
-        IBarcodeResult iBarcodeResult = null;
-      
+        private String TAG = "Barcode2D";
+        private BarcodeUtility barcodeUtility = null;
+        private BarcodeDataReceiver barcodeDataReceiver = null;
+        private IBarcodeResult iBarcodeResult = null;
+
         public Barcode2D()
         {
             barcodeUtility = BarcodeUtility.Instance;//.getInstance();
         }
-       
+
         public void startScan(Context context)
         {
             if (barcodeUtility != null)
             {
-                
-              
                 barcodeUtility.StartScan(context, BarcodeUtility.ModuleType.Barcode2d);
             }
         }
 
-      
-        public void EnableTrigger(Context context,bool enable)
+        public void EnableTrigger(Context context, bool enable)
         {
             if (barcodeUtility != null)
             {
@@ -48,12 +34,11 @@ namespace BarCode2D_Receiver
                 {
                     barcodeUtility.StopScan(context, BarcodeUtility.ModuleType.Barcode2d);
                     EnableKeyboardemulator(context, false);
-
                 }
             }
         }
-      
-        public void EnableKeyboardemulator(Context context,bool enable)
+
+        public void EnableKeyboardemulator(Context context, bool enable)
         {
             if (barcodeUtility != null)
             {
@@ -63,8 +48,8 @@ namespace BarCode2D_Receiver
                     barcodeUtility.CloseKeyboardHelper(context);
             }
         }
-   
-        public void GoodReadNotificationSound(Context context,bool enable)
+
+        public void GoodReadNotificationSound(Context context, bool enable)
         {
             if (barcodeUtility != null)
             {
@@ -75,13 +60,12 @@ namespace BarCode2D_Receiver
             }
         }
 
-
         //
         public void stopScan(Context context)
         {
             if (barcodeUtility != null)
             {
-               // Log.i(TAG, "stopScan");
+                // Log.i(TAG, "stopScan");
                 barcodeUtility.StopScan(context, BarcodeUtility.ModuleType.Barcode2d);
             }
         }
@@ -102,7 +86,6 @@ namespace BarCode2D_Receiver
                 barcodeUtility.EnablePlaySuccessSound(context, false);//
                 barcodeUtility.EnableEnter(context, false);//
 
-              
                 if (barcodeDataReceiver == null)
                 {
                     barcodeDataReceiver = new BarcodeDataReceiver(this.iBarcodeResult);
@@ -112,6 +95,7 @@ namespace BarCode2D_Receiver
                 }
             }
         }
+
         //
         public void close(Context context)
         {
@@ -125,46 +109,37 @@ namespace BarCode2D_Receiver
                 }
             }
         }
-                   
-
     }
 
-
-
-    class BarcodeDataReceiver : BroadcastReceiver
+    internal class BarcodeDataReceiver : BroadcastReceiver
     {
-        IBarcodeResult ib;
+        private IBarcodeResult ib;
+
         public BarcodeDataReceiver(IBarcodeResult IB)
         {
             ib = IB;
         }
+
         public override void OnReceive(Context context, Intent intent)
         {
-
             String barCode = intent.GetStringExtra("data");
             String status = intent.GetStringExtra("SCAN_STATE");
             if (status != null && (status.Equals("cancel")))
             {
-
                 return;
             }
             else
             {
                 if (barCode != null && !barCode.Equals(""))
                 {
-                
                 }
                 else
                 {
                     barCode = "Scan fail";
-
                 }
                 if (ib != null)
                     ib.GetBarcode(barCode);
             }
-            
         }
-
-
     }
 }

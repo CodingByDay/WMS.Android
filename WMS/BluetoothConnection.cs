@@ -1,57 +1,22 @@
-﻿using Android.App;
-using Android.OS;
-using Android.Runtime;
-using Android.Widget;
-using Android.Views;
-using TrendNET.WMS.Device.Services;
-using Android.Net;
-using System.Net;
-using Stream = Android.Media.Stream;
-using Android.Util;
-using Android.Content;
-using Plugin.Settings.Abstractions;
-using System.Linq;
-
-
-
-// Crashes, analytics and automatic updating.
-
+﻿// Crashes, analytics and automatic updating.
 
 ////////////////////////////////////
-using Microsoft.AppCenter;//////////
-using Microsoft.AppCenter.Analytics;
-using Microsoft.AppCenter.Crashes;
-using static Android.App.ActionBar;
-using Microsoft.AppCenter.Distribute;
-using Uri = System.Uri;
-using System.Threading.Tasks;
-using AlertDialog = Android.App.AlertDialog;
-using Aspose.Words.Tables;
 using Android.Bluetooth;
+using Android.Content;
 using AndroidX.AppCompat.App;
 using WMS.App;
-
-using AndroidX.AppCompat.App;
-
-
-
 
 namespace WMS
 {
     [Activity(Label = "WMS", MainLauncher = false, Icon = "@drawable/barcode", NoHistory = true)]
     public class BluetoothConnection : AppCompatActivity
     {
-
-
         private EditText deviceName;
         private Button makeConnection;
         private BluetoothAdapter bluetoothAdapter;
 
-
-
-
         protected override void OnCreate(Bundle savedInstanceState)
-        {      
+        {
             base.OnCreate(savedInstanceState);
             SetTheme(Resource.Style.AppTheme_NoActionBar);
             SetContentView(Resource.Layout.BluetoothConnection);
@@ -86,7 +51,5 @@ namespace WMS
             StartActivity(typeof(Settings));
             HelpfulMethods.clearTheStack(this);
         }
-
-     
     }
 }

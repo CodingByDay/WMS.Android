@@ -17,9 +17,6 @@
             layout="@layout/toolbar" />
     </LinearLayout>
 
-
-
-
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -28,8 +25,6 @@
         android:layout_below="@id/text"
         />
 
-
-
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -37,7 +32,7 @@
         android:layout_toRightOf="@id/app"
         android:id="@+id/dataList"
         android:choiceMode="singleChoice"
-        android:listSelector="@android:color/holo_blue_light" 
+        android:listSelector="@android:color/holo_blue_light"
         />
 
     <LinearLayout
@@ -96,7 +91,6 @@
             android:layout_marginRight="28.0dp"
             android:id="@+id/position" />
 
-
         <TextView
             android:textSize="18dp"
             android:layout_weight="1"
@@ -108,8 +102,6 @@
             android:text="Serijska"
             android:layout_marginRight="28.0dp"
             android:id="@+id/serial" />
-
-
 
         <TextView
             android:textSize="18dp"
@@ -134,9 +126,6 @@
         android:id="@+id/app"
         tools:context=".LinearLayout"
         android:foregroundGravity="center">
-
-
-
 
         <TextView
             android:layout_width="wrap_content"
@@ -173,7 +162,6 @@
                 android:layout_marginRight="2dp"
                 android:textSize="18dp"
                 android:id="@+id/tbIdent" />
-
 
         </LinearLayout>
 
@@ -234,7 +222,6 @@
                 android:textSize="18dp"
                 android:id="@+id/tbSerialNumber" />
 
-
         </LinearLayout>
 
         <LinearLayout
@@ -293,11 +280,7 @@
                 android:textSize="18dp"
                 android:id="@+id/tbLocation" />
 
-
-
         </LinearLayout>
-
-
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -331,7 +314,6 @@
             android:layout_height="0dip"
             android:layout_width="fill_parent"
             android:layout_weight="1" />
-
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -367,12 +349,7 @@
                 android:layout_marginRight="2dp"
                 android:id="@+id/btUpdate" />
 
-
         </LinearLayout>
-
-
-
-
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -410,9 +387,7 @@
                 android:layout_marginRight="2dp"
                 android:id="@+id/btFinish" />
 
-
         </LinearLayout>
-
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -451,17 +426,8 @@
                 android:layout_marginRight="2dp"
                 android:id="@+id/button5" />
 
-
         </LinearLayout>
 
     </LinearLayout>
-
-
-
-
-
-
-
-
 
 </androidx.percentlayout.widget.PercentRelativeLayout>

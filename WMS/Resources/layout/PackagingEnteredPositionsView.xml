@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
@@ -49,7 +48,6 @@
             android:background="@drawable/editText_bg_grey"
             android:layout_marginRight="2dp"
             android:id="@+id/tbPackNum" />
-
 
     </LinearLayout>
 
@@ -137,16 +135,11 @@
             android:layout_marginRight="2dp"
             android:id="@+id/tbCreatedBy" />
 
-
-
     </LinearLayout>
     <TextView
         android:layout_height="0dip"
         android:layout_width="fill_parent"
         android:layout_weight="1" />
-
-
-
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -154,9 +147,6 @@
         android:orientation="vertical"
         android:weightSum="3"
         android:paddingTop="5dp">
-
-
-
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -197,9 +187,7 @@
                 android:id="@+id/btUpdate"
            />
 
-
         </LinearLayout>
-
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -235,9 +223,6 @@
                 android:text="kreiraj - F3"
                 android:drawableLeft="@drawable/newitem_white"
                 android:id="@+id/btCreate" />
-
-         
-
 
         </LinearLayout>
         <Button

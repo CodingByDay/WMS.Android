@@ -45,8 +45,6 @@
         android:layout_marginRight="5.0dp"
         android:layout_marginLeft="5.0dp">
 
-
-
         <Button
             android:layout_weight="1"
             android:bottomLeftRadius="7dp"

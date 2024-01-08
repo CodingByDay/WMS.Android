@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
@@ -51,7 +50,6 @@
             android:layout_marginRight="2dp"
             android:id="@+id/tbIdent" />
 
-  
     </LinearLayout>
 
     <LinearLayout
@@ -121,7 +119,6 @@
             android:layout_marginRight="2dp"
             android:id="@+id/tbOrder" />
 
-
     </LinearLayout>
 
     <LinearLayout
@@ -177,11 +174,7 @@
             android:layout_marginRight="2dp"
             android:id="@+id/tbDeliveryDeadline" />
 
-
-
     </LinearLayout>
-
-
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -211,7 +204,6 @@
             android:id="@+id/tbQty"/>
 
     </LinearLayout>
-
 
     <TextView
         android:layout_height="0dip"
@@ -261,7 +253,6 @@
                 android:id="@+id/btConfirm"
             />
 
-
         </LinearLayout>
         <LinearLayout
             android:layout_width="fill_parent"
@@ -300,7 +291,6 @@
                 android:drawableLeft="@drawable/logout_white"
                 android:id="@+id/button5"
            />
-
 
         </LinearLayout>
     </LinearLayout>

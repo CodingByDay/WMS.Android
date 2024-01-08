@@ -1,40 +1,22 @@
-﻿using Stream = Android.Media.Stream;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Android.App;
-using Android.Content;
+﻿using Android.Content;
 using Android.Media;
-using Android.Net;
-using Android.OS;
-using Android.Runtime;
 using Android.Text;
-using Android.Text.Util;
 using Android.Views;
-using Android.Widget;
+using AndroidX.AppCompat.App;
 using BarCode2D_Receiver;
-using Java.Util;
-using Java.Util.Concurrent;
 using Microsoft.AppCenter.Crashes;
-using WMS.App;
 using TrendNET.WMS.Core.Data;
 using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
-using static Android.Renderscripts.ScriptGroup;
-using WebApp = TrendNET.WMS.Device.Services.WebApp;
-using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;
-
-using AndroidX.AppCompat.App;
-
-
+using WMS.App;
+using AlertDialog = Android.App.AlertDialog;
+using Stream = Android.Media.Stream;
 
 namespace WMS
 {
     [Activity(Label = "ClientPicking", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
     public class ClientPicking : AppCompatActivity, IBarcodeResult
     {
-
         private NameValueObject moveHead = (NameValueObject)InUseObjects.Get("MoveHead");
         private NameValueObject openOrder = (NameValueObject)InUseObjects.Get("OpenOrder");
         private ClientPickingAdapter adapter;
@@ -45,8 +27,8 @@ namespace WMS
         private EditText tbClient;
         private EditText tbIdentFilter;
         private EditText tbLocationFilter;
-        SoundPool soundPool;
-        int soundPoolId;
+        private SoundPool soundPool;
+        private int soundPoolId;
         private MyOnItemLongClickListener listener;
         private ClientPickingPosition chosen;
         /*
@@ -64,7 +46,7 @@ namespace WMS
         private ClientPickingPosition orderCurrent;
         private object mItem;
 
-        protected async override void OnCreate(Bundle savedInstanceState)
+        protected override async void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             SetTheme(Resource.Style.AppTheme_NoActionBar);
@@ -78,7 +60,7 @@ namespace WMS
             tbClient = FindViewById<EditText>(Resource.Id.tbClient);
             tbIdentFilter = FindViewById<EditText>(Resource.Id.tbIdentFilter);
             tbLocationFilter = FindViewById<EditText>(Resource.Id.tbLocationFilter);
-            btConfirm = FindViewById<Button> (Resource.Id.btConfirm);
+            btConfirm = FindViewById<Button>(Resource.Id.btConfirm);
             btDisplayPositions = FindViewById<Button>(Resource.Id.btDisplayPositions);
             btBack = FindViewById<Button>(Resource.Id.btBack);
             btLogout = FindViewById<Button>(Resource.Id.btLogout);
@@ -141,7 +123,7 @@ namespace WMS
                 });
 
                 return;
-            }          
+            }
         }
 
         private ClientPickingPosition GetAllStockLocations(ClientPickingPosition obj)
@@ -173,7 +155,6 @@ namespace WMS
             return pickingPosition;
         }
 
-
         private bool SaveMoveHead()
         {
             var obj = adapter.returnSelected();
@@ -196,7 +177,7 @@ namespace WMS
                 }
                 InUseObjects.Set("OpenIdent", openIdent);
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 Crashes.TrackError(ex);
                 return false;
@@ -204,11 +185,11 @@ namespace WMS
             if (!moveHead.GetBool("Saved"))
             {
                 try
-                {         
+                {
                     // warehouse
                     moveHead.SetInt("Clerk", Services.UserID());
                     moveHead.SetString("CurrentFlow", CurrentFlow.GetString("CurrentFlow"));
-                    moveHead.SetString("Type", "P");                  
+                    moveHead.SetString("Type", "P");
                     moveHead.SetString("Receiver", moveHead.GetString("Receiver"));
                     moveHead.SetString("LinkKey", orderCurrent.Order);
 
@@ -237,6 +218,7 @@ namespace WMS
                 return true;
             }
         }
+
         private void IvTrail_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
         {
             adapter.setSelected(e.Position);
@@ -251,58 +233,59 @@ namespace WMS
 
         private void SetUpView()
         {
-            if (moveHead != null) {
+            if (moveHead != null)
+            {
                 tbClient.Text = moveHead.GetString("Receiver");
-            } 
+            }
         }
 
         private async Task initializeView()
         {
-            await Task.Run(async () => { 
-            NameValueObjectList oodtw = new NameValueObjectList();
-            if (moveHead != null)
+            await Task.Run(async () =>
             {
-                adapter = new ClientPickingAdapter(this, positions);
-                ivTrail.Adapter = adapter;
-                string sql = $"SELECT * FROM uWMSOrderItemBySubjectTypeWarehouseOut WHERE acDocType = '{moveHead.GetString("DocumentType")}' AND acSubject = '{moveHead.GetString("Receiver")}' AND acWarehouse = '{moveHead.GetString("Wharehouse")}';";
-                result = Services.GetObjectListBySql(sql);
-            }
-            if (moveHead != null && result.Success && result.Rows.Count > 0)
-            {
-                int counter = 0;
-                
-                foreach (var row in result.Rows)
+                NameValueObjectList oodtw = new NameValueObjectList();
+                if (moveHead != null)
                 {
-                    var ident = row.StringValue("acIdent");
-                    var location = row.StringValue("aclocation");
-                    var name = row.StringValue("acName");
-                    var key = row.StringValue("acKey");
-                    var lvi = new ClientPickingPosition();
-                    var no = row.IntValue("anNo");
-
-                    if (no != null)
-                    {
-                        lvi.No = (int) no;
-                        lvi.Order = key;
-                        lvi.Ident = ident;
-                        lvi.Location = location;
-                        lvi.Quantity = string.Format("{0:###,##0.00}", row.DoubleValue("anQty"));
-                        lvi.originalIndex = counter;
-                        counter += 1;
-                        positions.Add(lvi);
-                    }
+                    adapter = new ClientPickingAdapter(this, positions);
+                    ivTrail.Adapter = adapter;
+                    string sql = $"SELECT * FROM uWMSOrderItemBySubjectTypeWarehouseOut WHERE acDocType = '{moveHead.GetString("DocumentType")}' AND acSubject = '{moveHead.GetString("Receiver")}' AND acWarehouse = '{moveHead.GetString("Wharehouse")}';";
+                    result = Services.GetObjectListBySql(sql);
                 }
-                RunOnUiThread(() =>
+                if (moveHead != null && result.Success && result.Rows.Count > 0)
                 {
-                    adapter.NotifyDataSetChanged();
-                    adapter.Filter(positions, true, string.Empty, false);
-                    listener = new MyOnItemLongClickListener(this, adapter.returnData(), adapter);
-                    ivTrail.OnItemLongClickListener = listener;         
-                });
-            } 
-          });
-        }
+                    int counter = 0;
 
+                    foreach (var row in result.Rows)
+                    {
+                        var ident = row.StringValue("acIdent");
+                        var location = row.StringValue("aclocation");
+                        var name = row.StringValue("acName");
+                        var key = row.StringValue("acKey");
+                        var lvi = new ClientPickingPosition();
+                        var no = row.IntValue("anNo");
+
+                        if (no != null)
+                        {
+                            lvi.No = (int)no;
+                            lvi.Order = key;
+                            lvi.Ident = ident;
+                            lvi.Location = location;
+                            lvi.Quantity = string.Format("{0:###,##0.00}", row.DoubleValue("anQty"));
+                            lvi.originalIndex = counter;
+                            counter += 1;
+                            positions.Add(lvi);
+                        }
+                    }
+                    RunOnUiThread(() =>
+                    {
+                        adapter.NotifyDataSetChanged();
+                        adapter.Filter(positions, true, string.Empty, false);
+                        listener = new MyOnItemLongClickListener(this, adapter.returnData(), adapter);
+                        ivTrail.OnItemLongClickListener = listener;
+                    });
+                }
+            });
+        }
 
         private void Sound()
         {
@@ -315,7 +298,8 @@ namespace WMS
             {
                 adapter.Filter(positions, false, tbLocationFilter.Text, false);
                 listener.updateData(adapter.returnData());
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 Crashes.TrackError(ex);
             }
@@ -327,7 +311,8 @@ namespace WMS
             {
                 adapter.Filter(positions, true, tbIdentFilter.Text, true);
                 listener.updateData(adapter.returnData());
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 Crashes.TrackError(ex);
             }
@@ -361,19 +346,17 @@ namespace WMS
             listener.updateData(adapter.returnData());
         }
 
-
-        // Class for handling long click 
+        // Class for handling long click
         public class MyOnItemLongClickListener : Java.Lang.Object, AdapterView.IOnItemLongClickListener
         {
             public Context context_;
             public List<ClientPickingPosition> data_;
             public ClientPickingAdapter adapter_;
 
-
             public void updateData(List<ClientPickingPosition> data)
             {
                 data_ = data;
-            } 
+            }
 
             public MyOnItemLongClickListener(Context context, List<ClientPickingPosition> data, ClientPickingAdapter adapter)
             {

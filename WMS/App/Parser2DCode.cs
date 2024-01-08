@@ -1,16 +1,4 @@
-﻿using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using Aspose.Words;
-using Stream = Android.Media.Stream;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS.App
+﻿namespace WMS.App
 {
     public class Parser2DCode
     {
@@ -27,15 +15,15 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
 
         public string charge { get; set; }
 
-        public string  containerNo { get; set; }
+        public string containerNo { get; set; }
 
         public string ident { get; set; }
 
-        public Parser2DCode(string code) 
+        public Parser2DCode(string code)
         {
             string input = code; // this is your input string
             char[] chars = input.ToCharArray();
-            List<char> buffer  = new List<char>();
+            List<char> buffer = new List<char>();
             bool addBuffer = false;
             foreach (var c in chars)
             {
@@ -43,7 +31,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 if (char.IsControl(c))
                 {
                     byte b = Convert.ToByte(c);
-                    switch(b)
+                    switch (b)
                     {
                         case 29:
                             if (buffer.Count > 0)
@@ -52,19 +40,22 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                                 buffer.Clear();
                             }
                             break;
+
                         case 30:
                             break;
+
                         case 4:
                             if (buffer.Count > 0)
                             {
                                 ProcessBuffer(buffer);
                                 buffer.Clear();
-                            }                
+                            }
                             break;
                     }
-                } else
-                {                 
-                    buffer.Add(c);             
+                }
+                else
+                {
+                    buffer.Add(c);
                 }
             }
         }
@@ -74,8 +65,9 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             Char c1 = buffer[0];
             Char c2 = buffer[1];
 
-            if((c2 == 'K' || c2 == 'T' || c2 == 'Q' || c2 == 'S' || c2 == 'P') && (System.Char.IsDigit(c1))) {
-                char[] chars = {c1, c2 };
+            if ((c2 == 'K' || c2 == 'T' || c2 == 'Q' || c2 == 'S' || c2 == 'P') && (System.Char.IsDigit(c1)))
+            {
+                char[] chars = { c1, c2 };
                 string finalTag = new string(chars);
                 switch (finalTag)
                 {
@@ -83,31 +75,37 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                         // stevilka naklada
                         this.delivery = new string(buffer.ToArray()).Replace(finalTag, string.Empty);
                         break;
+
                     case "4K":
                         // pozicija
                         this.delivery = this.delivery + " / " + new string(buffer.ToArray()).Replace(finalTag, string.Empty);
                         break;
+
                     case "4Q":
                         this.brutoWeight = new string(buffer.ToArray()).Replace(finalTag, string.Empty);
                         break;
+
                     case "5Q":
                         this.netoWeight = new string(buffer.ToArray()).Replace(finalTag, string.Empty);
                         break;
+
                     case "3S":
                         // zaporedna stevilka palete
-                        this.containerNo = string.Empty; 
+                        this.containerNo = string.Empty;
                         break;
+
                     case "1T":
                         // serijska
                         this.charge = new string(buffer.ToArray()).Replace(finalTag, string.Empty);
                         break;
+
                     case "1P":
                         this.ident = new string(buffer.ToArray()).Replace(finalTag, string.Empty);
                         break;
                         // 1P - ident
                 }
-            
-            } else if ((c1 == 'K' || c1 == 'T' || c1 == 'Q' || c1 == 'S' || c1 == 'P'))
+            }
+            else if ((c1 == 'K' || c1 == 'T' || c1 == 'Q' || c1 == 'S' || c1 == 'P'))
             {
                 char[] chars = { c1 };
                 string finalTag = new string(chars);
@@ -116,12 +114,8 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                     case "K":
                         this.clientOrder = new string(buffer.ToArray()).Replace(finalTag, string.Empty);
                         break;
-                 
                 }
             }
-
         }
-
-       
     }
 }

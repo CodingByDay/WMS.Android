@@ -17,8 +17,6 @@
             layout="@layout/toolbar" />
     </LinearLayout>
 
-
-
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -27,8 +25,6 @@
         android:layout_below="@id/text"
         />
 
-
-
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -36,7 +32,7 @@
         android:layout_toRightOf="@id/app"
         android:id="@+id/listData"
         android:listSelector="@android:color/holo_blue_light"
-        android:choiceMode="singleChoice" 
+        android:choiceMode="singleChoice"
         />
 
     <LinearLayout
@@ -91,9 +87,6 @@
             android:layout_width="match_parent"
             android:layout_marginRight="28.0dp"
             android:id="@+id/position" />
-
-
-
 
         <TextView
             android:layout_weight="1"
@@ -156,7 +149,6 @@
             android:layout_marginRight="2dp"
             android:id="@+id/tbWorkOrder" />
 
-
     </LinearLayout>
 
     <LinearLayout
@@ -206,7 +198,7 @@
             android:paddingLeft="4dp"
             android:paddingTop="4dp"
             android:text="Naročnik"
-     
+
            />
 
         <EditText
@@ -247,11 +239,7 @@
             android:layout_marginRight="2dp"
             android:id="@+id/tbIdent" />
 
-
-
     </LinearLayout>
-
-
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -332,7 +320,6 @@
             />
         </LinearLayout>
 
-
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_weight="1"
@@ -371,17 +358,9 @@
                 android:id="@+id/button2"
              />
 
-
         </LinearLayout>
 
     </LinearLayout>
     </LinearLayout>
-
-
-
-
-
-
-
 
 </androidx.percentlayout.widget.PercentRelativeLayout>

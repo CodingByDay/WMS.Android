@@ -1,40 +1,26 @@
-﻿using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using Stream = Android.Media.Stream;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS.App
+﻿namespace WMS.App
 {
     public static class HelpfulMethods
     {
-        private static int count=0;
+        private static int count = 0;
 
         public static bool preventDupUse()
         {
-                var check = count;
-                count += 1;
+            var check = count;
+            count += 1;
 
-                if (count > 1)
-                {
-                
-                    count = 0;
-                    return false;
+            if (count > 1)
+            {
+                count = 0;
+                return false;
+            }
+            else
 
-                } else
-
-                {
-                
+            {
                 return true;
-                }
+            }
         }
-        
-        
+
         public static void releaseLock()
         {
             count = 0;
@@ -42,21 +28,21 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
 
         public static string lastReturn(string input, int noCharacters)
         {
-            if(noCharacters > input.Length)
+            if (noCharacters > input.Length)
             {
                 return input;
-            } else
+            }
+            else
             {
                 string lastReturn;
                 lastReturn = input.Substring(input.Length - noCharacters);
                 return lastReturn;
-            }         
+            }
         }
 
         public static void clearTheStack(Activity activity)
         {
             activity.Finish();
         }
-
     }
 }

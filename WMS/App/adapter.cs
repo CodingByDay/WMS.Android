@@ -1,24 +1,13 @@
-﻿using Stream = Android.Media.Stream;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
+﻿using Android.Content;
 using Android.Views;
-using Android.Widget;
-using Java.Lang;
 using Exception = Java.Lang.Exception;
 
-using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS.App
+namespace WMS.App
 {
-   public class adapter : BaseAdapter
+    public class adapter : BaseAdapter
     {
         public List<Trail> sList;
         private Context sContext;
-
 
         private Trail selected;
 
@@ -31,18 +20,18 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
         public Trail returnSelected()
         {
             return selected;
-        } 
+        }
 
         public void setSelected(Trail selected)
         {
             this.selected = selected;
         }
 
-
         public void setSelected(int position)
         {
             selected = sList[position];
         }
+
         public override int Count
         {
             get
@@ -60,6 +49,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
         {
             return position;
         }
+
         public override View GetView(int position, View convertView, ViewGroup parent)
         {
             View row = convertView;
@@ -72,7 +62,6 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 TextView Ident = row.FindViewById<TextView>(Resource.Id.Ident);
                 Ident.Text = sList[position].Ident;
 
-
                 TextView Location = row.FindViewById<TextView>(Resource.Id.Location);
                 Location.Text = sList[position].Location;
 
@@ -81,34 +70,31 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
 
                 TextView Name = row.FindViewById<TextView>(Resource.Id.Name);
                 Name.Text = sList[position].Name;
-               
             }
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine(ex.Message);
             }
 
-            
             return row;
-
         }
-        
 
         public void Filter(List<Trail> data, bool byIdent, string val, bool restart)
         {
-            if(restart)
+            if (restart)
             {
                 sList = data;
-            }     
+            }
             if (byIdent)
             {
                 string searchFilter = val;
-                if(val.StartsWith("P"))
+                if (val.StartsWith("P"))
                 {
                     searchFilter = val.Substring(1);
                 }
-                sList = data.Where(data => data.Ident.Contains(searchFilter)).ToList(); 
-            } else
+                sList = data.Where(data => data.Ident.Contains(searchFilter)).ToList();
+            }
+            else
             {
                 sList = data.Where(data => data.Location.Contains(val)).ToList();
             }
@@ -128,8 +114,6 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
         public void NotifyDataSetChanged()
         {
             base.NotifyDataSetChanged();
-
         }
     }
-
 }

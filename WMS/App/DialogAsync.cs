@@ -1,14 +1,15 @@
-﻿using Android.App;
-using Android.Content;
-using Stream = Android.Media.Stream;
-using System.Threading.Tasks;
+﻿using Android.Content;
 
 public class DialogAsync : Java.Lang.Object, IDialogInterfaceOnClickListener, IDialogInterfaceOnCancelListener
 {
-    readonly TaskCompletionSource<bool?> taskCompletionSource = new TaskCompletionSource<bool?>();
+    private readonly TaskCompletionSource<bool?> taskCompletionSource = new TaskCompletionSource<bool?>();
 
-    public DialogAsync(IntPtr handle, Android.Runtime.JniHandleOwnership transfer) : base(handle, transfer) { }
-    public DialogAsync() { }
+    public DialogAsync(IntPtr handle, Android.Runtime.JniHandleOwnership transfer) : base(handle, transfer)
+    {
+    }
+
+    public DialogAsync()
+    { }
 
     public void OnClick(IDialogInterface dialog, int which)
     {
@@ -18,26 +19,26 @@ public class DialogAsync : Java.Lang.Object, IDialogInterfaceOnClickListener, ID
                 SetResult(true);
                 dialog.Dismiss();
                 dialog.Cancel();
-                
+
                 break;
+
             default:
                 SetResult(false);
                 break;
-
         }
     }
-  
+
     public void OnCancel(IDialogInterface dialog)
     {
         SetResult(false);
     }
 
-    void SetResult(bool? selection)
+    private void SetResult(bool? selection)
     {
         taskCompletionSource.SetResult(selection);
     }
 
-    public async static Task<bool?> Show(Activity context, string title, string message)
+    public static async Task<bool?> Show(Activity context, string title, string message)
     {
         using (var listener = new DialogAsync())
         using (var dialog = new AlertDialog.Builder(context)

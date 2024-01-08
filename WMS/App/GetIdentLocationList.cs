@@ -1,22 +1,9 @@
-﻿using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using Stream = Android.Media.Stream;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using TrendNET.WMS.Device.Services;
+﻿using TrendNET.WMS.Device.Services;
 
-using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS.App
+namespace WMS.App
 {
-   public static class GetIdentLocationList
+    public static class GetIdentLocationList
     {
-
-
         /// <summary>
         ///   This is a helper method used in tablet classes to get the list of locations for a specific ident in the specified warehouse.
         /// </summary>
@@ -40,11 +27,9 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                     location = x.GetString("Location"),
                     quantity = x.GetDouble("RealStock").ToString(CommonData.GetQtyPicture())
                 });
-               
             });
 
             return result;
-
         }
 
         public static List<LocationClass> fillItemsOfListLocationClass(string warehouse, string ident)
@@ -61,12 +46,9 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                     location = x.GetString("Location"),
                     quantity = x.GetDouble("RealStock").ToString(CommonData.GetQtyPicture())
                 });
-
             });
 
             return result;
-
         }
-
     }
 }

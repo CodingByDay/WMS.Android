@@ -45,7 +45,7 @@
             android:text="Location"
             android:layout_marginRight="28.0dp"
             android:id="@+id/Location" />
-          
+
         <TextView
             android:textStyle="bold"
             android:textSize="16dp"

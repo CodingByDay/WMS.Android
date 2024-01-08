@@ -35,7 +35,6 @@
             android:layout_marginRight="2dp"
             android:id="@+id/tbOrder" />
 
-
     </LinearLayout>
     <LinearLayout
         android:layout_width="fill_parent"
@@ -63,7 +62,6 @@
             android:background="@drawable/editText_bg_grey"
             android:layout_marginRight="2dp"
             android:id="@+id/tbReceiver" />
-
 
     </LinearLayout>
     <LinearLayout
@@ -93,7 +91,6 @@
             android:layout_marginRight="2dp"
             android:id="@+id/tbIdentFilter" />
 
-
     </LinearLayout>
     <LinearLayout
         android:layout_width="fill_parent"
@@ -120,7 +117,6 @@
             android:background="@drawable/editText_bg_grey"
             android:layout_marginRight="2dp"
             android:id="@+id/tbLocationFilter" />
-
 
     </LinearLayout>
     <LinearLayout
@@ -165,7 +161,6 @@
             android:layout_marginRight="28.0dp"
             android:id="@+id/Qty" />
 
-
         <TextView
             android:textStyle="bold"
             android:layout_weight="25"
@@ -178,11 +173,7 @@
             android:layout_marginRight="28.0dp"
             android:id="@+id/Name" />
 
-
-
-
     </LinearLayout>
-
 
     <ListView
         android:background="?android:attr/activatedBackgroundIndicator"
@@ -191,7 +182,7 @@
         android:id="@+id/ivTrail"
         android:layout_height="0dip"
         android:layout_weight="1"
-        android:listSelector="@android:drawable/screen_background_dark_transparent"  
+        android:listSelector="@android:drawable/screen_background_dark_transparent"
         />
 
     <LinearLayout
@@ -237,7 +228,6 @@
                 android:text="Preg. - f4"
                 android:drawableLeft="@drawable/focus_white"
                 android:id="@+id/btDisplayPositions" />
-
 
         </LinearLayout>
 

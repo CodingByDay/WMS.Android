@@ -1,19 +1,10 @@
-﻿using Stream = Android.Media.Stream;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading;
-
-
-namespace TrendNET.WMS.Device.App
+﻿namespace TrendNET.WMS.Device.App
 {
-
     /*
     public class Scanner
     {
         private static Barcode.Barcode barcode = new Barcode.Barcode();
-        
+
         private Control control;
 
         public static void SetEvent(Barcode.Barcode.ScannerReadEventHandler readEvent)
@@ -91,7 +82,7 @@ namespace TrendNET.WMS.Device.App
                     Log.Write(new LogEntry("  disabling scanner end"));
                 }
             }
-            
+
             Log.Write(new LogEntry("DisableScanner end"));
         }
     }

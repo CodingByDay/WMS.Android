@@ -2,6 +2,7 @@
 using Android.Content;
 using Android.OS;
 using WMS;
+
 public class MyServiceConnection : Java.Lang.Object, IServiceConnection
 {
     private IssuedGoodsIdentEntryWithTrail activityIssuedGoods;
@@ -26,7 +27,8 @@ public class MyServiceConnection : Java.Lang.Object, IServiceConnection
             activityIssuedGoods.OnServiceBindingComplete(binder.GetService());
             activityIssuedGoods.binder = binder;
             activityIssuedGoods.isBound = true;
-        } else if (activitySettings != null)
+        }
+        else if (activitySettings != null)
         {
             activitySettings.OnServiceBindingComplete(binder.GetService());
             activitySettings.binder = binder;
@@ -37,6 +39,5 @@ public class MyServiceConnection : Java.Lang.Object, IServiceConnection
     public void OnServiceDisconnected(ComponentName name)
     {
         activityIssuedGoods.isBound = false;
-        
     }
 }

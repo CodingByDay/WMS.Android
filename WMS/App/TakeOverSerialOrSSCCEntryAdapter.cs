@@ -1,28 +1,18 @@
-﻿using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
+﻿using Android.Content;
 using Android.Views;
-using Android.Widget;
-using Stream = Android.Media.Stream;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS.App
+namespace WMS.App
 {
-
-    class TakeOverSerialOrSSCCEntryAdapter : BaseAdapter
+    internal class TakeOverSerialOrSSCCEntryAdapter : BaseAdapter
     {
         public List<TakeOverSerialOrSSCCEntryList> sList;
         private Context sContext;
+
         public TakeOverSerialOrSSCCEntryAdapter(Context context, List<TakeOverSerialOrSSCCEntryList> list)
         {
             sList = list;
             sContext = context;
         }
-
-
 
         public override int Count
         {
@@ -41,6 +31,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
         {
             return position;
         }
+
         public override View GetView(int position, View convertView, ViewGroup parent)
         {
             View row = convertView;
@@ -66,24 +57,16 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 Qty.Text = sList[position].Qty;
                 Qty.SetTextColor(Android.Graphics.Color.Black);
 
-
                 TextView Filled = row.FindViewById<TextView>(Resource.Id.Filled);
                 Filled.Text = sList[position].Filled;
                 Filled.SetTextColor(Android.Graphics.Color.Black);
-
             }
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine(ex.Message);
             }
 
-
             return row;
-
         }
-
-
-
-
     }
 }

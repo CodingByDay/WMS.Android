@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
@@ -51,7 +50,6 @@
             android:background="@drawable/editText_bg_grey"
             android:layout_marginRight="2dp"
             android:id="@+id/tbBusEvent" />
-
 
     </LinearLayout>
 
@@ -112,7 +110,6 @@
             android:layout_marginRight="2dp"
             android:id="@+id/tbClient" />
 
-
     </LinearLayout>
 
     <LinearLayout
@@ -169,11 +166,7 @@
             android:layout_marginRight="2dp"
             android:id="@+id/tbCreatedBy" />
 
-
-
     </LinearLayout>
-
-
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -210,7 +203,6 @@
         android:paddingLeft="10dp"
         android:paddingTop="5dp"
         android:layout_marginRight="21.0dp" />
-
 
     <TextView
         android:layout_height="0dip"
@@ -262,9 +254,7 @@
                 android:id="@+id/btFinish"
             />
 
-
         </LinearLayout>
-
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -302,7 +292,6 @@
                 android:drawableLeft="@drawable/newitem_white"
                 android:id="@+id/btNew"
             />
-
 
         </LinearLayout>
         <Button

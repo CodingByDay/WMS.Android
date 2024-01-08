@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
@@ -52,7 +51,6 @@
             android:layout_marginRight="2dp"
             android:id="@+id/tbWorkOrder" />
 
-
     </LinearLayout>
 
     <LinearLayout
@@ -102,7 +100,7 @@
             android:paddingLeft="4dp"
             android:paddingTop="4dp"
             android:text="Naročnik"
-     
+
            />
 
         <EditText
@@ -143,11 +141,7 @@
             android:layout_marginRight="2dp"
             android:id="@+id/tbIdent" />
 
-
-
     </LinearLayout>
-
-
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -228,7 +222,6 @@
             />
         </LinearLayout>
 
-
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_weight="1"
@@ -266,7 +259,6 @@
                 android:drawableLeft="@drawable/logout_white"
                 android:id="@+id/button2"
              />
-
 
         </LinearLayout>
 

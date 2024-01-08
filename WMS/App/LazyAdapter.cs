@@ -1,7 +1,5 @@
 ﻿using Android.Content;
 using Android.Views;
-using Android.Widget;
-using System.Collections.Generic;
 
 public class LazyAdapter : BaseAdapter<string>
 {

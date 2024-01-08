@@ -17,10 +17,6 @@
             layout="@layout/toolbar" />
     </LinearLayout>
 
-
-
-
-
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -28,11 +24,8 @@
         android:layout_toRightOf="@id/app"
         android:id="@+id/listData"
         android:listSelector="@android:color/holo_blue_light"
-        android:choiceMode="singleChoice" 
+        android:choiceMode="singleChoice"
         />
-
-
-
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -68,9 +61,6 @@
             android:layout_marginRight="28.0dp"
             android:id="@+id/name" />
 
-
-
-
         <TextView
             android:textSize="18dp"
             android:layout_weight="1"
@@ -83,7 +73,6 @@
             android:layout_marginRight="28.0dp"
             android:id="@+id/ordered" />
 
-
         <TextView
             android:textSize="18dp"
             android:layout_weight="1"
@@ -95,7 +84,6 @@
             android:text="Naročeno"
             android:layout_marginRight="28.0dp"
             android:id="@+id/received" />
-
 
         <TextView
             android:textSize="18dp"
@@ -137,7 +125,6 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:paddingTop="5dp">
-
 
             <TextView
                 android:singleLine="true"
@@ -246,7 +233,6 @@
                 android:textSize="18dp"
                 android:id="@+id/tbOrder" />
 
-
         </LinearLayout>
 
         <LinearLayout
@@ -305,11 +291,7 @@
                 android:textSize="18dp"
                 android:id="@+id/tbDeliveryDeadline" />
 
-
-
         </LinearLayout>
-
-
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -378,7 +360,6 @@
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp" />
 
-
         </LinearLayout>
         <LinearLayout
             android:layout_width="fill_parent"
@@ -417,21 +398,9 @@
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"/>
 
-
         </LinearLayout>
 
-
-
-
-
-
-
-
-
-
     </LinearLayout>
-
-
 
     <TextView
         android:layout_width="match_parent"
@@ -440,11 +409,5 @@
         android:layout_toRightOf="@id/app"
         android:layout_below="@id/text"
         />
-
-
-
-
-
-
 
 </androidx.percentlayout.widget.PercentRelativeLayout>

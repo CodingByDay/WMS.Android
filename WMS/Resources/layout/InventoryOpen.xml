@@ -14,25 +14,25 @@
         android:layout_width="fill_parent"
 
         android:orientation="horizontal"
-        android:layout_height="30dp" 
+        android:layout_height="30dp"
         android:paddingTop="5dp"
         android:gravity="bottom">
 
         <TextView
-            android:textStyle="bold"              
+            android:textStyle="bold"
             android:layout_width="0dp"
             android:id="@+id/warehouseLabel"
-            android:layout_height="match_parent" 
+            android:layout_height="match_parent"
             android:paddingLeft="4dp"
             android:paddingTop="5dp"
             android:text="Skladišče"
-            android:layout_weight="5" /> 
+            android:layout_weight="5" />
 
         <Spinner
             android:layout_width="0dp"
-            android:layout_height="match_parent" 
+            android:layout_height="match_parent"
             android:id="@+id/cbWarehouse"
-            android:layout_weight="1" /> 
+            android:layout_weight="1" />
 
     </LinearLayout>
 
@@ -74,7 +74,6 @@
             android:textColor="@color/white"
             android:layout_marginLeft="4dp"/>
 
-
     </LinearLayout>
     <LinearLayout
         android:layout_width="fill_parent"
@@ -98,7 +97,6 @@
             android:paddingTop="5dp"
             android:id="@+id/tbItems"
             android:background="@drawable/editText_bg_grey"/>
-
 
     </LinearLayout>
     <LinearLayout
@@ -124,7 +122,6 @@
             android:id="@+id/tbConfirmedBy"
             android:background="@drawable/editText_bg_grey"/>
 
-
     </LinearLayout>
     <LinearLayout
         android:layout_width="fill_parent"
@@ -149,7 +146,6 @@
             android:paddingTop="5dp"
             android:id="@+id/tbConfirmationDate"
             android:background="@drawable/editText_bg_grey"/>
-
 
     </LinearLayout>
     <TextView
@@ -187,7 +183,7 @@
                 android:background="@color/rikoMain"
                 android:textColor="@color/white"
                 android:layout_marginLeft="4dp"
-                android:layout_marginRight="2dp"   
+                android:layout_marginRight="2dp"
                 />
 
             <Button
@@ -203,7 +199,6 @@
                 android:textColor="@color/white"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"/>
-
 
         </LinearLayout>
     </LinearLayout>

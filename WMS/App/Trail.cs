@@ -1,43 +1,26 @@
-﻿using Stream = Android.Media.Stream;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Runtime.Serialization;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using Java.IO;
+﻿using System.Runtime.Serialization;
 using System.Text.Json;
 
-using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS.App
+namespace WMS.App
 {
     [Serializable]
-    public class Trail: Java.Lang.Object, Java.IO.ISerializable
+    public class Trail : Java.Lang.Object, Java.IO.ISerializable
     {
         public string Ident { get; set; }
 
         public string Location { get; set; }
 
-        public string Qty{ get; set; }
+        public string Qty { get; set; }
 
         public string Name { get; set; }
 
-
         public string Key { get; set; }
-
 
         public int No { get; set; }
 
         public int originalIndex { get; set; }
 
-
-        public  Dictionary<string, double> locationQty { get; set; } = new Dictionary<string, double>();
+        public Dictionary<string, double> locationQty { get; set; } = new Dictionary<string, double>();
 
         // Constructor for deserialization
         public Trail(SerializationInfo info, StreamingContext context)
@@ -78,6 +61,5 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
         {
             return JsonSerializer.Deserialize<T>(data);
         }
-
     }
 }

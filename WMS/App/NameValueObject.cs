@@ -1,12 +1,10 @@
-﻿using Stream = Android.Media.Stream;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
+﻿using System.Reflection;
 
-namespace TrendNET.WMS.Core.Data {
+namespace TrendNET.WMS.Core.Data
+{
     [Serializable]
-    public class NameValueObject {
+    public class NameValueObject
+    {
         public string ObjectName { get; set; }
         public NameValueList Properties { get; set; }
 
@@ -69,7 +67,7 @@ namespace TrendNET.WMS.Core.Data {
             var obj = Properties.Items.FirstOrDefault(x => x.Name == property);
             if (obj != null)
             {
-                obj.StringValue = value == null ? "" : value.Trim ();
+                obj.StringValue = value == null ? "" : value.Trim();
             }
             else
             {

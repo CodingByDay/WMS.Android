@@ -1,22 +1,14 @@
-﻿using Android.App;
-using Android.Content;
+﻿using Android.Content;
 using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using WMS.App;
-using Stream = Android.Media.Stream;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Timers;
+using WMS.App;
 using Timer = System.Timers.Timer;
-using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS.Background
+
+namespace WMS.Background
 {
     [Service]
     public class Inactivity : Service
     {
-
         private static Timer timer = new Timer();
 
         public override IBinder OnBind(Intent intent)
@@ -38,9 +30,6 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
         private void Timer1_Elapsed(object sender, ElapsedEventArgs e)
         {
             settings.restart = true;
-
-
-
         }
     }
 }

@@ -6,7 +6,7 @@ xmlns:app="http://schemas.android.com/apk/res-auto">
 	android:id="@+id/action_setting1"
 	android:title="Nastavitve"
 	showAsAction="always"
-    
+
 	/>
-	
+
 </menu>

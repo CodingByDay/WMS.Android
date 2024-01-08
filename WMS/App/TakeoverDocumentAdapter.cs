@@ -1,18 +1,9 @@
-﻿using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
+﻿using Android.Content;
 using Android.Views;
-using Android.Widget;
-using Stream = Android.Media.Stream;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS.App
+namespace WMS.App
 {
-
-    class TakeoverDocumentAdapter : BaseAdapter
+    internal class TakeoverDocumentAdapter : BaseAdapter
     {
         public List<TakeoverDocument> sList;
         private Context sContext;
@@ -24,8 +15,6 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             sList = list;
             sContext = context;
         }
-
-
 
         public override int Count
         {
@@ -44,6 +33,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
         {
             return position;
         }
+
         public override View GetView(int position, View convertView, ViewGroup parent)
         {
             View row = convertView;
@@ -66,31 +56,23 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 TextView serial = row.FindViewById<TextView>(Resource.Id.serial);
                 friendlySerial = HelpfulMethods.lastReturn(sList[position].serial, 5);
 
-                serial.Text = friendlySerial;;
+                serial.Text = friendlySerial; ;
                 serial.SetTextColor(Android.Graphics.Color.Black);
 
                 TextView Qty = row.FindViewById<TextView>(Resource.Id.quantity);
                 Qty.Text = sList[position].quantity;
                 Qty.SetTextColor(Android.Graphics.Color.Black);
 
-
                 TextView Location = row.FindViewById<TextView>(Resource.Id.location);
                 Location.Text = sList[position].location;
                 Location.SetTextColor(Android.Graphics.Color.Black);
-
             }
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine(ex.Message);
             }
 
-
             return row;
-
         }
-
-
-
-
     }
 }

@@ -17,8 +17,6 @@
             layout="@layout/toolbar" />
     </LinearLayout>
 
-
-
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -27,15 +25,13 @@
         android:layout_below="@id/text"
         />
 
-
-
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/test"
         android:layout_toRightOf="@id/app"
         android:id="@+id/listView1"
-        
+
         />
 
     <LinearLayout
@@ -47,8 +43,6 @@
         android:weightSum="6"
         android:id="@+id/text"
         android:paddingTop="5dp">
-
-
 
     </LinearLayout>
     <LinearLayout
@@ -99,7 +93,6 @@
                 android:layout_marginRight="2dp"
                 android:textSize="18dp"
                 android:id="@+id/tbWarehouse" />
-
 
         </LinearLayout>
 
@@ -162,7 +155,6 @@
                 android:textSize="18dp"
                 android:id="@+id/tbDate" />
 
-
         </LinearLayout>
 
         <LinearLayout
@@ -223,11 +215,7 @@
                 android:textSize="18dp"
                 android:id="@+id/tbCreatedBy" />
 
-
-
         </LinearLayout>
-
-
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -258,7 +246,7 @@
                 android:id="@+id/tbCreatedAt" />
 
         </LinearLayout>
-   
+
         <TextView
             android:layout_height="0dip"
             android:layout_width="fill_parent"
@@ -308,7 +296,6 @@
                 android:layout_marginRight="2dp"
                 android:id="@+id/target" />
 
-
         </LinearLayout>
         <Button
             android:text="Izhod "
@@ -325,10 +312,6 @@
             android:layout_marginTop="4dp"
             android:layout_marginBottom="4dp"
             />
-
-
-
-
 
     </LinearLayout>
 </androidx.percentlayout.widget.PercentRelativeLayout>

@@ -1,7 +1,4 @@
-﻿using Stream = Android.Media.Stream;
-using System.Collections.Generic;
-using System.Runtime.Serialization;
-using Android.Widget;
+﻿using System.Runtime.Serialization;
 
 namespace TrendNET.WMS.Device.App
 {
@@ -11,7 +8,8 @@ namespace TrendNET.WMS.Device.App
         public string ID { get; set; }
         public string Text { get; set; }
 
-        public ComboBoxItem() { }
+        public ComboBoxItem()
+        { }
 
         protected ComboBoxItem(SerializationInfo info, StreamingContext context)
         {
@@ -56,9 +54,6 @@ namespace TrendNET.WMS.Device.App
             }
         }
 
-
-
-
         public static void SelectAutocomplete(CustomAutoCompleteTextView important, List<ComboBoxItem> obj, string id)
         {
             for (int i = 0; i < obj.Count; i++)
@@ -69,8 +64,5 @@ namespace TrendNET.WMS.Device.App
                 }
             }
         }
-
-
-
     }
 }

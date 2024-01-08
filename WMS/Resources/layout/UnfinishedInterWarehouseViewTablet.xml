@@ -19,9 +19,6 @@
            />
     </LinearLayout>
 
-
-
-
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -29,10 +26,8 @@
         android:layout_toRightOf="@id/app"
         android:layout_below="@id/text"
         android:text=""
-       
+
         />
-
-
 
     <ListView
         android:layout_width="match_parent"
@@ -43,7 +38,7 @@
         android:choiceMode="singleChoice"
         android:listSelector="@android:color/holo_blue_light"
         android:paddingLeft="10dp"
-        
+
         />
 
     <LinearLayout
@@ -91,7 +86,6 @@
             android:text="Datum"
             android:layout_marginRight="28.0dp"
             android:id="@+id/date" />
-
 
         <TextView
             android:textSize="16dp"
@@ -154,7 +148,6 @@
                 android:layout_marginRight="2dp"
                 android:id="@+id/tbBusEvent" />
 
-
         </LinearLayout>
 
         <LinearLayout
@@ -214,7 +207,6 @@
                 android:layout_marginRight="2dp"
                 android:id="@+id/tbReceiveWarehouse" />
 
-
         </LinearLayout>
 
         <LinearLayout
@@ -273,11 +265,7 @@
                 android:layout_marginRight="2dp"
                 android:id="@+id/tbCreatedBy" />
 
-
-
         </LinearLayout>
-
-
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -353,9 +341,7 @@
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp" />
 
-
         </LinearLayout>
-
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -393,7 +379,6 @@
                 android:layout_marginRight="2dp"
                 />
 
-
         </LinearLayout>
         <Button
             android:background="@color/rikoMain"
@@ -411,16 +396,6 @@
             android:layout_marginBottom="4dp"
             />
 
-
-
     </LinearLayout>
-
-
-
-
-
-
-
-
 
 </androidx.percentlayout.widget.PercentRelativeLayout>

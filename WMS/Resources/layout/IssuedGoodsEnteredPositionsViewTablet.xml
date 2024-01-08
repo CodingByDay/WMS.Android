@@ -17,9 +17,6 @@
             layout="@layout/toolbar" />
     </LinearLayout>
 
-
-
-
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -28,8 +25,6 @@
         android:layout_below="@id/text"
         />
 
-
-
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -37,7 +32,7 @@
         android:layout_toRightOf="@id/app"
         android:id="@+id/listData"
         android:choiceMode="singleChoice"
-        android:listSelector="@android:color/holo_blue_light" 
+        android:listSelector="@android:color/holo_blue_light"
         />
 
     <LinearLayout
@@ -101,7 +96,6 @@
             android:layout_marginRight="28.0dp"
             android:id="@+id/position" />
 
-
         <TextView
             android:textSize="18dp"
             android:singleLine="true"
@@ -114,8 +108,6 @@
             android:text="Serijska"
             android:layout_marginRight="28.0dp"
             android:id="@+id/serial" />
-
-
 
         <TextView
             android:textSize="18dp"
@@ -187,7 +179,6 @@
                 android:textSize="18dp"
                 android:id="@+id/tbIdent" />
 
-
         </LinearLayout>
 
         <LinearLayout
@@ -249,7 +240,6 @@
                 android:textSize="18dp"
                 android:id="@+id/tbSerialNumber" />
 
-
         </LinearLayout>
 
         <LinearLayout
@@ -310,11 +300,7 @@
                 android:textSize="18dp"
                 android:id="@+id/tbLocation" />
 
-
-
         </LinearLayout>
-
-
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -390,12 +376,7 @@
                 android:layout_marginRight="2dp"
                 android:id="@+id/btUpdate" />
 
-
         </LinearLayout>
-
-
-
-
 
         <LinearLayout
             android:weightSum="2"
@@ -433,9 +414,7 @@
                 android:layout_marginRight="2dp"
                 android:id="@+id/btFinish" />
 
-
         </LinearLayout>
-
 
         <LinearLayout
             android:weightSum="2"
@@ -474,17 +453,8 @@
                 android:drawableLeft="@drawable/logout_white"
                 android:id="@+id/btLogout" />
 
-
         </LinearLayout>
 
     </LinearLayout>
-
-
-
-
-
-
-
-
 
 </androidx.percentlayout.widget.PercentRelativeLayout>

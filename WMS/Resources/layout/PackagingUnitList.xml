@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
@@ -14,8 +13,6 @@
         android:id="@+id/toolbar"
         layout="@layout/toolbar" />
 
-
-
     <TextView
         android:textStyle="bold"
         android:layout_width="wrap_content"
@@ -26,7 +23,7 @@
         android:text="Vnesene pozicije na pakiranju:"
         android:id="@+id/lbInfo"
         android:textColor="@color/rikoMain"
- 
+
         android:layout_marginBottom="0dp"/>
     <LinearLayout
         android:layout_width="fill_parent"
@@ -52,7 +49,6 @@
             android:background="@drawable/editText_bg_grey"
             android:layout_marginRight="2dp"
             android:id="@+id/tbIdent" />
-
 
     </LinearLayout>
 
@@ -111,7 +107,6 @@
             android:layout_marginRight="2dp"
             android:id="@+id/tbSerialNo" />
 
-
     </LinearLayout>
 
     <LinearLayout
@@ -168,11 +163,7 @@
             android:layout_marginRight="2dp"
             android:id="@+id/tbLocation" />
 
-
-
     </LinearLayout>
-
-
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -207,7 +198,6 @@
         android:layout_height="1.5dp"
         android:paddingLeft="10dp"
         android:paddingTop="5dp"/>
-
 
     <TextView
         android:layout_height="0dip"
@@ -255,12 +245,7 @@
                 android:drawableLeft="@drawable/fix_white"
                 android:id="@+id/btUpdate" />
 
-
         </LinearLayout>
-
-
-
-
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -300,9 +285,7 @@
                 android:drawableLeft="@drawable/newitem_white"
                 android:id="@+id/btCreate" />
 
-
         </LinearLayout>
-
 
         <Button
             android:layout_weight="1"
@@ -319,12 +302,6 @@
             android:drawableLeft="@drawable/logout_white"
             android:id="@+id/btExit" />
 
-
-
-
-
     </LinearLayout>
-
-
 
 </LinearLayout>

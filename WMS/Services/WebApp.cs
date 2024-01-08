@@ -1,27 +1,20 @@
-﻿using System.IO;
-using System.Linq;
-using System.Net;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading;
- 
-
-using TrendNET.WMS.Device.App;
+﻿using Microsoft.AppCenter.Analytics;
 using Microsoft.AppCenter.Crashes;
-using Microsoft.AppCenter.Analytics;
-using Android.Net;
+using System.Net;
+using System.Text;
+using TrendNET.WMS.Device.App;
 using WMS.App;
 
 namespace TrendNET.WMS.Device.Services
 {
-    public class WebApp 
+    public class WebApp
     {
         private const int x16kb = 16 * 1024;
         public static string rootURL = settings.RootURL;
         public static string device = settings.ID;
         private static DateTime skipPingsUntil = DateTime.MinValue;
         private static object pingLock = new object();
-        
+
         public static void WaitForPing()
         {
             lock (pingLock)
@@ -56,19 +49,15 @@ namespace TrendNET.WMS.Device.Services
                         }
                         else
                         {
-                       
-                            {                                                    
+                            {
                             }
                         }
-                    }                                  
+                    }
                     throw new ApplicationException("Dlančnik ima težave z vzpostavitvijo povezave do strežnika (" + settings.RootURL + ")! Napaka: " + result);
                 }
                 catch (Exception err)
                 {
-
                     throw new ApplicationException("Dlančnik ima težave z vzpostavitvijo povezave do strežnika (" + settings.RootURL + ")! Napaka: " + err.Message);
-
-
                 }
             }
         }
@@ -91,19 +80,17 @@ namespace TrendNET.WMS.Device.Services
             t.IsBackground = true;
             t.Start();
             var cnt = timeout / 1500 + 5;
-      
-  
-                while (--cnt > 0 && !t.Join(1500))
-                {
-                }
-                if (cnt <= 0)
-                {
-                    threadResult = "Timeout/Aborted!";
-                    success = false;
-                    t.Abort();
-                }
-            
-            
+
+            while (--cnt > 0 && !t.Join(1500))
+            {
+            }
+            if (cnt <= 0)
+            {
+                threadResult = "Timeout/Aborted!";
+                success = false;
+                t.Abort();
+            }
+
             result = threadResult;
             return success;
         }
@@ -153,9 +140,8 @@ namespace TrendNET.WMS.Device.Services
             }
             catch (Exception ex)
             {
-               
                 result = ex.Message;
-                Crashes.TrackError(ex); 
+                Crashes.TrackError(ex);
                 return false;
             }
         }
@@ -165,9 +151,8 @@ namespace TrendNET.WMS.Device.Services
             try
             {
                 result = "";
-              
-            
-                var url = RandomizeURL (settings.RootURL + "/Services/Device/?" + rqURL + "&device=" + device);
+
+                var url = RandomizeURL(settings.RootURL + "/Services/Device/?" + rqURL + "&device=" + device);
                 var startedAt = DateTime.Now;
                 try
                 {
@@ -207,15 +192,10 @@ namespace TrendNET.WMS.Device.Services
             }
             catch (Exception ex)
             {
-              
-                result = ex.Message;      
+                result = ex.Message;
                 return false;
-
             }
         }
-
-
-     
 
         public static bool Get(string rqURL, out string result)
         {
@@ -224,21 +204,19 @@ namespace TrendNET.WMS.Device.Services
 
         public static bool Get(string rqURL, out string result, int timeout)
         {
-
             bool success = false;
             string threadResult = null;
-            var t = new Thread (new ThreadStart (() => {
-                success = GetX (rqURL, out threadResult, timeout);
+            var t = new Thread(new ThreadStart(() =>
+            {
+                success = GetX(rqURL, out threadResult, timeout);
             }));
             t.IsBackground = true;
             t.Start();
 
-  
-                while (!t.Join(1500))
-                {
+            while (!t.Join(1500))
+            {
+            }
 
-                }
-        
             result = threadResult;
             return success;
         }
@@ -276,7 +254,8 @@ namespace TrendNET.WMS.Device.Services
                             }
                         }
                     }
-                } catch
+                }
+                catch
                 {
                     Analytics.TrackEvent("END REQUEST: [Device/Get] '" + url + "';" + (DateTime.Now - startedAt).TotalMilliseconds.ToString());
                     return false;
@@ -296,11 +275,12 @@ namespace TrendNET.WMS.Device.Services
             }
         }
 
-        private static bool Ping (int waitSec, out string result) {
+        private static bool Ping(int waitSec, out string result)
+        {
             try
             {
-                result = "";                         
-                var url = RandomizeURL (settings.RootURL + "/Services/Device/?mode=ping&device=" + device);
+                result = "";
+                var url = RandomizeURL(settings.RootURL + "/Services/Device/?mode=ping&device=" + device);
                 var startedAt = DateTime.Now;
                 try
                 {
@@ -331,12 +311,10 @@ namespace TrendNET.WMS.Device.Services
                 finally
                 {
                     Log.Write(new LogEntry("END REQUEST: [Device/Ping] '" + url + "';" + (DateTime.Now - startedAt).TotalMilliseconds.ToString()));
-                    
                 }
             }
             catch (Exception ex)
             {
-            
                 result = ex.Message;
                 Crashes.TrackError(ex);
                 return false;
@@ -356,12 +334,10 @@ namespace TrendNET.WMS.Device.Services
             t.IsBackground = true;
             t.Start();
 
-      
-                while (!t.Join(1500))
-                {
-          
-                }
-           
+            while (!t.Join(1500))
+            {
+            }
+
             result = threadResult;
             return success;
         }
@@ -370,7 +346,7 @@ namespace TrendNET.WMS.Device.Services
         {
             try
             {
-                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(RandomizeURL (url));
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(RandomizeURL(url));
                 request.Method = "GET";
                 request.Timeout = 300000;
                 using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
@@ -399,7 +375,6 @@ namespace TrendNET.WMS.Device.Services
             }
             catch (Exception ex)
             {
-               
                 result = ex.Message;
                 Crashes.TrackError(ex);
                 return false;
@@ -420,7 +395,7 @@ namespace TrendNET.WMS.Device.Services
 
         private static string TimeStamp()
         {
-            return Environment.TickCount.ToString ();
+            return Environment.TickCount.ToString();
         }
     }
 }

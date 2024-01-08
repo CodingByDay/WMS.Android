@@ -1,27 +1,18 @@
-﻿using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
+﻿using Android.Content;
 using Android.Views;
-using Android.Widget;
-using Stream = Android.Media.Stream;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS.App
+namespace WMS.App
 {
-    class UnfinishedTakeoverAdapter : BaseAdapter
+    internal class UnfinishedTakeoverAdapter : BaseAdapter
     {
         public List<UnfinishedTakeoverList> sList;
         private Context sContext;
+
         public UnfinishedTakeoverAdapter(Context context, List<UnfinishedTakeoverList> list)
         {
             sList = list;
             sContext = context;
         }
-
-
 
         public override int Count
         {
@@ -40,6 +31,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
         {
             return position;
         }
+
         public override View GetView(int position, View convertView, ViewGroup parent)
         {
             View row = convertView;
@@ -49,7 +41,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 {
                     row = LayoutInflater.From(sContext).Inflate(Resource.Layout.UnfinishedTakeover, null, false);
                 }
-               
+
                 TextView Document = row.FindViewById<TextView>(Resource.Id.Document);
                 Document.Text = sList[position].Document;
                 Document.SetTextColor(Android.Graphics.Color.Black);
@@ -64,21 +56,13 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 TextView NumberOfPositions = row.FindViewById<TextView>(Resource.Id.NumberOfPositions);
                 NumberOfPositions.Text = sList[position].NumberOfPositions;
                 NumberOfPositions.SetTextColor(Android.Graphics.Color.Black);
-
-
             }
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine(ex.Message);
             }
 
-
             return row;
-
         }
-       
-
-   
-
     }
 }

@@ -1,18 +1,6 @@
-﻿using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
+﻿using Android.Views;
+using AndroidX.AppCompat.App;
 using WMS.App;
-using Stream = Android.Media.Stream;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using AndroidX.AppCompat.App;
-using AlertDialog = Android.App.AlertDialog;
-
-using AndroidX.AppCompat.App;
 
 namespace WMS
 {
@@ -21,6 +9,7 @@ namespace WMS
     {
         private Button production;
         private Button rapid;
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -49,27 +38,27 @@ namespace WMS
             StartActivity(typeof(UnfinishedTakeoversView));
             HelpfulMethods.clearTheStack(this);
         }
+
         public override void OnBackPressed()
         {
-
             HelpfulMethods.releaseLock();
 
             base.OnBackPressed();
         }
+
         public override bool OnKeyDown(Keycode keyCode, KeyEvent e)
         {
             switch (keyCode)
             {
-                // In smartphone.  
+                // In smartphone.
                 case Keycode.F2:
-                    Production_Click(this, null);                    
+                    Production_Click(this, null);
                     break;
                 // Return true;
 
                 case Keycode.F3:
                     Rapid_Click(this, null);
                     break;
-
             }
             return base.OnKeyDown(keyCode, e);
         }

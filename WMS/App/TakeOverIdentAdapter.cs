@@ -1,27 +1,18 @@
-﻿using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
+﻿using Android.Content;
 using Android.Views;
-using Android.Widget;
-using Stream = Android.Media.Stream;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS.App
+namespace WMS.App
 {
-    class TakeOverIdentAdapter : BaseAdapter
+    internal class TakeOverIdentAdapter : BaseAdapter
     {
         public List<TakeOverIdentList> sList;
         private Context sContext;
+
         public TakeOverIdentAdapter(Context context, List<TakeOverIdentList> list)
         {
             sList = list;
             sContext = context;
         }
-
-
 
         public override int Count
         {
@@ -40,6 +31,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
         {
             return position;
         }
+
         public override View GetView(int position, View convertView, ViewGroup parent)
         {
             View row = convertView;
@@ -66,21 +58,13 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 TextView Received = row.FindViewById<TextView>(Resource.Id.Received);
                 Received.Text = sList[position].Received;
                 Received.SetTextColor(Android.Graphics.Color.Black);
-
-
             }
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine(ex.Message);
             }
 
-
             return row;
-
         }
-
-
-    
-
     }
 }

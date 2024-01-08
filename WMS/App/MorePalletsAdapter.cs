@@ -1,28 +1,18 @@
-﻿using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
+﻿using Android.Content;
 using Android.Views;
-using Android.Widget;
-using Stream = Android.Media.Stream;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS.App
+namespace WMS.App
 {
-
-    class MorePalletsAdapter : BaseAdapter
+    internal class MorePalletsAdapter : BaseAdapter
     {
         public List<MorePallets> sList;
         private Context sContext;
+
         public MorePalletsAdapter(Context context, List<MorePallets> list)
         {
             sList = list;
             sContext = context;
         }
-
-
 
         public override int Count
         {
@@ -37,19 +27,16 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             return null;
         }
 
-
-
-
-        public MorePallets retunObjectAt(int index) 
+        public MorePallets retunObjectAt(int index)
         {
             return sList[index];
         }
-
 
         public override long GetItemId(int position)
         {
             return position;
         }
+
         public override View GetView(int position, View convertView, ViewGroup parent)
         {
             View row = convertView;
@@ -71,28 +58,17 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 Name.SetTextColor(Android.Graphics.Color.Black);
                 TextView Quantity = row.FindViewById<TextView>(Resource.Id.quantity);
                 Quantity.Text = sList[position].Quantity;
-                Quantity.SetTextColor(Android.Graphics.Color.Black);         
+                Quantity.SetTextColor(Android.Graphics.Color.Black);
                 TextView Serial = row.FindViewById<TextView>(Resource.Id.serial);
                 //Serial.Text = sList[position].Serial;
                 //Serial.SetTextColor(Android.Graphics.Color.Black);
-               
-
-
-
-
             }
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine(ex.Message);
             }
 
-
             return row;
-
         }
-
-
-      
-
     }
 }

@@ -17,8 +17,6 @@
             layout="@layout/toolbar" />
     </LinearLayout>
 
-
-
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -26,8 +24,6 @@
         android:layout_toRightOf="@id/app"
         android:layout_below="@id/text"
         />
-
-
 
     <ListView
         android:layout_width="match_parent"
@@ -94,7 +90,6 @@
             android:layout_marginRight="28.0dp"
             android:id="@+id/position" />
 
-
         <TextView
             android:textSize="18dp"
             android:textStyle="bold"
@@ -106,10 +101,6 @@
             android:text="Odprto"
             android:layout_marginRight="28.0dp"
             android:id="@+id/serial" />
-
-
-
-
 
     </LinearLayout>
     <LinearLayout
@@ -166,8 +157,6 @@
                     android:textSize="18dp"
                     android:id="@+id/tbIdent" />
 
-
-                
             </LinearLayout>
 
         </LinearLayout>
@@ -240,7 +229,6 @@
                 android:textSize="18dp"
                 android:id="@+id/tbOrder" />
 
-
         </LinearLayout>
 
         <LinearLayout
@@ -301,8 +289,6 @@
                 android:id="@+id/tbDeliveryDeadline" />
         </LinearLayout>
 
-
-
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -331,7 +317,6 @@
                 android:id="@+id/tbQty" />
 
         </LinearLayout>
-
 
         <TextView
             android:textSize="18dp"
@@ -379,7 +364,6 @@
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp" />
 
-
         </LinearLayout>
         <LinearLayout
             android:weightSum="2"
@@ -418,16 +402,7 @@
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp" />
 
-
         </LinearLayout>
     </LinearLayout>
-
-
-
-
-
-
-
-
 
 </androidx.percentlayout.widget.PercentRelativeLayout>

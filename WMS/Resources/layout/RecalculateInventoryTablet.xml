@@ -9,7 +9,6 @@
         android:id="@+id/toolbar"
         layout="@layout/toolbar" />
 
-
     <TextView
         android:textStyle="bold"
         android:layout_width="wrap_content"

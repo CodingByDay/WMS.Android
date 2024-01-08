@@ -99,7 +99,6 @@
                 android:id="@+id/btnOrderMode"
           />
 
-
         </LinearLayout>
         <Button
             android:layout_weight="1"
@@ -116,7 +115,7 @@
             android:text="izhod - f8"
             android:id="@+id/btnLogout"
             android:drawableLeft="@drawable/logout_white"
-   
+
         />
     </LinearLayout>
 

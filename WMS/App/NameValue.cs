@@ -1,11 +1,8 @@
-﻿using Stream = Android.Media.Stream;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace TrendNET.WMS.Core.Data {
+﻿namespace TrendNET.WMS.Core.Data
+{
     [Serializable]
-    public class NameValue {
+    public class NameValue
+    {
         public string Name { get; set; }
         public string StringValue { get; set; }
         public int? IntValue { get; set; }

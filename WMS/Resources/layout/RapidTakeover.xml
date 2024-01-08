@@ -6,8 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
-
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -22,13 +20,13 @@
         android:orientation="horizontal"
 
         android:layout_toRightOf="@id/app"
-      
+
         android:weightSum="5"
         android:id="@+id/text"
         android:paddingTop="5dp">
 
         <TextView
-            android:textSize="16dp" 
+            android:textSize="16dp"
             android:textStyle="bold"
             android:layout_weight="1"
             android:layout_height="wrap_content"
@@ -74,7 +72,6 @@
             android:layout_marginRight="28.0dp"
             android:id="@+id/position" />
 
-
         <TextView
             android:textSize="16dp"
             android:layout_weight="1"
@@ -87,10 +84,6 @@
             android:layout_marginRight="28.0dp"
             android:id="@+id/serial" />
 
-
-
-     
-
     </LinearLayout>
 
     <ListView
@@ -100,17 +93,17 @@
         android:layout_toRightOf="@id/app"
         android:id="@+id/listData"
         android:listSelector="@android:color/holo_blue_light"
-        android:choiceMode="singleChoice" 
-        
+        android:choiceMode="singleChoice"
+
         />
-   
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
 
         android:layout_toRightOf="@id/app"
-      
+
         android:weightSum="3"
         android:id="@+id/text"
         android:paddingTop="5dp">
@@ -157,7 +150,6 @@
         tools:context=".LinearLayout"
         android:foregroundGravity="center">
 
-  
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -165,12 +157,7 @@
         android:paddingLeft="10dp"
         android:paddingTop="5dp"
         android:text="Hitri prevzem." />
-  
 
-    
-
-      
-        
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -200,7 +187,6 @@
                 android:layout_weight="0.50"
                 android:paddingTop="5dp"
                 android:id="@+id/tbIdent" />
-
 
     </LinearLayout>
 
@@ -233,7 +219,6 @@
                     android:paddingTop="5dp"
                     android:id="@+id/tbSSCC" />
 
-
     </LinearLayout>
            <LinearLayout
         android:layout_width="fill_parent"
@@ -264,7 +249,6 @@
             android:layout_weight="0.50"
             android:paddingTop="5dp"
             android:id="@+id/tbReceiveLocation" />
-
 
     </LinearLayout>
            <LinearLayout
@@ -297,7 +281,6 @@
             android:paddingTop="5dp"
             android:id="@+id/tbRealStock" />
 
-
     </LinearLayout>
           <LinearLayout
         android:layout_width="fill_parent"
@@ -324,7 +307,6 @@
             android:layout_marginLeft="22.5dp"
             android:layout_marginRight="27.0dp"
            />
-
 
     </LinearLayout>
     <TextView
@@ -357,7 +339,6 @@
             android:layout_marginLeft="40dp"
             android:paddingTop="5dp"
             android:id="@+id/tbLocation" />
-
 
     </LinearLayout>
     <TextView
@@ -408,14 +389,8 @@
                 android:layout_height="70.0dp"
                 android:id="@+id/btLogout" />
 
-
     </LinearLayout>
-    
-
 
 </LinearLayout>
-
-
-
 
 </androidx.percentlayout.widget.PercentRelativeLayout>

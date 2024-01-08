@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
-            android:layout_weight="1" 
+            android:layout_weight="1"
             android:text="Skladišče"
         />
 
@@ -29,7 +29,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:id="@+id/cbWarehouse"
-        android:layout_weight="5" /> 
+        android:layout_weight="5" />
 </LinearLayout>
     <LinearLayout
         android:layout_width="fill_parent"
@@ -67,7 +67,6 @@
             android:id="@+id/select"
             android:background="@color/rikoMain"
             android:textColor="@color/white"/>
-
 
     </LinearLayout>
 
@@ -117,7 +116,6 @@
                 android:background="@color/rikoMain"
                 android:textColor="@color/white"
                 android:layout_marginLeft="2dp"/>
-
 
         </LinearLayout>
     </LinearLayout>

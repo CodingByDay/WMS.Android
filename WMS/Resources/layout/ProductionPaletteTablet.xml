@@ -17,8 +17,6 @@
             layout="@layout/toolbar" />
     </LinearLayout>
 
-
-
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -26,8 +24,6 @@
         android:layout_toRightOf="@id/app"
         android:layout_below="@id/text"
         />
-
-
 
     <ListView
         android:layout_width="match_parent"
@@ -89,7 +85,6 @@
             android:layout_marginRight="28.0dp"
             android:id="@+id/position" />
 
-
         <TextView
             android:layout_weight="1"
             android:layout_width="match_parent"
@@ -100,8 +95,6 @@
             android:paddingTop="5dp"
             android:layout_marginRight="28.0dp"
             android:id="@+id/serial" />
-
-
 
         <TextView
             android:layout_weight="1"
@@ -153,10 +146,7 @@
                 android:textSize="18dp"
                 android:id="@+id/tbWorkOrder" />
 
-
         </LinearLayout>
-
-
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -185,10 +175,7 @@
                 android:textSize="18dp"
                 android:id="@+id/tbIdent" />
 
-
         </LinearLayout>
-
-
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -217,10 +204,7 @@
                 android:textSize="18dp"
                 android:id="@+id/tbSSCC" />
 
-
         </LinearLayout>
-
-
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -248,7 +232,6 @@
                 android:layout_marginRight="2dp"
                 android:textSize="18dp"
                 android:id="@+id/tbSerialNum" />
-
 
         </LinearLayout>
         <LinearLayout
@@ -278,9 +261,7 @@
                 android:textSize="18dp"
                 android:id="@+id/tbCard" />
 
-
         </LinearLayout>
-
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -310,11 +291,8 @@
                 android:textSize="18dp"
                 android:id="@+id/tbLegCode" />
 
-
         </LinearLayout>
 
-
-       
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -331,7 +309,6 @@
                 android:text="" />
 
         </LinearLayout>
-
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -364,8 +341,6 @@
                 android:id="@+id/Location" />
         </LinearLayout>
 
-
-
         <ListView
             android:background="?android:attr/activatedBackgroundIndicator"
             android:choiceMode="singleChoice"
@@ -373,10 +348,9 @@
             android:id="@+id/lvCardList"
             android:layout_height="0dip"
             android:layout_weight="1"
-            android:listSelector="@android:drawable/screen_background_dark_transparent"  
+            android:listSelector="@android:drawable/screen_background_dark_transparent"
 
         />
-
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -415,17 +389,8 @@
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp" />
 
-
         </LinearLayout>
 
     </LinearLayout>
-
-
-
-
-
-
-
-
 
 </androidx.percentlayout.widget.PercentRelativeLayout>

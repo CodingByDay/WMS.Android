@@ -64,10 +64,6 @@
             android:layout_marginRight="6.0dp"
             android:id="@+id/wrapped" />
 
-
-
-
     </LinearLayout>
-
 
 </LinearLayout>

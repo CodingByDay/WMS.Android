@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-    
+
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:orientation="horizontal"
         android:layout_width="fill_parent"
@@ -22,7 +22,7 @@
         android:layout_weight="25"
         android:singleLine="true"
         android:text="Ident "
-        android:id="@+id/Ident"  
+        android:id="@+id/Ident"
         />
 
     <TextView
@@ -35,7 +35,7 @@
         android:layout_weight="25"
         android:singleLine="true"
         android:text="Lokacija "
-        android:id="@+id/Location" 
+        android:id="@+id/Location"
         />
 
     <TextView
@@ -48,9 +48,8 @@
         android:singleLine="true"
         android:paddingTop="5dp"
         android:text="Količina "
-        android:id="@+id/Qty" 
+        android:id="@+id/Qty"
         />
-
 
       <TextView
         android:textSize="16dp"
@@ -62,7 +61,7 @@
         android:singleLine="true"
         android:paddingTop="5dp"
         android:text="Naročilo "
-        android:id="@+id/Order" 
+        android:id="@+id/Order"
         />
 
 </LinearLayout>

@@ -1,24 +1,15 @@
 ﻿using Android.Content;
 using Android.Graphics;
-using Android.InputMethodServices;
 using Android.OS;
 using Android.Runtime;
-using Android.Text;
 using Android.Util;
 using Android.Views;
 using Android.Views.InputMethods;
-using Android.Widget;
-using Java.Lang;
 using Microsoft.AppCenter.Crashes;
-using Stream = Android.Media.Stream;
-using TrendNET.WMS.Device.App;
-using static Android.Widget.AdapterView;
-using static Java.IO.ObjectInputStream;
 using Keycode = Android.Views.Keycode;
 
 public class CustomAutoCompleteTextView : AutoCompleteTextView
 {
-
     public int Count()
     {
         return Adapter.Count;
@@ -64,6 +55,7 @@ public class CustomAutoCompleteTextView : AutoCompleteTextView
             }
         };
     }
+
     public void ShowKeyboard()
     {
         InputMethodManager imm = (InputMethodManager)Context.GetSystemService(Context.InputMethodService);
@@ -105,12 +97,14 @@ public class CustomAutoCompleteTextView : AutoCompleteTextView
                 }
             }
         }
-        catch(System.Exception e) {
-            Crashes.TrackError(e);   
+        catch (System.Exception e)
+        {
+            Crashes.TrackError(e);
         }
     }
+
     // Function to check if options exist (replace this with your logic)
-  
+
     public string GetItemAtPosition(int position)
     {
         if (position >= 0 && position < Adapter.Count)
@@ -122,19 +116,19 @@ public class CustomAutoCompleteTextView : AutoCompleteTextView
 
     public void SelectAtPosition(int position)
     {
-        if (Adapter!=null && position >= 0 && position < Adapter.Count)
+        if (Adapter != null && position >= 0 && position < Adapter.Count)
         {
             SetText(Adapter.GetItem(position).ToString(), false);
-            DismissDropDown(); 
+            DismissDropDown();
         }
     }
 
     public int SetItemByString(string value)
     {
         int index = -1;
-        for(int i=0;i<Adapter.Count; i++)
+        for (int i = 0; i < Adapter.Count; i++)
         {
-            if(Adapter.GetItem(i).ToString()==value)
+            if (Adapter.GetItem(i).ToString() == value)
             {
                 SetText(Adapter.GetItem(i).ToString(), false);
                 index = i;
@@ -152,15 +146,11 @@ public class CustomAutoCompleteTextView : AutoCompleteTextView
         {
             if (Adapter.GetItem(i).ToString() == value)
             {
-               index = i; 
-               break;
+                index = i;
+                break;
             }
         }
 
         return index;
     }
-
-
-  
-
 }

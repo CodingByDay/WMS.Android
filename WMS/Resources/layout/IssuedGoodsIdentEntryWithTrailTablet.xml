@@ -17,10 +17,6 @@
             layout="@layout/toolbar" />
     </LinearLayout>
 
-
-
-
-
     <TextView
         android:textStyle="bold"
         android:textSize="18dp"
@@ -30,8 +26,6 @@
         android:layout_toRightOf="@id/app"
         android:layout_below="@id/text"
         />
-
-
 
     <ListView
         android:layout_width="match_parent"
@@ -98,7 +92,6 @@
             android:layout_marginRight="28.0dp"
             android:id="@+id/position" />
 
-
         <TextView
             android:textStyle="bold"
             android:textSize="18dp"
@@ -110,8 +103,6 @@
             android:text="Serijska"
             android:layout_marginRight="28.0dp"
             android:id="@+id/serial" />
-
-
 
         <TextView
             android:textStyle="bold"
@@ -136,7 +127,6 @@
         android:layout_marginTop="70dp"
         tools:context=".LinearLayout"
         android:foregroundGravity="center">
-
 
         <TextView
             android:textStyle="bold"
@@ -177,7 +167,6 @@
                 android:textSize="18dp"
                 android:id="@+id/tbOrder" />
 
-
         </LinearLayout>
         <LinearLayout
             android:layout_width="fill_parent"
@@ -206,7 +195,6 @@
                 android:layout_marginRight="2dp"
                 android:textSize="18dp"
                 android:id="@+id/tbReceiver" />
-
 
         </LinearLayout>
         <LinearLayout
@@ -237,7 +225,6 @@
                 android:textSize="18dp"
                 android:id="@+id/tbIdentFilter" />
 
-
         </LinearLayout>
         <LinearLayout
             android:layout_width="fill_parent"
@@ -266,7 +253,6 @@
                 android:layout_marginRight="2dp"
                 android:textSize="18dp"
                 android:id="@+id/tbLocationFilter" />
-
 
         </LinearLayout>
         <LinearLayout
@@ -311,7 +297,6 @@
                 android:layout_marginRight="28.0dp"
                 android:id="@+id/Qty" />
 
-
             <TextView
                 android:textStyle="bold"
                 android:textSize="18dp"
@@ -323,9 +308,6 @@
                 android:text="Naziv"
                 android:layout_marginRight="28.0dp"
                 android:id="@+id/Name" />
-
-
-
 
         </LinearLayout>
         <HorizontalScrollView
@@ -356,7 +338,7 @@
                     android:defaultFocusHighlightEnabled="true"
                     android:scrollbars="horizontal|vertical"
                     android:layout_marginRight="0.0dp"
-                    android:listSelector="@android:drawable/screen_background_dark_transparent"  
+                    android:listSelector="@android:drawable/screen_background_dark_transparent"
         />
             </LinearLayout>
         </HorizontalScrollView>
@@ -400,7 +382,6 @@
                 android:layout_marginRight="2dp"
                 android:id="@+id/btDisplayPositions" />
 
-
         </LinearLayout>
         <Button
             android:textSize="20dp"
@@ -419,13 +400,5 @@
             />
 
     </LinearLayout>
-
-
-
-
-
-
-
-
 
 </androidx.percentlayout.widget.PercentRelativeLayout>

@@ -1,34 +1,18 @@
-﻿using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using Stream = Android.Media.Stream;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS.App
+﻿namespace WMS.App
 {
     public static class HelperMethods
     {
-
-
         public static bool is2D(string code)
         {
-            if(code.Contains("1T")&&code.Contains("K")&&code.Contains("4Q"))
+            if (code.Contains("1T") && code.Contains("K") && code.Contains("4Q"))
             {
                 return true;
-            } else
+            }
+            else
             {
                 return false;
             }
         }
-
-
-
-
 
         public static bool is1D(string barcode)
         {
@@ -38,7 +22,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
 
             foreach (var c in chars)
             {
-                if (char.IsControl(c)||char.IsSeparator(c)||char.IsSymbol(c))
+                if (char.IsControl(c) || char.IsSeparator(c) || char.IsSymbol(c))
                 {
                     return true;
                 }

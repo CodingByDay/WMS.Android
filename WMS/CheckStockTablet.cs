@@ -1,29 +1,19 @@
-﻿using Android.App;
-using Android.Content;
+﻿using Android.Content;
 using Android.Graphics.Drawables;
 using Android.Media;
 using Android.Net;
-using Android.OS;
-using Android.OS.Storage;
 using Android.Preferences;
 using Android.Views;
-using Android.Widget;
+using AndroidX.AppCompat.App;
 using BarCode2D_Receiver;
 using Com.Jsibbold.Zoomage;
-using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;
-
 using Microsoft.AppCenter.Crashes;
 using Newtonsoft.Json;
-using WMS.App;
-using Stream = Android.Media.Stream;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
+using WMS.App;
 using static Android.App.ActionBar;
-
-using AndroidX.AppCompat.App;
+using Stream = Android.Media.Stream;
 
 namespace WMS
 {
@@ -35,8 +25,8 @@ namespace WMS
         private CustomAutoCompleteTextView tbIdent;
         private Button btShowStock;
         private Button button1;
-        SoundPool soundPool;
-        int soundPoolId;
+        private SoundPool soundPool;
+        private int soundPoolId;
         private TextView lbStock;
         private List<ComboBoxItem> spinnerAdapterList = new List<ComboBoxItem>();
         private int temporaryPositionWarehouse;
@@ -65,7 +55,6 @@ namespace WMS
                 tbIdent.Text = barcode;
                 ProcessStock();
                 showPictureIdent(tbIdent.Text, element);
-
             }
             else if (tbLocation.HasFocus)
             {
@@ -76,7 +65,6 @@ namespace WMS
 
         public override void OnBackPressed()
         {
-
             HelpfulMethods.releaseLock();
 
             base.OnBackPressed();
@@ -101,10 +89,8 @@ namespace WMS
             }
             catch (Exception err)
             {
-
                 Crashes.TrackError(err);
                 return "";
-
             }
         }
 
@@ -116,7 +102,7 @@ namespace WMS
                 string WebError = string.Format("Skladišče ni izbrano.");
                 DialogHelper.ShowDialogError(this, this, WebError);
                 return;
-            }   
+            }
 
             if (!string.IsNullOrEmpty(tbLocation.Text.Trim()))
             {
@@ -138,15 +124,10 @@ namespace WMS
             stock = LoadStockFromStockSerialNo(wh.ID, tbLocation.Text.Trim(), tbIdent.Text.Trim());
             lbStock.Text = "Zaloga:\r\n" + stock;
             isEmptyStock();
-
-
         }
-
 
         private void isEmptyStock()
         {
-
-
             if (stock != "")
             {
                 lbStock.SetBackgroundColor(Android.Graphics.Color.Green);
@@ -159,17 +140,14 @@ namespace WMS
 
         private void color()
         {
-
             tbIdent.SetBackgroundColor(Android.Graphics.Color.Aqua);
             tbLocation.SetBackgroundColor(Android.Graphics.Color.Aqua);
         }
-
 
         private void Sound()
         {
             soundPool.Play(soundPoolId, 1, 1, 0, 0, 1);
         }
-
 
         public override bool OnKeyDown(Keycode keyCode, KeyEvent e)
         {
@@ -185,11 +163,11 @@ namespace WMS
                     break;
 
                     // return true;
-
             }
             return base.OnKeyDown(keyCode, e);
         }
-        protected async override void OnCreate(Bundle savedInstanceState)
+
+        protected override async void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             SetTheme(Resource.Style.AppTheme_NoActionBar);
@@ -237,12 +215,11 @@ namespace WMS
             }
 
             lbStock = FindViewById<TextView>(Resource.Id.lbStock);
-       
+
             var adapterWarehouse = new CustomAutoCompleteAdapter<ComboBoxItem>(this,
             Android.Resource.Layout.SimpleSpinnerItem, spinnerAdapterList);
             adapterWarehouse.SetDropDownViewResource(Android.Resource.Layout.SimpleSpinnerDropDownItem);
             cbWarehouses.Adapter = adapterWarehouse;
-
 
             identData = Caching.Caching.SavedList;
             ISharedPreferences sharedPreferences = PreferenceManager.GetDefaultSharedPreferences(Application.Context);
@@ -264,7 +241,6 @@ namespace WMS
             };
             imagePNG.Visibility = ViewStates.Invisible;
 
-
             var _broadcastReceiver = new NetworkStatusBroadcastReceiver();
             _broadcastReceiver.ConnectionStatusChanged += OnNetworkStatusChanged;
             Application.Context.RegisterReceiver(_broadcastReceiver,
@@ -272,26 +248,16 @@ namespace WMS
 
             cbWarehouses.ItemClick += CbWarehouses_ItemClick;
             tbLocation.ItemClick += TbLocation_ItemClick;
-
-
-
-
-
-
         }
-
 
         private void TbLocation_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
         {
-
         }
 
         private async void CbWarehouses_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
         {
-
             if (e.Position != 0)
             {
-
                 temporaryPositionWarehouse = e.Position;
             }
             await GetLocationsForGivenWarehouse();
@@ -305,7 +271,6 @@ namespace WMS
         {
             var cm = (ConnectivityManager)GetSystemService(ConnectivityService);
             return cm.ActiveNetworkInfo == null ? false : cm.ActiveNetworkInfo.IsConnected;
-
         }
 
         private List<string> GetCustomSuggestions(string userInput)
@@ -328,12 +293,10 @@ namespace WMS
             tbIdentAdapter.NotifyDataSetChanged();
         }
 
-
         private void OnNetworkStatusChanged(object sender, EventArgs e)
         {
             if (IsOnline())
             {
-                
                 try
                 {
                     LoaderManifest.LoaderManifestLoopStop(this);
@@ -352,11 +315,10 @@ namespace WMS
         private void SpinnerLocation_ItemSelected(object sender, AdapterView.ItemSelectedEventArgs e)
         {
             tbLocation.Text = locationData.ElementAt(e.Position);
-            
+
             Toast.MakeText(this, $"Izbrali ste  {locationData.ElementAt(e.Position)}.", ToastLength.Long).Show();
         }
 
-      
         private void SpinnerIdent_ItemSelected(object sender, AdapterView.ItemSelectedEventArgs e)
         {
             tbIdent.Text = identData.ElementAt(e.Position);
@@ -374,17 +336,15 @@ namespace WMS
                 imagePNG.SetImageDrawable(d);
                 imagePNG.Visibility = ViewStates.Visible;
 
-
                 imagePNG.Click += (e, ev) => { ImageClick(d); };
-
             }
             catch (Exception error)
             {
                 var log = error;
                 return;
             }
-
         }
+
         private void showPicture(string wh)
         {
             try
@@ -396,7 +356,6 @@ namespace WMS
                 imagePNG.SetImageDrawable(d);
                 imagePNG.Visibility = ViewStates.Visible;
                 imagePNG.Click += (e, ev) => { ImageClick(d); };
-
             }
             catch (Exception error)
             {
@@ -421,9 +380,8 @@ namespace WMS
             image.SetImageDrawable(d);
 
             // Access Popup layout fields like below
-
         }
-     
+
         private void Button1_Click(object sender, System.EventArgs e)
         {
             Finish();
@@ -435,9 +393,6 @@ namespace WMS
             ProcessStock();
             fillItemsOfList();
         }
-
-
-
 
         private void fillItemsOfList()
         {
@@ -453,7 +408,7 @@ namespace WMS
                     Location = x.GetString("Location"),
                     Quantity = x.GetDouble("RealStock").ToString(CommonData.GetQtyPicture())
                 });
-             });     
+            });
         }
 
         private async Task GetLocationsForGivenWarehouse()
@@ -480,8 +435,5 @@ namespace WMS
                 }
             });
         }
-
-
-      
     }
 }

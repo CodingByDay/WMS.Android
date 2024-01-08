@@ -5,8 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
-
     <include
         android:id="@+id/toolbar"
         layout="@layout/toolbar" />
@@ -15,7 +13,7 @@
         android:layout_width="fill_parent"
         android:layout_weight="1" />
     <LinearLayout
-     
+
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
@@ -25,7 +23,7 @@
         android:orientation="vertical">
 
         <Button
-            
+
             android:bottomLeftRadius="7dp"
             android:bottomRightRadius="7dp"
             android:topLeftRadius="7dp"
@@ -39,7 +37,7 @@
             android:textSize="16dp"
             android:textStyle="bold"
             android:layout_weight="1"
-            android:paddingLeft="20dp"           
+            android:paddingLeft="20dp"
             android:paddingRight="20dp"
             android:paddingTop="8dp"
             android:text="Ident - F1"
@@ -68,7 +66,7 @@
             android:background="@color/rikoMain"
             android:textColor="#ffffff"
             android:text="Naročilo - F2"
-            android:layout_marginBottom="5dp"           
+            android:layout_marginBottom="5dp"
             android:id="@+id/order" />
 
         <Button
@@ -95,11 +93,5 @@
             android:id="@+id/client" />
 
     </LinearLayout>
-
-
-
-
-
-
 
 </LinearLayout>
