@@ -122,12 +122,18 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
 
         private void InitializeAutocompleteControls()
         {
-            cbDocType.SelectAtPosition(0);
-            var dws = Queries.DefaultTakeoverWarehouse(objectcbDocType.ElementAt(0).ID);
-            temporaryPositionWarehouse = cbWarehouse.SetItemByString(dws.warehouse);
-            if (dws.main)
+            try
             {
-                cbWarehouse.Enabled = false;
+                cbDocType.SelectAtPosition(0);
+                var dws = Queries.DefaultTakeoverWarehouse(objectcbDocType.ElementAt(0).ID);
+                temporaryPositionWarehouse = cbWarehouse.SetItemByString(dws.warehouse);
+                if (dws.main)
+                {
+                    cbWarehouse.Enabled = false;
+                }
+            } catch (Exception ex)
+            {
+                return;
             }
         }
 

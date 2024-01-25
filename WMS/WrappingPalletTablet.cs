@@ -14,7 +14,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using TrendNET.WMS.Device.Services;
-
 using AndroidX.AppCompat.App;
 using AlertDialog = Android.App.AlertDialog;
 

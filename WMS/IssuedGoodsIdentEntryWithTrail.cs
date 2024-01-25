@@ -693,7 +693,11 @@ namespace WMS
                         Intent i = new Intent(Application.Context, typeof(IssuedGoodsSerialOrSSCCEntry));
                         i.PutExtra("ident", ident);
                         i.PutExtra("qty", qty);
-                        i.PutExtra("selected", Trail.Serialize(obj));
+
+
+                        string jsonString = JsonConvert.SerializeObject(obj);
+
+                        i.PutExtra("selected", jsonString);
                         StartActivity(i);
                         this.Finish();
 
@@ -706,7 +710,9 @@ namespace WMS
                         Intent i = new Intent(Application.Context, typeof(IssuedGoodsSerialOrSSCCEntry));
                         i.PutExtra("ident", ident);
                         i.PutExtra("qty", qty);
-                        i.PutExtra("selected", Trail.Serialize(obj));
+                        string jsonString = JsonConvert.SerializeObject(obj);
+
+                        i.PutExtra("selected", jsonString);
                         StartActivity(i);
                         this.Finish();
                     }

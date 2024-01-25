@@ -28,6 +28,7 @@ using static Android.App.ActionBar;
 using static Android.Graphics.Paint;
 using static Android.Icu.Text.Transliterator;
 using WebApp = TrendNET.WMS.Device.Services.WebApp;
+using System.Text.Json;
 
 using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;
 
@@ -222,9 +223,12 @@ namespace WMS
             tbSerialNum.FocusChange += TbSerialNum_FocusChange;
             if (Intent.Extras != null && Intent.Extras.GetString("update") != "1" && CurrentFlow.GetString("CurrentFlow") != "1")
             {
-                byte[] trailBytes = Intent.GetByteArrayExtra("selected");
+                string trailBytes = Intent.Extras.GetString("selected");
                 // Deserialize the Trail object
-                receivedTrail = Trail.Deserialize<Trail>(trailBytes);
+                Trail receivedTrail = JsonConvert.DeserializeObject<Trail>(trailBytes);
+
+                // Deserialize JSON string to object
+                //   Trail receivedObject = JsonConvert.DeserializeObject<Trail>(jsonString);
 
                 tbPacking.Text = receivedTrail.Qty;
                 qtyCheck = Double.Parse(receivedTrail.Qty);

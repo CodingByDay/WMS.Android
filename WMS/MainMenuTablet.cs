@@ -43,9 +43,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
             _customToolbar.SetNavigationIcon(settings.RootURL + "/Services/Logo");
             SetSupportActionBar(_customToolbar._toolbar);
-            SupportActionBar.SetDisplayShowTitleEnabled(false);
             var flag = Services.isTablet(App.settings.device);
-
             if (MainActivity.isValid == true)
             {
                 string toast = new string("Uspešna prijava.");
@@ -103,16 +101,11 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             dataCleanup = await FillTheCleanupList();
             cleanupAdapter = new CleanupAdapter(this, dataCleanup);
             rapidListview.Adapter = cleanupAdapter;
-
-
             ProccessRapidTakeover();
-
-
             var _broadcastReceiver = new NetworkStatusBroadcastReceiver();
             _broadcastReceiver.ConnectionStatusChanged += OnNetworkStatusChanged;
             Application.Context.RegisterReceiver(_broadcastReceiver,
             new IntentFilter(ConnectivityManager.ConnectivityAction));
-
             DownloadResources();
             // Track user
             Analytics.TrackEvent($"Login from the id-{settings.ID}, url-{settings.RootURL}, version-0.{GetAppVersion()}");
