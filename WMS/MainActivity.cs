@@ -279,7 +279,6 @@ namespace WMS
                         Finish();
                         StartActivity(typeof(Settings));
                         HelpfulMethods.clearTheStack(this);
-
                         return true;
                     }
 
@@ -298,11 +297,7 @@ namespace WMS
             MenuInflater.Inflate(Resource.Layout.popup_action, menu);
             return base.OnCreateOptionsMenu(menu);
         }
-        /// <summary>
-        /// First navigation event.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+
         private void BtnRegistrationEvent_Click(object sender, System.EventArgs e)
         {
             progressBar1.Visibility = ViewStates.Visible;

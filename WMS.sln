@@ -3,7 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34330.188
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WMS", "WMS\WMS.csproj", "{1A5A9CE7-162B-428D-B56A-3E5404B02066}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WMS", "WMS\WMS.csproj", "{1A5A9CE7-162B-428D-B56A-3E5404B02066}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B1C5C026-DBE8-4802-BDFD-1A7EF98C3F22}"
+	ProjectSection(SolutionItems) = preProject
+		.gitattributes = .gitattributes
+		.gitignore = .gitignore
+		README.md = README.md
+		si.in_sist.WMS.aab = si.in_sist.WMS.aab
+		WMS.keyInfo = WMS.keyInfo
+		WMS.keystore = WMS.keystore
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
