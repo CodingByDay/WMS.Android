@@ -58,11 +58,6 @@ namespace WMS
         }
 
 
-        private void BtnOkRestart_Click(object sender, EventArgs e)
-        {
-            var stop = true;
-        }
-
         private void ProcessRegistration()
         {
 

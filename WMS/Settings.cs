@@ -51,18 +51,31 @@ namespace WMS
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
-            base.OnCreate(savedInstanceState);
+
             SetTheme(Resource.Style.AppTheme_NoActionBar);
+
+            base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.settingsPopUp);
+
+
             AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
             var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
             _customToolbar.SetNavigationIcon(settings.RootURL + "/Services/Logo");
             SetSupportActionBar(_customToolbar._toolbar);
+
+
+
+
             SupportActionBar.SetDisplayShowTitleEnabled(false);
+
+
+
             arrayData.Add("Izberite tip naprave");
             arrayData.Add("TABLET");
-            arrayData.Add("PHONE");
+            arrayData.Add("PHONE");  
             
+
+
             bluetooth = FindViewById<Button>(Resource.Id.bluetooth);
             bluetooth.Click += Bluetooth_Click;
             ID = FindViewById<EditText>(Resource.Id.IDdevice);

@@ -188,6 +188,7 @@ namespace WMS
                 Dialog dialog = alert.Create();
                 dialog.Show();
             }
+
             docTypes = CommonData.ListDocTypes("P|N");
             
             LoadRelatedOrder();
@@ -228,7 +229,7 @@ namespace WMS
                 Trail receivedTrail = JsonConvert.DeserializeObject<Trail>(trailBytes);
 
                 // Deserialize JSON string to object
-                //   Trail receivedObject = JsonConvert.DeserializeObject<Trail>(jsonString);
+                // Trail receivedObject = JsonConvert.DeserializeObject<Trail>(jsonString);
 
                 tbPacking.Text = receivedTrail.Qty;
                 qtyCheck = Double.Parse(receivedTrail.Qty);
