@@ -45,6 +45,7 @@
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:id="sscc-row"
         android:orientation="horizontal"
         android:paddingTop="5dp"
                                      >
@@ -71,19 +72,13 @@
             android:layout_marginRight="2dp"
             android:layout_gravity="center_horizontal"
             android:id="@+id/tbSSCC" />
-        <Button
-            android:text="..."
-            android:layout_width="39.0dp"
-            android:layout_height="30dp"
-            android:layout_marginTop="0dp"
-            android:background="@color/rikoMain"
-            android:textColor="@color/white"
-            android:id="@+id/btMorePallets" />
+ 
 
     </LinearLayout>
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:id="serial-row"
         android:orientation="horizontal"
         android:paddingTop="5dp">
 
@@ -164,15 +159,7 @@
             android:layout_marginRight="2dp"
             android:id="@+id/tbPacking" />
 
-        <Button
-            android:text="-(F1)"
-            android:layout_width="74.0dp"
-            android:layout_height="33dp"
-            android:id="@+id/button1"
-            android:layout_marginTop="-5dp"
-            android:background="@color/rikoMain"
-            android:textColor="@color/white"
-            android:layout_marginLeft="4dp"/>
+ 
 
     </LinearLayout>
     <LinearLayout
@@ -264,7 +251,7 @@
                 android:layout_marginRight="2dp"
                 android:text="Serij. - f2"
                 android:drawableLeft="@drawable/newitem_white"
-                android:id="@+id/btSaveOrUpdate"
+                android:id="@+id/btCreateSame"
                  />
 
             <Button
@@ -279,7 +266,7 @@
                 android:layout_marginRight="4dp"
                 android:text="Kreiraj - f3"
                 android:drawableLeft="@drawable/newitem_white"
-                android:id="@+id/button4"
+                android:id="@+id/btCreate"
                 />
 
         </LinearLayout>
@@ -305,7 +292,7 @@
                 android:layout_marginRight="2dp"
                 android:text="Zaklj. - f4"
                 android:drawableLeft="@drawable/shipped_white"
-                android:id="@+id/button6" />
+                android:id="@+id/btFinish" />
 
             <Button
                 android:layout_weight="1"
@@ -319,7 +306,7 @@
                 android:layout_marginRight="4dp"
                 android:text="Preg. - f5"
                 android:drawableLeft="@drawable/focus_white"
-                android:id="@+id/button5"
+                android:id="@+id/btOverview"
                 />
 
         </LinearLayout>
@@ -336,7 +323,7 @@
             android:layout_marginBottom="4dp"
             android:text="Izhod - F8"
             android:drawableLeft="@drawable/logout_white"
-            android:id="@+id/button7"
+            android:id="@+id/btExit"
        />
     </LinearLayout>
 </LinearLayout>
