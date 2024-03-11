@@ -238,8 +238,15 @@ namespace WMS
                 tbPacking.Text = moveItem.GetDouble("Packing").ToString();
                 tbUnits.Text = moveItem.GetDouble("Factor").ToString();
                 btCreateSame.Text = "Serij. - F2";
+
                 // Use open order to get additional information.
-                GetConnectedPositions(openOrder.GetString("Key"), openOrder.GetInt("No"), openOrder.GetString("acIdent"), moveItem.GetString("Location"));
+
+                GetConnectedPositions(moveItem.GetString("LinkKey"), moveItem.GetInt("LinkNo"), moveItem.GetString("Ident"), moveItem.GetString("Location"));
+                var filtered = FilterIssuedGoods(connectedPositions, moveItem.GetString("SSCC"), moveItem.GetString("SerialNo"), moveItem.GetString("Location"));
+
+
+
+                var stop = true;
             }
             else
             {
@@ -249,10 +256,18 @@ namespace WMS
                 {
                     string trailBytes = Intent.Extras.GetString("selected");
                     Trail receivedTrail = JsonConvert.DeserializeObject<Trail>(trailBytes);
-                    tbPacking.Text = receivedTrail.Qty;
                     qtyCheck = Double.Parse(receivedTrail.Qty);
                     tbLocation.Text = receivedTrail.Location;
+                    lbQty.Text = "Zaloga ( " + qtyCheck.ToString(CommonData.GetQtyPicture()) + " )";
+                    tbPacking.Text = qtyCheck.ToString();
+
+
                     GetConnectedPositions(receivedTrail.Key, receivedTrail.No, receivedTrail.Ident, receivedTrail.Location);
+                    var filtered = FilterIssuedGoods(connectedPositions, receivedTrail.Location);
+
+
+                    var stop = true;
+
                 }
             }
 
@@ -277,6 +292,11 @@ namespace WMS
 
             // Test this function based on the proccess
         }
+
+     
+
+
+
 
         /// <summary>
         ///
@@ -315,6 +335,7 @@ namespace WMS
             {
                 if(subjects.Rows.Count > 0)
                 {
+
                     for (int i = 0; i < subjects.Rows.Count; i++)
                     {
                         var row = subjects.Rows[i];
@@ -329,22 +350,20 @@ namespace WMS
 
                         });
                     }
-
-
-                    if (connectedPositions.Count == 1)
-                    {
-
-                    } else if (connectedPositions.Count > 1)
-                    {
-
-                    } else if (connectedPositions.Count == 0)
-                    {
-
-                    }
                                          
                 }
             }
         }
+        public static List<IssuedGoods> FilterIssuedGoods(List<IssuedGoods> issuedGoodsList, string acSSCC = null, string acSerialNo = null, string acLocation = null)
+        {
+            return issuedGoodsList.Where(x =>
+                (string.IsNullOrEmpty(acSSCC) || x.acSSCC == acSSCC) &&
+                (string.IsNullOrEmpty(acSerialNo) || x.acSerialNo == acSerialNo) &&
+                (string.IsNullOrEmpty(acLocation) || x.aclocation == acLocation)
+            ).ToList();
+        }
+
+
 
 
 

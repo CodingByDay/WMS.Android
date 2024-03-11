@@ -17,5 +17,7 @@ namespace WMS.App
 
         public double? anQty { get; set; }
 
+        public string? aclocation { get; set; }
+
     }
 }
