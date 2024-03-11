@@ -30,14 +30,14 @@ using static Android.Icu.Text.Transliterator;
 using WebApp = TrendNET.WMS.Device.Services.WebApp;
 using System.Text.Json;
 
-using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;
+using AndroidX.AppCompat.App;
+using AlertDialog = Android.App.AlertDialog;
 
 namespace WMS
 {
     [Activity(Label = "IssuedGoodsSerialOrSSCCEntry", ScreenOrientation = ScreenOrientation.Portrait)]
     public class IssuedGoodsSerialOrSSCCEntry : AppCompatActivity, IBarcodeResult
     {
-      
         private EditText tbIdent;
         private EditText tbSSCC;
         private EditText tbSerialNum;
@@ -63,22 +63,25 @@ namespace WMS
         private TextView lbQty;
         private bool isPackaging = false;
         private TextView lbUnits;
-        private TextView lbPalette; 
-        SoundPool soundPool;
-        int soundPoolId;
+        private TextView lbPalette;
+        private SoundPool soundPool;
+        private int soundPoolId;
         private bool isOpened = false;
         private Trail receivedTrail;
         private List<string> locations = new List<string>();
-        double qtyCheck = 0;
+        private double qtyCheck = 0;
         private LinearLayout ssccRow;
         private LinearLayout serialRow;
-
-
-        protected async override void OnCreate(Bundle savedInstanceState)
+        private List<IssuedGoods> connectedPositions = new List<IssuedGoods>();
+        protected override async void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
+
             SetTheme(Resource.Style.AppTheme_NoActionBar);
+
+            // Start the loader
             LoaderManifest.LoaderManifestLoopResources(this);
+
             SetContentView(Resource.Layout.IssuedGoodsSerialOrSSCCEntry);
 
             // Definitions
@@ -102,12 +105,11 @@ namespace WMS
             tbPalette.InputType = Android.Text.InputTypes.ClassNumber;
             lbQty = FindViewById<TextView>(Resource.Id.lbQty);
             lbUnits = FindViewById<TextView>(Resource.Id.lbUnits);
-            lbPalette = FindViewById<TextView>(Resource.Id.lbPalette);        
+            lbPalette = FindViewById<TextView>(Resource.Id.lbPalette);
             soundPool = new SoundPool(10, Stream.Music, 0);
             soundPoolId = soundPool.Load(this, Resource.Raw.beep, 1);
             Barcode2D barcode2D = new Barcode2D();
             barcode2D.open(this, this);
-
 
             btCreateSame = FindViewById<Button>(Resource.Id.btCreateSame);
             btCreate = FindViewById<Button>(Resource.Id.btCreate);
@@ -115,8 +117,7 @@ namespace WMS
             btOverview = FindViewById<Button>(Resource.Id.btOverview);
             btExit = FindViewById<Button>(Resource.Id.btExit);
 
-
-
+            btExit.Click += BtExit_Click;
 
             var _broadcastReceiver = new NetworkStatusBroadcastReceiver();
             _broadcastReceiver.ConnectionStatusChanged += OnNetworkStatusChanged;
@@ -129,21 +130,29 @@ namespace WMS
 
             CheckIfApplicationStopingException();
 
-            // Load the data for an order
-            LoadRelatedOrder();         
-            colorFields();
+            // Color the fields that can be scanned
+            ColorFields();
+
+            // Main logic for the entry
             SetUpForm();
-                       
-           
+
+            // Stop the loader
+            LoaderManifest.LoaderManifestLoopStop(this);
+        }
+
+        private void BtExit_Click(object? sender, EventArgs e)
+        {
+            StartActivity(typeof(MainMenu));
         }
 
         private void CheckIfApplicationStopingException()
         {
-            if(CurrentFlow!=null&&!String.IsNullOrEmpty(CurrentFlow.GetString("CurrentFlow")) && moveHead !=null && openIdent!=null)
-            {   
+            if (CurrentFlow != null && !String.IsNullOrEmpty(CurrentFlow.GetString("CurrentFlow")) && moveHead != null && openIdent != null)
+            {
                 // No error here, safe (ish) to continue
                 return;
-            } else
+            }
+            else
             {
                 // Destroy the activity
                 Finish();
@@ -151,32 +160,22 @@ namespace WMS
             }
         }
 
-
-
-
-
-
-
-     
-
         public bool IsOnline()
         {
-            var cm = (ConnectivityManager) GetSystemService(ConnectivityService);
+            var cm = (ConnectivityManager)GetSystemService(ConnectivityService);
             return cm.ActiveNetworkInfo == null ? false : cm.ActiveNetworkInfo.IsConnected;
         }
 
         private void OnNetworkStatusChanged(object sender, EventArgs e)
         {
-     
         }
+
         private void BtSaveOrUpdate_LongClick(object sender, View.LongClickEventArgs e)
         {
- 
         }
 
         private void Button4_LongClick(object sender, View.LongClickEventArgs e)
         {
-
         }
 
         private void Button5_Click(object sender, EventArgs e)
@@ -185,42 +184,18 @@ namespace WMS
             Finish();
         }
 
-        private void LoadRelatedOrder()
-        {
-            if (openOrder != null)
-            {
-                isOpened = false;           
-            } else
-            {
-                isOpened = true;
-            }
-        }
-
-
-
         private void Button7_Click(object sender, EventArgs e)
-        {     
+        {
             StartActivity(typeof(IssuedGoodsEnteredPositionsView));
             Finish();
         }
-
-        
-
-
 
         private async Task FinishMethod()
         {
             await Task.Run(() =>
             {
-
             });
         }
-
-      
-
-     
-
-       
 
         private async void Button6_Click(object sender, EventArgs e)
         {
@@ -245,9 +220,8 @@ namespace WMS
 
         private async void BtnYesConfirm_Click(object sender, EventArgs e)
         {
-             await FinishMethod();   
+            await FinishMethod();
         }
-
 
         private void SetUpForm()
         {
@@ -255,6 +229,7 @@ namespace WMS
             tbSerialNum.Enabled = openIdent.GetBool("HasSerialNumber");
             if (moveItem != null)
             {
+                // Update logic ?? it seems to be true.
                 tbIdent.Text = moveItem.GetString("IdentName");
                 tbSerialNum.Text = moveItem.GetString("SerialNo");
                 tbSSCC.Text = moveItem.GetString("SSCC");
@@ -263,7 +238,24 @@ namespace WMS
                 tbPacking.Text = moveItem.GetDouble("Packing").ToString();
                 tbUnits.Text = moveItem.GetDouble("Factor").ToString();
                 btCreateSame.Text = "Serij. - F2";
+                // Use open order to get additional information.
+                GetConnectedPositions(openOrder.GetString("Key"), openOrder.GetInt("No"), openOrder.GetString("acIdent"), moveItem.GetString("Location"));
             }
+            else
+            {
+                // Not the update ?? it seems to be true
+                tbIdent.Text = openIdent.GetString("Code") + " " + openIdent.GetString("Name");
+                if (Intent.Extras != null && !String.IsNullOrEmpty(Intent.Extras.GetString("selected")))
+                {
+                    string trailBytes = Intent.Extras.GetString("selected");
+                    Trail receivedTrail = JsonConvert.DeserializeObject<Trail>(trailBytes);
+                    tbPacking.Text = receivedTrail.Qty;
+                    qtyCheck = Double.Parse(receivedTrail.Qty);
+                    tbLocation.Text = receivedTrail.Location;
+                    GetConnectedPositions(receivedTrail.Key, receivedTrail.No, receivedTrail.Ident, receivedTrail.Location);
+                }
+            }
+
             isPackaging = openIdent.GetBool("IsPackaging");
 
             if (isPackaging)
@@ -282,8 +274,124 @@ namespace WMS
                 lbUnits.Visibility = ViewStates.Visible;
                 tbUnits.Visibility = ViewStates.Visible;
             }
+
+            // Test this function based on the proccess
         }
-     
+
+        /// <summary>
+        ///
+        /// Podatke preneseš v masko - kličeš NE isti view ampak vedno "uWMSOrderItemByKeyOut", ker moraš
+        /// tudi pri subjektih zapisati na katero naročilo z pozicijo(acKey in anNo) se vrši izdaja.
+        /// uWMSOrderItemByKeyOut; vhodni parameter acKey varchar(13), anNo int, acIdent varchar(16), acLocation varchar(50);
+        /// izhod: acName varchar(80), acSubject varchar(30), acSerialNo varchar(100), acSSCC varchar(18), anQty decimal (19,6)
+        /// če je zapis 1 potem prikažeš tiste podatke in uporabnik le potrdi
+        /// če je zapisov več si jih shraniš in z dodatnimi vpisi/skeniranji(SSCC ali serijska) "filtriraš" podatke, ko prideš na enega izpolniš vse podatke, uporabnik lahko spremeni količino - v oklepaju je že od vsega začetka vpisan anQty.
+        /// če uporabnik klikne na gumb serijska, se iz seznama pobriše ta vrsitca in maska ostane kot je bila po koncu koraka 4.
+        /// lahko pa enostavno ponoviš klic view-a ki bi že moral imeti zapisane podatke in osvežene, če ne bo kaj težav z asinhronimi klici...
+        ///
+        /// </summary>
+        /// <param name="acKey">Številka naročila</param>
+        /// <param name="anNo">Pozicija znotraj naročila</param>
+        /// <param name="acIdent">Ident</param>
+        private void GetConnectedPositions(string acKey, int anNo, string acIdent, string acLocation)
+        {
+            var parameters = new List<Services.Parameter>();
+            parameters.Add(new Services.Parameter { Name = "acKey", Type = "String", Value = acKey });
+            parameters.Add(new Services.Parameter { Name = "anNo", Type = "Int32", Value = anNo });
+            parameters.Add(new Services.Parameter { Name = "acIdent", Type = "String", Value = acIdent });
+            parameters.Add(new Services.Parameter { Name = "acLocation", Type = "String", Value = acLocation });
+
+            var subjects = Services.GetObjectListBySql($"SELECT * from uWMSOrderItemByKeyOut WHERE acKey = @acKey AND anNo = @anNo AND acIdent = @acIdent and acLocation=@acLocation;", parameters);
+
+            if (!subjects.Success)
+            {
+                RunOnUiThread(() =>
+                {
+                    Analytics.TrackEvent(subjects.Error);
+                    return;
+                });
+            }
+            else
+            {
+                if(subjects.Rows.Count > 0)
+                {
+                    for (int i = 0; i < subjects.Rows.Count; i++)
+                    {
+                        var row = subjects.Rows[i];
+                        connectedPositions.Add(new IssuedGoods
+                        {
+
+                            acName = row.StringValue("acName"),
+                            acSubject = row.StringValue("acSubject"),
+                            acSerialNo = row.StringValue("acSerialNo"),
+                            acSSCC = row.StringValue("acSSCC"),
+                            anQty = row.DoubleValue("anQty")
+
+                        });
+                    }
+
+
+                    if (connectedPositions.Count == 1)
+                    {
+
+                    } else if (connectedPositions.Count > 1)
+                    {
+
+                    } else if (connectedPositions.Count == 0)
+                    {
+
+                    }
+                                         
+                }
+            }
+        }
+
+
+
+        private void FindConnectedPositions(string acKey, int anNo, string acIdent, string acLocation)
+        {
+            var parameters = new List<Services.Parameter>();
+
+            parameters.Add(new Services.Parameter { Name = "acKey", Type = "String", Value = acKey });
+            parameters.Add(new Services.Parameter { Name = "anNo", Type = "Int32", Value = anNo });
+            parameters.Add(new Services.Parameter { Name = "acIdent", Type = "String", Value = acIdent });
+            parameters.Add(new Services.Parameter { Name = "acLocation", Type = "String", Value = acLocation });
+
+            var subjects = Services.GetObjectListBySql($"SELECT * from uWMSOrderItemByKeyOut WHERE acKey = @acKey AND anNo = @anNo AND acIdent = @acIdent and acLocation=@acLocation;", parameters);
+            if (!subjects.Success)
+            {
+                RunOnUiThread(() =>
+                {
+                    Analytics.TrackEvent(subjects.Error);
+                    return;
+                });
+            }
+            else
+            {
+                if (subjects.Rows.Count > 0)
+                {
+                    for (int i = 0; i < subjects.Rows.Count; i++)
+                    {
+                        var row = subjects.Rows[i];
+                        connectedPositions.Add(new IssuedGoods
+                        {
+                            acName = row.StringValue("acName"),
+                            acSubject = row.StringValue("acSubject"),
+                            acSerialNo = row.StringValue("acSerialNo"),
+                            acSSCC = row.StringValue("acSSCC"),
+                            anQty = row.DoubleValue("anQty")
+                        });
+                    }
+
+                }
+            }
+        }
+
+
+
+
+
+
 
         private static bool? checkIssuedOpenQty = null;
         private ProgressDialogClass progress;
@@ -317,14 +425,13 @@ namespace WMS
         private string warehouse;
         private Dialog popupDialogMainIssueing;
 
- 
-
-        private void colorFields()
+        private void ColorFields()
         {
             tbSSCC.SetBackgroundColor(Android.Graphics.Color.Aqua);
             tbSerialNum.SetBackgroundColor(Android.Graphics.Color.Aqua);
-            tbLocation.SetBackgroundColor(Android.Graphics.Color.Aqua);            
+            tbLocation.SetBackgroundColor(Android.Graphics.Color.Aqua);
         }
+
         private void Button3_Click(object sender, EventArgs e)
         {
             StartActivity(typeof(IssuedGoodsIdentEntryWithTrail));
@@ -340,7 +447,6 @@ namespace WMS
                     if (barcode != "Scan fail")
                     {
                         Sound();
-
                     }
                 }
                 else if (tbSerialNum.HasFocus && isOkayToCallBarcode == false)
@@ -348,7 +454,6 @@ namespace WMS
                     if (barcode != "Scan fail")
                     {
                         Sound();
-
                     }
                 }
                 else if (tbLocation.HasFocus && isOkayToCallBarcode == false)
@@ -356,19 +461,15 @@ namespace WMS
                     if (barcode != "Scan fail")
                     {
                         Sound();
-                      
                     }
                 }
-          
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 Crashes.TrackError(ex);
                 Toast.MakeText(this, "Prišlo je do napake", ToastLength.Long).Show();
             }
         }
-
-
-
 
         private void Sound()
         {
