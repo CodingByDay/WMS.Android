@@ -31,6 +31,8 @@ using WMS.Background;
 
 using AndroidX.AppCompat.App;
 using FFImageLoading;
+using Android.Graphics.Drawables;
+using Android.Graphics;
 
 namespace WMS
 {
@@ -253,7 +255,8 @@ namespace WMS
                 popupDialog.Window.SetSoftInputMode(SoftInput.AdjustResize);
                 popupDialog.Show();
                 popupDialog.Window.SetLayout(LayoutParams.MatchParent, LayoutParams.WrapContent);
-                popupDialog.Window.SetBackgroundDrawableResource(Android.Resource.Color.HoloRedLight);
+                popupDialog.Window.SetBackgroundDrawable(new ColorDrawable(Color.ParseColor("#081a45")));
+
                 // Access Pop-up layout fields like below
                 btnOkRestart = popupDialog.FindViewById<Button>(Resource.Id.btnOk);
                 btnOkRestart.Click += BtnOk_Click;

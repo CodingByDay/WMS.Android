@@ -25,6 +25,7 @@ using WebApp = TrendNET.WMS.Device.Services.WebApp;
 using AlertDialog = Android.App.AlertDialog;
 
 using AndroidX.AppCompat.App;
+using Android.Graphics;
 
 namespace WMS
 {
@@ -1076,7 +1077,8 @@ namespace WMS
             popupDialog.Show();
 
             popupDialog.Window.SetLayout(LayoutParams.MatchParent, LayoutParams.WrapContent);
-            popupDialog.Window.SetBackgroundDrawableResource(Android.Resource.Color.HoloOrangeLight);
+            popupDialog.Window.SetBackgroundDrawable(new ColorDrawable(Color.ParseColor("#081a45")));
+
 
             // Access Popup layout fields like below
             btnYes = popupDialog.FindViewById<Button>(Resource.Id.btnYes);
@@ -1463,10 +1465,17 @@ namespace WMS
                 sscc = barcode;
                 warehouse = moveHead.GetString("Wharehouse");
                 var keyr = openOrder;
+                var parameters = new List<Services.Parameter>();
 
-                query = $"SELECT * FROM uWMSItemBySSCCWarehouseItem WHERE acIdent = '{ident}' AND acSSCC = '{sscc}' AND acWarehouse = '{warehouse}' AND acKey = '{keyr.GetString("Key")}'";
+                parameters.Add(new Services.Parameter { Name = "acIdent", Type = "String", Value = ident });
+                parameters.Add(new Services.Parameter { Name = "acSSCC", Type = "String", Value = sscc });
+                parameters.Add(new Services.Parameter { Name = "acWarehouse", Type = "String", Value = warehouse });
+                parameters.Add(new Services.Parameter { Name = "acKey", Type = "String", Value = keyr.GetString("Key") });
 
-                result = Services.GetObjectListBySql(query);
+
+                query = $"SELECT * FROM uWMSItemBySSCCWarehouseItem WHERE acIdent = @acIdent AND acSSCC = @acSSCC AND acWarehouse = @acWarehouse AND acKey = @acKey";
+
+                result = Services.GetObjectListBySql(query, parameters);
 
                 if (result.Success && result.Rows.Count > 0)
                 {
@@ -1568,7 +1577,7 @@ namespace WMS
             popupDialog.Show();
 
             popupDialog.Window.SetLayout(LayoutParams.MatchParent, LayoutParams.WrapContent);
-            popupDialog.Window.SetBackgroundDrawableResource(Android.Resource.Color.HoloBlueBright);
+            popupDialog.Window.SetBackgroundDrawable(new ColorDrawable(Color.ParseColor("#081a45")));
             image = popupDialog.FindViewById<ZoomageView>(Resource.Id.image);
             image.SetMinimumHeight(500);
             image.SetMinimumWidth(800);
@@ -1650,7 +1659,7 @@ namespace WMS
             popupDialogConfirm.Show();
 
             popupDialogConfirm.Window.SetLayout(LayoutParams.MatchParent, LayoutParams.WrapContent);
-            popupDialogConfirm.Window.SetBackgroundDrawableResource(Android.Resource.Color.HoloRedLight);
+            popupDialogConfirm.Window.SetBackgroundDrawable(new ColorDrawable(Color.ParseColor("#081a45")));
 
             // Access Popup layout fields like below
             btnYesConfirm = popupDialogConfirm.FindViewById<Button>(Resource.Id.btnYes);

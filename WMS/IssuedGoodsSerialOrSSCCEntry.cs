@@ -33,6 +33,7 @@ using System.Text.Json;
 using AndroidX.AppCompat.App;
 using AlertDialog = Android.App.AlertDialog;
 using Aspose.Words.Drawing;
+using Android.Graphics.Drawables;
 
 namespace WMS
 {
@@ -130,6 +131,7 @@ namespace WMS
             btCreate.Click += BtCreate_Click;
             btFinish.Click += BtFinish_Click;
             btExit.Click += BtExit_Click;
+            btOverview.Click += BtOverview_Click;
 
             var _broadcastReceiver = new NetworkStatusBroadcastReceiver();
             _broadcastReceiver.ConnectionStatusChanged += OnNetworkStatusChanged;
@@ -152,6 +154,15 @@ namespace WMS
             LoaderManifest.LoaderManifestLoopStop(this);
         }
 
+        private void BtOverview_Click(object? sender, EventArgs e)
+        {
+            StartActivity(typeof(IssuedGoodsEnteredPositionsView));
+            Finish();
+        }
+
+  
+
+
         private void TbPacking_KeyPress(object? sender, View.KeyEventArgs e)
         {
             if (e.KeyCode == Keycode.Enter && e.Event.Action == KeyEventActions.Down)
@@ -159,11 +170,23 @@ namespace WMS
                 FilterData();
             }
             e.Handled = false;
+
+
         }
 
         private void BtFinish_Click(object? sender, EventArgs e)
         {
-            Toast.MakeText(this, "Finishing.", ToastLength.Long).Show();
+            popupDialogConfirm = new Dialog(this);
+            popupDialogConfirm.SetContentView(Resource.Layout.Confirmation);
+            popupDialogConfirm.Window.SetSoftInputMode(SoftInput.AdjustResize);
+            popupDialogConfirm.Show();
+            popupDialogConfirm.Window.SetLayout(LayoutParams.MatchParent, LayoutParams.WrapContent);
+            popupDialogConfirm.Window.SetBackgroundDrawable(new ColorDrawable(Color.ParseColor("#081a45")));
+            // Access Popup layout fields like below
+            btnYesConfirm = popupDialogConfirm.FindViewById<Button>(Resource.Id.btnYes);
+            btnNoConfirm = popupDialogConfirm.FindViewById<Button>(Resource.Id.btnNo);
+            btnYesConfirm.Click += BtnYesConfirm_Click;
+            btnNoConfirm.Click += BtnNoConfirm_Click;
         }
 
         private async void BtCreate_Click(object? sender, EventArgs e)
@@ -178,6 +201,11 @@ namespace WMS
                 Toast.MakeText(this, "Nepravilni podatki", ToastLength.Long).Show();
             }
         }
+
+
+
+ 
+    
 
         private async void BtCreateSame_Click(object? sender, EventArgs e)
         {
@@ -274,6 +302,9 @@ namespace WMS
                         moveItem = new NameValueObject("MoveItem");
                     }
 
+                    moveItem.SetInt("HeadID", moveHead.GetInt("HeadID"));
+                    moveItem.SetString("LinkKey", receivedTrail.Key);
+                    moveItem.SetInt("LinkNo", receivedTrail.No);
                     moveItem.SetString("Ident", openIdent.GetString("Code"));
                     moveItem.SetString("SSCC", tbSSCC.Text.Trim());
                     moveItem.SetString("SerialNo", tbSerialNum.Text.Trim());
@@ -287,9 +318,31 @@ namespace WMS
                     string error;
                     moveItem = Services.SetObject("mi", moveItem, out error);
              
-                    if(moveItem != null && error != string.Empty)
+                    if(moveItem != null && error == string.Empty)
                     {
+                        RunOnUiThread(() =>
+                        {
+                            // Succesfull position creation
+                            if (ssccRow.Visibility == ViewStates.Visible)
+                            {
+                                tbSSCC.Text = string.Empty;
+                                tbSSCC.RequestFocus();
+                            }
+                            if (serialRow.Visibility == ViewStates.Visible)
+                            {
+                                tbSerialNum.Text = string.Empty;
 
+                                if (ssccRow.Visibility == ViewStates.Gone)
+                                {
+                                    tbSerialNum.RequestFocus();
+                                }
+                            }
+                        });
+
+                     
+                        dist = new List<IssuedGoods>();
+                        createPositionAllowed = false;
+                        GetConnectedPositions(receivedTrail.Key, receivedTrail.No, receivedTrail.Ident, receivedTrail.Location);
                     }
 
                 } else
@@ -299,20 +352,6 @@ namespace WMS
             });
         }
 
-        private async void Button6_Click(object sender, EventArgs e)
-        {
-            popupDialogConfirm = new Dialog(this);
-            popupDialogConfirm.SetContentView(Resource.Layout.Confirmation);
-            popupDialogConfirm.Window.SetSoftInputMode(SoftInput.AdjustResize);
-            popupDialogConfirm.Show();
-            popupDialogConfirm.Window.SetLayout(LayoutParams.MatchParent, LayoutParams.WrapContent);
-            popupDialogConfirm.Window.SetBackgroundDrawableResource(Android.Resource.Color.HoloRedLight);
-            // Access Popup layout fields like below
-            btnYesConfirm = popupDialogConfirm.FindViewById<Button>(Resource.Id.btnYes);
-            btnNoConfirm = popupDialogConfirm.FindViewById<Button>(Resource.Id.btnNo);
-            btnYesConfirm.Click += BtnYesConfirm_Click;
-            btnNoConfirm.Click += BtnNoConfirm_Click;
-        }
 
         private void BtnNoConfirm_Click(object sender, EventArgs e)
         {
@@ -322,8 +361,106 @@ namespace WMS
 
         private async void BtnYesConfirm_Click(object sender, EventArgs e)
         {
-            await CreateMethodSame();
+            await FinishMethod();
         }
+
+
+
+        private async Task FinishMethod()
+        {
+            await Task.Run(async () =>
+            {
+            
+                RunOnUiThread(() =>
+                {
+                    progress = new ProgressDialogClass();
+                    progress.ShowDialogSync(this, "Zaključevanje");
+                });
+
+                try
+                {
+
+                    var headID = moveHead.GetInt("HeadID");
+
+                    string result;
+
+                    if (WebApp.Get("mode=finish&stock=remove&print=" + Services.DeviceUser() + "&id=" + headID.ToString(), out result))
+                    {
+                        if (result.StartsWith("OK!"))
+                        {
+
+                            RunOnUiThread(() =>
+                            {
+                                progress.StopDialogSync();
+
+                                var id = result.Split('+')[1];
+
+                                Toast.MakeText(this, "Zaključevanje uspešno! Št. izdaje:\r\n" + id, ToastLength.Long).Show();
+
+                                AlertDialog.Builder alert = new AlertDialog.Builder(this);
+
+                                alert.SetTitle("Zaključevanje uspešno");
+
+                                alert.SetMessage("Zaključevanje uspešno! Št.prevzema:\r\n" + id);
+
+                                alert.SetPositiveButton("Ok", (senderAlert, args) =>
+                                {
+                                    alert.Dispose();
+                                    System.Threading.Thread.Sleep(500);
+                                    StartActivity(typeof(IssuedGoodsBusinessEventSetup));
+                                });
+
+
+
+                                Dialog dialog = alert.Create();
+                                dialog.Show();
+                            });
+
+                        }
+                        else
+                        {
+                            RunOnUiThread(() =>
+                            {
+                                progress.StopDialogSync();
+                                AlertDialog.Builder alert = new AlertDialog.Builder(this);
+                                alert.SetTitle("Napaka");
+                                alert.SetMessage("Napaka pri zaključevanju: " + result);
+
+                                alert.SetPositiveButton("Ok", (senderAlert, args) =>
+                                {
+                                    alert.Dispose();
+                                    System.Threading.Thread.Sleep(500);
+                                    StartActivity(typeof(MainMenu));
+
+                                });
+
+
+
+                                Dialog dialog = alert.Create();
+                                dialog.Show();
+                            });
+                        }
+                    }
+                    else
+                    {
+                        Toast.MakeText(this, "Napaka pri klicu do web aplikacije" + result, ToastLength.Long).Show();
+
+                    }
+                }
+                finally
+                {
+                    RunOnUiThread(() =>
+                    {
+                        progress.StopDialogSync();
+
+                    });
+                }
+                
+            });
+        }
+
+
+
 
         private void SetUpForm()
         {
@@ -438,7 +575,6 @@ namespace WMS
                         var row = subjects.Rows[i];
                         connectedPositions.Add(new IssuedGoods
                         {
-
                             acName = row.StringValue("acName"),
                             acSubject = row.StringValue("acSubject"),
                             acSerialNo = row.StringValue("acSerialNo"),

@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="130.5dp"
         android:id="@+id/bin"
-        android:src="@drawable/bin"
+        android:src="@drawable/delete"
         android:contentDescription=""
         android:layout_marginRight="0.0dp"
         android:layout_marginLeft="22.0dp" />
@@ -30,6 +30,8 @@
         android:id="@+id/text"
         android:paddingLeft="10dp"
         android:paddingTop="5dp"
+                android:textColor="@android:color/darker_gray"
+
         android:text="Ali ste sigurni da želite pobrisati pozicijo?"
         android:layout_marginTop="0.0dp"
         android:textStyle="bold|italic"
@@ -45,8 +47,8 @@
 
         <Button
             android:layout_weight="1"
-            android:background="@color/rikoMain"
-            android:textColor="#ffffff"
+            android:background="@android:color/darker_gray"
+            android:textColor="@color/rikoMain"
             android:text="Da"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -56,8 +58,8 @@
 
         <Button
             android:layout_weight="1"
-             android:background="@color/rikoMain"
-            android:textColor="#ffffff"
+            android:background="@android:color/darker_gray"
+            android:textColor="@color/rikoMain"
             android:text="Ne"
             android:layout_width="match_parent"
             android:layout_height="81.5dp"

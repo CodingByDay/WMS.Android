@@ -27,7 +27,10 @@ using static Android.App.DownloadManager;
 using static Android.Provider.CalendarContract;
 using WebApp = TrendNET.WMS.Device.Services.WebApp;
 
-using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS
+using AndroidX.AppCompat.App;
+using AlertDialog = Android.App.AlertDialog;
+using Android.Graphics;
+namespace WMS
 {
     [Activity(Label = "InterWarehouseSerialOrSSCCEntryTablet", ScreenOrientation = Android.Content.PM.ScreenOrientation.Landscape)]
     public class InterWarehouseSerialOrSSCCEntryTablet : AppCompatActivity
@@ -1044,7 +1047,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             popupDialog.Show();
 
             popupDialog.Window.SetLayout(LayoutParams.MatchParent, LayoutParams.WrapContent);
-            popupDialog.Window.SetBackgroundDrawableResource(Android.Resource.Color.HoloOrangeLight);
+            popupDialog.Window.SetBackgroundDrawable(new ColorDrawable(Color.ParseColor("#081a45")));
 
             // Access Pop-up layout fields like below
             btnYes = popupDialog.FindViewById<Button>(Resource.Id.btnYes);
@@ -1208,8 +1211,12 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                     return null;
                 }
 
-                query = $"SELECT * FROM uWMSItemBySSCCWarehouse WHERE acSSCC = '{barcode}' AND acWarehouse = '{warehouse}'";
-                resultQuery = Services.GetObjectListBySql(query);
+                var parameters = new List<Services.Parameter>();
+                parameters.Add(new Services.Parameter { Name = "acSSCC", Type = "String", Value = barcode });
+                parameters.Add(new Services.Parameter { Name = "acWarehouse", Type = "String", Value = warehouse });
+                query = $"SELECT * FROM uWMSItemBySSCCWarehouse WHERE acSSCC = @acSSCC AND acWarehouse = @acWarehouse";
+                resultQuery = Services.GetObjectListBySql(query, parameters);
+
                 if (resultQuery.Success && resultQuery.Rows.Count > 0)
                 {
                     MorePallets instance = new MorePallets();
@@ -1458,7 +1465,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             popupDialog.KeyPress += PopupDialog_KeyPress;
 
             popupDialog.Window.SetLayout(LayoutParams.MatchParent, LayoutParams.WrapContent);
-            popupDialog.Window.SetBackgroundDrawableResource(Android.Resource.Color.HoloBlueBright);
+            popupDialog.Window.SetBackgroundDrawable(new ColorDrawable(Color.ParseColor("#081a45")));
             image = popupDialog.FindViewById<ZoomageView>(Resource.Id.image);
             image.SetMinimumHeight(500);
             image.SetMinimumWidth(800);
@@ -1584,7 +1591,8 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             popupDialogConfirm.Show();
 
             popupDialogConfirm.Window.SetLayout(LayoutParams.MatchParent, LayoutParams.WrapContent);
-            popupDialogConfirm.Window.SetBackgroundDrawableResource(Android.Resource.Color.HoloRedLight);
+            popupDialogConfirm.Window.SetBackgroundDrawable(new ColorDrawable(Color.ParseColor("#081a45")));
+
 
             // Access Popup layout fields like below
             btnYesConfirm = popupDialogConfirm.FindViewById<Button>(Resource.Id.btnYes);

@@ -248,8 +248,13 @@ namespace WMS
                 {
                     adapter = new ClientPickingAdapter(this, positions);
                     ivTrail.Adapter = adapter;
-                    string sql = $"SELECT * FROM uWMSOrderItemBySubjectTypeWarehouseOut WHERE acDocType = '{moveHead.GetString("DocumentType")}' AND acSubject = '{moveHead.GetString("Receiver")}' AND acWarehouse = '{moveHead.GetString("Wharehouse")}';";
-                    result = Services.GetObjectListBySql(sql);
+                    var parameters = new List<Services.Parameter>();
+                    parameters.Add(new Services.Parameter { Name = "acDocType", Type = "String", Value = moveHead.GetString("DocumentType") });
+                    parameters.Add(new Services.Parameter { Name = "acSubject", Type = "String", Value = moveHead.GetString("Receiver") });
+                    parameters.Add(new Services.Parameter { Name = "acWarehouse", Type = "String", Value = moveHead.GetString("Wharehouse") });
+
+                    string sql = $"SELECT * FROM uWMSOrderItemBySubjectTypeWarehouseOut WHERE acDocType = @acDocType AND acSubject = @acSubject AND acWarehouse = @acWarehouse;";
+                    result = Services.GetObjectListBySql(sql, parameters);
                 }
                 if (moveHead != null && result.Success && result.Rows.Count > 0)
                 {

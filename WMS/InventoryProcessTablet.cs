@@ -292,8 +292,10 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
         private Row GetSSCCData(string sscc)
         {
             Row row = new Row();
-            var query = $"SELECT * FROM uWMSItemBySSCCWarehouse WHERE acSSCC='{sscc}';";
-            var result = Services.GetObjectListBySql(query);
+            var parameters = new List<Services.Parameter>();
+            parameters.Add(new Services.Parameter { Name = "acSSCC", Type = "String", Value = sscc });
+            var query = $"SELECT * FROM uWMSItemBySSCCWarehouse WHERE acSSCC=@acSSCC;";
+            var result = Services.GetObjectListBySql(query, parameters);
             if (result.Success && result.Rows.Count > 0)
             {
                 MorePallets instance = new MorePallets();

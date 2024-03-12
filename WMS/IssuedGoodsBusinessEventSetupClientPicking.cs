@@ -75,6 +75,8 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
        
             btnLogout.Click += BtnLogout_Click;
             btnOrder.Click += BtnOrder_Click;
+
+
             var warehouses = Services.GetObjectListBySql($"SELECT acWarehouse, acName FROM uWMSWarehouse");
 
             if (warehouses.Success)
@@ -140,8 +142,13 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                             var wh = adapterWarehouse.GetItem(temporaryPositionWarehouse);
                             if (wh != null)
                             {
-                                string error;                                
-                                var subjects = Services.GetObjectListBySql($"SELECT * FROM uWMSOrderSubjectByTypeWarehouseOut WHERE acDocType = '{dt.ID}' AND acWarehouse = '{wh.ID}'");
+                                string error;
+                                var parameters = new List<Services.Parameter>();
+
+                                parameters.Add(new Services.Parameter { Name = "acDocType", Type = "String", Value = dt.ID });
+                                parameters.Add(new Services.Parameter { Name = "acWarehouse", Type = "String", Value = wh.ID });
+
+                                var subjects = Services.GetObjectListBySql($"SELECT * FROM uWMSOrderSubjectByTypeWarehouseOut WHERE acDocType = @acDocType AND acWarehouse = @acWarehouse", parameters);
                                 if (!subjects.Success)
                                 {
                                     RunOnUiThread(() =>

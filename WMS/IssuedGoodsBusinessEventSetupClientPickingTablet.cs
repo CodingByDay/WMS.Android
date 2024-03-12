@@ -241,7 +241,12 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                         {
                             string error;
 
-                            var subjects = Services.GetObjectListBySql($"SELECT * FROM uWMSOrderSubjectByTypeWarehouseOut WHERE acDocType = '{dt.ID}' AND acWarehouse = '{wh.ID}'");
+                            var parameters = new List<Services.Parameter>();
+
+                            parameters.Add(new Services.Parameter { Name = "acDocType", Type = "String", Value = dt.ID });
+                            parameters.Add(new Services.Parameter { Name = "acWarehouse", Type = "String", Value = wh.ID });
+
+                            var subjects = Services.GetObjectListBySql($"SELECT * FROM uWMSOrderSubjectByTypeWarehouseOut WHERE acDocType = @acDocType AND acWarehouse = @acWarehouse", parameters);
 
                             if (!subjects.Success)
                             {

@@ -23,6 +23,7 @@ using WMS.Caching;
 
 using AndroidX.AppCompat.App;
 using AlertDialog = Android.App.AlertDialog;
+using Android.Graphics.Drawables;
 namespace WMS
 {
     [Activity(Label = "MainMenu", ScreenOrientation = ScreenOrientation.Portrait)]
@@ -179,7 +180,8 @@ namespace WMS
                 popupDialog.Show();
 
                 popupDialog.Window.SetLayout(LayoutParams.MatchParent, LayoutParams.WrapContent);
-                popupDialog.Window.SetBackgroundDrawableResource(Android.Resource.Color.HoloRedLight);
+                popupDialog.Window.SetBackgroundDrawable(new ColorDrawable(Color.ParseColor("#081a45")));
+#
 
                 // Access Pop-up layout fields like below
                 btnOkRestart = popupDialog.FindViewById<Button>(Resource.Id.btnOk);

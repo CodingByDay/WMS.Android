@@ -8,8 +8,10 @@ public static class Queries
     {
         AutocompleteResponse response = new AutocompleteResponse();
         ApiResultSet rs = new ApiResultSet();
-        string query = $"SELECT acWarehouse FROM uWMSOrderDocTypeOut WHERE acDocType = '{docType}'";
-        rs = Services.GetObjectListBySql(query);
+        var parameters = new List<Services.Parameter>();
+        parameters.Add(new Services.Parameter { Name = "acDocType", Type = "String", Value = docType });
+        string query = $"SELECT acWarehouse FROM uWMSOrderDocTypeOut WHERE acDocType = @acDocType";
+        rs = Services.GetObjectListBySql(query, parameters);
         if (rs.Success && rs.Rows.Count > 0 && !string.IsNullOrEmpty(rs.Rows[0].StringValue("acWarehouse")))
         {
             response.warehouse = rs.Rows[0].StringValue("acWarehouse");
@@ -27,8 +29,10 @@ public static class Queries
     {
         AutocompleteResponse response = new AutocompleteResponse();
         ApiResultSet rs = new ApiResultSet();
-        string query = $"SELECT acWarehouse FROM uWMSOrderDocTypeIn WHERE acDocType = '{docType}'";
-        rs = Services.GetObjectListBySql(query);
+        var parameters = new List<Services.Parameter>();
+        parameters.Add(new Services.Parameter { Name = "acDocType", Type = "String", Value = docType });
+        string query = $"SELECT acWarehouse FROM uWMSOrderDocTypeIn WHERE acDocType = @acDocType";
+        rs = Services.GetObjectListBySql(query, parameters);
         if (rs.Success && rs.Rows.Count > 0 && !string.IsNullOrEmpty(rs.Rows[0].StringValue("acWarehouse")))
         {
             response.warehouse = rs.Rows[0].StringValue("acWarehouse");

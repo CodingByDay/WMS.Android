@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="137.5dp"
         android:id="@+id/bin"
-        android:src="@drawable/icon9"
+        android:src="@drawable/warning"
         android:contentDescription=""
         android:layout_marginRight="0.0dp"
         android:layout_marginLeft="22.0dp" />
@@ -27,6 +27,7 @@
         android:layout_width="wrap_content"
         android:layout_height="65.0dp"
         android:layout_gravity="center"
+        android:textColor="@android:color/darker_gray"
         android:paddingLeft="10dp"
         android:paddingTop="5dp"
         android:text="Izpisanih je bilo zadostno št etiket. Želite zamenjati serijsko št.?"
@@ -42,28 +43,28 @@
         android:layout_marginBottom="20dp"
         android:paddingTop="5dp">
 
-        <Button
+        
+          <Button
             android:layout_weight="1"
-            android:background="@color/rikoMain"
-            android:textColor="#ffffff"
+            android:background="@android:color/darker_gray"
+            android:textColor="@color/rikoMain"
             android:text="Da"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="81.5dp"
             android:id="@+id/btnYes"
-            android:layout_marginLeft="4dp"
-            android:layout_marginRight="2dp"/>
-
-        <Button
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="4dp"/>
+ 
+          <Button
             android:layout_weight="1"
-             android:background="@color/rikoMain"
-            android:textColor="#ffffff"
+            android:background="@android:color/darker_gray"
+            android:textColor="@color/rikoMain"
             android:text="Ne"
             android:layout_width="match_parent"
             android:layout_height="81.5dp"
             android:id="@+id/btnNo"
             android:layout_marginLeft="2dp"
             android:layout_marginRight="4dp"/>
-
     </LinearLayout>
 
 </LinearLayout>
