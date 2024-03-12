@@ -75,6 +75,10 @@ namespace WMS
         private LinearLayout serialRow;
         private List<IssuedGoods> connectedPositions = new List<IssuedGoods>();
         private bool createPositionAllowed = false;
+        private double stock;
+
+
+
         protected override async void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -112,18 +116,19 @@ namespace WMS
             soundPoolId = soundPool.Load(this, Resource.Raw.beep, 1);
             Barcode2D barcode2D = new Barcode2D();
             barcode2D.open(this, this);
-
-            // Events
-
-            tbSSCC.KeyPress += TbSSCC_KeyPress;
-            tbSerialNum.KeyPress += TbSerialNum_KeyPress;
-
             btCreateSame = FindViewById<Button>(Resource.Id.btCreateSame);
             btCreate = FindViewById<Button>(Resource.Id.btCreate);
             btFinish = FindViewById<Button>(Resource.Id.btFinish);
             btOverview = FindViewById<Button>(Resource.Id.btOverview);
             btExit = FindViewById<Button>(Resource.Id.btExit);
 
+            // Events
+            tbPacking.KeyPress += TbPacking_KeyPress;
+            tbSSCC.KeyPress += TbSSCC_KeyPress;
+            tbSerialNum.KeyPress += TbSerialNum_KeyPress;
+            btCreateSame.Click += BtCreateSame_Click;
+            btCreate.Click += BtCreate_Click;
+            btFinish.Click += BtFinish_Click;
             btExit.Click += BtExit_Click;
 
             var _broadcastReceiver = new NetworkStatusBroadcastReceiver();
@@ -147,22 +152,63 @@ namespace WMS
             LoaderManifest.LoaderManifestLoopStop(this);
         }
 
-        private void TbSerialNum_KeyPress(object? sender, View.KeyEventArgs e)
+        private void TbPacking_KeyPress(object? sender, View.KeyEventArgs e)
         {
-            if(e.KeyCode == Keycode.Enter)
+            if (e.KeyCode == Keycode.Enter && e.Event.Action == KeyEventActions.Down)
             {
                 FilterData();
             }
             e.Handled = false;
+        }
 
+        private void BtFinish_Click(object? sender, EventArgs e)
+        {
+            Toast.MakeText(this, "Finishing.", ToastLength.Long).Show();
+        }
+
+        private async void BtCreate_Click(object? sender, EventArgs e)
+        {
+            double parsed;
+            if (createPositionAllowed && double.TryParse(tbPacking.Text, out parsed) && stock >= parsed)
+            {
+                await FinishMethod();
+            }
+            else
+            {
+                Toast.MakeText(this, "Nepravilni podatki", ToastLength.Long).Show();
+            }
+        }
+
+        private async void BtCreateSame_Click(object? sender, EventArgs e)
+        {
+            double parsed;
+            if(createPositionAllowed && double.TryParse(tbPacking.Text, out parsed) && stock >= parsed)
+            {
+                await FinishMethod();
+            } else
+            {
+                Toast.MakeText(this, "Nepravilni podatki", ToastLength.Long).Show();
+            }
+        }
+
+        private void TbSerialNum_KeyPress(object? sender, View.KeyEventArgs e)
+        {
+            if(e.KeyCode == Keycode.Enter && e.Event.Action == KeyEventActions.Down)
+            {
+                FilterData();
+            }
+
+            e.Handled = false;
         }
 
         private void TbSSCC_KeyPress(object? sender, View.KeyEventArgs e)
         {
-            if (e.KeyCode == Keycode.Enter)
+            if (e.KeyCode == Keycode.Enter && e.Event.Action == KeyEventActions.Down)
             {
                 FilterData();
             }
+
+            e.Handled = false;
         }
 
         private void BtExit_Click(object? sender, EventArgs e)
@@ -201,6 +247,7 @@ namespace WMS
 
         private void Button4_LongClick(object sender, View.LongClickEventArgs e)
         {
+
         }
 
         private void Button5_Click(object sender, EventArgs e)
@@ -219,7 +266,11 @@ namespace WMS
         {
             await Task.Run(() =>
             {
-
+                RunOnUiThread(() =>
+                {
+                    // Code executed on the UI thread
+                    Toast.MakeText(this, "Creating the position!", ToastLength.Short).Show();
+                });
             });
         }
 
@@ -251,7 +302,6 @@ namespace WMS
 
         private void SetUpForm()
         {
-
             // This is the default focus of the view.
             tbSSCC.RequestFocus();
 
@@ -267,7 +317,6 @@ namespace WMS
                 tbPacking.RequestFocus();
             }
 
-
             if (moveItem != null)
             {
                 // Update logic ?? it seems to be true.
@@ -279,8 +328,6 @@ namespace WMS
                 tbPacking.Text = moveItem.GetDouble("Packing").ToString();
                 tbUnits.Text = moveItem.GetDouble("Factor").ToString();
                 btCreateSame.Text = "Serij. - F2";
-
-
             }
             else
             {
@@ -294,6 +341,7 @@ namespace WMS
                     qtyCheck = Double.Parse(receivedTrail.Qty);
                     tbLocation.Text = receivedTrail.Location;
                     lbQty.Text = "Zaloga ( " + qtyCheck.ToString(CommonData.GetQtyPicture()) + " )";
+                    stock = qtyCheck;
                     tbPacking.Text = qtyCheck.ToString();
                     GetConnectedPositions(receivedTrail.Key, receivedTrail.No, receivedTrail.Ident, receivedTrail.Location);            
                 }
@@ -370,8 +418,8 @@ namespace WMS
                             acSubject = row.StringValue("acSubject"),
                             acSerialNo = row.StringValue("acSerialNo"),
                             acSSCC = row.StringValue("acSSCC"),
-                            anQty = row.DoubleValue("anQty")
-
+                            anQty = row.DoubleValue("anQty"),
+                            aclocation = row.StringValue("aclocation")
                         });
                     }                                         
                 }
@@ -399,10 +447,6 @@ namespace WMS
 
             return filtered;
         }
-
-
-
-
 
 
         private static bool? checkIssuedOpenQty = null;
@@ -454,25 +498,52 @@ namespace WMS
         {
             try
             {
-                if (tbSSCC.HasFocus && isOkayToCallBarcode == false)
+                if (tbSSCC.HasFocus)
                 {
                     if (barcode != "Scan fail")
                     {
                         Sound();
+
+                        tbSSCC.Text = barcode;
+
+                        if(serialRow.Visibility == ViewStates.Visible)
+                        {
+                            tbSerialNum.RequestFocus();
+                        } else
+                        {
+                            tbPacking.RequestFocus();
+                        }
+
+
+                        FilterData();   
                     }
                 }
-                else if (tbSerialNum.HasFocus && isOkayToCallBarcode == false)
+                else if (tbSerialNum.HasFocus)
                 {
                     if (barcode != "Scan fail")
                     {
                         Sound();
+
+                        tbSerialNum.Text = barcode;
+
+                        tbPacking.RequestFocus();
+
+
+                        FilterData();
+
                     }
                 }
-                else if (tbLocation.HasFocus && isOkayToCallBarcode == false)
+                else if (tbLocation.HasFocus)
                 {
                     if (barcode != "Scan fail")
                     {
                         Sound();
+
+                        tbLocation.Text = barcode;
+
+
+                        FilterData();
+
                     }
                 }
             }
@@ -486,13 +557,22 @@ namespace WMS
 
         private void FilterData()
         {
+
             var data = FilterIssuedGoods(connectedPositions, tbSSCC.Text, tbSerialNum.Text, tbLocation.Text);
 
-            if(data.Count == 1)
+            // Temporary solution because of the SQL error.
+            var dist = data
+                .GroupBy(x => new { x.acName, x.acSSCC, x.acSerialNo, x.aclocation, x.acSubject, x.anQty })
+                .Select(g => g.First())
+                .ToList();
+
+            if (dist.Count == 1)
             {
                 // Do stuff and allow creating the position
                 createPositionAllowed = true;
+                tbPacking.Text = dist.ElementAt(0).anQty.ToString();
             } 
+
         }
 
 
