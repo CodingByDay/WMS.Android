@@ -171,7 +171,7 @@ namespace WMS
             double parsed;
             if (createPositionAllowed && double.TryParse(tbPacking.Text, out parsed) && stock >= parsed)
             {
-                await FinishMethod();
+                await CreateMethodSame();
             }
             else
             {
@@ -184,7 +184,7 @@ namespace WMS
             double parsed;
             if(createPositionAllowed && double.TryParse(tbPacking.Text, out parsed) && stock >= parsed)
             {
-                await FinishMethod();
+                await CreateMethodSame();
             } else
             {
                 Toast.MakeText(this, "Nepravilni podatki", ToastLength.Long).Show();
@@ -262,15 +262,40 @@ namespace WMS
             Finish();
         }
 
-        private async Task FinishMethod()
+        private async Task CreateMethodSame()
         {
             await Task.Run(() =>
             {
-                RunOnUiThread(() =>
+                if (dist.Count == 1)
                 {
-                    // Code executed on the UI thread
-                    Toast.MakeText(this, "Creating the position!", ToastLength.Short).Show();
-                });
+
+                    if (moveItem == null)
+                    {
+                        moveItem = new NameValueObject("MoveItem");
+                    }
+
+                    moveItem.SetString("Ident", openIdent.GetString("Code"));
+                    moveItem.SetString("SSCC", tbSSCC.Text.Trim());
+                    moveItem.SetString("SerialNo", tbSerialNum.Text.Trim());
+                    moveItem.SetDouble("Packing", Convert.ToDouble(tbPacking.Text.Trim()));
+                    moveItem.SetDouble("Factor", Convert.ToDouble(tbUnits.Text.Trim()));
+                    moveItem.SetDouble("Qty", Convert.ToDouble(tbUnits.Text.Trim()) * Convert.ToDouble(tbPacking.Text.Trim()));
+                    moveItem.SetInt("Clerk", Services.UserID());
+                    moveItem.SetString("Location", tbLocation.Text.Trim());
+                    moveItem.SetString("Palette", tbPalette.Text.Trim());
+
+                    string error;
+                    moveItem = Services.SetObject("mi", moveItem, out error);
+             
+                    if(moveItem != null && error != string.Empty)
+                    {
+
+                    }
+
+                } else
+                {
+                    return;
+                }
             });
         }
 
@@ -297,7 +322,7 @@ namespace WMS
 
         private async void BtnYesConfirm_Click(object sender, EventArgs e)
         {
-            await FinishMethod();
+            await CreateMethodSame();
         }
 
         private void SetUpForm()
@@ -337,7 +362,7 @@ namespace WMS
                 if (Intent.Extras != null && !String.IsNullOrEmpty(Intent.Extras.GetString("selected")))
                 {
                     string trailBytes = Intent.Extras.GetString("selected");
-                    Trail receivedTrail = JsonConvert.DeserializeObject<Trail>(trailBytes);
+                    receivedTrail = JsonConvert.DeserializeObject<Trail>(trailBytes);
                     qtyCheck = Double.Parse(receivedTrail.Qty);
                     tbLocation.Text = receivedTrail.Location;
                     lbQty.Text = "Zaloga ( " + qtyCheck.ToString(CommonData.GetQtyPicture()) + " )";
@@ -480,6 +505,7 @@ namespace WMS
         private string sscc;
         private string warehouse;
         private Dialog popupDialogMainIssueing;
+        private List<IssuedGoods> dist;
 
         private void ColorFields()
         {
@@ -561,7 +587,7 @@ namespace WMS
             var data = FilterIssuedGoods(connectedPositions, tbSSCC.Text, tbSerialNum.Text, tbLocation.Text);
 
             // Temporary solution because of the SQL error.
-            var dist = data
+            dist = data
                 .GroupBy(x => new { x.acName, x.acSSCC, x.acSerialNo, x.aclocation, x.acSubject, x.anQty })
                 .Select(g => g.First())
                 .ToList();
