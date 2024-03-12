@@ -32,6 +32,7 @@ using System.Text.Json;
 
 using AndroidX.AppCompat.App;
 using AlertDialog = Android.App.AlertDialog;
+using Aspose.Words.Drawing;
 
 namespace WMS
 {
@@ -73,6 +74,7 @@ namespace WMS
         private LinearLayout ssccRow;
         private LinearLayout serialRow;
         private List<IssuedGoods> connectedPositions = new List<IssuedGoods>();
+        private bool createPositionAllowed = false;
         protected override async void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -111,6 +113,11 @@ namespace WMS
             Barcode2D barcode2D = new Barcode2D();
             barcode2D.open(this, this);
 
+            // Events
+
+            tbSSCC.KeyPress += TbSSCC_KeyPress;
+            tbSerialNum.KeyPress += TbSerialNum_KeyPress;
+
             btCreateSame = FindViewById<Button>(Resource.Id.btCreateSame);
             btCreate = FindViewById<Button>(Resource.Id.btCreate);
             btFinish = FindViewById<Button>(Resource.Id.btFinish);
@@ -138,6 +145,24 @@ namespace WMS
 
             // Stop the loader
             LoaderManifest.LoaderManifestLoopStop(this);
+        }
+
+        private void TbSerialNum_KeyPress(object? sender, View.KeyEventArgs e)
+        {
+            if(e.KeyCode == Keycode.Enter)
+            {
+                FilterData();
+            }
+            e.Handled = false;
+
+        }
+
+        private void TbSSCC_KeyPress(object? sender, View.KeyEventArgs e)
+        {
+            if (e.KeyCode == Keycode.Enter)
+            {
+                FilterData();
+            }
         }
 
         private void BtExit_Click(object? sender, EventArgs e)
@@ -194,6 +219,7 @@ namespace WMS
         {
             await Task.Run(() =>
             {
+
             });
         }
 
@@ -225,8 +251,23 @@ namespace WMS
 
         private void SetUpForm()
         {
-            tbSSCC.Enabled = openIdent.GetBool("isSSCC");
-            tbSerialNum.Enabled = openIdent.GetBool("HasSerialNumber");
+
+            // This is the default focus of the view.
+            tbSSCC.RequestFocus();
+
+            if(!openIdent.GetBool("isSSCC"))
+            {
+                ssccRow.Visibility = ViewStates.Gone;
+                tbSerialNum.RequestFocus();
+            }
+
+            if(!openIdent.GetBool("HasSerialNumber"))
+            {
+                serialRow.Visibility = ViewStates.Gone;
+                tbPacking.RequestFocus();
+            }
+
+
             if (moveItem != null)
             {
                 // Update logic ?? it seems to be true.
@@ -239,19 +280,13 @@ namespace WMS
                 tbUnits.Text = moveItem.GetDouble("Factor").ToString();
                 btCreateSame.Text = "Serij. - F2";
 
-                // Use open order to get additional information.
 
-                GetConnectedPositions(moveItem.GetString("LinkKey"), moveItem.GetInt("LinkNo"), moveItem.GetString("Ident"), moveItem.GetString("Location"));
-                var filtered = FilterIssuedGoods(connectedPositions, moveItem.GetString("SSCC"), moveItem.GetString("SerialNo"), moveItem.GetString("Location"));
-
-
-
-                var stop = true;
             }
             else
             {
                 // Not the update ?? it seems to be true
                 tbIdent.Text = openIdent.GetString("Code") + " " + openIdent.GetString("Name");
+
                 if (Intent.Extras != null && !String.IsNullOrEmpty(Intent.Extras.GetString("selected")))
                 {
                     string trailBytes = Intent.Extras.GetString("selected");
@@ -260,14 +295,7 @@ namespace WMS
                     tbLocation.Text = receivedTrail.Location;
                     lbQty.Text = "Zaloga ( " + qtyCheck.ToString(CommonData.GetQtyPicture()) + " )";
                     tbPacking.Text = qtyCheck.ToString();
-
-
-                    GetConnectedPositions(receivedTrail.Key, receivedTrail.No, receivedTrail.Ident, receivedTrail.Location);
-                    var filtered = FilterIssuedGoods(connectedPositions, receivedTrail.Location);
-
-
-                    var stop = true;
-
+                    GetConnectedPositions(receivedTrail.Key, receivedTrail.No, receivedTrail.Ident, receivedTrail.Location);            
                 }
             }
 
@@ -293,10 +321,6 @@ namespace WMS
             // Test this function based on the proccess
         }
 
-     
-
-
-
 
         /// <summary>
         ///
@@ -316,6 +340,7 @@ namespace WMS
         private void GetConnectedPositions(string acKey, int anNo, string acIdent, string acLocation)
         {
             var parameters = new List<Services.Parameter>();
+
             parameters.Add(new Services.Parameter { Name = "acKey", Type = "String", Value = acKey });
             parameters.Add(new Services.Parameter { Name = "anNo", Type = "Int32", Value = anNo });
             parameters.Add(new Services.Parameter { Name = "acIdent", Type = "String", Value = acIdent });
@@ -335,7 +360,6 @@ namespace WMS
             {
                 if(subjects.Rows.Count > 0)
                 {
-
                     for (int i = 0; i < subjects.Rows.Count; i++)
                     {
                         var row = subjects.Rows[i];
@@ -349,63 +373,32 @@ namespace WMS
                             anQty = row.DoubleValue("anQty")
 
                         });
-                    }
-                                         
+                    }                                         
                 }
             }
         }
+
         public static List<IssuedGoods> FilterIssuedGoods(List<IssuedGoods> issuedGoodsList, string acSSCC = null, string acSerialNo = null, string acLocation = null)
         {
-            return issuedGoodsList.Where(x =>
-                (string.IsNullOrEmpty(acSSCC) || x.acSSCC == acSSCC) &&
-                (string.IsNullOrEmpty(acSerialNo) || x.acSerialNo == acSerialNo) &&
-                (string.IsNullOrEmpty(acLocation) || x.aclocation == acLocation)
-            ).ToList();
-        }
+            var filtered = issuedGoodsList;
 
-
-
-
-
-        private void FindConnectedPositions(string acKey, int anNo, string acIdent, string acLocation)
-        {
-            var parameters = new List<Services.Parameter>();
-
-            parameters.Add(new Services.Parameter { Name = "acKey", Type = "String", Value = acKey });
-            parameters.Add(new Services.Parameter { Name = "anNo", Type = "Int32", Value = anNo });
-            parameters.Add(new Services.Parameter { Name = "acIdent", Type = "String", Value = acIdent });
-            parameters.Add(new Services.Parameter { Name = "acLocation", Type = "String", Value = acLocation });
-
-            var subjects = Services.GetObjectListBySql($"SELECT * from uWMSOrderItemByKeyOut WHERE acKey = @acKey AND anNo = @anNo AND acIdent = @acIdent and acLocation=@acLocation;", parameters);
-            if (!subjects.Success)
+            if(!String.IsNullOrEmpty(acSSCC))
             {
-                RunOnUiThread(() =>
-                {
-                    Analytics.TrackEvent(subjects.Error);
-                    return;
-                });
+                filtered = filtered.Where(x => x.acSSCC == acSSCC).ToList();
             }
-            else
+
+            if (!String.IsNullOrEmpty(acSerialNo))
             {
-                if (subjects.Rows.Count > 0)
-                {
-                    for (int i = 0; i < subjects.Rows.Count; i++)
-                    {
-                        var row = subjects.Rows[i];
-                        connectedPositions.Add(new IssuedGoods
-                        {
-                            acName = row.StringValue("acName"),
-                            acSubject = row.StringValue("acSubject"),
-                            acSerialNo = row.StringValue("acSerialNo"),
-                            acSSCC = row.StringValue("acSSCC"),
-                            anQty = row.DoubleValue("anQty")
-                        });
-                    }
-
-                }
+                filtered = filtered.Where(x => x.acSerialNo == acSerialNo).ToList();
             }
-        }
 
+            if (!String.IsNullOrEmpty(acLocation))
+            {
+                filtered = filtered.Where(x => x.aclocation == acLocation).ToList();
+            }
+
+            return filtered;
+        }
 
 
 
@@ -489,6 +482,19 @@ namespace WMS
                 Toast.MakeText(this, "Prišlo je do napake", ToastLength.Long).Show();
             }
         }
+
+
+        private void FilterData()
+        {
+            var data = FilterIssuedGoods(connectedPositions, tbSSCC.Text, tbSerialNum.Text, tbLocation.Text);
+
+            if(data.Count == 1)
+            {
+                // Do stuff and allow creating the position
+                createPositionAllowed = true;
+            } 
+        }
+
 
         private void Sound()
         {
