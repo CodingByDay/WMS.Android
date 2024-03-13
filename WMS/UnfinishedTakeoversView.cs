@@ -22,7 +22,10 @@ using WMS.App;
 using Android.Net;
 using Microsoft.AppCenter.Crashes;
 
-using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS
+using AndroidX.AppCompat.App;
+using AlertDialog = Android.App.AlertDialog;
+using Android.Graphics.Drawables;
+namespace WMS
 {
     [Activity(Label = "UnfinishedTakeoversView", ScreenOrientation = ScreenOrientation.Portrait)]
     public class UnfinishedTakeoversView : AppCompatActivity, ISwipeListener
@@ -207,7 +210,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             popupDialog.Show();
 
             popupDialog.Window.SetLayout(LayoutParams.MatchParent, LayoutParams.WrapContent);
-            popupDialog.Window.SetBackgroundDrawableResource(Android.Resource.Color.HoloGreenDark);
+            popupDialog.Window.SetBackgroundDrawable(new ColorDrawable(Color.ParseColor("#081a45")));
 
             // Access Popup layout fields like below
             btnYes = popupDialog.FindViewById<Button>(Resource.Id.btnYes);

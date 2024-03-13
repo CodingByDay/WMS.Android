@@ -10,7 +10,7 @@
         android:layout_width="fill_parent"
         android:layout_height="250.5dp"
         android:id="@+id/bin"
-        android:src="@drawable/icon9"
+        android:src="@drawable/warning"
         android:contentDescription=""
         android:layout_marginRight="0.0dp"
         android:layout_marginLeft="22.0dp" />
@@ -27,6 +27,7 @@
         android:layout_height="65.0dp"
         android:layout_gravity="center"
         android:paddingLeft="10dp"
+        android:textColor="@android:color/darker_gray"
         android:paddingTop="5dp"
         android:text="Karton je že razporejen na drugi paleti. Premestim?"
         android:layout_marginTop="0.0dp"
@@ -41,26 +42,26 @@
         android:paddingTop="5dp">
 
         <Button
-           android:background="@color/rikoMain"
-            android:textColor="#ffffff"
+            android:layout_weight="1"
+            android:background="@android:color/darker_gray"
+            android:textColor="@color/rikoMain"
             android:text="Da"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_height="81.5dp"
             android:id="@+id/btnYes"
-            android:layout_marginRight="2.0dp"
-            android:layout_marginLeft="4dp"/>
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="4dp"/>
 
-        <Button
-            android:background="@color/rikoMain"
-            android:textColor="#ffffff"
-            android:text="Ne"
+         <Button
             android:layout_weight="1"
+            android:background="@android:color/darker_gray"
+            android:textColor="@color/rikoMain"
+            android:text="Ne"
             android:layout_width="match_parent"
             android:layout_height="81.5dp"
             android:id="@+id/btnNo"
-            android:layout_marginLeft="2.0dp"
-            android:layout_marginRight="4.0dp" />
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="4dp"/>
 
     </LinearLayout>
 

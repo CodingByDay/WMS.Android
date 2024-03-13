@@ -1,4 +1,5 @@
 ﻿using Android.Content;
+using Android.Graphics;
 using Android.Graphics.Drawables;
 using Android.Media;
 using Android.Net;
@@ -371,7 +372,7 @@ namespace WMS
             popupDialog.Show();
 
             popupDialog.Window.SetLayout(LayoutParams.MatchParent, LayoutParams.WrapContent);
-            popupDialog.Window.SetBackgroundDrawableResource(Android.Resource.Color.HoloBlueBright);
+            popupDialog.Window.SetBackgroundDrawable(new ColorDrawable(Color.ParseColor("#081a45")));
             image = popupDialog.FindViewById<ZoomageView>(Resource.Id.image);
             image.SetMinimumHeight(500);
 

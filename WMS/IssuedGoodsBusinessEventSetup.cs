@@ -272,70 +272,6 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
 
 
 
-        private void FillOpenOrders()
-        {
-            try
-            {
-                string selectedFlow = choice.GetString("CurrentFlow");
-
-                if (selectedFlow == "2")
-                {
-
-
-                    try
-                    {
-                        objectExtra.Clear();
-                        var dt = objectDocType.Where(x=>x.Text == cbDocType.Text).FirstOrDefault().ID;
-
-                        if (dt != null)
-                        {
-                            var wh = cbWarehouse.Text;
-                            if (wh != null && !string.IsNullOrEmpty(wh))
-                            {
-
-
-                                string error;
-
-                                positions = Services.GetObjectList("oodtw", out error, dt + "|" + wh + "|" + byClient);
-
-               
-                                if (positions == null)
-                                {
-                                    string toasted = string.Format("Napaka pri pridobivanju odprtih naročil: " + error);
-                                    Toast.MakeText(this, toasted, ToastLength.Long).Show();
-                                    return;
-                                }
-
-                                positions.Items.ForEach(p =>
-                                {
-                                    if (!string.IsNullOrEmpty(p.GetString("Key")))
-                                    {
-                                        objectExtra.Add(new ComboBoxItem { ID = p.GetString("Key"), Text = p.GetString("ShortKey") + " " + p.GetString("FillPercStr") + " " + p.GetString("Receiver") });
-                                    }
-
-                                });
-
-                                adapterExtra = new CustomAutoCompleteAdapter<ComboBoxItem>(this, Android.Resource.Layout.SimpleSpinnerItem, objectExtra);
-                                cbExtra.Adapter = null;
-                                cbExtra.Adapter = adapterExtra;                            
-                                cbExtra.Threshold = 1;
-                                adapterExtra.NotifyDataSetChanged();
-                          
-
-                            }
-                        }
-                    }
-                    catch
-                    {
-
-                    }
-                }
-            }
-            catch
-            {
-
-            }
-        }
         private async Task FillOpenOrdersAsync()
         {
             await Task.Run(async () =>
@@ -418,7 +354,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
         private void BtnOrder_Click(object sender, EventArgs e)
         {
             // Fixing clicking the order without choosing an order...
-            if (objectExtra.Count == 0 && cbExtra.Visibility == ViewStates.Visible) 
+            if (cbExtra.Visibility == ViewStates.Visible&&cbExtra.Text==string.Empty) 
             {
                 Toast.MakeText(this, "Morate izbrati naročilo.", ToastLength.Long).Show();
             }

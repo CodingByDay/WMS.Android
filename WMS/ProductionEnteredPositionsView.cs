@@ -21,6 +21,8 @@ using WebApp = TrendNET.WMS.Device.Services.WebApp;
 using AlertDialog = Android.App.AlertDialog;
 
 using AndroidX.AppCompat.App;
+using Android.Graphics.Drawables;
+using Android.Graphics;
 
 namespace WMS
 {
@@ -221,7 +223,8 @@ namespace WMS
             popupDialog.Show();
 
             popupDialog.Window.SetLayout(LayoutParams.MatchParent, LayoutParams.WrapContent);
-            popupDialog.Window.SetBackgroundDrawableResource(Android.Resource.Color.HoloGreenDark);
+            popupDialog.Window.SetBackgroundDrawable(new ColorDrawable(Color.ParseColor("#081a45")));
+
 
             // Access Popup layout fields like below
             btnYes = popupDialog.FindViewById<Button>(Resource.Id.btnYes);
@@ -409,7 +412,8 @@ namespace WMS
             popupDialogConfirm.Show();
 
             popupDialogConfirm.Window.SetLayout(LayoutParams.MatchParent, LayoutParams.WrapContent);
-            popupDialogConfirm.Window.SetBackgroundDrawableResource(Android.Resource.Color.HoloRedLight);
+            popupDialogConfirm.Window.SetBackgroundDrawable(new ColorDrawable(Color.ParseColor("#081a45")));
+
 
             // Access Popup layout fields like below
             btnYesConfirm = popupDialogConfirm.FindViewById<Button>(Resource.Id.btnYes);

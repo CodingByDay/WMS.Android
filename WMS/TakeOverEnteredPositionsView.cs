@@ -19,7 +19,11 @@ using TrendNET.WMS.Device.Services;
 using static Android.App.ActionBar;
 using WebApp = TrendNET.WMS.Device.Services.WebApp;
 
-using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS
+using AndroidX.AppCompat.App;
+using AlertDialog = Android.App.AlertDialog;
+using Android.Graphics.Drawables;
+using Android.Graphics;
+namespace WMS
 {
     [Activity(Label = "TakeOverEnteredPositionsView", ScreenOrientation = ScreenOrientation.Portrait)]
     public class TakeOverEnteredPositionsView : AppCompatActivity
@@ -131,7 +135,8 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             popupDialog.Window.SetSoftInputMode(SoftInput.AdjustResize);
             popupDialog.Show();
             popupDialog.Window.SetLayout(LayoutParams.MatchParent, LayoutParams.WrapContent);
-            popupDialog.Window.SetBackgroundDrawableResource(Android.Resource.Color.HoloGreenDark);
+            popupDialog.Window.SetBackgroundDrawable(new ColorDrawable(Color.ParseColor("#081a45")));
+
             // Access Popup layout fields like below
             btnYes = popupDialog.FindViewById<Button>(Resource.Id.btnYes);
             btnNo = popupDialog.FindViewById<Button>(Resource.Id.btnNo);
@@ -274,7 +279,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             popupDialogConfirm.Show();
 
             popupDialogConfirm.Window.SetLayout(LayoutParams.MatchParent, LayoutParams.WrapContent);
-            popupDialogConfirm.Window.SetBackgroundDrawableResource(Android.Resource.Color.HoloRedLight);
+            popupDialogConfirm.Window.SetBackgroundDrawable(new ColorDrawable(Color.ParseColor("#081a45")));
 
             // Access Popup layout fields like below
             btnYesConfirm = popupDialogConfirm.FindViewById<Button>(Resource.Id.btnYes);

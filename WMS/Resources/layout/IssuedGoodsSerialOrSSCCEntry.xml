@@ -162,6 +162,11 @@
  
 
     </LinearLayout>
+     <TextView
+        android:layout_height="0dip"
+        android:layout_width="fill_parent"
+        android:layout_weight="1" />
+
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -180,6 +185,7 @@
         <EditText
             android:textStyle="bold"
             android:singleLine="true"
+            android:enabled="false"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0.50"
@@ -219,10 +225,7 @@
 
     </LinearLayout>
 
-    <TextView
-        android:layout_height="0dip"
-        android:layout_width="fill_parent"
-        android:layout_weight="1" />
+   
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"

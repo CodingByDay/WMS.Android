@@ -1,6 +1,5 @@
 ﻿using Stream = Android.Media.Stream;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,7 +22,10 @@ using TrendNET.WMS.Device.Services;
 using static Android.App.ActionBar;
 using WebApp = TrendNET.WMS.Device.Services.WebApp;
 
-using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS
+using AndroidX.AppCompat.App;
+using AlertDialog = Android.App.AlertDialog;
+using Android.Graphics;
+namespace WMS
 {
     [Activity(Label = "TakeOverSerialOrSSCCEntryTablet", ScreenOrientation = Android.Content.PM.ScreenOrientation.Landscape)]
     public class TakeOverSerialOrSSCCEntryTablet : AppCompatActivity, IBarcodeResult
@@ -408,7 +410,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             popupDialog.Window.SetSoftInputMode(SoftInput.AdjustResize);
             popupDialog.Show();
             popupDialog.Window.SetLayout(LayoutParams.MatchParent, LayoutParams.WrapContent);
-            popupDialog.Window.SetBackgroundDrawableResource(Android.Resource.Color.HoloBlueBright);
+            popupDialog.Window.SetBackgroundDrawable(new ColorDrawable(Color.ParseColor("#081a45")));
             image = popupDialog.FindViewById<ZoomageView>(Resource.Id.image);
             popupDialog.KeyPress += PopupDialog_KeyPress;
             
@@ -619,7 +621,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             popupDialog.KeyPress += PopupDialog_KeyPress;
 
             popupDialog.Window.SetLayout(LayoutParams.MatchParent, LayoutParams.WrapContent);
-            popupDialog.Window.SetBackgroundDrawableResource(Android.Resource.Color.HoloBlueBright);
+            popupDialog.Window.SetBackgroundDrawable(new ColorDrawable(Color.ParseColor("#081a45")));
             image = popupDialog.FindViewById<ZoomageView>(Resource.Id.image);
             image.SetMinimumHeight(500);
             image.SetMinimumWidth(800);
@@ -788,7 +790,8 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             popupDialogConfirm.Show();
 
             popupDialogConfirm.Window.SetLayout(LayoutParams.MatchParent, LayoutParams.WrapContent);
-            popupDialogConfirm.Window.SetBackgroundDrawableResource(Android.Resource.Color.HoloRedLight);
+            popupDialogConfirm.Window.SetBackgroundDrawable(new ColorDrawable(Color.ParseColor("#081a45")));
+
 
             // Access Popup layout fields like below
             btnYesConfirm = popupDialogConfirm.FindViewById<Button>(Resource.Id.btnYes);

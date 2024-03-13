@@ -23,7 +23,11 @@ using Microsoft.AppCenter.Crashes;
 using AndroidX.PercentLayout.Widget;
 using PercentRelativeLayout = AndroidX.PercentLayout.Widget.PercentRelativeLayout;
 
-using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS
+using AndroidX.AppCompat.App;
+using AlertDialog = Android.App.AlertDialog;
+using Android.Graphics.Drawables;
+using Android.Graphics;
+namespace WMS
 {
     [Activity(Label = "UnfinishedTakeoversViewTablet", ScreenOrientation = Android.Content.PM.ScreenOrientation.Landscape)]
     public class UnfinishedTakeoversViewTablet : AppCompatActivity, INotifyPropertyChanged, ISwipeListener
@@ -266,7 +270,8 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             popupDialog.Show();
 
             popupDialog.Window.SetLayout(LayoutParams.MatchParent, LayoutParams.WrapContent);
-            popupDialog.Window.SetBackgroundDrawableResource(Android.Resource.Color.HoloGreenDark);
+            popupDialog.Window.SetBackgroundDrawable(new ColorDrawable(Color.ParseColor("#081a45")));
+
 
             // Access Pop-up layout fields like below
             btnYes = popupDialog.FindViewById<Button>(Resource.Id.btnYes);
@@ -396,7 +401,8 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             popupDialog.Show();
 
             popupDialog.Window.SetLayout(LayoutParams.MatchParent, LayoutParams.WrapContent);
-            popupDialog.Window.SetBackgroundDrawableResource(Android.Resource.Color.HoloOrangeLight);
+            popupDialog.Window.SetBackgroundDrawable(new ColorDrawable(Color.ParseColor("#081a45")));
+
 
             // Access Popup layout fields like below
             btnYes = popupDialog.FindViewById<Button>(Resource.Id.btnYes);

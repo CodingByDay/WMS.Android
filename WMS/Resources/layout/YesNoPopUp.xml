@@ -30,8 +30,7 @@
         android:id="@+id/text"
         android:paddingLeft="10dp"
         android:paddingTop="5dp"
-                android:textColor="@android:color/darker_gray"
-
+        android:textColor="@android:color/darker_gray"
         android:text="Ali ste sigurni da želite pobrisati pozicijo?"
         android:layout_marginTop="0.0dp"
         android:textStyle="bold|italic"

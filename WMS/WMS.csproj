@@ -19,6 +19,7 @@
   <ItemGroup>
     <None Remove="Resources\drawable\check_mark.png" />
     <None Remove="Resources\drawable\system_update.png" />
+    <None Remove="Resources\drawable\warning.png" />
     <None Remove="Resources\layout\android.png" />
     <None Remove="Resources\layout\back.png" />
     <None Remove="Resources\layout\barcode.png" />

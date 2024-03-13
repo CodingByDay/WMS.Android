@@ -83,16 +83,11 @@ namespace WMS
         protected override async void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-
             SetTheme(Resource.Style.AppTheme_NoActionBar);
-
             // Start the loader
             LoaderManifest.LoaderManifestLoopResources(this);
-
             SetContentView(Resource.Layout.IssuedGoodsSerialOrSSCCEntry);
-
             // Definitions
-
             AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
             var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
             _customToolbar.SetNavigationIcon(settings.RootURL + "/Services/Logo");
@@ -122,7 +117,6 @@ namespace WMS
             btFinish = FindViewById<Button>(Resource.Id.btFinish);
             btOverview = FindViewById<Button>(Resource.Id.btOverview);
             btExit = FindViewById<Button>(Resource.Id.btExit);
-
             // Events
             tbPacking.KeyPress += TbPacking_KeyPress;
             tbSSCC.KeyPress += TbSSCC_KeyPress;
@@ -132,7 +126,6 @@ namespace WMS
             btFinish.Click += BtFinish_Click;
             btExit.Click += BtExit_Click;
             btOverview.Click += BtOverview_Click;
-
             var _broadcastReceiver = new NetworkStatusBroadcastReceiver();
             _broadcastReceiver.ConnectionStatusChanged += OnNetworkStatusChanged;
             Application.Context.RegisterReceiver(_broadcastReceiver,
@@ -171,7 +164,6 @@ namespace WMS
             }
             e.Handled = false;
 
-
         }
 
         private void BtFinish_Click(object? sender, EventArgs e)
@@ -182,7 +174,6 @@ namespace WMS
             popupDialogConfirm.Show();
             popupDialogConfirm.Window.SetLayout(LayoutParams.MatchParent, LayoutParams.WrapContent);
             popupDialogConfirm.Window.SetBackgroundDrawable(new ColorDrawable(Color.ParseColor("#081a45")));
-            // Access Popup layout fields like below
             btnYesConfirm = popupDialogConfirm.FindViewById<Button>(Resource.Id.btnYes);
             btnNoConfirm = popupDialogConfirm.FindViewById<Button>(Resource.Id.btnNo);
             btnYesConfirm.Click += BtnYesConfirm_Click;
@@ -192,9 +183,10 @@ namespace WMS
         private async void BtCreate_Click(object? sender, EventArgs e)
         {
             double parsed;
+
             if (createPositionAllowed && double.TryParse(tbPacking.Text, out parsed) && stock >= parsed)
             {
-                await CreateMethodSame();
+                await CreateMethodFromStart();
             }
             else
             {
@@ -267,28 +259,88 @@ namespace WMS
 
         private void OnNetworkStatusChanged(object sender, EventArgs e)
         {
+            if (IsOnline())
+            {
+
+                try
+                {
+                    LoaderManifest.LoaderManifestLoopStop(this);
+                }
+                catch (Exception err)
+                {
+                    Crashes.TrackError(err);
+                }
+            }
+            else
+            {
+                LoaderManifest.LoaderManifestLoop(this);
+            }
         }
 
-        private void BtSaveOrUpdate_LongClick(object sender, View.LongClickEventArgs e)
+  
+
+   
+
+
+
+        private async Task CreateMethodFromStart()
         {
+            await Task.Run(() =>
+            {
+                if (dist.Count == 1)
+                {
+
+                    if (moveItem == null)
+                    {
+                        moveItem = new NameValueObject("MoveItem");
+                    }
+
+                    moveItem.SetInt("HeadID", moveHead.GetInt("HeadID"));
+                    moveItem.SetString("LinkKey", receivedTrail.Key);
+                    moveItem.SetInt("LinkNo", receivedTrail.No);
+                    moveItem.SetString("Ident", openIdent.GetString("Code"));
+                    moveItem.SetString("SSCC", tbSSCC.Text.Trim());
+                    moveItem.SetString("SerialNo", tbSerialNum.Text.Trim());
+                    moveItem.SetDouble("Packing", Convert.ToDouble(tbPacking.Text.Trim()));
+                    moveItem.SetDouble("Factor", Convert.ToDouble(tbUnits.Text.Trim()));
+                    moveItem.SetDouble("Qty", Convert.ToDouble(tbUnits.Text.Trim()) * Convert.ToDouble(tbPacking.Text.Trim()));
+                    moveItem.SetInt("Clerk", Services.UserID());
+                    moveItem.SetString("Location", tbLocation.Text.Trim());
+                    moveItem.SetString("Palette", tbPalette.Text.Trim());
+
+                    string error;
+                    moveItem = Services.SetObject("mi", moveItem, out error);
+
+                    if (moveItem != null && error == string.Empty)
+                    {
+                        RunOnUiThread(() =>
+                        {
+                            if(CurrentFlow.GetString("CurrentFlow") == "2")
+                            {
+                                StartActivity(typeof(IssuedGoodsIdentEntryWithTrail));
+                                Finish();
+                            }
+                    });
+
+
+                        dist = new List<IssuedGoods>();
+                        createPositionAllowed = false;
+                        GetConnectedPositions(receivedTrail.Key, receivedTrail.No, receivedTrail.Ident, receivedTrail.Location);
+                    }
+
+                }
+                else
+                {
+                    return;
+                }
+            });
         }
 
-        private void Button4_LongClick(object sender, View.LongClickEventArgs e)
-        {
 
-        }
 
-        private void Button5_Click(object sender, EventArgs e)
-        {
-            StartActivity(typeof(IssuedGoodsEnteredPositionsView));
-            Finish();
-        }
 
-        private void Button7_Click(object sender, EventArgs e)
-        {
-            StartActivity(typeof(IssuedGoodsEnteredPositionsView));
-            Finish();
-        }
+
+
 
         private async Task CreateMethodSame()
         {
@@ -648,12 +700,6 @@ namespace WMS
             tbSSCC.SetBackgroundColor(Android.Graphics.Color.Aqua);
             tbSerialNum.SetBackgroundColor(Android.Graphics.Color.Aqua);
             tbLocation.SetBackgroundColor(Android.Graphics.Color.Aqua);
-        }
-
-        private void Button3_Click(object sender, EventArgs e)
-        {
-            StartActivity(typeof(IssuedGoodsIdentEntryWithTrail));
-            Finish();
         }
 
         public void GetBarcode(string barcode)
