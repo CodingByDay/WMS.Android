@@ -277,11 +277,6 @@ namespace WMS
             }
         }
 
-  
-
-   
-
-
 
         private async Task CreateMethodFromStart()
         {
@@ -389,6 +384,8 @@ namespace WMS
                                     tbSerialNum.RequestFocus();
                                 }
                             }
+
+                            Toast.MakeText(this, "Pozicija kreirana", ToastLength.Long);
                         });
 
                      
@@ -511,11 +508,23 @@ namespace WMS
             });
         }
 
-
-
+        private bool update = false;
 
         private void SetUpForm()
         {
+
+
+
+            string? isUpdate = Intent.Extras.GetString("update");
+
+            if(isUpdate != null)
+            {
+                if(isUpdate == "1")
+                {
+                    update = true;
+                }
+            }
+
             // This is the default focus of the view.
             tbSSCC.RequestFocus();
 
@@ -530,8 +539,8 @@ namespace WMS
                 serialRow.Visibility = ViewStates.Gone;
                 tbPacking.RequestFocus();
             }
-
-            if (moveItem != null)
+            
+            if (update&&moveItem != null)
             {
                 // Update logic ?? it seems to be true.
                 tbIdent.Text = moveItem.GetString("IdentName");
@@ -542,6 +551,7 @@ namespace WMS
                 tbPacking.Text = moveItem.GetDouble("Packing").ToString();
                 tbUnits.Text = moveItem.GetDouble("Factor").ToString();
                 btCreateSame.Text = "Serij. - F2";
+                // Update call for the connected positions
             }
             else
             {
@@ -585,7 +595,6 @@ namespace WMS
 
 
         /// <summary>
-        ///
         /// Podatke preneseš v masko - kličeš NE isti view ampak vedno "uWMSOrderItemByKeyOut", ker moraš
         /// tudi pri subjektih zapisati na katero naročilo z pozicijo(acKey in anNo) se vrši izdaja.
         /// uWMSOrderItemByKeyOut; vhodni parameter acKey varchar(13), anNo int, acIdent varchar(16), acLocation varchar(50);

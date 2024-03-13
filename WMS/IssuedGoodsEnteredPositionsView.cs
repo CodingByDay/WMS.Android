@@ -86,8 +86,6 @@ namespace WMS
             btDelete.Click += BtDelete_Click;
             btLogout.Click += BtLogout_Click;
 
-            // app 
-
             InUseObjects.ClearExcept(new string[] { "MoveHead", "OpenOrder" });
             if (moveHead == null)
             {
@@ -161,7 +159,6 @@ namespace WMS
         {
             switch (keyCode)
             {
-                // 
                 case Keycode.F1:
                     if (btNext.Enabled == true)
                     {

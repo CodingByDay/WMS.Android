@@ -187,12 +187,14 @@ namespace WMS
 
         private void BtNew_Click(object sender, EventArgs e)
         {
+
             NameValueObject moveHead = new NameValueObject("MoveHead");
             moveHead.SetBool("Saved", false);
             InUseObjects.Set("MoveHead", moveHead);
             // Client picking 1.9.2023 Janko Jovičić
             string pickingChoice = CommonData.GetSetting("UseSingleOrderIssueing");
             SetUpClientPicking(pickingChoice);
+
             switch (pickingChoice)
             {
                 case "0":
@@ -371,7 +373,6 @@ namespace WMS
                 tbCreatedBy.Enabled = false;
                 tbCreatedAt.Enabled = false;
 
-
                 tbBusEvent.SetTextColor(Android.Graphics.Color.Black);
                 tbOrder.SetTextColor(Android.Graphics.Color.Black);
                 tbClient.SetTextColor(Android.Graphics.Color.Black);
@@ -381,11 +382,7 @@ namespace WMS
 
                 btNext.Enabled = true;
                 btDelete.Enabled = true;
-                btFinish.Enabled = true;
-
-
-                // moveItem fix
-                
+                btFinish.Enabled = true;           
 
             }
             else

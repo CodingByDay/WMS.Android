@@ -67,7 +67,6 @@ namespace WMS
             string result;
 
 
-
             if (WebApp.Get("mode=deviceActive", out result))
             {
                 if (result != "Active!")
