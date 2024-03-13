@@ -156,21 +156,21 @@ namespace WMS
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
+
             settings.restart = false;
             Distribute.SetEnabledAsync(true);
             AppCenter.Start("ec2ca4ce-9e86-4620-9e90-6ecc5cda0e0e",
-                   typeof(Analytics), typeof(Crashes), typeof(Distribute));
+            typeof(Analytics), typeof(Crashes), typeof(Distribute));
             AppCenter.SetUserId(settings.RootURL);
             Crashes.NotifyUserConfirmation(UserConfirmation.AlwaysSend);
             ChangeTheOrientation();
             base.OnCreate(savedInstanceState);
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
-
             SetContentView(Resource.Layout.activity_main);
             Distribute.ReleaseAvailable = OnReleaseAvailable;
             Password = FindViewById<EditText>(Resource.Id.tbPassword);
             Password.InputType = Android.Text.InputTypes.NumberVariationPassword |
-                          Android.Text.InputTypes.ClassNumber;
+            Android.Text.InputTypes.ClassNumber;
             progressBar1 = FindViewById<ProgressBar>(Resource.Id.progressBar1);
             img = FindViewById<ImageView>(Resource.Id.imglogo);
             GetLogo();
@@ -185,22 +185,21 @@ namespace WMS
             settings.login = false;
 
         }
-        private async Task GetLogo()
+
+
+        private void GetLogo()
         {
             try
             {
                 var url = settings.RootURL + "/Services/Logo";
-
-
-                // Load the image using FFImageLoading
-                await ImageService.Instance
-                    .LoadUrl(url)
-                    .IntoAsync(img);
+                // Load and set the image with Picasso
+                Picasso.Get()
+                    .Load(url)
+                    .Into(img);
             }
-            catch (Exception ex)
+            catch 
             {
-                // Handle exceptions if the image loading fails
-                Console.WriteLine("Error loading image: " + ex.Message);
+              return;
             }
         }
 

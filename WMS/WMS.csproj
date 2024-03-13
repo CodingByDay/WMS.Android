@@ -17,61 +17,36 @@
     <NoWarn>1701;1702;8765;8602;8601,8622,8600,8604,8618</NoWarn>
   </PropertyGroup>
   <ItemGroup>
+    <AndroidJavaSource Remove="Resources\NewFolder\**" />
+    <AndroidLibrary Remove="Resources\NewFolder\**" />
+    <AndroidNativeLibrary Remove="Resources\NewFolder\**" />
+    <AndroidResource Remove="Resources\NewFolder\**" />
+    <Compile Remove="Resources\NewFolder\**" />
+    <EmbeddedResource Remove="Resources\NewFolder\**" />
+    <JavaSourceJar Remove="Resources\NewFolder\**" />
+    <None Remove="Resources\NewFolder\**" />
+    <ProguardConfiguration Remove="Resources\NewFolder\**" />
+    <TransformFile Remove="Resources\NewFolder\**" />
+  </ItemGroup>
+  <ItemGroup>
     <None Remove="Resources\drawable\check_mark.png" />
     <None Remove="Resources\drawable\system_update.png" />
     <None Remove="Resources\drawable\warning.png" />
-    <None Remove="Resources\layout\android.png" />
-    <None Remove="Resources\layout\back.png" />
-    <None Remove="Resources\layout\barcode.png" />
-    <None Remove="Resources\layout\bg.jpg" />
-    <None Remove="Resources\layout\bgWMS.jpg" />
-    <None Remove="Resources\layout\bin.png" />
     <None Remove="Resources\layout\BluetoothConnection.xml" />
     <None Remove="Resources\layout\border.xml" />
     <None Remove="Resources\layout\button_design.xml" />
-    <None Remove="Resources\layout\cancel.png" />
-    <None Remove="Resources\layout\card.png" />
-    <None Remove="Resources\layout\card_white.png" />
     <None Remove="Resources\layout\CheckStock.xml" />
     <None Remove="Resources\layout\CheckStockAddOnView.xml" />
     <None Remove="Resources\layout\CheckStockTablet.xml" />
-    <None Remove="Resources\layout\check_mark.png" />
     <None Remove="Resources\layout\Choice.xml" />
     <None Remove="Resources\layout\CleanupView.xml" />
-    <None Remove="Resources\layout\client.png" />
     <None Remove="Resources\layout\ClientPicking.xml" />
     <None Remove="Resources\layout\ClientPickingRow.xml" />
     <None Remove="Resources\layout\ClientPickingTablet.xml" />
-    <None Remove="Resources\layout\clipboard.png" />
-    <None Remove="Resources\layout\clock.png" />
-    <None Remove="Resources\layout\clock_white.png" />
     <None Remove="Resources\layout\common.xml" />
-    <None Remove="Resources\layout\confirmation.png" />
     <None Remove="Resources\layout\Confirmation.xml" />
-    <None Remove="Resources\layout\confirmation_white.png" />
     <None Remove="Resources\layout\custom_dropdown_item.xml" />
     <None Remove="Resources\layout\Dashboard.xml" />
-    <None Remove="Resources\layout\delete.png" />
-    <None Remove="Resources\layout\delete_white.png" />
-    <None Remove="Resources\layout\discount.png" />
-    <None Remove="Resources\layout\discount_white.png" />
-    <None Remove="Resources\layout\error.png" />
-    <None Remove="Resources\layout\factory.png" />
-    <None Remove="Resources\layout\factory_white.png" />
-    <None Remove="Resources\layout\finish.png" />
-    <None Remove="Resources\layout\fix.png" />
-    <None Remove="Resources\layout\fix_white.png" />
-    <None Remove="Resources\layout\focus.png" />
-    <None Remove="Resources\layout\focus_white.png" />
-    <None Remove="Resources\layout\glasses.png" />
-    <None Remove="Resources\layout\home.png" />
-    <None Remove="Resources\layout\icon.png" />
-    <None Remove="Resources\layout\icon7.png" />
-    <None Remove="Resources\layout\icon8.png" />
-    <None Remove="Resources\layout\icon9.png" />
-    <None Remove="Resources\layout\ident.png" />
-    <None Remove="Resources\layout\ident_white.png" />
-    <None Remove="Resources\layout\insist.png" />
     <None Remove="Resources\layout\InterWarehouseBusinessEventSetup.xml" />
     <None Remove="Resources\layout\InterWarehouseBusinessEventSetupTablet.xml" />
     <None Remove="Resources\layout\InterWarehouseEnteredPositionsView.xml" />
@@ -81,7 +56,6 @@
     <None Remove="Resources\layout\InterWarehouseSerialOrSSCCEntry.xml" />
     <None Remove="Resources\layout\InterWarehouseSerialOrSSCCEntryTablet.xml" />
     <None Remove="Resources\layout\InterWarehouseSerialOrSSCCEntryView.xml" />
-    <None Remove="Resources\layout\inventory.png" />
     <None Remove="Resources\layout\InventoryConfirm.xml" />
     <None Remove="Resources\layout\InventoryConfirmTablet.xml" />
     <None Remove="Resources\layout\InventoryMenu.xml" />
@@ -94,7 +68,6 @@
     <None Remove="Resources\layout\InventoryPrintTablet.xml" />
     <None Remove="Resources\layout\InventoryProcess.xml" />
     <None Remove="Resources\layout\InventoryProcessTablet.xml" />
-    <None Remove="Resources\layout\inventory_white.png" />
     <None Remove="Resources\layout\IssuedEnteredPositionsViewList.xml" />
     <None Remove="Resources\layout\IssuedEnteredPositionViewList.xml" />
     <None Remove="Resources\layout\IssuedGoodsBusinessEventSetup.xml" />
@@ -112,36 +85,16 @@
     <None Remove="Resources\layout\IssuedGoodsSerialOrSSCCEntryClientPickingTablet.xml" />
     <None Remove="Resources\layout\IssuedGoodsSerialOrSSCCEntryTablet.xml" />
     <None Remove="Resources\layout\IssuedView.xml" />
-    <None Remove="Resources\layout\left.png" />
     <None Remove="Resources\layout\ListViewItem.xml" />
     <None Remove="Resources\layout\ListViewTrail.xml" />
-    <None Remove="Resources\layout\location.png" />
     <None Remove="Resources\layout\LocationPopup.xml" />
-    <None Remove="Resources\layout\location_white.png" />
-    <None Remove="Resources\layout\login.png" />
-    <None Remove="Resources\layout\logout.png" />
-    <None Remove="Resources\layout\logout_white.png" />
-    <None Remove="Resources\layout\logo_final.png" />
-    <None Remove="Resources\layout\logo_riko.png" />
     <None Remove="Resources\layout\MainMenu.xml" />
-    <None Remove="Resources\layout\MainMenu1.xml" />
     <None Remove="Resources\layout\MainMenuTablet.xml" />
     <None Remove="Resources\layout\MenuPallets.xml" />
     <None Remove="Resources\layout\MenuPalletsTablet.xml" />
     <None Remove="Resources\layout\MorePalletsClass.xml" />
     <None Remove="Resources\layout\MorePalletsView.xml" />
-    <None Remove="Resources\layout\newItem.png" />
-    <None Remove="Resources\layout\next.png" />
-    <None Remove="Resources\layout\next_white.png" />
     <None Remove="Resources\layout\nicelookingbutton.xml" />
-    <None Remove="Resources\layout\note.png" />
-    <None Remove="Resources\layout\note_white.png" />
-    <None Remove="Resources\layout\open.png" />
-    <None Remove="Resources\layout\open_white.png" />
-    <None Remove="Resources\layout\order.png" />
-    <None Remove="Resources\layout\order_fulfillment.png" />
-    <None Remove="Resources\layout\order_white.png" />
-    <None Remove="Resources\layout\packaging.png" />
     <None Remove="Resources\layout\PackagingEnteredPositionsView.xml" />
     <None Remove="Resources\layout\PackagingEnteredPositionsViewTablet.xml" />
     <None Remove="Resources\layout\PackagingListAdapterView.xml" />
@@ -151,13 +104,9 @@
     <None Remove="Resources\layout\PackagingUnitList.xml" />
     <None Remove="Resources\layout\PackagingUnitListTablet.xml" />
     <None Remove="Resources\layout\PackagingUnitTablet.xml" />
-    <None Remove="Resources\layout\packaging_white.png" />
     <None Remove="Resources\layout\PickingMenu.xml" />
     <None Remove="Resources\layout\PickingMenuTablet.xml" />
     <None Remove="Resources\layout\popup_action.xml" />
-    <None Remove="Resources\layout\printer.png" />
-    <None Remove="Resources\layout\printer2.png" />
-    <None Remove="Resources\layout\printer_white.png" />
     <None Remove="Resources\layout\PrintingMenu.xml" />
     <None Remove="Resources\layout\PrintingMenu1.xml" />
     <None Remove="Resources\layout\PrintingReprintLabels.xml" />
@@ -182,27 +131,13 @@
     <None Remove="Resources\layout\RecalculateInventory.xml" />
     <None Remove="Resources\layout\RecalculateInventoryTablet.xml" />
     <None Remove="Resources\layout\ReceiverLayout.xml" />
-    <None Remove="Resources\layout\repeat.png" />
-    <None Remove="Resources\layout\repeat_white.png" />
     <None Remove="Resources\layout\restart.xml" />
-    <None Remove="Resources\layout\rikowmsbel.png" />
-    <None Remove="Resources\layout\riko_wms_logo.png" />
-    <None Remove="Resources\layout\riko_wms_logo_white.png" />
-    <None Remove="Resources\layout\riko_wms_logo_white_small.png" />
     <None Remove="Resources\layout\SelectSubjectBeforeFinish.xml" />
     <None Remove="Resources\layout\SelectSubjectBeforeFinishTablet.xml" />
-    <None Remove="Resources\layout\settings.png" />
-    <None Remove="Resources\layout\settingsPopUp.xml" />
-    <None Remove="Resources\layout\shipped.png" />
-    <None Remove="Resources\layout\shipped_white.png" />
+    <None Remove="Resources\layout\Settings.xml" />
     <None Remove="Resources\layout\ShippingPallet.xml" />
     <None Remove="Resources\layout\ShippingPalletTablet.xml" />
-    <None Remove="Resources\layout\signature.png" />
     <None Remove="Resources\layout\squaredbutton.xml" />
-    <None Remove="Resources\layout\sticker.png" />
-    <None Remove="Resources\layout\sticker_white.png" />
-    <None Remove="Resources\layout\supplier.png" />
-    <None Remove="Resources\layout\takeover.png" />
     <None Remove="Resources\layout\TakeOver2Main.xml" />
     <None Remove="Resources\layout\TakeOver2MainTablet.xml" />
     <None Remove="Resources\layout\TakeOver2Orders.xml" />
@@ -220,7 +155,6 @@
     <None Remove="Resources\layout\TakeOverSerialOrSSCCEntryTablet.xml" />
     <None Remove="Resources\layout\TakeOverSerialOrSSCCEntryView.xml" />
     <None Remove="Resources\layout\TakeOverSerialOrSSCCListView.xml" />
-    <None Remove="Resources\layout\takeover_white.png" />
     <None Remove="Resources\layout\test.xml" />
     <None Remove="Resources\layout\Toolbar.xml" />
     <None Remove="Resources\layout\TransportPopup.xml" />
@@ -240,12 +174,7 @@
     <None Remove="Resources\layout\update.xml" />
     <None Remove="Resources\layout\ViewLocation.xml" />
     <None Remove="Resources\layout\WaitForm.xml" />
-    <None Remove="Resources\layout\warehouse.png" />
     <None Remove="Resources\layout\WarehousePicture.xml" />
-    <None Remove="Resources\layout\warehouse_white.png" />
-    <None Remove="Resources\layout\wholesale.png" />
-    <None Remove="Resources\layout\wholesale_white.png" />
-    <None Remove="Resources\layout\wrapping.png" />
     <None Remove="Resources\layout\WrappingPallet.xml" />
     <None Remove="Resources\layout\WrappingPalletTablet.xml" />
     <None Remove="Resources\layout\YesNoGeneric.xml" />
@@ -274,9 +203,6 @@
     <PackageReference Include="Xamarin.FFImageLoading" Version="2.4.11.982" />
     <PackageReference Include="Xamarin.Google.Android.Material" Version="1.10.0.2" />
     <PackageReference Include="ZoomImage-Xamarin" Version="1.3.1" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Resources\NewFolder\" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="DeviceAPI">

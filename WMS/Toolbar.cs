@@ -18,9 +18,9 @@ public class CustomToolbar
     public void SetNavigationIcon(string imageUrl)
     {   try { 
         ImageView navIconImageView = _toolbar.FindViewById<ImageView>(_navIconImageViewId);
-
+        
         // Load and set the image with Picasso
-        Picasso.With(_activity)
+        Picasso.Get()
             .Load(imageUrl)
             .Into(navIconImageView);
 
