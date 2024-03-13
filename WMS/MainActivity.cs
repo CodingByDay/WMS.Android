@@ -50,6 +50,8 @@ namespace WMS
         private TextView deviceURL;
         private bool tablet = settings.tablet;
         private Button btnOkRestart;
+        private Base.Base? AppStore;
+
         public object MenuInflaterFinal { get; private set; }
 
         // Internet connection method.
@@ -164,6 +166,7 @@ namespace WMS
             Crashes.NotifyUserConfirmation(UserConfirmation.AlwaysSend);
             ChangeTheOrientation();
             base.OnCreate(savedInstanceState);
+            AppStore = (Base.Base)Application;
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             SetContentView(Resource.Layout.activity_main);
             Distribute.ReleaseAvailable = OnReleaseAvailable;
@@ -195,6 +198,11 @@ namespace WMS
                 Picasso.Get()
                     .Load(url)
                     .Into(img);
+
+                AppStore.cachedImage = GetBitmapFromImageView(img);
+
+
+
             }
             catch 
             {
@@ -202,6 +210,27 @@ namespace WMS
             }
         }
 
+
+        private Bitmap GetBitmapFromImageView(ImageView imageView)
+        {
+            // Get the drawable from the ImageView
+            Drawable drawable = imageView.Drawable;
+
+            // Check if the drawable is BitmapDrawable
+            if (drawable is BitmapDrawable bitmapDrawable)
+            {
+                return bitmapDrawable.Bitmap; // Return the Bitmap
+            }
+            else
+            {
+                // If the drawable is not a BitmapDrawable, create a new Bitmap from the drawable
+                Bitmap bitmap = Bitmap.CreateBitmap(drawable.IntrinsicWidth, drawable.IntrinsicHeight, Bitmap.Config.Argb8888);
+                Canvas canvas = new Canvas(bitmap);
+                drawable.SetBounds(0, 0, canvas.Width, canvas.Height);
+                drawable.Draw(canvas);
+                return bitmap; // Return the created Bitmap
+            }
+        }
 
         private void OnNetworkStatusChanged(object sender, EventArgs e)
         {

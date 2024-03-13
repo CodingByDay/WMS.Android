@@ -1,6 +1,8 @@
 ﻿using Android.App;
+using Android.Graphics;
 using Android.Widget;
 using Square.Picasso;
+using WMS.Base;
 
 public class CustomToolbar
 {
@@ -15,18 +17,17 @@ public class CustomToolbar
         _navIconImageViewId = navIconImageViewId;
     }
 
-    public void SetNavigationIcon(string imageUrl)
-    {   try { 
+    public void SetNavigationIcon(string imageUrl, ImageView image = null)
+    {
         ImageView navIconImageView = _toolbar.FindViewById<ImageView>(_navIconImageViewId);
-            Picasso.Get()
-                  .Load(imageUrl)
-                  .Into(navIconImageView);
-
-            // Make the ImageView visible
-            navIconImageView.Visibility = Android.Views.ViewStates.Visible;
-        } catch
+        ImageView cachedImage = image;
+        // Set the Bitmap to the ImageView
+        if (cachedImage != null)
         {
-            return;
+            navIconImageView = cachedImage;
         }
+        navIconImageView.Visibility = Android.Views.ViewStates.Visible;
+
+
     }
 }
