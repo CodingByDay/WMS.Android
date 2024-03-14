@@ -33,6 +33,10 @@ using AndroidX.AppCompat.App;
 using FFImageLoading;
 using Android.Graphics.Drawables;
 using Android.Graphics;
+using Android.Preferences;
+using Newtonsoft.Json;
+using Xamarin.Essentials;
+using AndroidX.Core.Content;
 
 namespace WMS
 {
@@ -47,9 +51,18 @@ namespace WMS
         private EditText rootURL;
         private EditText ID;
         private ImageView img;
+        private TextView? txtVersion;
+        private LinearLayout? chSlovenian;
+        private LinearLayout? chEnglish;
+        private ImageView? imgSlovenian;
+        private ImageView? imgEnglish;
         private TextView deviceURL;
         private bool tablet = settings.tablet;
         private Button btnOkRestart;
+        private ListView? cbLanguage;
+        private List<LanguageItem> mLanguageItems;
+        private LanguageAdapter mAdapter;
+        private ColorMatrixColorFilter highlightFilter;
 
         public object MenuInflaterFinal { get; private set; }
 
@@ -174,6 +187,14 @@ namespace WMS
             Android.Text.InputTypes.ClassNumber;
             progressBar1 = FindViewById<ProgressBar>(Resource.Id.progressBar1);
             img = FindViewById<ImageView>(Resource.Id.imglogo);
+            txtVersion = FindViewById<TextView>(Resource.Id.txtVersion);
+            chSlovenian = FindViewById<LinearLayout>(Resource.Id.chSlovenian);
+            chEnglish = FindViewById<LinearLayout>(Resource.Id.chSlovenian);
+            imgSlovenian = FindViewById<ImageView>(Resource.Id.imgSlovenian);
+            imgEnglish = FindViewById<ImageView>(Resource.Id.imgEnglish);
+            imgSlovenian.Click += ImgSlovenian_Click;
+            imgEnglish.Click += ImgEnglish_Click;
+            SetUpLanguages();
             GetLogo();
             var _broadcastReceiver = new NetworkStatusBroadcastReceiver();
             _broadcastReceiver.ConnectionStatusChanged += OnNetworkStatusChanged;
@@ -187,6 +208,69 @@ namespace WMS
 
         }
 
+        private void ImgEnglish_Click(object? sender, EventArgs e)
+        {
+            ISharedPreferences sharedPreferences = Application.Context.GetSharedPreferences("MyAppSettings", FileCreationMode.Private);
+            ISharedPreferencesEditor editor = sharedPreferences.Edit();
+            editor.PutString("language", "English");
+            editor.Apply();
+            imgSlovenian.ClearColorFilter();
+            imgEnglish.SetColorFilter(highlightFilter);
+        }
+
+        private void ImgSlovenian_Click(object? sender, EventArgs e)
+        {
+            ISharedPreferences sharedPreferences = Application.Context.GetSharedPreferences("MyAppSettings", FileCreationMode.Private);
+            ISharedPreferencesEditor editor = sharedPreferences.Edit();
+            editor.PutString("language", "Slovenian");
+            editor.Apply();
+            imgEnglish.ClearColorFilter();
+            imgSlovenian.SetColorFilter(highlightFilter);
+
+
+        }
+
+
+
+
+
+        public string GetAppVersion()
+        {
+            return AppInfo.VersionString;
+        }
+        private void SetUpLanguages()
+        {
+            // Create a color matrix for the highlight effect
+            float[] colorMatrixValues = {
+                2, 0, 0, 0, 0, // Red
+                0, 2, 0, 0, 0, // Green
+                0, 0, 2, 0, 0, // Blue
+                0, 0, 0, 1, 0  // Alpha
+            };
+            ColorMatrix colorMatrix = new ColorMatrix(colorMatrixValues);
+            highlightFilter = new ColorMatrixColorFilter(colorMatrix);
+            txtVersion.Text = "v."+GetAppVersion();
+            ISharedPreferences sharedPreferences = Application.Context.GetSharedPreferences("MyAppSettings", FileCreationMode.Private);
+            ISharedPreferencesEditor editor = sharedPreferences.Edit();
+            string language = sharedPreferences.GetString("language", "");
+            if (string.IsNullOrEmpty(language))
+            {
+                editor.PutString("language", "Slovenian");
+                language = "Slovenian";
+            }
+
+            
+            if(language =="Slovenian")
+            {
+                imgSlovenian.SetColorFilter(highlightFilter);
+            }
+            else if(language == "English")
+            {
+                imgEnglish.SetColorFilter(highlightFilter);
+            }
+
+            editor.Apply();
+        }
 
         private void GetLogo()
         {

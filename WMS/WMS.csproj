@@ -32,7 +32,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Remove="Resources\drawable\check_mark.png" />
+    <None Remove="Resources\drawable\slovenia.png" />
     <None Remove="Resources\drawable\system_update.png" />
+    <None Remove="Resources\drawable\united_kingdom.png" />
     <None Remove="Resources\drawable\warning.png" />
     <None Remove="Resources\layout\BluetoothConnection.xml" />
     <None Remove="Resources\layout\border.xml" />
@@ -87,6 +89,7 @@
     <None Remove="Resources\layout\IssuedGoodsSerialOrSSCCEntryClientPickingTablet.xml" />
     <None Remove="Resources\layout\IssuedGoodsSerialOrSSCCEntryTablet.xml" />
     <None Remove="Resources\layout\IssuedView.xml" />
+    <None Remove="Resources\layout\language_item.xml" />
     <None Remove="Resources\layout\ListViewItem.xml" />
     <None Remove="Resources\layout\ListViewTrail.xml" />
     <None Remove="Resources\layout\LocationPopup.xml" />

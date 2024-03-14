@@ -23,8 +23,8 @@
                 android:layout_marginTop="20dp"
                 android:layout_gravity="center"
                 android:foregroundGravity="center"
-                android:layout_width="150dp"
-                android:layout_height="75dp"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
                 android:id="@+id/imglogo"
                 />
         </LinearLayout>
@@ -90,5 +90,85 @@
                 android:layout_marginBottom="60.0dp"
          />
         </LinearLayout>
+      
+
+           <TextView
+        android:layout_height="0dip"
+        android:layout_width="fill_parent"
+        android:layout_weight="1" />
+
+       
+        <LinearLayout
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:background="@color/white"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            >
+
+              <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="v.1.0.8"
+                android:layout_gravity="bottom"
+                android:gravity="bottom"
+                android:id="@+id/txtVersion"
+                android:textColor="@color/black"
+                android:layout_marginLeft="30dp"
+/>
+
+                 <LinearLayout
+                    android:gravity="right"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="30dp"
+                    >
+                <LinearLayout
+
+                    android:orientation="horizontal"
+                    android:layout_width="80dp"
+                    android:id="@+id/chSlovenian"
+                    android:layout_height="wrap_content"
+
+
+                    >
+                    <ImageView
+                        android:layout_gravity="center"
+                        android:foregroundGravity="center"
+                        android:layout_width="80dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/slovenia"
+                        android:id="@+id/imgSlovenian"
+                        android:contentDescription="Slovenian" 
+                        />
+                 </LinearLayout>
+                 <LinearLayout
+
+                    android:orientation="horizontal"
+                    android:layout_width="80dp"
+                    android:id="@+id/chEnglish"
+                    android:layout_height="wrap_content"
+
+
+                    >
+                    <ImageView
+
+                        android:layout_width="80dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/united_kingdom"
+                        android:id="@+id/imgEnglish"
+                        android:contentDescription="description" 
+                        />
+                   </LinearLayout>
+                </LinearLayout>
+
+        </LinearLayout>
+     
     </LinearLayout>
 </LinearLayout> 
