@@ -48,7 +48,7 @@ namespace WMS
 
             base.OnCreate(savedInstanceState);
             SetTheme(Resource.Style.AppTheme_NoActionBar);
-
+            
             SetContentView(Resource.Layout.Settings);
 
             AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);

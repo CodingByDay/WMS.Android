@@ -33,6 +33,7 @@ using AndroidX.AppCompat.App;
 using FFImageLoading;
 using Android.Graphics.Drawables;
 using Android.Graphics;
+using WMS.BaseApplication;
 
 namespace WMS
 {
@@ -50,7 +51,6 @@ namespace WMS
         private TextView deviceURL;
         private bool tablet = settings.tablet;
         private Button btnOkRestart;
-        private Base.Base? AppStore;
 
         public object MenuInflaterFinal { get; private set; }
 
@@ -64,6 +64,7 @@ namespace WMS
 
         private void ProcessRegistration()
         {
+     
 
             var id = settings.ID.ToString();
             string result;
@@ -199,7 +200,6 @@ namespace WMS
                     .Load(url)
                     .Into(img);
 
-                AppStore.cachedImage = GetBitmapFromImageView(img);
 
 
 
