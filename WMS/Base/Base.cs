@@ -24,14 +24,7 @@ namespace WMS
         // This property is used for showing whether the current action is for updating the position or creating it.
         public bool isUpdate { get; set; } = false;
         // Open order object.
-        public NameValueObject openOrder { get; set; } = new NameValueObject();
-        // Open head document.
-        public NameValueObject openHead { get; set; } = new NameValueObject();
-        // Open position.
-        public NameValueObject openItem { get; set; } = new NameValueObject();
-
         public static Base Store { get; set; }
-
 
         // Reset method using reflection
         public void ResetValues()
@@ -58,7 +51,6 @@ namespace WMS
             Store = this;
             // Initialization code for your application
         }
-
 
     }
 }

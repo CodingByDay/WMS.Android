@@ -525,15 +525,7 @@ namespace WMS
 
 
 
-            string? isUpdate = Intent.Extras.GetString("update");
-
-            if(isUpdate != null)
-            {
-                if(isUpdate == "1")
-                {
-                    update = true;
-                }
-            }
+   
 
             // This is the default focus of the view.
             tbSSCC.RequestFocus();
@@ -550,7 +542,7 @@ namespace WMS
                 tbPacking.RequestFocus();
             }
             
-            if (update&&moveItem != null)
+            if (Base.Store.isUpdate)
             {
                 // Update logic ?? it seems to be true.
                 tbIdent.Text = moveItem.GetString("IdentName");
@@ -784,22 +776,16 @@ namespace WMS
 
         private void FilterData()
         {
-
             var data = FilterIssuedGoods(connectedPositions, tbSSCC.Text, tbSerialNum.Text, tbLocation.Text);
-
-            // Temporary solution because of the SQL error.
-            dist = data
-                .GroupBy(x => new { x.acName, x.acSSCC, x.acSerialNo, x.aclocation, x.acSubject, x.anQty })
-                .Select(g => g.First())
-                .ToList();
-
-            if (dist.Count == 1)
+            if (data.Count == 1)
             {
                 // Do stuff and allow creating the position
                 createPositionAllowed = true;
                 tbPacking.Text = dist.ElementAt(0).anQty.ToString();
+            } else
+            {
+                lbQty.Text = "Ni zaloge";
             } 
-
         }
 
 

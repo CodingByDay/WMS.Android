@@ -181,6 +181,7 @@ namespace WMS
             NameValueObject moveHead = new NameValueObject("MoveHead");
             moveHead.SetBool("Saved", false);
             InUseObjects.Set("MoveHead", moveHead);
+
             // Client picking 1.9.2023 Janko Jovičić
             string pickingChoice = CommonData.GetSetting("UseSingleOrderIssueing");
             SetUpClientPicking(pickingChoice);

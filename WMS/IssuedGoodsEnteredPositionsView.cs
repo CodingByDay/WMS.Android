@@ -415,7 +415,6 @@ namespace WMS
         private void BtNew_Click(object sender, EventArgs e)
         {
      
-
             if (moveHead.GetBool("ByOrder") && flow == "2")
             {            
                 StartActivity(typeof(IssuedGoodsIdentEntryWithTrail));
@@ -438,6 +437,7 @@ namespace WMS
             var item = positions.Items[displayedPosition];
 
             InUseObjects.Set("MoveItem", item);
+ 
             try
             {
                 string error;
@@ -448,24 +448,26 @@ namespace WMS
                 }
                 else
                 {
+
                     item.SetString("Ident", openIdent.GetString("Code"));
                     if(flow == "3")
                     {
                         Intent i = new Intent(Application.Context, typeof(IssuedGoodsSerialOrSSCCEntryClientPicking));
-                        i.PutExtra("update", "1");
+                        Base.Store.isUpdate = true;
                         InUseObjects.Set("OpenIdent", openIdent);
                         StartActivity(i);
                         HelpfulMethods.clearTheStack(this);
+
                     } else
                     {
+                        Base.Store.isUpdate = true;
                         Intent i = new Intent(Application.Context, typeof(IssuedGoodsSerialOrSSCCEntry));
-                        i.PutExtra("update", "1");
                         InUseObjects.Set("OpenIdent", openIdent);
                         StartActivity(i);
                         HelpfulMethods.clearTheStack(this);
-                    }
-                 
-               
+
+                    } 
+                    
                 }
             }
             catch(Exception error)

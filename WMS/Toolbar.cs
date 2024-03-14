@@ -18,15 +18,22 @@ public class CustomToolbar
 
     public void SetNavigationIcon(string imageUrl, ImageView image = null)
     {
-        ImageView navIconImageView = _toolbar.FindViewById<ImageView>(_navIconImageViewId);
-        ImageView cachedImage = image;
-        // Set the Bitmap to the ImageView
-        if (cachedImage != null)
+        try
         {
-            navIconImageView = cachedImage;
-        }
-        navIconImageView.Visibility = Android.Views.ViewStates.Visible;
+            ImageView navIconImageView = _toolbar.FindViewById<ImageView>(_navIconImageViewId);
 
+            // Load and set the image with Picasso
+            Picasso.With(_activity)
+                .Load(imageUrl)
+                .Into(navIconImageView);
+
+            // Make the ImageView visible
+            navIconImageView.Visibility = Android.Views.ViewStates.Visible;
+        }
+        catch
+        {
+            return;
+        }
 
     }
 }

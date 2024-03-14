@@ -86,6 +86,7 @@ namespace WMS
             _customToolbar.SetNavigationIcon(settings.RootURL + "/Services/Logo");
             SetSupportActionBar(_customToolbar._toolbar);
             SupportActionBar.SetDisplayShowTitleEnabled(false);
+            SupportActionBar.SetDisplayShowTitleEnabled(false);
             tbIdent = FindViewById<EditText>(Resource.Id.tbIdent);
             tbSSCC = FindViewById<EditText>(Resource.Id.tbSSCC);
             tbSerialNum = FindViewById<EditText>(Resource.Id.tbSerialNum);

@@ -96,6 +96,7 @@ namespace WMS
             } catch {
                 bluetooth.Visibility = ViewStates.Invisible;
             } 
+            
         }
 
         private void Bluetooth_Click(object sender, EventArgs e)
