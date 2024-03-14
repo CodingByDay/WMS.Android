@@ -111,20 +111,16 @@ namespace WMS
         {
             if(flow == "0")
             {
-                choice = new NameValueObject("CurrentClientFlow");
-                choice.SetString("CurrentFlow", "1");
-                InUseObjects.Set("CurrentClientFlow", choice);
-            } else if (flow == "1")
+                Base.Store.modeIssuing = 1;
+            }
+            else if (flow == "1")
             {
-                choice = new NameValueObject("CurrentClientFlow");
-                choice.SetString("CurrentFlow", "2");
-                InUseObjects.Set("CurrentClientFlow", choice);
-            } else if (flow == "A")
+                Base.Store.modeIssuing = 2;
+            }
+            else if (flow == "A")
             {
-                choice = new NameValueObject("CurrentClientFlow");
-                choice.SetString("CurrentFlow", flow);
-                InUseObjects.Set("CurrentClientFlow", choice);
-            }          
+                Base.Store.modeIssuing = 3;
+            }
         }
 
 
@@ -132,21 +128,15 @@ namespace WMS
         {
             if (flow == "0")
             {
-                choice = new NameValueObject("CurrentClientFlow");
-                choice.SetString("CurrentFlow", "1");
-                InUseObjects.Set("CurrentClientFlow", choice);
+                Base.Store.modeIssuing = 1;
             }
             else if (flow == "1")
             {
-                choice = new NameValueObject("CurrentClientFlow");
-                choice.SetString("CurrentFlow", "2");
-                InUseObjects.Set("CurrentClientFlow", choice);
+                Base.Store.modeIssuing = 2;
             }
             else if (flow == "3")
             {
-                choice = new NameValueObject("CurrentClientFlow");
-                choice.SetString("CurrentFlow", "3");
-                InUseObjects.Set("CurrentClientFlow", choice);
+                Base.Store.modeIssuing = 3;
             }
         }
         public bool IsOnline()
@@ -362,7 +352,7 @@ namespace WMS
                 tbClient.Text = item.GetString("Receiver");
                 tbItemCount.Text = item.GetInt("ItemCount").ToString();
                 tbCreatedBy.Text = item.GetString("ClerkName");
-                SetUpClientPickingChange( item.GetString("CurrentFlow"));
+                SetUpClientPickingChange(item.GetString("CurrentFlow"));
                 var created = item.GetDateTime("DateInserted");
                 tbCreatedAt.Text = created == null ? "" : ((DateTime)created).ToString("dd.MM.yyyy");
 

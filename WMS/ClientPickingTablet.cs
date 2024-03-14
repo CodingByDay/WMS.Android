@@ -36,7 +36,6 @@ namespace WMS
         it must have a value always
         String CurrentFlow possible values: 0, 1, 2, string.Empty.
         */
-        private NameValueObject CurrentFlow = (NameValueObject)InUseObjects.Get("CurrentClientFlow");
         private Button btConfirm;
         private Button btDisplayPositions;
         private Button btBack;
@@ -169,7 +168,7 @@ namespace WMS
                 {
                     var test = openOrder.GetString("No");
                     moveHead.SetInt("Clerk", Services.UserID());
-                    moveHead.SetString("CurrentFlow", CurrentFlow.GetString("CurrentFlow"));
+                    moveHead.SetString("CurrentFlow", Base.Store.modeIssuing.ToString());
                     moveHead.SetString("Type", "P");
                     moveHead.SetString("LinkKey", openOrder.GetString("Key"));
                     moveHead.SetString("LinkNo", openOrder.GetString("No"));

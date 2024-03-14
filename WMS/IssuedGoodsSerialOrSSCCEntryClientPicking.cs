@@ -51,7 +51,6 @@ namespace WMS
         private ApiResultSet OpenOrderItem = (ApiResultSet)InUseObjects.Get("OpenOrderItem");
         private NameValueObject moveHead = (NameValueObject)InUseObjects.Get("MoveHead");
         private NameValueObject moveItem = (NameValueObject)InUseObjects.Get("MoveItem");
-        private NameValueObject CurrentFlow = (NameValueObject)InUseObjects.Get("CurrentClientFlow");
         private NameValueObject extraData = (NameValueObject)InUseObjects.Get("ExtraData");
         private NameValueObject lastItem = (NameValueObject)InUseObjects.Get("LastItem");
 
@@ -238,7 +237,7 @@ namespace WMS
 
         private void CheckIfApplicationStopingException()
         {
-            if (CurrentFlow != null && !String.IsNullOrEmpty(CurrentFlow.GetString("CurrentFlow")) && moveHead != null && openIdent != null)
+            if (moveHead != null && openIdent != null)
             {
                 // No error here, safe (ish) to continue
                 return;
@@ -315,7 +314,7 @@ namespace WMS
                     {
                         RunOnUiThread(() =>
                         {
-                            if (CurrentFlow.GetString("CurrentFlow") == "2")
+                            if (Base.Store.modeIssuing == 2)
                             {
                                 StartActivity(typeof(IssuedGoodsIdentEntryWithTrail));
                                 Finish();

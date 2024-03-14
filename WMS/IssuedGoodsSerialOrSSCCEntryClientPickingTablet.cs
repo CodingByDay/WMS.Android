@@ -57,7 +57,6 @@ namespace WMS
         private bool isSkipable = false;
         private NameValueObject moveHead = (NameValueObject)InUseObjects.Get("MoveHead");
         private NameValueObject moveItem = (NameValueObject)InUseObjects.Get("MoveItem");
-        private NameValueObject CurrentFlow = (NameValueObject)InUseObjects.Get("CurrentClientFlow");
         private NameValueObject extraData = (NameValueObject)InUseObjects.Get("ExtraData");
         private NameValueObject lastItem = (NameValueObject)InUseObjects.Get("LastItem");
         private List<MorePallets> data = new List<MorePallets>();
@@ -82,28 +81,11 @@ namespace WMS
             base.OnCreate(savedInstanceState);
             SetTheme(Resource.Style.AppTheme_NoActionBar);
             SetContentView(Resource.Layout.IssuedGoodsSerialOrSSCCEntryClientPicking);
-            var s = CurrentFlow;
             AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
             var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
             _customToolbar.SetNavigationIcon(settings.RootURL + "/Services/Logo");
             SetSupportActionBar(_customToolbar._toolbar);
             SupportActionBar.SetDisplayShowTitleEnabled(false);
-            if (CurrentFlow != null)
-            {
-                if (String.IsNullOrEmpty(CurrentFlow.GetString("CurrentFlow")))
-                {
-                    AlertDialog.Builder alert = new AlertDialog.Builder(this);
-                    alert.SetTitle("Napaka na aplikaciji");
-                    alert.SetMessage("Prišlo je do napake.");
-                    alert.SetPositiveButton("Ok", (senderAlert, args) =>
-                    {
-                        StartActivity(typeof(MainMenu));
-                    });
-                    Dialog dialog = alert.Create();
-                    dialog.Show();
-                }
-            }
-
             tbIdent = FindViewById<EditText>(Resource.Id.tbIdent);
             tbSSCC = FindViewById<EditText>(Resource.Id.tbSSCC);
             tbSerialNum = FindViewById<EditText>(Resource.Id.tbSerialNum);

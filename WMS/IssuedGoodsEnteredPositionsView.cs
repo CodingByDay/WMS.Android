@@ -31,7 +31,6 @@ namespace WMS
     {
         private int displayedPosition = 0;
         private NameValueObject moveHead = (NameValueObject)InUseObjects.Get("MoveHead");
-        private NameValueObject CurrentFlow = new NameValueObject("CurrentClientFlow");
         private NameValueObjectList positions = null;
         private TextView lbInfo;
         private EditText tbIdent;
@@ -108,27 +107,13 @@ namespace WMS
             flow = moveHead.GetString("CurrentFlow");
             if (!String.IsNullOrEmpty(flow))
             {
-                CurrentFlow.SetString("CurrentFlow", flow);
-                InUseObjects.Set("CurrentClientFlow", CurrentFlow);
-            } else
-            {
-                string dbValue = CommonData.GetSetting("UseSingleOrderIssueing");
-                if(!String.IsNullOrEmpty(dbValue))
+                int result;
+                var mode = Int32.TryParse(flow, out result);
+                if (mode)
                 {
-                    if(dbValue == "0")
-                    {
-                        dbValue = "1";
-                    } else if (dbValue == "1") {
-
-                        dbValue = "2";
-                    }            
-                } else
-                {
-                    dbValue = "1";
+                    Base.Store.modeIssuing = result;
                 }
-                CurrentFlow.SetString("CurrentFlow", dbValue);
-                InUseObjects.Set("CurrentClientFlow", CurrentFlow);
-            }
+            } 
         }
 
         public bool IsOnline()

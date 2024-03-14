@@ -33,7 +33,6 @@ using AndroidX.AppCompat.App;
 using FFImageLoading;
 using Android.Graphics.Drawables;
 using Android.Graphics;
-using WMS.BaseApplication;
 
 namespace WMS
 {
@@ -167,7 +166,6 @@ namespace WMS
             Crashes.NotifyUserConfirmation(UserConfirmation.AlwaysSend);
             ChangeTheOrientation();
             base.OnCreate(savedInstanceState);
-            AppStore = (Base.Base)Application;
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             SetContentView(Resource.Layout.activity_main);
             Distribute.ReleaseAvailable = OnReleaseAvailable;

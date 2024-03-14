@@ -27,7 +27,6 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
         private Button ident;
         private Button order;
         private Button client;
-        private NameValueObject choice = (NameValueObject)InUseObjects.Get("CurrentClientFlow");
         private NameValueObject moveHead = (NameValueObject)InUseObjects.Get("MoveHead");
         private bool isMobile;
 
@@ -65,23 +64,20 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
 
         private void Client_Click(object sender, EventArgs e)
         {
-            choice.SetString("CurrentFlow", "2");
-            InUseObjects.Set("CurrentClientFlow", choice);
+            Base.Store.modeIssuing = 3;
             StartActivity(typeof(IssuedGoodsBusinessEventSetupClientPickingTablet));
         }
 
         private void Order_Click(object sender, EventArgs e)
         {
-            choice.SetString("CurrentFlow", "1");
-            InUseObjects.Set("CurrentClientFlow", choice);
+            Base.Store.modeIssuing = 2;
             StartActivity(typeof(IssuedGoodsBusinessEventSetupTablet));
 
         }
 
         private void Ident_Click(object sender, EventArgs e)
         {
-            choice.SetString("CurrentFlow", "0");
-            InUseObjects.Set("CurrentClientFlow", choice);
+            Base.Store.modeIssuing = 1;
             StartActivity(typeof(IssuedGoodsBusinessEventSetupTablet));
         }
     }

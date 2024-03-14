@@ -2,7 +2,6 @@
 using Android.Graphics;
 using Android.Widget;
 using Square.Picasso;
-using WMS.Base;
 
 public class CustomToolbar
 {

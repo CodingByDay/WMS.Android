@@ -269,13 +269,6 @@ namespace WMS
 
         }
 
-       /* private void SetUpClientPicking(string flow)
-        {
-            NameValueObject choice = new NameValueObject("CurrentClientFlow");
-            choice.SetString("CurrentFlow", flow);
-            InUseObjects.Set("CurrentClientFlow", choice);
-        }
-       */
 
         private void BtNew_Click(object sender, EventArgs e)
         {

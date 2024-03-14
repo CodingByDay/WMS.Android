@@ -39,7 +39,6 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
         private int temporaryPositionDoc = 0;
         private int temporaryPositionWarehouse = 0;
         private int temporaryPositionExtra = 0;
-        private NameValueObject choice = (NameValueObject)InUseObjects.Get("CurrentClientFlow");
         public static bool success = false;
         public static string objectTest;
         private bool byOrder = true;
@@ -278,8 +277,8 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             {
                 try
                 {
-                    string selectedFlow = choice.GetString("CurrentFlow");
-                    if (selectedFlow == "2")
+                    int selectedFlow = Base.Store.modeIssuing;
+                    if (selectedFlow == 2)
                     {
                         try
                         {
@@ -372,8 +371,8 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
       
             if (byOrder)
             {
-                string selectedFlow = choice.GetString("CurrentFlow");
-                if (selectedFlow == "2")
+                int selectedFlow = Base.Store.modeIssuing;
+                if (selectedFlow == 2)
                 {
                     lbExtra.Visibility = ViewStates.Visible;
                     cbExtra.Visibility = ViewStates.Visible;
@@ -464,7 +463,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                         }
                     }
                     NameValueObject moveHead = new NameValueObject("MoveHead");
-                    moveHead.SetString("CurrentFlow", choice.GetString("CurrentFlow"));
+                    moveHead.SetString("CurrentFlow", Base.Store.modeIssuing.ToString());
                     moveHead.SetString("DocumentType", itemDT.ID);
                     moveHead.SetString("Wharehouse", itemWH.ID);
                     moveHead.SetBool("ByOrder", byOrder);
@@ -476,7 +475,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                     NameValueObject order = null;
 
                     {
-                        string selectedFlow = choice.GetString("CurrentFlow");
+                        string selectedFlow = Base.Store.modeIssuing.ToString();
                         if (byOrder && selectedFlow == "2" )
                         {
                             itemSubj = adapterExtra.GetItem(temporaryPositionExtra);
