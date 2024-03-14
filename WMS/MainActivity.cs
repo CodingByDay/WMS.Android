@@ -192,8 +192,10 @@ namespace WMS
             chEnglish = FindViewById<LinearLayout>(Resource.Id.chSlovenian);
             imgSlovenian = FindViewById<ImageView>(Resource.Id.imgSlovenian);
             imgEnglish = FindViewById<ImageView>(Resource.Id.imgEnglish);
-            imgSlovenian.Click += ImgSlovenian_Click;
-            imgEnglish.Click += ImgEnglish_Click;
+
+
+
+
             SetUpLanguages();
             GetLogo();
             var _broadcastReceiver = new NetworkStatusBroadcastReceiver();
@@ -208,36 +210,15 @@ namespace WMS
 
         }
 
-        private void ImgEnglish_Click(object? sender, EventArgs e)
-        {
-            ISharedPreferences sharedPreferences = Application.Context.GetSharedPreferences("MyAppSettings", FileCreationMode.Private);
-            ISharedPreferencesEditor editor = sharedPreferences.Edit();
-            editor.PutString("language", "English");
-            editor.Apply();
-            imgSlovenian.ClearColorFilter();
-            imgEnglish.SetColorFilter(highlightFilter);
-        }
+     
 
-        private void ImgSlovenian_Click(object? sender, EventArgs e)
-        {
-            ISharedPreferences sharedPreferences = Application.Context.GetSharedPreferences("MyAppSettings", FileCreationMode.Private);
-            ISharedPreferencesEditor editor = sharedPreferences.Edit();
-            editor.PutString("language", "Slovenian");
-            editor.Apply();
-            imgEnglish.ClearColorFilter();
-            imgSlovenian.SetColorFilter(highlightFilter);
-
-
-        }
-
-
-
-
+    
 
         public string GetAppVersion()
         {
             return AppInfo.VersionString;
         }
+
         private void SetUpLanguages()
         {
             // Create a color matrix for the highlight effect
@@ -250,26 +231,24 @@ namespace WMS
             ColorMatrix colorMatrix = new ColorMatrix(colorMatrixValues);
             highlightFilter = new ColorMatrixColorFilter(colorMatrix);
             txtVersion.Text = "v."+GetAppVersion();
-            ISharedPreferences sharedPreferences = Application.Context.GetSharedPreferences("MyAppSettings", FileCreationMode.Private);
-            ISharedPreferencesEditor editor = sharedPreferences.Edit();
-            string language = sharedPreferences.GetString("language", "");
-            if (string.IsNullOrEmpty(language))
-            {
-                editor.PutString("language", "Slovenian");
-                language = "Slovenian";
-            }
+
+            var language = Resources.Configuration.Locale.Country; 
+            
+
 
             
-            if(language =="Slovenian")
+            if(language == "SI")
             {
                 imgSlovenian.SetColorFilter(highlightFilter);
             }
-            else if(language == "English")
+            else if(language == "EN")
             {
                 imgEnglish.SetColorFilter(highlightFilter);
             }
+            
 
-            editor.Apply();
+
+
         }
 
         private void GetLogo()
@@ -293,26 +272,6 @@ namespace WMS
         }
 
 
-        private Bitmap GetBitmapFromImageView(ImageView imageView)
-        {
-            // Get the drawable from the ImageView
-            Drawable drawable = imageView.Drawable;
-
-            // Check if the drawable is BitmapDrawable
-            if (drawable is BitmapDrawable bitmapDrawable)
-            {
-                return bitmapDrawable.Bitmap; // Return the Bitmap
-            }
-            else
-            {
-                // If the drawable is not a BitmapDrawable, create a new Bitmap from the drawable
-                Bitmap bitmap = Bitmap.CreateBitmap(drawable.IntrinsicWidth, drawable.IntrinsicHeight, Bitmap.Config.Argb8888);
-                Canvas canvas = new Canvas(bitmap);
-                drawable.SetBounds(0, 0, canvas.Width, canvas.Height);
-                drawable.Draw(canvas);
-                return bitmap; // Return the created Bitmap
-            }
-        }
 
         private void OnNetworkStatusChanged(object sender, EventArgs e)
         {

@@ -19,18 +19,6 @@
     <RunAOTCompilation>False</RunAOTCompilation>
   </PropertyGroup>
   <ItemGroup>
-    <AndroidJavaSource Remove="Resources\NewFolder\**" />
-    <AndroidLibrary Remove="Resources\NewFolder\**" />
-    <AndroidNativeLibrary Remove="Resources\NewFolder\**" />
-    <AndroidResource Remove="Resources\NewFolder\**" />
-    <Compile Remove="Resources\NewFolder\**" />
-    <EmbeddedResource Remove="Resources\NewFolder\**" />
-    <JavaSourceJar Remove="Resources\NewFolder\**" />
-    <None Remove="Resources\NewFolder\**" />
-    <ProguardConfiguration Remove="Resources\NewFolder\**" />
-    <TransformFile Remove="Resources\NewFolder\**" />
-  </ItemGroup>
-  <ItemGroup>
     <None Remove="Resources\drawable\check_mark.png" />
     <None Remove="Resources\drawable\slovenia.png" />
     <None Remove="Resources\drawable\system_update.png" />
@@ -186,6 +174,14 @@
     <None Remove="Resources\layout\YesNoPopUp.xml" />
     <None Remove="Resources\layout\YesNoProductionCard.xml" />
     <None Remove="Resources\raw\beep.wav" />
+    <None Remove="Resources\values-en\colors.xml" />
+    <None Remove="Resources\values-en\ic_launcher_background.xml" />
+    <None Remove="Resources\values-en\strings.xml" />
+    <None Remove="Resources\values-en\styles.xml" />
+    <None Remove="Resources\values-sl\colors.xml" />
+    <None Remove="Resources\values-sl\ic_launcher_background.xml" />
+    <None Remove="Resources\values-sl\strings.xml" />
+    <None Remove="Resources\values-sl\styles.xml" />
     <None Remove="Resources\values\colors.xml" />
     <None Remove="Resources\values\styles.xml" />
     <None Remove="Resources\xml\network_security_config.xml" />

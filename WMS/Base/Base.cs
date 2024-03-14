@@ -1,12 +1,20 @@
-﻿using Android.Graphics;
+﻿using Android.Content;
+using Android.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using TrendNET.WMS.Core.Data;
-
+using Android.Content;
+using Android.Content.Res;
+using Java.Util;
+using Android.OS;
+using Android.Util;
+using Android.Views;
+using System.Globalization;
 namespace WMS
 {
     /// <summary>
@@ -40,6 +48,10 @@ namespace WMS
             }
         }
 
+
+
+
+
         public Base(IntPtr javaReference, Android.Runtime.JniHandleOwnership transfer) : base(javaReference, transfer)
         {
         
@@ -49,8 +61,13 @@ namespace WMS
         {
             base.OnCreate();
             Store = this;
-            // Initialization code for your application
+
         }
+
+
+
+
+
 
     }
 }

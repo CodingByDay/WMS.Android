@@ -1,4 +1,15 @@
 <resources>
-    <string name="app_name">WMS</string>
-    <string name="app_text">Hello, Android!</string>
+	<string name="app_name">Scanner</string>
+	<string name="action_settings">Settings</string>
+	<string name="enter_password">Vnesite geslo</string>
+	<string name="log_in">PRIJAVA</string>
+	<string name="password">Geslo</string>
+	<string name="settings">Nastavitve</string>
+	<string name="version">Verzija</string>
+	<string name="api_address">Spletno mesto</string>
+	<string name="id_number">Številka</string>
+	<string name="type">Tip</string>
+	<string name="save">SHRANI</string>
+	<string name="settings_saved">Podatki shranjeni uspešno</string>
+	<string name="login_success">Uspešna prijava.</string>
 </resources>

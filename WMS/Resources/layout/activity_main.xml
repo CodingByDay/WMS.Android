@@ -51,7 +51,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="VNESITE GESLO"
+                android:text="@string/enter_password"
                 android:layout_marginLeft="30dp"
                 android:layout_marginBottom="5dp"/>
 
@@ -65,7 +65,7 @@
                 android:inputType="textPassword"
                 android:breakStrategy="simple"
                 android:focusedByDefault="true"
-                android:hint="Geslo"
+                android:hint="@string/password"
                 android:layout_marginLeft="30dp"
                 android:layout_marginRight="30dp" />
 
@@ -79,7 +79,7 @@
             <Button
                 android:background="@drawable/squaredbutton"
                 android:textColor="@color/white"
-                android:text="Prijava"
+                android:text="@string/log_in"
                 android:layout_width="200dp"
                 android:layout_height="80dp"
                 android:id="@+id/btnRegistrationClick"

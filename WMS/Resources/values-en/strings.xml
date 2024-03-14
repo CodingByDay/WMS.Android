@@ -1,0 +1,62 @@
+
+<resources>
+	<string name="app_name">Scanner</string>
+	<string name="action_settings">Settings</string>
+	<string name="enter_password">Enter the password</string>
+	<string name="log_in">LOG IN</string>
+	<string name="settings">Settings</string>
+	<string name="password">Password</string>
+	<string name="version">Version</string>
+	<string name="api_address">API address</string>
+	<string name="id_number">ID number</string>
+	<string name="type">Type</string>
+	<string name="save">SAVE</string>
+	<string name="settings_saved">Settings saved</string>
+	<string name="login_success">Login succesfull</string>
+	<string name="1" >TAKEOVER-F1</string>
+	<string name="2" >INT.WA.-F2</string>
+	<string name="3" >PRO.TK.-F3</string>
+	<string name="4" >ISSUING-F4</string>
+	<string name="5" >PACK.-F5</string>
+	<string name="6" >PRINT-F6</string>
+	<string name="7" >INV.-F7</string>
+	<string name="8" >STOCK-F8</string>
+	<string name="9" >PALLETS</string>
+	<string name="10" >RECALCULATION</string>
+	<string name="11" >LOG OUT</string>
+	<string name="12" >Open takeover documents</string>
+	<string name="13" >Takeover event</string>
+	<string name="14" >Order</string>
+	<string name="15" >Supplier</string>
+	<string name="16" >Positions</string>
+	<string name="17" >Created by</string>
+	<string name="18" >Created </string>
+	<string name="19" >NEXT-F1</string>
+	<string name="20" >EDIT-F2</string>
+	<string name="21" >DELETE-F3</string>
+	<string name="22" >CREATE-F4</string>
+	<string name="23" >MENU-F8</string>
+	<string name="24" >Are you sure you want to delete the position?</string>
+	<string name="25" >YES</string>
+	<string name="26" >NO</string>
+	<string name="27" >Event</string>
+	<string name="28" >Warehouse</string>
+	<string name="29" >CONFIRM-F2</string>
+	<string name="30" >WITHOUT-F3</string>
+	<string name="31" >MENU-F8</string>
+	<string name="32" >ORDER-F3</string>
+	<string name="33" >Subject</string>
+	<string name="34" >Ident or 2D</string>
+	<string name="35" >Name</string>
+	<string name="36" >Order</string>
+	<string name="37" >none</string>
+	<string name="38" >Order</string>
+	<string name="39" >Supplied </string>
+	<string name="40" >Quantity</string>
+	<string name="41" >CONFIRM-F3</string>
+	<string name="42" >NEXT-F2</string>
+	<string name="43" >OVERV.-F4</string>
+	<string name="44" >MENU-F8</string>
+
+
+</resources>
