@@ -277,6 +277,52 @@ namespace TrendNET.WMS.Device.Services
             }
         }
 
+
+
+        public static ApiResultSet Update(string sql, List<Parameter> sqlParameters = null)
+        {
+            string result;
+            SqlQueryRequest requestObject;
+
+            if (sqlParameters != null)
+            {
+                // Create a JSON object containing the SQL query
+                requestObject = new SqlQueryRequest { SQL = sql, Parameters = sqlParameters };
+            }
+            else
+            {
+                requestObject = new SqlQueryRequest { SQL = sql };
+            }
+            string requestBody = JsonConvert.SerializeObject(requestObject);
+
+            if (WebApp.Post("mode=sql&type=upd", requestBody, out result))
+            {
+                try
+                {
+                    var startedAt = DateTime.Now;
+                    var response = JsonConvert.DeserializeObject<ApiResultSet>(result);
+                    return response;
+                }
+                catch (Exception ex)
+                {
+                    // Handle deserialization or other exceptions
+                    return new ApiResultSet
+                    {
+                        Success = false,
+                        Error = "Napaka pri tolmačenju odziva web strežnika: " + ex.Message,
+                    };
+                }
+            }
+            else
+            {
+                return new ApiResultSet
+                {
+                    Success = false,
+                    Error = "Napaka pri klicu web strežnika: " + result,
+                };
+            }
+        }
+
         public static NameValueObjectList GetObjectList(string table, out string error, string pars)
         {
             if (table == "str")

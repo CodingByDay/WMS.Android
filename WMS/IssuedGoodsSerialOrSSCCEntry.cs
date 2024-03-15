@@ -40,44 +40,155 @@ namespace WMS
     [Activity(Label = "IssuedGoodsSerialOrSSCCEntry", ScreenOrientation = ScreenOrientation.Portrait)]
     public class IssuedGoodsSerialOrSSCCEntry : AppCompatActivity, IBarcodeResult
     {
-        private EditText tbIdent;
-        private EditText tbSSCC;
-        private EditText tbSerialNum;
-        private EditText tbLocation;
-        private EditText tbPacking;
-        private EditText tbUnits;
-        private EditText tbPalette;
+        private static bool? checkIssuedOpenQty = null;
+        private MorePalletsAdapter adapter;
+        private MorePalletsAdapter adapterNew;
+        private Button btConfirm;
+        private Button btCreate;
+        private Button btCreateSame;
+        private Button btExit;
+        private Button btFinish;
+        private Button btnNo;
+        private Button btnNoConfirm;
+        private Button btnYes;
+        private Button btnYesConfirm;
+        private Button btOverview;
+        private int check;
+        private List<IssuedGoods> connectedPositions = new List<IssuedGoods>();
+        private bool createPositionAllowed = false;
+        private CustomAutoCompleteAdapter<string> DataAdapter;
+        private NameValueObject dataObject;
+        private string error;
+        private MorePallets existsDuplicate;
+        private NameValueObject extraData = (NameValueObject)InUseObjects.Get("ExtraData");
+        private string ident;
+        private bool isBatch;
+        private bool isFirst;
+        private bool isMorePalletsMode = false;
+        private bool isOkayToCallBarcode;
+        private bool isOpened = false;
+        private bool isPackaging = false;
+        private NameValueObject lastItem = (NameValueObject)InUseObjects.Get("LastItem");
+        private TextView lbPalette;
+        private TextView lbQty;
+        private List<string> locations = new List<string>();
+        private ListView lvCardMore;
+        private NameValueObject moveHead = (NameValueObject)InUseObjects.Get("MoveHead");
+        private NameValueObject moveItem = (NameValueObject)InUseObjects.Get("MoveItem");
+        private NameValueObject moveItemNew;
         private NameValueObject openIdent = (NameValueObject)InUseObjects.Get("OpenIdent");
         private NameValueObject openOrder = (NameValueObject)InUseObjects.Get("OpenOrder");
         private ApiResultSet OpenOrderItem = (ApiResultSet)InUseObjects.Get("OpenOrderItem");
-        private NameValueObject moveHead = (NameValueObject)InUseObjects.Get("MoveHead");
-        private NameValueObject moveItem = (NameValueObject)InUseObjects.Get("MoveItem");
-        private NameValueObject extraData = (NameValueObject)InUseObjects.Get("ExtraData");
-        private NameValueObject lastItem = (NameValueObject)InUseObjects.Get("LastItem");
-
-        private Button btCreateSame;
-        private Button btCreate;
-        private Button btFinish;
-        private Button btOverview;
-        private Button btExit;
-
-        private TextView lbQty;
-        private bool isPackaging = false;
-        private TextView lbUnits;
-        private TextView lbPalette;
+        private Dialog popupDialog;
+        private Dialog popupDialogConfirm;
+        private Dialog popupDialogMain;
+        private Dialog popupDialogMainIssueing;
+        private ProgressDialogClass progress;
+        private double qtyCheck = 0;
+        private string qtyStock;
+        private string query;
+        private Trail receivedTrail;
+        private ApiResultSet result;
+        private LinearLayout serialRow;
         private SoundPool soundPool;
         private int soundPoolId;
-        private bool isOpened = false;
-        private Trail receivedTrail;
-        private List<string> locations = new List<string>();
-        private double qtyCheck = 0;
+        private string sscc;
         private LinearLayout ssccRow;
-        private LinearLayout serialRow;
-        private List<IssuedGoods> connectedPositions = new List<IssuedGoods>();
-        private bool createPositionAllowed = false;
         private double stock;
+        private EditText tbIdent;
+        private EditText tbLocation;
+        private EditText tbPacking;
+        private EditText tbPalette;
+        private EditText tbSerialNum;
+        private EditText tbSSCC;
+        private EditText tbSSCCpopup;
 
+        private string warehouse;
+        private List<IssuedGoods> data;
 
+        public static List<IssuedGoods> FilterIssuedGoods(List<IssuedGoods> issuedGoodsList, string acSSCC = null, string acSerialNo = null, string acLocation = null)
+        {
+            var filtered = issuedGoodsList;
+
+            if (!String.IsNullOrEmpty(acSSCC))
+            {
+                filtered = filtered.Where(x => x.acSSCC == acSSCC).ToList();
+            }
+
+            if (!String.IsNullOrEmpty(acSerialNo))
+            {
+                filtered = filtered.Where(x => x.acSerialNo == acSerialNo).ToList();
+            }
+
+            if (!String.IsNullOrEmpty(acLocation))
+            {
+                filtered = filtered.Where(x => x.aclocation == acLocation).ToList();
+            }
+
+            return filtered;
+        }
+
+        public void GetBarcode(string barcode)
+        {
+            try
+            {
+                if (tbSSCC.HasFocus)
+                {
+                    if (barcode != "Scan fail")
+                    {
+                        Sound();
+
+                        tbSSCC.Text = barcode;
+
+                        if (serialRow.Visibility == ViewStates.Visible)
+                        {
+                            tbSerialNum.RequestFocus();
+                        }
+                        else
+                        {
+                            tbPacking.RequestFocus();
+                        }
+
+                        FilterData();
+                    }
+                }
+                else if (tbSerialNum.HasFocus)
+                {
+                    if (barcode != "Scan fail")
+                    {
+                        Sound();
+
+                        tbSerialNum.Text = barcode;
+
+                        tbPacking.RequestFocus();
+
+                        FilterData();
+                    }
+                }
+                else if (tbLocation.HasFocus)
+                {
+                    if (barcode != "Scan fail")
+                    {
+                        Sound();
+
+                        tbLocation.Text = barcode;
+
+                        FilterData();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Crashes.TrackError(ex);
+                Toast.MakeText(this, "Prišlo je do napake", ToastLength.Long).Show();
+            }
+        }
+
+        public bool IsOnline()
+        {
+            var cm = (ConnectivityManager)GetSystemService(ConnectivityService);
+            return cm.ActiveNetworkInfo == null ? false : cm.ActiveNetworkInfo.IsConnected;
+        }
 
         protected override async void OnCreate(Bundle savedInstanceState)
         {
@@ -97,15 +208,12 @@ namespace WMS
             tbSerialNum = FindViewById<EditText>(Resource.Id.tbSerialNum);
             tbLocation = FindViewById<EditText>(Resource.Id.tbLocation);
             tbPacking = FindViewById<EditText>(Resource.Id.tbPacking);
-            tbUnits = FindViewById<EditText>(Resource.Id.tbUnits);
             tbPalette = FindViewById<EditText>(Resource.Id.tbPalette);
             tbIdent.InputType = Android.Text.InputTypes.ClassNumber;
             tbSSCC.InputType = Android.Text.InputTypes.ClassNumber;
             tbLocation.InputType = Android.Text.InputTypes.ClassText;
-            tbUnits.InputType = Android.Text.InputTypes.ClassNumber;
             tbPalette.InputType = Android.Text.InputTypes.ClassNumber;
             lbQty = FindViewById<TextView>(Resource.Id.lbQty);
-            lbUnits = FindViewById<TextView>(Resource.Id.lbUnits);
             lbPalette = FindViewById<TextView>(Resource.Id.lbPalette);
             soundPool = new SoundPool(10, Stream.Music, 0);
             soundPoolId = soundPool.Load(this, Resource.Raw.beep, 1);
@@ -128,7 +236,7 @@ namespace WMS
             var _broadcastReceiver = new NetworkStatusBroadcastReceiver();
             _broadcastReceiver.ConnectionStatusChanged += OnNetworkStatusChanged;
             Application.Context.RegisterReceiver(_broadcastReceiver,
-                new IntentFilter(ConnectivityManager.ConnectivityAction));
+            new IntentFilter(ConnectivityManager.ConnectivityAction));
             ssccRow = FindViewById<LinearLayout>(Resource.Id.sscc_row);
             serialRow = FindViewById<LinearLayout>(Resource.Id.serial_row);
 
@@ -144,26 +252,79 @@ namespace WMS
 
             // Stop the loader
             LoaderManifest.LoaderManifestLoopStop(this);
-
-            // Testing the base activity
-            int mode = Base.Store.modeIssuing;
         }
 
-        private void BtOverview_Click(object? sender, EventArgs e)
+        private async void BtCreate_Click(object? sender, EventArgs e)
         {
-            StartActivity(typeof(IssuedGoodsEnteredPositionsView));
-            Finish();
-        }
-
-  
-        private void TbPacking_KeyPress(object? sender, View.KeyEventArgs e)
-        {
-            if (e.KeyCode == Keycode.Enter && e.Event.Action == KeyEventActions.Down)
+            if (!Base.Store.isUpdate)
             {
-                FilterData();
+                double parsed;
+                if (createPositionAllowed && double.TryParse(tbPacking.Text, out parsed) && stock >= parsed)
+                {
+                    await CreateMethodFromStart();
+                }
+                else
+                {
+                    Toast.MakeText(this, "Nepravilni podatki", ToastLength.Long).Show();
+                }
             }
-            e.Handled = false;
+            else
+            {
+                // Update
+                double newQty;
+                if (Double.TryParse(tbPacking.Text, out newQty))
+                {
+                    if (newQty > moveItem.GetDouble("Packing"))
+                    {
+                        Toast.MakeText(this, "Količina je večja od dovoljene.", ToastLength.Long).Show();
+                    }
+                    else
+                    {
+                        var parameters = new List<Services.Parameter>();
+                        var f = moveItem;
+                        parameters.Add(new Services.Parameter { Name = "anQty", Type = "Decimal", Value = newQty });
+                        parameters.Add(new Services.Parameter { Name = "anItemID", Type = "Int32", Value = newQty });
 
+                        var subjects = Services.GetObjectListBySql($"UPDATE uWMSMoveItem SET anQty = @anQty where anItemID = @ItemID;", parameters);
+
+                        if (!subjects.Success)
+                        {
+                            RunOnUiThread(() =>
+                            {
+                                Analytics.TrackEvent(subjects.Error);
+                                return;
+                            });
+                        }
+                        else
+                        {
+                            StartActivity(typeof(MainMenu));
+                            Finish();
+                        }
+                    }
+                }
+                else
+                {
+                    Toast.MakeText(this, "Morate vpisati pravilno količino.", ToastLength.Long).Show();
+                }
+            }
+        }
+
+        private async void BtCreateSame_Click(object? sender, EventArgs e)
+        {
+            double parsed;
+            if (createPositionAllowed && double.TryParse(tbPacking.Text, out parsed) && stock >= parsed)
+            {
+                await CreateMethodSame();
+            }
+            else
+            {
+                Toast.MakeText(this, "Nepravilni podatki", ToastLength.Long).Show();
+            }
+        }
+
+        private void BtExit_Click(object? sender, EventArgs e)
+        {
+            StartActivity(typeof(MainMenu));
         }
 
         private void BtFinish_Click(object? sender, EventArgs e)
@@ -180,56 +341,21 @@ namespace WMS
             btnNoConfirm.Click += BtnNoConfirm_Click;
         }
 
-        private async void BtCreate_Click(object? sender, EventArgs e)
+        private void BtnNoConfirm_Click(object sender, EventArgs e)
         {
-            double parsed;
-
-            if (createPositionAllowed && double.TryParse(tbPacking.Text, out parsed) && stock >= parsed)
-            {
-                await CreateMethodFromStart();
-            }
-            else
-            {
-                Toast.MakeText(this, "Nepravilni podatki", ToastLength.Long).Show();
-            }
+            popupDialogConfirm.Dismiss();
+            popupDialogConfirm.Hide();
         }
 
-
-        private async void BtCreateSame_Click(object? sender, EventArgs e)
+        private async void BtnYesConfirm_Click(object sender, EventArgs e)
         {
-            double parsed;
-            if(createPositionAllowed && double.TryParse(tbPacking.Text, out parsed) && stock >= parsed)
-            {
-                await CreateMethodSame();
-            } else
-            {
-                Toast.MakeText(this, "Nepravilni podatki", ToastLength.Long).Show();
-            }
+            await FinishMethod();
         }
 
-        private void TbSerialNum_KeyPress(object? sender, View.KeyEventArgs e)
+        private void BtOverview_Click(object? sender, EventArgs e)
         {
-            if(e.KeyCode == Keycode.Enter && e.Event.Action == KeyEventActions.Down)
-            {
-                FilterData();
-            }
-
-            e.Handled = false;
-        }
-
-        private void TbSSCC_KeyPress(object? sender, View.KeyEventArgs e)
-        {
-            if (e.KeyCode == Keycode.Enter && e.Event.Action == KeyEventActions.Down)
-            {
-                FilterData();
-            }
-
-            e.Handled = false;
-        }
-
-        private void BtExit_Click(object? sender, EventArgs e)
-        {
-            StartActivity(typeof(MainMenu));
+            StartActivity(typeof(IssuedGoodsEnteredPositionsView));
+            Finish();
         }
 
         private void CheckIfApplicationStopingException()
@@ -247,40 +373,19 @@ namespace WMS
             }
         }
 
-        public bool IsOnline()
+        private void ColorFields()
         {
-            var cm = (ConnectivityManager)GetSystemService(ConnectivityService);
-            return cm.ActiveNetworkInfo == null ? false : cm.ActiveNetworkInfo.IsConnected;
+            tbSSCC.SetBackgroundColor(Android.Graphics.Color.Aqua);
+            tbSerialNum.SetBackgroundColor(Android.Graphics.Color.Aqua);
+            tbLocation.SetBackgroundColor(Android.Graphics.Color.Aqua);
         }
-
-        private void OnNetworkStatusChanged(object sender, EventArgs e)
-        {
-            if (IsOnline())
-            {
-
-                try
-                {
-                    LoaderManifest.LoaderManifestLoopStop(this);
-                }
-                catch (Exception err)
-                {
-                    Crashes.TrackError(err);
-                }
-            }
-            else
-            {
-                LoaderManifest.LoaderManifestLoop(this);
-            }
-        }
-
 
         private async Task CreateMethodFromStart()
         {
             await Task.Run(() =>
             {
-                if (dist.Count == 1)
+                if (data.Count == 1)
                 {
-
                     if (moveItem == null)
                     {
                         moveItem = new NameValueObject("MoveItem");
@@ -293,8 +398,8 @@ namespace WMS
                     moveItem.SetString("SSCC", tbSSCC.Text.Trim());
                     moveItem.SetString("SerialNo", tbSerialNum.Text.Trim());
                     moveItem.SetDouble("Packing", Convert.ToDouble(tbPacking.Text.Trim()));
-                    moveItem.SetDouble("Factor", Convert.ToDouble(tbUnits.Text.Trim()));
-                    moveItem.SetDouble("Qty", Convert.ToDouble(tbUnits.Text.Trim()) * Convert.ToDouble(tbPacking.Text.Trim()));
+                    moveItem.SetDouble("Factor", 1);
+                    moveItem.SetDouble("Qty", Convert.ToDouble(tbPacking.Text.Trim()));
                     moveItem.SetInt("Clerk", Services.UserID());
                     moveItem.SetString("Location", tbLocation.Text.Trim());
                     moveItem.SetString("Palette", tbPalette.Text.Trim());
@@ -307,19 +412,16 @@ namespace WMS
                     {
                         RunOnUiThread(() =>
                         {
-                            if(Base.Store.modeIssuing == 2)
+                            if (Base.Store.modeIssuing == 2)
                             {
                                 StartActivity(typeof(IssuedGoodsIdentEntryWithTrail));
                                 Finish();
                             }
-                    });
+                        });
 
-
-                        dist = new List<IssuedGoods>();
                         createPositionAllowed = false;
                         GetConnectedPositions(receivedTrail.Key, receivedTrail.No, receivedTrail.Ident, receivedTrail.Location);
                     }
-
                 }
                 else
                 {
@@ -332,14 +434,12 @@ namespace WMS
         {
             await Task.Run(() =>
             {
-                if (dist.Count == 1)
+                if (data.Count == 1)
                 {
-
                     if (moveItem == null)
                     {
                         moveItem = new NameValueObject("MoveItem");
                     }
-
                     moveItem.SetInt("HeadID", moveHead.GetInt("HeadID"));
                     moveItem.SetString("LinkKey", receivedTrail.Key);
                     moveItem.SetInt("LinkNo", receivedTrail.No);
@@ -347,16 +447,16 @@ namespace WMS
                     moveItem.SetString("SSCC", tbSSCC.Text.Trim());
                     moveItem.SetString("SerialNo", tbSerialNum.Text.Trim());
                     moveItem.SetDouble("Packing", Convert.ToDouble(tbPacking.Text.Trim()));
-                    moveItem.SetDouble("Factor", Convert.ToDouble(tbUnits.Text.Trim()));
-                    moveItem.SetDouble("Qty", Convert.ToDouble(tbUnits.Text.Trim()) * Convert.ToDouble(tbPacking.Text.Trim()));
+                    moveItem.SetDouble("Factor", 1);
+                    moveItem.SetDouble("Qty", Convert.ToDouble(tbPacking.Text.Trim()));
                     moveItem.SetInt("Clerk", Services.UserID());
                     moveItem.SetString("Location", tbLocation.Text.Trim());
                     moveItem.SetString("Palette", tbPalette.Text.Trim());
 
                     string error;
                     moveItem = Services.SetObject("mi", moveItem, out error);
-             
-                    if(moveItem != null && error == string.Empty)
+
+                    if (moveItem != null && error == string.Empty)
                     {
                         RunOnUiThread(() =>
                         {
@@ -379,38 +479,37 @@ namespace WMS
                             Toast.MakeText(this, "Pozicija kreirana", ToastLength.Long);
                         });
 
-                     
-                        dist = new List<IssuedGoods>();
+
                         createPositionAllowed = false;
                         GetConnectedPositions(receivedTrail.Key, receivedTrail.No, receivedTrail.Ident, receivedTrail.Location);
                     }
-
-                } else
+                }
+                else
                 {
                     return;
                 }
             });
         }
 
-
-        private void BtnNoConfirm_Click(object sender, EventArgs e)
+        private void FilterData()
         {
-            popupDialogConfirm.Dismiss();
-            popupDialogConfirm.Hide();
+            data = FilterIssuedGoods(connectedPositions, tbSSCC.Text, tbSerialNum.Text, tbLocation.Text);
+            if (data.Count == 1)
+            {
+                // Do stuff and allow creating the position
+                createPositionAllowed = true;
+                tbPacking.Text = data.ElementAt(0).anQty.ToString();
+            }
+            else
+            {
+                lbQty.Text = "Ni zaloge";
+            }
         }
-
-        private async void BtnYesConfirm_Click(object sender, EventArgs e)
-        {
-            await FinishMethod();
-        }
-
-
 
         private async Task FinishMethod()
         {
             await Task.Run(async () =>
             {
-            
                 RunOnUiThread(() =>
                 {
                     progress = new ProgressDialogClass();
@@ -419,7 +518,6 @@ namespace WMS
 
                 try
                 {
-
                     var headID = moveHead.GetInt("HeadID");
 
                     string result;
@@ -428,7 +526,6 @@ namespace WMS
                     {
                         if (result.StartsWith("OK!"))
                         {
-
                             RunOnUiThread(() =>
                             {
                                 progress.StopDialogSync();
@@ -450,12 +547,9 @@ namespace WMS
                                     StartActivity(typeof(IssuedGoodsBusinessEventSetup));
                                 });
 
-
-
                                 Dialog dialog = alert.Create();
                                 dialog.Show();
                             });
-
                         }
                         else
                         {
@@ -471,10 +565,7 @@ namespace WMS
                                     alert.Dispose();
                                     System.Threading.Thread.Sleep(500);
                                     StartActivity(typeof(MainMenu));
-
                                 });
-
-
 
                                 Dialog dialog = alert.Create();
                                 dialog.Show();
@@ -484,7 +575,6 @@ namespace WMS
                     else
                     {
                         Toast.MakeText(this, "Napaka pri klicu do web aplikacije" + result, ToastLength.Long).Show();
-
                     }
                 }
                 finally
@@ -492,90 +582,10 @@ namespace WMS
                     RunOnUiThread(() =>
                     {
                         progress.StopDialogSync();
-
                     });
                 }
-                
             });
         }
-
-        private bool update = false;
-
-        private void SetUpForm()
-        {
-
-
-
-   
-
-            // This is the default focus of the view.
-            tbSSCC.RequestFocus();
-
-            if(!openIdent.GetBool("isSSCC"))
-            {
-                ssccRow.Visibility = ViewStates.Gone;
-                tbSerialNum.RequestFocus();
-            }
-
-            if(!openIdent.GetBool("HasSerialNumber"))
-            {
-                serialRow.Visibility = ViewStates.Gone;
-                tbPacking.RequestFocus();
-            }
-            
-            if (Base.Store.isUpdate)
-            {
-                // Update logic ?? it seems to be true.
-                tbIdent.Text = moveItem.GetString("IdentName");
-                tbSerialNum.Text = moveItem.GetString("SerialNo");
-                tbSSCC.Text = moveItem.GetString("SSCC");
-                tbLocation.Text = moveItem.GetString("Location");
-                tbPalette.Text = moveItem.GetString("Palette");
-                tbPacking.Text = moveItem.GetDouble("Packing").ToString();
-                tbUnits.Text = moveItem.GetDouble("Factor").ToString();
-                btCreateSame.Text = "Serij. - F2";
-                // Update call for the connected positions
-            }
-            else
-            {
-                // Not the update ?? it seems to be true
-                tbIdent.Text = openIdent.GetString("Code") + " " + openIdent.GetString("Name");
-
-                if (Intent.Extras != null && !String.IsNullOrEmpty(Intent.Extras.GetString("selected")))
-                {
-                    string trailBytes = Intent.Extras.GetString("selected");
-                    receivedTrail = JsonConvert.DeserializeObject<Trail>(trailBytes);
-                    qtyCheck = Double.Parse(receivedTrail.Qty);
-                    tbLocation.Text = receivedTrail.Location;
-                    lbQty.Text = "Zaloga ( " + qtyCheck.ToString(CommonData.GetQtyPicture()) + " )";
-                    stock = qtyCheck;
-                    tbPacking.Text = qtyCheck.ToString();
-                    GetConnectedPositions(receivedTrail.Key, receivedTrail.No, receivedTrail.Ident, receivedTrail.Location);            
-                }
-            }
-
-            isPackaging = openIdent.GetBool("IsPackaging");
-
-            if (isPackaging)
-            {
-                ssccRow.Visibility = ViewStates.Gone;
-                serialRow.Visibility = ViewStates.Gone;
-            }
-            if (CommonData.GetSetting("ShowPaletteField") == "1")
-            {
-                lbPalette.Visibility = ViewStates.Visible;
-                tbPalette.Visibility = ViewStates.Visible;
-            }
-            if (string.IsNullOrEmpty(tbUnits.Text.Trim())) { tbUnits.Text = "1"; }
-            if (CommonData.GetSetting("ShowNumberOfUnitsField") == "1")
-            {
-                lbUnits.Visibility = ViewStates.Visible;
-                tbUnits.Visibility = ViewStates.Visible;
-            }
-
-            // Test this function based on the proccess
-        }
-
 
         /// <summary>
         /// Podatke preneseš v masko - kličeš NE isti view ampak vedno "uWMSOrderItemByKeyOut", ker moraš
@@ -612,7 +622,7 @@ namespace WMS
             }
             else
             {
-                if(subjects.Rows.Count > 0)
+                if (subjects.Rows.Count > 0)
                 {
                     for (int i = 0; i < subjects.Rows.Count; i++)
                     {
@@ -626,153 +636,131 @@ namespace WMS
                             anQty = row.DoubleValue("anQty"),
                             aclocation = row.StringValue("aclocation")
                         });
-                    }                                         
-                }
-            }
-        }
-
-        public static List<IssuedGoods> FilterIssuedGoods(List<IssuedGoods> issuedGoodsList, string acSSCC = null, string acSerialNo = null, string acLocation = null)
-        {
-            var filtered = issuedGoodsList;
-
-            if(!String.IsNullOrEmpty(acSSCC))
-            {
-                filtered = filtered.Where(x => x.acSSCC == acSSCC).ToList();
-            }
-
-            if (!String.IsNullOrEmpty(acSerialNo))
-            {
-                filtered = filtered.Where(x => x.acSerialNo == acSerialNo).ToList();
-            }
-
-            if (!String.IsNullOrEmpty(acLocation))
-            {
-                filtered = filtered.Where(x => x.aclocation == acLocation).ToList();
-            }
-
-            return filtered;
-        }
-
-
-        private static bool? checkIssuedOpenQty = null;
-        private ProgressDialogClass progress;
-        private Dialog popupDialogMain;
-        private Button btConfirm;
-        private EditText tbSSCCpopup;
-        private ListView lvCardMore;
-        private MorePalletsAdapter adapter;
-        private Dialog popupDialog;
-        private Button btnYes;
-        private Button btnNo;
-        private bool isFirst;
-        private bool isMorePalletsMode = false;
-        private bool isBatch;
-        private int check;
-        private bool isOkayToCallBarcode;
-        private MorePalletsAdapter adapterNew;
-        private NameValueObject moveItemNew;
-        private Dialog popupDialogConfirm;
-        private Button btnYesConfirm;
-        private Button btnNoConfirm;
-        private CustomAutoCompleteAdapter<string> DataAdapter;
-        private string qtyStock;
-        private MorePallets existsDuplicate;
-        private string error;
-        private string query;
-        private ApiResultSet result;
-        private NameValueObject dataObject;
-        private string ident;
-        private string sscc;
-        private string warehouse;
-        private Dialog popupDialogMainIssueing;
-        private List<IssuedGoods> dist;
-
-        private void ColorFields()
-        {
-            tbSSCC.SetBackgroundColor(Android.Graphics.Color.Aqua);
-            tbSerialNum.SetBackgroundColor(Android.Graphics.Color.Aqua);
-            tbLocation.SetBackgroundColor(Android.Graphics.Color.Aqua);
-        }
-
-        public void GetBarcode(string barcode)
-        {
-            try
-            {
-                if (tbSSCC.HasFocus)
-                {
-                    if (barcode != "Scan fail")
-                    {
-                        Sound();
-
-                        tbSSCC.Text = barcode;
-
-                        if(serialRow.Visibility == ViewStates.Visible)
-                        {
-                            tbSerialNum.RequestFocus();
-                        } else
-                        {
-                            tbPacking.RequestFocus();
-                        }
-
-
-                        FilterData();   
-                    }
-                }
-                else if (tbSerialNum.HasFocus)
-                {
-                    if (barcode != "Scan fail")
-                    {
-                        Sound();
-
-                        tbSerialNum.Text = barcode;
-
-                        tbPacking.RequestFocus();
-
-
-                        FilterData();
-
-                    }
-                }
-                else if (tbLocation.HasFocus)
-                {
-                    if (barcode != "Scan fail")
-                    {
-                        Sound();
-
-                        tbLocation.Text = barcode;
-
-
-                        FilterData();
-
                     }
                 }
             }
-            catch (Exception ex)
+        }
+
+        private void OnNetworkStatusChanged(object sender, EventArgs e)
+        {
+            if (IsOnline())
             {
-                Crashes.TrackError(ex);
-                Toast.MakeText(this, "Prišlo je do napake", ToastLength.Long).Show();
+                try
+                {
+                    LoaderManifest.LoaderManifestLoopStop(this);
+                }
+                catch (Exception err)
+                {
+                    Crashes.TrackError(err);
+                }
+            }
+            else
+            {
+                LoaderManifest.LoaderManifestLoop(this);
             }
         }
 
-
-        private void FilterData()
+        private void SetUpForm()
         {
-            var data = FilterIssuedGoods(connectedPositions, tbSSCC.Text, tbSerialNum.Text, tbLocation.Text);
-            if (data.Count == 1)
-            {
-                // Do stuff and allow creating the position
-                createPositionAllowed = true;
-                tbPacking.Text = dist.ElementAt(0).anQty.ToString();
-            } else
-            {
-                lbQty.Text = "Ni zaloge";
-            } 
-        }
+            // This is the default focus of the view.
+            tbSSCC.RequestFocus();
 
+            if (!openIdent.GetBool("isSSCC"))
+            {
+                ssccRow.Visibility = ViewStates.Gone;
+                tbSerialNum.RequestFocus();
+            }
+
+            if (!openIdent.GetBool("HasSerialNumber"))
+            {
+                serialRow.Visibility = ViewStates.Gone;
+                tbPacking.RequestFocus();
+            }
+
+            if (Base.Store.isUpdate)
+            {
+                // Update logic ?? it seems to be true.
+                tbIdent.Text = moveItem.GetString("IdentName");
+                tbSerialNum.Text = moveItem.GetString("SerialNo");
+                tbSSCC.Text = moveItem.GetString("SSCC");
+                tbLocation.Text = moveItem.GetString("Location");
+                tbPalette.Text = moveItem.GetString("Palette");
+                tbPacking.Text = moveItem.GetDouble("Packing").ToString();
+                lbQty.Text = "Zaloga ( " + moveItem.GetDouble("Packing").ToString() + " )";
+                btCreateSame.Text = "Serij. - F2";
+                // Lock down all other fields
+                tbIdent.Enabled = false;
+                tbSerialNum.Enabled = false;
+                tbSSCC.Enabled = false;
+                tbLocation.Enabled = false;
+                tbPalette.Enabled = false;
+            }
+            else
+            {
+                // Not the update ?? it seems to be true
+                tbIdent.Text = openIdent.GetString("Code") + " " + openIdent.GetString("Name");
+
+                if (Intent.Extras != null && !String.IsNullOrEmpty(Intent.Extras.GetString("selected")))
+                {
+                    string trailBytes = Intent.Extras.GetString("selected");
+                    receivedTrail = JsonConvert.DeserializeObject<Trail>(trailBytes);
+                    qtyCheck = Double.Parse(receivedTrail.Qty);
+                    tbLocation.Text = receivedTrail.Location;
+                    lbQty.Text = "Zaloga ( " + qtyCheck.ToString(CommonData.GetQtyPicture()) + " )";
+                    stock = qtyCheck;
+                    tbPacking.Text = qtyCheck.ToString();
+                    GetConnectedPositions(receivedTrail.Key, receivedTrail.No, receivedTrail.Ident, receivedTrail.Location);
+                }
+            }
+
+            isPackaging = openIdent.GetBool("IsPackaging");
+
+            if (isPackaging)
+            {
+                ssccRow.Visibility = ViewStates.Gone;
+                serialRow.Visibility = ViewStates.Gone;
+            }
+            if (CommonData.GetSetting("ShowPaletteField") == "1")
+            {
+                lbPalette.Visibility = ViewStates.Visible;
+                tbPalette.Visibility = ViewStates.Visible;
+            }
+
+            // Test this function based on the proccess
+        }
 
         private void Sound()
         {
             soundPool.Play(soundPoolId, 1, 1, 0, 0, 1);
+        }
+
+        private void TbPacking_KeyPress(object? sender, View.KeyEventArgs e)
+        {
+            if (e.KeyCode == Keycode.Enter && e.Event.Action == KeyEventActions.Down)
+            {
+                FilterData();
+            }
+            e.Handled = false;
+        }
+
+        private void TbSerialNum_KeyPress(object? sender, View.KeyEventArgs e)
+        {
+            if (e.KeyCode == Keycode.Enter && e.Event.Action == KeyEventActions.Down)
+            {
+                FilterData();
+            }
+
+            e.Handled = false;
+        }
+
+        private void TbSSCC_KeyPress(object? sender, View.KeyEventArgs e)
+        {
+            if (e.KeyCode == Keycode.Enter && e.Event.Action == KeyEventActions.Down)
+            {
+                FilterData();
+            }
+
+            e.Handled = false;
         }
     }
 }
