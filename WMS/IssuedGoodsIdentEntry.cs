@@ -21,7 +21,10 @@ using TrendNET.WMS.Core.Data;
 using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
 
-using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS
+using AndroidX.AppCompat.App;
+using AlertDialog = Android.App.AlertDialog;
+using Microsoft.AppCenter.Analytics;
+namespace WMS
 {
     [Activity(Label = "IssuedGoodsIdentEntry", ScreenOrientation = ScreenOrientation.Portrait)]
     public class IssuedGoodsIdentEntry : AppCompatActivity, IBarcodeResult
@@ -40,11 +43,10 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
         int soundPoolId;
         private NameValueObject moveHead = (NameValueObject)InUseObjects.Get("MoveHead");
         private NameValueObject openIdent = null;
-        private NameValueObjectList openOrders = null;
         private int displayedOrder = -1;
         private TextView lbOrderInfo;
-
-
+        private NameValueObjectList openOrders = (NameValueObjectList)InUseObjects.Get("OpenOrders");
+        private List<IssueIdent> orders = new List<IssueIdent>();
         private List<string> returnList = new List<string>();
         private List<string> identData = new List<string>();
         private CustomAutoCompleteAdapter<string> tbIdentAdapter;
@@ -86,7 +88,6 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                     tbIdent.Text = "";
                     tbIdent.RequestFocus();
                     tbNaziv.Text = "";
-                    openOrders = null;
                 }
                 else
                 {
@@ -106,18 +107,50 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                     else
                     {
                         tbNaziv.Text = openIdent.GetString("Name");
-                        openOrders = Services.GetObjectList("oo", out error, ident + "|" + moveHead.GetString("DocumentType"));
-                        if (openOrders == null)
+
+                        var parameters = new List<Services.Parameter>();
+                        string debug = $"SELECT * from uWMSOrderItemByItemTypeWarehouseOut WHERE acIdent = {ident} AND acDocType = {moveHead.GetString("DocumentType")} AND acWarehouse = {moveHead.GetString("Wharehouse")};";
+
+                        parameters.Add(new Services.Parameter { Name = "acIdent", Type = "String", Value = ident });
+                        parameters.Add(new Services.Parameter { Name = "acDocType", Type = "String", Value = moveHead.GetString("DocumentType") });
+                        parameters.Add(new Services.Parameter { Name = "acWarehouse", Type = "String", Value = moveHead.GetString("Wharehouse") });
+                        var subjects = Services.GetObjectListBySql($"SELECT * from uWMSOrderItemByItemTypeWarehouseOut WHERE acIdent = @acIdent AND acDocType = @acDocType AND acWarehouse = @acWarehouse ORDER BY acKey, anNo;", parameters);
+
+                        if (!subjects.Success)
                         {
-                            string WebError = string.Format("Napaka pri dobijanju odprtih naročila" + error);
-                            Toast.MakeText(this, WebError, ToastLength.Long).Show(); tbIdent.Text = "";
-                            tbIdent.RequestFocus();
-                            tbNaziv.Text = "";
+                            RunOnUiThread(() =>
+                            {
+                                Analytics.TrackEvent(subjects.Error);
+                                return;
+                            });
                         }
                         else
                         {
-                            InUseObjects.Set("openOrders", openOrders);
-                            displayedOrder = 0;
+                            if (subjects.Rows.Count > 0)
+                            {
+                                for (int i = 0; i < subjects.Rows.Count; i++)
+                                {
+                                    
+                                    var row = subjects.Rows[i];
+                                    orders.Add(new IssueIdent
+                                    {
+                                        Client = row.StringValue("acSubject"),
+                                        Order = row.StringValue("acKey"),
+                                        Position = (int?) row.IntValue("anNo"),
+                                        Quantity = row.DoubleValue("anQty"),
+                                        Date = row.DateTimeValue("DeliveryDeadline")
+                                    });
+                                    
+                                }
+
+
+
+
+                                // Setting it to global state
+
+
+                                var debugs = 3;
+                            }
                         }
                     }
                 }

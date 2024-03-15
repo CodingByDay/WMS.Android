@@ -28,21 +28,20 @@ public class ApiResultSet
                         case string s:
                             RetValRow.SetString(prop.Key, s);
                             break;
-
                         case int i:
                             RetValRow.SetInt(prop.Key, i);
                             break;
-
                         case double d:
                             RetValRow.SetDouble(prop.Key, d);
                             break;
-
                         case bool b:
                             RetValRow.SetBool(prop.Key, b);
                             break;
-
                         case Int64 i64:
                             RetValRow.SetInt(prop.Key, (int)i64);
+                            break;
+                        case DateTime dt:
+                            RetValRow.SetDateTime(prop.Key, dt);
                             break;
                     }
                 }
@@ -82,7 +81,9 @@ public class Row
                     case bool b:
                         RetValRow.SetBool(prop.Key, b);
                         break;
-
+                    case DateTime dt:
+                        RetValRow.SetDateTime(prop.Key, dt);
+                        break;
                     default:
                         Analytics.TrackEvent("New data type" + prop.Value.GetType().Name);
                         break;
@@ -94,7 +95,7 @@ public class Row
 
     public Dictionary<string, object> Items { get; set; }
 
-    public object GetProperty(string propertyName, string type)
+    public object GetProperty(string propertyName)
     {
         try
         {
@@ -122,21 +123,20 @@ public class Row
 
     public string StringValue(string propertyName)
     {
-        var objectValue = GetProperty(propertyName, "string");
+        var objectValue = GetProperty(propertyName);
         try
         {
             return (string)objectValue;
         }
         catch
         {
-            // prijavu v app center pa uporabniku return default value for type
             return null;
         }
     }
 
     public bool? BoolValue(string propertyName)
     {
-        var objectValue = GetProperty(propertyName, "bool");
+        var objectValue = GetProperty(propertyName);
         try
         {
             return (bool?)objectValue;
@@ -147,9 +147,22 @@ public class Row
         }
     }
 
+    public DateTime? DateTimeValue(string propertyName)
+    {
+        var objectValue = GetProperty(propertyName);
+        try
+        {
+            return (DateTime?)objectValue;
+        }
+        catch
+        {
+            return null;
+        }
+    }
+
     public Int64? IntValue(string propertyName)
     {
-        var objectValue = GetProperty(propertyName, "int64");
+        var objectValue = GetProperty(propertyName);
 
         var type = objectValue.GetType();
         try
@@ -164,7 +177,7 @@ public class Row
 
     public double? DoubleValue(string propertyName)
     {
-        var objectValue = GetProperty(propertyName, "double");
+        var objectValue = GetProperty(propertyName);
         try
         {
             return (double?)objectValue;

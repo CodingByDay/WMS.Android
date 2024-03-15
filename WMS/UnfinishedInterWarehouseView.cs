@@ -44,10 +44,6 @@ namespace WMS
         private Button btnNew;
         private Button btnLogout;
 
-/// <summary>
-/// ////////////////
-/// </summary>
-
         private int displayedPosition = 0;
         private NameValueObjectList positions = (NameValueObjectList)InUseObjects.Get("InterWarehouseHeads");
         private Dialog popupDialog;

@@ -145,16 +145,8 @@ namespace WMS
             // Stop the loader
             LoaderManifest.LoaderManifestLoopStop(this);
 
-
-
-
             // Testing the base activity
-
-
             int mode = Base.Store.modeIssuing;
-
-
-            var debug = true;
         }
 
         private void BtOverview_Click(object? sender, EventArgs e)
@@ -164,8 +156,6 @@ namespace WMS
         }
 
   
-
-
         private void TbPacking_KeyPress(object? sender, View.KeyEventArgs e)
         {
             if (e.KeyCode == Keycode.Enter && e.Event.Action == KeyEventActions.Down)
@@ -204,10 +194,6 @@ namespace WMS
             }
         }
 
-
-
- 
-    
 
         private async void BtCreateSame_Click(object? sender, EventArgs e)
         {
@@ -314,6 +300,7 @@ namespace WMS
                     moveItem.SetString("Palette", tbPalette.Text.Trim());
 
                     string error;
+
                     moveItem = Services.SetObject("mi", moveItem, out error);
 
                     if (moveItem != null && error == string.Empty)
@@ -340,12 +327,6 @@ namespace WMS
                 }
             });
         }
-
-
-
-
-
-
 
         private async Task CreateMethodSame()
         {
