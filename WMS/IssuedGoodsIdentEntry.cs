@@ -143,20 +143,18 @@ namespace WMS
                                     
                                 }
 
+                                displayedOrder = 0;
 
 
-
-                                // Setting it to global state
-
-
-                                var debugs = 3;
                             }
                         }
                     }
                 }
 
                 FillDisplayedOrderInfo();
-                btConfirm.RequestFocus();
+
+                tbIdent.SetSelection(0, tbIdent.Text.Length);
+
             }
             catch (Exception err)
             {
@@ -169,22 +167,22 @@ namespace WMS
 
         private void FillDisplayedOrderInfo()
         {
-            if ((openIdent != null) && (openOrders != null) && (openOrders.Items.Count > 0))
+            if ((openIdent != null) && (orders != null) && (orders.Count > 0))
             {
-                lbOrderInfo.Text = "Naročilo (" + (displayedOrder + 1).ToString() + "/" + openOrders.Items.Count.ToString() + ")";
-                var order = openOrders.Items[displayedOrder];
-                InUseObjects.Set("OpenOrder", order);
-                tbOrder.Text = order.GetString("Key") + " / " + order.GetInt("No");
-                tbConsignee.Text = order.GetString("Consignee");
-                tbQty.Text = order.GetDouble("OpenQty").ToString(CommonData.GetQtyPicture());
-                var deadLine = order.GetDateTime("DeliveryDeadline");
+                lbOrderInfo.Text = "Naročilo (" + (displayedOrder + 1).ToString() + "/" + orders.Count.ToString() + ")";
+                var order = orders.ElementAt(displayedOrder);
+                Base.Store.OpenOrder = order;
+                tbOrder.Text = order.Order + " / " + order.Position;
+                tbConsignee.Text = order.Client;
+                tbQty.Text = order.Quantity.ToString();
+                var deadLine = order.Date;
                 tbDeliveryDeadline.Text = deadLine == null ? "" : ((DateTime)deadLine).ToString("dd.MM.yyyy");
                 btNext.Enabled = true;
                 btConfirm.Enabled = true;
+
             }
             else
             {
-                InUseObjects.Invalidate("OpenOrder");
                 lbOrderInfo.Text = "Naročilo (ni postavk)";
                 tbOrder.Text = "";
                 tbConsignee.Text = "";
@@ -197,17 +195,8 @@ namespace WMS
 
         private bool SaveMoveHead()
         {
-            NameValueObject order;
-            if ((openOrders == null) || (openOrders.Items.Count == 0))
-            {
-                order = new NameValueObject("OpenOrder");
-                InUseObjects.Set("OpenOrder", order);
-            }
-            else
-            {
-                order = openOrders.Items[displayedOrder];
-                InUseObjects.Set("OpenOrder", order);
-            }
+            var order = Base.Store.OpenOrder;
+
 
             if (!moveHead.GetBool("Saved"))
             {
@@ -217,18 +206,17 @@ namespace WMS
 
                     moveHead.SetInt("Clerk", Services.UserID());
                     moveHead.SetString("Type", "P");
-                    moveHead.SetString("LinkKey", order.GetString("Key"));
-                    moveHead.SetString("LinkNo", order.GetString("No"));
-                    moveHead.SetString("Document1", order.GetString("Document1"));
-                    moveHead.SetDateTime("Document1Date", order.GetDateTime("Document1Date"));
-                    moveHead.SetString("Note", order.GetString("Note"));
+                    moveHead.SetString("LinkKey", order.Order);
+                    moveHead.SetString("LinkNo", order.Position.ToString());
+
                     if (moveHead.GetBool("ByOrder"))
                     {
-                        moveHead.SetString("Receiver", order.GetString("Receiver"));
+                        moveHead.SetString("Receiver", order.Client);
                     }
 
                     string error;
                     var savedMoveHead = Services.SetObject("mh", moveHead, out error);
+
                     if (savedMoveHead == null)
                     {
                         string WebError = string.Format("Napaka pri dostopu do web aplikacije" + error);
@@ -285,8 +273,8 @@ namespace WMS
             soundPoolId = soundPool.Load(this, Resource.Raw.beep, 1);
             Barcode2D barcode2D = new Barcode2D();
             barcode2D.open(this, this);
-            tbNaziv.FocusChange += TbNaziv_FocusChange;
             btNext.Click += BtNext_Click;
+            tbIdent.KeyPress += TbIdent_KeyPress; ;
             btConfirm.Click += BtConfirm_Click;
             button4.Click += Button4_Click;
             button5.Click += Button5_Click;
@@ -300,7 +288,7 @@ namespace WMS
                 savedIdents = JsonConvert.DeserializeObject<List<string>>(savedIdentsJson);
                 // Now you have your list of idents in the savedIdents variable
             }
-            tbIdent.LongClick += ClearTheFields;
+        
             tbIdentAdapter = new CustomAutoCompleteAdapter<string>(this, Android.Resource.Layout.SimpleDropDownItem1Line, new List<string>());
             tbIdent.Adapter = tbIdentAdapter;
             tbIdent.TextChanged += (sender, e) =>
@@ -313,6 +301,18 @@ namespace WMS
             Application.Context.RegisterReceiver(_broadcastReceiver,
             new IntentFilter(ConnectivityManager.ConnectivityAction));
         }
+
+        private void TbIdent_KeyPress(object? sender, View.KeyEventArgs e)
+        {
+            if (e.KeyCode == Keycode.Enter && e.Event.Action == KeyEventActions.Down)
+            {
+                ProcessIdent();
+            }
+
+            e.Handled = false;
+        }
+
+ 
 
         public bool IsOnline()
         {
@@ -361,59 +361,42 @@ namespace WMS
             }
         }
 
-        private void ClearTheFields(object sender, View.LongClickEventArgs e)
-        {
-            tbIdent.Text = "";
-            tbNaziv.Text = "";
-
-        }
+  
 
       
         private void SpinnerIdent_ItemSelected(object sender, AdapterView.ItemSelectedEventArgs e)
         {
-
             var item = e.Position;
-
             var chosen = identData.ElementAt(item);
             if (chosen != "")
             {
                 tbIdent.Text = chosen;
             }
-
             ProcessIdent();
         }
  
 
-        private void TbNaziv_FocusChange(object sender, View.FocusChangeEventArgs e)
-        {
-            ProcessIdent();
-        }
+       
 
         private void Button5_Click(object sender, EventArgs e)
         {
-            // logout
             StartActivity(typeof(MainMenu));
              
-    }
+        }
 
         private void Button4_Click(object sender, EventArgs e)
         {
-            // F4
-               StartActivity(typeof(IssuedGoodsEnteredPositionsView));
-               this.Finish();
-   
+            StartActivity(typeof(IssuedGoodsEnteredPositionsView));
+            this.Finish();
         }
 
         private void BtConfirm_Click(object sender, EventArgs e)
         {
-            // F3
             if (SaveMoveHead())
             {
                StartActivity(typeof(IssuedGoodsSerialOrSSCCEntry));
                this.Finish();
-
             }
-
         }
 
         private void BtNext_Click(object sender, EventArgs e)
@@ -422,7 +405,11 @@ namespace WMS
             {
                 // F2
                 displayedOrder++;
-                if (displayedOrder >= openOrders.Items.Count) { displayedOrder = 0; }
+
+                if (displayedOrder >= orders.Count) { 
+                    displayedOrder = 0; 
+                }
+
                 FillDisplayedOrderInfo();
             } catch { return; }
         }
@@ -441,7 +428,7 @@ namespace WMS
                         BtNext_Click(this, null);
                     }
                     break;
-                //return true;
+                // return true;
 
 
                 case Keycode.F3:

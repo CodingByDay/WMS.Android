@@ -15,6 +15,7 @@ using Android.OS;
 using Android.Util;
 using Android.Views;
 using System.Globalization;
+using WMS.App;
 namespace WMS
 {
     /// <summary>
@@ -33,6 +34,8 @@ namespace WMS
         public bool isUpdate { get; set; } = false;
         // Open order object.
         public static Base Store { get; set; }
+
+        public IssueIdent OpenOrder { get; set; }
 
         // Reset method using reflection
         public void ResetValues()

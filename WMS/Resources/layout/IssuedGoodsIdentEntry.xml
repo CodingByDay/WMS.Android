@@ -30,22 +30,22 @@
         android:paddingTop="5dp">
 
         <TextView
-           android:textStyle="bold"
-android:layout_width="100dp"
-android:layout_height="wrap_content"
-android:paddingLeft="4dp"
-android:paddingTop="4dp"
+            android:textStyle="bold"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:paddingLeft="4dp"
+            android:paddingTop="4dp"
             android:text="Ident" />
 
         <CustomAutoCompleteTextView
-              android:textStyle="bold"
+          android:textStyle="bold"
           android:singleLine="true"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:layout_weight="0.50"
           android:paddingTop="5dp"
           android:background="@drawable/editText_bg_grey"
-            android:id="@+id/tbIdent" />
+          android:id="@+id/tbIdent" />
 
     </LinearLayout>
 
@@ -126,7 +126,7 @@ android:paddingTop="4dp"
             android:textStyle="bold"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:text="Naročnik"
+            android:text="Subjekt"
             android:paddingTop="5dp"
             android:paddingLeft="4dp"/>
 

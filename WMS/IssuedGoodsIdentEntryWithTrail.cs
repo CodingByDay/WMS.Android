@@ -326,16 +326,11 @@ namespace WMS
                         string error;
                         var warehouse = moveHead.GetString("Wharehouse");
                         // qtyByLoc = Services.GetObjectList("ook", out error, password);
-
-
                         var parameters = new List<Services.Parameter>();
                         parameters.Add(new Services.Parameter { Name = "acKey", Type = "String", Value = password });
                         string sql = $"SELECT * FROM uWMSOrderItemByKeyOut WHERE acKey = @acKey;";
-                        result = Services.GetObjectListBySql(sql, parameters);
-                                                
-                                           
+                        result = Services.GetObjectListBySql(sql, parameters);                                                                                         
                         NameValueObjectVariableList = result.ConvertToNameValueObjectList("OpenOrder");
-
                         if (result.Success && result.Rows.Count > 0)
                         {
                             trails.Clear();
