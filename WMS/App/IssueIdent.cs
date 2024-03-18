@@ -8,6 +8,7 @@ namespace WMS.App
 {
     public class IssueIdent
     {
+        public string Ident { get; set; }
         public string? Order { get; set; }
         public int? Position { get; set; }
         public string? Client  { get; set; }

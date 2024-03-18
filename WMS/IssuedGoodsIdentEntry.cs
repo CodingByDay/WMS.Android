@@ -114,6 +114,11 @@ namespace WMS
                         parameters.Add(new Services.Parameter { Name = "acIdent", Type = "String", Value = ident });
                         parameters.Add(new Services.Parameter { Name = "acDocType", Type = "String", Value = moveHead.GetString("DocumentType") });
                         parameters.Add(new Services.Parameter { Name = "acWarehouse", Type = "String", Value = moveHead.GetString("Wharehouse") });
+
+
+                        // string debugs = $"SELECT * from uWMSOrderItemByItemTypeWarehouseOut WHERE acIdent = {ident} AND acDocType = {moveHead.GetString("DocumentType")} AND acWarehouse = {moveHead.GetString("Wharehouse")} ORDER BY acKey, anNo;";
+
+
                         var subjects = Services.GetObjectListBySql($"SELECT * from uWMSOrderItemByItemTypeWarehouseOut WHERE acIdent = @acIdent AND acDocType = @acDocType AND acWarehouse = @acWarehouse ORDER BY acKey, anNo;", parameters);
 
                         if (!subjects.Success)
@@ -132,13 +137,15 @@ namespace WMS
                                 {
                                     
                                     var row = subjects.Rows[i];
+
                                     orders.Add(new IssueIdent
                                     {
                                         Client = row.StringValue("acSubject"),
                                         Order = row.StringValue("acKey"),
-                                        Position = (int?) row.IntValue("anNo"),
+                                        Position = (int?)row.IntValue("anNo"),
                                         Quantity = row.DoubleValue("anQty"),
-                                        Date = row.DateTimeValue("DeliveryDeadline")
+                                        Date = row.DateTimeValue("DeliveryDeadline"),
+                                        Ident = row.StringValue("acIdent")
                                     });
                                     
                                 }

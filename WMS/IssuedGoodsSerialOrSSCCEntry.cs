@@ -204,6 +204,8 @@ namespace WMS
             SetSupportActionBar(_customToolbar._toolbar);
             SupportActionBar.SetDisplayShowTitleEnabled(false);
             tbIdent = FindViewById<EditText>(Resource.Id.tbIdent);
+            // Read only field.
+            tbIdent.Enabled = false;
             tbSSCC = FindViewById<EditText>(Resource.Id.tbSSCC);
             tbSerialNum = FindViewById<EditText>(Resource.Id.tbSerialNum);
             tbLocation = FindViewById<EditText>(Resource.Id.tbLocation);
@@ -510,9 +512,26 @@ namespace WMS
             data = FilterIssuedGoods(connectedPositions, tbSSCC.Text, tbSerialNum.Text, tbLocation.Text);
             if (data.Count == 1)
             {
+                var element = data.ElementAt(0);
+
+                if (Base.Store.modeIssuing != 3)
+                {
+                    stock = element.anQty ?? 0;
+                    lbQty.Text = "Zaloga ( " + element.anQty.ToString() + " )";
+                    tbPacking.Text = element.anQty.ToString();
+                }
+
+                tbLocation.Text = element.aclocation;
+                tbLocation.Enabled = false;
+
                 // Do stuff and allow creating the position
                 createPositionAllowed = true;
                 tbPacking.Text = data.ElementAt(0).anQty.ToString();
+
+
+                tbPacking.SetSelection(0, tbPacking.Text.Length);
+
+                // This flow should end up with correct data in the fields and the select focus on the qty field. 
             }
             else
             {
@@ -615,17 +634,19 @@ namespace WMS
         /// <param name="acKey">Številka naročila</param>
         /// <param name="anNo">Pozicija znotraj naročila</param>
         /// <param name="acIdent">Ident</param>
-        private void GetConnectedPositions(string acKey, int anNo, string acIdent, string acLocation)
+        private void GetConnectedPositions(string acKey, int anNo, string acIdent, string acLocation = null)
         {
+            var sql = "SELECT * from uWMSOrderItemByKeyOut WHERE acKey = @acKey AND anNo = @anNo AND acIdent = @acIdent";
             var parameters = new List<Services.Parameter>();
-
             parameters.Add(new Services.Parameter { Name = "acKey", Type = "String", Value = acKey });
             parameters.Add(new Services.Parameter { Name = "anNo", Type = "Int32", Value = anNo });
             parameters.Add(new Services.Parameter { Name = "acIdent", Type = "String", Value = acIdent });
-            parameters.Add(new Services.Parameter { Name = "acLocation", Type = "String", Value = acLocation });
-
-            var subjects = Services.GetObjectListBySql($"SELECT * from uWMSOrderItemByKeyOut WHERE acKey = @acKey AND anNo = @anNo AND acIdent = @acIdent and acLocation=@acLocation;", parameters);
-
+            if (acLocation != null)
+            {
+                parameters.Add(new Services.Parameter { Name = "acLocation", Type = "String", Value = acLocation });
+                sql += " AND acLocation = @acLocation;";
+            }
+            var subjects = Services.GetObjectListBySql(sql, parameters);
             if (!subjects.Success)
             {
                 RunOnUiThread(() =>
@@ -649,6 +670,7 @@ namespace WMS
                             acSSCC = row.StringValue("acSSCC"),
                             anQty = row.DoubleValue("anQty"),
                             aclocation = row.StringValue("aclocation")
+                            
                         });
                     }
                 }
@@ -713,8 +735,7 @@ namespace WMS
             {
                 // Not the update ?? it seems to be true
                 tbIdent.Text = openIdent.GetString("Code") + " " + openIdent.GetString("Name");
-
-                if (Intent.Extras != null && !String.IsNullOrEmpty(Intent.Extras.GetString("selected")))
+                if (Intent.Extras != null && !String.IsNullOrEmpty(Intent.Extras.GetString("selected")) && Base.Store.modeIssuing == 3)
                 {
                     string trailBytes = Intent.Extras.GetString("selected");
                     receivedTrail = JsonConvert.DeserializeObject<Trail>(trailBytes);
@@ -724,7 +745,22 @@ namespace WMS
                     stock = qtyCheck;
                     tbPacking.Text = qtyCheck.ToString();
                     GetConnectedPositions(receivedTrail.Key, receivedTrail.No, receivedTrail.Ident, receivedTrail.Location);
+
+                } else if (Base.Store.modeIssuing == 3)
+                {
+                    var order = Base.Store.OpenOrder;
+
+
+                    GetConnectedPositions(order.Order, order.Position ?? -1, order.Ident);
                 }
+                else if (Base.Store.modeIssuing == 1)
+                {
+                    var order = Base.Store.OpenOrder;
+
+
+                    GetConnectedPositions(order.Order, order.Position ?? -1, order.Ident);
+                }
+
             }
 
             isPackaging = openIdent.GetBool("IsPackaging");

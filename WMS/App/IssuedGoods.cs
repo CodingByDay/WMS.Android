@@ -19,5 +19,9 @@ namespace WMS.App
 
         public string? aclocation { get; set; }
 
+        public int anNo { get; set; }
+
+        public string acKey { get; set; }
+
     }
 }
