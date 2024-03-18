@@ -25,7 +25,9 @@
             android:gravity="bottom"
             android:paddingLeft="4dp"
             android:paddingTop="4dp"
-            android:text="Ident"
+            android:text="@string/s47"
+            
+            
  />
 
         <EditText
@@ -58,7 +60,7 @@
             android:gravity="bottom"
             android:paddingLeft="4dp"
             android:paddingTop="4dp"
-            android:text="SSCC koda"
+            android:text="@string/s48"
             android:id="@+id/textView1"
           />
 
@@ -88,7 +90,7 @@
             android:gravity="bottom"
             android:paddingLeft="4dp"
             android:paddingTop="4dp"
-            android:text="Serijska št."
+            android:text="@string/s49"
  />
 
         <EditText
@@ -118,7 +120,7 @@
             android:gravity="bottom"
             android:paddingLeft="4dp"
             android:paddingTop="4dp"
-            android:text="Lokacija"
+            android:text="@string/s50"
 />
 
         <EditText
@@ -148,7 +150,7 @@
             android:gravity="bottom"
             android:paddingLeft="4dp"
             android:paddingTop="4dp"
-            android:text="Količina"
+            android:text="@string/s83"
             android:id="@+id/lbQty" />
 
         <EditText
@@ -187,7 +189,7 @@
             android:gravity="bottom"
             android:paddingLeft="4dp"
             android:paddingTop="4dp"
-            android:text="Št. enot"
+            android:text="@string/s84"
             android:id="@+id/lbUnits" />
 
         <EditText
@@ -231,13 +233,13 @@
                 android:textColor="@color/white"
                 android:layout_marginLeft="4dp"
                 android:layout_marginRight="2dp"
-                android:text="serij. - f2"
+                android:text="@string/s85"
                 android:drawableLeft="@drawable/newitem_white"
                 android:id="@+id/btSaveOrUpdate"
                  />
 
             <Button
-                android:text="Kreiraj - f3"
+                android:text="@string/s86"
                 android:drawableLeft="@drawable/newitem_white"
                 android:id="@+id/button4"
                 android:layout_weight="1"
@@ -271,7 +273,7 @@
                 android:textColor="@color/white"
                 android:layout_marginLeft="4dp"
                 android:layout_marginRight="2dp"
-                android:text="Zaklj. - f4"
+                android:text="@string/s87"
                 android:drawableLeft="@drawable/shipped_white"
                 android:id="@+id/button6" />
 
@@ -285,7 +287,7 @@
                 android:textColor="@color/white"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="4dp"
-                android:text="Preg. - f5"
+                android:text="@string/s88"
                 android:drawableLeft="@drawable/focus_white"
                 android:id="@+id/button5"
                />
@@ -301,7 +303,7 @@
             android:textColor="@color/white"
             android:layout_marginLeft="4dp"
             android:layout_marginRight="4dp"
-            android:text="Izhod - F8"
+            android:text="@string/s88"
             android:drawableLeft="@drawable/logout_white"
             android:id="@+id/button7"
             android:layout_marginTop="4dp"

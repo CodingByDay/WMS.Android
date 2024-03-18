@@ -102,4 +102,11 @@
 	<string name="s87">FINISH-F4</string>
 	<string name="s88">OVERV-F5</string>
 	<string name="s89">MENU-F8</string>
+
+	<string name="s90">CONFIRM - F2</string>
+	<string name="s91">Takeover</string>
+	<string name="s92">Positions</string>
+	<string name="s93">Izhod - F8</string>
+
+
 </resources>

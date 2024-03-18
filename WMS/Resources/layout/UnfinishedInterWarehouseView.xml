@@ -22,7 +22,7 @@
         android:paddingTop="5dp"
         android:paddingBottom="10dp"
         android:textColor="@color/rikoMain"
-        android:text="Odprte medskladiščnice na čitalcu"
+        android:text="@string/s61"
         android:id="@+id/lbInfo" />
     <LinearLayout
         android:layout_width="fill_parent"
@@ -37,7 +37,7 @@
             android:gravity="bottom"
             android:paddingLeft="4dp"
             android:paddingTop="4dp"
-            android:text="Pos. dog. medsk."
+            android:text="@string/s63"
            />
 
         <EditText
@@ -67,7 +67,7 @@
             android:gravity="bottom"
             android:paddingLeft="4dp"
             android:paddingTop="4dp"
-            android:text="Izdaj. sklad."
+            android:text="@string/s64"
             android:id="@+id/textView1"
             />
 
@@ -96,7 +96,7 @@
             android:gravity="bottom"
             android:paddingLeft="4dp"
             android:paddingTop="4dp"
-            android:text="Prej. sklad."
+            android:text="@string/s65"
            />
 
         <EditText
@@ -126,7 +126,7 @@
             android:gravity="bottom"
             android:paddingLeft="4dp"
             android:paddingTop="4dp"
-            android:text="Št. pozicij"
+            android:text="@string/s66"
            />
 
         <EditText
@@ -154,7 +154,7 @@
             android:gravity="bottom"
             android:paddingLeft="4dp"
             android:paddingTop="4dp"
-            android:text="Kreiral" />
+            android:text="@string/s67" />
 
         <EditText
             android:textStyle="bold"
@@ -182,7 +182,7 @@
             android:gravity="bottom"
             android:paddingLeft="4dp"
             android:paddingTop="4dp"
-            android:text="Datum kreiranja" />
+            android:text="@string/s68" />
 
         <EditText
             android:textStyle="bold"
@@ -226,7 +226,7 @@
                 android:textColor="@color/white"
                 android:layout_marginLeft="4dp"
                 android:layout_marginRight="2dp"
-                android:text="Nasled. - f1"
+                android:text="@string/s69"
                 android:drawableLeft="@drawable/next_white"
                 android:id="@+id/btNext"
           />
@@ -241,7 +241,7 @@
                 android:textColor="@color/white"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="4dp"
-                android:text="uredi - f2"
+               android:text="@string/s70"
                 android:drawableLeft="@drawable/shipped_white"
                 android:id="@+id/btFinish"
             />
@@ -266,12 +266,12 @@
                 android:textColor="@color/white"
                 android:layout_marginLeft="4dp"
                 android:layout_marginRight="2dp"
-                android:text="Izbriši - f3"
+                android:text="@string/s71"
                 android:drawableLeft="@drawable/delete_white"
                 android:id="@+id/btDelete" />
 
             <Button
-                android:text="kreiraj - f4"
+                android:text="@string/s22"
                 android:drawableLeft="@drawable/newitem_white"
                 android:paddingLeft="10dp"
                 android:id="@+id/btnNew"
@@ -295,7 +295,7 @@
             android:textColor="@color/white"
             android:layout_marginLeft="4dp"
             android:layout_marginRight="4dp"
-            android:text="Izhod - F8"
+            android:text="@string/s23"
             android:drawableLeft="@drawable/logout_white"
             android:id="@+id/btnLogout"
             android:layout_marginTop="4.0dp"

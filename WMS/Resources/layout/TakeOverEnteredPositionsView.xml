@@ -22,7 +22,7 @@
         android:paddingTop="5dp"
         android:paddingBottom="5dp"
         android:textColor="@color/rikoMain"
-        android:text="Vnešene pozicije na naročilu"
+        android:text="@string/s92"
         android:id="@+id/lbInfo" />
     <LinearLayout
         android:layout_width="fill_parent"
@@ -37,7 +37,10 @@
             android:gravity="bottom"
             android:paddingLeft="4dp"
             android:paddingTop="4dp"
-            android:text="Ident" />
+            android:text="@string/s47"
+            
+            
+            />
 
         <EditText
             android:textStyle="bold"
@@ -66,7 +69,7 @@
             android:gravity="bottom"
             android:paddingLeft="4dp"
             android:paddingTop="4dp"
-            android:text="SSCC koda"
+            android:text="@string/s48"
             android:id="@+id/textView1" />
 
         <EditText
@@ -94,7 +97,10 @@
             android:gravity="bottom"
             android:paddingLeft="4dp"
             android:paddingTop="4dp"
-            android:text="Serijska št."/>
+            android:text="@string/s49"
+            
+            
+            />
 
         <EditText
             android:textStyle="bold"
@@ -123,7 +129,9 @@
             android:gravity="bottom"
             android:paddingLeft="4dp"
             android:paddingTop="4dp"
-            android:text="Količina"/>
+            android:text="@string/s40"
+            
+            />
 
         <EditText
             android:textStyle="bold"
@@ -151,7 +159,9 @@
             android:gravity="bottom"
             android:paddingLeft="4dp"
             android:paddingTop="4dp"
-            android:text="Lokacija" />
+            android:text="@string/s50"
+            
+            />
 
         <EditText
             android:textStyle="bold"
@@ -179,7 +189,7 @@
             android:gravity="bottom"
             android:paddingLeft="4dp"
             android:paddingTop="4dp"
-            android:text="Kreiral" />
+            android:text="@string/s57" />
 
         <EditText
             android:textStyle="bold"

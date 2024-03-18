@@ -9,7 +9,7 @@
         layout="@layout/toolbar" />
     <TextView
         android:textStyle="bold"
-        android:text="Posl dog"
+        android:text="@string/s27"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -25,7 +25,7 @@
         android:spinnerMode="dialog" />
     <TextView
         android:textStyle="bold"
-        android:text="Skladišče"
+        android:text="@string/s28"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:layout_width="match_parent"
         android:layout_height="39.0dp"
@@ -39,7 +39,7 @@
         android:spinnerMode="dialog" />
     <TextView
         android:textStyle="bold"
-        android:text="Subjekt"
+        android:text="@string/s33"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:layout_width="match_parent"
         android:layout_height="46.5dp"
@@ -80,7 +80,7 @@
                 android:textColor="@color/white"
                 android:layout_marginLeft="4dp"
                 android:layout_marginRight="2dp"
-                android:text="potrdi - f2"
+                android:text="@string/s90"
                 android:drawableLeft="@drawable/confirmation_white"
                 android:id="@+id/btnOrder" />
 
@@ -94,7 +94,7 @@
                 android:textColor="@color/white"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="4dp"
-                android:text="Brez - f3"
+                android:text="@string/s30"
                 android:drawableLeft="@drawable/newitem_white"
                 android:id="@+id/btnOrderMode"
           />
@@ -112,7 +112,7 @@
             android:layout_marginTop="4dp"
             android:layout_marginBottom="4dp"
             android:layout_marginRight="4dp"
-            android:text="izhod - f8"
+            android:text="@string/s31"
             android:id="@+id/btnLogout"
             android:drawableLeft="@drawable/logout_white"
 

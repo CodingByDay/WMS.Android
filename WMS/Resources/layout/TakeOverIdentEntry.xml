@@ -21,7 +21,7 @@
         android:paddingTop="5dp"
         android:paddingBottom="5dp"
         android:textColor="@color/rikoMain"
-        android:text="Prevzem od dobavitelja" />
+        android:text="@string/s91" />
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -36,7 +36,7 @@
             android:gravity="bottom"
             android:paddingLeft="4dp"
             android:paddingTop="4dp"
-            android:text="Ident ali 2D"
+           android:text="@string/s34"
       />
 
         <CustomAutoCompleteTextView
@@ -66,7 +66,7 @@
             android:gravity="bottom"
             android:paddingLeft="4dp"
             android:paddingTop="4dp"
-            android:text="Naziv"
+            android:text="@string/s35"
             android:id="@+id/textView1" />
 
         <EditText
@@ -106,7 +106,7 @@
             android:gravity="bottom"
             android:paddingLeft="4dp"
             android:paddingTop="4dp"
-            android:text="Naročilo"/>
+            android:text="@string/s36"/>
 
         <EditText
             android:textStyle="bold"
@@ -132,7 +132,7 @@
             android:textStyle="bold"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:text="Dobavitelj"
+            android:text="@string/s15"
             android:paddingTop="5dp"
             android:paddingLeft="4dp"/>
 
@@ -161,7 +161,7 @@
             android:gravity="bottom"
             android:paddingLeft="4dp"
             android:paddingTop="4dp"
-            android:text="Datum dobave" />
+            android:text="@string/s39" />
 
         <EditText
             android:textStyle="bold"
@@ -189,7 +189,7 @@
             android:gravity="bottom"
             android:paddingLeft="4dp"
             android:paddingTop="4dp"
-            android:text="Količina"
+            android:text="@string/s40"
    />
 
         <EditText
@@ -234,7 +234,7 @@
                 android:textColor="@color/white"
                 android:layout_marginLeft="4dp"
                 android:layout_marginRight="2dp"
-                android:text="Nasl. - f2"
+                android:text="@string/s42"
                 android:drawableLeft="@drawable/next_white"
                 android:id="@+id/btNext" />
 
@@ -248,7 +248,7 @@
                 android:textColor="@color/white"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="4dp"
-                android:text="potrdi-f3"
+                android:text="@string/s41"
                 android:drawableLeft="@drawable/confirmation_white"
                 android:id="@+id/btConfirm"
             />
@@ -273,7 +273,7 @@
                 android:textColor="@color/white"
                 android:layout_marginLeft="4dp"
                 android:layout_marginRight="2dp"
-                android:text="pregl. - f4"
+                android:text="@string/s43"
                 android:drawableLeft="@drawable/focus_white"
                 android:id="@+id/button4" />
 
@@ -287,7 +287,7 @@
                 android:textColor="@color/white"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="4dp"
-                android:text="izhod-f8"
+                android:text="@string/s44"
                 android:drawableLeft="@drawable/logout_white"
                 android:id="@+id/button5"
            />
