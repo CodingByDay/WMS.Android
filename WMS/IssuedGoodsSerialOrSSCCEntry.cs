@@ -407,11 +407,8 @@ namespace WMS
             {
                 if (data.Count == 1)
                 {
-                    if (moveItem == null)
-                    {
-                        moveItem = new NameValueObject("MoveItem");
-                    }
 
+                    moveItem = new NameValueObject("MoveItem");                   
                     moveItem.SetInt("HeadID", moveHead.GetInt("HeadID"));
                     moveItem.SetString("LinkKey", receivedTrail.Key);
                     moveItem.SetInt("LinkNo", receivedTrail.No);
@@ -457,11 +454,9 @@ namespace WMS
             {
                 if (data.Count == 1)
                 {
-                    if (moveItem == null)
-                    {
-                        moveItem = new NameValueObject("MoveItem");
-                    }
 
+                    // This solves the problem of updating the item. The problem occurs because of the old way of passing data.
+                    moveItem = new NameValueObject("MoveItem");                   
                     moveItem.SetInt("HeadID", moveHead.GetInt("HeadID"));
                     moveItem.SetString("LinkKey", receivedTrail.Key);
                     moveItem.SetInt("LinkNo", receivedTrail.No);
