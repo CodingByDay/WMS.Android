@@ -23,5 +23,7 @@ namespace WMS.App
 
         public string acKey { get; set; }
 
+        public string acIdent { get; set; }
+
     }
 }

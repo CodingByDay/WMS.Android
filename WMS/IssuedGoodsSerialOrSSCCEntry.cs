@@ -34,6 +34,7 @@ using AndroidX.AppCompat.App;
 using AlertDialog = Android.App.AlertDialog;
 using Aspose.Words.Drawing;
 using Android.Graphics.Drawables;
+using Android.Renderscripts;
 
 namespace WMS
 {
@@ -409,11 +410,11 @@ namespace WMS
             {
                 if (data.Count == 1)
                 {
-
+                    var element = data.ElementAt(0);
                     moveItem = new NameValueObject("MoveItem");                   
                     moveItem.SetInt("HeadID", moveHead.GetInt("HeadID"));
-                    moveItem.SetString("LinkKey", receivedTrail.Key);
-                    moveItem.SetInt("LinkNo", receivedTrail.No);
+                    moveItem.SetString("LinkKey", element.acKey);
+                    moveItem.SetInt("LinkNo", element.anNo);
                     moveItem.SetString("Ident", openIdent.GetString("Code"));
                     moveItem.SetString("SSCC", tbSSCC.Text.Trim());
                     moveItem.SetString("SerialNo", tbSerialNum.Text.Trim());
@@ -456,12 +457,12 @@ namespace WMS
             {
                 if (data.Count == 1)
                 {
-
+                    var element = data.ElementAt(0);
                     // This solves the problem of updating the item. The problem occurs because of the old way of passing data.
                     moveItem = new NameValueObject("MoveItem");                   
                     moveItem.SetInt("HeadID", moveHead.GetInt("HeadID"));
-                    moveItem.SetString("LinkKey", receivedTrail.Key);
-                    moveItem.SetInt("LinkNo", receivedTrail.No);
+                    moveItem.SetString("LinkKey", element.acKey);
+                    moveItem.SetInt("LinkNo", element.anNo);
                     moveItem.SetString("Ident", openIdent.GetString("Code"));
                     moveItem.SetString("SSCC", tbSSCC.Text.Trim());
                     moveItem.SetString("SerialNo", tbSerialNum.Text.Trim());
@@ -493,11 +494,14 @@ namespace WMS
                                 }
                             }
 
-                            Toast.MakeText(this, "Pozicija kreirana", ToastLength.Long);
+                            tbLocation.Text = string.Empty;
+                            tbPacking.Text = string.Empty;
+                            lbQty.Text = "Ni zaloge";
+
                         });
 
                         createPositionAllowed = false;
-                        GetConnectedPositions(receivedTrail.Key, receivedTrail.No, receivedTrail.Ident, receivedTrail.Location);
+                        GetConnectedPositions(element.acKey, element.anNo, element.acIdent, element.aclocation);
                     }
                 }
                 else
@@ -527,7 +531,6 @@ namespace WMS
                 // Do stuff and allow creating the position
                 createPositionAllowed = true;
                 tbPacking.Text = data.ElementAt(0).anQty.ToString();
-
 
                 tbPacking.SetSelection(0, tbPacking.Text.Length);
 
@@ -669,8 +672,10 @@ namespace WMS
                             acSerialNo = row.StringValue("acSerialNo"),
                             acSSCC = row.StringValue("acSSCC"),
                             anQty = row.DoubleValue("anQty"),
-                            aclocation = row.StringValue("aclocation")
-                            
+                            aclocation = row.StringValue("aclocation"),
+                            anNo = (int) (row.IntValue("anNo") ?? -1),
+                            acKey = row.StringValue("acKey"),    
+                            acIdent = row.StringValue("acIdent")
                         });
                     }
                 }
@@ -735,8 +740,9 @@ namespace WMS
             {
                 // Not the update ?? it seems to be true
                 tbIdent.Text = openIdent.GetString("Code") + " " + openIdent.GetString("Name");
-                if (Intent.Extras != null && !String.IsNullOrEmpty(Intent.Extras.GetString("selected")) && Base.Store.modeIssuing == 3)
+                if (Intent.Extras != null && !String.IsNullOrEmpty(Intent.Extras.GetString("selected")) && Base.Store.modeIssuing == 2)
                 {
+                    // This flow is for orders.
                     string trailBytes = Intent.Extras.GetString("selected");
                     receivedTrail = JsonConvert.DeserializeObject<Trail>(trailBytes);
                     qtyCheck = Double.Parse(receivedTrail.Qty);
@@ -745,22 +751,18 @@ namespace WMS
                     stock = qtyCheck;
                     tbPacking.Text = qtyCheck.ToString();
                     GetConnectedPositions(receivedTrail.Key, receivedTrail.No, receivedTrail.Ident, receivedTrail.Location);
-
                 } else if (Base.Store.modeIssuing == 3)
                 {
+                    // This flow is for clients.
                     var order = Base.Store.OpenOrder;
-
-
                     GetConnectedPositions(order.Order, order.Position ?? -1, order.Ident);
                 }
                 else if (Base.Store.modeIssuing == 1)
                 {
+                    // This flow is for idents.
                     var order = Base.Store.OpenOrder;
-
-
                     GetConnectedPositions(order.Order, order.Position ?? -1, order.Ident);
                 }
-
             }
 
             isPackaging = openIdent.GetBool("IsPackaging");
@@ -799,7 +801,6 @@ namespace WMS
             {
                 FilterData();
             }
-
             e.Handled = false;
         }
 
