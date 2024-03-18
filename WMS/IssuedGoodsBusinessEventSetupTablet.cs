@@ -343,7 +343,6 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             {
                 FindViewById<RelativeLayout>(Resource.Id.rlExtra).Visibility = ViewStates.Visible;
 
-
                 lbExtra.Visibility = ViewStates.Visible;
 
                 cbExtra.Visibility = ViewStates.Visible;
@@ -355,12 +354,10 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 var subjects = CommonData.ListSubjects();
 
                 subjects.Items.ForEach(s =>
-
                 {
-
                     objectExtra.Add(new ComboBoxItem { ID = s.GetString("ID"), Text = s.GetString("ID") });
-
                 });
+
                 adapterExtra.NotifyDataSetChanged();
 
                 docTypes = CommonData.ListDocTypes("I;M|F");

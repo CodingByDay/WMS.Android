@@ -152,16 +152,7 @@
             android:layout_gravity="center_horizontal"
             android:id="@+id/tbSSCC" />
 
-        <Button
-                android:text="..."
-                android:layout_width="39.0dp"
-                android:layout_height="30dp"
-                android:layout_marginTop="-5dp"
-                android:background="@color/rikoMain"
-                android:textColor="@color/white"
-                android:layout_marginLeft="4dp"
-                android:layout_marginBottom="4dp"
-                android:id="@+id/btMorePallets" />
+     
 
     </LinearLayout>
     <LinearLayout
@@ -218,10 +209,7 @@
             android:background="@drawable/editText_bg_grey"
             android:layout_marginRight="2dp"
             android:id="@+id/tbLocation" />
-        <Spinner
-            android:layout_width="54.0dp"
-            android:layout_height="wrap_content"
-            android:id="@id/spLocation" />
+
 
     </LinearLayout>
     <LinearLayout
@@ -251,44 +239,10 @@
             android:layout_marginRight="2dp"
             android:id="@+id/tbPacking" />
 
-        <Button
-            android:text="-(F1)"
-            android:layout_width="74.0dp"
-            android:layout_height="33dp"
-            android:id="@+id/button1"
-            android:layout_marginTop="-5dp"
-            android:background="@color/rikoMain"
-            android:textColor="@color/white"
-            android:layout_marginLeft="4dp"/>
+    
 
     </LinearLayout>
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingTop="5dp">
-
-        <TextView
-            android:textStyle="bold"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:paddingLeft="4dp"
-            android:paddingTop="5dp"
-            android:text="Št. enot"
-            android:id="@+id/lbUnits" />
-
-        <EditText
-            android:textStyle="bold"
-            android:singleLine="true"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.50"
-            android:paddingTop="5dp"
-            android:background="@drawable/editText_bg_grey"
-            android:layout_marginRight="2dp"
-            android:id="@+id/tbUnits" />
-
-    </LinearLayout>
+   
 
     <LinearLayout
         android:layout_width="fill_parent"

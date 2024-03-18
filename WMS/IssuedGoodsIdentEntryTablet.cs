@@ -116,7 +116,6 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                         {
                             string WebError = string.Format("Napaka pri dobijanju otprtih naročila" + error);
                             Toast.MakeText(this, WebError, ToastLength.Long).Show(); tbIdent.Text = "";
-                          //  tbIdent.RequestFocus();
                             tbNaziv.Text = "";
                         }
                         else

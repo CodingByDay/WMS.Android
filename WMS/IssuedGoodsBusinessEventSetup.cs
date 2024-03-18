@@ -120,7 +120,6 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             cbDocType.SelectAtPosition(0);
             cbExtra.SelectAtPosition(0);
             var dws = Queries.DefaultIssueWarehouse(objectDocType.ElementAt(0).ID);
-
             temporaryPositionWarehouse = cbWarehouse.SetItemByString(dws.warehouse);
             if(dws.main)
             {
@@ -161,18 +160,15 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
         {
             try
             {
-
-
                 temporaryPositionDoc = e.Position;
                 var dws = Queries.DefaultIssueWarehouse(adapterDocType.GetItem(temporaryPositionDoc).ID);
                 temporaryPositionWarehouse = cbWarehouse.SetItemByString(dws.warehouse);
-                     if(dws.main)
+                if(dws.main)
                 {
                     cbWarehouse.Enabled = false;
                 }
                 cbExtra.Text = string.Empty;
-                await FillOpenOrdersAsync();
-                
+                await FillOpenOrdersAsync();               
             }
             catch (Exception ex)
             {
