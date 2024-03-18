@@ -1,4 +1,5 @@
-﻿using Microsoft.AppCenter.Analytics;
+﻿using API;
+using Microsoft.AppCenter.Analytics;
 using Microsoft.AppCenter.Crashes;
 using Newtonsoft.Json;
 using System.Net;
@@ -279,7 +280,7 @@ namespace TrendNET.WMS.Device.Services
 
 
 
-        public static ApiResultSet Update(string sql, List<Parameter> sqlParameters = null)
+        public static ApiResultSetUpdate Update(string sql, List<Parameter> sqlParameters = null)
         {
             string result;
             SqlQueryRequest requestObject;
@@ -300,13 +301,13 @@ namespace TrendNET.WMS.Device.Services
                 try
                 {
                     var startedAt = DateTime.Now;
-                    var response = JsonConvert.DeserializeObject<ApiResultSet>(result);
+                    var response = JsonConvert.DeserializeObject<ApiResultSetUpdate>(result);
                     return response;
                 }
                 catch (Exception ex)
                 {
                     // Handle deserialization or other exceptions
-                    return new ApiResultSet
+                    return new ApiResultSetUpdate
                     {
                         Success = false,
                         Error = "Napaka pri tolmačenju odziva web strežnika: " + ex.Message,
@@ -315,7 +316,7 @@ namespace TrendNET.WMS.Device.Services
             }
             else
             {
-                return new ApiResultSet
+                return new ApiResultSetUpdate
                 {
                     Success = false,
                     Error = "Napaka pri klicu web strežnika: " + result,

@@ -252,10 +252,27 @@ namespace WMS
 
             // Stop the loader
             LoaderManifest.LoaderManifestLoopStop(this);
+
+            SetUpUpdate();
+        }
+
+        private void SetUpUpdate()
+        {
+            // This method changes the UI so it shows in a visible way that it is the update screen. - 18.03.2024
+            if (Base.Store.isUpdate)
+            {
+                btCreateSame.Visibility = ViewStates.Gone;
+                btCreate.Text = "Posodobi";
+            }
         }
 
         private async void BtCreate_Click(object? sender, EventArgs e)
         {
+            if (tbSSCC.HasFocus || tbSerialNum.HasFocus)
+            {
+                FilterData();
+            }
+
             if (!Base.Store.isUpdate)
             {
                 double parsed;
@@ -270,23 +287,22 @@ namespace WMS
             }
             else
             {
-                // Update
+                // Update flow.
                 double newQty;
                 if (Double.TryParse(tbPacking.Text, out newQty))
                 {
-                    if (newQty > moveItem.GetDouble("Packing"))
+                    if (newQty > moveItem.GetDouble("Qty"))
                     {
                         Toast.MakeText(this, "Količina je večja od dovoljene.", ToastLength.Long).Show();
                     }
                     else
                     {
                         var parameters = new List<Services.Parameter>();
-                        var f = moveItem;
+                        var tt = moveItem.GetInt("ItemID");
                         parameters.Add(new Services.Parameter { Name = "anQty", Type = "Decimal", Value = newQty });
-                        parameters.Add(new Services.Parameter { Name = "anItemID", Type = "Int32", Value = newQty });
-
-                        var subjects = Services.GetObjectListBySql($"UPDATE uWMSMoveItem SET anQty = @anQty where anItemID = @ItemID;", parameters);
-
+                        parameters.Add(new Services.Parameter { Name = "anItemID", Type = "Int32", Value = moveItem.GetInt("ItemID") });
+                        string debugString = $"UPDATE uWMSMoveItem SET anQty = {newQty} WHERE anIDItem = {moveItem.GetInt("ItemID")}";
+                        var subjects = Services.Update($"UPDATE uWMSMoveItem SET anQty = @anQty WHERE anIDItem = @anItemID;", parameters);
                         if (!subjects.Success)
                         {
                             RunOnUiThread(() =>
@@ -297,7 +313,7 @@ namespace WMS
                         }
                         else
                         {
-                            StartActivity(typeof(MainMenu));
+                            StartActivity(typeof(IssuedGoodsEnteredPositionsView));
                             Finish();
                         }
                     }
@@ -311,6 +327,11 @@ namespace WMS
 
         private async void BtCreateSame_Click(object? sender, EventArgs e)
         {
+            if (tbSSCC.HasFocus || tbSerialNum.HasFocus)
+            {
+                FilterData();
+            }
+
             double parsed;
             if (createPositionAllowed && double.TryParse(tbPacking.Text, out parsed) && stock >= parsed)
             {
@@ -440,6 +461,7 @@ namespace WMS
                     {
                         moveItem = new NameValueObject("MoveItem");
                     }
+
                     moveItem.SetInt("HeadID", moveHead.GetInt("HeadID"));
                     moveItem.SetString("LinkKey", receivedTrail.Key);
                     moveItem.SetInt("LinkNo", receivedTrail.No);
@@ -452,10 +474,8 @@ namespace WMS
                     moveItem.SetInt("Clerk", Services.UserID());
                     moveItem.SetString("Location", tbLocation.Text.Trim());
                     moveItem.SetString("Palette", tbPalette.Text.Trim());
-
                     string error;
                     moveItem = Services.SetObject("mi", moveItem, out error);
-
                     if (moveItem != null && error == string.Empty)
                     {
                         RunOnUiThread(() =>
@@ -478,7 +498,6 @@ namespace WMS
 
                             Toast.MakeText(this, "Pozicija kreirana", ToastLength.Long);
                         });
-
 
                         createPositionAllowed = false;
                         GetConnectedPositions(receivedTrail.Key, receivedTrail.No, receivedTrail.Ident, receivedTrail.Location);
@@ -685,8 +704,8 @@ namespace WMS
                 tbSSCC.Text = moveItem.GetString("SSCC");
                 tbLocation.Text = moveItem.GetString("Location");
                 tbPalette.Text = moveItem.GetString("Palette");
-                tbPacking.Text = moveItem.GetDouble("Packing").ToString();
-                lbQty.Text = "Zaloga ( " + moveItem.GetDouble("Packing").ToString() + " )";
+                tbPacking.Text = moveItem.GetDouble("Qty").ToString();
+                lbQty.Text = "Zaloga ( " + moveItem.GetDouble("Qty").ToString() + " )";
                 btCreateSame.Text = "Serij. - F2";
                 // Lock down all other fields
                 tbIdent.Enabled = false;
