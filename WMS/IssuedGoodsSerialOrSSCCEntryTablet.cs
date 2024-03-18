@@ -36,7 +36,6 @@ namespace WMS
         private EditText tbSerialNum;
         private EditText tbLocation;
         private EditText tbPacking;
-        private EditText tbUnits;
         private EditText tbPalette;
         private Button btSaveOrUpdate;
         private ListView listData;
@@ -65,7 +64,7 @@ namespace WMS
         private Button btExit;
         private LinearLayout ssccRow;
         private LinearLayout serialRow;
-        private List<IssuedGoods> connectedPositions;
+        private List<IssuedGoods> connectedPositions = new List<IssuedGoods>();
         private bool createPositionAllowed;
         private List<IssuedGoods> data;
         private double stock;
@@ -91,7 +90,6 @@ namespace WMS
             tbSerialNum = FindViewById<EditText>(Resource.Id.tbSerialNum);
             tbLocation = FindViewById<EditText>(Resource.Id.tbLocation);
             tbPacking = FindViewById<EditText>(Resource.Id.tbPacking);
-            tbUnits = FindViewById<EditText>(Resource.Id.tbUnits);
             tbPalette = FindViewById<EditText>(Resource.Id.tbPalette);
             btSaveOrUpdate = FindViewById<Button>(Resource.Id.btSaveOrUpdate);
             lbQty = FindViewById<TextView>(Resource.Id.lbQty);
@@ -109,7 +107,6 @@ namespace WMS
             tbIdent.InputType = Android.Text.InputTypes.ClassNumber;
             tbSSCC.InputType = Android.Text.InputTypes.ClassNumber;
             tbLocation.InputType = Android.Text.InputTypes.ClassText;
-            tbUnits.InputType = Android.Text.InputTypes.ClassNumber;
             tbPacking.InputType = Android.Text.InputTypes.ClassNumber;
             tbPalette.InputType = Android.Text.InputTypes.ClassNumber;
             // Methods
@@ -274,7 +271,8 @@ namespace WMS
                 tbPalette.Enabled = false;
             }
             else
-            {              
+            {
+                tbIdent.Text = openIdent.GetString("Code") + " " + openIdent.GetString("Name");
                 // This flow is for idents.
                 var order = Base.Store.OpenOrder;
                 GetConnectedPositions(order.Order, order.Position ?? -1, order.Ident);                

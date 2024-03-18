@@ -8,6 +8,10 @@
     android:gravity="top"
    >
 
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/toolbar" />
+
     <LinearLayout
         android:layout_width="1182.0dp"
         android:layout_height="wrap_content"

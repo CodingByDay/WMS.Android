@@ -43,6 +43,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
             _customToolbar.SetNavigationIcon(settings.RootURL + "/Services/Logo");
             SetSupportActionBar(_customToolbar._toolbar);
+            SupportActionBar.SetDisplayShowTitleEnabled(false);
             var flag = Services.isTablet(App.settings.device);
             if (MainActivity.isValid == true)
             {
@@ -114,10 +115,8 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
         {
             return AppInfo.BuildString;
         }
-
         private void DownloadResources()
         {
-
             if (!settings.login)
             {
                 var intent = new Intent(this, typeof(CachingService));
@@ -125,21 +124,16 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 settings.login = true;
             }
         }
-
-
-
         public bool IsOnline()
         {
             var cm = (ConnectivityManager)GetSystemService(ConnectivityService);
             return cm.ActiveNetworkInfo == null ? false : cm.ActiveNetworkInfo.IsConnected;
-
         }
 
         private void OnNetworkStatusChanged(object sender, EventArgs e)
         {
             if (IsOnline())
-            {
-                
+            {               
                 try
                 {
                     LoaderManifest.LoaderManifestLoopStop(this);

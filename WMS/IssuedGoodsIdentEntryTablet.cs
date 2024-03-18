@@ -20,7 +20,10 @@ using TrendNET.WMS.Core.Data;
 using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
 
-using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS
+using AndroidX.AppCompat.App;
+using AlertDialog = Android.App.AlertDialog;
+using Microsoft.AppCenter.Analytics;
+namespace WMS
 {
     [Activity(Label = "IssuedGoodsIdentEntryTablet", ScreenOrientation = Android.Content.PM.ScreenOrientation.Landscape)]
     public class IssuedGoodsIdentEntryTablet : AppCompatActivity, IBarcodeResult
@@ -47,6 +50,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
         private List<string> identData = new List<string>();
         private List<string> savedIdents;
         private CustomAutoCompleteAdapter<string> tbIdentAdapter;
+        private List<IssueIdent> orders = new List<IssueIdent>();
 
         private void Sound()
         {
@@ -73,37 +77,30 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
         {
             var ident = tbIdent.Text.Trim();
             if (string.IsNullOrEmpty(ident)) { return; }
-
             try
             {
-
                 string error;
                 openIdent = Services.GetObject("id", ident, out error);
                 if (openIdent == null)
                 {
-
-
                     string SuccessMessage = string.Format("Napaka pri preverjanju identa." + error);
                     Toast.MakeText(this, SuccessMessage, ToastLength.Long).Show();
                     tbIdent.Text = "";
                     tbIdent.RequestFocus();
                     tbNaziv.Text = "";
-                    openOrders = null;
                 }
                 else
                 {
                     ident = openIdent.GetString("Code");
                     tbIdent.Text = ident;
                     InUseObjects.Set("OpenIdent", openIdent);
-
                     var isPackaging = openIdent.GetBool("IsPackaging");
                     if (!moveHead.GetBool("ByOrder") || isPackaging)
                     {
                         if (SaveMoveHead())
                         {
-                            StartActivity(typeof(IssuedGoodsSerialOrSSCCEntryTablet));
-                            HelpfulMethods.clearTheStack(this);
-
+                            StartActivity(typeof(IssuedGoodsSerialOrSSCCEntry));
+                            Finish();
                         }
                         return;
                     }
@@ -111,23 +108,60 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                     {
                         tbNaziv.Text = openIdent.GetString("Name");
 
-                        openOrders = Services.GetObjectList("oo", out error, ident + "|" + moveHead.GetString("DocumentType"));
-                        if (openOrders == null)
+                        var parameters = new List<Services.Parameter>();
+                        string debug = $"SELECT * from uWMSOrderItemByItemTypeWarehouseOut WHERE acIdent = {ident} AND acDocType = {moveHead.GetString("DocumentType")} AND acWarehouse = {moveHead.GetString("Wharehouse")};";
+
+                        parameters.Add(new Services.Parameter { Name = "acIdent", Type = "String", Value = ident });
+                        parameters.Add(new Services.Parameter { Name = "acDocType", Type = "String", Value = moveHead.GetString("DocumentType") });
+                        parameters.Add(new Services.Parameter { Name = "acWarehouse", Type = "String", Value = moveHead.GetString("Wharehouse") });
+
+
+                        // string debugs = $"SELECT * from uWMSOrderItemByItemTypeWarehouseOut WHERE acIdent = {ident} AND acDocType = {moveHead.GetString("DocumentType")} AND acWarehouse = {moveHead.GetString("Wharehouse")} ORDER BY acKey, anNo;";
+
+
+                        var subjects = Services.GetObjectListBySql($"SELECT * from uWMSOrderItemByItemTypeWarehouseOut WHERE acIdent = @acIdent AND acDocType = @acDocType AND acWarehouse = @acWarehouse ORDER BY acKey, anNo;", parameters);
+
+                        if (!subjects.Success)
                         {
-                            string WebError = string.Format("Napaka pri dobijanju otprtih naročila" + error);
-                            Toast.MakeText(this, WebError, ToastLength.Long).Show(); tbIdent.Text = "";
-                            tbNaziv.Text = "";
+                            RunOnUiThread(() =>
+                            {
+                                Analytics.TrackEvent(subjects.Error);
+                                return;
+                            });
                         }
                         else
                         {
-                            InUseObjects.Set("openOrders", openOrders);
-                            displayedOrder = 0;
+                            if (subjects.Rows.Count > 0)
+                            {
+                                for (int i = 0; i < subjects.Rows.Count; i++)
+                                {
+
+                                    var row = subjects.Rows[i];
+
+                                    orders.Add(new IssueIdent
+                                    {
+                                        Client = row.StringValue("acSubject"),
+                                        Order = row.StringValue("acKey"),
+                                        Position = (int?)row.IntValue("anNo"),
+                                        Quantity = row.DoubleValue("anQty"),
+                                        Date = row.DateTimeValue("DeliveryDeadline"),
+                                        Ident = row.StringValue("acIdent")
+                                    });
+
+                                }
+
+                                displayedOrder = 0;
+
+
+                            }
                         }
                     }
                 }
 
                 FillDisplayedOrderInfo();
-                //btConfirm.RequestFocus();
+
+                tbIdent.SetSelection(0, tbIdent.Text.Length);
+
             }
             catch (Exception err)
             {
@@ -140,16 +174,17 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
 
         private void FillDisplayedOrderInfo()
         {
-            if ((openIdent != null) && (openOrders != null) && (openOrders.Items.Count > 0))
+            if ((openIdent != null) && (orders != null) && (orders.Count > 0))
             {
-                lbOrderInfo.Text = "Naročilo (" + (displayedOrder + 1).ToString() + "/" + openOrders.Items.Count.ToString() + ")";
-                var order = openOrders.Items[displayedOrder];
-                InUseObjects.Set("OpenOrder", order);
-                tbOrder.Text = order.GetString("Key") + " / " + order.GetInt("No");
-                tbConsignee.Text = order.GetString("Consignee");
-                tbQty.Text = order.GetDouble("OpenQty").ToString(CommonData.GetQtyPicture());
-                var deadLine = order.GetDateTime("DeliveryDeadline");
+                lbOrderInfo.Text = "Naročilo (" + (displayedOrder + 1).ToString() + "/" + orders.Count.ToString() + ")";
+                var order = orders.ElementAt(displayedOrder);
+                Base.Store.OpenOrder = order;
+                tbOrder.Text = order.Order + " / " + order.Position;
+                tbConsignee.Text = order.Client;
+                tbQty.Text = order.Quantity.ToString();
+                var deadLine = order.Date;
                 tbDeliveryDeadline.Text = deadLine == null ? "" : ((DateTime)deadLine).ToString("dd.MM.yyyy");
+                btNext.Enabled = true;
                 btConfirm.Enabled = true;
             }
             else
@@ -166,17 +201,8 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
 
         private bool SaveMoveHead()
         {
-            NameValueObject order;
-            if ((openOrders == null) || (openOrders.Items.Count == 0))
-            {
-                order = new NameValueObject("OpenOrder");
-                InUseObjects.Set("OpenOrder", order);
-            }
-            else
-            {
-                order = openOrders.Items[displayedOrder];
-                InUseObjects.Set("OpenOrder", order);
-            }
+            var order = Base.Store.OpenOrder;
+
 
             if (!moveHead.GetBool("Saved"))
             {
@@ -186,18 +212,17 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
 
                     moveHead.SetInt("Clerk", Services.UserID());
                     moveHead.SetString("Type", "P");
-                    moveHead.SetString("LinkKey", order.GetString("Key"));
-                    moveHead.SetString("LinkNo", order.GetString("No"));
-                    moveHead.SetString("Document1", order.GetString("Document1"));
-                    moveHead.SetDateTime("Document1Date", order.GetDateTime("Document1Date"));
-                    moveHead.SetString("Note", order.GetString("Note"));
+                    moveHead.SetString("LinkKey", order.Order);
+                    moveHead.SetString("LinkNo", order.Position.ToString());
+
                     if (moveHead.GetBool("ByOrder"))
                     {
-                        moveHead.SetString("Receiver", order.GetString("Receiver"));
+                        moveHead.SetString("Receiver", order.Client);
                     }
 
                     string error;
                     var savedMoveHead = Services.SetObject("mh", moveHead, out error);
+
                     if (savedMoveHead == null)
                     {
                         string WebError = string.Format("Napaka pri dostopu do web aplikacije" + error);
@@ -223,6 +248,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 return true;
             }
         }
+
 
         protected async override void OnCreate(Bundle savedInstanceState)
         {
@@ -253,11 +279,10 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             soundPoolId = soundPool.Load(this, Resource.Raw.beep, 1);
             Barcode2D barcode2D = new Barcode2D();
             barcode2D.open(this, this);
-            tbNaziv.FocusChange += TbNaziv_FocusChange;
             btConfirm.Click += BtConfirm_Click;
             button4.Click += Button4_Click;
             button5.Click += Button5_Click;
-      
+            tbIdent.KeyPress += TbIdent_KeyPress;
             identData = Caching.Caching.SavedList;
             ISharedPreferences sharedPreferences = PreferenceManager.GetDefaultSharedPreferences(Application.Context);
             ISharedPreferencesEditor editor = sharedPreferences.Edit();
@@ -268,7 +293,6 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 savedIdents = JsonConvert.DeserializeObject<List<string>>(savedIdentsJson);
                 // Now you have your list of idents in the savedIdents variable
             }
-            tbIdent.LongClick += ClearTheFields;
             tbIdentAdapter = new CustomAutoCompleteAdapter<string>(this, Android.Resource.Layout.SimpleDropDownItem1Line, new List<string>());
             tbIdent.Adapter = tbIdentAdapter;
             tbIdent.TextChanged += (sender, e) =>
@@ -276,11 +300,20 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 string userInput = e.Text.ToString();
                 UpdateSuggestions(userInput);
             };
-            tbIdent.LongClick += ClearTheFields;
             var _broadcastReceiver = new NetworkStatusBroadcastReceiver();
             _broadcastReceiver.ConnectionStatusChanged += OnNetworkStatusChanged;
             Application.Context.RegisterReceiver(_broadcastReceiver,
             new IntentFilter(ConnectivityManager.ConnectivityAction));
+        }
+
+        private void TbIdent_KeyPress(object? sender, View.KeyEventArgs e)
+        {
+            if (e.KeyCode == Keycode.Enter && e.Event.Action == KeyEventActions.Down)
+            {
+                ProcessIdent();
+            }
+
+            e.Handled = false;
         }
 
         private void UpdateSuggestions(string userInput)
@@ -342,16 +375,8 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             ProcessIdent();
         }
 
-        private void ClearTheFields(object sender, View.LongClickEventArgs e)
-        {
-            tbIdent.Text = "";
-            tbNaziv.Text = "";
-
-        }
-        private void TbNaziv_FocusChange(object sender, View.FocusChangeEventArgs e)
-        {
-            ProcessIdent();
-        }
+     
+      
 
         private void Button5_Click(object sender, EventArgs e)
         {
@@ -387,9 +412,15 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             {
                 // F2
                 displayedOrder++;
-                if (displayedOrder >= openOrders.Items.Count) { displayedOrder = 0; }
+
+                if (displayedOrder >= orders.Count)
+                {
+                    displayedOrder = 0;
+                }
+
                 FillDisplayedOrderInfo();
-            } catch { return; }
+            }
+            catch { return; }
         }
 
 
@@ -400,30 +431,24 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             switch (keyCode)
             {
           
-
-
                 case Keycode.F3:
                     if (btConfirm.Enabled == true)
                     {
                         BtConfirm_Click(this, null);
                     }
                     break;
-
-
                 case Keycode.F4:
                     if (button4.Enabled == true)
                     {
                         Button4_Click(this, null);
                     }
                     break;
-
                 case Keycode.F8:
                     if (button5.Enabled == true)
                     {
                         Button5_Click(this, null);
                     }
                     break;
-
             }
             return base.OnKeyDown(keyCode, e);
         }

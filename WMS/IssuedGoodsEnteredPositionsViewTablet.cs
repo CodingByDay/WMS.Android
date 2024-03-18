@@ -62,12 +62,13 @@ namespace WMS
         {
             base.OnCreate(savedInstanceState);
             SetTheme(Resource.Style.AppTheme_NoActionBar);
+
+            SetContentView(Resource.Layout.IssuedGoodsEnteredPositionsViewTablet);
             AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
             var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
             _customToolbar.SetNavigationIcon(settings.RootURL + "/Services/Logo");
             SetSupportActionBar(_customToolbar._toolbar);
             SupportActionBar.SetDisplayShowTitleEnabled(false);
-            SetContentView(Resource.Layout.IssuedGoodsEnteredPositionsViewTablet);
             lbInfo = FindViewById<TextView>(Resource.Id.lbInfo);
             tbIdent = FindViewById<EditText>(Resource.Id.tbIdent);
             tbSSCC = FindViewById<EditText>(Resource.Id.tbSSCC);
@@ -253,31 +254,14 @@ namespace WMS
                 {
                     if (i < positions.Items.Count && positions.Items.Count > 0)
                     {
+
                         var item = positions.Items.ElementAt(i);
                         var created = item.GetDateTime("DateInserted");
                         var numbering = i + 1;
-                        bool setting;
-
-                        if (CommonData.GetSetting("ShowNumberOfUnitsField") == "1")
-                        {
-                            setting = false;
-                        }
-                        else
-                        {
-                            setting = true;
-                        }
-                        if (setting)
-                        {
-                            tempUnit = item.GetDouble("Qty").ToString();
-                        }
-                        else
-                        {
-                            tempUnit = item.GetDouble("Factor").ToString();
-                        }
                         string error;
                         var ident = item.GetString("Ident").Trim();
                         var openIdent = Services.GetObject("id", ident, out error);
-                        //var ident = CommonData.LoadIdent(item.GetString("Ident"));
+                        // var ident = CommonData.LoadIdent(item.GetString("Ident"));
                         var identName = openIdent.GetString("Name");
                         var date = created == null ? "" : ((DateTime)created).ToString("dd.MM.yyyy");
 
@@ -288,7 +272,7 @@ namespace WMS
                                     Ident = item.GetString("Ident").Trim(),
                                     SerialNumber = item.GetString("SerialNo"),
                                     SSCC = item.GetString("SSCC"),
-                                    Quantity = tempUnit,
+                                    Quantity = item.GetDouble("Qty").ToString(),
                                     Position = numbering.ToString(),
                                     Name = identName,
                                 });
