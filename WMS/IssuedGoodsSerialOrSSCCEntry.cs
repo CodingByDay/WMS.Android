@@ -437,11 +437,18 @@ namespace WMS
                             {
                                 StartActivity(typeof(IssuedGoodsIdentEntryWithTrail));
                                 Finish();
+                            } else if (Base.Store.modeIssuing == 1)
+                            {
+                                StartActivity(typeof(IssuedGoodsIdentEntry));
+                                Finish();
+                            } else if (Base.Store.modeIssuing == 3) {
+                                StartActivity(typeof(ClientPicking));
+                                Finish();
                             }
                         });
 
                         createPositionAllowed = false;
-                        GetConnectedPositions(receivedTrail.Key, receivedTrail.No, receivedTrail.Ident, receivedTrail.Location);
+                        GetConnectedPositions(element.acKey, element.anNo, element.acIdent, element.aclocation);
                     }
                 }
                 else

@@ -275,9 +275,31 @@ namespace WMS
             NameValueObject moveHead = new NameValueObject("MoveHead");
             moveHead.SetBool("Saved", false);
             InUseObjects.Set("MoveHead", moveHead);
-            StartActivity(typeof(IssuedGoodsBusinessEventSetupTablet));
-            HelpfulMethods.clearTheStack(this);
-            Finish();
+
+            string pickingChoice = CommonData.GetSetting("UseSingleOrderIssueing");
+
+            switch (pickingChoice)
+            {
+                case "0":
+                    Base.Store.modeIssuing = 1;
+                    StartActivity(typeof(IssuedGoodsBusinessEventSetupTablet));
+                    HelpfulMethods.clearTheStack(this);
+                    Finish();
+                    break;
+                case "1":
+                    Base.Store.modeIssuing = 2;
+                    StartActivity(typeof(IssuedGoodsBusinessEventSetupTablet));
+                    HelpfulMethods.clearTheStack(this);
+                    Finish();
+                    break;
+                case "A":
+                    Base.Store.modeIssuing = 1;
+                    StartActivity(typeof(IssuedGoodsBusinessEventSetupTablet));
+                    HelpfulMethods.clearTheStack(this);
+                    Finish();
+                    break;
+            }
+
         }
 
         private void BtDelete_Click(object sender, EventArgs e)
@@ -463,6 +485,24 @@ namespace WMS
             }
         }
 
+
+        private void SetUpClientPickingChange(string flow)
+        {
+            if (flow == "0")
+            {
+                Base.Store.modeIssuing = 1;
+            }
+            else if (flow == "1")
+            {
+                Base.Store.modeIssuing = 2;
+            }
+            else if (flow == "3")
+            {
+                Base.Store.modeIssuing = 1;
+            }
+        }
+
+
         private void FillDisplayedItem()
         {
             if ((positions != null) && (positions.Items.Count > 0))
@@ -475,6 +515,7 @@ namespace WMS
                 tbClient.Text = item.GetString("Receiver");
                 tbItemCount.Text = item.GetInt("ItemCount").ToString();
                 tbCreatedBy.Text = item.GetString("ClerkName");
+                SetUpClientPickingChange(item.GetString("CurrentFlow"));
 
                 var created = item.GetDateTime("DateInserted");
                 tbCreatedAt.Text = created == null ? "" : ((DateTime)created).ToString("dd.MM.yyyy");
