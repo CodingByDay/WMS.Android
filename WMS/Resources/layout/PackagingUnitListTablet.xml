@@ -55,7 +55,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
-            android:text="Naziv"
+            android:text="@string/s35"
             android:layout_width="match_parent"
             android:layout_marginRight="28.0dp"
             android:id="@+id/name" />
@@ -144,7 +144,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="10dp"
                 android:paddingTop="5dp"
-                android:text="Ident" />
+                android:text="@string/s47" />
 
             <EditText
                 android:textStyle="bold"
@@ -173,7 +173,7 @@
                 android:singleLine="true"
                 android:layout_width="120dp"
                 android:layout_height="wrap_content"
-                android:text="SSCC koda"
+                android:text="@string/s48"
                 android:paddingTop="5dp"
                 android:paddingLeft="10dp"
                 android:id="@+id/textView1" />
@@ -205,7 +205,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="10dp"
                 android:paddingTop="5dp"
-                android:text="Serijska št." />
+                android:text="@string/s49" />
 
             <EditText
                 android:textStyle="bold"
@@ -265,7 +265,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="10dp"
                 android:paddingTop="5dp"
-                android:text="Lokacija" />
+                android:text="@string/s50" />
 
             <EditText
                 android:textStyle="bold"
@@ -295,7 +295,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="10dp"
                 android:paddingTop="5dp"
-                android:text="Kreiral" />
+                android:text="@string/s67" />
 
             <EditText
                 android:textStyle="bold"
@@ -325,7 +325,7 @@
             android:paddingTop="5dp">
 
             <Button
-                android:text="nasled."
+                android:text="@string/s114"
                 android:drawableLeft="@drawable/next_white"
                 android:layout_weight="1"
                 android:textSize="20dp"
@@ -339,7 +339,7 @@
                 android:id="@+id/btNext" />
 
             <Button
-                android:text="uredi"
+                android:text="@string/s115"
                 android:drawableLeft="@drawable/fix_white"
                 android:layout_weight="1"
                 android:textSize="20dp"
@@ -363,7 +363,7 @@
             android:layout_marginLeft="2dp">
 
             <Button
-                android:text="izbriši"
+                android:text="@string/s118"
                 android:layout_weight="1"
                 android:textSize="20dp"
                 android:paddingLeft="10dp"
@@ -377,7 +377,7 @@
                 android:id="@+id/btDelete" />
 
             <Button
-                android:text="kreiraj"
+                android:text="@string/s116"
                 android:drawableLeft="@drawable/newitem_white"
                 android:layout_weight="1"
                 android:textSize="20dp"
@@ -393,7 +393,7 @@
         </LinearLayout>
 
         <Button
-            android:text="Izhod "
+            android:text="@string/s110"
             android:textSize="20dp"
             android:paddingLeft="10dp"
             android:layout_width="match_parent"

@@ -9,9 +9,10 @@
     android:orientation="vertical"
     tools:context=".LinearLayout"
     android:foregroundGravity="center">
-    <include
-        android:id="@+id/toolbar"
-        layout="@layout/toolbar" />
+ <include
+            android:id="@+id/toolbar"
+            layout="@layout/toolbar"
+         />
 
     <TextView
         android:textStyle="bold"
@@ -21,7 +22,7 @@
         android:paddingLeft="10dp"
         android:paddingTop="5dp"
         android:paddingBottom="5dp"
-        android:text="Vnešene pozicije na medskladiščnici"
+        android:text="@string/s92"
         android:id="@+id/lbInfo"
         android:textColor="@color/rikoMain"/>
 
@@ -38,7 +39,9 @@
             android:gravity="bottom"
             android:paddingLeft="4dp"
             android:paddingTop="4dp"
-            android:text="Ident" />
+            android:text="@string/s78"
+            
+            />
 
         <EditText
             android:textStyle="bold"
@@ -69,7 +72,7 @@
             android:gravity="bottom"
             android:paddingLeft="4dp"
             android:paddingTop="4dp"
-            android:text="SSCC koda"
+            android:text="@string/s48"
             android:id="@+id/textView1"
             />
 
@@ -98,7 +101,9 @@
             android:gravity="bottom"
             android:paddingLeft="4dp"
             android:paddingTop="4dp"
-            android:text="Serijska št." />
+            android:text="@string/s49"
+            
+            />
 
         <EditText
             android:textStyle="bold"
@@ -128,7 +133,7 @@
             android:gravity="bottom"
             android:paddingLeft="4dp"
             android:paddingTop="4dp"
-            android:text="Količina"
+            android:text="@string/s83"
       />
 
         <EditText
@@ -157,7 +162,8 @@
             android:gravity="bottom"
             android:paddingLeft="4dp"
             android:paddingTop="4dp"
-            android:text="Lokacija" />
+            android:text="@string/s50" 
+        />
 
         <EditText
             android:textStyle="bold"
@@ -185,7 +191,10 @@
             android:gravity="bottom"
             android:paddingLeft="4dp"
             android:paddingTop="4dp"
-            android:text="Kreiral" />
+            android:text="@string/s17" 
+        
+            
+            />
 
         <EditText
             android:textStyle="bold"
@@ -226,7 +235,7 @@
             <Button
                 android:layout_weight="1"
                 android:textSize="20dp"
-                android:text="Nasled. - F1"
+                android:text="@string/s69"
                 android:drawableLeft="@drawable/next_white"
                 android:paddingLeft="10dp"
                 android:layout_width="match_parent"
@@ -240,7 +249,7 @@
             <Button
                 android:layout_weight="1"
                 android:textSize="20dp"
-                android:text="Uredi - F2"
+                android:text="@string/s70"
                 android:drawableLeft="@drawable/fix_white"
                 android:paddingLeft="10dp"
                 android:layout_width="match_parent"
@@ -264,7 +273,7 @@
             android:layout_marginRight="4dp">
 
             <Button
-                android:text="Kreiraj - F3"
+                android:text="@string/s53"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:textSize="20dp"
@@ -278,7 +287,7 @@
                 />
 
             <Button
-                android:text="Zaklj. - F4"
+                android:text="@string/s87"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -304,7 +313,7 @@
             android:layout_marginRight="4dp">
 
             <Button
-                android:text="Izbriši - F5"
+                android:text="@string/s59"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -319,7 +328,7 @@
 
             <Button
                 android:layout_weight="1"
-                android:text="Izhod - F8"
+                android:text="@string/s60"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:textSize="20dp"

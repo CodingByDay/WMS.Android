@@ -31,7 +31,7 @@
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
             android:layout_weight="1"
-            android:text="Skladišče"
+            android:text="@string/s28"
         />
 
     <Spinner
@@ -58,7 +58,7 @@
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
             android:layout_weight="1"
-            android:text="Lokacija"
+            android:text="@string/s50"
         />
             <EditText
                 android:textStyle="bold"
@@ -95,7 +95,7 @@
 
                 <Button
                     android:textSize="20dp"
-                    android:text="Tiskaj - f2"
+                    android:text="@string/s134"
                     android:drawableLeft="@drawable/printer_white"
                     android:paddingLeft="10dp"
                     android:layout_width="match_parent"
@@ -110,7 +110,7 @@
                 <Button
                     android:layout_weight="1"
                     android:textSize="20dp"
-                    android:text="Izhod - f8"
+                    android:text="@string/s77"
                     android:drawableLeft="@drawable/logout_white"
                     android:paddingLeft="10dp"
                     android:layout_width="match_parent"

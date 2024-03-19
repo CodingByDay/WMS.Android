@@ -228,7 +228,7 @@
 
         </LinearLayout>
         <Button
-            android:text="Izhod - F8"
+            android:text="@string/s77"
             android:drawableLeft="@drawable/logout_white"
             android:id="@+id/btClose"
             android:layout_weight="1"

@@ -30,7 +30,7 @@
             android:paddingTop="8dp"
             android:layout_weight="1"
             android:drawableLeft="@drawable/open_white"
-            android:text="O. dokument - F2"
+            android:text="@string/s126"
             android:layout_marginBottom="4dp"
             android:textColor="#ffffff"
             android:id="@+id/button1" />
@@ -54,7 +54,7 @@
             android:drawablePadding="7dp"
             android:paddingRight="20dp"
             android:paddingTop="8dp"
-            android:text="Izvedba - f3"
+            android:text="@string/s127"
             android:textColor="#ffffff"
             android:id="@+id/button2" />
 
@@ -79,7 +79,7 @@
             android:paddingRight="20dp"
             android:textSize="16dp"
             android:paddingTop="8dp"
-            android:text="Potrdi - f4"
+            android:text="@string/s128"
             android:textColor="#ffffff"
             android:id="@+id/button3"
             />
@@ -98,7 +98,7 @@
             android:paddingLeft="5dp"
             android:paddingRight="20dp"
             android:paddingTop="8dp"
-            android:text="O. inventuro - f5"
+            android:text="@string/s129"
             android:textColor="#ffffff"
             android:id="@+id/button4" />
 
@@ -121,7 +121,7 @@
             android:paddingLeft="16dp"
             android:paddingRight="20dp"
             android:paddingTop="6dp"
-            android:text="Tiskaj inventuro-f6"
+            android:text="@string/s130"
             android:layout_marginBottom="4dp"
             android:layout_marginTop="0dp"
             android:textColor="#ffffff"
@@ -144,7 +144,7 @@
         android:bottomRightRadius="7dp"
         android:topLeftRadius="7dp"
         android:topRightRadius="7dp"
-        android:text="Nazaj "
+        android:text="@string/s109"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:textSize="16dp"

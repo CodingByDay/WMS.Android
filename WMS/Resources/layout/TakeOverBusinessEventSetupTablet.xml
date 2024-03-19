@@ -128,6 +128,7 @@
             <CustomAutoCompleteTextView
                 android:layout_width="match_parent"
                 android:layout_height="42.5dp"
+                android:maxLength="30"
                 android:id="@+id/cbDocType"
                 android:gravity="center"
                 android:spinnerMode="dialog"/>
@@ -137,7 +138,7 @@
             android:layout_marginLeft="10dp"
             android:paddingTop="10dp"
             android:textStyle="bold"
-            android:text="Skladišče"
+            android:text="@string/s28"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:layout_width="match_parent"
             android:layout_height="39.0dp"
@@ -151,6 +152,7 @@
             <CustomAutoCompleteTextView
                 android:layout_width="match_parent"
                 android:layout_height="41.0dp"
+                android:maxLength="30"
                 android:id="@+id/cbWarehouse"
                 android:gravity="center"
                 android:spinnerMode="dialog" />
@@ -175,6 +177,7 @@
             <CustomAutoCompleteTextView
                 android:layout_width="match_parent"
                 android:layout_height="48.0dp"
+                android:maxLength="30"
                 android:id="@+id/cbSubject"
                 android:layout_marginBottom="14.5dp"
                 android:gravity="center"
@@ -198,7 +201,7 @@
             android:paddingTop="5dp">
 
             <Button
-                android:text="potrdi"
+                android:text="@string/s107"
                 android:layout_weight="1"
                 android:textSize="20dp"
                 android:paddingLeft="10dp"
@@ -227,7 +230,7 @@
 
         </LinearLayout>
         <Button
-            android:text="izhod"
+            android:text="@string/s119"
             android:id="@+id/btnLogout"
             android:drawableLeft="@drawable/logout_white"
             android:layout_marginBottom="4dp"

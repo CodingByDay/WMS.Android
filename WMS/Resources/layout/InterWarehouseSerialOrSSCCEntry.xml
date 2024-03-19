@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:paddingTop="4dp"
-            android:text="Ident"
+            android:text="@string/s78"
             android:layout_marginRight="1.0dp" />
 
         <EditText
@@ -71,7 +71,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:paddingTop="4dp"
-            android:text="SSCC"
+            android:text="@string/s79"
             android:layout_marginRight="1.0dp"
             android:id="@+id/textView1" />
 
@@ -112,7 +112,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:paddingTop="4dp"
-            android:text="Serijska "
+            android:text="@string/s80"
             android:layout_marginRight="0dp" />
 
         <EditText
@@ -142,7 +142,7 @@
             android:textStyle="bold"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:text="Izdano"
+            android:text="@string/s81"
             android:paddingTop="4dp"
             android:paddingLeft="10dp"
             android:layout_marginRight="0dp" />
@@ -174,7 +174,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:paddingTop="4dp"
-            android:text="Prejeto"
+            android:text="@string/s82"
             android:layout_marginRight="0dp" />
 
         <EditText
@@ -204,7 +204,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:paddingTop="4dp"
-            android:text="Količina"
+            android:text="@string/s83"
             android:layout_marginRight="0dp"
             android:id="@+id/lbQty" />
 
@@ -221,7 +221,7 @@
             />
 
         <Button
-            android:text="-(F1)"
+            android:text="@string/s94"
             android:layout_width="74.0dp"
             android:layout_height="33dp"
             android:id="@+id/button1"
@@ -245,7 +245,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:paddingTop="4dp"
-            android:text="Št. enot"
+            android:text="@string/s84"
             android:id="@+id/lbUnits" />
 
         <EditText
@@ -288,7 +288,7 @@
             <Button
                 android:layout_weight="1"
                 android:background="@color/rikoMain"
-                android:text="Serij. - f2"
+                android:text="@string/s85"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:textSize="18dp"
@@ -302,7 +302,7 @@
             <Button
                 android:layout_weight="1"
                 android:background="@color/rikoMain"
-                android:text="Kreiraj - f3"
+                android:text="@string/s86"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:drawableLeft="@drawable/newitem_white"
@@ -328,7 +328,7 @@
 
             <Button
                 android:background="@color/rikoMain"
-                android:text="Zaklj. - f4"
+                android:text="@string/s87"
                 android:layout_width="match_parent"
                 android:layout_weight="1"
                 android:layout_height="match_parent"
@@ -343,7 +343,7 @@
             <Button
                 android:layout_weight="1"
                 android:background="@color/rikoMain"
-                android:text="Pregl. - f5"
+                android:text="@string/s88"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:textSize="18dp"
@@ -360,7 +360,7 @@
         <Button
             android:layout_weight="1"
             android:background="@color/rikoMain"
-            android:text="Izhod - F8"
+            android:text="@string/s89"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:textSize="18dp"

@@ -30,7 +30,7 @@
                 android:gravity="bottom"
                 android:paddingLeft="4dp"
                 android:paddingTop="4dp"
-                android:text="Ident"
+                android:text="@string/s47"
                 android:id="@+id/Idents" />
 
             <EditText
@@ -60,7 +60,7 @@
                 android:gravity="bottom"
                 android:paddingLeft="4dp"
                 android:paddingTop="4dp"
-                android:text="Serijska"
+                android:text="@string/s120"
                 android:id="@+id/serial" />
 
             <EditText
@@ -89,7 +89,7 @@
                 android:gravity="bottom"
                 android:paddingLeft="4dp"
                 android:paddingTop="4dp"
-                android:text="Lokacija"
+                android:text="@string/s50"
                 android:id="@+id/receiveLocation" />
 
             <EditText
@@ -149,7 +149,7 @@
                 android:paddingLeft="4dp"
                 android:layout_gravity="center"
                 android:paddingTop="4dp"
-                android:text="Skladišče"
+                android:text="@string/s28"
                 android:layout_marginRight="27.0dp" />
 
             <Spinner
@@ -267,7 +267,7 @@
                     android:textColor="@color/white"
                     android:layout_marginLeft="2dp"
                     android:layout_marginRight="4dp"
-                    android:text="Izhod - f8"
+                    android:text="@string/s77"
                     android:drawableLeft="@drawable/logout_white"
                     android:id="@+id/btLogout" />
 

@@ -124,7 +124,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="10dp"
                 android:paddingTop="5dp"
-                android:text="Ident"
+                android:text="@string/s47"
              />
             <LinearLayout
                 android:layout_width="match_parent"
@@ -165,7 +165,7 @@
             <TextView
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:text="Naziv"
+                android:text="@string/s35"
                 android:paddingTop="5dp"
                 android:paddingLeft="10dp"
                 android:id="@+id/textView1"
@@ -195,7 +195,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="10dp"
                 android:paddingTop="5dp"
-                android:text="SSCC koda"
+                android:text="@string/s48"
           />
 
             <EditText
@@ -222,7 +222,7 @@
             <TextView
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:text="Serijska št."
+                android:text="@string/s49"
                 android:paddingTop="5dp"
                 android:paddingLeft="10dp"
           />
@@ -251,7 +251,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="10dp"
                 android:paddingTop="5dp"
-                android:text="Skladišče"
+                android:text="@string/s28"
              />
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -279,7 +279,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="10dp"
                 android:paddingTop="5dp"
-                android:text="Lokacija"
+                android:text="@string/s50"
              />
             <LinearLayout
                 android:layout_width="match_parent"
@@ -405,7 +405,7 @@
             android:paddingTop="5dp">
 
             <Button
-                android:text="Tiskaj"
+                android:text="@string/s135"
                 android:drawableLeft="@drawable/printer_white"
                 android:layout_weight="1"
                 android:textSize="20dp"
@@ -419,7 +419,7 @@
                 android:id="@id/btPrint" />
 
             <Button
-                android:text="Izhod"
+                android:text="@string/s119"
                 android:drawableLeft="@drawable/logout_white"
                 android:layout_weight="1"
                 android:textSize="20dp"

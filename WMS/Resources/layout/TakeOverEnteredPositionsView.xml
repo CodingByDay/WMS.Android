@@ -326,7 +326,7 @@
                 android:textColor="@color/white"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="4dp"
-                android:text="Izhod - F8"
+                android:text="@string/s77"
                 android:drawableLeft="@drawable/logout_white"
                 android:id="@+id/button5" />
 

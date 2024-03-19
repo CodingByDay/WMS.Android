@@ -21,7 +21,7 @@
             android:gravity="bottom"
             android:paddingLeft="4dp"
             android:paddingTop="4dp"
-            android:text="Ident"
+            android:text="@string/s47"
             android:id="@+id/textView1"
          />
 
@@ -51,7 +51,7 @@
             android:gravity="bottom"
             android:paddingLeft="4dp"
             android:paddingTop="4dp"
-            android:text="Naziv"
+            android:text="@string/s35"
             android:id="@+id/textView21"
             />
 
@@ -264,7 +264,7 @@
                 android:textColor="@color/white"
                 android:layout_marginLeft="4dp"
                 android:layout_marginRight="2dp"
-                android:text="nasled. - f2"
+                android:text="@string/s42"
                 android:drawableLeft="@drawable/next_white"
                 android:id="@+id/button1" />
 
@@ -355,7 +355,7 @@
                 android:textColor="@color/white"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="4dp"
-                android:text="Izhod - F8"
+                android:text="@string/s77"
                 android:drawableLeft="@drawable/logout_white"
                 android:id="@+id/button6" />
 

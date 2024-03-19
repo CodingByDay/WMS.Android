@@ -21,7 +21,7 @@
         android:paddingTop="5dp"
         android:layout_weight="25"
         android:singleLine="true"
-        android:text="Ident "
+        android:text="@string/s78"
         android:id="@+id/Ident"
         />
 
@@ -34,7 +34,7 @@
         android:paddingTop="5dp"
         android:layout_weight="25"
         android:singleLine="true"
-        android:text="Lokacija "
+        android:text="@string/s50"
         android:id="@+id/Location"
         />
 
@@ -47,7 +47,7 @@
         android:layout_weight="25"
         android:singleLine="true"
         android:paddingTop="5dp"
-        android:text="Količina "
+        android:text="@string/s83"
         android:id="@+id/Qty"
         />
 
@@ -60,7 +60,7 @@
         android:layout_weight="25"
         android:singleLine="true"
         android:paddingTop="5dp"
-        android:text="Naročilo "
+        android:text="@string/s14"
         android:id="@+id/Order"
         />
 

@@ -242,7 +242,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="10dp"
                 android:paddingTop="5dp"
-                android:text="Kreiral" />
+                android:text="@string/s67" />
 
             <EditText
                 android:textStyle="bold"
@@ -307,7 +307,7 @@
             android:paddingTop="5dp">
 
             <Button
-                android:text="Nasled."
+                android:text="@string/s114"
                 android:layout_weight="1"
                 android:textSize="20dp"
                 android:paddingLeft="10dp"
@@ -320,7 +320,7 @@
                 android:drawableLeft="@drawable/next_white"
                 android:id="@+id/btNext" />
             <Button
-                android:text="uredi"
+                android:text="@string/s115"
                 android:drawableLeft="@drawable/shipped_white"
                 android:layout_weight="1"
                 android:textSize="20dp"
@@ -345,7 +345,7 @@
             android:paddingTop="4dp">
 
             <Button
-                android:text="izbriši"
+                android:text="@string/s118"
                 android:layout_weight="1"
                 android:textSize="20dp"
                 android:paddingLeft="10dp"
@@ -359,7 +359,7 @@
                 android:id="@+id/btDelete" />
 
             <Button
-                android:text="kreiraj"
+                android:text="@string/s116"
                 android:drawableLeft="@drawable/newitem_white"
                 android:id="@+id/btnew"
                 android:layout_weight="1"
@@ -374,7 +374,7 @@
 
         </LinearLayout>
         <Button
-            android:text="Izhod "
+            android:text="@string/s110"
             android:drawableLeft="@drawable/logout_white"
             android:id="@+id/logout"
             android:textSize="20dp"

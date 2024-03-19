@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:singleLine="true"
             android:paddingTop="5dp"
-            android:text="Ident"
+            android:text="@string/s47"
             android:id="@+id/Ident" />
 
         <TextView
@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:singleLine="true"
             android:paddingTop="5dp"
-            android:text="Lokacija"
+            android:text="@string/s50"
             android:id="@+id/Location" />
 
         <TextView
@@ -52,7 +52,7 @@
             android:layout_height="wrap_content"
             android:singleLine="true"
             android:paddingTop="5dp"
-            android:text="Naziv"
+            android:text="@string/s35"
             android:id="@+id/Name" />
 
 </LinearLayout>

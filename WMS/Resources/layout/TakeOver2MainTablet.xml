@@ -50,7 +50,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
-            android:text="Ident"
+            android:text="@string/s47"
             android:layout_marginRight="28.0dp"
             android:id="@+id/ident"
             android:layout_width="match_parent" />
@@ -62,7 +62,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
-            android:text="Naziv"
+            android:text="@string/s35"
             android:layout_width="match_parent"
             android:layout_marginRight="28.0dp"
             android:id="@+id/name" />
@@ -124,7 +124,7 @@
             <TextView
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:text="Ident"
+                android:text="@string/s47"
                 android:textStyle="bold"
                 android:textSize="18dp"
                 android:paddingTop="5dp"
@@ -158,7 +158,7 @@
                 android:textSize="18dp"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:text="Naziv"
+                android:text="@string/s35"
                 android:paddingTop="5dp"
                 android:paddingLeft="10dp"
                 android:id="@+id/textView12"
@@ -248,7 +248,7 @@
                 android:layout_marginRight="2dp" />
 
             <Button
-                android:text="Potrdi"
+                android:text="@string/s107"
                 android:drawableLeft="@drawable/confirmation_white"
                 android:id="@+id/button2"
                 android:layout_weight="1"
@@ -302,7 +302,7 @@
         </LinearLayout>
         <Button
             android:id="@+id/button5"
-            android:text="Izhod "
+            android:text="@string/s110"
             android:textSize="20dp"
             android:paddingLeft="10dp"
             android:layout_width="match_parent"

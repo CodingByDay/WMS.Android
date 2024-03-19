@@ -21,7 +21,7 @@
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
             android:layout_weight="1"
-            android:text="Skladišče"
+            android:text="@string/s28"
         />
 
     <Spinner
@@ -44,7 +44,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
-            android:text="Datum inventure."
+            android:text="@string/s124"
             android:layout_marginTop="15dp"/>
 
         <EditText
@@ -61,7 +61,7 @@
             android:layout_marginRight="4dp"/>
 
         <Button
-            android:text="Izberi"
+            android:text="@string/s131"
             android:layout_width="70dp"
             android:layout_height="wrap_content"
             android:id="@+id/select"
@@ -93,7 +93,7 @@
 
             <Button
                 android:textSize="20dp"
-                android:text="Potrdi - f3"
+                android:text="@string/s76"
                 android:drawableLeft="@drawable/confirmation_white"
                 android:paddingLeft="10dp"
                 android:layout_width="match_parent"
@@ -106,7 +106,7 @@
 
             <Button
                 android:textSize="20dp"
-                android:text="Izhod - f8"
+                android:text="@string/s77"
                 android:layout_weight="1"
                 android:drawableLeft="@drawable/logout_white"
                 android:paddingLeft="10dp"

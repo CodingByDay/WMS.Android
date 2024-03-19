@@ -20,7 +20,7 @@
         android:paddingLeft="10dp"
         android:paddingTop="5dp"
         android:paddingBottom="5dp"
-        android:text="Odprte inventure"
+        android:text="@string/s123"
         android:id="@+id/lbInfo"
         android:textColor="@color/rikoMain"/>
     <LinearLayout
@@ -36,7 +36,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:paddingTop="4dp"
-            android:text="Skladišče"
+            android:text="@string/s28"
             android:layout_marginRight="0dp" />
 
         <EditText
@@ -63,7 +63,7 @@
             android:textStyle="bold"
             android:layout_width="115dp"
             android:layout_height="wrap_content"
-            android:text="Naziv"
+            android:text="@string/s35"
             android:paddingTop="5dp"
             android:paddingLeft="10dp"
             android:id="@+id/textView1"
@@ -95,7 +95,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
-            android:text="Datum inv."
+            android:text="@string/s124"
             />
 
         <EditText
@@ -123,7 +123,7 @@
             android:textStyle="bold"
             android:layout_width="115dp"
             android:layout_height="wrap_content"
-            android:text="Št. popisov"
+            android:text="@string/s125"
             android:paddingTop="5dp"
             android:paddingLeft="10dp"
              />
@@ -155,7 +155,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
-            android:text="Kreiral"
+            android:text="@string/s67"
              />
 
         <EditText
@@ -183,7 +183,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
-            android:text="Datum kreiranja"
+            android:text="@string/s18"
        />
 
         <EditText
@@ -225,7 +225,7 @@
             <Button
                 android:textSize="20dp"
                 android:background="@color/rikoMain"
-                android:text="Nasled. - F2"
+                android:text="@string/s42"
                 android:drawableLeft="@drawable/next_white"
                 android:paddingLeft="10dp"
                 android:layout_width="match_parent"
@@ -239,7 +239,7 @@
                 android:textSize="20dp"
                 android:layout_weight="1"
                 android:background="@color/rikoMain"
-                android:text="potrdi - f3"
+                android:text="@string/s76"
                 android:drawableLeft="@drawable/confirmation_white"
                 android:paddingLeft="10dp"
                 android:layout_width="match_parent"
@@ -253,7 +253,7 @@
         <Button
             android:layout_weight="1"
             android:background="@color/rikoMain"
-            android:text="Izhod - F8"
+            android:text="@string/s77"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:textSize="20dp"

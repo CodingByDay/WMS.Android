@@ -39,7 +39,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:paddingTop="4dp"
-            android:text="Ident" />
+            android:text="@string/s47" />
 
         <EditText
             android:textStyle="bold"
@@ -66,7 +66,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:paddingTop="4dp"
-            android:text="SSCC koda"
+            android:text="@string/s48"
             android:id="@+id/textView1" />
 
         <EditText
@@ -92,7 +92,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:paddingTop="4dp"
-            android:text="Serijska št." />
+            android:text="@string/s49" />
 
         <EditText
             android:textStyle="bold"
@@ -146,7 +146,7 @@
             android:paddingLeft="10dp"
             android:paddingTop="4dp"
             android:singleLine="true"
-            android:text="Lokacija" />
+            android:text="@string/s50" />
 
         <EditText
             android:textStyle="bold"
@@ -173,7 +173,7 @@
             android:paddingLeft="10dp"
             android:paddingTop="4dp"
             android:singleLine="true"
-            android:text="Kreiral" />
+            android:text="@string/s67" />
 
         <EditText
             android:textStyle="bold"
@@ -296,7 +296,7 @@
                 android:id="@+id/btDelete" />
 
             <Button
-                android:text="Izhod - F8"
+                android:text="@string/s77"
                 android:layout_weight="1"
                 android:textSize="20dp"
                 android:paddingLeft="10dp"

@@ -104,7 +104,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="4dp"
             android:paddingTop="5dp"
-            android:text="Lokacija"
+            android:text="@string/s50"
           />
 
         <EditText
@@ -133,7 +133,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
-            android:text="Ident"
+            android:text="@string/s47"
             android:layout_marginRight="28.0dp"
             android:id="@+id/Ident" />
 
@@ -169,7 +169,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
-            android:text="Naziv"
+            android:text="@string/s35"
             android:layout_marginRight="28.0dp"
             android:id="@+id/Name" />
 
@@ -211,7 +211,7 @@
                 android:textColor="@color/white"
                 android:layout_marginLeft="4dp"
                 android:layout_marginRight="2dp"
-                android:text="Potrdi - f3"
+                android:text="@string/s76"
                 android:drawableLeft="@drawable/confirmation_white"
                 android:id="@+id/btConfirm" />
 
@@ -264,7 +264,7 @@
                 android:textColor="@color/white"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="4dp"
-                android:text="Izhod - F8"
+                android:text="@string/s77"
                 android:layout_marginBottom="4dp"
                 android:drawableLeft="@drawable/logout_white"
                 android:id="@+id/btLogout"

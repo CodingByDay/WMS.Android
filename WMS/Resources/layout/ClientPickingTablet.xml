@@ -55,7 +55,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
-            android:text="Ident"
+            android:text="@string/s47"
             android:layout_marginRight="28.0dp"
             android:id="@+id/ident"
             android:layout_width="match_parent" />
@@ -67,7 +67,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
-            android:text="Naziv"
+            android:text="@string/s35"
             android:layout_width="match_parent"
             android:layout_marginRight="28.0dp"
             android:id="@+id/name" />
@@ -79,7 +79,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
-            android:text="Količina"
+            android:text="@string/s40"
             android:layout_width="match_parent"
             android:layout_marginRight="28.0dp"
             android:id="@+id/quantity" />
@@ -90,7 +90,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
-            android:text="Pozicija"
+            android:text="@string/s106"
             android:layout_width="match_parent"
             android:layout_marginRight="28.0dp"
             android:id="@+id/position" />
@@ -103,7 +103,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
-            android:text="Serijska"
+            android:text="@string/s80"
             android:layout_marginRight="28.0dp"
             android:id="@+id/serial" />
 
@@ -115,7 +115,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
-            android:text="SSCC"
+            android:text="@string/s79"
             android:layout_marginRight="28.0dp"
             android:id="@+id/sscc" />
 
@@ -143,7 +143,7 @@
         <TextView
 
             android:id="@+id/tbClientField"
-            android:text="Naročnik"
+            android:text="@string/s101"
             android:textStyle="bold"
             android:layout_width="115dp"
             android:layout_height="match_parent"
@@ -174,7 +174,7 @@
 
         <TextView
 
-            android:text="Ident ali 2D"
+            android:text="@string/s34"
             android:textStyle="bold"
             android:layout_width="115dp"
             android:layout_height="match_parent"
@@ -206,7 +206,7 @@
             android:layout_width="115dp"
             android:layout_height="match_parent"
             android:gravity="bottom"
-            android:text="Lokacija"
+            android:text="@string/s50"
             android:paddingLeft="4dp"
             android:paddingTop="4dp" />
 
@@ -236,7 +236,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
-            android:text="Ident"
+            android:text="@string/s47"
             android:layout_marginRight="28.0dp"
             android:id="@+id/Ident" />
 
@@ -248,7 +248,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
-            android:text="Lok."
+            android:text="@string/s102"
             android:layout_marginRight="28.0dp"
             android:id="@+id/Location" />
 
@@ -260,7 +260,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
-            android:text="Kol."
+            android:text="@string/s103"
             android:layout_marginRight="28.0dp"
             android:id="@+id/Qty" />
 
@@ -272,7 +272,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
-            android:text="Nar"
+            android:text="@string/s104"
             android:layout_marginRight="28.0dp"
             android:id="@+id/Name" />
 
@@ -307,7 +307,7 @@
                 android:textSize="20dp"
                 android:background="@color/rikoMain"
                 android:textColor="@color/white"
-                android:text="Potrdi - f3"
+                android:text="@string/s107"
                 android:drawableLeft="@drawable/confirmation_white"
                 android:paddingLeft="10dp"
                 android:layout_marginLeft="4dp"
@@ -324,7 +324,7 @@
                 android:textSize="20dp"
                 android:background="@color/rikoMain"
                 android:textColor="@color/white"
-                android:text="Preg. - f4"
+                android:text="@string/s108"
                 android:drawableLeft="@drawable/focus_white"
                 android:paddingLeft="10dp"
                 android:layout_width="match_parent"
@@ -350,7 +350,7 @@
             android:textColor="@color/white"
             android:layout_marginLeft="4dp"
             android:layout_marginRight="2dp"
-            android:text="Nazaj - F5"
+            android:text="@string/s109"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:textSize="20dp"
@@ -365,7 +365,7 @@
             android:layout_marginRight="4dp"
             android:background="@color/rikoMain"
             android:textColor="@color/white"
-            android:text="Izhod - F8"
+            android:text="@string/s110"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:textSize="20dp"

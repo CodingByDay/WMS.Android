@@ -6,6 +6,7 @@ using Android.Util;
 using Android.Views;
 using Android.Views.InputMethods;
 using Microsoft.AppCenter.Crashes;
+using System.ComponentModel.DataAnnotations;
 using Keycode = Android.Views.Keycode;
 
 public class CustomAutoCompleteTextView : AutoCompleteTextView

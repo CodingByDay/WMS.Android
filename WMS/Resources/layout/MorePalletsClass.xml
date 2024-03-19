@@ -116,7 +116,7 @@
         android:layout_marginBottom="4dp">
 
         <Button
-            android:text="Potrdi"
+            android:text="@string/s107"
             android:layout_weight="1"
             android:textSize="20dp"
             android:paddingLeft="10dp"
@@ -130,7 +130,7 @@
             android:id="@+id/btConfirm" />
 
         <Button
-            android:text="Izhod"
+            android:text="@string/s119"
             android:drawableLeft="@drawable/logout_white"
             android:id="@+id/btExit"
             android:layout_weight="1"

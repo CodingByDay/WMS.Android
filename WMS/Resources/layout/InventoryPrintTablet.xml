@@ -120,7 +120,7 @@
             android:textStyle="bold"
             android:textSize="18dp"
             android:layout_weight="1"
-            android:text="Skladišče"
+            android:text="@string/s28"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:layout_width="wrap_content"
             android:layout_height="37.0dp"
@@ -148,7 +148,7 @@
             android:textStyle="bold"
             android:textSize="18dp"
             android:layout_weight="1"
-            android:text="Lokacija"
+            android:text="@string/s50"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:layout_width="wrap_content"
             android:layout_height="37.0dp"
@@ -179,7 +179,7 @@
             android:paddingTop="5dp">
 
             <Button
-                android:text="Tiskaj"
+                android:text="@string/s135"
                 android:drawableLeft="@drawable/printer_white"
                 android:layout_weight="1"
                 android:textSize="20dp"
@@ -202,7 +202,7 @@
                 android:textColor="@color/white"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
-                android:text="Izhod"
+                android:text="@string/s119"
                 android:drawableLeft="@drawable/logout_white"
                 android:id="@+id/button2" />
 

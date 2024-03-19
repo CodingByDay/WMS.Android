@@ -23,7 +23,7 @@
             android:gravity="bottom"
             android:paddingLeft="4dp"
             android:paddingTop="4dp"
-            android:text="Ident" />
+            android:text="@string/s47" />
 
         <EditText
             android:textStyle="bold"
@@ -52,7 +52,7 @@
             android:gravity="bottom"
             android:paddingLeft="4dp"
             android:paddingTop="4dp"
-            android:text="Naziv"
+            android:text="@string/s35"
             android:id="@+id/textView12"
           />
 
@@ -126,7 +126,7 @@
             android:gravity="bottom"
             android:paddingLeft="4dp"
             android:paddingTop="4dp"
-            android:text="Lokacija"
+            android:text="@string/s50"
             android:id="@+id/txtLocation"
           />
 
@@ -244,7 +244,7 @@
             android:layout_marginRight="4dp"
             android:layout_marginBottom="4dp"
             android:layout_marginTop="4dp"
-            android:text="Izhod - F8"
+            android:text="@string/s77"
             android:drawableLeft="@drawable/logout_white"
             android:id="@+id/button5"
         />

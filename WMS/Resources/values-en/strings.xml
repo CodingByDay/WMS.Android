@@ -107,6 +107,62 @@
 	<string name="s91">Takeover</string>
 	<string name="s92">Positions</string>
 	<string name="s93">Izhod - F8</string>
+	<string name="s94">F1</string>
+	<string name="s95">Stock overview</string>
+	<string name="s96">Prikaži - F2</string>
+	<string name="s97">Prikaži</string>
+	<string name="s98">Izhod</string>
+	<string name="s99">Takeover - F2</string>
+	<string name="s100">Rapid takeover - F3</string>
+	<string name="s101">Client</string>
+	<string name="s102">Loc.</string>
 
+	<string name="s103">Quan.</string>
+
+	<string name="s104">Ord.</string>
+
+	<string name="s105">Back - f5</string>
+	<string name="s106">Position</string>
+	<string name="s107">Confirm</string>
+	<string name="s108">Overv.</string>
+	<string name="s109">Back</string>
+	<string name="s110">Menu</string>
+
+
+	<string name="s111">Are you sure you want to finish the proccess?</string>
+
+	<string name="s112">YES</string>
+	<string name="s113">NO</string>
+
+	<string name="s114">NEXT</string>
+	<string name="s115">EDIT</string>
+	<string name="s116">CREATE</string>
+	<string name="s117">FINISH</string>
+	<string name="s118">DELETE</string>
+	<string name="s119">MENU</string>
+	<string name="s120">SERIAL</string>
+	<string name="s121">OVERVIEW</string>
+	<string name="s122">Filled</string>
+
+	<string name="s123">Open inventories</string>
+	
+	<string name="s124">Inventory date</string>
+
+	<string name="s125">No. of inv.</string>
+
+	<string name="s126">O. document - F2</string>
+	<string name="s127">Inventory - f3</string>
+	<string name="s128">Confirm - f4</string>
+	<string name="s129">O. inventory - f5</string>
+	<string name="s130">Print inventory - f6</string>
+
+	<string name="s131">Choose</string>
+	
+	<string name="s132">Confirmed</string>
+
+	<string name="s133">Confirmed</string>
+
+	<string name="s134">Print - f2</string>
+	<string name="s135">Print</string>
 
 </resources>

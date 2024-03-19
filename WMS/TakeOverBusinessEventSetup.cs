@@ -16,8 +16,9 @@ using WMS.App;
 using TrendNET.WMS.Core.Data;
 using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
-
-using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS
+using AndroidX.AppCompat.App;
+using AlertDialog = Android.App.AlertDialog;
+namespace WMS
 {
     [Activity(Label = "TakeOverBusinessEventSetup", ScreenOrientation = ScreenOrientation.Portrait)]
     public class TakeOverBusinessEventSetup : AppCompatActivity
@@ -97,9 +98,6 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             adapter.SetDropDownViewResource(Android.Resource.Layout.SimpleSpinnerItem);
             cbDocType.Adapter = adapterDoc;
 
-
-            
-
             var dw = CommonData.GetSetting("DefaultWarehouse");
             if (!string.IsNullOrEmpty(dw))
             {
@@ -131,7 +129,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 {
                     cbWarehouse.Enabled = false;
                 }
-            } catch (Exception ex)
+            } catch 
             {
                 return;
             }
@@ -149,9 +147,14 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
 
         private void CbDocType_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
         {
+            var selected = objectcbDocType.ElementAt(e.Position);
+
             temporaryPositioncbDoc = e.Position;
+
             var dws = Queries.DefaultTakeoverWarehouse(objectcbDocType.ElementAt(temporaryPositioncbDoc).ID);
+
             temporaryPositionWarehouse = cbWarehouse.SetItemByString(dws.warehouse);
+
             if (dws.main)
             {
                 cbWarehouse.Enabled = false;

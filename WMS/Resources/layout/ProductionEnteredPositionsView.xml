@@ -36,7 +36,7 @@
             android:gravity="bottom"
             android:paddingLeft="4dp"
             android:paddingTop="4dp"
-            android:text="SSCC koda" />
+            android:text="@string/s48" />
 
         <EditText
             android:textStyle="bold"
@@ -65,7 +65,7 @@
             android:gravity="bottom"
             android:paddingLeft="4dp"
             android:paddingTop="4dp"
-            android:text="Serijska št."
+            android:text="@string/s49"
             android:id="@+id/textView1" />
 
         <EditText
@@ -123,7 +123,7 @@
             android:gravity="bottom"
             android:paddingLeft="4dp"
             android:paddingTop="4dp"
-            android:text="Lokacija" />
+            android:text="@string/s50" />
 
         <EditText
             android:textStyle="bold"
@@ -151,7 +151,7 @@
             android:gravity="bottom"
             android:paddingLeft="4dp"
             android:paddingTop="4dp"
-            android:text="Kreiral" />
+            android:text="@string/s67" />
 
         <EditText
             android:textStyle="bold"
@@ -179,7 +179,7 @@
             android:gravity="bottom"
             android:paddingLeft="4dp"
             android:paddingTop="4dp"
-            android:text="Datum kreiranja" />
+            android:text="@string/s18" />
 
         <EditText
             android:textStyle="bold"
@@ -313,7 +313,7 @@
                 android:textColor="@color/white"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
-                android:text="Izhod - F8"
+                android:text="@string/s77"
                 android:drawableLeft="@drawable/logout_white"
                 android:id="@+id/button5" />
 

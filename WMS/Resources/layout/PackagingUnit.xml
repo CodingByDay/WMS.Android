@@ -280,7 +280,7 @@
                 android:id="@+id/btFinish" />
 
             <Button
-                android:text="Izhod - f8"
+                android:text="@string/s77"
                 android:drawableLeft="@drawable/logout_white"
                 android:id="@+id/btExit"
                 android:layout_weight="1"

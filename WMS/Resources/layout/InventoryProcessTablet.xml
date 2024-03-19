@@ -124,7 +124,7 @@
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
             android:textSize="18dp"
-            android:text="Skladišče"
+            android:text="@string/s28"
             android:layout_weight="5" />
 
         <Spinner
@@ -146,7 +146,7 @@
                 android:textStyle="bold"
                 android:layout_width="110dp"
                 android:layout_height="wrap_content"
-                android:text="Lokacija"
+                android:text="@string/s50"
                 android:paddingTop="5dp"
                 android:paddingLeft="10dp"
                 android:id="@+id/textView1" />
@@ -186,7 +186,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="10dp"
                 android:paddingTop="5dp"
-                android:text="Ident"
+                android:text="@string/s47"
                 />
 
             <LinearLayout
@@ -226,7 +226,7 @@
                 android:textStyle="bold"
                 android:layout_width="110dp"
                 android:layout_height="wrap_content"
-                android:text="Naziv"
+                android:text="@string/s35"
                 android:paddingTop="5dp"
                 android:paddingLeft="10dp"
                 android:id="@+id/textView2" />
@@ -385,7 +385,7 @@
             android:paddingTop="5dp">
 
             <Button
-                android:text="Tiskaj"
+                android:text="@string/s135"
                 android:layout_weight="1"
                 android:textSize="20dp"
                 android:paddingLeft="10dp"
@@ -399,7 +399,7 @@
                 android:id="@+id/btPrint" />
 
             <Button
-                android:text="Potrdi"
+                android:text="@string/s107"
                 android:drawableLeft="@drawable/confirmation_white"
                 android:id="@+id/button1"
                 android:layout_weight="1"
@@ -446,7 +446,7 @@
                 android:textColor="@color/white"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
-                android:text="izhod"
+                android:text="@string/s119"
                 android:drawableLeft="@drawable/logout_white"
                 android:id="@+id/button2"
 

@@ -174,7 +174,7 @@
             android:paddingTop="5dp">
 
             <Button
-                android:text="Tiskaj"
+                android:text="@string/s135"
                 android:drawableLeft="@drawable/printer_white"
                 android:layout_weight="1"
                 android:textSize="20dp"
@@ -188,7 +188,7 @@
                 android:id="@+id/button1" />
 
             <Button
-                android:text="Izhod"
+                android:text="@string/s119"
                 android:drawableLeft="@drawable/logout_white"
                 android:layout_weight="1"
                 android:textSize="20dp"

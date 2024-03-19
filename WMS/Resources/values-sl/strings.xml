@@ -102,17 +102,74 @@
 	<string name="s87">Zaklj. - f4</string>
 	<string name="s88">Pregl. - f5</string>
 	<string name="s89">Izhod - F8</string>
-
-
-
-
-
-
-
 	<string name="s90">POTRDI - F2</string>
 	<string name="s91">Prevzem </string>
 	<string name="s92">Vnešene pozicije</string>
 	<string name="s93">Izhod - F8</string>
+	<string name="s94">F1</string>
+	<string name="s95">Pregled zaloge</string>
+	<string name="s96">Show - F2</string>
+	<string name="s97">Show</string>
+	<string name="s98">Menu</string>
 
+	<string name="s99">Prevzem - F2</string>
+	<string name="s100">Hitri prevzem - F3</string>
+
+	<string name="s101">Naročnik</string>
+	<string name="s102">Lok.</string>
+
+	<string name="s103">Kol.</string>
+
+	<string name="s104">Nar.</string>
+
+	<string name="s105">Nazaj - f5</string>
+
+	<string name="s106">Pozicija</string>
+	<string name="s107">Potrdi</string>
+	<string name="s108">Preg.</string>
+	<string name="s109">Nazaj</string>
+	<string name="s110">Izhod</string>
+
+
+
+	<string name="s111">Ali res  želite zaključiti?</string>
+	
+	
+	<string name="s112">DA</string>
+	<string name="s113">NE</string>
+	
+    <string name="s114">NASLED.</string>
+	<string name="s115">UREDI</string>
+	<string name="s116">KREIRAJ</string>
+	<string name="s117">ZAKLJUČI</string>
+	<string name="s118">IZBRIŠI</string>
+	<string name="s119">IZHOD</string>
+	<string name="s120">SERIJSKA</string>
+	<string name="s121">PREGLED</string>
+
+	<string name="s122">Izpolnjeno</string>
+
+	<string name="s123">Odprte inventure</string>
+	
+	<string name="s124">Datum inventure</string>
+
+	<string name="s125">Št. popisov</string>
+
+    <string name="s126">O. dokument - F2</string>
+	<string name="s127">Izvedba - f3</string>
+	<string name="s128">Potrdi - f4</string>
+	<string name="s129">O. inventuro - f5</string>
+	<string name="s130">Tiskaj inventuro-f6</string>
+
+
+	<string name="s131">Izberi</string>
+
+	<string name="s132">Potrdil</string>
+
+	<string name="s133">Datum potrditve</string>
+
+
+	<string name="s134">Tiskaj - f2</string>
+	<string name="s135">Tiskaj</string>
 
 </resources>

@@ -30,7 +30,6 @@ namespace WMS
         private int temporaryPositionWarehouse;
         private string stock;
         private Button btnOK;
-
         private List<String> identData = new List<string>();
         private List<string> returnList;
         private List<String> locationData = new List<String>();
@@ -87,7 +86,6 @@ namespace WMS
             {
                 string WebError = string.Format("Skladišče ni izbrano.");
                 DialogHelper.ShowDialogError(this, this, WebError);
-
                 //   Toast.MakeText(this, WebError, ToastLength.Long).Show(); tbIdent.Text = "";
                 return;
             }

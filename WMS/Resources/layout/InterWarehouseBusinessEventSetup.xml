@@ -7,9 +7,10 @@
     <include
         android:id="@+id/toolbar"
         layout="@layout/toolbar" />
+
     <TextView
         android:textStyle="bold"
-        android:text="Posl dog"
+        android:text="@string/s27"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -18,10 +19,12 @@
         android:textColor="@color/rikoMain"
         android:layout_marginTop="5dp"
         android:layout_marginBottom="10dp"/>
+
     <CustomAutoCompleteTextView
         android:singleLine="true"
         android:layout_width="match_parent"
         android:layout_height="42.5dp"
+        android:maxLength="30"
         android:id="@+id/cbDocType"
         android:gravity="center"
         android:spinnerMode="dialog"
@@ -30,7 +33,7 @@
 
     <TextView
         android:textStyle="bold"
-        android:text="Izdajno skladišće"
+        android:text="@string/s74"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:layout_width="match_parent"
         android:layout_height="39.0dp"
@@ -41,13 +44,14 @@
         android:layout_width="match_parent"
         android:layout_height="41.0dp"
         android:singleLine="true"
+        android:maxLength="30"
         android:id="@+id/cbIssueWH"
         android:gravity="center"
         android:spinnerMode="dialog"
        />
     <TextView
         android:textStyle="bold"
-        android:text="Prejemno skladišće"
+        android:text="@string/s75"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:layout_width="match_parent"
         android:layout_height="46.5dp"
@@ -58,6 +62,7 @@
         android:layout_width="match_parent"
         android:layout_height="48.0dp"
         android:singleLine="true"
+        android:maxLength="30"
         android:id="@+id/cbRecceiveWH"
         android:layout_marginBottom="14.5dp"
         android:gravity="center"
@@ -90,7 +95,7 @@
                 android:layout_weight="1"
                 android:textSize="20dp"
                 android:background="@color/rikoMain"
-                android:text="Potrdi - f3"
+                android:text="@string/s76"
                 android:drawableLeft="@drawable/next_white"
                 android:paddingLeft="10dp"
                 android:layout_width="match_parent"
@@ -102,7 +107,7 @@
             <Button
                 android:textSize="20dp"
                 android:background="@color/rikoMain"
-                android:text="Izhod - f8"
+                android:text="@string/s77"
                 android:drawableLeft="@drawable/logout_white"
                 android:paddingLeft="10dp"
                 android:layout_weight="1"

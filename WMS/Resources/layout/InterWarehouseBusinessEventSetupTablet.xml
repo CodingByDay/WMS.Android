@@ -59,9 +59,10 @@
         android:layout_marginTop="70dp">
 
         <TextView
+            
             android:textStyle="bold"
             android:textSize="18dp"
-            android:text="Poslovni dogodek"
+            android:text="@string/s63"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -77,6 +78,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="41.0dp"
                 android:id="@+id/cbDocType"
+                android:maxLength="30"
                 android:gravity="center"
                 android:spinnerMode="dialog"
 
@@ -85,7 +87,7 @@
         <TextView
             android:textStyle="bold"
             android:textSize="18dp"
-            android:text="Izdajno skladišče"
+            android:text="@string/s74"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:layout_width="match_parent"
             android:layout_height="39.0dp"
@@ -98,10 +100,12 @@
             android:layout_height="wrap_content"
             android:padding="0dp"
             android:background="@drawable/edittext_bg_grey">
+
             <CustomAutoCompleteTextView
                 android:layout_width="match_parent"
                 android:layout_height="41.0dp"
                 android:id="@+id/cbIssueWH"
+                android:maxLength="30"
                 android:gravity="center"
                 android:spinnerMode="dialog"
 
@@ -110,7 +114,7 @@
         <TextView
             android:textStyle="bold"
             android:textSize="18dp"
-            android:text="Prejemno skladišče"
+            android:text="@string/s75"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:layout_width="match_parent"
             android:layout_height="46.5dp"
@@ -128,6 +132,7 @@
                 android:layout_height="41.0dp"
                 android:id="@+id/cbRecceiveWH"
                 android:layout_marginBottom="0.0dp"
+                android:maxLength="30"
                 android:gravity="center"
                 android:spinnerMode="dialog"
          />
@@ -155,7 +160,7 @@
             >
 
             <Button
-                android:text="Potrdi"
+                android:text="@string/s107"
                 android:drawableLeft="@drawable/next_white"
                 android:id="@+id/btnConfirm"
                 android:layout_weight="1"
@@ -169,7 +174,7 @@
                 android:layout_marginRight="2dp"/>
 
             <Button
-                android:text="Izhod"
+                android:text="@string/s110"
                 android:drawableLeft="@drawable/logout_white"
                 android:id="@+id/logout"
                 android:layout_weight="1"

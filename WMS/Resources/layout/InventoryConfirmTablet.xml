@@ -64,7 +64,7 @@
             android:layout_gravity="center"
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
-            android:text="Odprte inventure"
+            android:text="@string/s123"
             android:id="@+id/lbInfo" />
         <LinearLayout
             android:layout_width="fill_parent"
@@ -79,7 +79,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="10dp"
                 android:paddingTop="5dp"
-                android:text="Skladišče"
+                android:text="@string/s28"
             />
 
             <EditText
@@ -108,7 +108,7 @@
                 android:textSize="18dp"
                 android:layout_width="120dp"
                 android:layout_height="wrap_content"
-                android:text="Naziv"
+                android:text="@string/s35"
                 android:paddingTop="5dp"
                 android:paddingLeft="10dp"
                 android:id="@+id/textView1"
@@ -140,7 +140,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="10dp"
                 android:paddingTop="5dp"
-                android:text="Datum inv."
+                android:text="@string/s124"
              />
 
             <EditText
@@ -169,7 +169,7 @@
                 android:textSize="18dp"
                 android:layout_width="120dp"
                 android:layout_height="wrap_content"
-                android:text="Št. popisov"
+                android:text="@string/s125"
                 android:paddingTop="5dp"
                 android:paddingLeft="10dp"
             />
@@ -200,7 +200,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="10dp"
                 android:paddingTop="5dp"
-                android:text="Kreiral"
+                android:text="@string/s67"
             />
 
             <EditText
@@ -230,7 +230,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="10dp"
                 android:paddingTop="5dp"
-                android:text="Datum kreiranja"
+                android:text="@string/s18"
             />
 
             <EditText
@@ -269,7 +269,7 @@
             android:paddingTop="5dp">
 
             <Button
-                android:text="Nasled."
+                android:text="@string/s114"
                 android:drawableLeft="@drawable/next_white"
                 android:layout_weight="1"
                 android:textSize="20dp"
@@ -283,7 +283,7 @@
                 android:id="@+id/btNext" />
 
             <Button
-                android:text="potrdi"
+                android:text="@string/s107"
                 android:drawableLeft="@drawable/confirmation_white"
                 android:layout_weight="1"
                 android:textSize="20dp"
@@ -298,7 +298,7 @@
 
         </LinearLayout>
         <Button
-            android:text="Izhod "
+            android:text="@string/s110"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="20dp"

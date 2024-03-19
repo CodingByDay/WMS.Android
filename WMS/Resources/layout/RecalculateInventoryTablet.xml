@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
-            android:text="Ident"
+            android:text="@string/s47"
             android:layout_marginRight="28.5dp" />
         <LinearLayout
             android:layout_width="match_parent"

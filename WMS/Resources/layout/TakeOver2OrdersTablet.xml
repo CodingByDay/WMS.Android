@@ -50,7 +50,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
-            android:text="Ident"
+            android:text="@string/s47"
             android:layout_marginRight="28.0dp"
             android:id="@+id/ident"
             android:layout_width="match_parent" />
@@ -62,7 +62,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
-            android:text="Naziv"
+            android:text="@string/s35"
             android:layout_width="match_parent"
             android:layout_marginRight="28.0dp"
             android:id="@+id/name" />
@@ -98,7 +98,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
-            android:text="Serijska"
+            android:text="@string/s120"
             android:layout_marginRight="28.0dp"
             android:id="@+id/serial" />
 
@@ -139,7 +139,7 @@
                 android:textStyle="bold"
                 android:textSize="18dp"
                 android:layout_height="wrap_content"
-                android:text="Ident"
+                android:text="@string/s47"
                 android:paddingTop="5dp"
                 android:paddingLeft="10dp"
                 android:id="@+id/textView1"
@@ -170,7 +170,7 @@
                 android:textSize="18dp"
                 android:layout_width="100.0dp"
                 android:layout_height="wrap_content"
-                android:text="Naziv"
+                android:text="@string/s35"
                 android:paddingTop="5dp"
                 android:paddingLeft="10dp"
                 android:id="@+id/textView21"
@@ -380,7 +380,7 @@
             android:paddingTop="5dp">
 
             <Button
-                android:text="nasled."
+                android:text="@string/s114"
                 android:drawableLeft="@drawable/next_white"
                 android:layout_weight="1"
                 android:textSize="20dp"
@@ -470,7 +470,7 @@
                 android:id="@+id/button5" />
 
             <Button
-                android:text="Izhod "
+                android:text="@string/s110"
                 android:drawableLeft="@drawable/logout_white"
                 android:layout_weight="1"
                 android:textSize="20dp"

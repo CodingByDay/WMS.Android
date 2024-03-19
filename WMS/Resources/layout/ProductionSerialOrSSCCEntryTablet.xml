@@ -55,10 +55,10 @@
             android:layout_marginRight="28.0dp"
             android:id="@+id/ident"
             android:layout_width="match_parent"
-            android:text="Ident" />
+            android:text="@string/s47" />
 
         <TextView
-            android:text="Lokacija"
+            android:text="@string/s50"
             android:textSize="18dp"
             android:textStyle="bold"
             android:layout_weight="1"
@@ -128,7 +128,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="10dp"
                 android:paddingTop="5dp"
-                android:text="Ident" />
+                android:text="@string/s47" />
 
             <EditText
                 android:textStyle="bold"
@@ -215,7 +215,7 @@
                 android:textStyle="bold"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:text="Lokacija"
+                android:text="@string/s50"
                 android:paddingTop="5dp"
                 android:paddingLeft="10dp"/>
 
@@ -338,7 +338,7 @@
             android:paddingTop="5dp">
 
             <Button
-                android:text="Serijska"
+                android:text="@string/s120"
                 android:layout_weight="1"
                 android:textSize="20dp"
                 android:paddingLeft="10dp"
@@ -352,7 +352,7 @@
                 android:id="@+id/btSaveOrUpdate" />
 
             <Button
-                android:text="Pregled"
+                android:text="@string/s121"
                 android:drawableLeft="@drawable/focus_white"
                 android:id="@+id/button3"
                 android:layout_weight="1"
@@ -390,7 +390,7 @@
                 android:id="@+id/button4" />
 
             <Button
-                android:text="izhod"
+                android:text="@string/s119"
                 android:drawableLeft="@drawable/logout_white"
                 android:id="@+id/button5"
                 android:layout_weight="1"

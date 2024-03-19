@@ -57,10 +57,10 @@
             android:layout_marginRight="28.0dp"
             android:id="@+id/ident"
             android:layout_width="match_parent"
-            android:text="Ident" />
+            android:text="@string/s47" />
 
         <TextView
-            android:text="Količina"
+            android:text="@string/s83"
             android:textSize="18dp"
             android:textStyle="bold"
             android:layout_weight="1"
@@ -72,7 +72,7 @@
             android:id="@+id/name" />
 
         <TextView
-            android:text="Lokacija"
+            android:text="@string/s50"
             android:textSize="18dp"
             android:textStyle="bold"
             android:layout_weight="1"
@@ -108,7 +108,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="10dp"
                 android:paddingTop="5dp"
-                android:text="Ident"
+                android:text="@string/s47"
                 android:layout_marginRight="0.0dp" />
 
             <EditText
@@ -152,7 +152,7 @@
                 android:textSize="18dp"
                 android:layout_width="100.0dp"
                 android:layout_height="wrap_content"
-                android:text="SSCC "
+                android:text="@string/s79"
                 android:paddingTop="5dp"
                 android:paddingLeft="10dp"
                 android:id="@+id/textView1"
@@ -195,7 +195,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="10dp"
                 android:paddingTop="5dp"
-                android:text="Serijska "
+                android:text="@string/s80"
                 android:layout_marginRight="0dp" />
 
             <EditText
@@ -224,7 +224,7 @@
                 android:textSize="18dp"
                 android:layout_width="100.0dp"
                 android:layout_height="wrap_content"
-                android:text="Izdano"
+                android:text="@string/s81"
                 android:paddingTop="5dp"
                 android:paddingLeft="10dp"
                 android:layout_marginRight="0.0dp" />
@@ -266,7 +266,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="10dp"
                 android:paddingTop="5dp"
-                android:text="Prejeto"
+                android:text="@string/s82"
                 android:layout_marginRight="0dp" />
             <LinearLayout
                 android:layout_width="match_parent"
@@ -308,7 +308,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="10dp"
                 android:paddingTop="5dp"
-                android:text="Količina"
+                android:text="@string/s83"
                 android:layout_marginRight="0dp"
                 android:id="@+id/lbQty" />
 
@@ -325,7 +325,7 @@
                 android:id="@+id/tbPacking" />
 
             <Button
-                android:text="-(F1)"
+                android:text="@string/s94"
                 android:layout_width="74.0dp"
                 android:layout_height="33dp"
                 android:layout_marginTop="-5dp"
@@ -348,7 +348,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="10dp"
                 android:paddingTop="5dp"
-                android:text="Št. enot"
+                android:text="@string/s84"
                 android:id="@+id/lbUnits" />
 
             <EditText
@@ -397,7 +397,7 @@
             android:paddingTop="5dp">
 
             <Button
-                android:text="Serijska"
+                android:text="@string/s120"
                 android:drawableLeft="@drawable/newitem_white"
                 android:id="@+id/btSaveOrUpdate"
                 android:layout_weight="1"
@@ -411,7 +411,7 @@
                 android:layout_marginRight="2dp" />
 
             <Button
-                android:text="KREIRAJ"
+                android:text="@string/s116"
                 android:drawableLeft="@drawable/newitem_white"
                 android:id="@+id/button3"
                 android:layout_weight="1"
@@ -434,7 +434,7 @@
             android:paddingTop="4dp">
 
             <Button
-                android:text="Zaključi"
+                android:text="@string/s117"
                 android:layout_weight="1"
                 android:textSize="20dp"
                 android:paddingLeft="10dp"
@@ -448,7 +448,7 @@
                 android:id="@+id/button5" />
 
             <Button
-                android:text="Pregled"
+                android:text="@string/s121"
                 android:drawableLeft="@drawable/focus_white"
                 android:id="@+id/button4"
                 android:layout_weight="1"
@@ -463,7 +463,7 @@
 
         </LinearLayout>
         <Button
-            android:text="Izhod "
+            android:text="@string/s119"
             android:layout_marginTop="4dp"
             android:textSize="20dp"
             android:paddingLeft="10dp"

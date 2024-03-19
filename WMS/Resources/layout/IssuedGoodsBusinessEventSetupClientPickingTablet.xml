@@ -122,6 +122,7 @@
         android:layout_width="match_parent"
         android:layout_height="49.5dp"
         android:singleLine="true"
+        android:maxLength="30"
         android:id="@+id/cbDocType" />
     <TextView
         android:textStyle="bold"
@@ -129,10 +130,11 @@
         android:layout_width="match_parent"
         android:layout_height="38.0dp"
         android:id="@+id/textView2"
-        android:text="Skladišče" />
+        android:text="@string/s28" />
     <CustomAutoCompleteTextView
         android:spinnerMode="dialog"
         android:singleLine="true"
+        android:maxLength="30"
         android:layout_width="match_parent"
         android:layout_height="53.0dp"
         android:id="@+id/cbWarehouse" />
@@ -148,6 +150,7 @@
         android:singleLine="true"
         android:layout_width="match_parent"
         android:layout_height="69.5dp"
+        android:maxLength="30"
         android:clickable="true"
         android:id="@+id/cbExtra" />
 
@@ -192,7 +195,7 @@
             android:textSize="20dp"
             android:background="@color/rikoMain"
             android:textColor="@color/white"
-            android:text="Potrdi - f3"
+            android:text="@string/s76"
             android:layout_marginLeft="4dp"
             android:layout_marginRight="4dp"
             android:drawableLeft="@drawable/confirmation_white"
@@ -207,7 +210,7 @@
         android:layout_weight="1"
         android:background="@color/rikoMain"
         android:textColor="@color/white"
-        android:text="Izhod - F8"
+        android:text="@string/s77"
         android:layout_width="match_parent"
         android:layout_marginLeft="4dp"
         android:layout_marginRight="4dp"

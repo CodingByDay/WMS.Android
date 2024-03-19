@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net8.0-android</TargetFramework>
+    <TargetFramework>net8.0-android34.0</TargetFramework>
     <OutputType>Exe</OutputType>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
@@ -24,7 +24,6 @@
     <None Remove="Resources\drawable\system_update.png" />
     <None Remove="Resources\drawable\united_kingdom.png" />
     <None Remove="Resources\drawable\warning.png" />
-    <None Remove="Resources\layout\BluetoothConnection.xml" />
     <None Remove="Resources\layout\border.xml" />
     <None Remove="Resources\layout\button_design.xml" />
     <None Remove="Resources\layout\CheckStock.xml" />
@@ -35,10 +34,8 @@
     <None Remove="Resources\layout\ClientPicking.xml" />
     <None Remove="Resources\layout\ClientPickingRow.xml" />
     <None Remove="Resources\layout\ClientPickingTablet.xml" />
-    <None Remove="Resources\layout\common.xml" />
     <None Remove="Resources\layout\Confirmation.xml" />
     <None Remove="Resources\layout\custom_dropdown_item.xml" />
-    <None Remove="Resources\layout\Dashboard.xml" />
     <None Remove="Resources\layout\InterWarehouseBusinessEventSetup.xml" />
     <None Remove="Resources\layout\InterWarehouseBusinessEventSetupTablet.xml" />
     <None Remove="Resources\layout\InterWarehouseEnteredPositionsView.xml" />
@@ -51,7 +48,6 @@
     <None Remove="Resources\layout\InventoryConfirm.xml" />
     <None Remove="Resources\layout\InventoryConfirmTablet.xml" />
     <None Remove="Resources\layout\InventoryMenu.xml" />
-    <None Remove="Resources\layout\InventoryMenu1.xml" />
     <None Remove="Resources\layout\InventoryOpen.xml" />
     <None Remove="Resources\layout\InventoryOpenDocument.xml" />
     <None Remove="Resources\layout\InventoryOpenDocumentTablet.xml" />

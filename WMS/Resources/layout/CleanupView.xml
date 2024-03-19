@@ -18,7 +18,7 @@
             android:singleLine="true"
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
-            android:text="Naziv"
+            android:text="@string/s35"
             android:layout_marginRight="28.0dp"
             android:id="@+id/Name" />
          <TextView
@@ -30,7 +30,7 @@
             android:singleLine="true"
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
-            android:text="Ident"
+            android:text="@string/s78"
             android:layout_marginRight="28.0dp"
             android:id="@+id/Ident" />
          <TextView
@@ -42,7 +42,7 @@
             android:singleLine="true"
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
-            android:text="Location"
+            android:text="@string/s50"
             android:layout_marginRight="28.0dp"
             android:id="@+id/Location" />
 
@@ -55,7 +55,7 @@
             android:singleLine="true"
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
-            android:text="SSCC"
+            android:text="@string/s79"
             android:layout_marginRight="28.0dp"
             android:id="@+id/SSCC" />
 
@@ -68,7 +68,7 @@
             android:singleLine="true"
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
-            android:text="Serijska"
+            android:text="@string/s80"
             android:layout_marginRight="28.0dp"
             android:id="@+id/Serial" />
 

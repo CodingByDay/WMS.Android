@@ -161,7 +161,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="10dp"
                 android:paddingTop="5dp"
-                android:text="Ident" />
+                android:text="@string/s47" />
 
             <EditText
                 android:textStyle="bold"
@@ -219,7 +219,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="10dp"
                 android:paddingTop="5dp"
-                android:text="Serijska" />
+                android:text="@string/s120" />
 
             <EditText
                 android:textStyle="bold"
@@ -376,7 +376,7 @@
                 android:id="@+id/btConfirm" />
 
             <Button
-                android:text="izhod"
+                android:text="@string/s119"
                 android:drawableLeft="@drawable/logout_white"
                 android:id="@+id/button2"
                 android:layout_weight="1"
