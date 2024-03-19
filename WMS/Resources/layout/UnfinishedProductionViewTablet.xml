@@ -90,7 +90,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
-            android:text="Pozicija"
+            android:text="@string/s106"
             android:layout_marginRight="28.0dp"
             android:id="@+id/numberOfPositions" />
 
@@ -364,7 +364,7 @@
                 android:id="@+id/btDelete" />
 
             <Button
-                android:text="Kreiraj "
+                android:text="@string/s116"
                 android:drawableLeft="@drawable/newitem_white"
                 android:id="@+id/btNew"
                 android:layout_weight="1"

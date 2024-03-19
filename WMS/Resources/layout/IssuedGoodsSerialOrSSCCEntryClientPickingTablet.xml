@@ -58,7 +58,7 @@
             android:text="@string/s47" />
 
         <TextView
-            android:text="Količina"
+            android:text="@string/s40"
             android:textSize="18dp"
             android:textStyle="bold"
             android:layout_weight="1"
@@ -135,7 +135,7 @@
                 android:textSize="18dp"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:text="SSCC "
+                android:text="@string/s79"
                 android:paddingTop="5dp"
                 android:paddingLeft="10dp"
                 android:id="@+id/textView1"
@@ -178,7 +178,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="10dp"
                 android:paddingTop="5dp"
-                android:text="Serijska "
+                android:text="@string/s80"
                 />
 
             <EditText
@@ -251,7 +251,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="10dp"
                 android:paddingTop="5dp"
-                android:text="Količina"
+                android:text="@string/s40"
                 android:id="@+id/lbQty" />
 
             <EditText
@@ -294,7 +294,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="10dp"
                 android:paddingTop="5dp"
-                android:text="Št. enot"
+                android:text="@string/s51"
                 android:id="@+id/lbUnits" />
 
             <EditText

@@ -21,7 +21,7 @@
         android:paddingLeft="10dp"
         android:paddingTop="5dp"
         android:layout_marginBottom="0dp"
-        android:text="Vnešene pozicije na odpremi"
+        android:text="@string/s92"
         android:id="@+id/lbInfo"
         android:textColor="@color/rikoMain"
         android:textStyle="bold"
@@ -119,7 +119,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:paddingTop="4dp"
-            android:text="Količina"
+            android:text="@string/s40"
           />
 
         <EditText
@@ -205,7 +205,7 @@
             android:paddingTop="5dp">
 
             <Button
-                android:text="Nasled. - F1"
+                android:text="@string/s69"
                 android:drawableLeft="@drawable/next_white"
                 android:layout_weight="1"
                 android:textSize="20dp"
@@ -219,7 +219,7 @@
                 android:id="@+id/btNext" />
 
             <Button
-                android:text="Uredi - F2"
+                android:text="@string/s70"
                 android:drawableLeft="@drawable/fix_white"
                 android:layout_weight="1"
                 android:textSize="20dp"
@@ -243,7 +243,7 @@
             android:paddingTop="4dp">
 
             <Button
-                android:text="Kreiraj - F3"
+                android:text="@string/s86"
                 android:layout_weight="1"
                 android:textSize="20dp"
                 android:paddingLeft="10dp"
@@ -266,7 +266,7 @@
                 android:textColor="@color/white"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="4dp"
-                android:text="Zaklj. - F4"
+                android:text="@string/s87"
                 android:drawableLeft="@drawable/confirmation_white"
                 android:id="@+id/btFinish" />
 
@@ -291,7 +291,7 @@
                 android:textColor="@color/white"
                 android:layout_marginLeft="4dp"
                 android:layout_marginRight="2dp"
-                android:text="Izbriši - F5"
+                android:text="@string/s59"
                 android:drawableLeft="@drawable/delete_white"
                 android:id="@+id/btDelete" />
 

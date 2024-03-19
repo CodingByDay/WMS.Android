@@ -209,7 +209,7 @@
                 android:gravity="bottom"
                 android:paddingLeft="4dp"
                 android:paddingTop="4dp"
-                android:text="SSCC"
+                android:text="@string/s79"
                 android:id="@+id/textView1" />
 
             <EditText
@@ -253,7 +253,7 @@
                     android:textColor="@color/white"
                     android:layout_marginLeft="4dp"
                     android:layout_marginRight="2dp"
-                    android:text="Potrdi - F2"
+                    android:text="@string/s90"
                     android:drawableLeft="@drawable/confirmation_white"
                     android:id="@+id/btConfirm" />
 

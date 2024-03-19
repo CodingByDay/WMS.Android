@@ -156,13 +156,16 @@
 	<string name="s129">O. inventory - f5</string>
 	<string name="s130">Print inventory - f6</string>
 
-	<string name="s131">Choose</string>
-	
+	<string name="s131">Choose</string>	
 	<string name="s132">Confirmed</string>
-
 	<string name="s133">Confirmed</string>
-
 	<string name="s134">Print - f2</string>
 	<string name="s135">Print</string>
+	<string name="s136">Delete - F4</string>
+	<string name="s137">Delete</string>
+	
+	<string name="s138">Without</string>
+
+
 
 </resources>

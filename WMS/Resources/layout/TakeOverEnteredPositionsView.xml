@@ -226,7 +226,7 @@
 
             <Button
 
-                android:text="Nasled. - F1"
+                android:text="@string/s69"
                 android:drawableLeft="@drawable/next_white"
                 android:layout_weight="1"
                 android:textSize="20dp"
@@ -249,7 +249,7 @@
                 android:textColor="@color/white"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="4dp"
-                android:text="uredi - F2"
+                android:text="@string/s70"
                 android:drawableLeft="@drawable/fix_white"
                 android:id="@+id/btUpdate" />
 
@@ -274,7 +274,7 @@
                 android:textColor="@color/white"
                 android:layout_marginLeft="4dp"
                 android:layout_marginRight="2dp"
-                android:text="Kreiraj - F3"
+                android:text="@string/s86"
                 android:drawableLeft="@drawable/newitem_white"
                 android:id="@+id/button4" />
 
@@ -288,7 +288,7 @@
                 android:textColor="@color/white"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="4dp"
-                android:text="Zaklj. - F4"
+                android:text="@string/s87"
                 android:drawableLeft="@drawable/confirmation_white"
                 android:id="@+id/btFinish" />
 
@@ -312,7 +312,7 @@
                 android:textColor="@color/white"
                 android:layout_marginLeft="4dp"
                 android:layout_marginRight="2dp"
-                android:text="Izbriši - F5"
+                android:text="@string/s59"
                 android:drawableLeft="@drawable/delete_white"
                 android:id="@+id/btDelete" />
 

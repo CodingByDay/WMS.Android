@@ -146,7 +146,7 @@
             android:gravity="bottom"
             android:paddingLeft="4dp"
             android:paddingTop="4dp"
-            android:text="Količina"
+            android:text="@string/s40"
             android:id="@+id/tex1tView1" />
 
         <EditText

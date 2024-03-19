@@ -101,7 +101,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
-            android:text="Odprto"
+            android:text="@string/s40"
             android:layout_marginRight="28.0dp"
             android:id="@+id/serial" />
 
@@ -297,7 +297,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="10dp"
                 android:paddingTop="5dp"
-                android:text="Količina"
+                android:text="@string/s40"
                 android:id="@+id/lbQty" />
 
             <EditText
@@ -374,7 +374,7 @@
             android:paddingTop="4dp">
 
             <Button
-                android:text="zaključi "
+                android:text="@string/s117"
                 android:layout_weight="1"
                 android:textSize="20dp"
                 android:paddingLeft="10dp"

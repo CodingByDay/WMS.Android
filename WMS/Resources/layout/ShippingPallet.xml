@@ -78,7 +78,7 @@
         android:layout_marginRight="28.5dp" />
     <Button
         android:background="@color/rikoMain"
-        android:text="Potrdi - F2"
+        android:text="@string/s90"
         android:layout_width="match_parent"
         android:layout_height="70.0dp"
         android:drawableLeft="@drawable/confirmation_white"

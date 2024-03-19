@@ -221,7 +221,7 @@
                 android:textColor="@color/white"
                 android:layout_marginLeft="4dp"
                 android:layout_marginRight="2dp"
-                android:text="Nasled. - f1"
+                android:text="@string/s69"
                 android:drawableLeft="@drawable/next_white"
                 android:id="@+id/btNext"
             />
@@ -236,7 +236,7 @@
                 android:textColor="@color/white"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="4dp"
-                android:text="uredi - f2"
+                android:text="@string/s70"
                 android:drawableLeft="@drawable/shipped_white"
                 android:id="@+id/btFinish"
              />

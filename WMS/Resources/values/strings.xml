@@ -62,7 +62,7 @@
 	<string name="s48">SSCC koda</string>
 	<string name="s49">Serijska št.</string>
 	<string name="s50">Lokacija</string>
-	<string name="s51">Št. Enot</string>
+	<string name="s51">Št. enot</string>
 	<string name="s52">SERIJ. - F2</string>
 	<string name="s53">KREIRAJ - F3</string>
 	<string name="s54">ZAKLJ. - F4</string>
@@ -102,17 +102,10 @@
 	<string name="s88">Pregl. - f5</string>
 	<string name="s89">Izhod - F8</string>
 
-
-
-
-
-
-
 	<string name="s90">POTRDI - F2</string>
 	<string name="s91">Prevzem </string>
 	<string name="s92">Vnešene pozicije</string>
 	<string name="s93">Izhod - F8</string>
-	
 	
 	<string name="s94">F1</string>
 
@@ -189,6 +182,17 @@
 	<string name="s134">Tiskaj - f2</string>
 
 	<string name="s135">Tiskaj</string>
+
+	<string name="s136">Izbriši - F4</string>
+
+
+	<string name="s137">Izbriši</string>
+	
+	<string name="s138">Brez</string>
+
+
+
+
 
 
 

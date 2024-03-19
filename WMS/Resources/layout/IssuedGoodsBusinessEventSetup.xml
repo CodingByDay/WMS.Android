@@ -10,7 +10,7 @@
         layout="@layout/toolbar" />
     <TextView
         android:textStyle="bold"
-        android:text="Posl. dog."
+        android:text="@string/s63"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:layout_width="match_parent"
         android:layout_height="33.0dp"
@@ -100,12 +100,12 @@
                 android:textColor="@color/white"
                 android:layout_marginLeft="4dp"
                 android:layout_marginRight="2dp"
-                android:text="Potrdi - f2"
+                android:text="@string/s90"
                 android:drawableLeft="@drawable/confirmation_white"
                 android:id="@+id/btnOrder" />
 
             <Button
-                android:text="Brez - f3"
+                android:text="@string/s30"
                 android:drawableLeft="@drawable/order_white"
                 android:layout_weight="1"
                 android:textSize="20dp"

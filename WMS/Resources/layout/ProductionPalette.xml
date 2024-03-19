@@ -75,7 +75,7 @@
             android:gravity="bottom"
             android:paddingLeft="4dp"
             android:paddingTop="4dp"
-            android:text="SSCC" />
+            android:text="@string/s79" />
 
         <EditText
             android:textStyle="bold"
@@ -102,7 +102,7 @@
             android:gravity="bottom"
             android:paddingLeft="4dp"
             android:paddingTop="4dp"
-            android:text="Serijska " />
+            android:text="@string/s80" />
 
         <EditText
             android:textStyle="bold"
@@ -214,7 +214,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:paddingTop="1dp"
-            android:text="Količina"
+            android:text="@string/s40"
             android:layout_marginRight="28.0dp"
             android:id="@+id/Location" />
     </LinearLayout>

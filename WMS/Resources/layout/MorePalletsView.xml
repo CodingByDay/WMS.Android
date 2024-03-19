@@ -19,7 +19,7 @@
         android:paddingLeft="10dp"
         android:paddingTop="5dp"
         android:layout_weight="33"
-        android:text="SSCC "
+        android:text="@string/s79"
         android:layout_marginRight="28.0dp"
         android:id="@id/sscc" />
 

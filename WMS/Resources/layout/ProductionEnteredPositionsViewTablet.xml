@@ -64,7 +64,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
-            android:text="Količina"
+            android:text="@string/s40"
             android:layout_width="match_parent"
             android:layout_marginRight="28.0dp"
             android:id="@+id/name" />
@@ -100,7 +100,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
-            android:text="SSCC"
+            android:text="@string/s79"
             android:layout_marginRight="28.0dp"
             android:id="@+id/sscc" />
 
@@ -197,7 +197,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="10dp"
                 android:paddingTop="5dp"
-                android:text="Količina" />
+                android:text="@string/s40" />
 
             <EditText
                 android:textStyle="bold"
@@ -349,7 +349,7 @@
             android:paddingTop="4dp">
 
             <Button
-                android:text="Kreiraj "
+                android:text="@string/s116"
                 android:layout_weight="1"
                 android:textSize="20dp"
                 android:paddingLeft="10dp"
@@ -363,7 +363,7 @@
                 android:id="@+id/button4" />
 
             <Button
-                android:text="Zaključi "
+                android:text="@string/s117"
                 android:drawableLeft="@drawable/confirmation_white"
                 android:layout_weight="1"
                 android:textSize="20dp"

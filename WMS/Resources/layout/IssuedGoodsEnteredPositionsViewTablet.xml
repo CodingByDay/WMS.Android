@@ -79,7 +79,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
-            android:text="Količina"
+            android:text="@string/s40"
             android:layout_width="match_parent"
             android:layout_marginRight="28.0dp"
             android:id="@+id/quantity" />
@@ -91,7 +91,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
-            android:text="Pozicija"
+            android:text="@string/s106"
             android:layout_width="match_parent"
             android:layout_marginRight="28.0dp"
             android:id="@+id/position" />
@@ -118,7 +118,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
-            android:text="SSCC"
+            android:text="@string/s79"
             android:layout_marginRight="28.0dp"
             android:id="@+id/sscc" />
 
@@ -147,7 +147,7 @@
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
             android:textColor="@color/rikoMain"
-            android:text="Vnešene pozicije na odpremi"
+            android:text="@string/s92"
             android:id="@+id/lbInfo" />
         <LinearLayout
             android:textSize="18dp"
@@ -255,7 +255,7 @@
                 android:singleLine="true"
                 android:layout_width="110.0dp"
                 android:layout_height="wrap_content"
-                android:text="Količina"
+                android:text="@string/s40"
                 android:paddingTop="5dp"
                 android:paddingLeft="10dp"/>
 
@@ -387,7 +387,7 @@
             android:layout_marginLeft="2dp">
 
             <Button
-                android:text="Kreiraj "
+                android:text="@string/s116"
                 android:layout_weight="1"
                 android:textSize="20dp"
                 android:paddingLeft="10dp"
@@ -401,7 +401,7 @@
                 android:id="@+id/btNew" />
 
             <Button
-                android:text="Zaključi "
+                android:text="@string/s117"
                 android:drawableLeft="@drawable/confirmation_white"
                 android:layout_weight="1"
                 android:textSize="20dp"

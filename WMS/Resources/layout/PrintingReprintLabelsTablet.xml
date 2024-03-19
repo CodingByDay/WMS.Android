@@ -320,7 +320,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="10dp"
                 android:paddingTop="5dp"
-                android:text="Količina"
+                android:text="@string/s40"
              />
 
             <EditText

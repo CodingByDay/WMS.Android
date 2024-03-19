@@ -111,7 +111,7 @@
 
        <TextView
         android:textStyle="bold"
-        android:text="Posl. dog."
+        android:text="@string/s63"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:layout_width="match_parent"
         android:layout_height="33.0dp"
@@ -140,7 +140,7 @@
         android:id="@+id/cbWarehouse" />
     <TextView
         android:textStyle="bold"
-        android:text="Naročnik"
+        android:text="@string/s101"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

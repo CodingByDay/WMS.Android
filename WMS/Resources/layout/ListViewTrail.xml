@@ -41,7 +41,7 @@
             android:layout_height="wrap_content"
             android:singleLine="true"
             android:paddingTop="5dp"
-            android:text="Količina"
+            android:text="@string/s40"
             android:id="@+id/Qty" />
 
         <TextView

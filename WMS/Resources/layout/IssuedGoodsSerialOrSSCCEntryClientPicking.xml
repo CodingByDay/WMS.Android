@@ -54,7 +54,7 @@
             android:textStyle="bold"
             android:layout_width="100dp"
             android:layout_height="match_parent"
-            android:text="SSCC "
+            android:text="@string/s79"
             android:paddingTop="5dp"
             android:paddingLeft="4dp"
             android:id="@+id/textView1"
@@ -88,7 +88,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="4dp"
             android:paddingTop="5dp"
-            android:text="Serijska "
+            android:text="@string/s80"
         />
 
         <EditText
@@ -145,7 +145,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="4dp"
             android:paddingTop="5dp"
-            android:text="Količina"
+            android:text="@string/s40"
             android:id="@+id/lbQty" />
 
         <EditText
@@ -179,7 +179,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="4dp"
             android:paddingTop="5dp"
-            android:text="Št. enot"
+            android:text="@string/s51"
             android:id="@+id/lbUnits" />
 
         <EditText
@@ -267,7 +267,7 @@
                 android:textColor="@color/white"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="4dp"
-                android:text="Kreiraj - f3"
+                android:text="@string/s86"
                 android:drawableLeft="@drawable/newitem_white"
                 android:id="@+id/btCreate"
                 />
@@ -293,7 +293,7 @@
                 android:textColor="@color/white"
                 android:layout_marginLeft="4dp"
                 android:layout_marginRight="2dp"
-                android:text="Zaklj. - f4"
+                android:text="@string/s87"
                 android:drawableLeft="@drawable/shipped_white"
                 android:id="@+id/btFinish" />
 

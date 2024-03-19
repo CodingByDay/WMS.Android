@@ -197,7 +197,7 @@
             android:paddingTop="5dp"
             android:id="@+id/lbPacking"
             android:gravity="bottom"
-            android:text="Količina"
+            android:text="@string/s40"
              />
 
         <EditText
@@ -224,7 +224,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="4dp"
             android:paddingTop="5dp"
-            android:text="Št. enot"
+            android:text="@string/s51"
             android:id="@+id/lbUnits" />
 
         <EditText
@@ -306,7 +306,7 @@
             android:layout_marginBottom="3dp">
 
             <Button
-                android:text="Briši - F4"
+                android:text="@string/s136"
                 android:drawableLeft="@drawable/delete_white"
                 android:id="@+id/btDelete"
                 android:layout_weight="1"

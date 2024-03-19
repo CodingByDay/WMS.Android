@@ -56,8 +56,6 @@
     <None Remove="Resources\layout\InventoryPrintTablet.xml" />
     <None Remove="Resources\layout\InventoryProcess.xml" />
     <None Remove="Resources\layout\InventoryProcessTablet.xml" />
-    <None Remove="Resources\layout\IssuedEnteredPositionsViewList.xml" />
-    <None Remove="Resources\layout\IssuedEnteredPositionViewList.xml" />
     <None Remove="Resources\layout\IssuedGoodsBusinessEventSetup.xml" />
     <None Remove="Resources\layout\IssuedGoodsBusinessEventSetupClientPicking.xml" />
     <None Remove="Resources\layout\IssuedGoodsBusinessEventSetupClientPickingTablet.xml" />
