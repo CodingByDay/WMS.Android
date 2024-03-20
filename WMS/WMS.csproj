@@ -157,7 +157,6 @@
     <None Remove="Resources\layout\UnfinishedTakeoversViewTablet.xml" />
     <None Remove="Resources\layout\update.xml" />
     <None Remove="Resources\layout\ViewLocation.xml" />
-    <None Remove="Resources\layout\WaitForm.xml" />
     <None Remove="Resources\layout\WarehousePicture.xml" />
     <None Remove="Resources\layout\WrappingPallet.xml" />
     <None Remove="Resources\layout\WrappingPalletTablet.xml" />

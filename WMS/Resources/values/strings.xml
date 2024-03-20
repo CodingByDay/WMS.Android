@@ -319,7 +319,7 @@
 	<string name="s204">Datum</string>
 
 
-	<string name="s205">Odprte odpreme</string>
+	<string name="s205">Odprte odpreme</string>Ok
 
 
 
@@ -327,6 +327,12 @@
 	<string name="s206">Delovni nalog</string>
 
 	<string name="s207">Nova posodobitev</string>
+	
+	<string name="s208">Ali želite odstraniti karton?</string>
+	<string name="s209">Ali ste sigurni da želite pobrisati pozicijo?</string>
+	<string name="s210">Izpisanih je bilo zadostno št etiket. Želite zamenjati serijsko št.?</string>
+
+
 
 
 

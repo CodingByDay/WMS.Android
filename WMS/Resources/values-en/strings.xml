@@ -286,6 +286,14 @@
 	<string name="s206">Delovni nalog</string>
 
 	<string name="s207">New update</string>
+	
+	<string name="s208">Do you want to delete the card?</string>
+
+	<string name="s209">Are you sure you want to delete the position?</string>
+	
+	
+	<string name="s210">Enough codes were created. Do you want to replace the serial number?</string>
+
 
 
 </resources>
