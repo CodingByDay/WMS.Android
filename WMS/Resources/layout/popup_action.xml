@@ -4,7 +4,7 @@ xmlns:android="http://schemas.android.com/apk/res/android"
 xmlns:app="http://schemas.android.com/apk/res-auto">
 	<item
 	android:id="@+id/action_setting1"
-	android:title="Nastavitve"
+	android:title="@string/s168"
 	showAsAction="always"
 
 	/>

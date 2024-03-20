@@ -104,14 +104,7 @@
         android:id="@+id/app"
         tools:context=".LinearLayout"
         android:foregroundGravity="center">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:textColor="@color/rikoMain"
-            android:paddingLeft="10dp"
-            android:paddingTop="5dp"
-            android:text="Tiskanje etiket - ponovno tiskanje" />
+
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -347,7 +340,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="10dp"
                 android:paddingTop="5dp"
-                android:text="Št. kopija"
+                android:text="@string/s171"
             />
 
             <EditText

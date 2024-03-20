@@ -132,7 +132,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="10dp"
                 android:paddingTop="5dp"
-                android:text="DN" />
+                android:text="@string/s173" />
 
             <EditText
                 android:textStyle="bold"
@@ -247,7 +247,7 @@
                 android:paddingLeft="10dp"
                 android:textStyle="bold"
                 android:paddingTop="5dp"
-                android:text="Karton" />
+                android:text="@string/s175" />
 
             <EditText
                 android:textStyle="bold"
@@ -277,7 +277,7 @@
                 android:paddingLeft="10dp"
                 android:textStyle="bold"
                 android:paddingTop="5dp"
-                android:text="Noga" />
+                android:text="@string/s176" />
 
             <EditText
                 android:textStyle="bold"
@@ -324,7 +324,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="10dp"
                 android:paddingTop="5dp"
-                android:text="Št. kartona"
+                android:text="@string/s47"
                 android:layout_marginRight="28.0dp"
                 android:id="@+id/Ident" />
 
@@ -336,7 +336,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="10dp"
                 android:paddingTop="5dp"
-                android:text="@string/s40"
+                android:text="@string/s50"
                 android:layout_marginRight="28.0dp"
                 android:id="@+id/Location" />
         </LinearLayout>
@@ -362,7 +362,7 @@
             android:paddingTop="5dp">
 
             <Button
-                android:text="potrdi "
+                android:text="@string/s174"
                 android:layout_weight="1"
                 android:textSize="20dp"
                 android:paddingLeft="10dp"

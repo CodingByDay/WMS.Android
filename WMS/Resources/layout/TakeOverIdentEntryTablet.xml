@@ -93,7 +93,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
-            android:text="Prejeto"
+            android:text="@string/s181"
             android:layout_marginRight="28.0dp"
             android:id="@+id/open" />
 
@@ -109,17 +109,7 @@
         tools:context=".LinearLayout"
         android:foregroundGravity="center">
 
-        <TextView
-            android:textSize="18dp"
-            android:textStyle="bold"
-            android:singleLine="true"
-            android:layout_width="wrap_content"
-            android:layout_height="27.0dp"
-            android:textColor="@color/rikoMain"
-            android:layout_gravity="center"
-            android:paddingLeft="10dp"
-            android:paddingTop="5dp"
-            android:text="Prevzem od dobavitelja" />
+   
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -248,7 +238,7 @@
                 android:textStyle="bold"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:text="Dobavitelj"
+                android:text="@string/s15"
                 android:paddingTop="5dp"
                 android:paddingLeft="10dp"/>
 

@@ -190,7 +190,7 @@
         android:paddingTop="5dp">
 
         <TextView
-            android:text="Št. kopij"
+            android:text="@string/s171"
             android:textStyle="bold"
             android:layout_width="100dp"
             android:layout_height="match_parent"
@@ -291,7 +291,7 @@
                 android:textColor="@color/white"
                 android:layout_marginLeft="4dp"
                 android:layout_marginRight="2dp"
-                android:text="Tiskaj - f3"
+                android:text="@string/s172"
                 android:drawableLeft="@drawable/printer_white"
                 android:id="@id/btPrint" />
 

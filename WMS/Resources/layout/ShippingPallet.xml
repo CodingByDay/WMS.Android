@@ -48,7 +48,7 @@
         android:paddingTop="5dp">
 
         <TextView
-            android:text="Stroj"
+            android:text="@string/s189"
             android:textStyle="bold"
             android:layout_width="100dp"
             android:layout_height="match_parent"

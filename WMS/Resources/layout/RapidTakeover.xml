@@ -44,7 +44,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
-            android:text="Serij. štev."
+            android:text="@string/s35"
             android:layout_width="match_parent"
             android:layout_marginRight="28.0dp"
             android:id="@+id/name" />
@@ -56,7 +56,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
-            android:text="@string/s50"
+            android:text="@string/s40"
             android:layout_width="match_parent"
             android:layout_marginRight="28.0dp"
             android:id="@+id/quantity" />
@@ -67,7 +67,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
-            android:text="Količina na lokaciji"
+            android:text="@string/s106"
             android:layout_width="match_parent"
             android:layout_marginRight="28.0dp"
             android:id="@+id/position" />
@@ -80,9 +80,9 @@
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
-            android:text="Zasedenost(%)"
+            android:text="@string/s180"
             android:layout_marginRight="28.0dp"
-            android:id="@+id/serial" />
+            android:id="@+id/full" />
 
     </LinearLayout>
 
@@ -156,7 +156,7 @@
         android:layout_gravity="center"
         android:paddingLeft="10dp"
         android:paddingTop="5dp"
-        android:text="Hitri prevzem." />
+        android:text="@string/s146" />
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -202,7 +202,7 @@
                 android:singleLine="true"
                 android:layout_width="97.5dp"
                 android:layout_height="wrap_content"
-                android:text="SCCC"
+                android:text="@string/s79"
                 android:paddingTop="5dp"
                 android:paddingLeft="10dp"
                 android:id="@+id/textView1" />
@@ -264,7 +264,7 @@
                 android:singleLine="true"
                 android:layout_width="97.5dp"
                 android:layout_height="wrap_content"
-                android:text="Zaloga"
+                android:text="@string/s155"
                 android:paddingTop="5dp"
                 android:paddingLeft="10dp"
                 android:id="@+id/tbStock" />
@@ -327,7 +327,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="10dp"
                 android:paddingTop="5dp"
-                android:text="Prejeto" />
+                android:text="@string/s181" />
 
         <EditText
             android:textSize="16dp"

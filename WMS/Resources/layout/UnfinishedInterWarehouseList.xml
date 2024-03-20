@@ -19,7 +19,7 @@
             android:singleLine="true"
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
-            android:text="Dokument"
+            android:text="@string/s203"
             android:layout_marginRight="28.0dp"
             android:id="@+id/Document" />
 
@@ -45,7 +45,7 @@
             android:singleLine="true"
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
-            android:text="Datum"
+            android:text="@string/s204"
             android:layout_marginRight="28.0dp"
             android:id="@+id/Date" />
 
@@ -58,7 +58,7 @@
             android:textStyle="bold"
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
-            android:text="Št. pozicija"
+            android:text="@string/s106"
             android:layout_marginRight="28.0dp"
             android:id="@+id/NumberOfPositions" />
 

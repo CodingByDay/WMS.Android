@@ -201,7 +201,91 @@
 	<string name="s161">Open packaging</string>
 	
 	<string name="s162">Packaging no.</string>
+	
+	<string name="s163">Create - F2</string>
 
+	<string name="s164">Overview - F3</string>
+
+	<string name="s165">Ident - F1</string>
+	<string name="s166">Order - F2</string>
+	<string name="s167">Client - F3</string>
+
+
+	<string name="s168">Settings</string>
+
+
+	<string name="s169">AGAIN - F2</string>
+	<string name="s170">SSCC - F3</string>
+
+
+	<string name="s171">Copies</string>
+
+	<string name="s172">Print - f3</string>
+
+	
+	<string name="s173">WO</string>
+
+	<string name="s174">Confirm</string>
+	
+	<string name="s175">Card</string>
+	
+	<string name="s176">Leg code</string>
+
+	<string name="s177">Open quantity</string>
+
+	<string name="s178">Card - f2</string>
+	
+	<string name="s179">Pallets - f4</string>
+
+	<string name="s180">Full(%)</string>
+
+
+	<string name="s181">Received</string>
+
+	<string name="s182">Calculate - F2</string>
+	<string name="s183">Calculate</string>
+
+
+	<string name="s184">Too much innactivity. Application will close.</string>
+
+	<string name="s185">AR glasses</string>
+	
+	<string name="s186">API</string>
+	<string name="s187">Device</string>
+
+	<string name="s188">Type</string>
+
+	<string name="s189">Machine</string>
+
+	<string name="s190">Order</string>
+
+	<string name="s191">SSCC code - f4"</string>
+
+	<string name="s192">SSCC code"</string>
+
+	<string name="s193">Client</string>
+	
+	<string name="s194">Date delivery</string>
+	<string name="s195">Quantity issued /</string>
+	<string name="s196">Previous. - f3</string>
+	<string name="s197">Tape - f4</string>
+	<string name="s198">Print - f5</string>
+	<string name="s199">New ident - f6</string>
+
+
+	<string name="s200">Card is already on the other pallet. Move?</string>
+
+	<string name="s201">Yes</string>
+	<string name="s202">No</string>
+
+	<string name="s203">Document</string>
+	<string name="s204">Date</string>
+	
+	<string name="s205">Open issue document</string>
+
+	<string name="s206">Delovni nalog</string>
+
+	<string name="s207">New update</string>
 
 
 </resources>

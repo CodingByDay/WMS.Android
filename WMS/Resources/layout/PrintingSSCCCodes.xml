@@ -12,17 +12,7 @@
      <include
         android:id="@+id/toolbar"
         layout="@layout/toolbar" />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:paddingLeft="10dp"
-        android:paddingTop="5dp"
-        android:textColor="@color/rikoMain"
-        android:textStyle="bold"
-        android:layout_marginTop="15dp"
-        android:layout_marginBottom="10dp"
-        android:text="Tiskanje etiket - SSCC kode" />
+
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -31,23 +21,23 @@
 
         <TextView
            android:textStyle="bold"
-android:layout_width="100dp"
-android:layout_height="match_parent"
-android:gravity="bottom"
-android:paddingLeft="4dp"
-android:paddingTop="4dp"
-            android:text="Št. nalepk"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:gravity="bottom"
+            android:paddingLeft="4dp"
+            android:paddingTop="4dp"
+            android:text="@string/s171"
            />
 
         <EditText
         android:textStyle="bold"
-  android:singleLine="true"
-  android:layout_width="match_parent"
-  android:layout_height="wrap_content"
-  android:layout_weight="0.50"
-  android:paddingTop="5dp"
-  android:background="@drawable/editText_bg_grey"
-  android:layout_marginRight="2dp"
+              android:singleLine="true"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_weight="0.50"
+              android:paddingTop="5dp"
+              android:background="@drawable/editText_bg_grey"
+              android:layout_marginRight="2dp"
             android:id="@+id/tbNum" />
 
     </LinearLayout>
@@ -85,7 +75,7 @@ android:background="@color/rikoMain"
 android:textColor="@color/white"
 android:layout_marginLeft="4dp"
 android:layout_marginRight="2dp"
-            android:text="Tiskaj - f3"
+            android:text="@string/s172"
             android:drawableLeft="@drawable/printer_white"
 
             android:id="@+id/button1" />

@@ -165,7 +165,7 @@
             android:id="@+id/tbPacking" />
 
         <Button
-            android:text="-(F1)"
+            android:text="@string/s94"
             android:layout_width="74.0dp"
             android:layout_height="33dp"
             android:id="@+id/button1"

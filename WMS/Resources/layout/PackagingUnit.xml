@@ -12,18 +12,7 @@
     <include
         android:id="@+id/toolbar"
         layout="@layout/toolbar" />
-    <TextView
-        android:singleLine="true"
-        android:textStyle="bold"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:paddingLeft="10dp"
-        android:paddingTop="5dp"
-        android:text="Pakiranje"
-        android:layout_marginTop="15dp"
-        android:layout_marginBottom="10dp"
-        android:textColor="@color/rikoMain"/>
+  
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -36,7 +25,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="4dp"
             android:paddingTop="4dp"
-            android:text="Ident:"
+            android:text="@string/s47"
   />
 
         <EditText
@@ -65,7 +54,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="4dp"
             android:paddingTop="4dp"
-            android:text="Naziv:"
+            android:text="@string/s35"
             android:id="@+id/textView1"
      />
 
@@ -93,7 +82,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="4dp"
             android:paddingTop="4dp"
-            android:text="Lokacija:"
+            android:text="@string/s50"
  />
 
         <EditText
@@ -144,7 +133,7 @@
                                      >
 
         <TextView
-            android:text="Serijska št.:"
+            android:text="@string/s49"
             android:textStyle="bold"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
@@ -191,7 +180,7 @@
             android:id="@+id/tbQty" />
 
         <Button
-            android:text="-(F1)"
+            android:text="@string/s94"
             android:layout_width="74.0dp"
             android:layout_height="33dp"
             android:layout_marginTop="-5dp"
@@ -237,12 +226,12 @@
                 android:textColor="@color/white"
                 android:layout_marginLeft="4dp"
                 android:layout_marginRight="2dp"
-                android:text="Kreir. - f2"
+                android:text="@string/s163"
                 android:drawableLeft="@drawable/newitem_white"
                 android:id="@+id/btNew" />
 
             <Button
-                android:text="Pregl. - f3"
+                android:text="@string/s164"
                 android:drawableLeft="@drawable/focus_white"
                 android:id="@+id/btList"
                 android:layout_weight="1"

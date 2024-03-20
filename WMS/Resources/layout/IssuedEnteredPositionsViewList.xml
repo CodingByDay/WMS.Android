@@ -65,7 +65,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
-            android:text="Prejeto"
+            android:text="@string/s181"
             android:layout_marginRight="28.0dp"
             android:id="@+id/SerialNumber" />
 
@@ -77,7 +77,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
-            android:text="Prejeto"
+            android:text="@string/s181"
             android:layout_marginRight="28.0dp"
             android:id="@+id/SSCC" />
 

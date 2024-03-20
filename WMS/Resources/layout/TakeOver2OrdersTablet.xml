@@ -201,7 +201,7 @@
                 android:textSize="18dp"
                 android:layout_width="175dp"
                 android:layout_height="wrap_content"
-                android:text="Količina prevzema"
+                android:text="@string/s83"
                 android:paddingTop="5dp"
                 android:paddingLeft="10dp"
                 android:id="@+id/textView31"
@@ -263,7 +263,7 @@
                 android:textSize="18dp"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:text="Kupec"
+                android:text="@string/s193"
                 android:paddingTop="5dp"
                 android:paddingLeft="10dp"
                 android:id="@+id/textView12"
@@ -294,7 +294,7 @@
                 android:textSize="18dp"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
-                android:text="Datum dostave"
+                android:text="@string/s194"
                 android:paddingTop="5dp"
                 android:paddingLeft="10dp"
                 android:id="@+id/textView13"
@@ -323,7 +323,7 @@
             <TextView
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:text="Kol. odp. /"
+                android:text="@string/s195"
                 android:paddingTop="5dp"
                 android:textStyle="bold"
                 android:textSize="18dp"
@@ -394,7 +394,7 @@
                 android:id="@+id/button1" />
 
             <Button
-                android:text="prejšn."
+                android:text="@string/s196"
                 android:drawableLeft="@drawable/left_white"
                 android:layout_weight="1"
                 android:textSize="20dp"
@@ -418,7 +418,7 @@
             android:layout_marginLeft="2dp">
 
             <Button
-                android:text="natisni "
+                android:text="@string/s197"
                 android:layout_weight="1"
                 android:textSize="20dp"
                 android:paddingLeft="10dp"
@@ -432,7 +432,7 @@
                 android:id="@+id/button3" />
 
             <Button
-                android:text="tiskaj "
+                android:text="@string/s198"
                 android:drawableLeft="@drawable/printer_white"
                 android:layout_weight="1"
                 android:textSize="20dp"
@@ -456,7 +456,7 @@
             android:layout_marginBottom="4dp">
 
             <Button
-                android:text="n. ident"
+                android:text="@string/s199"
                 android:layout_weight="1"
                 android:textSize="20dp"
                 android:paddingLeft="10dp"

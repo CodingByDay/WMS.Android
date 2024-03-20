@@ -173,7 +173,7 @@
                 android:textColor="@color/white"
                 android:layout_marginLeft="4dp"
                 android:layout_marginRight="2dp"
-                android:text="Naroč. - f2"
+                android:text="@string/s190"
                 android:drawableLeft="@drawable/newitem_white"
                 android:id="@+id/button1"
                 />
@@ -188,7 +188,7 @@
                 android:textColor="@color/white"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="4dp"
-                android:text="Potrdi-f3"
+                android:text="@string/s76"
                 android:drawableLeft="@drawable/confirmation_white"
                 android:id="@+id/button2"
            />
@@ -213,7 +213,7 @@
                 android:textColor="@color/white"
                 android:layout_marginLeft="4dp"
                 android:layout_marginRight="2dp"
-                android:text="SS Etik.-f4"
+                android:text="@string/s191"
                 android:drawableLeft="@drawable/sticker_white"
                 android:id="@+id/button3" />
 

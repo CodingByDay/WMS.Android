@@ -76,7 +76,7 @@
             android:textColor="@color/white"
             android:layout_marginLeft="4dp"
             android:layout_marginRight="4dp"
-            android:text="Izračunaj - F2"
+            android:text="@string/s183"
             android:drawableLeft="@drawable/confirmation_white"
             android:id="@+id/btCalculate"
              />

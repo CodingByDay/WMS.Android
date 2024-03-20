@@ -95,7 +95,6 @@
     <None Remove="Resources\layout\PickingMenuTablet.xml" />
     <None Remove="Resources\layout\popup_action.xml" />
     <None Remove="Resources\layout\PrintingMenu.xml" />
-    <None Remove="Resources\layout\PrintingMenu1.xml" />
     <None Remove="Resources\layout\PrintingReprintLabels.xml" />
     <None Remove="Resources\layout\PrintingReprintLabelsTablet.xml" />
     <None Remove="Resources\layout\PrintingSSCCCodes.xml" />
@@ -117,7 +116,6 @@
     <None Remove="Resources\layout\RapidTakeoverPhone.xml" />
     <None Remove="Resources\layout\RecalculateInventory.xml" />
     <None Remove="Resources\layout\RecalculateInventoryTablet.xml" />
-    <None Remove="Resources\layout\ReceiverLayout.xml" />
     <None Remove="Resources\layout\restart.xml" />
     <None Remove="Resources\layout\SelectSubjectBeforeFinish.xml" />
     <None Remove="Resources\layout\SelectSubjectBeforeFinishTablet.xml" />
@@ -142,7 +140,6 @@
     <None Remove="Resources\layout\TakeOverSerialOrSSCCEntryTablet.xml" />
     <None Remove="Resources\layout\TakeOverSerialOrSSCCEntryView.xml" />
     <None Remove="Resources\layout\TakeOverSerialOrSSCCListView.xml" />
-    <None Remove="Resources\layout\test.xml" />
     <None Remove="Resources\layout\Toolbar.xml" />
     <None Remove="Resources\layout\TransportPopup.xml" />
     <None Remove="Resources\layout\UnfinishedInterWarehouseList.xml" />

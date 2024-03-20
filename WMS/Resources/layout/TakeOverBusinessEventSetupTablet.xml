@@ -113,7 +113,7 @@
         <TextView
             android:textSize="18dp"
             android:textStyle="bold"
-            android:text="Posl dog"
+            android:text="@string/s73"
             android:paddingLeft="10dp"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:layout_width="match_parent"
@@ -215,7 +215,7 @@
                 android:id="@+id/btnOrder" />
 
             <Button
-                android:text="Brez "
+                android:text="@string/s138"
                 android:drawableLeft="@drawable/newitem_white"
                 android:id="@+id/btnOrderMode"
                 android:layout_weight="1"

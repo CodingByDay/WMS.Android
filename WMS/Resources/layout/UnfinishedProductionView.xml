@@ -22,7 +22,7 @@
         android:paddingTop="5dp"
         android:paddingBottom="5dp"
         android:textColor="@color/rikoMain"
-        android:text="Odprti prevzemi na čitalcu"
+        android:text="@string/s12"
         android:id="@+id/lbInfo" />
     <LinearLayout
         android:layout_width="fill_parent"
@@ -37,7 +37,7 @@
             android:gravity="bottom"
             android:paddingLeft="4dp"
             android:paddingTop="4dp"
-            android:text="DN" />
+            android:text="@string/s173" />
 
         <EditText
             android:textStyle="bold"
@@ -124,7 +124,10 @@
             android:gravity="bottom"
             android:paddingLeft="4dp"
             android:paddingTop="4dp"
-            android:text="Št. pozicij "/>
+            android:text="@string/s66"
+            
+            
+            />
 
         <EditText
             android:textStyle="bold"
@@ -179,7 +182,7 @@
             android:gravity="bottom"
             android:paddingLeft="4dp"
             android:paddingTop="4dp"
-            android:text="Datum"/>
+            android:text="@string/s204"/>
 
         <EditText
             android:textStyle="bold"
@@ -252,7 +255,7 @@
             android:paddingTop="4dp">
 
             <Button
-                android:text="Izbriši - f3"
+                android:text="@string/s21"
                 android:layout_weight="1"
                 android:textSize="20dp"
                 android:paddingLeft="10dp"
@@ -266,7 +269,7 @@
                 android:id="@+id/btDelete" />
 
             <Button
-                android:text="Kreiraj - f4"
+                android:text="@string/s22"
                 android:drawableLeft="@drawable/newitem_white"
                 android:id="@+id/btNew"
                 android:layout_weight="1"

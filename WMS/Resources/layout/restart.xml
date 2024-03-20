@@ -28,9 +28,8 @@
         android:layout_gravity="center"
         android:paddingLeft="10dp"
         android:paddingTop="5dp"
-                android:textColor="@android:color/darker_gray"
-
-        android:text="Preveč neaktivnosti. Aplikacija se bo zaprla."
+        android:textColor="@android:color/darker_gray"
+        android:text="@string/184"
         android:layout_marginTop="0.0dp"
         android:textStyle="bold|italic"
         android:textSize="18dp" />
@@ -45,7 +44,7 @@
             android:layout_weight="1"
             android:background="@android:color/darker_gray"
             android:textColor="@color/rikoMain"
-            android:text="Ok"
+            android:text="@string/s46"
             android:layout_width="match_parent"
             android:layout_height="81.5dp"
             android:id="@+id/btnOk"

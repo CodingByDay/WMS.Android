@@ -36,7 +36,7 @@
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
             android:paddingTop="8dp"
-            android:text="Ident - F1"
+            android:text="@string/s165"            
             android:layout_marginBottom="5dp"
             android:background="@color/rikoMain"
             android:textColor="#ffffff"
@@ -61,7 +61,7 @@
             android:paddingTop="8dp"
             android:background="@color/rikoMain"
             android:textColor="#ffffff"
-            android:text="Naročilo - F2"
+            android:text="@string/s166"
             android:layout_marginBottom="5dp"
             android:id="@+id/order" />
 
@@ -84,7 +84,7 @@
             android:textColor="#ffffff"
             android:paddingRight="20dp"
             android:paddingTop="8dp"
-            android:text="Stranka - F3"
+            android:text="@string/s167"
             android:layout_marginBottom="5dp"
             android:id="@+id/client" />
 

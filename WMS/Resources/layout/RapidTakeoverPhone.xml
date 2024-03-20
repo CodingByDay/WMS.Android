@@ -118,7 +118,7 @@
                 android:gravity="bottom"
                 android:paddingLeft="4dp"
                 android:paddingTop="4dp"
-                android:text="Zaloga"
+                android:text="@string/s155"
                 android:id="@+id/tbStock" />
 
             <EditText
@@ -181,7 +181,7 @@
                 android:gravity="bottom"
                 android:paddingLeft="4dp"
                 android:paddingTop="4dp"
-                android:text="Prej. Lokacija" />
+                android:text="@string/s181" />
 
             <EditText
                 android:textStyle="bold"

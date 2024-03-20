@@ -22,7 +22,7 @@
         android:paddingTop="5dp"
         android:paddingBottom="5dp"
         android:textColor="@color/rikoMain"
-        android:text="Odprte odpreme na čitalcu"
+        android:text="@string/s205"
         android:id="@+id/lbInfo" />
     <LinearLayout
         android:layout_width="fill_parent"
@@ -37,7 +37,7 @@
             android:gravity="bottom"
             android:paddingLeft="4dp"
             android:paddingTop="4dp"
-            android:text="Posl. dog. odpr."
+            android:text="@string/s63"
              />
 
         <EditText
@@ -126,7 +126,7 @@
             android:gravity="bottom"
             android:paddingLeft="4dp"
             android:paddingTop="4dp"
-            android:text="Št. pozicij" />
+            android:text="@string/s106" />
 
         <EditText
             android:textStyle="bold"
@@ -274,7 +274,7 @@
                 android:textColor="@color/white"
                 android:layout_marginLeft="4dp"
                 android:layout_marginRight="2dp"
-                android:text="Izbriši - f3"
+                android:text="@string/s21"
                 android:drawableLeft="@drawable/delete_white"
                 android:id="@+id/btDelete" />
 

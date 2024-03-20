@@ -88,7 +88,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
-            android:text="Prejeto"
+            android:text="@string/s106"
             android:layout_width="match_parent"
             android:layout_marginRight="28.0dp"
             android:id="@+id/position" />
@@ -101,7 +101,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
-            android:text="@string/s40"
+            android:text="@string/s49"
             android:layout_marginRight="28.0dp"
             android:id="@+id/serial" />
 
@@ -127,7 +127,7 @@
             android:textColor="@color/rikoMain"
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
-            android:text="Pakiranje" />
+            android:text="@string/s152" />
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -172,7 +172,7 @@
                 android:singleLine="true"
                 android:layout_width="120dp"
                 android:layout_height="wrap_content"
-                android:text="Naziv:"
+                android:text="@string/s35"
                 android:paddingTop="5dp"
                 android:paddingLeft="10dp"
                 android:id="@+id/textView1"
@@ -205,7 +205,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="10dp"
                 android:paddingTop="5dp"
-                android:text="Lokacija:"
+                android:text="@string/s50"
           />
 
             <EditText
@@ -265,7 +265,7 @@
                 android:textStyle="bold"
                 android:layout_width="120dp"
                 android:layout_height="wrap_content"
-                android:text="Serijska št.:"
+                android:text="@string/s49"
                 android:paddingTop="5dp"
                 android:paddingLeft="10dp"
             />
@@ -313,7 +313,7 @@
                 android:id="@+id/tbQty" />
 
             <Button
-                android:text="-(F1)"
+                android:text="@string/s94"
                 android:layout_width="74.0dp"
                 android:layout_height="33dp"
                 android:layout_marginTop="-5dp"

@@ -12,16 +12,7 @@
         <include
         android:id="@+id/toolbar"
         layout="@layout/toolbar" />
-    <TextView
-        android:textStyle="bold"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:paddingLeft="10dp"
-        android:paddingTop="15dp"
-        android:layout_marginBottom="10dp"
-        android:text="Prevzem iz proizvodnje"
-        android:textColor="@color/rikoMain"/>
+
     <LinearLayout
         android:textStyle="bold"
         android:singleLine="true"
@@ -37,7 +28,7 @@
             android:gravity="bottom"
             android:paddingLeft="4dp"
             android:paddingTop="4dp"
-            android:text="DN"
+            android:text="@string/s173"
          />
 
         <EditText
@@ -68,7 +59,7 @@
             android:gravity="bottom"
             android:paddingLeft="4dp"
             android:paddingTop="4dp"
-            android:text="Odprta kol."
+            android:text="@string/s177"
             android:id="@+id/textView1"
          />
 
@@ -201,7 +192,7 @@
                 android:textColor="@color/white"
                 android:layout_marginLeft="4dp"
                 android:layout_marginRight="2dp"
-                android:text="Karton - f2"
+                android:text="@string/s178"
                 android:drawableLeft="@drawable/card_white"
                 android:id="@+id/btCard"
             />
@@ -241,7 +232,7 @@
                 android:textColor="@color/white"
                 android:layout_marginLeft="4dp"
                 android:layout_marginRight="2dp"
-                android:text="palete - f4"
+                android:text="@string/s179"
                 android:drawableLeft="@drawable/wholesale_white"
                 android:id="@+id/btPalette" />
 

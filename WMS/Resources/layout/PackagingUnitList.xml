@@ -20,7 +20,7 @@
         android:layout_gravity="center"
         android:paddingLeft="10dp"
         android:paddingTop="5dp"
-        android:text="Vnesene pozicije na pakiranju:"
+        android:text="@string/s92"
         android:id="@+id/lbInfo"
         android:textColor="@color/rikoMain"
 

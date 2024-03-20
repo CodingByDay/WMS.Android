@@ -20,7 +20,7 @@
         android:paddingLeft="10dp"
         android:paddingTop="5dp"
         android:layout_marginBottom="0dp"
-        android:text="Vnešene pozicije na prevzemu"
+        android:text="@string/s92"
         android:textColor="@color/rikoMain"
         android:id="@+id/lbInfo" />
     <LinearLayout

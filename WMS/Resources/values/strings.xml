@@ -101,7 +101,6 @@
 	<string name="s87">Zaklj. - f4</string>
 	<string name="s88">Pregl. - f5</string>
 	<string name="s89">Izhod - F8</string>
-
 	<string name="s90">POTRDI - F2</string>
 	<string name="s91">Prevzem </string>
 	<string name="s92">Vnešene pozicije</string>
@@ -212,15 +211,127 @@
 	<string name="s155">Zaloga</string>
 	<string name="s156">Palete</string>
 	<string name="s157">Preračun</string>
-
-
 	<string name="s158">Dostava palete</string>
 	<string name="s159">Zavijanje palete</string>
-
 	<string name="s160">Naziv</string>
-
 	<string name="s161">Odprta pakiranja</string>
 	<string name="s162">Št. pakiranja</string>
+	<string name="s163">Kreiraj - F2</string>
+	<string name="s164">Pregled - F3</string>
+	<string name="s165">Ident - F1</string>
+	<string name="s166">Naročilo - F2</string>
+	<string name="s167">Stranka - F3</string>
+	<string name="s168">Nastavitve</string>
+	<string name="s169">PON. - F2</string>
+	<string name="s170">SSCC - F3</string>
+	<string name="s171">Kopije</string>
+
+	<string name="s172">Tiskaj - f3</string>
+
+	<string name="s173">DN</string>
+	
+
+	<string name="s174">Potrdi</string>
+
+
+	<string name="s175">Karton</string>
+
+
+	<string name="s176">Noga palete</string>
+
+
+	<string name="s177">Odprta količina</string>
+
+
+	<string name="s178">Karton - f2</string>
+
+	<string name="s179">Palete - f4</string>
+
+
+	<string name="s180">Zasedenost(%)</string>
+
+
+	<string name="s181">Prejeto</string>
+
+
+
+	<string name="s182">Izračunaj - F2</string>
+
+	<string name="s183">Izračunaj</string>
+
+
+	<string name="s184">Preveč neaktivnosti. Aplikacija se bo zaprla.</string>
+
+	<string name="s185">AR očala</string>
+
+
+	<string name="s186">Vmesnik</string>
+	
+	
+	<string name="s187">Naprava</string>
+
+
+	<string name="s188">Tip</string>
+
+
+
+	<string name="s189">Stroj</string>
+	
+	
+	
+	
+	<string name="s190">Naroč.</string>
+
+
+
+	<string name="s191">SSCC koda - f4"</string>
+
+
+
+	<string name="s192">SSCC koda</string>
+
+
+	
+	
+	
+	<string name="s193">Kupec</string>
+
+
+
+	<string name="s194">Datum dostave</string>
+	<string name="s195">Kol. odp. /</string>
+	<string name="s196">prejšn. - f3</string>
+	<string name="s197">natisni - f4</string>
+	<string name="s198">tiskaj - f5</string>
+	<string name="s199">n. ident - f6</string>
+
+
+
+	<string name="s200">Karton je že razporejen na drugi paleti. Premestim?</string>
+	
+	
+	
+	<string name="s201">Da</string>
+	<string name="s202">Ne</string>
+
+
+	<string name="s203">Dokument</string>
+	<string name="s204">Datum</string>
+
+
+	<string name="s205">Odprte odpreme</string>
+
+
+
+
+	<string name="s206">Delovni nalog</string>
+
+	<string name="s207">Nova posodobitev</string>
+
+
+
+
+
 
 
 

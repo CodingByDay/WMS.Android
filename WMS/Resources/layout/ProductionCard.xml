@@ -28,7 +28,7 @@
             android:gravity="bottom"
             android:paddingLeft="4dp"
             android:paddingTop="4dp"
-            android:text="DN"
+            android:text="@string/s173"
           />
 
         <EditText
@@ -191,7 +191,7 @@
                 android:textColor="@color/white"
                 android:layout_marginLeft="4dp"
                 android:layout_marginRight="2dp"
-                android:text="potrdi - f4"
+                android:text="@string/s128"
                 android:drawableLeft="@drawable/confirmation_white"
                 android:id="@+id/btConfirm" />
 

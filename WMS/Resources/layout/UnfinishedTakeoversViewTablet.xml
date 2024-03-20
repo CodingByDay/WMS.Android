@@ -50,7 +50,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
-            android:text="Dokument"
+            android:text="@string/s203"
             android:textSize="18dp"
             android:layout_marginRight="28.0dp"
             android:id="@+id/document"
@@ -63,7 +63,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
-            android:text="Dobavitelj"
+            android:text="@string/s15"
             android:layout_width="match_parent"
             android:layout_marginRight="28.0dp"
             android:id="@+id/provider" />
@@ -76,7 +76,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
-            android:text="Datum"
+            android:text="@string/s204"
             android:layout_marginRight="28.0dp"
             android:id="@+id/date" />
 
@@ -88,7 +88,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
-            android:text="Štev. pozicija"
+            android:text="@string/s16"
             android:layout_marginRight="28.0dp"
             android:id="@+id/numberOfPositions" />
 
@@ -128,7 +128,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="10dp"
                 android:paddingTop="5dp"
-                android:text="Dogodek" />
+                android:text="@string/s63" />
 
             <EditText
                 android:textStyle="bold"
@@ -187,7 +187,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="10dp"
                 android:paddingTop="5dp"
-                android:text="Dobavitelj" />
+                android:text="@string/s15" />
 
             <EditText
                 android:textStyle="bold"
@@ -213,7 +213,7 @@
                 android:textStyle="bold"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:text="Št. pozicij"
+                android:text="@string/s106"
                 android:paddingTop="5dp"
                 android:paddingLeft="10dp"/>
 
@@ -269,7 +269,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="10dp"
                 android:paddingTop="5dp"
-                android:text="Datum "
+                android:text="@string/s204"
                 android:textStyle="bold" />
 
             <EditText

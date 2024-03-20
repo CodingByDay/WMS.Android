@@ -87,7 +87,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
-            android:text="Prejeto"
+            android:text="@string/s106"
             android:layout_width="match_parent"
             android:layout_marginRight="28.0dp"
             android:id="@+id/position" />
@@ -100,7 +100,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
-            android:text="@string/s40"
+            android:text="@string/s80"
             android:layout_marginRight="28.0dp"
             android:id="@+id/serial" />
 
@@ -129,7 +129,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="10dp"
                 android:paddingTop="5dp"
-                android:text="DN"
+                android:text="@string/s173"
             />
 
             <EditText
@@ -188,7 +188,7 @@
                 android:textStyle="bold"
                 android:layout_width="130dp"
                 android:layout_height="wrap_content"
-                android:text="Št. kartona"
+                android:text="@string/s145"
                 android:paddingTop="5dp"
                 android:paddingLeft="10dp"
                 android:id="@+id/textView11" />
@@ -283,7 +283,7 @@
             android:layout_marginLeft="2dp">
 
             <Button
-                android:text="potrdi "
+                android:text="@string/s174"
                 android:layout_weight="1"
                 android:textSize="20dp"
                 android:paddingLeft="10dp"

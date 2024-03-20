@@ -86,7 +86,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
-            android:text="Prejeto"
+            android:text="@string/s181"
             android:layout_width="match_parent"
             android:layout_marginRight="28.0dp"
             android:id="@+id/position" />
@@ -153,7 +153,7 @@
             android:textColor="@color/white"
             android:layout_marginLeft="4dp"
             android:layout_marginRight="2dp"
-            android:text="Potrdi "
+            android:text="@string/s174"
             android:layout_marginBottom="4dp"
             android:id="@+id/btConfirm" />
 
