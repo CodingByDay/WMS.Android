@@ -1,4 +1,3 @@
-
 <resources>
 	<string name="app_name">Scanner</string>
 	<string name="action_settings">Settings</string>
@@ -14,13 +13,13 @@
 	<string name="settings_saved">Podatki shranjeni uspešno</string>
 	<string name="login_success">Uspešna prijava.</string>
 	<string name="s1">PREVZ. BLAGA-F1</string>
-	<string name="s2">MEDSK.-F2</string>
+	<string name="s2">MEDSK. F2</string>
 	<string name="s3">PREVZ. IZ PROIZV.-F3</string>
 	<string name="s4">ODPREMA BLAGA-F4</string>
-	<string name="s5">PAKIR.-F5</string>
-	<string name="s6">TISK. - F6</string>
-	<string name="s7">INVEN.-F7</string>
-	<string name="s8">ZALOGA-F8</string>
+	<string name="s5">PAKIR. F5</string>
+	<string name="s6">TISK. F6</string>
+	<string name="s7">INVEN. F7</string>
+	<string name="s8">ZALOGA F8</string>
 	<string name="s9">PALETE </string>
 	<string name="s10">PRERAČUN</string>
 	<string name="s11">ODJAVA</string>
@@ -31,20 +30,20 @@
 	<string name="s16">Št. Pozicij</string>
 	<string name="s17">Kreiral</string>
 	<string name="s18">Datum kreiranja</string>
-	<string name="s19">NASLED. - F1</string>
-	<string name="s20">UREDI - F2</string>
-	<string name="s21">IZBRIŠI - F3</string>
-	<string name="s22">KREIRAJ - F4</string>
-	<string name="s23">IZHOD - F8</string>
+	<string name="s19">NASLED. F1</string>
+	<string name="s20">UREDI F2</string>
+	<string name="s21">IZBRIŠI F3</string>
+	<string name="s22">KREIRAJ F4</string>
+	<string name="s23">IZHOD F8</string>
 	<string name="s24">Ali ste sigurni da želite pobrisati pozicijo?</string>
 	<string name="s25">DA</string>
 	<string name="s26">NE</string>
 	<string name="s27">Posl. Dog</string>
 	<string name="s28">Skladišče</string>
-	<string name="s29">POTRDI -F2</string>
-	<string name="s30">BREZ - F3</string>
-	<string name="s31">IZHOD - F8</string>
-	<string name="s32">Z NAR. - F3</string>
+	<string name="s29">POTRDI F2</string>
+	<string name="s30">BREZ F3</string>
+	<string name="s31">IZHOD F8</string>
+	<string name="s32">Z NAR. F3</string>
 	<string name="s33">Subjekt</string>
 	<string name="s34">Ident ali 2D</string>
 	<string name="s35">Naziv</string>
@@ -53,26 +52,26 @@
 	<string name="s38">Naročilo</string>
 	<string name="s39">Datum dobave</string>
 	<string name="s40">Količina</string>
-	<string name="s41">POTRDI - F3</string>
-	<string name="s42">NASL. - F2</string>
-	<string name="s43">PREGL. - F4</string>
-	<string name="s44">IZHOD-F8</string>
+	<string name="s41">POTRDI F3</string>
+	<string name="s42">NASL. F2</string>
+	<string name="s43">PREGL. F4</string>
+	<string name="s44">IZHOD F8</string>
 	<string name="s45">Ident ne obstaja</string>
 	<string name="s46">Ok</string>
-	<string name="s47">Ident </string>
+	<string name="s47">Ident</string>
 	<string name="s48">SSCC koda</string>
 	<string name="s49">Serijska št.</string>
 	<string name="s50">Lokacija</string>
 	<string name="s51">Št. enot</string>
-	<string name="s52">SERIJ. - F2</string>
-	<string name="s53">KREIRAJ - F3</string>
-	<string name="s54">ZAKLJ. - F4</string>
-	<string name="s55">PREG. - F5</string>
-	<string name="s56">IZHOD - F8</string>
+	<string name="s52">SERIJ. F2</string>
+	<string name="s53">KREIRAJ F3</string>
+	<string name="s54">ZAKLJ. F4</string>
+	<string name="s55">PREG. F5</string>
+	<string name="s56">IZHOD F8</string>
 	<string name="s57">Kreiral</string>
-	<string name="s58">KREIRAJ - F3</string>
-	<string name="s59">IZBRIŠI - F5</string>
-	<string name="s60">IZHOD - F8</string>
+	<string name="s58">KREIRAJ F3</string>
+	<string name="s59">IZBRIŠI F5</string>
+	<string name="s60">IZHOD F8</string>
 	<string name="s61">Odprte medsladišnice</string>
 	<string name="s62">ni</string>
 	<string name="s63">Posl. dog.</string>
@@ -81,15 +80,15 @@
 	<string name="s66">Št. Pozicij</string>
 	<string name="s67">Kreiral</string>
 	<string name="s68">Datum kreiranja</string>
-	<string name="s69">Nasled. - f1</string>
-	<string name="s70">uredi - f2</string>
-	<string name="s71">Izbriši - f3</string>
-	<string name="s72">Izhod - F8</string>
+	<string name="s69">Nasled. f1</string>
+	<string name="s70">uredi f2</string>
+	<string name="s71">Izbriši f3</string>
+	<string name="s72">Izhod F8</string>
 	<string name="s73">Posl dog</string>
 	<string name="s74">Izdajno skladišće</string>
 	<string name="s75">Prejemno skladišče</string>
-	<string name="s76">Potrdi - f3</string>
-	<string name="s77">Izhod - f8</string>
+	<string name="s76">Potrdi f3</string>
+	<string name="s77">Izhod f8</string>
 	<string name="s78">Ident</string>
 	<string name="s79">SSCC</string>
 	<string name="s80">Serijska</string>
@@ -97,23 +96,30 @@
 	<string name="s82">Prejeto</string>
 	<string name="s83">Količina</string>
 	<string name="s84">Št. Enot</string>
-	<string name="s85">Serij. - f2</string>
-	<string name="s86">Kreiraj - f3</string>
-	<string name="s87">Zaklj. - f4</string>
-	<string name="s88">Pregl. - f5</string>
-	<string name="s89">Izhod - F8</string>
-	<string name="s90">POTRDI - F2</string>
+	<string name="s85">Serij. f2</string>
+	<string name="s86">Kreiraj f3</string>
+	<string name="s87">Zaklj. f4</string>
+	<string name="s88">Pregl. f5</string>
+	<string name="s89">Izhod F8</string>
+	<string name="s90">POTRDI F2</string>
 	<string name="s91">Prevzem </string>
 	<string name="s92">Vnešene pozicije</string>
-	<string name="s93">Izhod - F8</string>
+	<string name="s93">Izhod F8</string>
 	<string name="s94">F1</string>
-	<string name="s95">Pregled zaloge</string>
-	<string name="s96">Show - F2</string>
-	<string name="s97">Show</string>
-	<string name="s98">Menu</string>
 
-	<string name="s99">Prevzem - F2</string>
-	<string name="s100">Hitri prevzem - F3</string>
+	<string name="s95">Pregled zaloge</string>
+
+	<string name="s96">Prikaži F2</string>
+
+	<string name="s97">Prikaži</string>
+
+	<string name="s98">Izhod</string>
+
+
+
+	<string name="s99">Prevzem F2</string>
+	<string name="s100">Hitri prevzem F3</string>
+
 
 	<string name="s101">Naročnik</string>
 	<string name="s102">Lok.</string>
@@ -122,23 +128,17 @@
 
 	<string name="s104">Nar.</string>
 
-	<string name="s105">Nazaj - f5</string>
+	<string name="s105">Nazaj f5</string>
 
 	<string name="s106">Pozicija</string>
 	<string name="s107">Potrdi</string>
 	<string name="s108">Preg.</string>
 	<string name="s109">Nazaj</string>
 	<string name="s110">Izhod</string>
-
-
-
 	<string name="s111">Ali res  želite zaključiti?</string>
-	
-	
 	<string name="s112">DA</string>
 	<string name="s113">NE</string>
-	
-    <string name="s114">NASLED.</string>
+	<string name="s114">NASLED.</string>
 	<string name="s115">UREDI</string>
 	<string name="s116">KREIRAJ</string>
 	<string name="s117">ZAKLJUČI</string>
@@ -146,41 +146,45 @@
 	<string name="s119">IZHOD</string>
 	<string name="s120">SERIJSKA</string>
 	<string name="s121">PREGLED</string>
-
 	<string name="s122">Izpolnjeno</string>
-
 	<string name="s123">Odprte inventure</string>
-	
 	<string name="s124">Datum inventure</string>
-
 	<string name="s125">Št. popisov</string>
 
-    <string name="s126">O. dokument - F2</string>
-	<string name="s127">Izvedba - f3</string>
-	<string name="s128">Potrdi - f4</string>
-	<string name="s129">O. inventuro - f5</string>
-	<string name="s130">Tiskaj inventuro-f6</string>
+
+
+	<string name="s126">O. dokument F2</string>
+	<string name="s127">Izvedba f3</string>
+	<string name="s128">Potrdi f4</string>
+	<string name="s129">O. inventuro f5</string>
+	<string name="s130">Tiskaj inventuro f6</string>
+
 
 
 	<string name="s131">Izberi</string>
 
 	<string name="s132">Potrdil</string>
 
+
 	<string name="s133">Datum potrditve</string>
 
 
-	<string name="s134">Tiskaj - f2</string>
-	<string name="s135">Tiskaj</string>
-	
-	<string name="s136">Izbriši - F4</string>
-	<string name="s137">Izbriši</string>
-	
-	<string name="s138">Brez</string>
+	<string name="s134">Tiskaj f2</string>
 
+	<string name="s135">Tiskaj</string>
+
+	<string name="s136">Izbriši F4</string>
+
+
+	<string name="s137">Izbriši</string>
+
+	<string name="s138">Brez</string>
 
 	<string name="s139">Naročilo/poz.</string>
 
-	<string name="s140">Izdana</string>
+
+
+	<string name="s140">Izdajna</string>
 	<string name="s141">Prejemna</string>
 
 	<string name="s142">Paleta</string>
@@ -188,9 +192,12 @@
 
 	<string name="s143">Naročeno</string>
 	<string name="s144">Odpremljeno</string>
+
+
 	<string name="s145">Št. kartona</string>
 
 	<string name="s146">Hitri prevzem</string>
+
 
 	<string name="s147">Odjava</string>
 	<string name="s148">Prevz. blaga</string>
@@ -203,86 +210,104 @@
 	<string name="s155">Zaloga</string>
 	<string name="s156">Palete</string>
 	<string name="s157">Preračun</string>
-
-
 	<string name="s158">Dostava palete</string>
 	<string name="s159">Zavijanje palete</string>
-
 	<string name="s160">Naziv</string>
-
 	<string name="s161">Odprta pakiranja</string>
 	<string name="s162">Št. pakiranja</string>
-	<string name="s163">Kreiraj - F2</string>
-
-	<string name="s164">Pregled - F3</string>
-
-	<string name="s165">Ident - F1</string>
-	<string name="s166">Naročilo - F2</string>
-	<string name="s167">Stranka - F3</string>
-
+	<string name="s163">Kreiraj F2</string>
+	<string name="s164">Pregled F3</string>
+	<string name="s165">Ident F1</string>
+	<string name="s166">Naročilo F2</string>
+	<string name="s167">Stranka F3</string>
 	<string name="s168">Nastavitve</string>
-
-	<string name="s169">PON. - F2</string>
-	<string name="s170">SSCC - F3</string>
-
+	<string name="s169">PON. F2</string>
+	<string name="s170">SSCC F3</string>
 	<string name="s171">Kopije</string>
 
-	<string name="s172">Tiskaj - f3</string>
+	<string name="s172">Tiskaj f3</string>
 
 	<string name="s173">DN</string>
 
+
 	<string name="s174">Potrdi</string>
+
 
 	<string name="s175">Karton</string>
 
+
 	<string name="s176">Noga palete</string>
+
 
 	<string name="s177">Odprta količina</string>
 
-	<string name="s178">Karton - f2</string>
 
-	<string name="s179">Palete - f4</string>
+	<string name="s178">Karton f2</string>
+
+	<string name="s179">Palete f4</string>
+
 
 	<string name="s180">Zasedenost(%)</string>
-	
+
+
 	<string name="s181">Prejeto</string>
 
-	<string name="s182">Izračunaj - F2</string>
+
+
+	<string name="s182">Izračunaj F2</string>
 
 	<string name="s183">Izračunaj</string>
-	
+
+
 	<string name="s184">Preveč neaktivnosti. Aplikacija se bo zaprla.</string>
 
 	<string name="s185">AR očala</string>
-	
+
+
 	<string name="s186">Vmesnik</string>
+
 
 	<string name="s187">Naprava</string>
 
 
 	<string name="s188">Tip</string>
-	
-	
+
+
+
 	<string name="s189">Stroj</string>
+
+
+
 
 	<string name="s190">Naroč.</string>
 
-	<string name="s191">SSCC koda - f4"</string>
-	
-	
-	<string name="s192">SSCC koda"</string>
+
+
+	<string name="s191">SSCC koda f4"</string>
+
+
+
+	<string name="s192">SSCC koda</string>
+
+
+
 
 
 	<string name="s193">Kupec</string>
+
+
+
 	<string name="s194">Datum dostave</string>
 	<string name="s195">Kol. odp. /</string>
-	<string name="s196">prejšn. - f3</string>
-	<string name="s197">natisni - f4</string>
-	<string name="s198">tiskaj - f5</string>
-	<string name="s199">n. ident - f6</string>
+	<string name="s196">prejšn. f3</string>
+	<string name="s197">natisni f4</string>
+	<string name="s198">tiskaj f5</string>
+	<string name="s199">n. ident f6</string>
 
-	
+
+
 	<string name="s200">Karton je že razporejen na drugi paleti. Premestim?</string>
+
 
 
 	<string name="s201">Da</string>
@@ -297,14 +322,28 @@
 
 
 
+
 	<string name="s206">Delovni nalog</string>
-	
-	
+
 	<string name="s207">Nova posodobitev</string>
-	
+
 	<string name="s208">Ali želite odstraniti karton?</string>
 	<string name="s209">Ali ste sigurni da želite pobrisati pozicijo?</string>
 	<string name="s210">Izpisanih je bilo zadostno št etiket. Želite zamenjati serijsko št.?</string>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

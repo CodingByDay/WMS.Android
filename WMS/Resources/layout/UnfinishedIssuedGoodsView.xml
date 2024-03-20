@@ -288,7 +288,7 @@
                 android:textColor="@color/white"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="4dp"
-                android:text="Kreiraj - f4"
+                android:text="@string/s22"
                 android:drawableLeft="@drawable/newitem_white"
                 android:id="@+id/btNew"
             />

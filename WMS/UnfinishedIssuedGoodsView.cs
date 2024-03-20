@@ -345,7 +345,7 @@ namespace WMS
         {
             if ((positions != null) && (positions.Items.Count > 0))
             {
-                lbInfo.Text = "Odprte odpreme na čitalcu (" + (displayedPosition + 1).ToString() + "/" + positions.Items.Count + ")";
+                lbInfo.Text = $"{Resources.GetString(Resource.String.s205)} (" + (displayedPosition + 1).ToString() + "/" + positions.Items.Count + ")";
                 var item = positions.Items[displayedPosition];
                 
                 tbBusEvent.Text = item.GetString("DocumentTypeName");
@@ -378,7 +378,7 @@ namespace WMS
             }
             else
             {
-                lbInfo.Text = "Odprte odpreme na čitalcu (ni)";
+                lbInfo.Text = $"{Resources.GetString(Resource.String.s205)} (ni)";
 
                 tbBusEvent.Text = "";
                 tbOrder.Text = "";

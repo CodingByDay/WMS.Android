@@ -384,7 +384,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                     await FillOpenOrdersAsync();
                 }
                 docTypes = CommonData.ListDocTypes("P|N");
-                btnOrderMode.Text = "Brez - F3";
+                btnOrderMode.Text = Resources.GetString(Resource.String.s30);
                 initial += 1;
             }
             else
@@ -405,7 +405,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
 
                 adapterExtra.NotifyDataSetChanged();
                 docTypes = CommonData.ListDocTypes("I;M|F");
-                btnOrderMode.Text = "Z nar. - F3";
+                btnOrderMode.Text = Resources.GetString(Resource.String.s32);
             }
             docTypes.Items.ForEach(dt =>
             {
@@ -413,17 +413,6 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             });
         }
 
-        private bool isOrderLess()
-        {
-            if (btnOrderMode.Text == "Brez nar. - F3")
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
 
         private void NextStep()
         {
