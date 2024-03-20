@@ -74,7 +74,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
-            android:text="Naročeno"
+            android:text="@string/s40"
             android:layout_width="match_parent"
             android:layout_marginRight="28.0dp"
             android:id="@+id/quantity" />
@@ -85,7 +85,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
-            android:text="Odpremljeno"
+            android:text="@string/s106"
             android:layout_width="match_parent"
             android:layout_marginRight="28.0dp"
             android:id="@+id/position" />
@@ -98,7 +98,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
-            android:text="@string/s40"
+            android:text="@string/s80"
             android:layout_marginRight="28.0dp"
             android:id="@+id/serial" />
 
@@ -114,16 +114,7 @@
         android:layout_marginTop="70dp"
         android:foregroundGravity="center">
 
-        <TextView
-            android:textSize="18dp"
-            android:textStyle="bold"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingLeft="10dp"
-            android:paddingTop="5dp"
-            android:textColor="@color/rikoMain"
-            android:text="Odprema blaga"
-            android:layout_gravity="center" />
+
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -192,7 +183,7 @@
         </LinearLayout>
         <TextView
             android:textStyle="bold"
-            android:text="Naročilo"
+            android:text="@string/s38"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -216,7 +207,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="10dp"
                 android:paddingTop="5dp"
-                android:text="Naročilo/poz." />
+                android:text="@string/s139" />
 
             <EditText
                 android:textStyle="bold"
@@ -244,7 +235,7 @@
                 android:textStyle="bold"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:text="Naročnik"
+                android:text="@string/s101"
                 android:paddingTop="5dp"
                 android:paddingLeft="10dp"/>
 
@@ -275,7 +266,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="10dp"
                 android:paddingTop="5dp"
-                android:text="Datum dobave" />
+                android:text="@string/s39" />
 
             <EditText
                 android:textStyle="bold"

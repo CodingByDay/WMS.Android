@@ -132,9 +132,7 @@
 	
 	<string name="s105">Nazaj - f5</string>
 
-
 	<string name="s106">Pozicija</string>
-
 	<string name="s107">Potrdi</string>
 	<string name="s108">Preg.</string>
 	<string name="s109">Nazaj</string>
@@ -150,15 +148,9 @@
 	<string name="s119">IZHOD</string>
 	<string name="s120">SERIJSKA</string>
 	<string name="s121">PREGLED</string>
-
-
 	<string name="s122">Izpolnjeno</string>
-
-
 	<string name="s123">Odprte inventure</string>
-
 	<string name="s124">Datum inventure</string>
-	
 	<string name="s125">Št. popisov</string>
 
 
@@ -190,9 +182,45 @@
 	
 	<string name="s138">Brez</string>
 
+	<string name="s139">Naročilo/poz.</string>
+
+	
+
+	<string name="s140">Izdajna</string>
+	<string name="s141">Prejemna</string>
+
+	<string name="s142">Paleta</string>
 
 
+	<string name="s143">Naročeno</string>
+	<string name="s144">Odpremljeno</string>
 
+
+	<string name="s145">Št. kartona</string>
+	
+	<string name="s146">Hitri prevzem</string>
+
+
+	<string name="s147">Odjava</string>
+	<string name="s148">Prevz. blaga</string>
+	<string name="s149">MEDSK.</string>
+	<string name="s150">Prevz. iz proizv.</string>
+	<string name="s151">Odprema blaga</string>
+	<string name="s152">Pakiranje</string>
+	<string name="s153">Tiskanje</string>
+	<string name="s154">Inventura</string>
+	<string name="s155">Zaloga</string>
+	<string name="s156">Palete</string>
+	<string name="s157">Preračun</string>
+
+
+	<string name="s158">Dostava palete</string>
+	<string name="s159">Zavijanje palete</string>
+
+	<string name="s160">Naziv</string>
+
+	<string name="s161">Odprta pakiranja</string>
+	<string name="s162">Št. pakiranja</string>
 
 
 

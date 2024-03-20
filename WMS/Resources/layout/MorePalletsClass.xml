@@ -36,8 +36,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="4dp"
             android:paddingTop="5dp"
-            android:text="SSCC."
-  />
+            android:text="@string/s79" />
 
         <EditText
             android:textStyle="bold"
@@ -76,7 +75,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
-            android:text="Naz."
+            android:text="@string/s160"
             android:layout_marginRight="28.0dp"
             android:id="@+id/name" />
         <TextView
@@ -86,7 +85,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
-            android:text="Kol."
+            android:text="@string/s103"
             android:layout_marginRight="28.0dp"
             android:id="@+id/quantity" />
 

@@ -128,17 +128,7 @@
         tools:context=".LinearLayout"
         android:foregroundGravity="center">
 
-        <TextView
-            android:textStyle="bold"
-            android:textSize="18dp"
-            android:layout_width="378.5dp"
-            android:layout_height="wrap_content"
-            android:paddingLeft="10dp"
-            android:paddingTop="5dp"
-            android:textColor="@color/rikoMain"
-            android:text="Izberite eno pozicijo!"
-            android:layout_marginRight="28.0dp"
-            android:layout_marginLeft="130.0dp" />
+      
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -152,7 +142,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="10dp"
                 android:paddingTop="5dp"
-                android:text="Naročilo"
+                android:text="@string/s38"
            />
 
             <EditText
@@ -181,7 +171,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="10dp"
                 android:paddingTop="5dp"
-                android:text="Naročnik"
+                android:text="@string/s101"
             />
 
             <EditText
@@ -369,7 +359,7 @@
                 android:id="@+id/btConfirm" />
 
             <Button
-                android:text="Pregled "
+                android:text="@string/s121"
                 android:drawableLeft="@drawable/focus_white"
                 android:layout_weight="1"
                 android:textSize="20dp"

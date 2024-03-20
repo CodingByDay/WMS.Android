@@ -111,7 +111,7 @@
             android:gravity="bottom"
             android:paddingLeft="4dp"
             android:paddingTop="4dp"
-            android:text="Naročilo"
+            android:text="@string/s38"
             android:id="@+id/lblOrder"
          />
 

@@ -374,7 +374,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="10dp"
                 android:paddingTop="5dp"
-                android:text="Subjekt"
+                android:text="@string/s33"
              />
             <RelativeLayout
                 android:layout_width="match_parent"

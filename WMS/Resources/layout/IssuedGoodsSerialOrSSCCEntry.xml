@@ -115,7 +115,7 @@
             android:textStyle="bold"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:text="Izdana"
+            android:text="@string/s140"
             android:paddingTop="5dp"
             android:paddingLeft="4dp"
     />
@@ -180,7 +180,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="4dp"
             android:paddingTop="5dp"
-            android:text="Paleta"
+            android:text="@string/s142"
             android:id="@+id/lbPalette" />
 
         <EditText
@@ -223,7 +223,7 @@
                 android:textColor="@color/white"
                 android:layout_marginLeft="4dp"
                 android:layout_marginRight="2dp"
-                android:text="Serij. - f2"
+                android:text="@string/s52"
                 android:drawableLeft="@drawable/newitem_white"
                 android:id="@+id/btCreateSame"
                  />
@@ -278,7 +278,7 @@
                 android:textColor="@color/white"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="4dp"
-                android:text="Preg. - f5"
+                android:text="@string/s55"
                 android:drawableLeft="@drawable/focus_white"
                 android:id="@+id/btOverview"
                 />

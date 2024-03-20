@@ -53,7 +53,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
-            android:text="Naročilo"
+            android:text="@string/s38"
             android:layout_marginRight="28.0dp"
             android:id="@+id/document"
             android:layout_width="match_parent" />
@@ -65,7 +65,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
-            android:text="Naročnik"
+            android:text="@string/s101"
             android:layout_width="match_parent"
             android:layout_marginRight="28.0dp"
             android:id="@+id/provider" />
@@ -157,7 +157,7 @@
                 android:textStyle="bold"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:text="Naročnik"
+                android:text="@string/s101"
                 android:paddingTop="5dp"
                 android:paddingLeft="10dp"
                 android:id="@+id/textView1" />

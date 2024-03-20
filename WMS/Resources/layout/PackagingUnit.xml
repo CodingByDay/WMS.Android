@@ -117,7 +117,7 @@
                                      >
 
         <TextView
-            android:text="SSCC koda:"
+            android:text="@string/s40"
             android:textStyle="bold"
             android:layout_width="100dp"
             android:layout_height="wrap_content"

@@ -267,7 +267,7 @@
                 android:textColor="@color/white"
                 android:layout_marginLeft="4dp"
                 android:layout_marginRight="2dp"
-                android:text="Izbriši - f4"
+                android:text="@string/s136"
                 android:drawableLeft="@drawable/delete_white"
                 android:id="@+id/btDelete" />
 

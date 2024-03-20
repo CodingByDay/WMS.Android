@@ -74,7 +74,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
-            android:text="Naročeno"
+            android:text="@string/s83"
             android:layout_width="match_parent"
             android:layout_marginRight="28.0dp"
             android:id="@+id/quantity" />
@@ -85,7 +85,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
-            android:text="Prejeto"
+            android:text="@string/s106"
             android:layout_width="match_parent"
             android:layout_marginRight="28.0dp"
             android:id="@+id/position" />
@@ -114,18 +114,6 @@
         tools:context=".LinearLayout"
         android:foregroundGravity="center">
 
-        <TextView
-            android:textSize="18dp"
-            android:textStyle="bold"
-            android:layout_width="match_parent"
-            android:layout_height="40.5dp"
-            android:text="                                    Pakiranje"
-            android:paddingTop="5dp"
-            android:textColor="@color/rikoMain"
-            android:paddingLeft="10dp"
-            android:id="@+id/textView1"
-            android:layout_marginRight="6.0dp"
-            android:layout_marginLeft="0.0dp" />
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -139,7 +127,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="10dp"
                 android:paddingTop="5dp"
-                android:text="Skladišče:"
+                android:text="@string/s28"
             />
 
             <RelativeLayout
@@ -172,7 +160,7 @@
                 android:textStyle="bold"
                 android:layout_width="110dp"
                 android:layout_height="wrap_content"
-                android:text="Prej. lokacija:"
+                android:text="@string/s141"
                 android:paddingTop="5dp"
                 android:paddingLeft="10dp"
                 android:id="@+id/view"
@@ -204,7 +192,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="10dp"
                 android:paddingTop="5dp"
-                android:text="SSCC koda:"
+                android:text="@string/s40"
              />
 
             <EditText

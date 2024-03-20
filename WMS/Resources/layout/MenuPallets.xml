@@ -39,7 +39,7 @@
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
             android:paddingTop="8dp"
-            android:text="Dostava palete"
+            android:text="@string/s158"
             android:layout_marginBottom="5dp"
             android:textColor="#ffffff"
             android:id="@+id/shipped" />
@@ -59,7 +59,7 @@
             android:textStyle="bold"
             android:paddingRight="20dp"
             android:paddingTop="8dp"
-            android:text="Zavijanje palete"
+            android:text="@string/s159"
             android:layout_marginBottom="5dp"
             android:textColor="#ffffff"
             android:layout_marginLeft="6.0dp"

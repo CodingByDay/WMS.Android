@@ -26,7 +26,7 @@
             android:gravity="bottom"
             android:paddingLeft="4dp"
             android:paddingTop="4dp"
-            android:text="Paleta"/>
+            android:text="@string/s142"/>
 
         <EditText
             android:textStyle="bold"

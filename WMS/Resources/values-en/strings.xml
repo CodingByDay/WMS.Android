@@ -166,6 +166,42 @@
 	
 	<string name="s138">Without</string>
 
+	<string name="s139">Order/pos.</string>
+
+
+	<string name="s140">Issuing</string>
+	<string name="s141">Receiving</string>
+
+	<string name="s142">Pallet</string>
+
+	<string name="s143">Order</string>
+	<string name="s144">Issued</string>
+	
+	<string name="s145">Card number</string>
+
+	<string name="s146">Rapid takeover</string>
+
+	<string name="s147">Log out</string>
+	<string name="s148">Tekover</string>
+	<string name="s149">Interwarehouse.</string>
+	<string name="s150">Production takeover.</string>
+	<string name="s151">Issued goods</string>
+	<string name="s152">Packaging</string>
+	<string name="s153">Printing</string>
+	<string name="s154">Inventory</string>
+	<string name="s155">Stock</string>
+	<string name="s156">Pallets</string>
+	<string name="s157">Recalculation</string>
+
+	<string name="s158">Issuing pallet</string>
+	<string name="s159">Wrapping pallet</string>
+
+	<string name="s160">Name</string>
+
+	<string name="s161">Open packaging</string>
+	
+	<string name="s162">Packaging no.</string>
+
 
 
 </resources>

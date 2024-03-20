@@ -162,7 +162,7 @@
             android:textStyle="bold"
             android:paddingLeft="10dp"
             android:paddingTop="10dp"
-            android:text="Subjekt"
+            android:text="@string/s33"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:layout_width="match_parent"
             android:layout_height="46.5dp"

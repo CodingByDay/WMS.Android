@@ -246,7 +246,7 @@
         android:paddingTop="5dp">
 
         <TextView
-            android:text="Subjekt"
+            android:text="@string/s33"
             android:textStyle="bold"
             android:layout_width="100dp"
             android:layout_height="wrap_content"

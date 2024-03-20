@@ -218,7 +218,7 @@
                 android:id="@+id/button3" />
 
             <Button
-                android:text="Preg. - f5"
+                android:text="@string/s55"
                 android:drawableLeft="@drawable/focus_white"
                 android:paddingLeft="10dp"
                 android:id="@+id/button4"

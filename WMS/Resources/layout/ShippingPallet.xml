@@ -20,7 +20,7 @@
         android:paddingTop="5dp">
 
         <TextView
-            android:text="Paleta"
+            android:text="@string/s142"
             android:textStyle="bold"
             android:layout_width="100dp"
             android:layout_height="match_parent"

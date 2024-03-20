@@ -26,7 +26,7 @@
             android:layout_height="match_parent"
             android:paddingLeft="4dp"
             android:paddingTop="5dp"
-            android:text="Skladišče:"
+            android:text="@string/s28"
             android:gravity="bottom"
           />
 
@@ -52,7 +52,7 @@
             android:textStyle="bold"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:text="Prej. lokacija:"
+            android:text="@string/s141"
             android:paddingTop="5dp"
             android:paddingLeft="4dp"
             android:id="@+id/textView1Location"
@@ -61,13 +61,13 @@
 
         <EditText
               android:textStyle="bold"
-  android:singleLine="true"
-  android:layout_width="match_parent"
-  android:layout_height="wrap_content"
-  android:layout_weight="0.50"
-  android:paddingTop="5dp"
-  android:background="@drawable/editText_bg_grey"
-  android:layout_marginRight="2dp"
+              android:singleLine="true"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_weight="0.50"
+              android:paddingTop="5dp"
+              android:background="@drawable/editText_bg_grey"
+              android:layout_marginRight="2dp"
             android:id="@+id/tbLocation" />
 
     </LinearLayout>
@@ -84,21 +84,21 @@
             android:layout_height="wrap_content"
             android:paddingLeft="4dp"
             android:paddingTop="5dp"
-            android:text="SSCC koda:"
+            android:text="@string/s40"
             android:layout_marginRight="2dp
             "
             />
 
         <EditText
-        android:textStyle="bold"
-  android:singleLine="true"
-  android:layout_width="match_parent"
-  android:layout_height="wrap_content"
-  android:layout_weight="0.50"
-  android:paddingTop="5dp"
-  android:background="@drawable/editText_bg_grey"
-  android:layout_marginRight="2dp"
-            android:id="@+id/tbSSCC" />
+              android:textStyle="bold"
+              android:singleLine="true"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_weight="0.50"
+              android:paddingTop="5dp"
+              android:background="@drawable/editText_bg_grey"
+              android:layout_marginRight="2dp"
+              android:id="@+id/tbSSCC" />
 
     </LinearLayout>
 
@@ -110,7 +110,6 @@
         android:paddingTop="5dp"
         android:minWidth="25dp"
         android:minHeight="25dp"
-
         android:id="@+id/linearLayout1" >
 
     </LinearLayout>
@@ -142,34 +141,31 @@
             android:layout_marginBottom="4dp">
 
         <Button
-          android:layout_weight="1"
-android:textSize="20dp"
-android:paddingLeft="10dp"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-android:background="@color/rikoMain"
-android:textColor="@color/white"
-android:layout_marginLeft="4dp"
-android:layout_marginRight="2dp"
-
+            android:layout_weight="1"
+            android:textSize="20dp"
+            android:paddingLeft="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/rikoMain"
+            android:textColor="@color/white"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="2dp"
             android:text="@string/s76"
             android:drawableLeft="@drawable/confirmation_white"
-
             android:id="@+id/btConfirm" />
 
         <Button
-      android:layout_weight="1"
-android:textSize="20dp"
-android:paddingLeft="10dp"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-android:background="@color/rikoMain"
-android:textColor="@color/white"
-android:layout_marginLeft="2dp"
-android:layout_marginRight="4dp"
+            android:layout_weight="1"
+            android:textSize="20dp"
+            android:paddingLeft="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/rikoMain"
+            android:textColor="@color/white"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="4dp"
             android:text="@string/s77"
             android:drawableLeft="@drawable/logout_white"
-
             android:id="@+id/btExit" />
 
     </LinearLayout>

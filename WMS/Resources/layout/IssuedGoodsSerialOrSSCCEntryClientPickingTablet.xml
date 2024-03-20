@@ -207,7 +207,7 @@
                 android:textSize="18dp"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:text="Izdana"
+                android:text="@string/s140"
                 android:paddingTop="5dp"
                 android:paddingLeft="10dp"
                  />
@@ -270,7 +270,7 @@
                 android:id="@+id/tbPackingField" />
 
             <Button
-                android:text="-(F1)"
+                android:text="@string/s94"
                 android:layout_width="74.0dp"
                 android:layout_height="33dp"
                 android:id="@+id/button1"
@@ -324,7 +324,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="10dp"
                 android:paddingTop="5dp"
-                android:text="Paleta"
+                android:text="@string/s142"
                 android:id="@+id/lbPalette" />
 
             <EditText

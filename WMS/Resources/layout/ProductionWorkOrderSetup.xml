@@ -99,7 +99,7 @@
             android:gravity="bottom"
             android:paddingLeft="4dp"
             android:paddingTop="4dp"
-            android:text="Naročnik"
+            android:text="@string/s101"
 
            />
 
