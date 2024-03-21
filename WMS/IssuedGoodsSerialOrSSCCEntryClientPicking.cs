@@ -767,7 +767,7 @@ namespace WMS
             catch (Exception ex)
             {
                 Crashes.TrackError(ex);
-                Toast.MakeText(this, "Prišlo je do napake", ToastLength.Long).Show();
+                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s225)}", ToastLength.Long).Show();
             }
         }
 

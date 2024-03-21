@@ -122,7 +122,7 @@ namespace WMS
                         openOrder = Services.GetObject("oobl", moveItem.GetString("LinkKey") + "|" + moveItem.GetInt("LinkNo").ToString(), out error);
                         if (openOrder == null)
                         {
-                            DialogHelper.ShowDialogError(this, this, "Napaka pri dostopu do web aplikacije." + error);
+                            DialogHelper.ShowDialogError(this, this, $"{Resources.GetString(Resource.String.s213)}" + error);
 
                             return;
                         }
@@ -798,7 +798,7 @@ namespace WMS
 
                 if(locations == null)
                 {
-                    Toast.MakeText(this, "Prišlo je do napake", ToastLength.Long).Show();
+                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s225)}", ToastLength.Long).Show();
                 } else
                 {
                     locations.Items.ForEach(x =>

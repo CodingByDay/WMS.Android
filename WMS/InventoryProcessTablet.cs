@@ -548,7 +548,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 var debi = issuerLocs.Items.Count();
                 if (issuerLocs == null)
                 {
-                    Toast.MakeText(this, "Prišlo je do napake", ToastLength.Long).Show();
+                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s225)}", ToastLength.Long).Show();
                 }
                 else
                 {

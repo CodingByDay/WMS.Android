@@ -448,7 +448,7 @@ namespace WMS
                 {
                     RunOnUiThread(() =>
                     {
-                        string WebError = string.Format("Napaka pri dostopu do web aplikacije." + error);
+                        string WebError = string.Format($"{Resources.GetString(Resource.String.s213)}" + error);
                         DialogHelper.ShowDialogError(this, this, WebError);
 
                     });

@@ -158,7 +158,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 cbIssueWH.Visibility = ViewStates.Invisible;
                 cbReceiveWH.Visibility = ViewStates.Invisible;
                 confirm.Enabled = false;
-                string errorWebApp = string.Format("Poslovni dogodek mora biti izbran.");
+                string errorWebApp = string.Format($"{Resources.GetString(Resource.String.s237)}");
                 Toast.MakeText(this, errorWebApp, ToastLength.Long).Show();
 
             }
@@ -248,7 +248,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
 
             if (temporaryPositionDoc == 0)
             {
-                Toast.MakeText(this, "Morate izbrati dokument", ToastLength.Long).Show();
+                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s238)}", ToastLength.Long).Show();
                 return;
             }
             if (temporaryPositionDoc == -1 || temporaryPositionIssue == -1 || temporaryPositionReceive == -1)
@@ -339,7 +339,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 cbIssueWH.Visibility = ViewStates.Invisible;
                 cbReceiveWH.Visibility = ViewStates.Invisible;
                 confirm.Enabled = false;
-                string errorWebApp = string.Format("Poslovni dogodek mora biti izbran.");
+                string errorWebApp = string.Format($"{Resources.GetString(Resource.String.s237)}");
                 Toast.MakeText(this, errorWebApp, ToastLength.Long).Show();
 
             } else {

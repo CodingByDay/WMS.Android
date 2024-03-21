@@ -83,7 +83,7 @@ namespace WMS
                 openIdent = Services.GetObject("id", ident, out error);
                 if (openIdent == null)
                 {        
-                    string SuccessMessage = string.Format("Napaka pri preverjanju identa." + error);
+                    string SuccessMessage = string.Format($"{Resources.GetString(Resource.String.s229)}" + error);
                     Toast.MakeText(this, SuccessMessage, ToastLength.Long).Show();
                     tbIdent.Text = "";
                     tbIdent.RequestFocus();

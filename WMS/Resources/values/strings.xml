@@ -47,7 +47,7 @@
 	<string name="s33">Subjekt</string>
 	<string name="s34">Ident ali 2D</string>
 	<string name="s35">Naziv</string>
-	<string name="s36">Naročilo</string>
+	<string name="s36">Naročilo </string>
 	<string name="s37">ni postavk</string>
 	<string name="s38">Naročilo</string>
 	<string name="s39">Datum dobave</string>
@@ -104,30 +104,30 @@
 	<string name="s90">POTRDI F2</string>
 	<string name="s91">Prevzem </string>
 	<string name="s92">Vnešene pozicije</string>
-	<string name="s93">Izhod F8</string>	
+	<string name="s93">Izhod F8</string>
 	<string name="s94">F1</string>
 
 	<string name="s95">Pregled zaloge</string>
-	
+
 	<string name="s96">Prikaži F2</string>
 
 	<string name="s97">Prikaži</string>
 
 	<string name="s98">Izhod</string>
-	
-	
-	
+
+
+
 	<string name="s99">Prevzem F2</string>
 	<string name="s100">Hitri prevzem F3</string>
-	
-	
+
+
 	<string name="s101">Naročnik</string>
 	<string name="s102">Lokacija</string>
-	
+
 	<string name="s103">Količina</string>
-	
+
 	<string name="s104">Nar.</string>
-	
+
 	<string name="s105">Nazaj f5</string>
 
 	<string name="s106">Pozicija</string>
@@ -177,12 +177,12 @@
 
 
 	<string name="s137">Izbriši</string>
-	
+
 	<string name="s138">Brez</string>
 
 	<string name="s139">Naročilo/poz.</string>
 
-	
+
 
 	<string name="s140">Izdajna</string>
 	<string name="s141">Prejemna</string>
@@ -195,7 +195,7 @@
 
 
 	<string name="s145">Št. kartona</string>
-	
+
 	<string name="s146">Hitri prevzem</string>
 
 
@@ -228,7 +228,7 @@
 	<string name="s172">Tiskaj f3</string>
 
 	<string name="s173">DN</string>
-	
+
 
 	<string name="s174">Potrdi</string>
 
@@ -265,8 +265,8 @@
 
 
 	<string name="s186">Vmesnik</string>
-	
-	
+
+
 	<string name="s187">Naprava</string>
 
 
@@ -275,10 +275,10 @@
 
 
 	<string name="s189">Stroj</string>
-	
-	
-	
-	
+
+
+
+
 	<string name="s190">Naroč.</string>
 
 
@@ -290,9 +290,9 @@
 	<string name="s192">SSCC koda</string>
 
 
-	
-	
-	
+
+
+
 	<string name="s193">Kupec</string>
 
 
@@ -307,9 +307,9 @@
 
 
 	<string name="s200">Karton je že razporejen na drugi paleti. Premestim?</string>
-	
-	
-	
+
+
+
 	<string name="s201">Da</string>
 	<string name="s202">Ne</string>
 
@@ -326,7 +326,7 @@
 	<string name="s206">Delovni nalog</string>
 
 	<string name="s207">Nova posodobitev</string>
-	
+
 	<string name="s208">Ali želite odstraniti karton?</string>
 	<string name="s209">Ali ste sigurni da želite pobrisati pozicijo?</string>
 	<string name="s210">Izpisanih je bilo zadostno št etiket. Želite zamenjati serijsko št.?</string>
@@ -336,14 +336,58 @@
 
 
 
+	<string name="s212">Napaka pri brisanju pozicije:</string>
+	<string name="s213">Napaka pri dostopu web aplikacije: </string>
+	<string name="s214">Pozicija uspešno zbrisana.</string>
+	<string name="s215">Kritična napaka…</string>
+	<string name="s216">Napaka:</string>
+	<string name="s217">Serijska številka je že uporabljena:</string>
+	<string name="s218">Napaka pri klicu web aplikacije:</string>
+	<string name="s219">ne sme presegati max. količine</string>
+	<string name="s220">Količina mora biti število</string>
+	<string name="s221"> je obvezen podatek!</string>
+	<string name="s222"> je obvezen podatek in mora biti različna od nič!</string>
+	<string name="s223"> mora biti število (</string>
+	<string name="s224"> ni veljavna za skladišče </string>
+	<string name="s225">Prišlo je do napake</string>
+	<string name="s226">Serijska številka je že uporabljena</string>
+	<string name="s227">Ta izdelek ni mogoče izdati ker nima zaloge.</string>
+	<string name="s228">Izdelek ni izbran.</string>
+	<string name="s229">Napaka pri preverjanju identa.</string>
+	<string name="s230">Ni zaloge.</string>
+	<string name="s231">Povezava z napravo uspešna</string>
+	<string name="s232">Povezava neuspešna</string>
+	<string name="s233">Failed to disconnect: </string>
+	<string name="s234">Lokacija ni veljavna.</string>
+	<string name="s235">Ident ni podan.</string>
+	<string name="s236">Izbrali ste</string>
+	<string name="s237">Poslovni dogodek mora biti izbran.</string>
+	<string name="s238">Morate izbrati dokument</string>
+	<string name="s239">Kritična napaka:</string>
+	<string name="s240">Ne obstaja.</string>
+	<string name="s241">Lokacija manjka.</string>
+	<string name="s242">Uspešno procesiran ident.</string>
+	<string name="s243">Potrjevanje uspešno!</string>
+	<string name="s244">Potrjevanje neuspešno.</string>
+	<string name="s245">Skladišče ni izbrano!</string>
+	<string name="s246">Inventura odprta!</string>
+	<string name="s247">Napaka: </string>
+	<string name="s248">Dokument inventure shranjen!</string>
+	<string name="s249">Prosimo izberite pravilen datum.</string>
+	<string name="s250">Poslano…</string>
+	<string name="s251">Napaka pri klicu strežniške funkcije (</string>
+	<string name="s252">Za skladišče ni odprtega dokumenta inventure! Zapis ni mogoč.</string>
+	<string name="s253">Skladišče ni izbrano!</string>
+	<string name="s254">SSCC koda ni vnešena!</string>
+	<string name="s255">Serijska št. ni vnešena!</string>
 
 
-
-
-
-
-
-
+	
+	<string name="s256">Podrobnosti</string>
+	<string name="s257">Ident</string>
+	<string name="s258">Lokacija</string>
+	<string name="s259">Naročilo</string>
+	<string name="s260">Naziv</string>
 
 
 

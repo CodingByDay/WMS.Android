@@ -241,7 +241,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 var stock = Services.GetObjectList("str", out error, warehouse + "|" + ident);
                 if (stock == null)
                 {
-                    string WebError = string.Format("Napaka pri preverjanju zaloge." + error);
+                    string WebError = string.Format($"{Resources.GetString(Resource.String.s216)}" + error);
                     Toast.MakeText(this, WebError, ToastLength.Long).Show(); tbIdent.Text = "";
                     return "";
                 }

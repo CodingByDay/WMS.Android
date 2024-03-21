@@ -319,7 +319,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 var openIdent = Services.GetObject("id", ident, out error);
                 if (openIdent == null)
                 {
-                    string WebError = string.Format("Napaka pri preverjanju identa." + error);
+                    string WebError = string.Format($"{Resources.GetString(Resource.String.s229)}" + error);
                     Toast.MakeText(this, WebError, ToastLength.Long).Show();
                     return false;
                 }
@@ -354,7 +354,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                     var savedMoveHead = Services.SetObject("mh", moveHead, out error);
                     if (savedMoveHead == null)
                     {
-                        string WebError = string.Format("Napaka pri dostopu do web aplikacije." + error);
+                        string WebError = string.Format($"{Resources.GetString(Resource.String.s213)}" + error);
                         Toast.MakeText(this, WebError, ToastLength.Long).Show();
                         return false;
                     }

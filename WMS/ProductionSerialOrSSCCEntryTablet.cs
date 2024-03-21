@@ -850,7 +850,7 @@ namespace WMS
             
                 if (issuerLocs == null)
                 {
-                    Toast.MakeText(this, "Prišlo je do napake", ToastLength.Long).Show();
+                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s225)}", ToastLength.Long).Show();
 
                 }
                 else

@@ -237,7 +237,7 @@
 	<string name="s223"> has to be a number (</string>
 	<string name="s224"> not valid for warehouse </string>
 	<string name="s225">Error occurred</string>
-	<string name="s227">It's not possible to issue this item because it has no stock.</string>
+	<string name="s227">It\'s not possible to issue this item because it has no stock.</string>
 	<string name="s228">Item was not chosen.</string>
 	<string name="s229">Error when checking the item.</string>
 	<string name="s230">No stock.</string>
@@ -266,4 +266,13 @@
 	<string name="s253">Warehouse not chosen!</string>
 	<string name="s254">SSCC code was not inputted!</string>
 	<string name="s255">Serial number not inputted!</string>
+
+
+	<string name="s256">Details</string>
+	<string name="s257">Ident</string>
+	<string name="s258">Location</string>
+	<string name="s259">Order</string>
+	<string name="s260">Name</string>
+	
+	
 </resources>

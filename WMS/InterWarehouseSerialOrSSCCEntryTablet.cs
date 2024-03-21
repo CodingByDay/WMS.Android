@@ -368,7 +368,7 @@ namespace WMS
                 {
                     RunOnUiThread(() =>
                     {
-                        string WebError = string.Format("Napaka pri dostopu do web aplikacije." + error);
+                        string WebError = string.Format($"{Resources.GetString(Resource.String.s213)}" + error);
                         DialogHelper.ShowDialogError(this, this, WebError);
                        
                     });
@@ -491,7 +491,7 @@ namespace WMS
                     var locations = Services.GetObjectList("lo", out error, warehouse);
                     if (locations == null)
                     {
-                        DialogHelper.ShowDialogError(this, this, "Prišlo je do napake");
+                        DialogHelper.ShowDialogError(this, this, $"{Resources.GetString(Resource.String.s225)}");
 
                     }
                     else
@@ -1327,7 +1327,7 @@ namespace WMS
                     var debi = issuerLocs.Items.Count();
                     if (issuerLocs == null)
                     {
-                        DialogHelper.ShowDialogError(this, this, "Prišlo je do napake");
+                        DialogHelper.ShowDialogError(this, this, $"{Resources.GetString(Resource.String.s225)}");
                     }
                     else
                     {
@@ -1760,7 +1760,7 @@ namespace WMS
                 {
                     RunOnUiThread(() =>
                     {
-                        string WebError = string.Format("Napaka pri dostopu do web aplikacije." + error);
+                        string WebError = string.Format($"{Resources.GetString(Resource.String.s213)}" + error);
                         DialogHelper.ShowDialogError(this, this, WebError);
        
                     });

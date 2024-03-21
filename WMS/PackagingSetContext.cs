@@ -195,7 +195,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             }
             else
             {
-                string toast = string.Format("Napaka pri dostopu do web aplikacije.");
+                string toast = string.Format($"{Resources.GetString(Resource.String.s213)}");
                 Toast.MakeText(this, toast, ToastLength.Long).Show();
                 return;
             }

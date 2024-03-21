@@ -79,7 +79,7 @@ namespace WMS
                 var stock = Services.GetObjectList("str", out error, warehouse + "|" + location + "|" + ident);
                 if (stock == null)
                 {
-                    string WebError = string.Format("Napaka pri preverjanju zaloge." + error);
+                    string WebError = string.Format($"{Resources.GetString(Resource.String.s216)}" + error);
                     DialogHelper.ShowDialogError(this, this, WebError);
                     return "";
                 }
@@ -100,7 +100,7 @@ namespace WMS
             var wh = spinnerAdapterList.ElementAt(temporaryPositionWarehouse);
             if (wh == null)
             {
-                string WebError = string.Format("Skladišče ni izbrano.");
+                string WebError = string.Format($"{Resources.GetString(Resource.String.s245)}");
                 DialogHelper.ShowDialogError(this, this, WebError);
                 return;
             }
@@ -109,7 +109,7 @@ namespace WMS
             {
                 if (!CommonData.IsValidLocation(wh.ID, tbLocation.Text.Trim()))
                 {
-                    string WebError = string.Format("Lokacija ni veljavna");
+                    string WebError = string.Format($"{Resources.GetString(Resource.String.s234)}");
                     DialogHelper.ShowDialogError(this, this, WebError);
                     return;
                 }
@@ -117,13 +117,13 @@ namespace WMS
 
             if (string.IsNullOrEmpty(tbIdent.Text.Trim()))
             {
-                string WebError = string.Format("Ident ni podan");
+                string WebError = string.Format($"{Resources.GetString(Resource.String.s235)}");
                 DialogHelper.ShowDialogError(this, this, WebError);
                 return;
             }
 
             stock = LoadStockFromStockSerialNo(wh.ID, tbLocation.Text.Trim(), tbIdent.Text.Trim());
-            lbStock.Text = "Zaloga:\r\n" + stock;
+            lbStock.Text = $"{Resources.GetString(Resource.String.s155)}:\r\n" + stock;
             isEmptyStock();
         }
 
@@ -317,13 +317,13 @@ namespace WMS
         {
             tbLocation.Text = locationData.ElementAt(e.Position);
 
-            Toast.MakeText(this, $"Izbrali ste  {locationData.ElementAt(e.Position)}.", ToastLength.Long).Show();
+            Toast.MakeText(this, $"{Resources.GetString(Resource.String.s236)}  {locationData.ElementAt(e.Position)}.", ToastLength.Long).Show();
         }
 
         private void SpinnerIdent_ItemSelected(object sender, AdapterView.ItemSelectedEventArgs e)
         {
             tbIdent.Text = identData.ElementAt(e.Position);
-            Toast.MakeText(this, $"Izbrali ste  {identData.ElementAt(e.Position)}", ToastLength.Long).Show();
+            Toast.MakeText(this, $"{Resources.GetString(Resource.String.s236)}  {identData.ElementAt(e.Position)}", ToastLength.Long).Show();
         }
 
         private void showPictureIdent(string ident, string wh)
@@ -351,14 +351,12 @@ namespace WMS
             try
             {
                 Android.Graphics.Bitmap show = Services.GetImageFromServer(wh);
-
                 Drawable d = new BitmapDrawable(Resources, show);
-
                 imagePNG.SetImageDrawable(d);
                 imagePNG.Visibility = ViewStates.Visible;
                 imagePNG.Click += (e, ev) => { ImageClick(d); };
             }
-            catch (Exception error)
+            catch (Exception)
             {
                 return;
             }
@@ -370,16 +368,12 @@ namespace WMS
             popupDialog.SetContentView(Resource.Layout.WarehousePicture);
             popupDialog.Window.SetSoftInputMode(SoftInput.AdjustResize);
             popupDialog.Show();
-
             popupDialog.Window.SetLayout(LayoutParams.MatchParent, LayoutParams.WrapContent);
             popupDialog.Window.SetBackgroundDrawable(new ColorDrawable(Color.ParseColor("#081a45")));
             image = popupDialog.FindViewById<ZoomageView>(Resource.Id.image);
             image.SetMinimumHeight(500);
-
             image.SetMinimumWidth(800);
-
             image.SetImageDrawable(d);
-
             // Access Popup layout fields like below
         }
 
@@ -423,7 +417,7 @@ namespace WMS
                 var debi = issuerLocs.Items.Count();
                 if (issuerLocs == null)
                 {
-                    DialogHelper.ShowDialogError(this, this, "Prišlo je do napake");
+                    DialogHelper.ShowDialogError(this, this, $"{Resources.GetString(Resource.String.s225)}");
                 }
                 else
                 {
@@ -431,7 +425,6 @@ namespace WMS
                     {
                         var location = x.GetString("LocationID");
                         locationData.Add(location);
-                        // Notify the adapter state change!
                     });
                 }
             });

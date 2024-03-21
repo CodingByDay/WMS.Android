@@ -509,7 +509,7 @@ namespace WMS
                 adapter_.setSelected(position);
                 Trail selected = data_.ElementAt(position);
                 AlertDialog.Builder builder = new AlertDialog.Builder(context_);
-                builder.SetTitle("Podrobnosti");
+                builder.SetTitle($"{context_.Resources.GetString(Resource.String.s256)}");
                 builder.SetMessage($"Ident: {selected.Ident}\nNaziv: {selected.Name}\nKljuč: {selected.Key}");
                 builder.SetPositiveButton("OK", (s, args) =>
                 {
@@ -742,7 +742,7 @@ namespace WMS
                 var openIdent = Services.GetObject("id", ident, out error);
                 if (openIdent == null)
                 {
-                    string WebError = string.Format("Napaka pri preverjanju identa." + error);
+                    string WebError = string.Format($"{Resources.GetString(Resource.String.s229)}" + error);
                     Toast.MakeText(this, WebError, ToastLength.Long).Show();
                     return false;
                 }
@@ -772,7 +772,7 @@ namespace WMS
                     var savedMoveHead = Services.SetObject("mh", moveHead, out error);
                     if (savedMoveHead == null)
                     {
-                        string WebError = string.Format("Napaka pri dostopu do web aplikacije." + error);
+                        string WebError = string.Format($"{Resources.GetString(Resource.String.s213)}" + error);
                         Toast.MakeText(this, WebError, ToastLength.Long).Show();
                         return false;
                     }
@@ -832,7 +832,7 @@ namespace WMS
                     var savedMoveHead = Services.SetObject("mh", moveHead, out error);
                     if (savedMoveHead == null)
                     {
-                        string WebError = string.Format("Napaka pri dostopu do web aplikacije." + error);
+                        string WebError = string.Format($"{Resources.GetString(Resource.String.s213)}" + error);
                         Toast.MakeText(this, WebError, ToastLength.Long).Show();
                         return false;
                     }

@@ -198,7 +198,7 @@ namespace WMS
                 else
                 {
 
-                    string toastError = string.Format("Napaka pri dostopu do web aplikacije." + result);
+                    string toastError = string.Format($"{Resources.GetString(Resource.String.s213)}" + result);
                     Toast.MakeText(this, toastError, ToastLength.Long).Show();
                     System.Diagnostics.Process.GetCurrentProcess().Kill();
                     return;

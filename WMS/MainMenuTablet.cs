@@ -175,7 +175,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 var stock = Services.GetObjectList("strl", out error,  location);
                 if (stock == null)
                 {
-                    string WebError = string.Format("Napaka pri preverjanju zaloge." + error);
+                    string WebError = string.Format($"{Resources.GetString(Resource.String.s216)}" + error);
                     RunOnUiThread(() =>
                     {
                         Toast.MakeText(this, WebError, ToastLength.Long).Show();

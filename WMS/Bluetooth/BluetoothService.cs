@@ -84,13 +84,13 @@ public class BluetoothService : Service
 
                 socket = device.CreateRfcommSocketToServiceRecord(UUID.FromString("f8edf739-676c-464e-9337-0d46feaa61d6"));
                 socket.Connect();
-                ShowToast("Povezava z napravo uspešna");
+                ShowToast("Connection successful");
                 running = true;
                 // Now you have a connected socket for communication
             }
             catch (Exception)
             {
-                ShowToast("Povezava neuspešna");
+                ShowToast("Failed connection");
                 return;
                 // Handle connection errors
             }

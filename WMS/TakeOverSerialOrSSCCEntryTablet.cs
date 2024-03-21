@@ -143,7 +143,7 @@ namespace WMS
 
                         if (openOrder == null)
                         {
-                            Toast.MakeText(this, "Napaka pri dostopu do web aplikacije." + error, ToastLength.Long).Show();
+                            Toast.MakeText(this, $"{Resources.GetString(Resource.String.s213)}" + error, ToastLength.Long).Show();
                             return;
                         }
                     }
@@ -657,7 +657,7 @@ namespace WMS
 
                 if (locations == null)
                 {
-                    Toast.MakeText(this, "Prišlo je do napake", ToastLength.Long).Show();
+                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s225)}", ToastLength.Long).Show();
                 }
                 else
                 {

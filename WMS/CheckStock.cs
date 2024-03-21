@@ -62,7 +62,7 @@ namespace WMS
                 var stock = Services.GetObjectList("str", out error, warehouse + "|" + location + "|" + ident);
                 if (stock == null)
                 {
-                    string WebError = string.Format("Napaka pri preverjanju zaloge." + error);
+                    string WebError = string.Format($"{Resources.GetString(Resource.String.s216)}" + error);
                     DialogHelper.ShowDialogError(this, this, WebError);
 
                     return "";
@@ -91,7 +91,7 @@ namespace WMS
             {
                 if (!CommonData.IsValidLocation(wh.ID, tbLocation.Text.Trim()))
                 {
-                    string WebError = string.Format("Lokacija ni veljavna.");
+                    string WebError = string.Format($"{Resources.GetString(Resource.String.s234)}");
                     DialogHelper.ShowDialogError(this, this, WebError);
                     return;
                 }
@@ -99,14 +99,14 @@ namespace WMS
 
             if (string.IsNullOrEmpty(tbIdent.Text.Trim()))
             {
-                string WebError = string.Format("Ident ni podan.");
+                string WebError = string.Format($"{Resources.GetString(Resource.String.s235)}");
                 DialogHelper.ShowDialogError(this, this, WebError);
 
                 return;
             }
 
             stock = LoadStockFromStockSerialNo(wh.ID, tbLocation.Text.Trim(), tbIdent.Text.Trim());
-            lbStock.Text = "Zaloga:\r\n" + stock;
+            lbStock.Text = $"{Resources.GetString(Resource.String.s155)}:\r\n" + stock;
             isEmptyStock();
         }
 
@@ -337,7 +337,7 @@ namespace WMS
                 var debi = issuerLocs.Items.Count();
                 if (issuerLocs == null)
                 {
-                    DialogHelper.ShowDialogError(this, this, "Prišlo je do napake");
+                    DialogHelper.ShowDialogError(this, this, $"{Resources.GetString(Resource.String.s225)}");
                 }
                 else
                 {

@@ -17,18 +17,10 @@ namespace WMS.Printing
             var data = CompactSerializer.Serialize<NameValueObject>(nvo);
             if (WebApp.Post("mode=print", data, out error))
             {
-                if (error == "OK!")
-                {
-                    string toast = string.Format("Podatki poslati na tiskalnik.");
-                }
-                else
-                {
-                    string toast = string.Format("Napaka pri tiskanju." + error);
-                }
+
             }
             else
             {
-                string toast = string.Format("Napaka pri dostopu do web aplikacije." + error);
             }
         }
     }
