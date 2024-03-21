@@ -341,7 +341,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             if ((0 <= displayOrder) && (displayOrder < moveItemDivision.Items.Count))
             {
                 var mid = moveItemDivision.Items[displayOrder];
-                lblOrder.Text = "Naročilo (" + (displayOrder + 1).ToString() + "/" + moveItemDivision.Items.Count.ToString() + ")";
+                lblOrder.Text = $"{Resources.GetString(Resource.String.s14)} (" + (displayOrder + 1).ToString() + "/" + moveItemDivision.Items.Count.ToString() + ")";
                 tbNarocilo.Text = mid.GetString("Order");
                 tbKupec.Text = mid.GetString("Receiver");
                 var dd = mid.GetDateTime("DeliveryDeadline");

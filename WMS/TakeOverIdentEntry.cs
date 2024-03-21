@@ -257,7 +257,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                     var savedMoveHead = Services.SetObject("mh", moveHead, out error);
                     if (savedMoveHead == null)
                     {
-                        DialogHelper.ShowDialogError(this, this, "Napaka pri dostopu do web aplikacije");
+                        DialogHelper.ShowDialogError(this, this, $"{Resources.GetString(Resource.String.s213)}");
                         return false;
                     }
                     else
@@ -301,7 +301,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                     var savedMoveHead = Services.SetObject("mh", moveHead, out error);
                     if (savedMoveHead == null)
                     {
-                        DialogHelper.ShowDialogError(this, this, "Napaka pri dostopu do web aplikacije");
+                        DialogHelper.ShowDialogError(this, this, $"{Resources.GetString(Resource.String.s213)}");
                         return false;
                     }
                     else
@@ -369,8 +369,8 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                         if (openOrders == null)
                         {
                             // Napaka pri pridobivanju odprtih naročil: " + error
-                            DialogHelper.ShowDialogError(this, this, "Napaka pri pridobivanju odprtih naročil: ");
-                            //  Toast.MakeText(this, "Napaka pri pridobivanju odprtih naročil: " + error, ToastLength.Long).Show();
+                            DialogHelper.ShowDialogError(this, this, $"{Resources.GetString(Resource.String.s216)}");
+                            //  Toast.MakeText(this, $"{Resources.GetString(Resource.String.s216)}" + error, ToastLength.Long).Show();
                             tbIdent.Text = "";                        
                             tbNaziv.Text = "";
                         }

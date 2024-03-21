@@ -258,7 +258,7 @@ namespace WMS
                 {
                     RunOnUiThread(() =>
                     {
-                        string WebError = string.Format("SSCC koda je obvezen podatek.");
+                        string WebError = string.Format($"{Resources.GetString(Resource.String.s254)}");
                         DialogHelper.ShowDialogError(this, this, WebError);
                         tbSSCC.RequestFocus();
                     });
@@ -271,7 +271,7 @@ namespace WMS
             {
                 RunOnUiThread(() =>
                 {
-                    string WebError = string.Format("Serijska št. je obvezen podatek.");
+                    string WebError = string.Format($"{Resources.GetString(Resource.String.s255)}");
                     DialogHelper.ShowDialogError(this, this, WebError);
 
                     tbSerialNum.RequestFocus();
@@ -284,7 +284,7 @@ namespace WMS
             {
                 RunOnUiThread(() =>
                 {
-                    string WebError = string.Format("Količina je obvezan podatek.");
+                    string WebError = string.Format($"{Resources.GetString(Resource.String.s220)}");
                     DialogHelper.ShowDialogError(this, this, WebError);
 
                     tbPacking.RequestFocus();
@@ -301,7 +301,7 @@ namespace WMS
                     {
                         RunOnUiThread(() =>
                         {
-                            string WebError = string.Format("Količina je obvezan podatek in mora biti različna od nič");
+                            string WebError = string.Format($"{Resources.GetString(Resource.String.s40)} {Resources.GetString(Resource.String.s222)}");
                             DialogHelper.ShowDialogError(this, this, WebError);
 
                             tbPacking.RequestFocus();
@@ -322,19 +322,17 @@ namespace WMS
                     {
                         RunOnUiThread(() =>
                         {
-                            string WebError = string.Format("Zaloga ni znana, vpišite potrebne podatke");
+                            string WebError = string.Format($"{Resources.GetString(Resource.String.s269)}");
                             DialogHelper.ShowDialogError(this, this, WebError);
                         });
 
-
-                        //  SelectNext(tbIdent);
                         return false;
                     }
                     if (Math.Abs(qty) > Math.Abs(stockQtyLocal))
                     {
                         RunOnUiThread(() =>
                         {
-                            string WebError = string.Format("Količina ne sme presegati zaloge!");
+                            string WebError = string.Format($"{Resources.GetString(Resource.String.s278)}");
                             DialogHelper.ShowDialogError(this, this, WebError);
 
                             tbPacking.RequestFocus();
@@ -347,7 +345,7 @@ namespace WMS
                 {
                     RunOnUiThread(() =>
                     {
-                        string WebError = string.Format("Količina mora biti število (" + e.Message + ")!");
+                        string WebError = string.Format($"{Resources.GetString(Resource.String.s220)}");
                         DialogHelper.ShowDialogError(this, this, WebError);
                         tbPacking.RequestFocus();
                     });
@@ -360,7 +358,7 @@ namespace WMS
             {
                 RunOnUiThread(() =>
                 {
-                    string WebError = string.Format("Št. enota je obavezan podatek.");
+                    string WebError = string.Format($"{Resources.GetString(Resource.String.s270)}");
                     DialogHelper.ShowDialogError(this, this, WebError);
                 });
 
@@ -375,7 +373,7 @@ namespace WMS
                     {
                         RunOnUiThread(() =>
                         {
-                            string WebError = string.Format("Št. enota je obavezan podatek in mora biti različit od nič.");
+                            string WebError = string.Format($"{Resources.GetString(Resource.String.s270)}");
                             DialogHelper.ShowDialogError(this, this, WebError);
                             tbUnits.RequestFocus();
                         });
@@ -389,7 +387,7 @@ namespace WMS
 
                     RunOnUiThread(() =>
                     {
-                        string WebError = string.Format("Št. enot mora biti število (" + e.Message + ")!");
+                        string WebError = string.Format($"{Resources.GetString(Resource.String.s270)}");
                         DialogHelper.ShowDialogError(this, this, WebError);
                         tbPacking.RequestFocus();
                     });
@@ -402,7 +400,7 @@ namespace WMS
             {
                 RunOnUiThread(() =>
                 {
-                    string WebError = string.Format("Prejemna lokacija" + tbLocation.Text.Trim() + "ni veljavna za sladišće" + moveHead.GetString("Issuer") + "!");
+                    string WebError = string.Format($"{Resources.GetString(Resource.String.s271)}" + tbLocation.Text.Trim() + $"{Resources.GetString(Resource.String.s272)}" + moveHead.GetString("Issuer") + "!");
                     DialogHelper.ShowDialogError(this, this, WebError);
                     tbIssueLocation.RequestFocus();
                 });
@@ -414,7 +412,7 @@ namespace WMS
             {
                 RunOnUiThread(() =>
                 {
-                    string WebError = string.Format("Prejemna lokacija" + tbLocation.Text.Trim() + "ni veljavna za sladišće" + moveHead.GetString("Receiver") + "!");
+                    string WebError = string.Format($"{Resources.GetString(Resource.String.s271)}" + tbLocation.Text.Trim() + $"{Resources.GetString(Resource.String.s272)}" + moveHead.GetString("Receiver") + "!");
                     DialogHelper.ShowDialogError(this, this, WebError);
                     tbLocation.RequestFocus();
                 });
@@ -497,7 +495,7 @@ namespace WMS
 
             if (!CommonData.IsValidLocation(moveHead.GetString("Issuer"), location))
             {
-                string SuccessMessage = string.Format("Izdajna lokacija" + location + "ni veljavna za skladisće" + moveHead.GetString("Issuer") + "'!");
+                string SuccessMessage = string.Format($"{Resources.GetString(Resource.String.s273)}" + location + $"{Resources.GetString(Resource.String.s27)}" + moveHead.GetString("Issuer") + "'!");
                 DialogHelper.ShowDialogError(this, this, SuccessMessage);
 
 
@@ -513,7 +511,7 @@ namespace WMS
             }
             else
             {
-                DialogHelper.ShowDialogError(this, this, "Prišlo je do napake.");
+                DialogHelper.ShowDialogError(this, this, $"{Resources.GetString(Resource.String.s225)}");
 
             }
             return obj;
@@ -561,7 +559,7 @@ namespace WMS
 
             if (!CommonData.IsValidLocation(moveHead.GetString("Issuer"), tbIssueLocation.Text.Trim()))
             {
-                string SuccessMessage = string.Format("Izdajna lokacija" + tbIssueLocation.Text.Trim() + "ni veljavna za skladisće" + moveHead.GetString("Issuer") + "'!");
+                string SuccessMessage = string.Format($"{Resources.GetString(Resource.String.s273)}" + tbIssueLocation.Text.Trim() + $"{Resources.GetString(Resource.String.s27)}" + moveHead.GetString("Issuer") + "'!");
                 DialogHelper.ShowDialogError(this, this, SuccessMessage);
                 tbIssueLocation.RequestFocus();
 
@@ -572,12 +570,12 @@ namespace WMS
             if (!Double.IsNaN(stockQty))
             {
                 tbPacking.Text = stockQty.ToString(CommonData.GetQtyPicture());
-                lbQty.Text = "Količina (" + stockQty.ToString(CommonData.GetQtyPicture()) + ")";
+                lbQty.Text = $"{Resources.GetString(Resource.String.s40)} (" + stockQty.ToString(CommonData.GetQtyPicture()) + ")";
             }
             else
             {
                 tbPacking.Text = "";
-                lbQty.Text = "Količina (?)";
+                lbQty.Text = $"{Resources.GetString(Resource.String.s40)} (?)";
             }
 
 
@@ -616,7 +614,7 @@ namespace WMS
                 var stock = Services.GetObject("str", warehouse + "|" + location + "|" + sscc + "|" + serialNum + "|" + ident, out error);
                 if (stock == null)
                 {
-                    string SuccessMessage = string.Format("Napaka pri preverjenju zaloge." + error);
+                    string SuccessMessage = string.Format($"{Resources.GetString(Resource.String.s216)}" + error);
                     DialogHelper.ShowDialogError(this, this, SuccessMessage);
 
                     return Double.NaN;
@@ -642,7 +640,7 @@ namespace WMS
                 var stock = Services.GetObject("pas", warehouse + "|" + ident, out error);
                 if (stock == null)
                 {
-                    string SuccessMessage = string.Format("Napaka pri preverjenju zaloge." + error);
+                    string SuccessMessage = string.Format($"{Resources.GetString(Resource.String.s216)}" + error);
                     return Double.NaN;
                 }
                 else
@@ -666,7 +664,7 @@ namespace WMS
                 var stock = Services.GetObject("pass", warehouse + "|" + ident + "|" + serialNo, out error);
                 if (stock == null)
                 {
-                    string SuccessMessage = string.Format("Napaka pri preverjanju zaloge" + error);
+                    string SuccessMessage = string.Format($"{Resources.GetString(Resource.String.s216)}" + error);
                     return Double.NaN;
                 }
                 else
@@ -890,7 +888,7 @@ namespace WMS
 
             if (!CommonData.IsValidLocation(moveHead.GetString("Issuer"), tbIssueLocation.Text.Trim()))
             {
-                string SuccessMessage = string.Format("Izdajna lokacija" + tbIssueLocation.Text.Trim() + "ni veljavna za skladisće" + moveHead.GetString("Issuer") + "'!");
+                string SuccessMessage = string.Format($"{Resources.GetString(Resource.String.s273)}" + tbIssueLocation.Text.Trim() + $"{Resources.GetString(Resource.String.s27)}" + moveHead.GetString("Issuer") + "'!");
                 DialogHelper.ShowDialogError(this, this, SuccessMessage);
                 tbIssueLocation.RequestFocus();
 
@@ -901,12 +899,12 @@ namespace WMS
             if (!Double.IsNaN(stockQty))
             {
                 tbPacking.Text = stockQty.ToString(CommonData.GetQtyPicture());
-                lbQty.Text = "Količina (" + stockQty.ToString(CommonData.GetQtyPicture()) + ")";
+                lbQty.Text = $"{Resources.GetString(Resource.String.s40)} (" + stockQty.ToString(CommonData.GetQtyPicture()) + ")";
             }
             else
             {
                 tbPacking.Text = "";
-                lbQty.Text = "Količina (?)";
+                lbQty.Text = $"{Resources.GetString(Resource.String.s40)} (?)";
             }
 
 
@@ -986,7 +984,7 @@ namespace WMS
                     /* Adds an object to the list. */
                     if (obj is null)
                     {
-                        Toast.MakeText(this, "Ne obstaja.", ToastLength.Long).Show();
+                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s240)}", ToastLength.Long).Show();
                         if (isOkayToCallBarcode == true)
                         {
                             tbSSCCpopup.Text = "";
@@ -1040,7 +1038,7 @@ namespace WMS
         {
             if (data.Count != 0)
             {
-                string formatedString = $"{data.Count} skeniranih SSCC koda.";
+                string formatedString = $"{data.Count} {Resources.GetString(Resource.String.s240)}";
                 tbSSCC.Text = formatedString;
                 tbSerialNum.Text = "...";
                 tbIssueLocation.Text = "...";
@@ -1149,16 +1147,15 @@ namespace WMS
             var item = adapter.retunObjectAt(index);
 
 
-
             AlertDialog.Builder alert = new AlertDialog.Builder(this);
-            alert.SetTitle("Podatki o kodi");
-            alert.SetMessage($"Podatki:\nIdent: {item.Ident}\nNaziv: {item.Name}\nSSCC: {item.SSCC}\nKoličina: {item.Quantity}\n");
+            alert.SetTitle($"{Resources.GetString(Resource.String.s256)}");
+            alert.SetMessage($"{Resources.GetString(Resource.String.s275)}:\n{Resources.GetString(Resource.String.s257)}: {item.Ident}\n{Resources.GetString(Resource.String.s260)}: {item.Name}\n{Resources.GetString(Resource.String.s79)}: {item.SSCC}\n{Resources.GetString(Resource.String.s83)}: {item.Quantity}\n");
             // Close button
-            alert.SetNegativeButton("Zapri", (senderAlert, args) =>
+            alert.SetNegativeButton($"{Resources.GetString(Resource.String.s276)}", (senderAlert, args) =>
             {
 
             });
-            alert.SetPositiveButton("Pobriši", (senderAlert, args) =>
+            alert.SetPositiveButton($"{Resources.GetString(Resource.String.s277)}", (senderAlert, args) =>
             {
                 DeleteFromTouch(index);
             });
@@ -1355,7 +1352,7 @@ namespace WMS
                 {
                     if (String.IsNullOrEmpty(tbLocation.Text))
                     {
-                        Toast.MakeText(this, "Lokacija manjka.", ToastLength.Long).Show();
+                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s241)}", ToastLength.Long).Show();
                         return;
                     }
 
@@ -1381,7 +1378,7 @@ namespace WMS
             else
             if (String.IsNullOrEmpty(tbLocation.Text))
             {
-                Toast.MakeText(this, "Lokacija manjka.", ToastLength.Long).Show();
+                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s241)}", ToastLength.Long).Show();
                 return;
             }
             {
@@ -1400,7 +1397,7 @@ namespace WMS
                     RunOnUiThread(() =>
                     {
                         progress = new ProgressDialogClass();
-                        progress.ShowDialogSync(this, "Zaključujem");
+                        progress.ShowDialogSync(this, $"{Resources.GetString(Resource.String.s262)}");
                     });
 
 
@@ -1419,8 +1416,8 @@ namespace WMS
                                     var id = result.Split('+')[1];
 
                                     AlertDialog.Builder alert = new AlertDialog.Builder(this);
-                                    alert.SetTitle("Zaključevanje uspešno");
-                                    alert.SetMessage("Zaključevanje uspešno! Št.prevzema:\r\n" + id);
+                                    alert.SetTitle($"{Resources.GetString(Resource.String.s263)}");
+                                    alert.SetMessage($"{Resources.GetString(Resource.String.s264)}" + id);
 
                                     alert.SetPositiveButton("Ok", (senderAlert, args) =>
                                     {
@@ -1443,8 +1440,8 @@ namespace WMS
                                 {
                                     progress.StopDialogSync();
                                     AlertDialog.Builder alert = new AlertDialog.Builder(this);
-                                    alert.SetTitle("Napaka");
-                                    alert.SetMessage("Napaka pri zaključevanju: " + result);
+                                    alert.SetTitle($"{Resources.GetString(Resource.String.s265)}");
+                                    alert.SetMessage($"{Resources.GetString(Resource.String.s266)}" + result);
 
                                     alert.SetPositiveButton("Ok", (senderAlert, args) =>
                                     {
@@ -1466,7 +1463,7 @@ namespace WMS
                         {
                             RunOnUiThread(() =>
                             {
-                                string SuccessMessage = string.Format("Napaka pri klicu web aplikacije");
+                                string SuccessMessage = string.Format($"{Resources.GetString(Resource.String.s218)}");
                                 DialogHelper.ShowDialogError(this, this, SuccessMessage);
                             });
                            
@@ -1509,8 +1506,8 @@ namespace WMS
                                 progress.StopDialogSync();
                                 var id = result.Split('+')[1];
                                 AlertDialog.Builder alert = new AlertDialog.Builder(this);
-                                alert.SetTitle("Zaključevanje uspešno");
-                                alert.SetMessage("Zaključevanje uspešno! Št.prevzema:\r\n" + id);
+                                alert.SetTitle($"{Resources.GetString(Resource.String.s263)}");
+                                alert.SetMessage($"{Resources.GetString(Resource.String.s264)}" + id);
                                 alert.SetPositiveButton("Ok", (senderAlert, args) =>
                                 {
                                     System.Threading.Thread.Sleep(500);
@@ -1528,8 +1525,8 @@ namespace WMS
                             {
                                 progress.StopDialogSync();
                                 AlertDialog.Builder alert = new AlertDialog.Builder(this);
-                                alert.SetTitle("Napaka");
-                                alert.SetMessage("Napaka pri zaključevanju: " + result);
+                                alert.SetTitle($"{Resources.GetString(Resource.String.s265)}");
+                                alert.SetMessage($"{Resources.GetString(Resource.String.s266)}" + result);
 
                                 alert.SetPositiveButton("Ok", (senderAlert, args) =>
                                 {
@@ -1550,7 +1547,7 @@ namespace WMS
                     {
                         RunOnUiThread(() =>
                         {
-                            string SuccessMessage = string.Format("Napaka pri klicu web aplikacije");
+                            string SuccessMessage = string.Format($"{Resources.GetString(Resource.String.s218)}");
                             DialogHelper.ShowDialogError(this, this, SuccessMessage);
                         });
                       
@@ -1655,11 +1652,7 @@ namespace WMS
                     return;
 
                 }
-                finally
-                {
-                    string toast = new string("Uspešno procesiran ident.");
-                    Toast.MakeText(this, toast, ToastLength.Long).Show();
-                }
+
             }
 
             lbIdentName.Text = ident.GetString("Name");

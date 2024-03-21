@@ -273,6 +273,74 @@
 	<string name="s258">Location</string>
 	<string name="s259">Order</string>
 	<string name="s260">Name</string>
+	<string name="s261">Choose the business event.</string>
+
+	<string name="s262">Finishing</string>
+	<string name="s263">Success</string>
+	<string name="s264">Success! Document number:\r\n</string>
+	<string name="s265">Error</string>
+	<string name="s266">Error: </string>
+
+
+	<string name="s267">Positions (none)</string>
+	<string name="s268">Information</string>
+
+	
+	<string name="s269">Stock is not known</string>
+
+	<string name="s270">Data is missing / invalid.</string>
+
+	<string name="s271">Receiving location</string>
+	<string name="s272">not valid for warehouse</string>
+	<string name="s273">Issue location</string>
+
+	<string name="s274">scanned SSCC codes.</string>
+
+
+	<string name="s275">Details:</string>
+
+	<string name="s276">Close</string>
+	<string name="s277">Delete</string>
+
+	<string name="s278">Quantity cannot exceed the stock!</string>
+
+	<string name="s279">Confirmation succesfull! Confirmation: </string>
+	<string name="s280">Confirmation error: </string>
 	
 	
+	<string name="s281">Open inventories (none)</string>
+
+	<string name="s282">Inventory document does not exist!</string>
+	<string name="s283">Inventory open</string>
+	
+	
+	<string name="s284">Inventory document saved</string>
+	
+	<string name="s285">No inventory document for the selected warehouse.</string>
+	
+	<string name="s286">You have to choose an order</string>
+
+	<string name="s287">You have to choose a warehouse</string>
+	<string name="s288">You have to choose a subject</string>
+	
+	<string name="s289">Order (none)</string>
+	
+	
+	<string name="s290">Update</string>
+
+
+	<string name="s291">Quantity is bigger than the stock</string>
+
+
+	<string name="s292">No stock</string>
+
+	<string name="s293">Serial F2</string>
+
+
+	<string name="s294">Device is innactive.</string>
+	<string name="s295">Device does not have the permissions.</string>
+	<string name="s296">Wrong password.</string>
+	<string name="s297">No internet connection...</string>
+
+
 </resources>

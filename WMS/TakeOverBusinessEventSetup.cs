@@ -291,7 +291,7 @@ namespace WMS
             var itemDT = adapterDoc.GetItem(temporaryPositioncbDoc); 
             if (itemDT == null)
             {
-                string toast = string.Format("Poslovni dogodek more bit izbran");
+                string toast = string.Format($"{Resources.GetString(Resource.String.s237)}");
                 Toast.MakeText(this, toast, ToastLength.Long).Show();
                 return;
             }

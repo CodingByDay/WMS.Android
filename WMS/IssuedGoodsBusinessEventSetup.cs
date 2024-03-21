@@ -137,7 +137,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             }
             catch (Exception ex)
             {
-                string toast = string.Format("Napaka" + ex.ToString());
+                string toast = string.Format($"{Resources.GetString(Resource.String.s265)}" + ex.ToString());
                 Toast.MakeText(this, toast, ToastLength.Long).Show();
             }
         }
@@ -151,7 +151,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             }
             catch (Exception ex)
             {
-                string toast = string.Format("Napaka" + ex.ToString());
+                string toast = string.Format($"{Resources.GetString(Resource.String.s265)}" + ex.ToString());
                 Toast.MakeText(this, toast, ToastLength.Long).Show();
             }
         }
@@ -172,7 +172,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             }
             catch (Exception ex)
             {
-                string toast = string.Format("Napaka" + ex.ToString());
+                string toast = string.Format($"{Resources.GetString(Resource.String.s265)}" + ex.ToString());
                 Toast.MakeText(this, toast, ToastLength.Long).Show();
             }
         }
@@ -293,7 +293,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                                     {
                                         RunOnUiThread(() =>
                                         {
-                                            string toasted = string.Format("Napaka pri pridobivanju odprtih naročil: " + error);
+                                            string toasted = string.Format($"{Resources.GetString(Resource.String.s216)}" + error);
                                             Toast.MakeText(this, toasted, ToastLength.Long).Show();
                                             return;
 
@@ -351,7 +351,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             // Fixing clicking the order without choosing an order...
             if (cbExtra.Visibility == ViewStates.Visible&&cbExtra.Text==string.Empty) 
             {
-                Toast.MakeText(this, "Morate izbrati naročilo.", ToastLength.Long).Show();
+                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s286)}", ToastLength.Long).Show();
             }
             else
             {
@@ -423,7 +423,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             var itemDT = adapterDocType.GetItem(temporaryPositionDoc);
             if (itemDT == null)
             {
-                string toast = string.Format("Poslovni dogodek more bit izbran");
+                string toast = string.Format($"{Resources.GetString(Resource.String.s237)}");
                 Toast.MakeText(this, toast, ToastLength.Long).Show();
             }
             else
@@ -431,7 +431,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 var itemWH = adapterWarehouse.GetItem(temporaryPositionWarehouse);
                 if (itemWH == null)
                 {
-                    string toast = string.Format("Sladište more biti izbrano.");
+                    string toast = string.Format($"{Resources.GetString(Resource.String.s287)}");
                     Toast.MakeText(this, toast, ToastLength.Long).Show();
                 }
                 else
@@ -442,7 +442,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                         itemSubj = adapterExtra.GetItem(temporaryPositionExtra);
                         if (itemSubj == null)
                         {
-                            string toast = string.Format("Poslovni dogodek more bit izbran");
+                            string toast = string.Format($"{Resources.GetString(Resource.String.s237)}");
                             Toast.MakeText(this, toast, ToastLength.Long).Show();
                             return;
                         }
@@ -466,7 +466,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                             itemSubj = adapterExtra.GetItem(temporaryPositionExtra);
                             if (itemSubj == null)
                             {
-                                string toast = string.Format("Subjekt more biti izbran.");
+                                string toast = string.Format($"{Resources.GetString(Resource.String.s288)}");
                                 Toast.MakeText(this, toast, ToastLength.Long).Show();
                                 return;
                             }

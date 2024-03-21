@@ -86,7 +86,7 @@ namespace WMS
             {
                 if (result != "Active!")
                 {
-                    Toast.MakeText(this, "Naprava je neaktivna", ToastLength.Long).Show();
+                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s294)}", ToastLength.Long).Show();
                     return;
                 }
 
@@ -135,7 +135,7 @@ namespace WMS
                             Analytics.TrackEvent("Invalid permissions");
                             Password.Text = "";
                             isValid = false;
-                            string toast = new string("Uporabnik nima pravice.");
+                            string toast = new string($"{Resources.GetString(Resource.String.s295)}");
                             Toast.MakeText(this, toast, ToastLength.Long).Show();
                             progressBar1.Visibility = ViewStates.Invisible;
                         }
@@ -144,7 +144,7 @@ namespace WMS
                     {
                         Password.Text = "";
                         isValid = false;
-                        string toast = new string("Napaèno geslo.");
+                        string toast = new string($"{Resources.GetString(Resource.String.s296)}");
                         Toast.MakeText(this, toast, ToastLength.Long).Show();
                         progressBar1.Visibility = ViewStates.Invisible;
                     }
@@ -152,7 +152,7 @@ namespace WMS
                 else
                 {
                     // Is connected 
-                    string toast = new string("Ni internetne povezave...");
+                    string toast = new string($"{Resources.GetString(Resource.String.s297)}");
                     Toast.MakeText(this, toast, ToastLength.Long).Show();
                     progressBar1.Visibility = ViewStates.Invisible;
 

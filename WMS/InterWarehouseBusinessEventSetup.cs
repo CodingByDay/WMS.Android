@@ -66,22 +66,15 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             objectDocType.Add(new ComboBoxItem { ID = "Default", Text = "Izberite poslovni dogodek." });
             docTypes = CommonData.ListDocTypes("E|");
             docTypes.Items.ForEach(dt =>
-            { //       
+            {        
                 objectDocType.Add(new ComboBoxItem { ID = dt.GetString("Code"), Text = dt.GetString("Code") + " " + dt.GetString("Name") });
             });
-            /*
-             Aditional comment area. */
+
             adapter = new CustomAutoCompleteAdapter<ComboBoxItem>(this,
             Android.Resource.Layout.SimpleSpinnerItem, objectDocType);
 
-            ///* 
-            ///* Documentation for the spinner objects add method with an adapter...
-            ///*---------------------------------------------------
-
             cbDocType.Adapter = adapter;
 
-            // Next thing... var warehouses = CommonData.ListWarehouses();
-            // cbIssueWH
 
             var warehouses = CommonData.ListWarehouses();
             if (warehouses != null)
@@ -279,7 +272,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 var savedMoveHead = Services.SetObject("mh", moveHead, out error);
                 if (savedMoveHead == null)
                 {
-                    string errorWebApp = string.Format("Napaka pri dostopu do web aplikacije:" + error );
+                    string errorWebApp = string.Format($"{Resources.GetString(Resource.String.s213)}" + error );
                     DialogHelper.ShowDialogError(this, this, errorWebApp);
 
 
@@ -288,7 +281,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 {
                     if (!Services.TryLock("MoveHead" + savedMoveHead.GetInt("HeadID").ToString(), out error))
                     {
-                        string errorWebApp = string.Format("Kritična napaka: " + error);
+                        string errorWebApp = string.Format($"{Resources.GetString(Resource.String.s215)}" + error);
                         DialogHelper.ShowDialogError(this, this, errorWebApp);
 
                     }
@@ -303,7 +296,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
 
             } catch(Exception errorL)
             {
-                string errorWebApp = string.Format("Napaka pri dostopu do web aplikacije:" + errorL.Message);
+                string errorWebApp = string.Format($"{Resources.GetString(Resource.String.s213)}" + errorL.Message);
                 DialogHelper.ShowDialogError(this, this, errorWebApp);
 
             }
@@ -351,7 +344,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             Spinner spinner = (Spinner)sender;
                 if (e.Position != 0)
                 {
-                    string toast = string.Format("Izbrali ste: {0}", spinner.GetItemAtPosition(e.Position));
+                    string toast = string.Format($"{Resources.GetString(Resource.String.s236)}: {0}", spinner.GetItemAtPosition(e.Position));
                     temporaryPositionDoc = e.Position;
                     var id = objectDocType.ElementAt(e.Position).ID;
                     PrefillWarehouses(id);

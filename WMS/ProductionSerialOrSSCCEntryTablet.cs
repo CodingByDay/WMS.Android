@@ -195,7 +195,7 @@ namespace WMS
             {
                 RunOnUiThread(() =>
                 {
-                    string SuccessMessage = string.Format("SSCC koda je obvezen podatek.");
+                    string SuccessMessage = string.Format($"{Resources.GetString(Resource.String.s254)}");
                     DialogHelper.ShowDialogError(this, this, SuccessMessage);
                     tbSSCC.RequestFocus();
                 });
@@ -223,7 +223,7 @@ namespace WMS
             {
                 RunOnUiThread(() =>
                 {
-                    string SuccessMessage = string.Format("Lokacija '" + tbLocation.Text.Trim() + "' ni veljavna za skladišče '" + moveHead.GetString("Wharehouse") + "'!");
+                    string SuccessMessage = string.Format($"{Resources.GetString(Resource.String.s258)} '" + tbLocation.Text.Trim() + $"' {Resources.GetString(Resource.String.s272)} '" + moveHead.GetString("Wharehouse") + "'!");
                     DialogHelper.ShowDialogError(this, this, SuccessMessage);
                     tbLocation.RequestFocus();
                 });
@@ -243,7 +243,7 @@ namespace WMS
                     {
                         RunOnUiThread(() =>
                         {
-                            string SuccessMessage = string.Format("Napaka pri dostopu do web aplikacije" + error);
+                            string SuccessMessage = string.Format($"{Resources.GetString(Resource.String.s213)}" + error);
                             DialogHelper.ShowDialogError(this, this, SuccessMessage);
                         });
 
@@ -298,7 +298,7 @@ namespace WMS
                             {
                                 RunOnUiThread(() =>
                                 {
-                                    string SuccessMessage = string.Format("Količina (" + qty.ToString(CommonData.GetQtyPicture()) + ") ne sme presegati max. količine (" + max.ToString(CommonData.GetQtyPicture()) + ")!");
+                                    string SuccessMessage = string.Format($"{Resources.GetString(Resource.String.s40)} (" + qty.ToString(CommonData.GetQtyPicture()) + ") ne sme presegati max. količine (" + max.ToString(CommonData.GetQtyPicture()) + ")!");
                                     DialogHelper.ShowDialogError(this, this, SuccessMessage);
                                     tbPacking.RequestFocus();
                                 });
@@ -311,7 +311,7 @@ namespace WMS
                     {
                         RunOnUiThread(() =>
                         {
-                            string SuccessMessage = string.Format("Količina mora biti število (" + e.Message + ")!");
+                            string SuccessMessage = string.Format($"{Resources.GetString(Resource.String.s220)}");
                             DialogHelper.ShowDialogError(this, this, SuccessMessage);
 
                             tbPacking.RequestFocus();
@@ -354,7 +354,7 @@ namespace WMS
                     {
                         RunOnUiThread(() =>
                         {
-                            string SuccessMessage = string.Format("Št. enot mora biti število (" + e.Message + ")!");
+                            string SuccessMessage = string.Format($"{Resources.GetString(Resource.String.s270)}");
                             DialogHelper.ShowDialogError(this, this, SuccessMessage);
                             tbUnits.RequestFocus();
                         });
@@ -383,7 +383,7 @@ namespace WMS
                 {
                     RunOnUiThread(() =>
                     {
-                        string SuccessMessage = string.Format("Napaka pri dostopu do web aplikacije: " + error);
+                        string SuccessMessage = string.Format($"{Resources.GetString(Resource.String.s213)}" + error);
                         DialogHelper.ShowDialogError(this, this, SuccessMessage);
                     });
 
@@ -541,7 +541,7 @@ namespace WMS
                 string error;
                 openWorkOrder = Services.GetObject("wo", key, out error);
                 if (openWorkOrder == null) { throw new ApplicationException("Neveljaven povezan dokument: " + key); }
-                lbQty.Text = "Količina (" + openWorkOrder.GetDouble("OpenQty").ToString(CommonData.GetQtyPicture()) + ")";
+                lbQty.Text = $"{Resources.GetString(Resource.String.s40)} (" + openWorkOrder.GetDouble("OpenQty").ToString(CommonData.GetQtyPicture()) + ")";
             }
             catch (Exception err)
             {
@@ -743,7 +743,7 @@ namespace WMS
                     {
                         progress = new ProgressDialogClass();
 
-                        progress.ShowDialogSync(this, "Zaključujem");
+                        progress.ShowDialogSync(this, $"{Resources.GetString(Resource.String.s262)}");
                     });
                     try
                     {
@@ -759,8 +759,8 @@ namespace WMS
                                     var id = result.Split('+')[1];
 
                                     AlertDialog.Builder alert = new AlertDialog.Builder(this);
-                                    alert.SetTitle("Zaključevanje uspešno");
-                                    alert.SetMessage("Zaključevanje uspešno! Št.prevzema:\r\n" + id);
+                                    alert.SetTitle($"{Resources.GetString(Resource.String.s263)}");
+                                    alert.SetMessage($"{Resources.GetString(Resource.String.s264)}" + id);
 
                                     alert.SetPositiveButton("Ok", (senderAlert, args) =>
                                     {
@@ -784,8 +784,8 @@ namespace WMS
                                 {
                                     progress.StopDialogSync();
                                     AlertDialog.Builder alert = new AlertDialog.Builder(this);
-                                    alert.SetTitle("Napaka");
-                                    alert.SetMessage("Napaka pri zaključevanju: " + result);
+                                    alert.SetTitle($"{Resources.GetString(Resource.String.s265)}");
+                                    alert.SetMessage($"{Resources.GetString(Resource.String.s266)}" + result);
 
                                     alert.SetPositiveButton("Ok", (senderAlert, args) =>
                                     {
@@ -811,8 +811,8 @@ namespace WMS
                             {
                                 progress.StopDialogSync();
                                 AlertDialog.Builder alert = new AlertDialog.Builder(this);
-                                alert.SetTitle("Napaka");
-                                alert.SetMessage("Napaka pri klicu web aplikacije: " + result);
+                                alert.SetTitle($"{Resources.GetString(Resource.String.s265)}");
+                                alert.SetMessage($"{Resources.GetString(Resource.String.s218)}" + result);
 
                                 alert.SetPositiveButton("Ok", (senderAlert, args) =>
                                 {

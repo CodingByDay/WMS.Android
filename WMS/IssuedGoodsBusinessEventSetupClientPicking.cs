@@ -27,7 +27,7 @@ using Android.Speech.Tts;
 using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS
 {
     [Activity(Label = "IssuedGoodsBusinessEventSetupClientPicking", ScreenOrientation = ScreenOrientation.Portrait)]
-    public class IssuedGoodsBusinessEventSetupClientPicking : AppCompatActivity, IDialogInterfaceOnClickListener
+    public class IssuedGoodsBusinessEventSetupClientPicking : AppCompatActivity
     {
         private int initial = 0;
         private CustomAutoCompleteTextView cbDocType;
@@ -97,7 +97,6 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             adapterDocType.SetDropDownViewResource(Android.Resource.Layout.SimpleSpinnerItem);
             cbDocType.Adapter = adapterDocType;
             cbWarehouse.Enabled = true;
-            BottomSheetActions bottomSheetActions = new BottomSheetActions();
             initialLoad = true;
             var _broadcastReceiver = new NetworkStatusBroadcastReceiver();
             _broadcastReceiver.ConnectionStatusChanged += OnNetworkStatusChanged;
@@ -226,7 +225,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             }
             catch (Exception ex)
             {
-                string toast = string.Format("Napaka" + ex.ToString());
+                string toast = string.Format($"{Resources.GetString(Resource.String.s265)}" + ex.ToString());
                 Toast.MakeText(this, toast, ToastLength.Long).Show();
             }
         }
@@ -255,28 +254,10 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 LoaderManifest.LoaderManifestLoop(this);
             }
         }
-        internal class BottomSheetActions : Java.Lang.Object, IDialogInterfaceOnClickListener
-        {
-            public void OnClick(IDialogInterface dialog, int which)
-            {
-                Console.WriteLine("Hello fox");
-            }
+     
 
-        }
-        public void OnClick(IDialogInterface dialog, int which)
-        {
+ 
 
-        }
-
-        private void BtnHidden_Click(object sender, EventArgs e)
-        {
-      
-        }
-
-        private void Hidden_Click(object sender, EventArgs e)
-        {
-            focus.RequestFocus();
-        }
 
         public override bool OnKeyDown(Keycode keyCode, KeyEvent e)
         {
@@ -323,7 +304,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
         {
             if(String.IsNullOrEmpty(currentClient))
             {
-                Toast.MakeText(this, "Morate izbrati naročnika.", ToastLength.Long).Show();
+                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s288)}", ToastLength.Long).Show();
                 return;
             }
             NameValueObject moveHead = new NameValueObject("MoveHead");

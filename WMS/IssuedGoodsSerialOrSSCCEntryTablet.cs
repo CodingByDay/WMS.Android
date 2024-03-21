@@ -184,7 +184,7 @@ namespace WMS
 
     
                 stock = element.anQty ?? 0;
-                lbQty.Text = "Zaloga ( " + element.anQty.ToString() + " )";
+                lbQty.Text = $"{Resources.GetString(Resource.String.s155)} ( " + element.anQty.ToString() + " )";
                 tbPacking.Text = element.anQty.ToString();
                 
 
@@ -200,7 +200,7 @@ namespace WMS
             }
             else
             {
-                lbQty.Text = "Ni zaloge";
+                lbQty.Text = $"{Resources.GetString(Resource.String.s292)}";
             }
         }
 
@@ -231,7 +231,7 @@ namespace WMS
             if (Base.Store.isUpdate)
             {
                 btCreateSame.Visibility = ViewStates.Gone;
-                btCreate.Text = "Posodobi";
+                btCreate.Text = $"{Resources.GetString(Resource.String.s290)}";
             }
         }
 
@@ -261,8 +261,8 @@ namespace WMS
                 tbLocation.Text = moveItem.GetString("Location");
                 tbPalette.Text = moveItem.GetString("Palette");
                 tbPacking.Text = moveItem.GetDouble("Qty").ToString();
-                lbQty.Text = "Zaloga ( " + moveItem.GetDouble("Qty").ToString() + " )";
-                btCreateSame.Text = "Serij. - F2";
+                lbQty.Text = $"{Resources.GetString(Resource.String.s155)} ( " + moveItem.GetDouble("Qty").ToString() + " )";
+                btCreateSame.Text = $"{Resources.GetString(Resource.String.s293)}";
                 // Lock down all other fields
                 tbIdent.Enabled = false;
                 tbSerialNum.Enabled = false;
@@ -409,7 +409,7 @@ namespace WMS
                 RunOnUiThread(() =>
                 {
                     progress = new ProgressDialogClass();
-                    progress.ShowDialogSync(this, "Zaključevanje");
+                    progress.ShowDialogSync(this, $"{Resources.GetString(Resource.String.s262)}");
                 });
 
                 try
@@ -428,13 +428,13 @@ namespace WMS
 
                                 var id = result.Split('+')[1];
 
-                                Toast.MakeText(this, "Zaključevanje uspešno! Št. izdaje:\r\n" + id, ToastLength.Long).Show();
+                                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s264)}" + id, ToastLength.Long).Show();
 
                                 AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
-                                alert.SetTitle("Zaključevanje uspešno");
+                                alert.SetTitle($"{Resources.GetString(Resource.String.s263)}");
 
-                                alert.SetMessage("Zaključevanje uspešno! Št.prevzema:\r\n" + id);
+                                alert.SetMessage($"{Resources.GetString(Resource.String.s264)}" + id);
 
                                 alert.SetPositiveButton("Ok", (senderAlert, args) =>
                                 {
@@ -453,8 +453,8 @@ namespace WMS
                             {
                                 progress.StopDialogSync();
                                 AlertDialog.Builder alert = new AlertDialog.Builder(this);
-                                alert.SetTitle("Napaka");
-                                alert.SetMessage("Napaka pri zaključevanju: " + result);
+                                alert.SetTitle($"{Resources.GetString(Resource.String.s265)}");
+                                alert.SetMessage($"{Resources.GetString(Resource.String.s266)}" + result);
 
                                 alert.SetPositiveButton("Ok", (senderAlert, args) =>
                                 {
@@ -470,7 +470,7 @@ namespace WMS
                     }
                     else
                     {
-                        Toast.MakeText(this, "Napaka pri klicu do web aplikacije" + result, ToastLength.Long).Show();
+                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s216)}" + result, ToastLength.Long).Show();
                     }
                 }
                 finally
@@ -549,7 +549,7 @@ namespace WMS
                 }
                 else
                 {
-                    Toast.MakeText(this, "Nepravilni podatki", ToastLength.Long).Show();
+                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
                 }
             }
             else
@@ -560,7 +560,7 @@ namespace WMS
                 {
                     if (newQty > moveItem.GetDouble("Qty"))
                     {
-                        Toast.MakeText(this, "Količina je večja od dovoljene.", ToastLength.Long).Show();
+                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s291)}", ToastLength.Long).Show();
                     }
                     else
                     {
@@ -587,7 +587,7 @@ namespace WMS
                 }
                 else
                 {
-                    Toast.MakeText(this, "Morate vpisati pravilno količino.", ToastLength.Long).Show();
+                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
                 }
             }
         }
@@ -636,7 +636,7 @@ namespace WMS
 
                             tbLocation.Text = string.Empty;
                             tbPacking.Text = string.Empty;
-                            lbQty.Text = "Ni zaloge";
+                            lbQty.Text = $"{Resources.GetString(Resource.String.s292)}";
 
                         });
 
@@ -666,7 +666,7 @@ namespace WMS
             }
             else
             {
-                Toast.MakeText(this, "Nepravilni podatki", ToastLength.Long).Show();
+                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
             }
         }
 

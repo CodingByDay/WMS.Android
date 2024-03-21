@@ -196,7 +196,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                     moveItem = Services.SetObject("mi", moveItem, out error);
                     if (moveItem == null)
                     {
-                        Toast.MakeText(this, "Napaka pri dostopu do web aplikacije: " + error, ToastLength.Long).Show();
+                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s213)}" + error, ToastLength.Long).Show();
 
                         return null;
                     }

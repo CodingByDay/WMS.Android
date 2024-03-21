@@ -185,8 +185,8 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                             var id = result.Split('+')[1];
                             Toast.MakeText(this, "Zaključevanje uspešno! Št. prevzema:\r\n" + id, ToastLength.Long).Show();
                             AlertDialog.Builder alert = new AlertDialog.Builder(this);
-                            alert.SetTitle("Zaključevanje uspešno");
-                            alert.SetMessage("Zaključevanje uspešno! Št.prevzema:\r\n" + id);
+                            alert.SetTitle($"{Resources.GetString(Resource.String.s263)}");
+                            alert.SetMessage($"{Resources.GetString(Resource.String.s264)}" + id);
 
                             alert.SetPositiveButton("Ok", (senderAlert, args) =>
                             {
@@ -201,13 +201,13 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                         }
                         else
                         {
-                            Toast.MakeText(this, "Napaka pri zaključevanju: " + result, ToastLength.Long).Show();
+                            Toast.MakeText(this, $"{Resources.GetString(Resource.String.s266)}" + result, ToastLength.Long).Show();
 
                         }
                     }
                     else
                     {
-                        Toast.MakeText(this, "Napaka pri klicu web aplikacije: " + result, ToastLength.Long).Show();
+                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s218)}" + result, ToastLength.Long).Show();
 
                     }
                 }
@@ -228,7 +228,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             var warehouse = data.ElementAt(tempLocation);
             if (!CommonData.IsValidLocation(warehouse.ID, tbLocation.Text.Trim()))
             {
-                string WebError = string.Format("Prejemna lokacija" + tbLocation.Text.Trim() + "ni veljavna za sladišče:" + " " + data.ElementAt(tempLocation).Text + "!");
+                string WebError = string.Format($"{Resources.GetString(Resource.String.s271)}" + tbLocation.Text.Trim() + "ni veljavna za sladišče:" + " " + data.ElementAt(tempLocation).Text + "!");
                 Toast.MakeText(this, WebError, ToastLength.Long).Show();
                 tbLocation.RequestFocus();
                 return false;

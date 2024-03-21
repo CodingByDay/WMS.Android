@@ -175,7 +175,7 @@ namespace WMS
                     }
                     else
                     {
-                        string errorWebAppIssued = string.Format("Napaka pri brisanju pozicije " + result);
+                        string errorWebAppIssued = string.Format($"{Resources.GetString(Resource.String.s212)}" + result);
                         Toast.MakeText(this, errorWebAppIssued, ToastLength.Long).Show();
                         positions = null;
                         LoadPositions();
@@ -187,7 +187,7 @@ namespace WMS
                 }
                 else
                 {
-                    string errorWebAppIssued = string.Format("Napaka pri dostopu web aplikacije: " + result);
+                    string errorWebAppIssued = string.Format($"{Resources.GetString(Resource.String.s213)}" + result);
                     Toast.MakeText(this, errorWebAppIssued, ToastLength.Long).Show();
                     popupDialog.Dismiss();
                     popupDialog.Hide();
@@ -203,7 +203,7 @@ namespace WMS
 
             }
 
-            string errorWebApp = string.Format("Pozicija uspešno zbrisana.");
+            string errorWebApp = string.Format($"{Resources.GetString(Resource.String.s214)}");
             Toast.MakeText(this, errorWebApp, ToastLength.Long).Show();
         }
 
@@ -250,7 +250,7 @@ namespace WMS
                 }
                 else
                 {
-                    string errorWebApp = string.Format("Kritična napaka...");
+                    string errorWebApp = string.Format($"{Resources.GetString(Resource.String.s247)}");
                     Toast.MakeText(this, errorWebApp, ToastLength.Long).Show();
                 }
 
@@ -400,7 +400,7 @@ namespace WMS
                     }
                     if (positions == null)
                     {
-                        string toast = string.Format("Napaka pri dostopu do web aplikacije" + error);
+                        string toast = string.Format($"{Resources.GetString(Resource.String.s213)}" + error);
                         Toast.MakeText(this, toast, ToastLength.Long).Show();
                         return;
                     }

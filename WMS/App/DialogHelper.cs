@@ -10,7 +10,7 @@ public static class DialogHelper
             activity.RunOnUiThread(() =>
             {
                 AlertDialog.Builder alert = new AlertDialog.Builder(context);
-                alert.SetTitle("Napaka");
+                alert.SetTitle($"Error");
                 alert.SetMessage(error);
                 alert.SetPositiveButton("Ok", (senderAlert, args) =>
                 {
@@ -33,7 +33,7 @@ public static class DialogHelper
             activity.RunOnUiThread(() =>
             {
                 AlertDialog.Builder alert = new AlertDialog.Builder(context);
-                alert.SetTitle("Informacija");
+                alert.SetTitle("Information");
                 alert.SetMessage(error);
                 alert.SetPositiveButton("Ok", (senderAlert, args) =>
                 {

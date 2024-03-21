@@ -250,7 +250,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
 
                     docTypes = CommonData.ListDocTypes("I|N");
 
-                    btnOrderMode.Text = "Brez nar. - F3";
+                    btnOrderMode.Text = $"{Resources.GetString(Resource.String.s30)}";
                 }
                 else
                 {
@@ -300,7 +300,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             var itemDT = adapterDoc.GetItem(temporaryPositioncbDoc);
             if (itemDT == null)
             {
-                string toast = string.Format("Poslovni dogodek more bit izbran");
+                string toast = string.Format($"{Resources.GetString(Resource.String.s237)}");
                 Toast.MakeText(this, toast, ToastLength.Long).Show();
             }
             else
@@ -348,7 +348,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
         {
 
             Spinner spinner = (Spinner)sender;
-            string toast = string.Format("Izbrali ste: {0}", spinner.GetItemAtPosition(e.Position));
+            string toast = string.Format($"{Resources.GetString(Resource.String.s236)}: {0}", spinner.GetItemAtPosition(e.Position));
             temporaryPositionWarehouse = e.Position;
         }
 
@@ -356,7 +356,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
         {
 
             Spinner spinner = (Spinner)sender;
-            string toast = string.Format("Izbrali ste: {0}", spinner.GetItemAtPosition(e.Position));
+            string toast = string.Format($"{Resources.GetString(Resource.String.s236)}: {0}", spinner.GetItemAtPosition(e.Position));
             temporaryPositionSubject = e.Position;
         }
 
@@ -364,7 +364,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
         {
 
             Spinner spinner = (Spinner)sender;
-            string toast = string.Format("Izbrali ste: {0}", spinner.GetItemAtPosition(e.Position));
+            string toast = string.Format($"{Resources.GetString(Resource.String.s236)}: {0}", spinner.GetItemAtPosition(e.Position));
             temporaryPositioncbDoc = e.Position;
         }
     }

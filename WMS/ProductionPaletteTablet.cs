@@ -146,8 +146,8 @@ namespace WMS
                                 var id = result.Split('+')[1];
 
                                 AlertDialog.Builder alert = new AlertDialog.Builder(this);
-                                alert.SetTitle("Zaključevanje uspešno");
-                                alert.SetMessage("Paletiranje uspešno! Št. prevzema:\r\n" + id);
+                                alert.SetTitle($"{Resources.GetString(Resource.String.s263)}");
+                                alert.SetMessage($"{Resources.GetString(Resource.String.s264)}" + id);
 
                                 alert.SetPositiveButton("Ok", (senderAlert, args) =>
                                 {
@@ -165,7 +165,7 @@ namespace WMS
                             {
                                 progress.StopDialogSync();
                                 AlertDialog.Builder alert = new AlertDialog.Builder(this);
-                                alert.SetTitle("Napaka");
+                                alert.SetTitle($"{Resources.GetString(Resource.String.s265)}");
                                 alert.SetMessage("Napaka pri paletiranju: " + result);
 
                                 alert.SetPositiveButton("Ok", (senderAlert, args) =>

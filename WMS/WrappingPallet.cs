@@ -155,7 +155,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
 
                             progress.StopDialogSync();
                             AlertDialog.Builder alert = new AlertDialog.Builder(this);
-                            alert.SetTitle("Napaka");
+                            alert.SetTitle($"{Resources.GetString(Resource.String.s265)}");
                             alert.SetMessage($"Napaka pri zavijanju palete. {result}");
 
                             alert.SetPositiveButton("Ok", (senderAlert, args) =>
@@ -182,7 +182,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
 
                         progress.StopDialogSync();
                         AlertDialog.Builder alert = new AlertDialog.Builder(this);
-                        alert.SetTitle("Napaka");
+                        alert.SetTitle($"{Resources.GetString(Resource.String.s265)}");
                         alert.SetMessage($"Napaka pri dostopu do web aplikacije. {result}");
 
                         alert.SetPositiveButton("Ok", (senderAlert, args) =>

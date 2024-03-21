@@ -235,7 +235,7 @@ namespace WMS
 
 
                     AlertDialog.Builder alert = new AlertDialog.Builder(this);
-                    alert.SetTitle("Napaka");
+                    alert.SetTitle($"{Resources.GetString(Resource.String.s265)}");
                     alert.SetMessage("Shranjevanje neuspešno, napaka: " + error);
 
                     alert.SetPositiveButton("Ok", (senderAlert, args) =>

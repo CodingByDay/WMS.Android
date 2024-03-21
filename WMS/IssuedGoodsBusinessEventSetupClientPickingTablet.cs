@@ -89,7 +89,6 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 adapterDocType.SetDropDownViewResource(Android.Resource.Layout.SimpleSpinnerItem);
                 cbDocType.Adapter = adapterDocType;
                 cbWarehouse.Enabled = true;
-                BottomSheetActions bottomSheetActions = new BottomSheetActions();
                 initialLoad = true;
                 var _broadcastReceiver = new NetworkStatusBroadcastReceiver();
                 _broadcastReceiver.ConnectionStatusChanged += OnNetworkStatusChanged;
@@ -143,7 +142,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             }
             catch (Exception ex)
             {
-                string toast = string.Format("Napaka" + ex.ToString());
+                string toast = string.Format($"{Resources.GetString(Resource.String.s265)}" + ex.ToString());
                 Toast.MakeText(this, toast, ToastLength.Long).Show();
             }
         }
@@ -173,29 +172,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 LoaderManifest.LoaderManifestLoop(this);
             }
         }
-        internal class BottomSheetActions : Java.Lang.Object, IDialogInterfaceOnClickListener
-        {
-            public void OnClick(IDialogInterface dialog, int which)
-            {
-                Console.WriteLine("Hello fox");
-            }
-
-
-        }
-        public void OnClick(IDialogInterface dialog, int which)
-        {
-
-        }
-
-        private void BtnHidden_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void Hidden_Click(object sender, EventArgs e)
-        {
-            focus.RequestFocus();
-        }
+     
 
         public override bool OnKeyDown(Keycode keyCode, KeyEvent e)
         {
@@ -250,7 +227,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
 
                             if (!subjects.Success)
                             {
-                                string toasted = string.Format("Napaka pri pridobivanju odprtih naročil: " + subjects.Error);
+                                string toasted = string.Format($"{Resources.GetString(Resource.String.s216)}" + subjects.Error);
                                 Toast.MakeText(this, toasted, ToastLength.Long).Show();
                                 return;
                             }
@@ -349,7 +326,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             }
             catch (Exception ex)
             {
-                string toast = string.Format("Napaka" + ex.ToString());
+                string toast = string.Format($"{Resources.GetString(Resource.String.s265)}" + ex.ToString());
                 Toast.MakeText(this, toast, ToastLength.Long).Show();
             }
         }

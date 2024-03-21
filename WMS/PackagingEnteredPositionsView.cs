@@ -179,7 +179,7 @@ namespace WMS
                    
                        
                         AlertDialog.Builder alert = new AlertDialog.Builder(this);
-                        alert.SetTitle("Napaka");
+                        alert.SetTitle($"{Resources.GetString(Resource.String.s265)}");
                         alert.SetMessage("Napaka pri brisanju pozicije." + result);
 
                         alert.SetPositiveButton("Ok", (senderAlert, args) =>
@@ -298,7 +298,7 @@ namespace WMS
                     }
                     if (positions == null)
                     {
-                       string toast = string.Format("Napaka pri dostopu do web aplikacije" + error);
+                       string toast = string.Format($"{Resources.GetString(Resource.String.s213)}" + error);
                        Toast.MakeText(this, toast, ToastLength.Long).Show();
                         return;
                     }

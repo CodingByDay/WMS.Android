@@ -79,7 +79,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                     /* Adds an object to the list. */
                     if(obj is null)
                     {
-                        Toast.MakeText(this, "Prišlo je do napake.", ToastLength.Long).Show();
+                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s225)}", ToastLength.Long).Show();
                     } else
                     {
                         data.Add(obj);
@@ -115,7 +115,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
 
             if (!CommonData.IsValidLocation(moveHead.GetString("Issuer"), location))
             {
-                string SuccessMessage = string.Format("Izdajna lokacija" + location + "ni veljavna za skladisće" + moveHead.GetString("Issuer") + "'!");
+                string SuccessMessage = string.Format($"{Resources.GetString(Resource.String.s273)}" + location + $"{Resources.GetString(Resource.String.s27)}" + moveHead.GetString("Issuer") + "'!");
                 Toast.MakeText(this, SuccessMessage, ToastLength.Long).Show();
               
 
@@ -130,7 +130,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             }
             else
             {
-                Toast.MakeText(this, "Prišlo je do napake.", ToastLength.Long).Show();
+                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s225)}", ToastLength.Long).Show();
             }
             return obj;
 
@@ -166,7 +166,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 var stock = Services.GetObject("str", warehouse + "|" + location + "|" + sscc + "|" + serialNum + "|" + ident, out error);
                 if (stock == null)
                 {
-                    string SuccessMessage = string.Format("Napaka pri preverjenju zaloge." + error);
+                    string SuccessMessage = string.Format($"{Resources.GetString(Resource.String.s216)}" + error);
                     Toast.MakeText(this, SuccessMessage, ToastLength.Long).Show();
 
                     return Double.NaN;
@@ -192,7 +192,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 var stock = Services.GetObject("pas", warehouse + "|" + ident, out error);
                 if (stock == null)
                 {
-                    string SuccessMessage = string.Format("Napaka pri preverjenju zaloge." + error);
+                    string SuccessMessage = string.Format($"{Resources.GetString(Resource.String.s216)}" + error);
                     return Double.NaN;
                 }
                 else
@@ -218,7 +218,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 var stock = Services.GetObject("pass", warehouse + "|" + ident + "|" + serialNo, out error);
                 if (stock == null)
                 {
-                    string SuccessMessage = string.Format("Napaka pri preverjanju zaloge" + error);
+                    string SuccessMessage = string.Format($"{Resources.GetString(Resource.String.s216)}" + error);
                     return Double.NaN;
                 }
                 else

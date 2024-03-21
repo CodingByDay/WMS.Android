@@ -101,7 +101,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             var warehouse = warehousesAdapter.ElementAt(temporaryPositionWarehouse);
             if (warehouse == null)
             {
-                Toast.MakeText(this, "Skladišče ni izbrano!", ToastLength.Long).Show();
+                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s245)}", ToastLength.Long).Show();
                 return;
             }
             try
@@ -117,7 +117,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 string error;
                 if (!WebApp.Get("mode=canInsertInventory&wh=" + warehouse.ID.ToString(), out error))
                 {
-                    Toast.MakeText(this, "Napaka pri preverjanju zapisa inventure: " + error, ToastLength.Long).Show();
+                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s247)}" + error, ToastLength.Long).Show();
 
                     return;
                 }
@@ -126,17 +126,17 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                     var savedMoveHead = Services.SetObject("mh", moveHead, out error);
                     if (savedMoveHead == null)
                     {
-                        Toast.MakeText(this, "Napaka pri zapisu inventure: " + error, ToastLength.Long).Show();
+                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s216)}" + error, ToastLength.Long).Show();
 
                         return;
                     }
-                    Toast.MakeText(this, "Dokument inventure shranjen!", ToastLength.Long).Show();
+                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s284)}", ToastLength.Long).Show();
                     StartActivity(typeof(InventoryMenu));
                     HelpfulMethods.clearTheStack(this);
                 }
                 else
                 {
-                    Toast.MakeText(this, "Napaka pri preverjanju zapisa inventure: " + error, ToastLength.Long).Show();
+                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s247)}" + error, ToastLength.Long).Show();
                     return;
                 }
             }
@@ -160,7 +160,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 }
                 else
                 {
-                    Toast.MakeText(this, "Prosimo izberite pravilen datum.", ToastLength.Short).Show();
+                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s249)}", ToastLength.Short).Show();
                 }
             }, today.Year, today.Month - 1, today.Day);
             DatePicker datePicker = dialog.DatePicker;

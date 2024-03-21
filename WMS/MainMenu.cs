@@ -51,29 +51,17 @@ namespace WMS
         private bool login = false;
 
         protected override async void OnCreate(Bundle savedInstanceState)
-        {
-           
+        {     
             base.OnCreate(savedInstanceState);
             SetTheme(Resource.Style.AppTheme_NoActionBar);
-
             HelpfulMethods.releaseLock();
             SetContentView(Resource.Layout.MainMenu);
             AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
             var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
             _customToolbar.SetNavigationIcon(settings.RootURL + "/Services/Logo");
-
             SetSupportActionBar(_customToolbar._toolbar);
             SupportActionBar.SetDisplayShowTitleEnabled(false);
             var flag = Services.isTablet(App.settings.device);
-            if (MainActivity.isValid == true)
-            {
-                string toast = new string("Uspešna prijava.");             
-                Toast.MakeText(this, toast, ToastLength.Long).Show();
-                MainActivity.isValid = false;
-                MainActivity.progressBar1.Visibility = ViewStates.Invisible;
-            }
-
-            string error2;
             IDdevice = settings.ID;
             target = settings.device;
             result = settings.tablet;

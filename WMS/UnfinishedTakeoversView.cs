@@ -247,8 +247,8 @@ namespace WMS
                     }
                     else
                     {
-                        // MessageForm.Show("Napaka pri brisanju pozicije: " + result);
-                        string errorWebApp = string.Format("Napaka pri brisanju pozicije " + result);
+                        // MessageForm.Show($"{Resources.GetString(Resource.String.s212)}" + result);
+                        string errorWebApp = string.Format($"{Resources.GetString(Resource.String.s212)}" + result);
                         Toast.MakeText(this, errorWebApp, ToastLength.Long).Show();
                         positions = null;
                         LoadPositions();

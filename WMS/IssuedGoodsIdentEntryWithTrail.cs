@@ -210,7 +210,7 @@ namespace WMS
 
                 if (trail.Location == string.Empty)
                 {
-                    Toast.MakeText(this, "Ni zaloge.", ToastLength.Long).Show();
+                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s230)}", ToastLength.Long).Show();
                     return;
                 }
                 InUseObjects.Set("OpenOrder", trails.ElementAt(adapterObj.returnSelected().originalIndex));
@@ -259,7 +259,7 @@ namespace WMS
                 Trail trail = adapterObj.returnData().ElementAt(0);
                 if (trail.Location == string.Empty)
                 {
-                    Toast.MakeText(this, "Ni zaloge.", ToastLength.Long).Show();
+                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s230)}", ToastLength.Long).Show();
                     return;
                 }
                 InUseObjects.Set("OpenOrder", trails.ElementAt(adapterObj.returnSelected().originalIndex));
@@ -434,18 +434,10 @@ namespace WMS
 
             if (openOrder == null && moveHead == null)
             {
-                //  openOrder = Services.GetObject("oobl", moveItem.GetString("LinkKey") + "|" + moveItem.GetInt("LinkNo").ToString(), out error);
-                AlertDialog.Builder alert = new AlertDialog.Builder(this);
-                alert.SetTitle("Napaka");
-                alert.SetMessage("Prišlo je do napake in aplikacija se bo zaprla");
-                alert.SetPositiveButton("Ok", (senderAlert, args) =>
-                {
-                    alert.Dispose();
-                    System.Threading.Thread.Sleep(500);
-                    throw new ApplicationException("Error, openIdent");
-                });
-                Dialog dialog = alert.Create();
-                dialog.Show();
+
+                System.Threading.Thread.Sleep(500);
+                throw new ApplicationException("Error, openIdent");
+
             }
 
 
@@ -510,7 +502,7 @@ namespace WMS
                 Trail selected = data_.ElementAt(position);
                 AlertDialog.Builder builder = new AlertDialog.Builder(context_);
                 builder.SetTitle($"{context_.Resources.GetString(Resource.String.s256)}");
-                builder.SetMessage($"Ident: {selected.Ident}\nNaziv: {selected.Name}\nKljuč: {selected.Key}");
+                builder.SetMessage($"{context_.Resources.GetString(Resource.String.s257)}: {selected.Ident}\n{context_.Resources.GetString(Resource.String.s260)}: {selected.Name}\n{context_.Resources.GetString(Resource.String.s14)}: {selected.Key}");
                 builder.SetPositiveButton("OK", (s, args) =>
                 {
                 });
@@ -648,7 +640,7 @@ namespace WMS
                     {
                         RunOnUiThread(() =>
                         {
-                            Toast.MakeText(this, "Ta izdelek ni mogoče izdati ker nima zaloge.", ToastLength.Long).Show();
+                            Toast.MakeText(this, $"{Resources.GetString(Resource.String.s230)}", ToastLength.Long).Show();
                         });
                         return;
                     }

@@ -118,19 +118,19 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                         if (result.StartsWith("OK!"))
                         {
                             var id = result.Split('+')[1];
-                            DialogHelper.ShowDialogSuccess(this, this, "Potrjevanje uspešno! Št. potrditve: " + id);
+                            DialogHelper.ShowDialogSuccess(this, this, $"{Resources.GetString(Resource.String.s279)}" + id);
                             output = 1;
                             StartActivity(typeof(MainMenu));
                         }
                         else
                         {
                             output = 2;
-                            DialogHelper.ShowDialogError(this, this, "Napaka pri potrjevanju: " + result);
+                            DialogHelper.ShowDialogError(this, this, $"{Resources.GetString(Resource.String.s280)}" + result);
                         }
                     }
                     else
                     {
-                       DialogHelper.ShowDialogError(this, this, "Napaka pri klicu web aplikacije: " + result);
+                       DialogHelper.ShowDialogError(this, this, $"{Resources.GetString(Resource.String.s218)}" + result);
                     }
                 }
                 catch (Exception err)
@@ -152,10 +152,10 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
            
             if(output == 1)
             {
-                Toast.MakeText(this, "Potrjevanje uspešno!", ToastLength.Long).Show();
+                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s243)}", ToastLength.Long).Show();
             } else
             {
-                Toast.MakeText(this, "Potrjevanje neuspešno.", ToastLength.Long).Show();
+                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s244)}", ToastLength.Long).Show();
             }
 
         }
@@ -221,7 +221,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                     }
                     if (positions == null)
                     {
-                        DialogHelper.ShowDialogError(this, this, "Napaka pri dostopu do web aplikacije: " + error);
+                        DialogHelper.ShowDialogError(this, this, $"{Resources.GetString(Resource.String.s213)}" + error);
 
                         return;
                     }
@@ -246,7 +246,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
         {
             if ((positions != null) && (positions.Items.Count > 0))
             {
-                lbInfo.Text = "Odprte inventure na čitalcu (" + (displayedPosition + 1).ToString() + "/" + positions.Items.Count + ")";
+                lbInfo.Text = $"{Resources.GetString(Resource.String.s123)} (" + (displayedPosition + 1).ToString() + "/" + positions.Items.Count + ")";
                 var item = positions.Items[displayedPosition];
 
                 tbWarehouse.Text = item.GetString("Wharehouse");
@@ -276,7 +276,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             }
             else
             {
-                lbInfo.Text = "Odprte inventure na čitalcu (ni)";
+                lbInfo.Text = $"{Resources.GetString(Resource.String.s281)}";
 
                 tbWarehouse.Text = "";
                 tbTitle.Text = "";

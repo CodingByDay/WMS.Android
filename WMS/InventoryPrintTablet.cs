@@ -66,10 +66,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
 
             var adapterWarehouse = new CustomAutoCompleteAdapter<ComboBoxItem>(this,
             Android.Resource.Layout.SimpleSpinnerItem, objectsAdapter);
-            ///* 22.12.2020---------------------------------------------------------------
-            ///* Documentation for the spinner objects add method with an adapter...
-            ///*---------------------------------------------------
-            ///
+ 
             adapterWarehouse.SetDropDownViewResource(Android.Resource.Layout.SimpleSpinnerDropDownItem);
             cbWarehouse.Adapter = adapterWarehouse;
 
@@ -139,14 +136,14 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             var wh = objectsAdapter.ElementAt(temporaryPositionWarehouse);
             if (wh == null)
             {
-                Toast.MakeText(this, "Skladišče ni izbrano!", ToastLength.Long).Show();
+                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s245)}", ToastLength.Long).Show();
 
                 return;
             }
 
             if (!CommonData.IsValidLocation(wh.ID, tbLocation.Text.Trim()))
             {
-                Toast.MakeText(this, "Lokacija '" + tbLocation.Text.Trim() + "' ni veljavna za skladišče '" + wh.ID + "'!", ToastLength.Long).Show();
+                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s258)} '" + tbLocation.Text.Trim() + $"' {Resources.GetString(Resource.String.s272)} '" + wh.ID + "'!", ToastLength.Long).Show();
                 return;
             }
 
@@ -163,7 +160,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             }
             finally
             {
-                Toast.MakeText(this, "Poslano...", ToastLength.Long).Show();
+                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s250)}", ToastLength.Long).Show();
             }
 
         }
@@ -173,7 +170,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
 
             Spinner spinner = (Spinner)sender;
             /* Spinner item selected object. */
-            string toast = string.Format("Izbrali ste: {0}", spinner.GetItemAtPosition(e.Position));
+            string toast = string.Format($"{Resources.GetString(Resource.String.s236)}: {0}", spinner.GetItemAtPosition(e.Position));
             Toast.MakeText(this, toast, ToastLength.Long).Show();
             temporaryPositionWarehouse = e.Position;
         }

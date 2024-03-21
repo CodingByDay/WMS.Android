@@ -203,7 +203,7 @@ namespace WMS
             var qty = Convert.ToDouble(tbQty.Text.Trim());
             if (qty > stock.GetDouble("RealStock"))
             {
-                Toast.MakeText(this, "Količina (" + qty.ToString(CommonData.GetQtyPicture()) + ") presega zalogo (" + stock.GetDouble("RealStock").ToString(CommonData.GetQtyPicture()) + ")!", ToastLength.Long).Show();
+                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s40)} (" + qty.ToString(CommonData.GetQtyPicture()) + ") presega zalogo (" + stock.GetDouble("RealStock").ToString(CommonData.GetQtyPicture()) + ")!", ToastLength.Long).Show();
                 return false;
             }
 
@@ -233,7 +233,7 @@ namespace WMS
                 }
                 else
                 {
-                    Toast.MakeText(this, "Napaka pri dostopu do web aplikacije: " + error, ToastLength.Long).Show();
+                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s213)}" + error, ToastLength.Long).Show();
                     return false;
                 }
             }
@@ -281,7 +281,7 @@ namespace WMS
 
             if (LoadStock(warehouse, location, sscc, serialNo, ident))
             {
-                label.Text = "Količina (" + stock.GetDouble("RealStock").ToString(CommonData.GetQtyPicture()) + "):";
+                label.Text = $"{Resources.GetString(Resource.String.s40)} (" + stock.GetDouble("RealStock").ToString(CommonData.GetQtyPicture()) + "):";
                 tbQty.Text = stock.GetDouble("RealStock").ToString(CommonData.GetQtyPicture());
             }
             else
@@ -447,7 +447,7 @@ namespace WMS
                     {
                         progress = new ProgressDialogClass();
 
-                        progress.ShowDialogSync(this, "Zaključujem");
+                        progress.ShowDialogSync(this, $"{Resources.GetString(Resource.String.s262)}");
                     });
 
                     try
@@ -465,8 +465,8 @@ namespace WMS
 
                                 Toast.MakeText(this, "Zaklučevanje uspešno! Št. prenosa \r\n" + id, ToastLength.Long).Show();
                                 AlertDialog.Builder alert = new AlertDialog.Builder(this);
-                                alert.SetTitle("Zaključevanje uspešno");
-                                alert.SetMessage("Zaključevanje uspešno! Št.prevzema:\r\n" + id);
+                                alert.SetTitle($"{Resources.GetString(Resource.String.s263)}");
+                                alert.SetMessage($"{Resources.GetString(Resource.String.s264)}" + id);
 
                                 alert.SetPositiveButton("Ok", (senderAlert, args) =>
                                 {
@@ -488,8 +488,8 @@ namespace WMS
                                 {
                                     progress.StopDialogSync();
                                     AlertDialog.Builder alert = new AlertDialog.Builder(this);
-                                    alert.SetTitle("Napaka");
-                                    alert.SetMessage("Napaka pri zaključevanju: " + result);
+                                    alert.SetTitle($"{Resources.GetString(Resource.String.s265)}");
+                                    alert.SetMessage($"{Resources.GetString(Resource.String.s266)}" + result);
 
                                     alert.SetPositiveButton("Ok", (senderAlert, args) =>
                                     {

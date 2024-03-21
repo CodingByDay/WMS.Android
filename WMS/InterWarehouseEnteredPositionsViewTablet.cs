@@ -188,7 +188,7 @@ namespace WMS
                     }
                     else
                     {
-                        string errorWebAppIssued = string.Format("Napaka pri brisanju pozicije " + result);
+                        string errorWebAppIssued = string.Format($"{Resources.GetString(Resource.String.s212)}" + result);
                         DialogHelper.ShowDialogError(this, this, errorWebAppIssued);
                         positions = null;
                         LoadPositions();
@@ -200,7 +200,7 @@ namespace WMS
                 }
                 else
                 {
-                    string errorWebAppIssued = string.Format("Napaka pri dostopu web aplikacije: " + result);
+                    string errorWebAppIssued = string.Format($"{Resources.GetString(Resource.String.s213)}" + result);
 
                     DialogHelper.ShowDialogError(this, this, errorWebAppIssued);
                     popupDialog.Dismiss();
@@ -217,7 +217,7 @@ namespace WMS
 
             }
 
-            string errorWebApp = string.Format("Pozicija uspešno zbrisana.");
+            string errorWebApp = string.Format($"{Resources.GetString(Resource.String.s214)}");
 
             Toast.MakeText(this, errorWebApp, ToastLength.Long).Show();
         }
@@ -291,7 +291,7 @@ namespace WMS
                 }
                 else
                 {
-                    string errorWebApp = string.Format("Kritična napaka...");
+                    string errorWebApp = string.Format($"{Resources.GetString(Resource.String.s247)}");
                     DialogHelper.ShowDialogError(this, this, errorWebApp);
                 }
 
@@ -402,7 +402,7 @@ namespace WMS
                     }
                     else
                     {
-                        string WebErrors = string.Format("Napaka pri brisanju pozicije: " + result);
+                        string WebErrors = string.Format($"{Resources.GetString(Resource.String.s212)}" + result);
                         DialogHelper.ShowDialogError(this, this, WebErrors);
                         positions = null;
                         LoadPositions();
@@ -413,7 +413,7 @@ namespace WMS
                 }
                 else
                 {
-                    string WebErrora = string.Format("Napaka pri dostopu do web aplikacije: " + result);
+                    string WebErrora = string.Format($"{Resources.GetString(Resource.String.s213)}" + result);
                     DialogHelper.ShowDialogError(this, this, WebErrora);
                     popupDialog.Dismiss();
                     popupDialog.Hide();
@@ -429,7 +429,7 @@ namespace WMS
 
             }
 
-            string WebError = string.Format("Pozicija zbrisana.");
+            string WebError = string.Format($"{Resources.GetString(Resource.String.s214)}");
             Toast.MakeText(this, WebError, ToastLength.Long).Show();
             popupDialog.Dismiss();
             popupDialog.Hide();
@@ -472,13 +472,13 @@ namespace WMS
                     if (result.StartsWith("OK!"))
                     {
                         var id = result.Split('+')[1];
-                        string WebError = string.Format("Zaključevanje uspešno! Št. prenosa:\r\n" + id);
+                        string WebError = string.Format($"{Resources.GetString(Resource.String.s264)}" + id);
                         RunOnUiThread(() =>
                         {
                             var id = result.Split('+')[1];
                             AlertDialog.Builder alert = new AlertDialog.Builder(this);
-                            alert.SetTitle("Zaključevanje uspešno");
-                            alert.SetMessage("Zaključevanje uspešno! Št.prenosa:\r\n" + id);
+                            alert.SetTitle($"{Resources.GetString(Resource.String.s263)}");
+                            alert.SetMessage($"{Resources.GetString(Resource.String.s264)}" + id);
 
                             alert.SetPositiveButton("Ok", (senderAlert, args) =>
                             {
@@ -492,13 +492,13 @@ namespace WMS
                     }
                     else
                     {
-                        string WebError = string.Format("Napaka pri zaključevanju: " + result);
+                        string WebError = string.Format($"{Resources.GetString(Resource.String.s266)}" + result);
                         DialogHelper.ShowDialogError(this, this, WebError);
                     }
                 }
                 else
                 {
-                    string WebError = string.Format("Napaka pri klicu web aplikacije: " + result);
+                    string WebError = string.Format($"{Resources.GetString(Resource.String.s218)}" + result);
                     DialogHelper.ShowDialogError(this, this, WebError);
                 }
             }
@@ -562,7 +562,7 @@ namespace WMS
                     }
                     if (positions == null)
                     {
-                        string WebError = string.Format("Napaka pri dostopu do web aplikacije: " + error);
+                        string WebError = string.Format($"{Resources.GetString(Resource.String.s213)}" + error);
                         DialogHelper.ShowDialogError(this, this, WebError);
                         return;
                     }
@@ -581,7 +581,7 @@ namespace WMS
             if ((positions != null) && (displayedPosition < positions.Items.Count))
             {
                 var item = positions.Items[displayedPosition];
-                lbInfo.Text = "Vnešene pozicije na medskladiščnici (" + (displayedPosition + 1).ToString() + "/" + positions.Items.Count + ")";
+                lbInfo.Text = $"{Resources.GetString(Resource.String.s92)} (" + (displayedPosition + 1).ToString() + "/" + positions.Items.Count + ")";
 
                 tbIdent.Text = item.GetString("IdentName");
                 tbSSCC.Text = item.GetString("SSCC");
@@ -608,7 +608,7 @@ namespace WMS
             }
             else
             {
-                lbInfo.Text = "Vnešene pozicije na medskladiščnici (ni)";
+                lbInfo.Text = $"{Resources.GetString(Resource.String.s267)}";
                 tbIdent.Text = "";
                 tbSSCC.Text = "";
                 tbSerialNumber.Text = "";

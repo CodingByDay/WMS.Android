@@ -206,7 +206,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             Spinner spinner = (Spinner)sender;
             if (e.Position != 0)
             {
-                string toast = string.Format("Izbrali ste: {0}", spinner.GetItemAtPosition(e.Position));
+                string toast = string.Format($"{Resources.GetString(Resource.String.s236)}: {0}", spinner.GetItemAtPosition(e.Position));
                 Toast.MakeText(this, toast, ToastLength.Long).Show();
                 temporaryPositionWarehouse = e.Position;
             }

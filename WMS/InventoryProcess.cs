@@ -375,14 +375,14 @@ namespace WMS
                         }
                         else
                         {
-                            Toast.MakeText(this, "Napaka pri brisanju pozicije: " + result, ToastLength.Long).Show();
+                            Toast.MakeText(this, $"{Resources.GetString(Resource.String.s212)}" + result, ToastLength.Long).Show();
 
                             return;
                         }
                     }
                     else
                     {
-                        Toast.MakeText(this, "Napaka pri dostopu do web aplikacije: " + result, ToastLength.Long).Show();
+                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s213)}" + result, ToastLength.Long).Show();
 
                         return;
                     }
@@ -484,14 +484,14 @@ namespace WMS
 
                     catch (Exception ex)
                     {
-                        Toast.MakeText(this, "Napaka pri klicu strežniške funkcije (" + ex.Message + "): " + result, ToastLength.Long).Show();
+                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s216)}" + ex.Message + "): " + result, ToastLength.Long).Show();
                         return;
                     }
 
                     if (headID < 0)
                     {
                         cbWarehouse.SetSelection(-1);
-                        Toast.MakeText(this, "Za skladišče ni odprtega dokumenta inventure! Zapis ni mogoč.", ToastLength.Long).Show();
+                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s285)}", ToastLength.Long).Show();
                         return;
                     }
 
@@ -520,7 +520,7 @@ namespace WMS
 
                     if (moveItem == null)
                     {
-                        Toast.MakeText(this, "Napaka pri dostopu do web aplikacije: " + result, ToastLength.Long).Show();
+                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s213)}" + result, ToastLength.Long).Show();
 
                         return;
                     }
@@ -535,7 +535,7 @@ namespace WMS
                 }
                 else
                 {
-                    Toast.MakeText(this, "Napaka pri dostopu do web aplikacije: " + result, ToastLength.Long).Show();
+                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s213)}" + result, ToastLength.Long).Show();
                     return;
                 }
             }
@@ -582,7 +582,7 @@ namespace WMS
         private async void CbWarehouse_ItemSelected(object sender, AdapterView.ItemSelectedEventArgs e)
         {
             temporaryPosWarehouse = e.Position;
-            warehouseLabel.Text = "Skladišče: " + warehouseAdapter.ElementAt(temporaryPosWarehouse);
+            warehouseLabel.Text = $"{Resources.GetString(Resource.String.s28)}: " + warehouseAdapter.ElementAt(temporaryPosWarehouse);
         }
 
         private void ProcessIdent()
@@ -628,7 +628,7 @@ namespace WMS
             var warehouse = warehouseAdapter.ElementAt(temporaryPosWarehouse);
             if (warehouse == null)
             {
-                Toast.MakeText(this, "Skladišče ni izbrano!", ToastLength.Long).Show();
+                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s245)}", ToastLength.Long).Show();
                 ClearData();
                 return;
             }
@@ -636,14 +636,14 @@ namespace WMS
             var sscc = tbSSCC.Text.Trim();
             if (tbSSCC.Enabled && string.IsNullOrEmpty(sscc))
             {
-                Toast.MakeText(this, "SSCC koda ni vnešena!", ToastLength.Long).Show();
+                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
                 return;
             }
 
             var serialNum = tbSerialNum.Text.Trim();
             if (tbSerialNum.Enabled && string.IsNullOrEmpty(serialNum))
             {
-                Toast.MakeText(this, "Serijska št. ni vnešena!", ToastLength.Long).Show();
+                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
 
                 return;
             }
@@ -651,7 +651,7 @@ namespace WMS
             var ident = tbIdent.Text.Trim();
             if (string.IsNullOrEmpty(ident))
             {
-                Toast.MakeText(this, "Ident ni vnešen!", ToastLength.Long).Show();
+                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
 
                 return;
             }
@@ -660,7 +660,7 @@ namespace WMS
                 var location = tbLocation.Text.Trim();
                 if (!CommonData.IsValidLocation(warehouse.ID, location))
                 {
-                    Toast.MakeText(this, "Lokacija '" + location + "' ni veljavna za skladišče '" + warehouse.ID + "'!", ToastLength.Long).Show();
+                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s258)} '" + location + $"' {Resources.GetString(Resource.String.s272)} '" + warehouse.ID + "'!", ToastLength.Long).Show();
                     return;
                 }
                 string result;
@@ -711,12 +711,12 @@ namespace WMS
                 double q = dataObject.DoubleValue("anQty") ?? 0;
                 if (dataObject!=null)
                 {
-                    lbPacking.Text = $"Zaloga ({q.ToString(CommonData.GetQtyPicture())})";
+                    lbPacking.Text = $"{Resources.GetString(Resource.String.s155)} ({q.ToString(CommonData.GetQtyPicture())})";
                     tbPacking.Text =  q.ToString(CommonData.GetQtyPicture());
 
                 } else if(result!=null)
                 {
-                    lbPacking.Text = $"Zaloga ({result})";
+                    lbPacking.Text = $"{Resources.GetString(Resource.String.s155)} ({result})";
                     tbPacking.Text = result;
                 }
 
@@ -855,35 +855,35 @@ namespace WMS
             warehouse = warehouseAdapter.ElementAt(temporaryPosWarehouse);
             if (warehouse == null)
             {
-                Toast.MakeText(this, "Skladišče ni izbrano!", ToastLength.Long).Show();
+                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s245)}", ToastLength.Long).Show();
                 return false;
             }
 
             location = tbLocation.Text.Trim();
             if (!CommonData.IsValidLocation(warehouse.ID, location))
             {
-                Toast.MakeText(this, "Lokacija '" + location + "' ni veljavna za skladišče '" + warehouse.ID + "'!", ToastLength.Long).Show();
+                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s258)} '" + location + $"' {Resources.GetString(Resource.String.s272)} '" + warehouse.ID + "'!", ToastLength.Long).Show();
                 return false;
             }
 
             sscc = tbSSCC.Text.Trim();
             if (tbSSCC.Enabled && string.IsNullOrEmpty(sscc))
             {
-                Toast.MakeText(this, "SSCC koda ni vpisana!", ToastLength.Long).Show();
+                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
                 return false;
             }
 
             ident = tbIdent.Text.Trim();
             if (string.IsNullOrEmpty(ident))
             {
-                Toast.MakeText(this, "Ident ni vpisan!", ToastLength.Long).Show();
+                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
                 return false;
             }
 
             serNo = tbSerialNum.Text.Trim();
             if (tbSerialNum.Enabled && string.IsNullOrEmpty(serNo))
             {
-                Toast.MakeText(this, "Serijska št. ni vpisana!", ToastLength.Long).Show();
+                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
                 return false;
             }
 
@@ -897,7 +897,7 @@ namespace WMS
             catch (Exception ex)
 
             {
-                Toast.MakeText(this, "Količina ni vpisana ali ni število: " + ex.Message, ToastLength.Long).Show();
+                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}" + ex.Message, ToastLength.Long).Show();
                 return false;
             }
 
@@ -908,7 +908,7 @@ namespace WMS
             }
             catch (Exception ex)
             {
-                Toast.MakeText(this, "Št. enot ni vpisano ali ni število: " + ex.Message, ToastLength.Long).Show();
+                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}" + ex.Message, ToastLength.Long).Show();
                 return false;
             }
 
@@ -922,7 +922,7 @@ namespace WMS
             var warehouse = warehouseAdapter.ElementAt(temporaryPosWarehouse);
             if (warehouse == null)
             {
-                Toast.MakeText(this, "Skladišče ni izbrano!", ToastLength.Long).Show();
+                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s245)}", ToastLength.Long).Show();
 
                 cbWarehouse.RequestFocus();
                 return;
@@ -931,7 +931,7 @@ namespace WMS
             var location = tbLocation.Text.Trim();
             if (!CommonData.IsValidLocation(warehouse.ID, location))
             {
-                Toast.MakeText(this, "Lokacija '" + location + "' ni veljavna za skladišče '" + warehouse.ID + "'!", ToastLength.Long).Show();
+                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s258)} '" + location + $"' {Resources.GetString(Resource.String.s272)} '" + warehouse.ID + "'!", ToastLength.Long).Show();
 
                 tbLocation.RequestFocus();
                 return;

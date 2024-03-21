@@ -116,7 +116,6 @@ namespace WMS
                         parameters.Add(new Services.Parameter { Name = "acWarehouse", Type = "String", Value = moveHead.GetString("Wharehouse") });
 
 
-                        // string debugs = $"SELECT * from uWMSOrderItemByItemTypeWarehouseOut WHERE acIdent = {ident} AND acDocType = {moveHead.GetString("DocumentType")} AND acWarehouse = {moveHead.GetString("Wharehouse")} ORDER BY acKey, anNo;";
 
 
                         var subjects = Services.GetObjectListBySql($"SELECT * from uWMSOrderItemByItemTypeWarehouseOut WHERE acIdent = @acIdent AND acDocType = @acDocType AND acWarehouse = @acWarehouse ORDER BY acKey, anNo;", parameters);
@@ -176,7 +175,7 @@ namespace WMS
         {
             if ((openIdent != null) && (orders != null) && (orders.Count > 0))
             {
-                lbOrderInfo.Text = "Naročilo (" + (displayedOrder + 1).ToString() + "/" + orders.Count.ToString() + ")";
+                lbOrderInfo.Text = $"{Resources.GetString(Resource.String.s14)} (" + (displayedOrder + 1).ToString() + "/" + orders.Count.ToString() + ")";
                 var order = orders.ElementAt(displayedOrder);
                 Base.Store.OpenOrder = order;
                 tbOrder.Text = order.Order + " / " + order.Position;
@@ -190,7 +189,7 @@ namespace WMS
             }
             else
             {
-                lbOrderInfo.Text = "Naročilo (ni postavk)";
+                lbOrderInfo.Text = $"{Resources.GetString(Resource.String.s289)}";
                 tbOrder.Text = "";
                 tbConsignee.Text = "";
                 tbQty.Text = "";
@@ -226,7 +225,7 @@ namespace WMS
 
                     if (savedMoveHead == null)
                     {
-                        string WebError = string.Format("Napaka pri dostopu do web aplikacije" + error);
+                        string WebError = string.Format($"{Resources.GetString(Resource.String.s213)}" + error);
                         Toast.MakeText(this, WebError, ToastLength.Long).Show(); return false;
                     }
                     else
@@ -291,9 +290,7 @@ namespace WMS
             string savedIdentsJson = sharedPreferences.GetString("idents", "");
             if (!string.IsNullOrEmpty(savedIdentsJson))
             {
-                // Deserialize the JSON string back to a List<string>
                 savedIdents = JsonConvert.DeserializeObject<List<string>>(savedIdentsJson);
-                // Now you have your list of idents in the savedIdents variable
             }
         
             tbIdentAdapter = new CustomAutoCompleteAdapter<string>(this, Android.Resource.Layout.SimpleDropDownItem1Line, new List<string>());
@@ -339,9 +336,6 @@ namespace WMS
 
         private List<string> GetCustomSuggestions(string userInput)
         {
-            // Provide custom suggestions based on userInput
-            // Example: Suggest fruits based on user input
-    
             return savedIdents
                 .Where(suggestion => suggestion.ToLower().Contains(userInput.ToLower())).Take(10000)
                 .ToList();

@@ -391,7 +391,6 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 {
                     if (result == "OK!")
                     {
-                        Toast.MakeText(this, "Pozicija pobrisana!", ToastLength.Long).Show();
 
                         StartActivity(typeof(InventoryProcess));
                         HelpfulMethods.clearTheStack(this);
@@ -399,14 +398,14 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                     }
                     else
                     {
-                        Toast.MakeText(this, "Napaka pri brisanju pozicije: " + result, ToastLength.Long).Show();
+                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s212)}" + result, ToastLength.Long).Show();
 
                         return;
                     }
                 }
                 else
                 {
-                    Toast.MakeText(this, "Napaka pri dostopu do web aplikacije: " + result, ToastLength.Long).Show();
+                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s213)}" + result, ToastLength.Long).Show();
 
                     return;
                 }
@@ -439,7 +438,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                     }
                     catch (Exception ex)
                     {
-                        Toast.MakeText(this, "Napaka pri klicu strežniške funkcije (" + ex.Message + "): " + result, ToastLength.Long).Show();
+                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s216)}" + ex.Message + "): " + result, ToastLength.Long).Show();
 
                         return;
                     }
@@ -447,7 +446,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                     if (headID < 0)
                     {
                         cbWarehouse.SetSelection(-1);
-                        Toast.MakeText(this, "Za skladišče ni odprtega dokumenta inventure! Zapis ni mogoč.", ToastLength.Long).Show();
+                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s285)}", ToastLength.Long).Show();
 
                         return;
                     }
@@ -476,7 +475,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                     moveItem = Services.SetObject("mi", moveItem, out result);
                     if (moveItem == null)
                     {
-                        Toast.MakeText(this, "Napaka pri dostopu do web aplikacije: " + result, ToastLength.Long).Show();
+                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s213)}" + result, ToastLength.Long).Show();
 
                         return;
                     }
@@ -492,7 +491,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 }
                 else
                 {
-                    Toast.MakeText(this, "Napaka pri dostopu do web aplikacije: " + result, ToastLength.Long).Show();
+                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s213)}" + result, ToastLength.Long).Show();
 
                     return;
                 }
@@ -564,7 +563,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
         private async void CbWarehouse_ItemSelected(object sender, AdapterView.ItemSelectedEventArgs e)
         {
             temporaryPosWarehouse = e.Position;
-            warehouseLabel.Text = "Skladišče: " + warehouseAdapter.ElementAt(temporaryPosWarehouse);
+            warehouseLabel.Text = $"{Resources.GetString(Resource.String.s28)}: " + warehouseAdapter.ElementAt(temporaryPosWarehouse);
         }
 
 
@@ -593,7 +592,6 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             else
             {
                 tbIdent.Text = "";
-                Toast.MakeText(this, "Ident ni pravilen.", ToastLength.Long).Show();
 
             }
         }
@@ -612,27 +610,27 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             var warehouse = warehouseAdapter.ElementAt(temporaryPosWarehouse);
             if (warehouse == null)
             {
-                Toast.MakeText(this, "Skladišče ni izbrano!", ToastLength.Long).Show();
+                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s245)}", ToastLength.Long).Show();
                 ClearData();
                 return;
             }
             var sscc = tbSSCC.Text.Trim();
             if (tbSSCC.Enabled && string.IsNullOrEmpty(sscc))
             {
-                Toast.MakeText(this, "SSCC koda ni vnešena!", ToastLength.Long).Show();
+                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
                 return;
             }
             var serialNum = tbSerialNum.Text.Trim();
             if (tbSerialNum.Enabled && string.IsNullOrEmpty(serialNum))
             {
-                Toast.MakeText(this, "Serijska št. ni vnešena!", ToastLength.Long).Show();
+                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
                 return;
             }
 
             var ident = tbIdent.Text.Trim();
             if (string.IsNullOrEmpty(ident))
             {
-                Toast.MakeText(this, "Ident ni vnešen!", ToastLength.Long).Show();
+                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
                 return;
             }
             try
@@ -640,7 +638,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 var location = tbLocation.Text.Trim();
                 if (!CommonData.IsValidLocation(warehouse.ID, location))
                 {
-                    Toast.MakeText(this, "Lokacija '" + location + "' ni veljavna za skladišče '" + warehouse.ID + "'!", ToastLength.Long).Show();
+                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s258)} '" + location + $"' {Resources.GetString(Resource.String.s272)} '" + warehouse.ID + "'!", ToastLength.Long).Show();
                     return;
                 }
                 string result;
@@ -691,13 +689,13 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 double q = dataObject.DoubleValue("anQty") ?? 0;
                 if (dataObject != null)
                 {
-                    lbPacking.Text = $"Zaloga ({q.ToString(CommonData.GetQtyPicture())})";
+                    lbPacking.Text = $"{Resources.GetString(Resource.String.s155)} ({q.ToString(CommonData.GetQtyPicture())})";
                     tbPacking.Text = q.ToString(CommonData.GetQtyPicture());
 
                 }
                 else if (result != null)
                 {
-                    lbPacking.Text = $"Zaloga ({result})";
+                    lbPacking.Text = $"{Resources.GetString(Resource.String.s155)} ({result})";
                     tbPacking.Text = result;
                 }
             }
@@ -828,35 +826,35 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             warehouse = warehouseAdapter.ElementAt(temporaryPosWarehouse);
             if (warehouse == null)
             {
-                Toast.MakeText(this, "Skladišče ni izbrano!", ToastLength.Long).Show();
+                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s245)}", ToastLength.Long).Show();
                 return false;
             }
 
             location = tbLocation.Text.Trim();
             if (!CommonData.IsValidLocation(warehouse.ID, location))
             {
-                Toast.MakeText(this, "Lokacija '" + location + "' ni veljavna za skladišče '" + warehouse.ID + "'!", ToastLength.Long).Show();
+                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s258)} '" + location + $"' {Resources.GetString(Resource.String.s272)} '" + warehouse.ID + "'!", ToastLength.Long).Show();
                 return false;
             }
 
             sscc = tbSSCC.Text.Trim();
             if (tbSSCC.Enabled && string.IsNullOrEmpty(sscc))
             {
-                Toast.MakeText(this, "SSCC koda ni vpisana!", ToastLength.Long).Show();
+                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
                 return false;
             }
 
             ident = tbIdent.Text.Trim();
             if (string.IsNullOrEmpty(ident))
             {
-                Toast.MakeText(this, "Ident ni vpisan!", ToastLength.Long).Show();
+                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
                 return false;
             }
 
             serNo = tbSerialNum.Text.Trim();
             if (tbSerialNum.Enabled && string.IsNullOrEmpty(serNo))
             {
-                Toast.MakeText(this, "Serijska št. ni vpisana!", ToastLength.Long).Show();
+                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
                 return false;
             }
 
@@ -870,7 +868,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             catch (Exception ex)
 
             {
-                Toast.MakeText(this, "Količina ni vpisana ali ni število: " + ex.Message, ToastLength.Long).Show();
+                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}" + ex.Message, ToastLength.Long).Show();
                 return false;
             }
 
@@ -881,7 +879,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             }
             catch (Exception ex)
             {
-                Toast.MakeText(this, "Št. enot ni vpisano ali ni število: " + ex.Message, ToastLength.Long).Show();
+                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}" + ex.Message, ToastLength.Long).Show();
                 return false;
             }
 
@@ -895,7 +893,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             var warehouse = warehouseAdapter.ElementAt(temporaryPosWarehouse);
             if (warehouse == null)
             {
-                Toast.MakeText(this, "Skladišče ni izbrano!", ToastLength.Long).Show();
+                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s245)}", ToastLength.Long).Show();
 
                 cbWarehouse.RequestFocus();
                 return;
@@ -904,7 +902,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             var location = tbLocation.Text.Trim();
             if (!CommonData.IsValidLocation(warehouse.ID, location))
             {
-                Toast.MakeText(this, "Lokacija '" + location + "' ni veljavna za skladišče '" + warehouse.ID + "'!", ToastLength.Long).Show();
+                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s258)} '" + location + $"' {Resources.GetString(Resource.String.s272)} '" + warehouse.ID + "'!", ToastLength.Long).Show();
 
                 tbLocation.RequestFocus();
                 return;

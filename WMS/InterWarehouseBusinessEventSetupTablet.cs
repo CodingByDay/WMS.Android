@@ -54,7 +54,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             cbDocType = FindViewById<CustomAutoCompleteTextView>(Resource.Id.cbDocType);
             cbIssueWH = FindViewById<CustomAutoCompleteTextView>(Resource.Id.cbIssueWH);
             cbReceiveWH = FindViewById<CustomAutoCompleteTextView>(Resource.Id.cbRecceiveWH);
-            objectDocType.Add(new ComboBoxItem { ID = "Default", Text = "Izberite poslovni dogodek." });
+            objectDocType.Add(new ComboBoxItem { ID = "Default", Text = $"{Resources.GetString(Resource.String.s261)}" });
 
             docTypes = CommonData.ListDocTypes("E|");
             docTypes.Items.ForEach(dt =>
@@ -269,7 +269,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 var savedMoveHead = Services.SetObject("mh", moveHead, out error);
                 if (savedMoveHead == null)
                 {
-                    string errorWebApp = string.Format("Napaka pri dostopu do web aplikacije:" + error);
+                    string errorWebApp = string.Format($"{Resources.GetString(Resource.String.s213)}" + error);
                     DialogHelper.ShowDialogError(this, this, errorWebApp);
 
 
@@ -278,7 +278,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 {
                     if (!Services.TryLock("MoveHead" + savedMoveHead.GetInt("HeadID").ToString(), out error))
                     {
-                        string errorWebApp = string.Format("Kritična napaka pri zaklepanju nove medskladiščnice: " + error);
+                        string errorWebApp = string.Format($"{Resources.GetString(Resource.String.s215)}" + error);
                         DialogHelper.ShowDialogError(this, this, errorWebApp);
 
                     }
@@ -338,7 +338,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 Spinner spinner = (Spinner)sender;
                 if (e.Position != 0)
                 {
-                    string toast = string.Format("Izbrali ste: {0}", spinner.GetItemAtPosition(e.Position));
+                    string toast = string.Format($"{Resources.GetString(Resource.String.s236)}: {0}", spinner.GetItemAtPosition(e.Position));
                     temporaryPositionDoc = e.Position;
                     var id = objectDocType.ElementAt(e.Position).ID;
                     PrefillWarehouses(id);

@@ -389,10 +389,65 @@
 	<string name="s259">Naročilo</string>
 	<string name="s260">Naziv</string>
 
+	<string name="s261">Izberite poslovni dogodek.</string>
 
 
 
+	<string name="s262">Zaključujem.</string>
+
+	<string name="s263">Zaključevanje uspešno </string>
+	<string name="s264">Zaključevanje uspešno! Št. :\r\n </string>
+	<string name="s265">Napaka</string>
+	<string name="s266">Napaka pri zaključevanju: </string>
+
+	<string name="s267">Vnešene pozicije (ni)</string>
+	<string name="s268">Informacija</string>
 
 
+	<string name="s269">Zaloga ni znana</string>
+	<string name="s270">Podatki manjkajo</string>
+	
+	
+	<string name="s271">Prejemna lokacija</string>
+	<string name="s272">ni veljavna za sladišče</string>
+	<string name="s273">Izdajna lokacija</string>
+	<string name="s274">skeniranih SSCC koda.</string>
+	
+	
+	<string name="s275">Podatki:</string>
 
+	<string name="s276">Zapri</string>
+	<string name="s277">Pobriši</string>
+
+	<string name="s278">Količina ne sme presegati zaloge!</string>
+	
+	<string name="s279">Potrjevanje uspešno! Št. potrditve: </string>
+	<string name="s280">Napaka pri potrjevanju: </string>
+	<string name="s281">Odprte inventure (ni)</string>
+	<string name="s282">Inventurni dokument za skladišče in datum ne obstaja!</string>
+	<string name="s283">Inventura odprta</string>
+
+	<string name="s284">Dokument inventure shranjen</string>
+
+	<string name="s285">Za skladišče ni odprtega dokumenta inventure! Zapis ni mogoč.</string>
+
+	<string name="s286">Morate izbrati naročilo</string>
+	
+	<string name="s287">Morate izbrati skladišče</string>
+	<string name="s288">Morate izbrati subjekta</string>
+
+	<string name="s289">Naročilo (ni)</string>
+
+	<string name="s290">Posodobi</string>
+	<string name="s291">Količina je večja od dovoljene</string>
+
+	<string name="s292">Ni zaloge</string>
+
+	<string name="s293">Serijska F2</string>
+	
+	
+	<string name="s294">Naprava je neaktivna</string>
+	<string name="s295">Uporabnik nima pravice.</string>
+	<string name="s296">Napačno geslo.</string>
+	<string name="s297">Ni internetne povezave...</string>
 </resources>

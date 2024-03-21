@@ -244,7 +244,7 @@ namespace WMS
                     }
                     else
                     {
-                        string errorWebApp = string.Format("Napaka pri brisanju pozicije " + result);
+                        string errorWebApp = string.Format($"{Resources.GetString(Resource.String.s212)}" + result);
                         Toast.MakeText(this, errorWebApp, ToastLength.Long).Show();
                         positions = null;
                         LoadPositions();
@@ -323,7 +323,7 @@ namespace WMS
                     }
                     if (positions == null)
                     {
-                        string toast = string.Format("Napaka pri dostopu do web aplikacije" + error);
+                        string toast = string.Format($"{Resources.GetString(Resource.String.s213)}" + error);
                         Toast.MakeText(this, toast, ToastLength.Long).Show();
                         return;
                     }

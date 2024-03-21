@@ -188,7 +188,7 @@ namespace WMS
             }
             else
             {
-                Toast.MakeText(this, "Nepravilni podatki", ToastLength.Long).Show();
+                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
             }
         }
 
@@ -206,7 +206,7 @@ namespace WMS
             }
             else
             {
-                Toast.MakeText(this, "Nepravilni podatki", ToastLength.Long).Show();
+                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
             }
         }
 
@@ -426,7 +426,7 @@ namespace WMS
                 RunOnUiThread(() =>
                 {
                     progress = new ProgressDialogClass();
-                    progress.ShowDialogSync(this, "Zaključevanje");
+                    progress.ShowDialogSync(this, $"{Resources.GetString(Resource.String.s262)}");
                 });
 
                 try
@@ -447,13 +447,13 @@ namespace WMS
 
                                 var id = result.Split('+')[1];
 
-                                Toast.MakeText(this, "Zaključevanje uspešno! Št. izdaje:\r\n" + id, ToastLength.Long).Show();
+                                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s264)}" + id, ToastLength.Long).Show();
 
                                 AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
-                                alert.SetTitle("Zaključevanje uspešno");
+                                alert.SetTitle($"{Resources.GetString(Resource.String.s263)}");
 
-                                alert.SetMessage("Zaključevanje uspešno! Št.prevzema:\r\n" + id);
+                                alert.SetMessage($"{Resources.GetString(Resource.String.s264)}" + id);
 
                                 alert.SetPositiveButton("Ok", (senderAlert, args) =>
                                 {
@@ -475,8 +475,8 @@ namespace WMS
                             {
                                 progress.StopDialogSync();
                                 AlertDialog.Builder alert = new AlertDialog.Builder(this);
-                                alert.SetTitle("Napaka");
-                                alert.SetMessage("Napaka pri zaključevanju: " + result);
+                                alert.SetTitle($"{Resources.GetString(Resource.String.s265)}");
+                                alert.SetMessage($"{Resources.GetString(Resource.String.s266)}" + result);
 
                                 alert.SetPositiveButton("Ok", (senderAlert, args) =>
                                 {
@@ -494,7 +494,7 @@ namespace WMS
                     }
                     else
                     {
-                        Toast.MakeText(this, "Napaka pri klicu do web aplikacije" + result, ToastLength.Long).Show();
+                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s216)}" + result, ToastLength.Long).Show();
 
                     }
                 }
@@ -550,7 +550,7 @@ namespace WMS
                 tbPalette.Text = moveItem.GetString("Palette");
                 tbPacking.Text = moveItem.GetDouble("Packing").ToString();
                 tbUnits.Text = moveItem.GetDouble("Factor").ToString();
-                btCreateSame.Text = "Serij. - F2";
+                btCreateSame.Text = $"{Resources.GetString(Resource.String.s293)}";
             }
             else
             {
@@ -563,7 +563,7 @@ namespace WMS
                     receivedTrail = ClientPickingPosition.Deserialize<ClientPickingPosition>(trailBytes);
                     qtyCheck = Double.Parse(receivedTrail.Quantity);
                     tbLocation.Text = receivedTrail.Location;
-                    lbQty.Text = "Zaloga ( " + qtyCheck.ToString(CommonData.GetQtyPicture()) + " )";
+                    lbQty.Text = $"{Resources.GetString(Resource.String.s155)} ( " + qtyCheck.ToString(CommonData.GetQtyPicture()) + " )";
                     stock = qtyCheck;
                     tbPacking.Text = qtyCheck.ToString();
                     GetConnectedPositions(receivedTrail.Order, receivedTrail.No, receivedTrail.Ident, receivedTrail.Location);

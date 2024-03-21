@@ -117,7 +117,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 var qtyByLoc = Services.GetObjectList("stoo", out error, warehouse + "|" + openOrder.GetString("Key") + "|" + moveHead.GetInt("HeadID"));
                 if (qtyByLoc == null)
                 {
-                    throw new ApplicationException("Napaka pri pridobivanju podatkov za vodenje po skladišču: " + error);
+                    throw new ApplicationException($"{Resources.GetString(Resource.String.s247)}" + error);
                 }
 
                 trails.Clear();
@@ -284,7 +284,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
 
 
             selected = e.Position;
-            string toast = string.Format("Izbrali ste: {0}", trails.ElementAt(selected).Location.ToString());
+            string toast = string.Format($"{Resources.GetString(Resource.String.s236)}: {0}", trails.ElementAt(selected).Location.ToString());
             Toast.MakeText(this, toast, ToastLength.Long).Show();
 
 
@@ -295,7 +295,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
         {
             if (selected == -1)
             {
-                string WebError = string.Format("Kritična napaka.");
+                string WebError = string.Format($"{Resources.GetString(Resource.String.s265)}");
                 Toast.MakeText(this, WebError, ToastLength.Long).Show();
                 return false;
             }

@@ -88,7 +88,7 @@ namespace WMS
             InUseObjects.ClearExcept(new string[] { "MoveHead", "OpenOrder" });
             if (moveHead == null)
             {
-                var task = await DialogAsync.Show(this, "Napaka", "Aplikacija se bo zaprla ker nimate pravih podatkov.");
+                var task = await DialogAsync.Show(this, $"{Resources.GetString(Resource.String.s265)}", "Aplikacija se bo zaprla ker nimate pravih podatkov.");
                 if ((bool)task)
                 {
                     System.Diagnostics.Process.GetCurrentProcess().Kill();
@@ -233,7 +233,7 @@ namespace WMS
                     }
                         else
                         {
-                        Toast.MakeText(this, "Napaka pri brisanju pozicije: " + result, ToastLength.Long).Show();
+                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s212)}" + result, ToastLength.Long).Show();
      
                             positions = null;
                             LoadPositions();
@@ -244,7 +244,7 @@ namespace WMS
                     }
                     else
                     {
-                    Toast.MakeText(this, "Napaka pri dostopu do web aplikacije: " + result, ToastLength.Long).Show();
+                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s213)}" + result, ToastLength.Long).Show();
                     popupDialog.Dismiss();
                     popupDialog.Hide();
                     return;
@@ -303,7 +303,7 @@ namespace WMS
                     {
                         progress = new ProgressDialogClass();
 
-                        progress.ShowDialogSync(this, "Zaključujem");
+                        progress.ShowDialogSync(this, $"{Resources.GetString(Resource.String.s262)}");
                     });
 
 
@@ -312,7 +312,7 @@ namespace WMS
 
                         if(headID == null)
                         {
-                            Toast.MakeText(this, "Glava dokumenta ne obstaja. Kontaktirajte administratorja.", ToastLength.Long).Show();
+                            return;
                         }
 
                         string result;
@@ -326,8 +326,8 @@ namespace WMS
 
                                     var id = result.Split('+')[1];
                                     AlertDialog.Builder alert = new AlertDialog.Builder(this);
-                                    alert.SetTitle("Zaključevanje uspešno");
-                                    alert.SetMessage("Zaključevanje uspešno! Št.izdaje: \r\n" + id);
+                                    alert.SetTitle($"{Resources.GetString(Resource.String.s263)}");
+                                    alert.SetMessage($"{Resources.GetString(Resource.String.s264)}" + id);
 
                                     alert.SetPositiveButton("Ok", (senderAlert, args) =>
                                     {
@@ -350,8 +350,8 @@ namespace WMS
                                 {
                                     progress.StopDialogSync();
                                     AlertDialog.Builder alert = new AlertDialog.Builder(this);
-                                    alert.SetTitle("Napaka");
-                                    alert.SetMessage("Napaka pri zaključevanju: " + result);
+                                    alert.SetTitle($"{Resources.GetString(Resource.String.s265)}");
+                                    alert.SetMessage($"{Resources.GetString(Resource.String.s266)}" + result);
 
                                     alert.SetPositiveButton("Ok", (senderAlert, args) =>
                                     {
@@ -373,8 +373,8 @@ namespace WMS
                             {
                                 progress.StopDialogSync();
                                 AlertDialog.Builder alert = new AlertDialog.Builder(this);
-                                alert.SetTitle("Napaka");
-                                alert.SetMessage("Napaka pri klicu web aplikacije: " + result);
+                                alert.SetTitle($"{Resources.GetString(Resource.String.s265)}");
+                                alert.SetMessage($"{Resources.GetString(Resource.String.s218)}" + result);
 
                                 alert.SetPositiveButton("Ok", (senderAlert, args) =>
                                 {
@@ -399,14 +399,7 @@ namespace WMS
                       
                     }
 
-                } else
-                {
-                    RunOnUiThread(() =>
-                    {
-                        Toast.MakeText(this, "Kontaktirajte administratorja.", ToastLength.Long).Show();
-                    });
-                
-                }
+                } 
             });
         }
 
@@ -444,7 +437,7 @@ namespace WMS
                 var openIdent = Services.GetObject("id", item.GetString("Ident"), out error);
                 if (openIdent == null)
                 {
-                    Toast.MakeText(this, "Napaka pri preverjanju ident-a: " + error, ToastLength.Long).Show();
+                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s229)}" + error, ToastLength.Long).Show();
                 }
                 else
                 {
@@ -500,7 +493,7 @@ namespace WMS
                     }
                     if (positions == null)
                     {
-                        Toast.MakeText(this, "Napaka pri dostopu do web aplikacije: " + error, ToastLength.Long).Show();
+                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s213)}" + error, ToastLength.Long).Show();
 
                         return;
                     }
@@ -523,7 +516,7 @@ namespace WMS
             if ((positions != null) && (displayedPosition < positions.Items.Count))
             {
                 var item = positions.Items[displayedPosition];
-                lbInfo.Text = "Vnešene pozicije na odpremi (" + (displayedPosition + 1).ToString() + "/" + positions.Items.Count + ")";
+                lbInfo.Text = $"{Resources.GetString(Resource.String.s92)} (" + (displayedPosition + 1).ToString() + "/" + positions.Items.Count + ")";
 
                 tbIdent.Text = item.GetString("IdentName");
                 tbSSCC.Text = item.GetString("SSCC");
@@ -556,7 +549,7 @@ namespace WMS
             }
             else
             {
-                lbInfo.Text = "Vnešene pozicije na odpremi (ni)";
+                lbInfo.Text = $"{Resources.GetString(Resource.String.s267)}";
                 tbIdent.Text = "";
                 tbSSCC.Text = "";
                 tbSerialNumber.Text = "";

@@ -212,7 +212,7 @@ namespace WMS
                         }
                         else
                         {
-                            string WebError = string.Format("Napaka pri brisanju pozicije: " + result);
+                            string WebError = string.Format($"{Resources.GetString(Resource.String.s212)}" + result);
                             Toast.MakeText(this, WebError, ToastLength.Long).Show();
 
                             return;
@@ -220,7 +220,7 @@ namespace WMS
                     }
                     else
                     {
-                        string WebError = string.Format("Napaka pri dostopu do web aplikacije: " + result);
+                        string WebError = string.Format($"{Resources.GetString(Resource.String.s213)}" + result);
                         Toast.MakeText(this, WebError, ToastLength.Long).Show();
 
                         return;
@@ -270,7 +270,7 @@ namespace WMS
                     }
                     if (positions == null)
                     {
-                        string WebError = string.Format("Napaka pri dostopu do web aplikacije: " + error);
+                        string WebError = string.Format($"{Resources.GetString(Resource.String.s213)}" + error);
                         Toast.MakeText(this, WebError, ToastLength.Long).Show();
                         return;
                     }

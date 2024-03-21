@@ -242,7 +242,7 @@ namespace WMS
 
             var progress = new ProgressDialogClass();
 
-            progress.ShowDialogSync(this, "Zaključujem");
+            progress.ShowDialogSync(this, $"{Resources.GetString(Resource.String.s262)}");
 
             try
             {
@@ -260,7 +260,7 @@ namespace WMS
                     }
                     else
                     {
-                        string errorWebAppIssued = string.Format("Napaka pri brisanju pozicije " + result);
+                        string errorWebAppIssued = string.Format($"{Resources.GetString(Resource.String.s212)}" + result);
                         Toast.MakeText(this, errorWebAppIssued, ToastLength.Long).Show();
                         positions = null;
                         LoadPositions();
@@ -272,7 +272,7 @@ namespace WMS
                 }
                 else
                 {
-                    string errorWebAppIssued = string.Format("Napaka pri dostopu web aplikacije: " + result);
+                    string errorWebAppIssued = string.Format($"{Resources.GetString(Resource.String.s213)}" + result);
                     Toast.MakeText(this, errorWebAppIssued, ToastLength.Long).Show();
                     popupDialog.Dismiss();
                     popupDialog.Hide();
@@ -285,7 +285,7 @@ namespace WMS
                 progress.StopDialogSync();
             }
 
-            string errorWebApp = string.Format("Pozicija uspešno zbrisana.");
+            string errorWebApp = string.Format($"{Resources.GetString(Resource.String.s214)}");
             Toast.MakeText(this, errorWebApp, ToastLength.Long).Show();
         }
 

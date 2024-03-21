@@ -185,7 +185,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             var qty = Convert.ToDouble(tbQty.Text.Trim());
             if (qty > stock.GetDouble("RealStock"))
             {
-                Toast.MakeText(this, "Količina (" + qty.ToString(CommonData.GetQtyPicture()) + ") presega zalogo (" + stock.GetDouble("RealStock").ToString(CommonData.GetQtyPicture()) + ")!", ToastLength.Long).Show();
+                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s40)} (" + qty.ToString(CommonData.GetQtyPicture()) + ") presega zalogo (" + stock.GetDouble("RealStock").ToString(CommonData.GetQtyPicture()) + ")!", ToastLength.Long).Show();
                 return false;
             }
 
@@ -215,7 +215,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 }
                 else
                 {
-                    Toast.MakeText(this, "Napaka pri dostopu do web aplikacije: " + error, ToastLength.Long).Show();
+                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s213)}" + error, ToastLength.Long).Show();
                     return false;
                 }
             }
@@ -263,7 +263,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
 
             if (LoadStock(warehouse, location, sscc, serialNo, ident))
             {
-                lbQty.Text = "Količina (" + stock.GetDouble("RealStock").ToString(CommonData.GetQtyPicture()) + "):";
+                lbQty.Text = $"{Resources.GetString(Resource.String.s40)} (" + stock.GetDouble("RealStock").ToString(CommonData.GetQtyPicture()) + "):";
                 tbQty.Text = stock.GetDouble("RealStock").ToString(CommonData.GetQtyPicture());
             }
             else

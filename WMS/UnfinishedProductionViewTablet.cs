@@ -265,7 +265,7 @@ namespace WMS
                     }
                     else
                     {
-                        string errorWebAppIssued = string.Format("Napaka pri brisanju pozicije " + result);
+                        string errorWebAppIssued = string.Format($"{Resources.GetString(Resource.String.s212)}" + result);
                         DialogHelper.ShowDialogError(this, this, errorWebAppIssued);
 
                         //Toast.MakeText(this, errorWebAppIssued, ToastLength.Long).Show();
@@ -279,7 +279,7 @@ namespace WMS
                 }
                 else
                 {
-                    string errorWebAppIssued = string.Format("Napaka pri dostopu web aplikacije: " + result);
+                    string errorWebAppIssued = string.Format($"{Resources.GetString(Resource.String.s213)}" + result);
                     DialogHelper.ShowDialogError(this, this, errorWebAppIssued);
                     popupDialog.Dismiss();
                     popupDialog.Hide();
@@ -295,7 +295,7 @@ namespace WMS
 
             }
 
-            string errorWebApp = string.Format("Pozicija uspešno zbrisana.");
+            string errorWebApp = string.Format($"{Resources.GetString(Resource.String.s214)}");
             Toast.MakeText(this, errorWebApp, ToastLength.Long).Show();
         }
         private void DeleteFromTouch(int index)
@@ -364,7 +364,7 @@ namespace WMS
                     }
                     else
                     {
-                        string errorWebAppProduction = string.Format("Napaka pri brisanju pozicije " + result);
+                        string errorWebAppProduction = string.Format($"{Resources.GetString(Resource.String.s212)}" + result);
                         DialogHelper.ShowDialogError(this, this, errorWebAppProduction);
                         positions = null;
                         LoadPositions();
@@ -452,7 +452,7 @@ namespace WMS
                 }
                 else
                 {
-                    string errorWebApp = string.Format("Kritična napaka...");
+                    string errorWebApp = string.Format($"{Resources.GetString(Resource.String.s247)}");
                     DialogHelper.ShowDialogError(this, this, errorWebApp);
                 }
 

@@ -254,7 +254,7 @@ namespace WMS
                     }
                     else
                     {
-                        string errorWebAppProduction = string.Format("Napaka pri brisanju pozicije " + result);
+                        string errorWebAppProduction = string.Format($"{Resources.GetString(Resource.String.s212)}" + result);
                         DialogHelper.ShowDialogError(this, this, errorWebAppProduction);
                         positions = null;
                         LoadPositions();

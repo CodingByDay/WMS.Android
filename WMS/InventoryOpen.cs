@@ -139,7 +139,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                         var moveHeadID = Convert.ToInt32(result);
                         if (moveHeadID < 0)
                         {
-                            ClearFieldsError("Inventurni dokument za skladišče in datum ne obstaja!");
+                            ClearFieldsError($"{Resources.GetString(Resource.String.s282)}");
                             return;
                         }
                         else
@@ -147,7 +147,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                             moveHead = Services.GetObject("mh", moveHeadID.ToString(), out result);
                             if (moveHead == null)
                             {
-                                ClearFieldsError("Inventurni dokument za skladišče in datum ne obstaja!");
+                                ClearFieldsError($"{Resources.GetString(Resource.String.s282)}");
                                 return;
                             }
                             else
@@ -162,7 +162,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                     }
                     else
                     {
-                        ClearFieldsError("Napaka pri preverjanju inventure: " + result);
+                        ClearFieldsError($"{Resources.GetString(Resource.String.s247)}" + result);
                         return;
                     }
                 }
@@ -226,7 +226,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             var warehouse = warehousesObjectsAdapter.ElementAt(temporaryPositionWarehouse);
             if (warehouse == null)
             {
-                Toast.MakeText(this, "Skladišče ni izbrano!", ToastLength.Long).Show();
+                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s245)}", ToastLength.Long).Show();
 
                 return;
             }
@@ -240,7 +240,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 string error;
                 if (!WebApp.Get("mode=canInsertInventory&wh=" + warehouse.ID.ToString(), out error))
                 {
-                    DialogHelper.ShowDialogError(this, this, "Napaka pri preverjanju zapisa inventure: " + error);
+                    DialogHelper.ShowDialogError(this, this, $"{Resources.GetString(Resource.String.s247)}" + error);
          
                     return;
                 }
@@ -248,13 +248,13 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 {
                     if (!WebApp.Get("mode=reopenInventory&id=" + moveHead.GetInt("HeadID").ToString(), out error))
                     {
-                        DialogHelper.ShowDialogError(this, this, "Napaka pri odpiranju inventure: " + error);
+                        DialogHelper.ShowDialogError(this, this, $"{Resources.GetString(Resource.String.s247)}" + error);
                      
                         return;
                     }
                     else
                     {
-                        Toast.MakeText(this, "Inventura odprta!", ToastLength.Long).Show();
+                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s283)}", ToastLength.Long).Show();
               
                         StartActivity(typeof(InventoryConfirm));
                         HelpfulMethods.clearTheStack(this);
@@ -262,7 +262,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 }
                 else
                 {
-                    DialogHelper.ShowDialogError(this, this, "Napaka pri preverjanju zapisa inventure: " + error);
+                    DialogHelper.ShowDialogError(this, this, $"{Resources.GetString(Resource.String.s247)}" + error);
                     return;
                 }
             }
@@ -277,7 +277,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
         {
 
             temporaryPositionWarehouse = e.Position;
-            warehouseLabel.Text = "Skladišče: " + warehousesObjectsAdapter.ElementAt(temporaryPositionWarehouse);
+            warehouseLabel.Text = $"{Resources.GetString(Resource.String.s28)}: " + warehousesObjectsAdapter.ElementAt(temporaryPositionWarehouse);
             UpdateFields();
 
         }

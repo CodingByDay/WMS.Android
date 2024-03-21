@@ -24,7 +24,6 @@
             string input = code; // this is your input string
             char[] chars = input.ToCharArray();
             List<char> buffer = new List<char>();
-            bool addBuffer = false;
             foreach (var c in chars)
             {
                 var innerChar = c;

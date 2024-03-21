@@ -23,7 +23,7 @@ using Exception = System.Exception;
 using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS
 {
     [Activity(Label = "IssuedGoodsBusinessEventSetupTablet", ScreenOrientation = Android.Content.PM.ScreenOrientation.Landscape)]
-    public class IssuedGoodsBusinessEventSetupTablet : AppCompatActivity,  IDialogInterfaceOnClickListener
+    public class IssuedGoodsBusinessEventSetupTablet : AppCompatActivity
     {
         private CustomAutoCompleteTextView cbDocType;
         public NameValueObjectList docTypes = null;
@@ -77,13 +77,9 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             });
             adapterWarehouse = new CustomAutoCompleteAdapter<ComboBoxItem>(this,
             Android.Resource.Layout.SimpleSpinnerItem, objectWarehouse);
-            ///* 22.12.2020---------------------------------------------------------------
-            ///* Documentation for the spinner objects add method with an adapter...
-            ///*---------------------------------------------------
-            ///
+
             adapterWarehouse.SetDropDownViewResource(Android.Resource.Layout.SimpleSpinnerDropDownItem);
             cbWarehouse.Adapter = adapterWarehouse;
-            // Function update form...
             UpdateForm();
             adapterExtra = new CustomAutoCompleteAdapter<ComboBoxItem>(this,
             Android.Resource.Layout.SimpleSpinnerItem, objectExtra);
@@ -127,7 +123,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             }
             catch (Exception ex)
             {
-                string toast = string.Format("Napaka" + ex.ToString());
+                string toast = string.Format($"{Resources.GetString(Resource.String.s265)}" + ex.ToString());
                 Toast.MakeText(this, toast, ToastLength.Long).Show();
             }
         }
@@ -136,12 +132,11 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
         {
             try
             {
-
                 temporaryPositionExtra = e.Position;
             }
             catch (Exception ex)
             {
-                string toast = string.Format("Napaka" + ex.ToString());
+                string toast = string.Format($"{Resources.GetString(Resource.String.s265)}" + ex.ToString());
                 Toast.MakeText(this, toast, ToastLength.Long).Show();
             }
         }
@@ -162,7 +157,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             }
             catch (Exception ex)
             {
-                string toast = string.Format("Napaka" + ex.ToString());
+                string toast = string.Format($"{Resources.GetString(Resource.String.s265)}" + ex.ToString());
                 Toast.MakeText(this, toast, ToastLength.Long).Show();
             }
         }
@@ -192,19 +187,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             }
         }
 
-        private async Task SendEvents()
-        {
-            await Task.Run(() =>
-            {
-                Instrumentation inst = new Instrumentation();            
-                inst.SendKeyDownUpSync(Keycode.Back);
-            });
-        } 
 
-        public void OnClick(IDialogInterface dialog, int which)
-        {
-       
-        }
         public override bool OnKeyDown(Keycode keyCode, KeyEvent e)
         {
             switch (keyCode)
@@ -249,7 +232,6 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
 
             if ((byOrder && CommonData.GetSetting("UseSingleOrderIssueing") == "1"))
             {
-                string toast = string.Format("Pridobivam seznam odprtih naručila");
                 
                 try
                 {
@@ -264,7 +246,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                             positions = Services.GetObjectList("oodtw", out error, dt.ID + "|" + wh.ID + "|" + byClient);
                             if (positions == null)
                             {
-                                string toasted = string.Format("Napaka pri pridobivanju odprtih naročil: " + error);
+                                string toasted = string.Format($"{Resources.GetString(Resource.String.s216)}" + error);
                                 Toast.MakeText(this, toasted, ToastLength.Long).Show();
                            
                                 return;
@@ -325,7 +307,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                     lbExtra.Visibility = ViewStates.Visible;
                     FindViewById<RelativeLayout>(Resource.Id.rlExtra).Visibility = ViewStates.Visible;
                     cbExtra.Visibility = ViewStates.Visible;      
-                    lbExtra.Text = "Naročilo:";                
+                    lbExtra.Text = $"{Resources.GetString(Resource.String.s14)}";                
                 }
                 else
 
@@ -337,7 +319,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
 
                 docTypes = CommonData.ListDocTypes("P|N");
 
-                btnOrderMode.Text = "Brez nar. - F3";
+                btnOrderMode.Text = $"{Resources.GetString(Resource.String.s30)}";
             }
             else
             {
@@ -347,7 +329,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
 
                 cbExtra.Visibility = ViewStates.Visible;
 
-                lbExtra.Text = "Subjekt:";
+                lbExtra.Text = $"{Resources.GetString(Resource.String.s33)}";
 
                 objectExtra.Clear();
 
@@ -362,7 +344,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
 
                 docTypes = CommonData.ListDocTypes("I;M|F");
 
-                btnOrderMode.Text = "Z nar. - F3";
+                btnOrderMode.Text = $"{Resources.GetString(Resource.String.s32)}";
             }
 
             docTypes.Items.ForEach(dt =>
@@ -377,7 +359,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             var itemDT = adapterDocType.GetItem(temporaryPositionDoc);
             if (itemDT == null)
             {
-                string toast = string.Format("Poslovni dogodek more bit izbran");
+                string toast = string.Format($"{Resources.GetString(Resource.String.s237)}");
 
                 Toast.MakeText(this, toast, ToastLength.Long).Show();
             }
@@ -386,7 +368,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 var itemWH = adapterWarehouse.GetItem(temporaryPositionWarehouse);
                 if (itemWH == null)
                 {
-                    string toast = string.Format("Sladište more biti izbrano.");
+                    string toast = string.Format($"{Resources.GetString(Resource.String.s287)}");
 
                     Toast.MakeText(this, toast, ToastLength.Long).Show();
                 }
@@ -398,7 +380,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                         itemSubj = adapterExtra.GetItem(temporaryPositionExtra);
                         if (itemSubj == null)
                         {
-                            string toast = string.Format("Poslovni dogodek more bit izbran");
+                            string toast = string.Format($"{Resources.GetString(Resource.String.s237)}");
 
                             Toast.MakeText(this, toast, ToastLength.Long).Show();
 
@@ -425,7 +407,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                         if (itemSubj == null)
                         {
                          
-                            string toast = string.Format("Subjekt more biti izbran.");
+                            string toast = string.Format($"{Resources.GetString(Resource.String.s288)}");
 
                             Toast.MakeText(this, toast, ToastLength.Long).Show();
                             return;

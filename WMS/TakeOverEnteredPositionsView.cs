@@ -172,7 +172,7 @@ namespace WMS
                         }
                         else
                         {
-                            Toast.MakeText(this, "Napaka pri brisanju pozicije: " + result, ToastLength.Long).Show();
+                            Toast.MakeText(this, $"{Resources.GetString(Resource.String.s212)}" + result, ToastLength.Long).Show();
                             positions = null;
                             LoadPositions();
                             popupDialog.Dismiss();
@@ -182,7 +182,7 @@ namespace WMS
                     }
                     else
                     {
-                        Toast.MakeText(this, "Napaka pri dostopu do web aplikacije: " + result, ToastLength.Long).Show();
+                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s213)}" + result, ToastLength.Long).Show();
                         popupDialog.Dismiss();
                         popupDialog.Hide();
                         return;
@@ -204,7 +204,7 @@ namespace WMS
                 RunOnUiThread(() =>
                 {
                     progress = new ProgressDialogClass();
-                    progress.ShowDialogSync(this, "Zaključujem");
+                    progress.ShowDialogSync(this, $"{Resources.GetString(Resource.String.s262)}");
                 });
                 try
                 {
@@ -239,8 +239,8 @@ namespace WMS
                             {
                                 progress.StopDialogSync();
                                 AlertDialog.Builder alert = new AlertDialog.Builder(this);
-                                alert.SetTitle("Napaka");
-                                alert.SetMessage("Napaka pri zaključevanju: " + result);
+                                alert.SetTitle($"{Resources.GetString(Resource.String.s265)}");
+                                alert.SetMessage($"{Resources.GetString(Resource.String.s266)}" + result);
                                 alert.SetPositiveButton("Ok", (senderAlert, args) =>
                                 {
                                     alert.Dispose();
@@ -378,7 +378,7 @@ namespace WMS
                     }
                     if (positions == null)
                     {
-                        Toast.MakeText(this, "Napaka pri dostopu do web aplikacije: " + error, ToastLength.Long).Show();
+                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s213)}" + error, ToastLength.Long).Show();
                         return;
                     }
                 }

@@ -301,7 +301,7 @@ namespace WMS
                     RunOnUiThread(() =>
                     {
                         progress = new ProgressDialogClass();
-                        progress.ShowDialogSync(this, "Zaključujem");
+                        progress.ShowDialogSync(this, $"{Resources.GetString(Resource.String.s262)}");
                     });
 
                     try
@@ -322,15 +322,15 @@ namespace WMS
 
                                     var id = result.Split('+')[1];
 
-                                    Toast.MakeText(this, "Zaključevanje uspešno! Št. izdaje:\r\n" + id, ToastLength.Long).Show();
+                                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s264)}" + id, ToastLength.Long).Show();
 
                                     InvalidateAndClose();
 
                                     AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
-                                    alert.SetTitle("Zaključevanje uspešno");
+                                    alert.SetTitle($"{Resources.GetString(Resource.String.s263)}");
 
-                                    alert.SetMessage("Zaključevanje uspešno! Št.prevzema:\r\n" + id);
+                                    alert.SetMessage($"{Resources.GetString(Resource.String.s264)}" + id);
 
                                     alert.SetPositiveButton("Ok", (senderAlert, args) =>
                                     {
@@ -350,8 +350,8 @@ namespace WMS
                                 {
                                     progress.StopDialogSync();
                                     AlertDialog.Builder alert = new AlertDialog.Builder(this);
-                                    alert.SetTitle("Napaka");
-                                    alert.SetMessage("Napaka pri zaključevanju: " + result);
+                                    alert.SetTitle($"{Resources.GetString(Resource.String.s265)}");
+                                    alert.SetMessage($"{Resources.GetString(Resource.String.s266)}" + result);
                                     alert.SetPositiveButton("Ok", (senderAlert, args) =>
                                     {
                                         alert.Dispose();
@@ -366,7 +366,7 @@ namespace WMS
                         }
                         else
                         {
-                            Toast.MakeText(this, "Napaka pri klicu do web aplikacije" + result, ToastLength.Long).Show();
+                            Toast.MakeText(this, $"{Resources.GetString(Resource.String.s216)}" + result, ToastLength.Long).Show();
                         }
                     }
                     finally
@@ -442,7 +442,7 @@ namespace WMS
             }
             else
             {
-                Toast.MakeText(this, "Obstaja napaka na podatkih.", ToastLength.Long).Show();
+                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
             }
 
 
@@ -476,7 +476,7 @@ namespace WMS
                 tbPalette.Text = moveItem.GetString("Palette");
                 tbPacking.Text = moveItem.GetDouble("Packing").ToString();
                 tbUnits.Text = moveItem.GetDouble("Factor").ToString();
-                btSaveOrUpdate.Text = "Serij. - F2";
+                btSaveOrUpdate.Text = $"{Resources.GetString(Resource.String.s293)}";
             }
             else
             {
@@ -546,7 +546,7 @@ namespace WMS
                 stock = Services.GetObject("str", warehouse + "|" + location + "|" + sscc + "|" + serialNum + "|" + ident, out error);
                 if (stock == null)
                 {
-                    Toast.MakeText(this, "Napaka pri dostopu do web aplikacije" + error, ToastLength.Long).Show();
+                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s213)}" + error, ToastLength.Long).Show();
                     return false;
                 }
 
@@ -621,7 +621,7 @@ namespace WMS
                     {
                         RunOnUiThread(() =>
                         {
-                            Toast.MakeText(this, "Ne morete izdati več kot je trenutno na zalogi!", ToastLength.Long).Show();
+                            Toast.MakeText(this, $"{Resources.GetString(Resource.String.s278)}", ToastLength.Long).Show();
                         });
                         return false;
                     }
@@ -636,7 +636,7 @@ namespace WMS
 
                 RunOnUiThread(() =>
                 {
-                    Toast.MakeText(this, "Nepravilen vnos", ToastLength.Long).Show();
+                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
                 });
                 return false;
             }
@@ -650,7 +650,7 @@ namespace WMS
             {
                 RunOnUiThread(() =>
                 {
-                    Toast.MakeText(this, "SSCC koda je obvezen podatek", ToastLength.Long).Show();
+                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
 
                     tbSSCC.RequestFocus();
                 });
@@ -661,7 +661,7 @@ namespace WMS
             {
                 RunOnUiThread(() =>
                 {
-                    Toast.MakeText(this, "Serijska številka je obvezen podatek!", ToastLength.Long).Show();
+                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
 
                     tbSerialNum.RequestFocus();
                 });
@@ -673,7 +673,7 @@ namespace WMS
             {
                 RunOnUiThread(() =>
                 {
-                    Toast.MakeText(this, "Lokacija '" + tbLocation.Text.Trim() + "' ni veljavna za skladišče '" + moveHead.GetString("Wharehouse") + "'!", ToastLength.Long).Show();
+                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s258)} '" + tbLocation.Text.Trim() + $"' {Resources.GetString(Resource.String.s272)} '" + moveHead.GetString("Wharehouse") + "'!", ToastLength.Long).Show();
 
                     tbLocation.RequestFocus();
                 });
@@ -689,7 +689,7 @@ namespace WMS
             {
                 RunOnUiThread(() =>
                 {
-                    Toast.MakeText(this, "Količina je obvezen podatek", ToastLength.Long).Show();
+                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
                     tbPacking.RequestFocus();
                 });
 
@@ -704,7 +704,7 @@ namespace WMS
                     {
                         RunOnUiThread(() =>
                         {
-                            Toast.MakeText(this, "Količina je obvezen podatek in mora biti različna od nič.", ToastLength.Long).Show();
+                            Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
 
                             tbPacking.RequestFocus();
                         });
@@ -720,7 +720,7 @@ namespace WMS
                         {
                             RunOnUiThread(() =>
                             {
-                                Toast.MakeText(this, "Količina presega (" + qty.ToString(CommonData.GetQtyPicture()) + ") naročilo (" + maxVal.ToString(CommonData.GetQtyPicture()) + ")!", ToastLength.Long).Show();
+                                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
                                 tbPacking.RequestFocus();
                             });
 
@@ -732,7 +732,7 @@ namespace WMS
                 {
                     RunOnUiThread(() =>
                     {
-                        Toast.MakeText(this, "Količina mora biti število (" + e.Message + ")!", ToastLength.Long).Show();
+                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s220)}", ToastLength.Long).Show();
 
                         tbPacking.RequestFocus();
                     });
@@ -745,7 +745,7 @@ namespace WMS
             {
                 RunOnUiThread(() =>
                 {
-                    Toast.MakeText(this, "Število enota je obvezan podatek", ToastLength.Long).Show();
+                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
                     tbUnits.RequestFocus();
                 });
 
@@ -760,7 +760,7 @@ namespace WMS
                     {
                         RunOnUiThread(() =>
                         {
-                            Toast.MakeText(this, "Število enota je obvezan podatek in more biti raličit o nič", ToastLength.Long).Show();
+                            Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
                             tbUnits.RequestFocus();
                         });
 
@@ -807,7 +807,7 @@ namespace WMS
                     RunOnUiThread(() =>
                     {
                         var debug = error;
-                        Toast.MakeText(this, "Napaka pri dostopu web aplikacije." + error, ToastLength.Long).Show();
+                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s216)}" + error, ToastLength.Long).Show();
                     });
 
                     return false;

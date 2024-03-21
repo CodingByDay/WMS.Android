@@ -183,7 +183,7 @@ namespace WMS
                     }
                     else
                     {
-                        string errorWebAppIssued = string.Format("Napaka pri brisanju pozicije " + result);
+                        string errorWebAppIssued = string.Format($"{Resources.GetString(Resource.String.s212)}" + result);
                         Toast.MakeText(this, errorWebAppIssued, ToastLength.Long).Show();
                         positions = null;
                         LoadPositions();
@@ -195,7 +195,7 @@ namespace WMS
                 }
                 else
                 {
-                    string errorWebAppIssued = string.Format("Napaka pri dostopu web aplikacije: " + result);
+                    string errorWebAppIssued = string.Format($"{Resources.GetString(Resource.String.s213)}" + result);
                     Toast.MakeText(this, errorWebAppIssued, ToastLength.Long).Show();
                     popupDialog.Dismiss();
                     popupDialog.Hide();
@@ -211,7 +211,7 @@ namespace WMS
 
             }
 
-            string errorWebApp = string.Format("Pozicija uspešno zbrisana.");
+            string errorWebApp = string.Format($"{Resources.GetString(Resource.String.s214)}");
             Toast.MakeText(this, errorWebApp, ToastLength.Long).Show();
         }
         private void DataList_ItemLongClick(object sender, AdapterView.ItemLongClickEventArgs e)
@@ -297,7 +297,7 @@ namespace WMS
                 }
                 else
                 {
-                    string errorWebApp = string.Format("Kritična napaka...");
+                    string errorWebApp = string.Format($"{Resources.GetString(Resource.String.s247)}");
                     Toast.MakeText(this, errorWebApp, ToastLength.Long).Show();
                 }
 
@@ -348,7 +348,7 @@ namespace WMS
                         }
                         else
                         {
-                            Toast.MakeText(this, "Napaka pri brisanju pozicije: " + result, ToastLength.Long).Show();
+                            Toast.MakeText(this, $"{Resources.GetString(Resource.String.s212)}" + result, ToastLength.Long).Show();
                             positions = null;
                             LoadPositions();
                             popupDialog.Dismiss();
@@ -358,7 +358,7 @@ namespace WMS
                     }
                     else
                     {
-                        Toast.MakeText(this, "Napaka pri dostopu do web aplikacije: " + result, ToastLength.Long).Show();
+                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s213)}" + result, ToastLength.Long).Show();
                         popupDialog.Dismiss();
                         popupDialog.Hide();
                         return;
@@ -384,7 +384,7 @@ namespace WMS
                 {
                     progress = new ProgressDialogClass();
 
-                    progress.ShowDialogSync(this, "Zaključujem");
+                    progress.ShowDialogSync(this, $"{Resources.GetString(Resource.String.s262)}");
                 });
 
 
@@ -428,8 +428,8 @@ namespace WMS
                             {
                                 progress.StopDialogSync();
                                 AlertDialog.Builder alert = new AlertDialog.Builder(this);
-                                alert.SetTitle("Napaka");
-                                alert.SetMessage("Napaka pri zaključevanju: " + result);
+                                alert.SetTitle($"{Resources.GetString(Resource.String.s265)}");
+                                alert.SetMessage($"{Resources.GetString(Resource.String.s266)}" + result);
 
                                 alert.SetPositiveButton("Ok", (senderAlert, args) =>
                                 {
@@ -594,7 +594,7 @@ namespace WMS
                     }
                     if (positions == null)
                     {
-                        Toast.MakeText(this, "Napaka pri dostopu do web aplikacije: " + error, ToastLength.Long).Show();
+                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s213)}" + error, ToastLength.Long).Show();
 
                         return;
                     }

@@ -266,7 +266,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                     var savedMoveHead = Services.SetObject("mh", moveHead, out error);
                     if (savedMoveHead == null)
                     {
-                        string SuccessMessage = string.Format("Napaka pri dostopu do web aplikacije" + error);
+                        string SuccessMessage = string.Format($"{Resources.GetString(Resource.String.s213)}" + error);
                         Toast.MakeText(this, SuccessMessage, ToastLength.Long).Show();
                         return false;
                     }

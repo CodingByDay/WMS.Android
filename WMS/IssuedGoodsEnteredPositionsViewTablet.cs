@@ -188,7 +188,7 @@ namespace WMS
                     }
                     else
                     {
-                        string errorWebAppIssued = string.Format("Napaka pri brisanju pozicije " + result);
+                        string errorWebAppIssued = string.Format($"{Resources.GetString(Resource.String.s212)}" + result);
                         Toast.MakeText(this, errorWebAppIssued, ToastLength.Long).Show();
                         positions = null;
                         LoadPositions();
@@ -200,7 +200,7 @@ namespace WMS
                 }
                 else
                 {
-                    string errorWebAppIssued = string.Format("Napaka pri dostopu web aplikacije: " + result);
+                    string errorWebAppIssued = string.Format($"{Resources.GetString(Resource.String.s213)}" + result);
                     Toast.MakeText(this, errorWebAppIssued, ToastLength.Long).Show();
                     popupDialog.Dismiss();
                     popupDialog.Hide();
@@ -216,7 +216,7 @@ namespace WMS
 
             }
 
-            string errorWebApp = string.Format("Pozicija uspešno zbrisana.");
+            string errorWebApp = string.Format($"{Resources.GetString(Resource.String.s214)}");
             Toast.MakeText(this, errorWebApp, ToastLength.Long).Show();
         }
 
@@ -284,7 +284,7 @@ namespace WMS
                     {
                         RunOnUiThread(() =>
                         {
-                            string errorWebApp = string.Format("Kritična napaka...");
+                            string errorWebApp = string.Format($"{Resources.GetString(Resource.String.s247)}");
                             Toast.MakeText(this, errorWebApp, ToastLength.Long).Show();
                         });                     
                     }
@@ -387,7 +387,7 @@ namespace WMS
                     }
                     else
                     {
-                        Toast.MakeText(this, "Napaka pri brisanju pozicije: " + result, ToastLength.Long).Show();
+                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s212)}" + result, ToastLength.Long).Show();
 
                         positions = null;
                         LoadPositions();
@@ -398,7 +398,7 @@ namespace WMS
                 }
                 else
                 {
-                    Toast.MakeText(this, "Napaka pri dostopu do web aplikacije: " + result, ToastLength.Long).Show();
+                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s213)}" + result, ToastLength.Long).Show();
                     popupDialog.Dismiss();
                     popupDialog.Hide();
                     return;
@@ -443,8 +443,8 @@ namespace WMS
             try
             {
              
-                    progress = new ProgressDialogClass();
-                    progress.ShowDialogSync(this, "Zaključujem več paleta na enkrat.");
+                progress = new ProgressDialogClass();
+                progress.ShowDialogSync(this, $"{Resources.GetString(Resource.String.s262)}");
             
                 var headID = moveHead.GetInt("HeadID");
 
@@ -456,8 +456,8 @@ namespace WMS
                         progress.StopDialogSync();
                         var id = result.Split('+')[1];
                         AlertDialog.Builder alert = new AlertDialog.Builder(this);
-                        alert.SetTitle("Zaključevanje uspešno");
-                        alert.SetMessage("Zaključevanje uspešno! Št.izdaje:\r\n" + id);
+                        alert.SetTitle($"{Resources.GetString(Resource.String.s263)}");
+                        alert.SetMessage($"{Resources.GetString(Resource.String.s264)}" + id);
                         alert.SetPositiveButton("Ok", (senderAlert, args) =>
                         {
                             System.Threading.Thread.Sleep(500);
@@ -473,8 +473,8 @@ namespace WMS
                     {
                         progress.StopDialogSync();
                         AlertDialog.Builder alert = new AlertDialog.Builder(this);
-                        alert.SetTitle("Napaka");
-                        alert.SetMessage("Napaka pri zaključevanju: " + result);
+                        alert.SetTitle($"{Resources.GetString(Resource.String.s265)}");
+                        alert.SetMessage($"{Resources.GetString(Resource.String.s266)}" + result);
 
                         alert.SetPositiveButton("Ok", (senderAlert, args) =>
                         {
@@ -491,7 +491,7 @@ namespace WMS
                 }
                 else
                 {
-                    Toast.MakeText(this, "Napaka pri klicu web aplikacije: " + result, ToastLength.Long).Show();
+                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s218)}" + result, ToastLength.Long).Show();
 
                 }
             }
@@ -533,7 +533,7 @@ namespace WMS
                 var openIdent = Services.GetObject("id", item.GetString("Ident"), out error);
                 if (openIdent == null)
                 {
-                    Toast.MakeText(this, "Napaka pri preverjanju ident-a: " + error, ToastLength.Long).Show();
+                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s229)}" + error, ToastLength.Long).Show();
 
                 }
                 else
@@ -595,7 +595,7 @@ namespace WMS
                     }
                     if (positions == null)
                     {
-                        Toast.MakeText(this, "Napaka pri dostopu do web aplikacije: " + error, ToastLength.Long).Show();
+                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s213)}" + error, ToastLength.Long).Show();
 
                         return;
                     }
@@ -618,7 +618,7 @@ namespace WMS
             if ((positions != null) && (displayedPosition < positions.Items.Count))
             {
                 var item = positions.Items[displayedPosition];
-                lbInfo.Text = "Vnešene pozicije na odpremi (" + (displayedPosition + 1).ToString() + "/" + positions.Items.Count + ")";
+                lbInfo.Text = $"{Resources.GetString(Resource.String.s92)} (" + (displayedPosition + 1).ToString() + "/" + positions.Items.Count + ")";
 
                 tbIdent.Text = item.GetString("IdentName");
                 tbSSCC.Text = item.GetString("SSCC");
@@ -655,7 +655,7 @@ namespace WMS
             }
             else
             {
-                lbInfo.Text = "Vnešene pozicije na odpremi (ni)";
+                lbInfo.Text = $"{Resources.GetString(Resource.String.s267)}";
 
                 tbIdent.Text = "";
                 tbSSCC.Text = "";

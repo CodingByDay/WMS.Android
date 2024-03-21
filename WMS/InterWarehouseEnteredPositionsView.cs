@@ -76,7 +76,6 @@ namespace WMS
             btFinish = FindViewById<Button>(Resource.Id.btFinish);
             btDelete = FindViewById<Button>(Resource.Id.btDelete);
             button5 = FindViewById<Button>(Resource.Id.button5);
-            ////////////////////////////////////////////////////
 
             btNext.Click += BtNext_Click;
             btUpdate.Click += BtUpdate_Click;
@@ -84,7 +83,6 @@ namespace WMS
             btFinish.Click += BtFinish_Click;
             btDelete.Click += BtDelete_Click;
             button5.Click += Button5_Click;
-            ////////////////////////////////////////////////////////////////
             InUseObjects.ClearExcept(new string[] { "MoveHead" });
             if (moveHead == null) { throw new ApplicationException("moveHead not known at this point!?"); }
 
@@ -227,7 +225,7 @@ namespace WMS
                     }
                     else
                     {
-                        string WebErrors = string.Format("Napaka pri brisanju pozicije: " + result);
+                        string WebErrors = string.Format($"{Resources.GetString(Resource.String.s212)}" + result);
                         DialogHelper.ShowDialogError(this, this, WebErrors);
 
                         positions = null;
@@ -239,7 +237,7 @@ namespace WMS
                 }
                 else
                 {
-                    string WebErrora = string.Format("Napaka pri dostopu do web aplikacije: " + result);
+                    string WebErrora = string.Format($"{Resources.GetString(Resource.String.s213)}" + result);
                     DialogHelper.ShowDialogError(this, this, WebErrora);
                     popupDialog.Dismiss();
                     popupDialog.Hide();
@@ -255,7 +253,7 @@ namespace WMS
 
             }
 
-            string WebError = string.Format("Pozicija zbrisana.");
+            string WebError = string.Format($"{Resources.GetString(Resource.String.s214)}");
             DialogHelper.ShowDialogError(this, this, WebError);
             popupDialog.Dismiss();
             popupDialog.Hide();
@@ -270,7 +268,7 @@ namespace WMS
                 {
                     progress = new ProgressDialogClass();
 
-                    progress.ShowDialogSync(this, "Zaključujem");
+                    progress.ShowDialogSync(this, $"{Resources.GetString(Resource.String.s262)}");
                 });
 
                 try
@@ -290,8 +288,8 @@ namespace WMS
                                 var id = result.Split('+')[1];
 
                                 AlertDialog.Builder alert = new AlertDialog.Builder(this);
-                                alert.SetTitle("Zaključevanje uspešno");
-                                alert.SetMessage("Paletiranje uspešno! Št. prevzema:\r\n" + id);
+                                alert.SetTitle($"{Resources.GetString(Resource.String.s263)}");
+                                alert.SetMessage($"{Resources.GetString(Resource.String.s264)}" + id);
 
                                 alert.SetPositiveButton("Ok", (senderAlert, args) =>
                                 {
@@ -311,8 +309,8 @@ namespace WMS
                                 progress.StopDialogSync();
                              
                                 AlertDialog.Builder alert = new AlertDialog.Builder(this);
-                                alert.SetTitle("Napaka");
-                                alert.SetMessage("Napaka pri zaključevanju: " + result);
+                                alert.SetTitle($"{Resources.GetString(Resource.String.s265)}");
+                                alert.SetMessage($"{Resources.GetString(Resource.String.s266)}" + result);
 
                                 alert.SetPositiveButton("Ok", (senderAlert, args) =>
                                 {
@@ -332,7 +330,7 @@ namespace WMS
                         RunOnUiThread(() =>
                         {
                             progress.StopDialogSync();
-                            string WebError = string.Format("Napaka pri klicu web aplikacije: " + result);
+                            string WebError = string.Format($"{Resources.GetString(Resource.String.s218)}" + result);
                             DialogHelper.ShowDialogError(this, this, WebError);
                         });
 
@@ -431,7 +429,7 @@ namespace WMS
                     }
                     if (positions == null)
                     {
-                        string WebError = string.Format("Napaka pri dostopu do web aplikacije: " + error);
+                        string WebError = string.Format($"{Resources.GetString(Resource.String.s213)}" + error);
                         DialogHelper.ShowDialogError(this, this, WebError);
                         return;
                     }
@@ -450,7 +448,7 @@ namespace WMS
             if ((positions != null) && (displayedPosition < positions.Items.Count))
             {
                 var item = positions.Items[displayedPosition];
-                lbInfo.Text = "Vnešene pozicije na medskladiščnici (" + (displayedPosition + 1).ToString() + "/" + positions.Items.Count + ")";
+                lbInfo.Text = $"{Resources.GetString(Resource.String.s92)} (" + (displayedPosition + 1).ToString() + "/" + positions.Items.Count + ")";
 
                 tbIdent.Text = item.GetString("IdentName");
                 tbSSCC.Text = item.GetString("SSCC");
@@ -480,7 +478,7 @@ namespace WMS
             }
             else
             {
-                lbInfo.Text = "Vnešene pozicije na medskladiščnici (ni)";
+                lbInfo.Text = $"{Resources.GetString(Resource.String.s267)}";
 
                 tbIdent.Text = "";
                 tbSSCC.Text = "";
@@ -488,18 +486,12 @@ namespace WMS
                 tbQty.Text = "";
                 tbLocation.Text = "";
                 tbCreatedBy.Text = "";
-
-
                 tbIdent.Enabled = false;
                 tbSSCC.Enabled = false;
                 tbSerialNumber.Enabled = false;
                 tbQty.Enabled = false;
                 tbLocation.Enabled = false;
                 tbCreatedBy.Enabled = false;
-
-      
-         
-
                 btUpdate.Enabled = false;
                 btDelete.Enabled = false;
                 btNext.Enabled = false;

@@ -341,7 +341,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                     var savedMoveHead = Services.SetObject("mh", moveHead, out error);
                     if (savedMoveHead == null)
                     {
-                        Toast.MakeText(this, "Napaka pri dostopu do web aplikacije" + error, ToastLength.Long).Show();
+                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s213)}" + error, ToastLength.Long).Show();
                         return false;
                     }
                     else
@@ -411,7 +411,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                         if (openOrders == null)
                         {
                             // Napaka pri pridobivanju odprtih naročil: " + error
-                            Toast.MakeText(this, "Napaka pri pridobivanju odprtih naročil: " + error, ToastLength.Long).Show();
+                            Toast.MakeText(this, $"{Resources.GetString(Resource.String.s216)}" + error, ToastLength.Long).Show();
 
 
                             tbIdent.Text = "";
@@ -471,7 +471,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
         {
             if ((openIdent != null) && (openOrders != null) && (openOrders.Items.Count > 0))
             {
-                lbOrderInfo.Text = "Naročilo (" + (displayedOrder + 1).ToString() + "/" + openOrders.Items.Count.ToString() + ")";
+                lbOrderInfo.Text = $"{Resources.GetString(Resource.String.s14)} (" + (displayedOrder + 1).ToString() + "/" + openOrders.Items.Count.ToString() + ")";
                 order = openOrders.Items[displayedOrder];
                 InUseObjects.Set("OpenOrder", order);
                 tbOrder.Text = order.GetString("Key");
@@ -492,7 +492,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             else
             {
                 InUseObjects.Invalidate("OpenOrder");
-                lbOrderInfo.Text = "Naročilo (ni postavk)";
+                lbOrderInfo.Text = $"{Resources.GetString(Resource.String.s289)}";
                 tbOrder.Text = "";
                 tbConsignee.Text = "";
                 tbQty.Text = "";
@@ -505,7 +505,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
         {
             if ((openIdent != null) && (openOrders != null) && (openOrders.Items.Count > 0))
             {
-                lbOrderInfo.Text = "Naročilo (" + (displayedOrder + 1).ToString() + "/" + openOrders.Items.Count.ToString() + ")";
+                lbOrderInfo.Text = $"{Resources.GetString(Resource.String.s14)} (" + (displayedOrder + 1).ToString() + "/" + openOrders.Items.Count.ToString() + ")";
                 order = openOrders.Items[displayedOrder];
                 InUseObjects.Set("OpenOrder", order);
                 tbOrder.Text = order.GetString("Key");
@@ -524,7 +524,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             else
             {
                 InUseObjects.Invalidate("OpenOrder");
-                lbOrderInfo.Text = "Naročilo (ni postavk)";
+                lbOrderInfo.Text = $"{Resources.GetString(Resource.String.s289)}";
                 tbOrder.Text = "";
                 tbConsignee.Text = "";
                 tbQty.Text = "";

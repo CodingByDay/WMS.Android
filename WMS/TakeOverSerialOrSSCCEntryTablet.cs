@@ -190,7 +190,7 @@ namespace WMS
             
             }
             
-            lbQty.Text = "Količina (" + openOrder.GetDouble("OpenQty").ToString(CommonData.GetQtyPicture()) + ")";
+            lbQty.Text = $"{Resources.GetString(Resource.String.s40)} (" + openOrder.GetDouble("OpenQty").ToString(CommonData.GetQtyPicture()) + ")";
 
             isPackaging = openIdent.GetBool("IsPackaging");
             if (isPackaging)
@@ -361,7 +361,7 @@ namespace WMS
                 }
                 else
                 {
-                    string errorWebApp = string.Format("Kritična napaka...");
+                    string errorWebApp = string.Format($"{Resources.GetString(Resource.String.s247)}");
                     Toast.MakeText(this, errorWebApp, ToastLength.Long).Show();
                 }
 
@@ -387,7 +387,7 @@ namespace WMS
                         }
                         if (positions == null)
                         {
-                            Toast.MakeText(this, "Napaka pri dostopu do web aplikacije: " + error, ToastLength.Long).Show();
+                            Toast.MakeText(this, $"{Resources.GetString(Resource.String.s213)}" + error, ToastLength.Long).Show();
 
                             return;
                         }
@@ -485,7 +485,7 @@ namespace WMS
                     {
                         progress = new ProgressDialogClass();
 
-                        progress.ShowDialogSync(this, "Zaključujem");
+                        progress.ShowDialogSync(this, $"{Resources.GetString(Resource.String.s262)}");
                     });
                     try
                     {
@@ -527,8 +527,8 @@ namespace WMS
                                 {
                                     progress.StopDialogSync();
                                     AlertDialog.Builder alert = new AlertDialog.Builder(this);
-                                    alert.SetTitle("Napaka");
-                                    alert.SetMessage("Napaka pri zaključevanju: " + result);
+                                    alert.SetTitle($"{Resources.GetString(Resource.String.s265)}");
+                                    alert.SetMessage($"{Resources.GetString(Resource.String.s266)}" + result);
 
                                     alert.SetPositiveButton("Ok", (senderAlert, args) =>
                                     {
@@ -548,7 +548,7 @@ namespace WMS
                         }
                         else
                         {
-                            Toast.MakeText(this, "Napaka pri klicu web aplikacije: " + result, ToastLength.Long).Show();
+                            Toast.MakeText(this, $"{Resources.GetString(Resource.String.s218)}" + result, ToastLength.Long).Show();
 
                         }
                     }
@@ -932,7 +932,7 @@ namespace WMS
                         {
                             RunOnUiThread(() =>
                             {
-                                string errorWebAppIssued = string.Format("Količina (" + qty.ToString(CommonData.GetQtyPicture()) + ") ne sme presegati max. količine (" + max.ToString(CommonData.GetQtyPicture()) + ")!");
+                                string errorWebAppIssued = string.Format($"{Resources.GetString(Resource.String.s40)} (" + qty.ToString(CommonData.GetQtyPicture()) + ") ne sme presegati max. količine (" + max.ToString(CommonData.GetQtyPicture()) + ")!");
                                 Toast.MakeText(this, errorWebAppIssued, ToastLength.Long).Show();
 
                                 tbPacking.RequestFocus();
@@ -946,7 +946,7 @@ namespace WMS
                 {
                     RunOnUiThread(() =>
                     {
-                        string errorWebAppIssued = string.Format("Količina mora biti število (" + e.Message + ")!");
+                        string errorWebAppIssued = string.Format($"{Resources.GetString(Resource.String.s220)}");
                         Toast.MakeText(this, errorWebAppIssued, ToastLength.Long).Show();
 
                         tbPacking.RequestFocus();
@@ -1003,7 +1003,7 @@ namespace WMS
             {
                 RunOnUiThread(() =>
                 {
-                    string errorWebAppIssued = string.Format("Lokacija '" + tbLocation.Text.Trim() + "' ni veljavna za skladišče '" + moveHead.GetString("Wharehouse") + "'!");
+                    string errorWebAppIssued = string.Format($"{Resources.GetString(Resource.String.s258)} '" + tbLocation.Text.Trim() + $"' {Resources.GetString(Resource.String.s272)} '" + moveHead.GetString("Wharehouse") + "'!");
                     Toast.MakeText(this, errorWebAppIssued, ToastLength.Long).Show();
 
                     tbLocation.RequestFocus();
@@ -1060,7 +1060,7 @@ namespace WMS
                 {
                     RunOnUiThread(() =>
                     {
-                        string errorWebAppIssued = string.Format("Napaka pri dostopu do web aplikacije: " + error);
+                        string errorWebAppIssued = string.Format($"{Resources.GetString(Resource.String.s213)}" + error);
                         Toast.MakeText(this, errorWebAppIssued, ToastLength.Long).Show();
 
                         tbLocation.RequestFocus();

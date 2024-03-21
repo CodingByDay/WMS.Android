@@ -93,7 +93,7 @@ namespace WMS
             if (moveHead == null)
             {
                 AlertDialog.Builder alert = new AlertDialog.Builder(this);
-                alert.SetTitle("Napaka");
+                alert.SetTitle($"{Resources.GetString(Resource.String.s265)}");
                 alert.SetMessage("Prišlo je do napake in aplikacija se bo zaprla.");
 
                 alert.SetPositiveButton("Ok", (senderAlert, args) =>
@@ -264,7 +264,7 @@ namespace WMS
                         {
   
                         AlertDialog.Builder alert = new AlertDialog.Builder(this);
-                        alert.SetTitle("Napaka");
+                        alert.SetTitle($"{Resources.GetString(Resource.String.s265)}");
                         alert.SetMessage("Napaka pri brisanju pozicije." + result);
 
                         alert.SetPositiveButton("Ok", (senderAlert, args) =>
@@ -286,7 +286,7 @@ namespace WMS
                     }
                     else
                     {
-                    string errorWebApp = string.Format("Napaka pri dostopu do web aplikacije: " + result);
+                    string errorWebApp = string.Format($"{Resources.GetString(Resource.String.s213)}" + result);
                     Toast.MakeText(this, errorWebApp, ToastLength.Long).Show();
                     popupDialog.Dismiss();
                     popupDialog.Hide();
@@ -314,7 +314,7 @@ namespace WMS
                 {
                     progress = new ProgressDialogClass();
 
-                    progress.ShowDialogSync(this, "Zaključujem");
+                    progress.ShowDialogSync(this, $"{Resources.GetString(Resource.String.s262)}");
                 });
                 
 
@@ -360,8 +360,8 @@ namespace WMS
                             {
                                 progress.StopDialogSync();
                                 AlertDialog.Builder alert = new AlertDialog.Builder(this);
-                                alert.SetTitle("Napaka");
-                                alert.SetMessage("Napaka pri zaključevanju: " + result);
+                                alert.SetTitle($"{Resources.GetString(Resource.String.s265)}");
+                                alert.SetMessage($"{Resources.GetString(Resource.String.s266)}" + result);
 
                                 alert.SetPositiveButton("Ok", (senderAlert, args) =>
                                 {
@@ -387,7 +387,7 @@ namespace WMS
 
                         RunOnUiThread(() =>
                         {
-                            string errorWebApp = string.Format("Napaka pri klicu web aplikacije: " + result);
+                            string errorWebApp = string.Format($"{Resources.GetString(Resource.String.s218)}" + result);
                             Toast.MakeText(this, errorWebApp, ToastLength.Long).Show();
                         });
                       
@@ -474,7 +474,7 @@ namespace WMS
                     }
                     if (positions == null)
                     {
-                        string errorWebApp = string.Format("Napaka pri dostopu do web aplikacije: " + error);
+                        string errorWebApp = string.Format($"{Resources.GetString(Resource.String.s213)}" + error);
                         Toast.MakeText(this, errorWebApp, ToastLength.Long).Show();
                       
                         return;

@@ -282,7 +282,7 @@ namespace WMS
                 {
                     if (change.locationQty.Count == 0)
                     {
-                        change.Location = "Ni zaloge";
+                        change.Location = $"{Resources.GetString(Resource.String.s292)}";
                         change.Quantity = string.Empty;
                     }
                     else if (change.locationQty.Count == 1)
@@ -372,7 +372,7 @@ namespace WMS
                 ClientPickingPosition selected = data_.ElementAt(position);
                 AlertDialog.Builder builder = new AlertDialog.Builder(context_);
                 builder.SetTitle($"{context_.Resources.GetString(Resource.String.s256)}");
-                builder.SetMessage($"Ident: {selected.Ident}\nLokacija: {selected.Location}\nNaročilo: {selected.Order}\nNaziv: {selected.Name}");
+                builder.SetMessage($"{context_.Resources.GetString(Resource.String.s257)}: {selected.Ident}\n{context_.Resources.GetString(Resource.String.s258)}: {selected.Location}\n{context_.Resources.GetString(Resource.String.s259)}: {selected.Order}\n{context_.Resources.GetString(Resource.String.s260)}: {selected.Name}");
                 builder.SetPositiveButton("OK", (s, args) =>
                 {
                 });

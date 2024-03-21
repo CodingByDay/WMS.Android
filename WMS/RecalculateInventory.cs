@@ -273,7 +273,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
 
                                 progress.StopDialogSync();
                                 AlertDialog.Builder alert = new AlertDialog.Builder(this);
-                                alert.SetTitle("Napaka");
+                                alert.SetTitle($"{Resources.GetString(Resource.String.s265)}");
                                 alert.SetMessage($"Napaka: {result}");
 
                                 alert.SetPositiveButton("Ok", (senderAlert, args) =>
@@ -300,8 +300,8 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
 
                             progress.StopDialogSync();
                             AlertDialog.Builder alert = new AlertDialog.Builder(this);
-                            alert.SetTitle("Napaka");
-                            alert.SetMessage("Napaka pri dostopu do web aplikacije");
+                            alert.SetTitle($"{Resources.GetString(Resource.String.s265)}");
+                            alert.SetMessage($"{Resources.GetString(Resource.String.s213)}");
 
                             alert.SetPositiveButton("Ok", (senderAlert, args) =>
                             {
@@ -330,7 +330,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                     {
                         progress.StopDialogSync();
                         AlertDialog.Builder alert = new AlertDialog.Builder(this);
-                        alert.SetTitle("Napaka");
+                        alert.SetTitle($"{Resources.GetString(Resource.String.s265)}");
                         alert.SetMessage($"Prišlo je do napake. {ex.Message}");
                         alert.SetPositiveButton("Ok", (senderAlert, args) =>
                         {
