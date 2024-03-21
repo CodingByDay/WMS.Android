@@ -96,11 +96,8 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 objectsPackaging.Add(new ComboBoxItem { ID = wh.GetString("Subject"), Text = wh.GetString("Name") });
             });
             var adapterWarehouse = new CustomAutoCompleteAdapter<ComboBoxItem>(this,
-        Android.Resource.Layout.SimpleSpinnerItem, objectsPackaging);
-            ///* 22.12.2020---------------------------------------------------------------
-            ///* Documentation for the spinner objects add method with an adapter...
-            ///*---------------------------------------------------
-            ///
+            Android.Resource.Layout.SimpleSpinnerItem, objectsPackaging);
+
             adapterWarehouse.SetDropDownViewResource(Android.Resource.Layout.SimpleSpinnerDropDownItem);
             cbWarehouse.Adapter = adapterWarehouse;
 
@@ -165,19 +162,18 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
 
             if (!CommonData.IsValidLocation(temporaryString, tbLocation.Text.Trim()))
             {
-                string toast = string.Format("Skladišće/lokacija ni veljavna.");
+                string toast = string.Format($"{Resources.GetString(Resource.String.s270)}");
                 Toast.MakeText(this, toast, ToastLength.Long).Show(); 
                 return;
             }
 
             if (string.IsNullOrEmpty(tbSSCC.Text.Trim()))
             {
-                string toast = string.Format("SSCC koda je obvezna.");
+                string toast = string.Format($"{Resources.GetString(Resource.String.s270)}");
                 Toast.MakeText(this, toast, ToastLength.Long).Show();
                 return;
             }
 
-            //  var head = new NameValueObject("PackagingHead");
             var head = new NameValueObject("PackagingHead");
             head.SetInt("HeadID", 0);
             head.SetString("Warehouse", objectsPackaging.ElementAt(temporaryPositionWarehouse).ID);
@@ -224,10 +220,6 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                     }
                         break;
                     
-             
-                //return true;
-
-
                 case Keycode.F8:
                     BtExit_Click(this, null);
                     break;

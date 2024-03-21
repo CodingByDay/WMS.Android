@@ -45,13 +45,6 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             SetSupportActionBar(_customToolbar._toolbar);
             SupportActionBar.SetDisplayShowTitleEnabled(false);
             var flag = Services.isTablet(App.settings.device);
-            if (MainActivity.isValid == true)
-            {
-                string toast = new string("Uspešna prijava.");
-                Toast.MakeText(this, toast, ToastLength.Long).Show();
-                MainActivity.isValid = false;
-                MainActivity.progressBar1.Visibility = ViewStates.Invisible;
-            }
             IDdevice = settings.ID;
             target = settings.device;
             result = settings.tablet;

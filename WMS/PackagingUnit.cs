@@ -126,7 +126,6 @@ namespace WMS
                 tbLocation.RequestFocus();
             } else
             {
-                Toast.MakeText(this, "Napačen ident.", ToastLength.Long).Show();
                 tbIdent.Text = "";
             }
         }
@@ -177,26 +176,26 @@ namespace WMS
 
             if (string.IsNullOrEmpty(ident))
             {
-                Toast.MakeText(this, "Ident je obvezen", ToastLength.Long).Show();
+                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
              
                 return false;
             }
 
             if (!CommonData.IsValidLocation(warehouse, location))
             {
-                Toast.MakeText(this, "Skladišće/lokacija ne veljavno.", ToastLength.Long).Show();
+                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
                 return false;
             }
 
             if (tbSSCC.Enabled && string.IsNullOrEmpty(sscc))
             {
-                Toast.MakeText(this, "SSCC koda je obvezna.", ToastLength.Long).Show();
+                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
                 return false;
             }
 
             if (tbSerialNo.Enabled && string.IsNullOrEmpty(serialNo))
             {
-                Toast.MakeText(this, "Serijaska št. je obvezna.", ToastLength.Long).Show();
+                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
                 return false;
             }
 
@@ -257,25 +256,25 @@ namespace WMS
 
             if (string.IsNullOrEmpty(ident))
             {
-                Toast.MakeText(this, "Ident je obvezen", ToastLength.Long).Show();
+                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
                 return;
             }
 
             if (!CommonData.IsValidLocation(warehouse, location))
             {
-                Toast.MakeText(this, "Skladišće/lokacija ne veljavno.", ToastLength.Long).Show();
+                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
                 return;
             }
 
             if (tbSSCC.Enabled && string.IsNullOrEmpty(sscc))
             {
-                Toast.MakeText(this, "SSCC koda je obvezna.", ToastLength.Long).Show();
+                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
                 return;
             }
 
             if (tbSerialNo.Enabled && string.IsNullOrEmpty(serialNo))
             {
-                Toast.MakeText(this, "Serijska št. je obvezna", ToastLength.Long).Show();
+                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
                 return;
             }
 
@@ -286,7 +285,7 @@ namespace WMS
             }
             else
             {
-                label.Text = "Količina:";
+                label.Text = $"{Resources.GetString(Resource.String.s240)}";
                 tbQty.Text = "";
             }
         }
@@ -507,7 +506,7 @@ namespace WMS
                         }
                         else
                         {
-                            Toast.MakeText(this, "Napaka pri klicu web aplikacije:" + result, ToastLength.Long).Show();
+                            Toast.MakeText(this, $"{Resources.GetString(Resource.String.s216)}" + result, ToastLength.Long).Show();
 
                         }
                     }

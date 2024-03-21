@@ -159,26 +159,26 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
 
             if (string.IsNullOrEmpty(ident))
             {
-                Toast.MakeText(this, "Ident je obvezen", ToastLength.Long).Show();
+                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
 
                 return false;
             }
 
             if (!CommonData.IsValidLocation(warehouse, location))
             {
-                Toast.MakeText(this, "Skladišće/lokacija ne veljavno.", ToastLength.Long).Show();
+                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
                 return false;
             }
 
             if (tbSSCC.Enabled && string.IsNullOrEmpty(sscc))
             {
-                Toast.MakeText(this, "SSCC koda je obvezna.", ToastLength.Long).Show();
+                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
                 return false;
             }
 
             if (tbSerialNo.Enabled && string.IsNullOrEmpty(serialNo))
             {
-                Toast.MakeText(this, "Serijaska št. je obvezna.", ToastLength.Long).Show();
+                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
                 return false;
             }
 
@@ -239,25 +239,25 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
 
             if (string.IsNullOrEmpty(ident))
             {
-                Toast.MakeText(this, "Ident je obvezen", ToastLength.Long).Show();
+                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
                 return;
             }
 
             if (!CommonData.IsValidLocation(warehouse, location))
             {
-                Toast.MakeText(this, "Skladišće/lokacija ne veljavno.", ToastLength.Long).Show();
+                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
                 return;
             }
 
             if (tbSSCC.Enabled && string.IsNullOrEmpty(sscc))
             {
-                Toast.MakeText(this, "SSCC koda je obvezna.", ToastLength.Long).Show();
+                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
                 return;
             }
 
             if (tbSerialNo.Enabled && string.IsNullOrEmpty(serialNo))
             {
-                Toast.MakeText(this, "Serijska št. je obvezna", ToastLength.Long).Show();
+                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
                 return;
             }
 
@@ -268,7 +268,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             }
             else
             {
-                lbQty.Text = "Količina:";
+                lbQty.Text = $"{Resources.GetString(Resource.String.s240)}";
                 tbQty.Text = "";
             }
         }
@@ -446,7 +446,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                     }
                     else
                     {
-                        Toast.MakeText(this, "Napaka pri klicu web aplikacije:" + result, ToastLength.Long).Show();
+                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s216)}" + result, ToastLength.Long).Show();
 
                     }
                 }

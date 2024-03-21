@@ -192,10 +192,6 @@ namespace WMS
             chEnglish = FindViewById<LinearLayout>(Resource.Id.chSlovenian);
             imgSlovenian = FindViewById<ImageView>(Resource.Id.imgSlovenian);
             imgEnglish = FindViewById<ImageView>(Resource.Id.imgEnglish);
-
-
-
-
             SetUpLanguages();
             GetLogo();
             var _broadcastReceiver = new NetworkStatusBroadcastReceiver();
@@ -231,12 +227,8 @@ namespace WMS
             ColorMatrix colorMatrix = new ColorMatrix(colorMatrixValues);
             highlightFilter = new ColorMatrixColorFilter(colorMatrix);
             txtVersion.Text = "v."+GetAppVersion();
-
             var language = Resources.Configuration.Locale.Country; 
-            
-
-
-            
+                    
             if(language == "SI")
             {
                 imgSlovenian.SetColorFilter(highlightFilter);
@@ -246,9 +238,6 @@ namespace WMS
                 imgEnglish.SetColorFilter(highlightFilter);
             }
             
-
-
-
         }
 
         private void GetLogo()
@@ -260,10 +249,6 @@ namespace WMS
                 Picasso.Get()
                     .Load(url)
                     .Into(img);
-
-
-
-
             }
             catch 
             {

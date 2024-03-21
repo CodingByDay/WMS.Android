@@ -265,7 +265,7 @@ namespace WMS
   
                         AlertDialog.Builder alert = new AlertDialog.Builder(this);
                         alert.SetTitle($"{Resources.GetString(Resource.String.s265)}");
-                        alert.SetMessage("Napaka pri brisanju pozicije." + result);
+                        alert.SetMessage($"{Resources.GetString(Resource.String.s212)}" + result);
 
                         alert.SetPositiveButton("Ok", (senderAlert, args) =>
                         {

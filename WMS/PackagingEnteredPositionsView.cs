@@ -45,10 +45,6 @@ namespace WMS
         private NameValueObjectList positions = null;
         private Button btnYes;
         private Button btnNo;
-        /// <summary>
-        /// /////////////////////////
-        /// </summary>
-        /// <param name="savedInstanceState"></param>
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -180,7 +176,7 @@ namespace WMS
                        
                         AlertDialog.Builder alert = new AlertDialog.Builder(this);
                         alert.SetTitle($"{Resources.GetString(Resource.String.s265)}");
-                        alert.SetMessage("Napaka pri brisanju pozicije." + result);
+                        alert.SetMessage($"{Resources.GetString(Resource.String.s212)}" + result);
 
                         alert.SetPositiveButton("Ok", (senderAlert, args) =>
                         {
@@ -189,15 +185,12 @@ namespace WMS
                             throw new ApplicationException("Error, openIdent");
                         });
 
-
-
                         Dialog dialog = alert.Create();
                         dialog.Show();
                     }
                 }
                 else
                 {
-
                     string toastError = string.Format($"{Resources.GetString(Resource.String.s213)}" + result);
                     Toast.MakeText(this, toastError, ToastLength.Long).Show();
                     System.Diagnostics.Process.GetCurrentProcess().Kill();
@@ -217,7 +210,7 @@ namespace WMS
         {
             var item = positions.Items[displayedPosition];
             InUseObjects.Set("PackagingHead", item);
-           StartActivity(typeof(PackagingUnitList));
+            StartActivity(typeof(PackagingUnitList));
             HelpfulMethods.clearTheStack(this);
         }
 
@@ -322,7 +315,7 @@ namespace WMS
             if ((positions != null) && (displayedPosition < positions.Items.Count))
             {
                 var item = positions.Items[displayedPosition];
-                lbInfo.Text = "Odprta pakiranja (" + (displayedPosition + 1).ToString() + "/" + positions.Items.Count + ")";
+                lbInfo.Text = $"{Resources.GetString(Resource.String.s92)} (" + (displayedPosition + 1).ToString() + "/" + positions.Items.Count + ")";
 
                 tbPackNum.Text = item.GetInt("HeadID").ToString();
                 tbSSCC.Text = item.GetString("SSCC");
@@ -348,7 +341,7 @@ namespace WMS
             }
             else
             {
-                lbInfo.Text = "Odprta pakiranja (ni)";
+                lbInfo.Text = $"{Resources.GetString(Resource.String.s267)}";
 
                 tbPackNum.Text = "";
                 tbSSCC.Text = "";

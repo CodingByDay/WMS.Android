@@ -324,7 +324,7 @@ namespace WMS
                     else
                     {
 
-                        string toastDelete = string.Format("Napaka pri brisanju pozicije." + result);
+                        string toastDelete = string.Format($"{Resources.GetString(Resource.String.s212)}" + result);
                         Toast.MakeText(this, toastDelete, ToastLength.Long).Show();
                         popupDialog.Dismiss();
                         popupDialog.Hide();
@@ -425,7 +425,7 @@ namespace WMS
             if ((positions != null) && (displayedPosition < positions.Items.Count))
             {
                 var item = positions.Items[displayedPosition];
-                lbInfo.Text = "Odprta pakiranja (" + (displayedPosition + 1).ToString() + "/" + positions.Items.Count + ")";
+                lbInfo.Text = $"{Resources.GetString(Resource.String.s92)} (" + (displayedPosition + 1).ToString() + "/" + positions.Items.Count + ")";
 
                 tbPackNum.Text = item.GetInt("HeadID").ToString();
                 tbSSCC.Text = item.GetString("SSCC");
@@ -451,7 +451,7 @@ namespace WMS
             }
             else
             {
-                lbInfo.Text = "Odprta pakiranja (ni)";
+                lbInfo.Text = $"{Resources.GetString(Resource.String.s267)}";
 
                 tbPackNum.Text = "";
                 tbSSCC.Text = "";
