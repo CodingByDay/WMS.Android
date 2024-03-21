@@ -152,10 +152,10 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
            
             if(output == 1)
             {
-                Toast.MakeText(this, "Potrjevanje uspešno!: ", ToastLength.Long).Show();
+                Toast.MakeText(this, "Potrjevanje uspešno!", ToastLength.Long).Show();
             } else
             {
-                Toast.MakeText(this, "Potrjevanje neuspešno.: ", ToastLength.Long).Show();
+                Toast.MakeText(this, "Potrjevanje neuspešno.", ToastLength.Long).Show();
             }
 
         }

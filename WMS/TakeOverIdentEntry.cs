@@ -392,7 +392,8 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
         {
             if ((openIdent != null) && (openOrders != null) && (openOrders.Items.Count > 0))
             {
-                lbOrderInfo.Text = "Naročilo (" + (displayedOrder + 1).ToString() + "/" + openOrders.Items.Count.ToString() + ")";
+
+                lbOrderInfo.Text = $"{Resources.GetString(Resource.String.s36)} (" + (displayedOrder + 1).ToString() + "/" + openOrders.Items.Count.ToString() + ")";
                 var order = openOrders.Items[displayedOrder];
                 InUseObjects.Set("OpenOrder", order);
                 tbOrder.Text = order.GetString("Key");
@@ -412,7 +413,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             else
             {
                 InUseObjects.Invalidate("OpenOrder");
-                lbOrderInfo.Text = "Naročilo (ni postavk)";
+                lbOrderInfo.Text = $"{Resources.GetString(Resource.String.s36)} (ni postavk)";
                 tbOrder.Text = "";
                 tbConsignee.Text = "";
                 tbQty.Text = "";

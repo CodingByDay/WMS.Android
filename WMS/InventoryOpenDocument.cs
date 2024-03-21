@@ -120,7 +120,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 string error;
                 if (!WebApp.Get("mode=canInsertInventory&wh=" + warehouse.ID.ToString(), out error))
                 {
-                    Toast.MakeText(this, "Napaka pri preverjanju zapisa inventure: " + error, ToastLength.Long).Show();
+                    Toast.MakeText(this, "Napaka: " + error, ToastLength.Long).Show();
                     return;
                 }
                 if (error == "OK!")
@@ -128,7 +128,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                     var savedMoveHead = Services.SetObject("mh", moveHead, out error);
                     if (savedMoveHead == null)
                     {
-                        Toast.MakeText(this, "Napaka pri zapisu inventure: " + error, ToastLength.Long).Show();
+                        Toast.MakeText(this, "Napaka: " + error, ToastLength.Long).Show();
                         return;
                     }
                     Toast.MakeText(this, "Dokument inventure shranjen!", ToastLength.Long).Show();

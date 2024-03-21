@@ -47,7 +47,7 @@
 	<string name="s33">Subjekt</string>
 	<string name="s34">Ident ali 2D</string>
 	<string name="s35">Naziv</string>
-	<string name="s36">Naročilo </string>
+	<string name="s36">Naročilo</string>
 	<string name="s37">ni postavk</string>
 	<string name="s38">Naročilo</string>
 	<string name="s39">Datum dobave</string>
@@ -122,9 +122,9 @@
 	
 	
 	<string name="s101">Naročnik</string>
-	<string name="s102">Lok.</string>
+	<string name="s102">Lokacija</string>
 	
-	<string name="s103">Kol.</string>
+	<string name="s103">Količina</string>
 	
 	<string name="s104">Nar.</string>
 	
@@ -330,6 +330,10 @@
 	<string name="s208">Ali želite odstraniti karton?</string>
 	<string name="s209">Ali ste sigurni da želite pobrisati pozicijo?</string>
 	<string name="s210">Izpisanih je bilo zadostno št etiket. Želite zamenjati serijsko št.?</string>
+
+
+	<string name="s211">....</string>
+
 
 
 

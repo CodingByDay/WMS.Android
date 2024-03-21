@@ -1552,7 +1552,6 @@ namespace WMS
                         {
                             string SuccessMessage = string.Format("Napaka pri klicu web aplikacije");
                             DialogHelper.ShowDialogError(this, this, SuccessMessage);
-                           // Toast.MakeText(this, SuccessMessage, ToastLength.Long).Show();
                         });
                       
                     }

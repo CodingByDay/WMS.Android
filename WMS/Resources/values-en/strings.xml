@@ -1,4 +1,3 @@
-
 <resources>
 	<string name="app_name">Scanner</string>
 	<string name="action_settings">Settings</string>
@@ -12,25 +11,25 @@
 	<string name="type">Type</string>
 	<string name="save">SAVE</string>
 	<string name="settings_saved">Settings saved</string>
-	<string name="login_success">Login succesfull</string>
+	<string name="login_success">Login successful</string>
 	<string name="s1">TAKEOVER F1</string>
-	<string name="s2">INT.WA. F2</string>
-	<string name="s3">PRO.TK. F3</string>
+	<string name="s2">INT. WA. F2</string>
+	<string name="s3">PRO. TK. F3</string>
 	<string name="s4">ISSUING F4</string>
 	<string name="s5">PACK. F5</string>
-	<string name="s6">PRINT F6</string>
+	<string name="s6">PRINT. F6</string>
 	<string name="s7">INV. F7</string>
 	<string name="s8">STOCK F8</string>
 	<string name="s9">PALLETS</string>
 	<string name="s10">RECALCULATION</string>
 	<string name="s11">LOG OUT</string>
-	<string name="s12">Open takeover documents</string>
+	<string name="s12">Open takeover document</string>
 	<string name="s13">Takeover event</string>
 	<string name="s14">Order</string>
 	<string name="s15">Supplier</string>
 	<string name="s16">Positions</string>
 	<string name="s17">Created by</string>
-	<string name="s18">Created </string>
+	<string name="s18">Created date</string>
 	<string name="s19">NEXT F1</string>
 	<string name="s20">EDIT F2</string>
 	<string name="s21">DELETE F3</string>
@@ -51,7 +50,7 @@
 	<string name="s36">Order</string>
 	<string name="s37">none</string>
 	<string name="s38">Order</string>
-	<string name="s39">Supplied </string>
+	<string name="s39">Supplied</string>
 	<string name="s40">Quantity</string>
 	<string name="s41">CONFIRM-F3</string>
 	<string name="s42">NEXT F2</string>
@@ -73,11 +72,11 @@
 	<string name="s58">CREATE F3</string>
 	<string name="s59">DELETE F5</string>
 	<string name="s60">MENU F8</string>
-	<string name="s61">Open interwarehouse documents</string>
+	<string name="s61">Open transfer document</string>
 	<string name="s62">none</string>
-	<string name="s63">Bussiness event</string>
-	<string name="s64">Issuing warehouse</string>
-	<string name="s65">Receiving warehouse</string>
+	<string name="s63">Business event</string>
+	<string name="s64">Issuing</string>
+	<string name="s65">Receiving</string>
 	<string name="s66">Positions</string>
 	<string name="s67">Created</string>
 	<string name="s68">Created at</string>
@@ -85,9 +84,9 @@
 	<string name="s70">EDIT F2</string>
 	<string name="s71">DELETE F3</string>
 	<string name="s72">MENU F8</string>
-	<string name="s73">Bussiness event</string>
-	<string name="s74">Issuing warehouse</string>
-	<string name="s75">Receiving warehouse</string>
+	<string name="s73">Business event</string>
+	<string name="s74">Issuing</string>
+	<string name="s75">Receiving</string>
 	<string name="s76">CONFIRM F3</string>
 	<string name="s77">MENU F8</string>
 	<string name="s78">Ident</string>
@@ -102,38 +101,30 @@
 	<string name="s87">FINISH F4</string>
 	<string name="s88">OVERV F5</string>
 	<string name="s89">MENU F8</string>
-
 	<string name="s90">CONFIRM F2</string>
 	<string name="s91">Takeover</string>
 	<string name="s92">Positions</string>
-	<string name="s93">Izhod F8</string>
+	<string name="s93">Exit F8</string>
 	<string name="s94">F1</string>
 	<string name="s95">Stock overview</string>
-	<string name="s96">Prikaži F2</string>
-	<string name="s97">Prikaži</string>
-	<string name="s98">Izhod</string>
+	<string name="s96">Show F2</string>
+	<string name="s97">Show</string>
+	<string name="s98">Exit</string>
 	<string name="s99">Takeover F2</string>
 	<string name="s100">Rapid takeover - F3</string>
 	<string name="s101">Client</string>
-	<string name="s102">Loc.</string>
-
-	<string name="s103">Quan.</string>
-
-	<string name="s104">Ord.</string>
-
-	<string name="s105">Back f5</string>
+	<string name="s102">Location</string>
+	<string name="s103">Quantity</string>
+	<string name="s104">Order</string>
+	<string name="s105">Back F5</string>
 	<string name="s106">Position</string>
 	<string name="s107">Confirm</string>
 	<string name="s108">Overv.</string>
 	<string name="s109">Back</string>
 	<string name="s110">Menu</string>
-
-
-	<string name="s111">Are you sure you want to finish the proccess?</string>
-
+	<string name="s111">Are you sure you want to finish the process?</string>
 	<string name="s112">YES</string>
 	<string name="s113">NO</string>
-
 	<string name="s114">NEXT</string>
 	<string name="s115">EDIT</string>
 	<string name="s116">CREATE</string>
@@ -143,48 +134,34 @@
 	<string name="s120">SERIAL</string>
 	<string name="s121">OVERVIEW</string>
 	<string name="s122">Filled</string>
-
 	<string name="s123">Open inventories</string>
-	
 	<string name="s124">Inventory date</string>
-
 	<string name="s125">No. of inv.</string>
-
 	<string name="s126">O. document F2</string>
-	<string name="s127">Inventory f3</string>
-	<string name="s128">Confirm f4</string>
-	<string name="s129">O. inventory f5</string>
-	<string name="s130">Print inventory f6</string>
-
-	<string name="s131">Choose</string>	
+	<string name="s127">Inventory F3</string>
+	<string name="s128">Confirm F4</string>
+	<string name="s129">O. inventory F5</string>
+	<string name="s130">Print inventory F6</string>
+	<string name="s131">Choose</string>
 	<string name="s132">Confirmed</string>
 	<string name="s133">Confirmed</string>
-	<string name="s134">Print f2</string>
+	<string name="s134">Print F2</string>
 	<string name="s135">Print</string>
 	<string name="s136">Delete F4</string>
 	<string name="s137">Delete</string>
-	
 	<string name="s138">Without</string>
-
 	<string name="s139">Order/pos.</string>
-
-
 	<string name="s140">Issuing</string>
 	<string name="s141">Receiving</string>
-
 	<string name="s142">Pallet</string>
-
 	<string name="s143">Order</string>
 	<string name="s144">Issued</string>
-	
 	<string name="s145">Card number</string>
-
 	<string name="s146">Rapid takeover</string>
-
 	<string name="s147">Log out</string>
-	<string name="s148">Tekover</string>
+	<string name="s148">Takeover</string>
 	<string name="s149">Interwarehouse.</string>
-	<string name="s150">Production takeover.</string>
+	<string name="s150">Production takeover</string>
 	<string name="s151">Issued goods</string>
 	<string name="s152">Packaging</string>
 	<string name="s153">Printing</string>
@@ -192,105 +169,101 @@
 	<string name="s155">Stock</string>
 	<string name="s156">Pallets</string>
 	<string name="s157">Recalculation</string>
-
 	<string name="s158">Issuing pallet</string>
 	<string name="s159">Wrapping pallet</string>
-
 	<string name="s160">Name</string>
-
 	<string name="s161">Open packaging</string>
-	
 	<string name="s162">Packaging no.</string>
-	
 	<string name="s163">Create F2</string>
-
 	<string name="s164">Overview F3</string>
-
 	<string name="s165">Ident F1</string>
 	<string name="s166">Order F2</string>
 	<string name="s167">Client F3</string>
-
-
 	<string name="s168">Settings</string>
-
-
 	<string name="s169">AGAIN F2</string>
 	<string name="s170">SSCC F3</string>
-
-
 	<string name="s171">Copies</string>
-
-	<string name="s172">Print f3</string>
-
-	
+	<string name="s172">Print F3</string>
 	<string name="s173">WO</string>
-
 	<string name="s174">Confirm</string>
-	
 	<string name="s175">Card</string>
-	
 	<string name="s176">Leg code</string>
-
 	<string name="s177">Open quantity</string>
-
-	<string name="s178">Card f2</string>
-	
-	<string name="s179">Pallets f4</string>
-
+	<string name="s178">Card F2</string>
+	<string name="s179">Pallets F4</string>
 	<string name="s180">Full(%)</string>
-
-
 	<string name="s181">Received</string>
-
 	<string name="s182">Calculate F2</string>
 	<string name="s183">Calculate</string>
-
-
-	<string name="s184">Too much innactivity. Application will close.</string>
-
+	<string name="s184">Too much inactivity. Application will close.</string>
 	<string name="s185">AR glasses</string>
-	
 	<string name="s186">API</string>
 	<string name="s187">Device</string>
-
 	<string name="s188">Type</string>
-
 	<string name="s189">Machine</string>
-
 	<string name="s190">Order</string>
-
-	<string name="s191">SSCC code f4"</string>
-
+	<string name="s191">SSCC code F4"</string>
 	<string name="s192">SSCC code"</string>
-
 	<string name="s193">Client</string>
-	
 	<string name="s194">Date delivery</string>
-	<string name="s195">Quantity issued /</string>
-	<string name="s196">Previous. f3</string>
-	<string name="s197">Tape f4</string>
-	<string name="s198">Print f5</string>
-	<string name="s199">New ident f6</string>
+	<string name="s195">Quantity issued</string>
+	<string name="s196">Previous. F3</string>
+	<string name="s197">Tape F4</string>
+	<string name="s198">Print F5</string>
+	<string name="s199">New ident F6</string>
 	<string name="s200">Card is already on the other pallet. Move?</string>
 	<string name="s201">Yes</string>
 	<string name="s202">No</string>
-
 	<string name="s203">Document</string>
 	<string name="s204">Date</string>
-	
 	<string name="s205">Open issue document</string>
-
-	<string name="s206">Delovni nalog</string>
-
+	<string name="s206">Work order</string>
 	<string name="s207">New update</string>
-	
 	<string name="s208">Do you want to delete the card?</string>
-
 	<string name="s209">Are you sure you want to delete the position?</string>
-	
-	
 	<string name="s210">Enough codes were created. Do you want to replace the serial number?</string>
-
-
-
+	<string name="s211">....</string>
+	<string name="s212">Delete operation error:</string>
+	<string name="s213">Web application access error:</string>
+	<string name="s214">Position was deleted.</string>
+	<string name="s215">Critical error...</string>
+	<string name="s216">Error:</string>
+	<string name="s217">Serial number already used:</string>
+	<string name="s218">Error on the API call:</string>
+	<string name="s219">Cannot exceed maximum quantity</string>
+	<string name="s220">Quantity needs to be a valid decimal number</string>
+	<string name="s221"> is mandatory!</string>
+	<string name="s222"> is mandatory and has to be different than 0!</string>
+	<string name="s223"> has to be a number (</string>
+	<string name="s224"> not valid for warehouse </string>
+	<string name="s225">Error occurred</string>
+	<string name="s227">It's not possible to issue this item because it has no stock.</string>
+	<string name="s228">Item was not chosen.</string>
+	<string name="s229">Error when checking the item.</string>
+	<string name="s230">No stock.</string>
+	<string name="s231">Connection successful</string>
+	<string name="s232">Failed connection</string>
+	<string name="s233">Failed to disconnect</string>
+	<string name="s234">Location is not valid.</string>
+	<string name="s235">Ident was not supplied.</string>
+	<string name="s236">You have chosen</string>
+	<string name="s237">Business event needs to be chosen.</string>
+	<string name="s238">You have to choose a document</string>
+	<string name="s239">Critical error:</string>
+	<string name="s240">Does not exist.</string>
+	<string name="s241">Location is missing.</string>
+	<string name="s242">Ident was processed.</string>
+	<string name="s243">Successful confirmation!</string>
+	<string name="s244">Confirmation unsuccessful.</string>
+	<string name="s245">Warehouse not chosen!</string>
+	<string name="s246">Inventory open!</string>
+	<string name="s247">Error: </string>
+	<string name="s248">Inventory document saved!</string>
+	<string name="s249">Please choose the correct date.</string>
+	<string name="s250">Sent...</string>
+	<string name="s251">Error when accessing the remote endpoint (</string>
+	<string name="s252">No open inventory document.</string>
+	<string name="s253">Warehouse not chosen!</string>
+	<string name="s254">SSCC code was not inputted!</string>
+	<string name="s255">Serial number not inputted!</string>
 </resources>

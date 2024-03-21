@@ -64,7 +64,6 @@ namespace WMS
             btnOrder = FindViewById<Button>(Resource.Id.btnOrder);
             btnOrderMode = FindViewById<Button>(Resource.Id.btnOrderMode);
             logout = FindViewById<Button>(Resource.Id.btnLogout);
-
             label1 = FindViewById<TextView>(Resource.Id.label1);
             label2 = FindViewById<TextView>(Resource.Id.label2);
             lbSubject = FindViewById<TextView>(Resource.Id.lbSubject);
@@ -73,8 +72,6 @@ namespace WMS
             logout.Click += Logout_Click;
             btnOrderMode.Enabled = Services.HasPermission("TNET_WMS_BLAG_ACQ_NORDER", "R");
             var warehouses = CommonData.ListWarehouses();
-
-
             if (warehouses != null)
             {
                 warehouses.Items.ForEach(wh =>
@@ -82,9 +79,6 @@ namespace WMS
                     objectcbWarehouse.Add(new ComboBoxItem { ID = wh.GetString("Subject"), Text = wh.GetString("Name") });
                 });
             }
-
-
-
             adapter = new CustomAutoCompleteAdapter<ComboBoxItem>(this,
             Android.Resource.Layout.SimpleSpinnerItem, objectcbWarehouse);
             adapter.SetDropDownViewResource(Android.Resource.Layout.SimpleSpinnerItem);
@@ -106,14 +100,13 @@ namespace WMS
 
             var _broadcastReceiver = new NetworkStatusBroadcastReceiver();
             _broadcastReceiver.ConnectionStatusChanged += OnNetworkStatusChanged;
+
             Application.Context.RegisterReceiver(_broadcastReceiver,
             new IntentFilter(ConnectivityManager.ConnectivityAction));
 
             cbDocType.ItemClick += CbDocType_ItemClick;
             cbSubject.ItemClick += CbSubject_ItemClick;
             cbWarehouse.ItemClick += CbWarehouse_ItemClick;
-
-
 
             InitializeAutocompleteControls();
         }
@@ -250,7 +243,7 @@ namespace WMS
                     cbSubject.Visibility = ViewStates.Invisible;
 
                     docTypes = CommonData.ListDocTypes("I|N");
-                    btnOrderMode.Text = "Brez - F3";
+                    btnOrderMode.Text = Resources.GetString(Resource.String.s30);
                 }
                 else
                 {
@@ -274,7 +267,7 @@ namespace WMS
 
                     docTypes = CommonData.ListDocTypes("P|F");
 
-                    btnOrderMode.Text = "Z nar. - F3";
+                    btnOrderMode.Text = Resources.GetString(Resource.String.s32);
                 }
 
                 docTypes.Items.ForEach(dt =>

@@ -27,10 +27,8 @@ namespace WMS
 {
     [Activity(Label = "UnfinishedInterWarehouseView", ScreenOrientation = ScreenOrientation.Portrait)]
     public class UnfinishedInterWarehouseView : AppCompatActivity, ISwipeListener
-
     {
 
- 
         private TextView lbInfo;
         private EditText tbBusEvent;
         private EditText tbIssueWarehouse;
@@ -43,7 +41,6 @@ namespace WMS
         private Button btDelete;
         private Button btnNew;
         private Button btnLogout;
-
         private int displayedPosition = 0;
         private NameValueObjectList positions = (NameValueObjectList)InUseObjects.Get("InterWarehouseHeads");
         private Dialog popupDialog;
@@ -73,17 +70,14 @@ namespace WMS
             btFinish = FindViewById<Button>(Resource.Id.btFinish);
             btnNew = FindViewById<Button>(Resource.Id.btnNew);
             btnLogout = FindViewById<Button>(Resource.Id.btnLogout);
-            btDelete = FindViewById<Button>(Resource.Id.btDelete);
-       
+            btDelete = FindViewById<Button>(Resource.Id.btDelete);      
             btNext.Click += BtNext_Click;
             btFinish.Click += BtFinish_Click;
             btDelete.Click += BtDelete_Click;
             btnNew.Click += BtnNew_Click;
             btnLogout.Click += BtnLogout_Click;
             InUseObjects.Clear();
-
             LoadPositions();
-
             var _broadcastReceiver = new NetworkStatusBroadcastReceiver();
             _broadcastReceiver.ConnectionStatusChanged += OnNetworkStatusChanged;
             Application.Context.RegisterReceiver(_broadcastReceiver,
@@ -354,7 +348,7 @@ namespace WMS
         {
             if ((positions != null) && (positions.Items.Count > 0))
             {
-                lbInfo.Text = "Odprte medskladiščnice na čitalcu (" + (displayedPosition + 1).ToString() + "/" + positions.Items.Count + ")";
+                lbInfo.Text = $"{Resources.GetString(Resource.String.s61)}" + (displayedPosition + 1).ToString() + "/" + positions.Items.Count + ")";
                 var item = positions.Items[displayedPosition];
 
                 tbBusEvent.Text = item.GetString("DocumentTypeName");
@@ -386,7 +380,7 @@ namespace WMS
             }
             else
             {
-                lbInfo.Text = "Odprte medskladiščnice na čitalcu (ni)";
+                lbInfo.Text = $"{Resources.GetString(Resource.String.s61)} (none)";
 
                 tbBusEvent.Text = "";
                 tbIssueWarehouse.Text = "";

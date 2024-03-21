@@ -173,7 +173,7 @@ namespace WMS
                 tbIdent.Text = openIdent.GetString("Code") + " " + openIdent.GetString("Name");
             }
      
-            lbQty.Text = "Količina (" + openOrder.GetDouble("OpenQty").ToString(CommonData.GetQtyPicture()) + ")";
+            lbQty.Text = $"{Resources.GetString(Resource.String.s40)} (" + openOrder.GetDouble("OpenQty").ToString(CommonData.GetQtyPicture()) + ")";
 
             isPackaging = openIdent.GetBool("IsPackaging");
             if (isPackaging)
@@ -223,7 +223,6 @@ namespace WMS
             }
             else if (CommonData.GetSetting("ShowMorePrintsField") == "1")
             {
-                lbUnits.Text = "Koli";
                 lbUnits.Visibility = ViewStates.Invisible;
                 tbUnits.Visibility = ViewStates.Invisible;
             }

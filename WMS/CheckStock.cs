@@ -84,9 +84,6 @@ namespace WMS
             var wh = spinnerAdapterList.ElementAt(temporaryPositionWarehouse);
             if (wh == null)
             {
-                string WebError = string.Format("Skladišče ni izbrano.");
-                DialogHelper.ShowDialogError(this, this, WebError);
-                //   Toast.MakeText(this, WebError, ToastLength.Long).Show(); tbIdent.Text = "";
                 return;
             }
 
@@ -94,7 +91,7 @@ namespace WMS
             {
                 if (!CommonData.IsValidLocation(wh.ID, tbLocation.Text.Trim()))
                 {
-                    string WebError = string.Format("Lokacija ni veljavna");
+                    string WebError = string.Format("Lokacija ni veljavna.");
                     DialogHelper.ShowDialogError(this, this, WebError);
                     return;
                 }
@@ -102,10 +99,9 @@ namespace WMS
 
             if (string.IsNullOrEmpty(tbIdent.Text.Trim()))
             {
-                string WebError = string.Format("Ident ni podan");
+                string WebError = string.Format("Ident ni podan.");
                 DialogHelper.ShowDialogError(this, this, WebError);
 
-                //Toast.MakeText(this, WebError, ToastLength.Long).Show();
                 return;
             }
 
@@ -341,7 +337,6 @@ namespace WMS
                 var debi = issuerLocs.Items.Count();
                 if (issuerLocs == null)
                 {
-                    // Toast.MakeText(this, "Prišlo je do napake", ToastLength.Long).Show();
                     DialogHelper.ShowDialogError(this, this, "Prišlo je do napake");
                 }
                 else
@@ -361,13 +356,9 @@ namespace WMS
             Spinner spinner = (Spinner)sender;
             if (e.Position != 0)
             {
-                string toast = string.Format("Izbrali ste: {0}", spinner.GetItemAtPosition(e.Position));
-                Toast.MakeText(this, toast, ToastLength.Long).Show();
                 temporaryPositionWarehouse = e.Position;
             }
-            Toast.MakeText(this, "Pripravljamo listu lokacija.", ToastLength.Long).Show();
             await GetLocationsForGivenWarehouse(spinnerAdapterList.ElementAt(temporaryPositionWarehouse).Text);
-            Toast.MakeText(this, "Lista lokacija pripravljena.", ToastLength.Long).Show();
             DataAdapterLocation = new CustomAutoCompleteAdapter<string>(this,
             Android.Resource.Layout.SimpleSpinnerItem, locationData);
             tbLocation.Adapter = null;

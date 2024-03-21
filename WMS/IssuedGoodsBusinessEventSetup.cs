@@ -372,7 +372,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 {
                     lbExtra.Visibility = ViewStates.Visible;
                     cbExtra.Visibility = ViewStates.Visible;
-                    lbExtra.Text = "Naročilo:";
+                    lbExtra.Text = Resources.GetString(Resource.String.s36);
                 }
                 else
                 {
@@ -391,7 +391,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             {
                 lbExtra.Visibility = ViewStates.Visible;
                 cbExtra.Visibility = ViewStates.Visible;
-                lbExtra.Text = "Subjekt:";
+                lbExtra.Text = Resources.GetString(Resource.String.s33);
                 objectExtra.Clear();
                 var subjects = CommonData.ListSubjects();
                 subjects.Items.ForEach(s =>

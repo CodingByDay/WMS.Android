@@ -288,12 +288,9 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 {
                     if (!Services.TryLock("MoveHead" + savedMoveHead.GetInt("HeadID").ToString(), out error))
                     {
-                        string errorWebApp = string.Format("Kritična napaka pri zaklepanju nove medskladiščnice: " + error);
+                        string errorWebApp = string.Format("Kritična napaka: " + error);
                         DialogHelper.ShowDialogError(this, this, errorWebApp);
 
-                        // Toast.MakeText(this, errorWebApp, ToastLength.Long).Show();
-                        // show a message
-                        // terminate
                     }
 
                     moveHead.SetInt("HeadID", savedMoveHead.GetInt("HeadID"));

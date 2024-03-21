@@ -521,10 +521,7 @@ namespace WMS
         }
 
 
-        private void IvTrail_LongClick(object sender, View.LongClickEventArgs e)
-        {
-            Toast.MakeText(this, "Long", ToastLength.Long).Show();
-        }
+
 
         private void TbLocationFilter_AfterTextChanged(object sender, AfterTextChangedEventArgs e)
         {
@@ -651,7 +648,7 @@ namespace WMS
                     {
                         RunOnUiThread(() =>
                         {
-                            Toast.MakeText(this, "Ta izdelek ni mogoče izdati ker nima zalogo.", ToastLength.Long).Show();
+                            Toast.MakeText(this, "Ta izdelek ni mogoče izdati ker nima zaloge.", ToastLength.Long).Show();
                         });
                         return;
                     }
@@ -670,7 +667,7 @@ namespace WMS
                 {
                     RunOnUiThread(() =>
                     {
-                        Toast.MakeText(this, "Izdelek ni izbran?.", ToastLength.Long);
+                        Toast.MakeText(this, "Izdelek ni izbran.", ToastLength.Long);
                     });
 
                     return;

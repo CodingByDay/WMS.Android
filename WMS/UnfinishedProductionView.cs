@@ -340,7 +340,7 @@ namespace WMS
         {
             if ((positions != null) && (positions.Items.Count > 0))
             {
-                lbInfo.Text = "Odprti prevzemi na čitalcu (" + (displayedPosition + 1).ToString() + "/" + positions.Items.Count + ")";
+                lbInfo.Text = $"{Resources.GetString(Resource.String.s12)}" + (displayedPosition + 1).ToString() + "/" + positions.Items.Count + ")";
                 var item = positions.Items[displayedPosition];
 
                 tbWorkOrder.Text = item.GetString("LinkKey");
@@ -373,7 +373,7 @@ namespace WMS
             }
             else
             {
-                lbInfo.Text = "Odprti prevzemi na čitalcu (ni)";
+                lbInfo.Text = $"{Resources.GetString(Resource.String.s12)} (none)";
 
                 tbWorkOrder.Text = "";
                 tbClient.Text = "";

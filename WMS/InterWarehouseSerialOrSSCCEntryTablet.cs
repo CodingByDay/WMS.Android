@@ -1344,34 +1344,7 @@ namespace WMS
             }
         }
 
-    
-
-/*
-        private void fillItems()
-        {
-            string error;
-            var stock = Services.GetObjectList("str", out error, moveHead.GetString("Issuer") + "||" + tbIdent.Text); 
-            var number = stock.Items.Count();
-            string SuccessMessage = string.Format(number.ToString());
-            Toast.MakeText(this, SuccessMessage, ToastLength.Long).Show();
-            if (stock != null)
-            {
-                stock.Items.ForEach(x =>
-                {
-                    data.Add(new ProductionEnteredPositionViewList
-                    {
-                        Ident = x.GetString("Ident"),
-                        Location = x.GetString("Location"),
-                        Qty = x.GetDouble("RealStock").ToString(),
-                        SerialNumber = x.GetString("SerialNo")
-
-                    });
-                });
-
-            }
-
-        }
-*/
+   
         private void TbPacking_FocusChange(object sender, View.FocusChangeEventArgs e)
         {
             if (!editMode)

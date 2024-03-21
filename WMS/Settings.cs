@@ -21,7 +21,7 @@ using AlertDialog = Android.App.AlertDialog;
 
 namespace WMS
 {
-    [Activity(Label = "Nastavitve", WindowSoftInputMode = SoftInput.AdjustResize)]
+    [Activity(Label = "Settings", WindowSoftInputMode = SoftInput.AdjustResize)]
     public class Settings : AppCompatActivity
     {
         private EditText ID;

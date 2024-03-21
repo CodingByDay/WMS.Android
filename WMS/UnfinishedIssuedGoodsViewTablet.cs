@@ -443,14 +443,6 @@ namespace WMS
                 }
               
             }
-            //issuedData.Adapter = null;
-
-            //UnfinishedIssuedAdapter adapter = new UnfinishedIssuedAdapter(this, data);
-
-            //issuedData.Adapter = adapter;
-
-
-
         }
         private void LoadPositions()
         {
@@ -467,7 +459,7 @@ namespace WMS
                     }
                     if (positions == null)
                     {
-                        string errorWebApp = string.Format("Napaka pri brisanju pozicije:: " + error);
+                        string errorWebApp = string.Format("Napaka pri brisanju pozicije: " + error);
                         Toast.MakeText(this, errorWebApp, ToastLength.Long).Show();
                         return;
                     }

@@ -88,7 +88,7 @@ public class BluetoothService : Service
                 running = true;
                 // Now you have a connected socket for communication
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 ShowToast("Povezava neuspešna");
                 return;
