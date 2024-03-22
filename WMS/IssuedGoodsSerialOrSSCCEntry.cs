@@ -281,7 +281,21 @@ namespace WMS
             if (!Base.Store.isUpdate)
             {
                 double parsed;
-                if (createPositionAllowed && double.TryParse(tbPacking.Text, out parsed) && stock >= parsed)
+
+                if (createPositionAllowed && double.TryParse(tbPacking.Text, out parsed) && stock == 0)
+                {
+                    if (Base.Store.modeIssuing == 2)
+                    {
+                        StartActivity(typeof(IssuedGoodsIdentEntryWithTrail));
+                        Finish();
+                    }
+                    else if (Base.Store.modeIssuing == 1)
+                    {
+                        StartActivity(typeof(IssuedGoodsIdentEntry));
+                        Finish();
+                    }
+                }
+                else if (createPositionAllowed && double.TryParse(tbPacking.Text, out parsed) && stock >= parsed)
                 {
                     await CreateMethodFromStart();
                 }
@@ -331,17 +345,29 @@ namespace WMS
         }
 
         private async void BtCreateSame_Click(object? sender, EventArgs e)
-        {
+        {          
             if (tbSSCC.HasFocus || tbSerialNum.HasFocus)
             {
                 FilterData();
             }
-
             double parsed;
-            if (createPositionAllowed && double.TryParse(tbPacking.Text, out parsed) && stock >= parsed)
+            if (createPositionAllowed && double.TryParse(tbPacking.Text, out parsed) && stock == 0)
+            {
+                if (Base.Store.modeIssuing == 2)
+                {
+                    StartActivity(typeof(IssuedGoodsIdentEntryWithTrail));
+                    Finish();
+                }
+                else if (Base.Store.modeIssuing == 1)
+                {
+                    StartActivity(typeof(IssuedGoodsIdentEntry));
+                    Finish();
+                }
+            }
+            else if (createPositionAllowed && double.TryParse(tbPacking.Text, out parsed) && stock >= parsed)
             {
                 await CreateMethodSame();
-            }
+            } 
             else
             {
                 Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
@@ -443,10 +469,7 @@ namespace WMS
                             {
                                 StartActivity(typeof(IssuedGoodsIdentEntry));
                                 Finish();
-                            } else if (Base.Store.modeIssuing == 3) {
-                                StartActivity(typeof(ClientPicking));
-                                Finish();
-                            }
+                            } 
                         });
 
                         createPositionAllowed = false;
@@ -488,8 +511,13 @@ namespace WMS
 
                         serialOverflowQuantity += Convert.ToDouble(tbPacking.Text.Trim());
                         stock -= serialOverflowQuantity;
-                        
 
+                        RunOnUiThread(() =>
+                        {
+                            lbQty.Text = $"{Resources.GetString(Resource.String.s155)} ( " + stock.ToString(CommonData.GetQtyPicture()) + " )";
+                        });
+
+                        
                         RunOnUiThread(() =>
                         {
                             // Succesfull position creation
@@ -510,7 +538,6 @@ namespace WMS
 
                             tbLocation.Text = string.Empty;
                             tbPacking.Text = string.Empty;
-                            lbQty.Text = $"{Resources.GetString(Resource.String.s292)}";
 
                         });
 
@@ -532,12 +559,9 @@ namespace WMS
             {
                 var element = data.ElementAt(0);
 
-                if (Base.Store.modeIssuing != 3)
-                {
-                    stock = element.anQty ?? 0;
-                    lbQty.Text = $"{Resources.GetString(Resource.String.s155)} ( " + element.anQty.ToString() + " )";
-                    tbPacking.Text = element.anQty.ToString();
-                }
+                // This is perhaps not needed due to the quantity checking requirments. lbQty.Text = $"{Resources.GetString(Resource.String.s155)} ( " + element.anQty.ToString() + " )";
+                tbPacking.Text = element.anQty.ToString();
+                
 
                 tbLocation.Text = element.aclocation;
                 tbLocation.Enabled = false;
@@ -593,7 +617,7 @@ namespace WMS
                                 alert.SetPositiveButton("Ok", (senderAlert, args) =>
                                 {
                                     alert.Dispose();
-                                    System.Threading.Thread.Sleep(500);
+                                    Thread.Sleep(500);
                                     StartActivity(typeof(IssuedGoodsBusinessEventSetup));
                                 });
 
@@ -613,7 +637,7 @@ namespace WMS
                                 alert.SetPositiveButton("Ok", (senderAlert, args) =>
                                 {
                                     alert.Dispose();
-                                    System.Threading.Thread.Sleep(500);
+                                    Thread.Sleep(500);
                                     StartActivity(typeof(MainMenu));
                                 });
 
@@ -653,6 +677,7 @@ namespace WMS
         /// <param name="acIdent">Ident</param>
         private void GetConnectedPositions(string acKey, int anNo, string acIdent, string acLocation = null)
         {
+            connectedPositions.Clear();
             var sql = "SELECT * from uWMSOrderItemByKeyOut WHERE acKey = @acKey AND anNo = @anNo AND acIdent = @acIdent";
             var parameters = new List<Services.Parameter>();
             parameters.Add(new Services.Parameter { Name = "acKey", Type = "String", Value = acKey });
@@ -757,6 +782,7 @@ namespace WMS
                 if (Intent.Extras != null && !String.IsNullOrEmpty(Intent.Extras.GetString("selected")) && Base.Store.modeIssuing == 2)
                 {
                     // This flow is for orders.
+
                     string trailBytes = Intent.Extras.GetString("selected");
                     receivedTrail = JsonConvert.DeserializeObject<Trail>(trailBytes);
                     qtyCheck = Double.Parse(receivedTrail.Qty);
@@ -765,16 +791,15 @@ namespace WMS
                     stock = qtyCheck;
                     tbPacking.Text = qtyCheck.ToString();
                     GetConnectedPositions(receivedTrail.Key, receivedTrail.No, receivedTrail.Ident, receivedTrail.Location);
-                } else if (Base.Store.modeIssuing == 3)
-                {
-                    // This flow is for clients.
-                    var order = Base.Store.OpenOrder;
-                    GetConnectedPositions(order.Order, order.Position ?? -1, order.Ident);
                 }
                 else if (Base.Store.modeIssuing == 1)
                 {
                     // This flow is for idents.
+
                     var order = Base.Store.OpenOrder;
+                    qtyCheck = order.Quantity ?? 0;
+                    lbQty.Text = $"{Resources.GetString(Resource.String.s155)} ( " + qtyCheck.ToString(CommonData.GetQtyPicture()) + " )";
+                    stock = qtyCheck;
                     GetConnectedPositions(order.Order, order.Position ?? -1, order.Ident);
                 }
             }
