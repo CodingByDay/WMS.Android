@@ -106,6 +106,8 @@ namespace WMS
 
         private string warehouse;
         private List<IssuedGoods> data;
+        private double serialOverflowQuantity;
+
 
         public static List<IssuedGoods> FilterIssuedGoods(List<IssuedGoods> issuedGoodsList, string acSSCC = null, string acSerialNo = null, string acLocation = null)
         {
@@ -483,6 +485,11 @@ namespace WMS
                     moveItem = Services.SetObject("mi", moveItem, out error);
                     if (moveItem != null && error == string.Empty)
                     {
+
+                        serialOverflowQuantity += Convert.ToDouble(tbPacking.Text.Trim());
+                        stock -= serialOverflowQuantity;
+                        
+
                         RunOnUiThread(() =>
                         {
                             // Succesfull position creation
@@ -785,7 +792,6 @@ namespace WMS
                 tbPalette.Visibility = ViewStates.Visible;
             }
 
-            // Test this function based on the proccess
         }
 
         private void Sound()
@@ -795,11 +801,13 @@ namespace WMS
 
         private void TbPacking_KeyPress(object? sender, View.KeyEventArgs e)
         {
-            if (e.KeyCode == Keycode.Enter && e.Event.Action == KeyEventActions.Down)
+            /* Ignore for now due to user experience.
+             * if (e.KeyCode == Keycode.Enter && e.Event.Action == KeyEventActions.Down)
             {
                 FilterData();
             }
             e.Handled = false;
+            */
         }
 
         private void TbSerialNum_KeyPress(object? sender, View.KeyEventArgs e)

@@ -12,16 +12,6 @@
     <include
         android:id="@+id/toolbar"
         layout="@layout/toolbar" />
-    <TextView
-        android:textStyle="bold"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:paddingLeft="10dp"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp"
-        android:textColor="@color/rikoMain"
-        android:text="@string/s91" />
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -36,7 +26,7 @@
             android:gravity="bottom"
             android:paddingLeft="4dp"
             android:paddingTop="4dp"
-           android:text="@string/s34"
+            android:text="@string/s34"
       />
 
         <CustomAutoCompleteTextView

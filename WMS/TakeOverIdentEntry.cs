@@ -290,7 +290,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                     moveHead.SetString("LinkNo", data.IntValue("anNo").ToString());
                     if (moveHead.GetBool("ByOrder"))
                     {
-                       moveHead.SetString("Receiver", data.StringValue("acSubject"));
+                        moveHead.SetString("Receiver", data.StringValue("acSubject"));
                     }
                     string error;
                     var savedMoveHead = Services.SetObject("mh", moveHead, out error);
@@ -306,7 +306,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                         return true;
                     }
                 }
-                catch(Exception error)
+                catch (Exception error)
                 {
                     Crashes.TrackError(error);
                     return false;
@@ -316,7 +316,10 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             {
                 return true;
             }
-        
+        }
+
+
+
         private void ProcessIdent()
         {
             var ident = tbIdent.Text.Trim();
