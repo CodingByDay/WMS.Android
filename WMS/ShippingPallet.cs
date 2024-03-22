@@ -157,7 +157,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
 
                         progress = new ProgressDialogClass();
 
-                        progress.ShowDialogSync(this, "Pošiljam podatke, prosim počakajte.");
+                        progress.ShowDialogSync(this, $"{Resources.GetString(Resource.String.s308)}");
                     });
 
                     string result;
@@ -171,8 +171,8 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
 
                                 progress.StopDialogSync();
                                 AlertDialog.Builder alert = new AlertDialog.Builder(this);
-                                alert.SetTitle("Uspešno obdelano.");
-                                alert.SetMessage("Paleta uspešno dostavljena");
+                                alert.SetTitle($"{Resources.GetString(Resource.String.s323)}");
+                                alert.SetMessage($"{Resources.GetString(Resource.String.s324)}");
 
                                 alert.SetPositiveButton("Ok", (senderAlert, args) =>
                                 {
@@ -198,7 +198,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                                 progress.StopDialogSync();
                                 AlertDialog.Builder alert = new AlertDialog.Builder(this);
                                 alert.SetTitle($"{Resources.GetString(Resource.String.s265)}");
-                                alert.SetMessage($"Napaka pri dostavi palete: {result}");
+                                alert.SetMessage($"{Resources.GetString(Resource.String.s216)}" + result);
 
                                 alert.SetPositiveButton("Ok", (senderAlert, args) =>
                                 {
@@ -255,7 +255,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                         progress.StopDialogSync();
                         AlertDialog.Builder alert = new AlertDialog.Builder(this);
                         alert.SetTitle($"{Resources.GetString(Resource.String.s265)}");
-                        alert.SetMessage($"Prišlo je do napake. {ex.Message}");
+                        alert.SetMessage($"{Resources.GetString(Resource.String.s216)}" + ex.Message);
 
                         alert.SetPositiveButton("Ok", (senderAlert, args) =>
                         {

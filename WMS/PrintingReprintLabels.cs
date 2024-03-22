@@ -215,17 +215,11 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
 
         private void CbSubject_ItemSelected(object sender, AdapterView.ItemSelectedEventArgs e)
         {
-
-            Spinner spinner = (Spinner)sender;
-       
             tempPositionSubject = e.Position;
         }
 
         private void CbWarehouse_ItemSelected(object sender, AdapterView.ItemSelectedEventArgs e)
         {
-
-            Spinner spinner = (Spinner)sender;
-
             tempPositionWarehouse = e.Position;
         }
 
@@ -240,7 +234,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 stock = Services.GetObject("str", warehouse + "|" + location + "|" + sscc + "|" + serialNum + "|" + ident, out error);
                 if (stock == null)
                 {
-                    string toast = string.Format("Napaka pri preverjanju zaloge: " + error);
+                    string toast = string.Format($"{Resources.GetString(Resource.String.s216)}" + error);
                     Toast.MakeText(this, toast, ToastLength.Long).Show();
   
                     return false;
@@ -335,7 +329,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             if (String.IsNullOrEmpty(tbIdent.Text) | String.IsNullOrEmpty(tbTitle.Text))
             { return; }
 
-            var qty = 0.0;
+                var qty = 0.0;
 
                 if(!String.IsNullOrEmpty(tbQty.Text)) { 
 
@@ -349,24 +343,17 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
 
             if (qty <= 0.0)
             {
-                string toast = string.Format("Količina mora biti pozitivna!");
+                string toast = string.Format($"{Resources.GetString(Resource.String.s298)}");
                 Toast.MakeText(this, toast, ToastLength.Long).Show();
       
                 return;
-            }
-
-            
-
-    
+            }   
             try
             {
-                // Checking to see if the number of copies is set.
+
                 try
                 {
                     numberOfCopies = Convert.ToInt32(tbNumberOfCopies.Text);
-
-
-
                     if(numberOfCopies <= 0) { numberOfCopies = 1; }
 
                 } catch(Exception)
@@ -395,15 +382,11 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
 
                 }
                 PrintingCommon.SendToServer(nvo);
-
-                string toast = string.Format("Pošiljam podatke.");
-
-
             }
             finally
             {
                 
-                string toast = string.Format("Poslani podatki.");
+                string toast = string.Format($"{Resources.GetString(Resource.String.s299)}");
                 Toast.MakeText(this, toast, ToastLength.Long).Show();
                 ClearTheScreen();
             }

@@ -114,7 +114,7 @@ namespace WMS
             lvCardList.Adapter = adapter;
             totalQty += qty;
             btConfirm.Enabled = true;
-            lbTotalQty.Text = $"Količina skupaj: {totalQty.ToString("###,###,##0.00")} / {collectiveAmount.ToString("###,###,##0.00")}";
+            lbTotalQty.Text = $"{Resources.GetString(Resource.String.s304)}: {totalQty.ToString("###,###,##0.00")} / {collectiveAmount.ToString("###,###,##0.00")}";
             popupDialog.Dismiss();
             popupDialog.Cancel();          
         }
@@ -144,7 +144,7 @@ namespace WMS
                 var cardObj = Services.GetObject("cq", tbSerialNum.Text + "|1|" + tbIdent.Text, out error);
                 if (cardObj == null)
                 {
-                    string WebError = string.Format("Napaka pri preverjanju serijske št.: " + error);
+                    string WebError = string.Format($"{Resources.GetString(Resource.String.s216)}" + error);
                     Toast.MakeText(this, WebError, ToastLength.Long).Show();
 
                     return;
@@ -158,7 +158,7 @@ namespace WMS
                 }
                 else
                 {
-                    string WebError = string.Format("Serijska št. nima pripravljenih kartonov.");
+                    string WebError = string.Format($"{Resources.GetString(Resource.String.s305)}");
                     Toast.MakeText(this, WebError, ToastLength.Long).Show();
 
                     return;
@@ -201,7 +201,7 @@ namespace WMS
                     }
                     catch (Exception error)
                     {
-                        Toast.MakeText(this, "Napaka...", ToastLength.Long).Show();
+                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s265)}", ToastLength.Long).Show();
                     }
                 }
                 else { stKartona = Convert.ToInt32(tbCard.Text).ToString(); }
@@ -212,7 +212,7 @@ namespace WMS
                     if (!data.StartsWith(tbSerialNum.Text) && tbSerialNum.Text.Length < tbCard.Text.Length)
                     {
 
-                        string WebError = string.Format("Karton ne ustreza serijski številki.");
+                        string WebError = string.Format($"{Resources.GetString(Resource.String.s306)}");
                         Toast.MakeText(this, WebError, ToastLength.Long).Show();
                     }
                     else
@@ -222,7 +222,7 @@ namespace WMS
                         {
                             if (existing.stKartona == stKartona)
                             {
-                                string WebError = string.Format("Karton je že dodan na paleto!");
+                                string WebError = string.Format($"{Resources.GetString(Resource.String.s307)}");
                                 Toast.MakeText(this, WebError, ToastLength.Long).Show();
 
                                 return;
@@ -236,7 +236,7 @@ namespace WMS
 
                             if (cardObj == null)
                             {
-                                string WebError = string.Format("Napaka pri preverjanju kartona: " + error);
+                                string WebError = string.Format($"{Resources.GetString(Resource.String.s216)}" + error);
                                 Toast.MakeText(this, WebError, ToastLength.Long).Show();
                                 return;
                             }
@@ -266,7 +266,7 @@ namespace WMS
                                     totalQty += qty;
 
 
-                                    lbTotalQty.Text = $"Količina skupaj: {totalQty.ToString("###,###,##0.00")} / {collectiveAmount.ToString("###,###,##0.00")}";
+                                    lbTotalQty.Text = $"{Resources.GetString(Resource.String.s304)}: {totalQty.ToString("###,###,##0.00")} / {collectiveAmount.ToString("###,###,##0.00")}";
 
                                     btConfirm.Enabled = true;
                                 }
@@ -274,7 +274,7 @@ namespace WMS
 
                             else
                             {
-                                string WebError = string.Format("Neveljaven karton: " + data);
+                                string WebError = string.Format($"{Resources.GetString(Resource.String.s312)}" + data);
                                 Toast.MakeText(this, WebError, ToastLength.Long).Show();
                                 return;
                             }
@@ -287,7 +287,7 @@ namespace WMS
                 }
                 else
                 {
-                    Toast.MakeText(this, "Nepravilen vnos.", ToastLength.Long).Show();
+                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
                 }
             } catch { return; }
         }
@@ -455,7 +455,7 @@ namespace WMS
             ListViewItem itemPriorToDelete = listItems.ElementAt((int)selectedItemId);
             totalQty = totalQty - Convert.ToDouble(itemPriorToDelete.quantity);
             listItems.RemoveAt((int)selectedItemId);
-            lbTotalQty.Text = $"Količina skupaj: {totalQty.ToString("###,###,##0.00")} / {collectiveAmount.ToString("###,###,##0.00")}";
+            lbTotalQty.Text = $"{Resources.GetString(Resource.String.s304)}: {totalQty.ToString("###,###,##0.00")} / {collectiveAmount.ToString("###,###,##0.00")}";
 
             lvCardList.Adapter = null;
             adapterListViewItem adapter = new adapterListViewItem(this, listItems);
@@ -490,12 +490,11 @@ namespace WMS
                     RunOnUiThread(() =>
                     {
                         progress = new ProgressDialogClass();
-                        progress.ShowDialogSync(this, "Pošiljam podatke, prosim počakajte.");
+                        progress.ShowDialogSync(this, $"{Resources.GetString(Resource.String.s308)}");
 
                     });
 
                     var palInfo = new NameValueObject("PaletteInfo");
-                    System.Threading.Thread.Sleep(1000);
                     palInfo.SetString("WorkOrder", tbWorkOrder.Text);
                     palInfo.SetString("Ident", tbIdent.Text);
                     palInfo.SetInt("Clerk", Services.UserID());
@@ -514,7 +513,7 @@ namespace WMS
                             progress.StopDialogSync();
                             AlertDialog.Builder alert = new AlertDialog.Builder(this);
                             alert.SetTitle($"{Resources.GetString(Resource.String.s265)}");
-                            alert.SetMessage("Napaka pri potrjevanju palete: " + error);
+                            alert.SetMessage($"{Resources.GetString(Resource.String.s216)}" + error);
 
                             alert.SetPositiveButton("Ok", (senderAlert, args) =>
                             {
@@ -565,7 +564,7 @@ namespace WMS
                                 progress.StopDialogSync();
                                 AlertDialog.Builder alert = new AlertDialog.Builder(this);
                                 alert.SetTitle($"{Resources.GetString(Resource.String.s265)}");
-                                alert.SetMessage("Napaka pri paletiranju: " + result);
+                                alert.SetMessage($"{Resources.GetString(Resource.String.s216)}" + result);
 
                                 alert.SetPositiveButton("Ok", (senderAlert, args) =>
                                 {
@@ -603,15 +602,15 @@ namespace WMS
             {
                     AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
-                    alert.SetTitle("Noga palete manjka");
-                    alert.SetMessage("Ali sigurno želite nadaljevati?"); 
+                    alert.SetTitle($"{Resources.GetString(Resource.String.s309)}");
+                    alert.SetMessage($"{Resources.GetString(Resource.String.s313)}"); 
                     alert.SetPositiveButton("Ok", async (senderAlert, args) =>
                     {
                         alert.Dispose();
                         await runOnBothThreads();
                     });
 
-                    alert.SetNegativeButton("Nazaj", (senderAlert, args) =>
+                    alert.SetNegativeButton($"{Resources.GetString(Resource.String.s311)}", (senderAlert, args) =>
                     {
                         alert.Dispose();
                     });

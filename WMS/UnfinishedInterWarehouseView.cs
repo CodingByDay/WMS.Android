@@ -256,7 +256,7 @@ namespace WMS
                 }
                 else
                 {
-                    string errorWebApp = string.Format("Napaka pri dostopu do web aplikacije. " + result);
+                    string errorWebApp = string.Format($"{Resources.GetString(Resource.String.s216)}" + result);
                     Toast.MakeText(this, errorWebApp, ToastLength.Long).Show();
                     System.Diagnostics.Process.GetCurrentProcess().Kill();
                     popupDialog.Dismiss();
@@ -380,7 +380,7 @@ namespace WMS
             }
             else
             {
-                lbInfo.Text = $"{Resources.GetString(Resource.String.s61)} (none)";
+                lbInfo.Text = $"{Resources.GetString(Resource.String.s267)}";
 
                 tbBusEvent.Text = "";
                 tbIssueWarehouse.Text = "";

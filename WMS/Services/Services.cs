@@ -84,7 +84,7 @@ namespace TrendNET.WMS.Device.Services
 
         public static bool isTablet(string target)
         {
-            if (target == "TABLET")
+            if (target == "Tablica" || target == "Tablet")
             {
                 return true;
             }

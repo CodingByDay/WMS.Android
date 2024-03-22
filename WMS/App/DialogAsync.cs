@@ -38,15 +38,15 @@ public class DialogAsync : Java.Lang.Object, IDialogInterfaceOnClickListener, ID
         taskCompletionSource.SetResult(selection);
     }
 
-    public static async Task<bool?> Show(Activity context, string title, string message)
+    public static async Task<bool?> Show(Activity context, string title, string message, string yes, string no)
     {
         using (var listener = new DialogAsync())
         using (var dialog = new AlertDialog.Builder(context)
-                                                            .SetPositiveButton("Da", listener)
-                                                            .SetNegativeButton("Ne", listener)
-                                                            .SetOnCancelListener(listener)
-                                                            .SetTitle(title)
-                                                            .SetMessage(message))
+        .SetPositiveButton(yes, listener)
+        .SetNegativeButton(no, listener)
+        .SetOnCancelListener(listener)
+        .SetTitle(title)
+        .SetMessage(message))
         {
             dialog.Show();
             return await listener.taskCompletionSource.Task;

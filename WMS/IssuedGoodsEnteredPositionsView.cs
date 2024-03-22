@@ -88,11 +88,7 @@ namespace WMS
             InUseObjects.ClearExcept(new string[] { "MoveHead", "OpenOrder" });
             if (moveHead == null)
             {
-                var task = await DialogAsync.Show(this, $"{Resources.GetString(Resource.String.s265)}", "Aplikacija se bo zaprla ker nimate pravih podatkov.");
-                if ((bool)task)
-                {
-                    System.Diagnostics.Process.GetCurrentProcess().Kill();
-                }
+                throw new ApplicationException("Data error");
             }
             LoadPositions();
             var _broadcastReceiver = new NetworkStatusBroadcastReceiver();

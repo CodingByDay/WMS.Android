@@ -298,10 +298,7 @@ namespace WMS
                 InUseObjects.Set("MoveHead", moveHead);
                 StartActivity(typeof(IssuedGoodsEnteredPositionsView));
                 HelpfulMethods.clearTheStack(this);
-            } else
-            {
-                Toast.MakeText(this, "Prosimo kontaktirajte administratorja.", ToastLength.Long).Show();
-            }
+            } 
         }
 
         private void BtNext_Click(object sender, EventArgs e)
@@ -326,7 +323,7 @@ namespace WMS
                     }
                     if (positions == null)
                     {
-                        string errorWebApp = string.Format("Napaka pri brisanju pozicije:: " + error);
+                        string errorWebApp = string.Format($"{Resources.GetString(Resource.String.s216)}" + error);
                         Toast.MakeText(this, errorWebApp, ToastLength.Long).Show();
                         return;
                     }
@@ -378,7 +375,7 @@ namespace WMS
             }
             else
             {
-                lbInfo.Text = $"{Resources.GetString(Resource.String.s205)} (ni)";
+                lbInfo.Text = $"{Resources.GetString(Resource.String.s330)}";
 
                 tbBusEvent.Text = "";
                 tbOrder.Text = "";

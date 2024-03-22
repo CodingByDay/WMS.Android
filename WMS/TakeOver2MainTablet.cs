@@ -66,7 +66,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 var mis = Services.GetObjectList("mi", out error, mhID);
                 if (mis == null)
                 {
-                    Toast.MakeText(this, "Napaka pri pridobivanju podatkov iz strežnika: " + error, ToastLength.Long).Show();
+                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s216)}" + error, ToastLength.Long).Show();
 
                     return;
                 }
@@ -114,7 +114,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 var savedMoveHead = Services.SetObject("mh", moveHead, out error);
                 if (savedMoveHead == null)
                 {
-                    Toast.MakeText(this, "Napaka pri shranjevanju glave: " + error, ToastLength.Long).Show();
+                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s216)}" + error, ToastLength.Long).Show();
 
                     return false;
                 }
@@ -135,7 +135,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             {
                 if (string.IsNullOrEmpty(tbIdent.Text.Trim()))
                 {
-                    Toast.MakeText(this, "Ident ni podan!", ToastLength.Long).Show();
+                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
 
                     return null;
                 }
@@ -152,21 +152,20 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                     var kolNova = string.IsNullOrEmpty(kolNovaStr) ? 0.0 : Convert.ToDouble(kolNovaStr);
                     if (kolNova == 0.0)
                     {
-                        Toast.MakeText(this, "Količina ne sme biti 0!", ToastLength.Long).Show();
+                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
 
                         return null;
                     }
                     kol = kolDoSedaj + kolNova;
                     if (kol < 0.0)
                     {
-                        Toast.MakeText(this, "Količina vračila presega dosedanji prevzem!", ToastLength.Long).Show();
+                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s325)}", ToastLength.Long).Show();
 
                         return null;
                     }
                 }
                 catch (Exception ex)
                 {
-                    Toast.MakeText(this, "Količina mora biti število (" + ex.Message + ")!", ToastLength.Long).Show();
                     tbKolicinaNova.RequestFocus();
                     return null;
                 }
@@ -370,7 +369,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
         {
             if (SaveItem(false) != null)
             {
-                Toast.MakeText(this, "Tiskanje... ", ToastLength.Long).Show();
+                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s326)}", ToastLength.Long).Show();
                 try
                 {
 
@@ -379,9 +378,9 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                     nvo.SetString("Ident", tbIdent.Text);
                     PrintingCommon.SendToServer(nvo);
                 }
-                finally
+                catch
                 {
-                    Toast.MakeText(this, "Uspeh. ", ToastLength.Long).Show();
+                    return;
                 }
             }
         }

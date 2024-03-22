@@ -112,19 +112,16 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             }
             catch (Exception ex)
             {
-                Toast.MakeText(this, "Št. nalepk ni pravilno! (" + ex.Message + ")", ToastLength.Long).Show();
+                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s301)} (" + ex.Message + ")", ToastLength.Long).Show();
 
                 return;
             }
-
             if (num < 1)
             {
-                Toast.MakeText(this, "Št. nalepk mora biti pozitivno!", ToastLength.Long).Show();
+                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s302)}", ToastLength.Long).Show();
 
                 return;
-            }
-
-   
+            }   
             try
             {
     
@@ -132,14 +129,12 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 PrintingCommon.SetNVOCommonData(ref nvo);
                 nvo.SetInt("Copies", num);
                 PrintingCommon.SendToServer(nvo);
-                Toast.MakeText(this, "Uspešno poslani podatki...", ToastLength.Long).Show();
+                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s299)}", ToastLength.Long).Show();
             }
             catch (Exception err)
             {
-
                 Crashes.TrackError(err);
                 return;
-
             }
         }
     }

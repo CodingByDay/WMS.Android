@@ -92,9 +92,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             string savedIdentsJson = sharedPreferences.GetString("idents", "");
             if (!string.IsNullOrEmpty(savedIdentsJson))
             {
-                // Deserialize the JSON string back to a List<string>
                 savedIdents = JsonConvert.DeserializeObject<List<string>>(savedIdentsJson);
-                // Now you have your list of idents in the savedIdents variable
             }
             tbIdent.LongClick += ClearTheFields;
             tbIdentAdapter = new CustomAutoCompleteAdapter<string>(this, Android.Resource.Layout.SimpleDropDownItem1Line, new List<string>());
@@ -108,12 +106,8 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             tbIdent.LongClick += ClearTheFields;
             var DataAdapter = new CustomAutoCompleteAdapter<string>(this,
             Android.Resource.Layout.SimpleSpinnerItem, identData);
-            // Change the search title. HERE
             DataAdapter.SetDropDownViewResource(Android.Resource.Layout.SimpleSpinnerDropDownItem);
-
-
             ident.LongClick += ClearTheFields;
-
             var _broadcastReceiver = new NetworkStatusBroadcastReceiver();
             _broadcastReceiver.ConnectionStatusChanged += OnNetworkStatusChanged;
             Application.Context.RegisterReceiver(_broadcastReceiver,
@@ -122,9 +116,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
 
         private void UpdateSuggestions(string userInput)
         {
-            // Provide custom suggestions based on user input
             List<string> suggestions = GetCustomSuggestions(userInput);
-            // Clear the existing suggestions and add the new ones
             tbIdentAdapter.Clear();
             tbIdentAdapter.AddAll(suggestions);
             tbIdentAdapter.NotifyDataSetChanged();
@@ -132,8 +124,6 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
 
         private List<string> GetCustomSuggestions(string userInput)
         {
-            // Provide custom suggestions based on userInput
-            // Example: Suggest fruits based on user input
 
             return savedIdents
                 .Where(suggestion => suggestion.ToLower().Contains(userInput.ToLower())).Take(10000)
@@ -226,7 +216,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                     {
                         progress = new ProgressDialogClass();
 
-                        progress.ShowDialogSync(this, "Izvaja se preračun zalog, prosimo počakajte trenutek.");
+                        progress.ShowDialogSync(this, $"{Resources.GetString(Resource.String.s317)}");
                     });
 
                     string result;
@@ -244,10 +234,10 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
 
                                 AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
-                                alert.SetTitle("Rezultat.");
+                                alert.SetTitle($"{Resources.GetString(Resource.String.s263)}");
 
 
-                                alert.SetMessage("Preračun uspešen.");
+                                alert.SetMessage($"{Resources.GetString(Resource.String.s318)}");
 
                                 alert.SetPositiveButton("Ok", (senderAlert, args) =>
                                 {
@@ -331,7 +321,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                         progress.StopDialogSync();
                         AlertDialog.Builder alert = new AlertDialog.Builder(this);
                         alert.SetTitle($"{Resources.GetString(Resource.String.s265)}");
-                        alert.SetMessage($"Prišlo je do napake. {ex.Message}");
+                        alert.SetMessage($"{Resources.GetString(Resource.String.s247)}" +  ex.Message);
                         alert.SetPositiveButton("Ok", (senderAlert, args) =>
                         {
                             alert.Dispose();

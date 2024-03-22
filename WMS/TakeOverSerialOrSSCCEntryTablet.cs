@@ -85,7 +85,6 @@ namespace WMS
             tbPacking = FindViewById<EditText>(Resource.Id.tbPacking);
             tbUnits = FindViewById<EditText>(Resource.Id.tbUnits);
             warehousePNG = FindViewById<ZoomageView>(Resource.Id.warehousePNG);
-            // Buttons.
             tbIdent.InputType = Android.Text.InputTypes.ClassNumber;
             tbSSCC.InputType = Android.Text.InputTypes.ClassNumber;
             tbSerialNum.InputType = Android.Text.InputTypes.ClassNumber;
@@ -113,15 +112,9 @@ namespace WMS
             button7.Click += Button7_Click;
             button5.Click += Button5_Click;
             spLocation.ItemSelected += SpLocation_ItemSelected;
-            warehousePNG.Visibility = ViewStates.Invisible;
-          
-            /// Consider changing this to something else.
-            
-            // Exceptions
+            warehousePNG.Visibility = ViewStates.Invisible;         
             if (moveHead == null) { throw new ApplicationException("moveHead not known at this point?!"); }
-            if (openIdent == null) { throw new ApplicationException("openIdent not known at this point?!"); }
-            //
-           
+            if (openIdent == null) { throw new ApplicationException("openIdent not known at this point?!"); }   
             try
             {
 
@@ -150,16 +143,13 @@ namespace WMS
                 }
 
             }
-            finally
+            catch
             {
             
-                Toast.MakeText(this, "Uspešno branje identa.", ToastLength.Long).Show();
             }
-            // Next block.
             docTypes = CommonData.ListDocTypes("I|N");
             tbSSCC.Enabled = openIdent.GetBool("isSSCC");
             tbSerialNum.Enabled = openIdent.GetBool("HasSerialNumber");
-            //
             if (moveItem != null)
             {
                 tbIdent.Text = moveItem.GetString("IdentName");
@@ -182,7 +172,7 @@ namespace WMS
 
                 tbSSCC.Text = moveItem.GetString("SSCC");
                 tbLocation.Text = moveItem.GetString("Location");
-                btSaveOrUpdate.Text = "Serijska - F2";
+                btSaveOrUpdate.Text = $"{Resources.GetString(Resource.String.s293)}";
             }
             else
             {
@@ -504,13 +494,13 @@ namespace WMS
 
 
                                     AlertDialog.Builder alert = new AlertDialog.Builder(this);
-                                    alert.SetTitle("Uspešno zaključevanje");
-                                    alert.SetMessage("Zaključevanje uspešno! Št. prevzema:\r\n" + id);
+                                    alert.SetTitle($"{Resources.GetString(Resource.String.s263)}");
+                                    alert.SetMessage($"{Resources.GetString(Resource.String.s264)}" + id);
 
                                     alert.SetPositiveButton("Ok", (senderAlert, args) =>
                                     {
                                         alert.Dispose();
-                                        System.Threading.Thread.Sleep(500);
+                                        Thread.Sleep(500);
                                         StartActivity(typeof(MainMenuTablet));
                                     });
 
@@ -533,7 +523,7 @@ namespace WMS
                                     alert.SetPositiveButton("Ok", (senderAlert, args) =>
                                     {
                                         alert.Dispose();
-                                        System.Threading.Thread.Sleep(500);
+                                        Thread.Sleep(500);
                                         StartActivity(typeof(MainMenuTablet));
 
                                     });
@@ -593,20 +583,15 @@ namespace WMS
         {
             try
             {
-                Android.Graphics.Bitmap show = Services.GetImageFromServerIdent(moveHead.GetString("Wharehouse"), ident);
+                Bitmap show = Services.GetImageFromServerIdent(moveHead.GetString("Wharehouse"), ident);
                 var debug = moveHead.GetString("Wharehouse");
                 Drawable d = new BitmapDrawable(Resources, show);
-
                 warehousePNG.SetImageDrawable(d);
                 warehousePNG.Visibility = ViewStates.Visible;
-
-
                 warehousePNG.Click += (e, ev) => { ImageClick(d); };
-
             }
             catch (Exception)
             {
-
                 return;
             }
 
@@ -872,7 +857,7 @@ namespace WMS
             {
                 RunOnUiThread(() =>
                 {
-                    string errorWebAppIssued = string.Format("SSCC koda je obvezan podatek. ");
+                    string errorWebAppIssued = string.Format($"{Resources.GetString(Resource.String.s270)}");
                     Toast.MakeText(this, errorWebAppIssued, ToastLength.Long).Show();
                     tbSSCC.RequestFocus();
                 });
@@ -886,7 +871,7 @@ namespace WMS
                 {
                     RunOnUiThread(() =>
                     {
-                        string errorWebAppIssued = string.Format("Serijska številka je obvezan podatek.");
+                        string errorWebAppIssued = string.Format($"{Resources.GetString(Resource.String.s270)}");
                         Toast.MakeText(this, errorWebAppIssued, ToastLength.Long).Show();
                         tbSerialNum.RequestFocus();
                     });
@@ -899,7 +884,7 @@ namespace WMS
             {
                 RunOnUiThread(() =>
                 {
-                    string errorWebAppIssued = string.Format("Količina je obvezen podatek.");
+                    string errorWebAppIssued = string.Format($"{Resources.GetString(Resource.String.s270)}");
                     Toast.MakeText(this, errorWebAppIssued, ToastLength.Long).Show();
                     tbPacking.RequestFocus();
                 });
@@ -916,7 +901,7 @@ namespace WMS
                     {
                         RunOnUiThread(() =>
                         {
-                            string errorWebAppIssued = string.Format("Količina je obvezen podatek in mora biti različna od nič");
+                            string errorWebAppIssued = string.Format($"{Resources.GetString(Resource.String.s270)}");
                             Toast.MakeText(this, errorWebAppIssued, ToastLength.Long).Show();
                             tbPacking.RequestFocus();
                         });
@@ -942,7 +927,7 @@ namespace WMS
                         }
                     }
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     RunOnUiThread(() =>
                     {
@@ -960,7 +945,7 @@ namespace WMS
             {
                 RunOnUiThread(() =>
                 {
-                    string errorWebAppIssued = string.Format(lbUnits.Text + " je obvezen podatek!");
+                    string errorWebAppIssued = string.Format($"{Resources.GetString(Resource.String.s270)}");
                     Toast.MakeText(this, errorWebAppIssued, ToastLength.Long).Show();
                     tbUnits.RequestFocus();
                 });
@@ -976,7 +961,7 @@ namespace WMS
                     {
                         RunOnUiThread(() =>
                         {
-                            string errorWebAppIssued = string.Format(lbUnits.Text + " je obvezen podatek in mora biti različna od nič!");
+                            string errorWebAppIssued = string.Format($"{Resources.GetString(Resource.String.s270)}");
                             Toast.MakeText(this, errorWebAppIssued, ToastLength.Long).Show();
 
                             tbUnits.RequestFocus();
@@ -985,11 +970,11 @@ namespace WMS
                         return false;
                     }
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     RunOnUiThread(() =>
                     {
-                        string errorWebAppIssued = string.Format(lbUnits.Text + " mora biti število (" + e.Message + ")!");
+                        string errorWebAppIssued = string.Format($"{Resources.GetString(Resource.String.s270)}");
                         Toast.MakeText(this, errorWebAppIssued, ToastLength.Long).Show();
                         tbUnits.RequestFocus();
                     });

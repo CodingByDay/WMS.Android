@@ -102,9 +102,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             string savedIdentsJson = sharedPreferences.GetString("idents", "");
             if (!string.IsNullOrEmpty(savedIdentsJson))
             {
-                // Deserialize the JSON string back to a List<string>
                 savedIdents = JsonConvert.DeserializeObject<List<string>>(savedIdentsJson);
-                // Now you have your list of idents in the savedIdents variable
             }
             tbIdent.LongClick += ClearTheFields;
             tbIdentAdapter = new CustomAutoCompleteAdapter<string>(this, Android.Resource.Layout.SimpleDropDownItem1Line, new List<string>());
@@ -126,9 +124,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
 
         private void UpdateSuggestions(string userInput)
         {
-            // Provide custom suggestions based on user input
             List<string> suggestions = GetCustomSuggestions(userInput);
-            // Clear the existing suggestions and add the new ones
             tbIdentAdapter.Clear();
             tbIdentAdapter.AddAll(suggestions);
             tbIdentAdapter.NotifyDataSetChanged();
@@ -137,8 +133,6 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
 
         private List<string> GetCustomSuggestions(string userInput)
         {
-            // Provide custom suggestions based on userInput
-            // Example: Suggest fruits based on user input
 
             return savedIdents
                 .Where(suggestion => suggestion.ToLower().Contains(userInput.ToLower())).Take(10000)
@@ -378,7 +372,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 openIdent = Services.GetObject("id", ident, out error);
                 if (openIdent == null)
                 {
-                    Toast.MakeText(this, "Napaka pri preverjanju identa" + error, ToastLength.Long).Show();
+                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s216)}" + error, ToastLength.Long).Show();
 
                     tbIdent.Text = "";
                     tbNaziv.Text = "";
@@ -461,10 +455,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                     preventingDups = true;
                 }
 
-                else
-                {
-                    Toast.MakeText(this, "Ni padatkov." + error, ToastLength.Long).Show();
-                }
+            
             } 
         }
         private void FillDisplayedOrderInfo()
@@ -544,10 +535,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                     barcode = data.Data.ToString();
                     tbIdent.Text = barcode; // change this later...
                 }
-                else
-                {
-                    Toast.MakeText(this, "Napačno branje", ToastLength.Long).Show();
-                }
+               
             }
         }
 
@@ -609,7 +597,6 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
 
         public void OnClick(IDialogInterface dialog, int which)
         {
-            throw new NotImplementedException();
         }
     }
 }

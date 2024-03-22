@@ -292,7 +292,7 @@ namespace WMS
             if ((positions != null) && (displayedPosition < positions.Items.Count))
             {
                 var item = positions.Items[displayedPosition];
-                lbInfo.Text = "Vnesene pozicije na pakiranju (" + (displayedPosition + 1).ToString() + "/" + positions.Items.Count + ")";
+                lbInfo.Text = $"{Resources.GetString(Resource.String.s92)} (" + (displayedPosition + 1).ToString() + "/" + positions.Items.Count + ")";
 
                 tbIdent.Text = item.GetString("IdentName");
                 tbSSCC.Text = item.GetString("SSCC");
@@ -327,7 +327,7 @@ namespace WMS
             }
             else
             {
-                lbInfo.Text = "Vnesene pozicije na pakiranju (ni)";
+                lbInfo.Text = $"{Resources.GetString(Resource.String.s267)}";
 
                 tbIdent.Text = "";
                 tbSSCC.Text = "";

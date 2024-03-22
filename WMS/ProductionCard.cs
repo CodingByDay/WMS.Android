@@ -128,7 +128,7 @@ namespace WMS
                 var data = Services.GetObject("cwns", tbWorkOrder.Text + "|" + tbIdent.Text + "|0", out error);
                 if (data == null)
                 {
-                    string SuccessMessage = string.Format("Napaka pri pridobivanju podatkov: " + error);
+                    string SuccessMessage = string.Format($"{Resources.GetString(Resource.String.s247)}" + error);
                     Toast.MakeText(this, SuccessMessage, ToastLength.Long).Show();
 
                 }
@@ -138,7 +138,7 @@ namespace WMS
                     {
                         try
                         {
-                            warning = (bool)await DialogAsync.Show(this, "Opozorilo", "Izpisanih je bilo zadostno št. etiket, ali želite zamenjati serijsko številko?");
+                            warning = (bool)await DialogAsync.Show(this, $"{Resources.GetString(Resource.String.s303)}", $"{Resources.GetString(Resource.String.s210)}", Resources.GetString(Resource.String.s201), Resources.GetString(Resource.String.s202));
                         }
                         catch (Exception err)
                         {
@@ -153,7 +153,7 @@ namespace WMS
                             data = Services.GetObject("cwns", tbWorkOrder.Text + "|" + tbIdent.Text + "|1", out error);
                             if (data == null)
                             {
-                                string SuccessMessage = string.Format("Napaka pri pridobivanju podatkov: " + error);
+                                string SuccessMessage = string.Format($"{Resources.GetString(Resource.String.s247)}" + error);
                                 Toast.MakeText(this, SuccessMessage, ToastLength.Long).Show();
 
                             }
@@ -222,7 +222,6 @@ namespace WMS
             nvo.SetString("SerialNum", tbSerialNum.Text);
             nvo.SetDouble("Qty", Convert.ToDouble(tbQty.Text));
             nvo.SetInt("ClerkIns", Services.UserID());
-
             var progress = new ProgressDialogClass();
 
            try
@@ -230,22 +229,17 @@ namespace WMS
                 string error;
                 nvo = Services.SetObject("cwns", nvo, out error);
                 if (nvo == null)
-                {
-              
-
-
+                {             
                     AlertDialog.Builder alert = new AlertDialog.Builder(this);
                     alert.SetTitle($"{Resources.GetString(Resource.String.s265)}");
-                    alert.SetMessage("Shranjevanje neuspešno, napaka: " + error);
+                    alert.SetMessage($"{Resources.GetString(Resource.String.s247)}" + error);
 
                     alert.SetPositiveButton("Ok", (senderAlert, args) =>
                     {
                         alert.Dispose();
-                        System.Threading.Thread.Sleep(500);
+                        Thread.Sleep(500);
                         this.Finish();
                     });
-
-
 
                     Dialog dialog = alert.Create();
                     dialog.Show();
@@ -260,8 +254,6 @@ namespace WMS
                     StartActivity(typeof(ProductionCard));
                     this.Finish();
                     HelpfulMethods.clearTheStack(this);
-
-                    //
                 }
             }
             catch (Exception err)

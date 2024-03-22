@@ -56,7 +56,6 @@ namespace WMS
         private Button btnYesConfirm;
         private Button btnNoConfirm;
 
-        /////////////////////
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -91,38 +90,17 @@ namespace WMS
             /////////////////////
             InUseObjects.ClearExcept(new string[] { "MoveHead" });
             if (moveHead == null)
-            {
-                AlertDialog.Builder alert = new AlertDialog.Builder(this);
-                alert.SetTitle($"{Resources.GetString(Resource.String.s265)}");
-                alert.SetMessage("Prišlo je do napake in aplikacija se bo zaprla.");
-
-                alert.SetPositiveButton("Ok", (senderAlert, args) =>
-                {
-                    alert.Dispose();
-                    System.Threading.Thread.Sleep(500);
+            { 
+                    Thread.Sleep(500);
                     throw new ApplicationException("Error, moveHead");
-                });
-
-
-
-                Dialog dialog = alert.Create();
-                dialog.Show();
+        
             }
-
             LoadPositions();
-
             var _broadcastReceiver = new NetworkStatusBroadcastReceiver();
             _broadcastReceiver.ConnectionStatusChanged += OnNetworkStatusChanged;
             Application.Context.RegisterReceiver(_broadcastReceiver,
             new IntentFilter(ConnectivityManager.ConnectivityAction));
         }
-
-
-
-
-
-
-
 
 
         public bool IsOnline()
@@ -334,13 +312,13 @@ namespace WMS
                                 
 
                                 AlertDialog.Builder alert = new AlertDialog.Builder(this);
-                                alert.SetTitle("Uspešno zaključevanje");
-                                alert.SetMessage("Zaključevanje uspešno! Št. prevzema:\r\n" + id);
+                                alert.SetTitle($"{Resources.GetString(Resource.String.s263)}");
+                                alert.SetMessage($"{Resources.GetString(Resource.String.s264)}" + id);
 
                                 alert.SetPositiveButton("Ok", (senderAlert, args) =>
                                 {
                                     alert.Dispose();
-                                    System.Threading.Thread.Sleep(500);
+                                    Thread.Sleep(500);
                                     StartActivity(typeof(MainMenu));
                                     HelpfulMethods.clearTheStack(this);
                                 });
@@ -498,7 +476,7 @@ namespace WMS
             if ((positions != null) && (displayedPosition < positions.Items.Count))
             {
                 var item = positions.Items[displayedPosition];
-                lbInfo.Text = "Vnešene pozicije na prevzemu (" + (displayedPosition + 1).ToString() + "/" + positions.Items.Count + ")";
+                lbInfo.Text = $"{Resources.GetString(Resource.String.s92)} (" + (displayedPosition + 1).ToString() + "/" + positions.Items.Count + ")";
 
                 tbSSCC.Text = item.GetString("SSCC");
                 tbSerialNumber.Text = item.GetString("SerialNo");
@@ -536,7 +514,7 @@ namespace WMS
             }
             else
             {
-                lbInfo.Text = "Vnešene pozicije na prevzemu (ni)";
+                lbInfo.Text = $"{Resources.GetString(Resource.String.s267)}";
 
                 tbSSCC.Text = "";
                 tbSerialNumber.Text = "";

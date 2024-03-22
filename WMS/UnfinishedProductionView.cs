@@ -266,7 +266,7 @@ namespace WMS
                 }
                 else
                 {
-                    string errorWebAppProduction = string.Format("Napaka pri dostopo do web aplikacije: " + result);
+                    string errorWebAppProduction = string.Format($"{Resources.GetString(Resource.String.s216)}" + result);
                     DialogHelper.ShowDialogError(this, this, errorWebAppProduction);
                     System.Diagnostics.Process.GetCurrentProcess().Kill();
                     return;
@@ -280,8 +280,7 @@ namespace WMS
 
             }
 
-            string errorWebApp = string.Format("Pozicija izbrisana.");
-            Toast.MakeText(this, errorWebApp, ToastLength.Long).Show();
+
         }
 
         private void BtFinish_Click(object sender, EventArgs e)
@@ -319,7 +318,7 @@ namespace WMS
                     }
                     if (positions == null)
                     {
-                        string errorWebApp = string.Format("Napaka pri dostopu do web aplikacije. " + error);
+                        string errorWebApp = string.Format($"{Resources.GetString(Resource.String.s216)}" + error);
                         DialogHelper.ShowDialogError(this, this, errorWebApp);
                         return;
                     }
@@ -373,7 +372,7 @@ namespace WMS
             }
             else
             {
-                lbInfo.Text = $"{Resources.GetString(Resource.String.s12)} (none)";
+                lbInfo.Text = $"{Resources.GetString(Resource.String.s331)}";
 
                 tbWorkOrder.Text = "";
                 tbClient.Text = "";

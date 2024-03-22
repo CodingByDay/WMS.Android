@@ -761,7 +761,7 @@ namespace WMS
                 ProcessIdent();
                 tbLocation.Text = moveItem.GetString("Location");
                 tbIssueLocation.Text = moveItem.GetString("IssueLocation");
-                btSaveOrUpdate.Text = "Serijska - F2";
+                btSaveOrUpdate.Text = $"{Resources.GetString(Resource.String.s293)}";
 
                 editMode = true;
                 tbSSCC.Enabled = false;

@@ -247,7 +247,6 @@ namespace WMS
                     }
                     else
                     {
-                        // MessageForm.Show($"{Resources.GetString(Resource.String.s212)}" + result);
                         string errorWebApp = string.Format($"{Resources.GetString(Resource.String.s212)}" + result);
                         Toast.MakeText(this, errorWebApp, ToastLength.Long).Show();
                         positions = null;
@@ -260,7 +259,7 @@ namespace WMS
                 else
                 {
 
-                    string errorWebApp = string.Format("Napaka pri brisanju pozicije:: " + result);
+                    string errorWebApp = string.Format($"{Resources.GetString(Resource.String.s216)}" + result);
                     Toast.MakeText(this, errorWebApp, ToastLength.Long).Show();
                     popupDialog.Dismiss();
                     popupDialog.Hide();
@@ -293,7 +292,6 @@ namespace WMS
         }
 
 
-        // Load position method...
         private void LoadPositions()
         {
 
@@ -330,7 +328,7 @@ namespace WMS
         {
             if ((positions != null) && (positions.Items.Count > 0))
             {
-                lbInfo.Text = "Odprti prevzemi na čitalcu (" + (displayedPosition + 1).ToString() + "/" + positions.Items.Count + ")";
+                lbInfo.Text = $"{Resources.GetString(Resource.String.s12)} (" + (displayedPosition + 1).ToString() + "/" + positions.Items.Count + ")";
                 var item = positions.Items[displayedPosition];
 
                 tbBusEvent.Text = item.GetString("DocumentTypeName");
@@ -364,7 +362,7 @@ namespace WMS
             }
             else
             {
-                lbInfo.Text = "Odprti prevzemi na čitalcu (ni)";
+                lbInfo.Text = $"{Resources.GetString(Resource.String.s331)}";
 
                 tbBusEvent.Text = "";
                 tbOrder.Text = "";

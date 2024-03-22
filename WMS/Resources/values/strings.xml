@@ -106,30 +106,17 @@
 	<string name="s92">Vnešene pozicije</string>
 	<string name="s93">Izhod F8</string>
 	<string name="s94">F1</string>
-
 	<string name="s95">Pregled zaloge</string>
-
 	<string name="s96">Prikaži F2</string>
-
 	<string name="s97">Prikaži</string>
-
 	<string name="s98">Izhod</string>
-
-
-
 	<string name="s99">Prevzem F2</string>
 	<string name="s100">Hitri prevzem F3</string>
-
-
 	<string name="s101">Naročnik</string>
 	<string name="s102">Lokacija</string>
-
 	<string name="s103">Količina</string>
-
 	<string name="s104">Nar.</string>
-
 	<string name="s105">Nazaj f5</string>
-
 	<string name="s106">Pozicija</string>
 	<string name="s107">Potrdi</string>
 	<string name="s108">Preg.</string>
@@ -382,7 +369,8 @@
 	<string name="s255">Serijska št. ni vnešena!</string>
 
 
-	
+
+
 	<string name="s256">Podrobnosti</string>
 	<string name="s257">Ident</string>
 	<string name="s258">Lokacija</string>
@@ -400,39 +388,50 @@
 	<string name="s265">Napaka</string>
 	<string name="s266">Napaka pri zaključevanju: </string>
 
+
+
+
 	<string name="s267">Vnešene pozicije (ni)</string>
 	<string name="s268">Informacija</string>
 
 
+
 	<string name="s269">Zaloga ni znana</string>
-	<string name="s270">Podatki manjkajo</string>
-	
-	
+
+	<string name="s270">Podatki manjkajo/nepravilen vnos</string>
+
+
 	<string name="s271">Prejemna lokacija</string>
 	<string name="s272">ni veljavna za sladišče</string>
 	<string name="s273">Izdajna lokacija</string>
 	<string name="s274">skeniranih SSCC koda.</string>
-	
-	
 	<string name="s275">Podatki:</string>
-
 	<string name="s276">Zapri</string>
 	<string name="s277">Pobriši</string>
-
 	<string name="s278">Količina ne sme presegati zaloge!</string>
-	
+
+
+
+
 	<string name="s279">Potrjevanje uspešno! Št. potrditve: </string>
 	<string name="s280">Napaka pri potrjevanju: </string>
-	<string name="s281">Odprte inventure (ni)</string>
-	<string name="s282">Inventurni dokument za skladišče in datum ne obstaja!</string>
-	<string name="s283">Inventura odprta</string>
 
+
+
+
+
+
+	<string name="s281">Odprte inventure (ni)</string>
+
+
+	<string name="s282">Inventurni dokument za skladišče in datum ne obstaja!</string>
+
+
+	<string name="s283">Inventura odprta</string>
 	<string name="s284">Dokument inventure shranjen</string>
 
 	<string name="s285">Za skladišče ni odprtega dokumenta inventure! Zapis ni mogoč.</string>
-
 	<string name="s286">Morate izbrati naročilo</string>
-	
 	<string name="s287">Morate izbrati skladišče</string>
 	<string name="s288">Morate izbrati subjekta</string>
 
@@ -441,13 +440,107 @@
 	<string name="s290">Posodobi</string>
 	<string name="s291">Količina je večja od dovoljene</string>
 
+
 	<string name="s292">Ni zaloge</string>
 
 	<string name="s293">Serijska F2</string>
-	
-	
+
+
+
 	<string name="s294">Naprava je neaktivna</string>
 	<string name="s295">Uporabnik nima pravice.</string>
 	<string name="s296">Napačno geslo.</string>
 	<string name="s297">Ni internetne povezave...</string>
+	<string name="s298">Količina mora biti pozitivna!</string>
+	<string name="s299">Poslani podatki.</string>
+
+	<string name="s301">Št. nalepk ni pravilno!</string>
+	<string name="s302">Št. nalepk mora biti pozitivno!</string>
+
+	<string name="s303">Opozorilo</string>
+
+
+	<string name="s304">Količina skupaj</string>
+
+	<string name="s305">Serijska št. nima pripravljenih kartonov.</string>
+	<string name="s306">Karton ne ustreza serijski številki.</string>
+	<string name="s307">Karton je že dodan na paleto!</string>
+	<string name="s308">Pošiljam podatke, prosim počakajte.</string>
+	<string name="s309">Noga palete manjka</string>
+	<string name="s310">Ali sigurno želite nadaljevati?</string>
+	<string name="s311">Nazaj</string>
+	<string name="s312">Neveljaven karton: </string>
+
+
+	<string name="s313">Ali sigurno želite nadaljevati?</string>
+
+	<string name="s314">Ni mogoče pridobiti serijsko številko.</string>
+	<string name="s315">SSCC koda že obstaja</string>
+
+
+
+	<string name="s316">Skladišče ni dosegljivo</string>
+
+
+	<string name="s317">Izvajanje...</string>
+
+
+	<string name="s318">Preračun uspešen</string>
+
+
+	<string name="s319">Izberite tip naprave</string>
+	<string name="s320">Tablica</string>
+	<string name="s321">Dlančnik</string>
+	<string name="s322">Ali želite resetirati podatke na strežniku?</string>
+
+
+
+	<string name="s323">Uspešno obdelano.</string>
+	<string name="s324">Paleta uspešno dostavljena</string>
+
+	<string name="s325">Količina vračila presega dosedanji prevzem!</string>
+	<string name="s326">Tiskanje</string>
+
+
+	<string name="s327">Nova količina ne sme biti 0!</string>
+	<string name="s328">Nova količina prevzema je prevelika!</string>
+
+
+	<string name="s329">Odprte medskladišnice (ni)</string>
+
+	<string name="s330">Odprte odpreme (ni)</string>
+
+
+	<string name="s331">Odprti prevzemi (ni)</string>
+	<string name="s332">Paleta uspešno zavita</string>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 </resources>

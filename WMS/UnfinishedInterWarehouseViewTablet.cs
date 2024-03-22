@@ -383,7 +383,7 @@ namespace WMS
                 }
                 else
                 {
-                    string errorWebApp = string.Format("Napaka pri dostopu do web aplikacije. " + result);
+                    string errorWebApp = string.Format($"{Resources.GetString(Resource.String.s216)}" + result);
                     Toast.MakeText(this, errorWebApp, ToastLength.Long).Show();
                     System.Diagnostics.Process.GetCurrentProcess().Kill();
                     popupDialog.Dismiss();
@@ -518,7 +518,7 @@ namespace WMS
         {
             if ((positions != null) && (positions.Items.Count > 0))
             {
-                lbInfo.Text = "Odprte medskladiščnice na čitalcu (" + (displayedPosition + 1).ToString() + "/" + positions.Items.Count + ")";
+                lbInfo.Text = $"{Resources.GetString(Resource.String.s61)} (" + (displayedPosition + 1).ToString() + "/" + positions.Items.Count + ")";
                 var item = positions.Items[displayedPosition];
 
                 tbBusEvent.Text = item.GetString("DocumentTypeName");
@@ -549,7 +549,7 @@ namespace WMS
             }
             else
             {
-                lbInfo.Text = "Odprte medskladiščnice na čitalcu (ni)";
+                lbInfo.Text = $"{Resources.GetString(Resource.String.s329)}";
 
                 tbBusEvent.Text = "";
                 tbIssueWarehouse.Text = "";

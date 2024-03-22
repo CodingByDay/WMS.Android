@@ -308,7 +308,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 var itemWH = adapter.GetItem(temporaryPositionWarehouse);
                 if (itemWH == null)
                 {
-                    string toast = string.Format("Skladište more biti izbrano");
+                    string toast = string.Format($"{Resources.GetString(Resource.String.s270)}");
                     Toast.MakeText(this, toast, ToastLength.Long).Show();
 
                 }
@@ -320,7 +320,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                         itemSubj = adapterSubject.GetItem(temporaryPositionSubject);
                         if (itemSubj == null)
                         {
-                            string toast = string.Format("Subjekt more bit izbran");
+                            string toast = string.Format($"{Resources.GetString(Resource.String.s270)}");
                             Toast.MakeText(this, toast, ToastLength.Long).Show();
 
                             return;

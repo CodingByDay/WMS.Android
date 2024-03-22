@@ -153,13 +153,13 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             var kolPrevStr = tbKolicinaPrevzetaNova.Text.Trim();
             if (string.IsNullOrEmpty(kolPrevStr))
             {
-                Toast.MakeText(this, "Količina ni unešena!", ToastLength.Long).Show();
+                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
                 return;
             }
             var kolPrev = Convert.ToDouble(kolPrevStr);
             if (kolPrev <= 0.0)
             {
-                Toast.MakeText(this, "Količina mora biti pozitivna.", ToastLength.Long).Show();
+                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s220)}", ToastLength.Long).Show();
    
                 return;
             }
@@ -169,7 +169,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                // wf
                 try
                 {
-                    Toast.MakeText(this, "Tiskam...", ToastLength.Long).Show();
+                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s326)}", ToastLength.Long).Show();
                     var nvo = new NameValueObject("ReceiverSticker");
                     PrintingCommon.SetNVOCommonData(ref nvo);
                     nvo.SetString("Ident", tbIdent.Text.Trim());
@@ -195,14 +195,14 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
 
                 try
                 {
-                    Toast.MakeText(this, "Tiskam... ", ToastLength.Long).Show();
+                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s326)}", ToastLength.Long).Show();
                     var nvo = new NameValueObject("ReceiverSticker");
                     PrintingCommon.SetNVOCommonData(ref nvo);
                     nvo.SetString("Ident", tbIdent.Text.Trim());
                     nvo.SetString("Order", tbNarocilo.Text.Trim());
                     nvo.SetDouble("Qty", 1.0);
                     PrintingCommon.SendToServer(nvo);
-                    Toast.MakeText(this, "Uspešno poslani podatki... ", ToastLength.Long).Show();
+                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s323)}", ToastLength.Long).Show();
                 }
                 catch (Exception err)
                 {
@@ -223,7 +223,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             var kolPrev = Convert.ToDouble(kolPrevStr);
             if (kolPrev == 0.0)
             {
-                Toast.MakeText(this, "Nova količina ne sme biti 0!", ToastLength.Long).Show();
+                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s327)}", ToastLength.Long).Show();
  
                 return false;
             }
@@ -234,7 +234,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             var kolPrevDS = string.IsNullOrEmpty(kolPrevDSStr) ? 0.0 : Convert.ToDouble(kolPrevDSStr);
             if ((kolPrevDS + kolPrev < 0) || (kolPrevDS + kolPrev > kolOdp))
             {
-                Toast.MakeText(this, "Nova količina prevzema je prevelika!", ToastLength.Long).Show();
+                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s328)}", ToastLength.Long).Show();
 
                 return false;
             }
@@ -252,7 +252,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 string error;
                 if (Services.SetObject("mid", nvo, out error) == null)
                 {
-                    Toast.MakeText(this, "Napaka pri shranjevanju stanja razporeditve: " + error, ToastLength.Long).Show();
+                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s247)}" + error, ToastLength.Long).Show();
  
                     return false;
                 }
@@ -320,7 +320,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 moveItemDivision = Services.GetObjectList("mid", out error, moveItem.GetInt("ItemID").ToString());
                 if (moveItemDivision == null)
                 {
-                    Toast.MakeText(this, "Napaka pri pridobivanju razporeditve prevzema: " + error, ToastLength.Long).Show();
+                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s247)}" + error, ToastLength.Long).Show();
  
                 
                 }
@@ -365,7 +365,6 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             else
             {
 
-                Toast.MakeText(this, "Za ta ident ni odprtih naročil!", ToastLength.Long).Show();
                 tbNarocilo.Text = "";
                 tbKupec.Text = "";
                 tbDatumDostave.Text = "";

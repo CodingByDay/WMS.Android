@@ -44,10 +44,6 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
         int soundPoolId;
         private int tempPositionSubject;
         private int tempPositionWarehouse;
-
-        /// <summary>
-        ///  Search-able spinner part.
-        /// </summary>
         private Spinner spinnerLocation;
         private Spinner spinnerIdent;
 
@@ -173,28 +169,19 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
 
 
             var adapterWarehouses = new CustomAutoCompleteAdapter<ComboBoxItem>(this,
-           Android.Resource.Layout.SimpleSpinnerItem, warehouseAdapter);
+            Android.Resource.Layout.SimpleSpinnerItem, warehouseAdapter);
 
             adapterWarehouses.SetDropDownViewResource(Android.Resource.Layout.SimpleSpinnerDropDownItem);
             cbWarehouse.Adapter = adapterWarehouses;
             var adapterSubjects = new CustomAutoCompleteAdapter<ComboBoxItem>(this,
                        Android.Resource.Layout.SimpleSpinnerItem, subjectsAdapter);
-
             adapterSubjects.SetDropDownViewResource(Android.Resource.Layout.SimpleSpinnerDropDownItem);
             cbSubject.Adapter = adapterWarehouses;
-            tbIdent.RequestFocus();
-
-           
-
-            Toast.MakeText(this, "Nalagamo seznam.", ToastLength.Long).Show();
+            tbIdent.RequestFocus();           
             dataIdent = Caching.Caching.SavedList;
-            Toast.MakeText(this, "Seznam pripravljen.", ToastLength.Long).Show();
-
             var DataAdapter = new CustomAutoCompleteAdapter<string>(this,
             Android.Resource.Layout.SimpleSpinnerItem, dataIdent);
             spinnerIdent.Adapter = DataAdapter;
-
-
             SetDefault();
             var _broadcastReceiver = new NetworkStatusBroadcastReceiver();
             _broadcastReceiver.ConnectionStatusChanged += OnNetworkStatusChanged;
@@ -272,20 +259,12 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
 
         private async void FillPositions(int tempPositionWarehouse)
         {
-            Toast.MakeText(this, "Pripravljamo listu lokacija.", ToastLength.Long).Show();
-
             await GetLocationsForGivenWarehouse(tempPositionWarehouse);
-            Toast.MakeText(this, "Lista lokacija pripravljena.", ToastLength.Long).Show();
-
             adapterLocations = new CustomAutoCompleteAdapter<string>(this,
                         Android.Resource.Layout.SimpleSpinnerItem, locationData);
             adapterLocations.SetDropDownViewResource(Android.Resource.Layout.SimpleSpinnerDropDownItem);
-
             spinnerLocation.Adapter = null;
-            spinnerLocation.Adapter = adapterLocations;
-           
-
-
+            spinnerLocation.Adapter = adapterLocations;          
         }
 
 
@@ -309,36 +288,28 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                     {
                         var location = x.GetString("LocationID");
                         locationData.Add(location);
-                        // Notify the adapter state change!
                     });
                 }
             });
         }
         private bool LoadStock(string warehouse, string location, string sscc, string serialNum, string ident)
         {
-
             try
             {
-
-
                 string error;
                 stock = Services.GetObject("str", warehouse + "|" + location + "|" + sscc + "|" + serialNum + "|" + ident, out error);
                 if (stock == null)
                 {
-                    string toast = string.Format("Napaka pri preverjanju zaloge: " + error);
+                    string toast = string.Format($"{Resources.GetString(Resource.String.s216)}" + error);
                     Toast.MakeText(this, toast, ToastLength.Long).Show();
-
                     return false;
                 }
-
                 return true;
             }
             catch (Exception err)
             {
-
                 Crashes.TrackError(err);
                 return false;
-
             }
         }
 
@@ -424,37 +395,26 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             if (String.IsNullOrEmpty(tbIdent.Text) | String.IsNullOrEmpty(tbTitle.Text))
             { return; }
 
-
             if (!String.IsNullOrEmpty(tbQty.Text))
             {
 
                 qty = Convert.ToDouble(tbQty.Text);
 
-            }
-           
-
-
+            }          
             if (qty <= 0.0)
             {
-                string toast = string.Format("Količina mora biti pozitivna!");
+                string toast = string.Format($"{Resources.GetString(Resource.String.s298)}");
                 Toast.MakeText(this, toast, ToastLength.Long).Show();
 
                 return;
             }
 
-
-
             try
             {
-
-
                 // Checking to see if the number of copies is set.
                 try
                 {
                     numberOfCopies = Convert.ToInt32(tbNumberOfCopies.Text);
-
-
-
                     if (numberOfCopies <= 0) { numberOfCopies = 1; }
 
                 }
@@ -490,7 +450,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             finally
             {
              
-                string toast = string.Format("Poslani podatki.");
+                string toast = string.Format($"{Resources.GetString(Resource.String.s299)}");
                 Toast.MakeText(this, toast, ToastLength.Long).Show();
                 ClearTheScreen();
             }

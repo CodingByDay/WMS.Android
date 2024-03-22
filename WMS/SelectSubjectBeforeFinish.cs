@@ -41,7 +41,6 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                     data = Services.GetObjectList("hs", out error, headID.ToString());
                     if (data == null)
                     {
-                        string errorWebApp = string.Format("Napaka pri pridobivanju možnih subjektov: " + error);
                       
                         
 
@@ -141,7 +140,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                     var result = Services.SetObject("hs", data, out error);
                     if (result == null)
                     {
-                        string errorWebApp = string.Format("Napaka pri nastavljanje subjekta" + error);
+                        string errorWebApp = string.Format($"{Resources.GetString(Resource.String.s247)}" + error);
                         Toast.MakeText(this, errorWebApp, ToastLength.Long).Show();
                      
                     }

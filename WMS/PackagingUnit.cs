@@ -242,10 +242,6 @@ namespace WMS
             }
         }
 
-
-        /// <summary>
-        /// 
-        /// </summary>
         private void ProcessQty()
         {
             var ident = tbIdent.Text.Trim();
@@ -462,7 +458,7 @@ namespace WMS
 
                                 var id = result.Split('+')[1];
 
-                                Toast.MakeText(this, "Zaklučevanje uspešno! Št. prenosa \r\n" + id, ToastLength.Long).Show();
+                                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s264)}" + id, ToastLength.Long).Show();
                                 AlertDialog.Builder alert = new AlertDialog.Builder(this);
                                 alert.SetTitle($"{Resources.GetString(Resource.String.s263)}");
                                 alert.SetMessage($"{Resources.GetString(Resource.String.s264)}" + id);

@@ -406,8 +406,8 @@ namespace WMS
 
 
                                 AlertDialog.Builder alert = new AlertDialog.Builder(this);
-                                alert.SetTitle("Uspešno zaključevanje");
-                                alert.SetMessage("Zaključevanje uspešno! Št. prevzema:\r\n" + id);
+                                alert.SetTitle($"{Resources.GetString(Resource.String.s263)}");
+                                alert.SetMessage($"{Resources.GetString(Resource.String.s264)}" + id);
 
                                 alert.SetPositiveButton("Ok", (senderAlert, args) =>
                                 {
@@ -448,7 +448,7 @@ namespace WMS
                     }
                     else
                     {
-                        Toast.MakeText(this, "Napaka pri klicu web aplikacije:  " + result, ToastLength.Long).Show();
+                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s216)}" + result, ToastLength.Long).Show();
                     }
                 }
                 finally
@@ -533,7 +533,7 @@ namespace WMS
                 if (openIdent == null)
                 {
 
-                    Toast.MakeText(this, "Napaka pri preverjanju identa.  " + error, ToastLength.Long).Show();
+                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s216)}" + error, ToastLength.Long).Show();
 
                 }
                 else
@@ -667,7 +667,7 @@ namespace WMS
             if ((positions != null) && (displayedPosition < positions.Items.Count))
             {
                 var item = positions.Items[displayedPosition];
-                lbInfo.Text = "Vnešene pozicije na naročilu (" + (displayedPosition + 1).ToString() + "/" + positions.Items.Count + ")";
+                lbInfo.Text = $"{Resources.GetString(Resource.String.s92)} (" + (displayedPosition + 1).ToString() + "/" + positions.Items.Count + ")";
 
                 tbIdent.Text = item.GetString("IdentName");
                 tbSSCC.Text = item.GetString("SSCC");
@@ -708,7 +708,7 @@ namespace WMS
             }
             else
             {
-                lbInfo.Text = "Vnešene pozicije na naročilu (ni)";
+                lbInfo.Text = $"{Resources.GetString(Resource.String.s267)}";
 
                 tbIdent.Text = "";
                 tbSSCC.Text = "";

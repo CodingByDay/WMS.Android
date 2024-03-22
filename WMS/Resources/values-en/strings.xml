@@ -343,4 +343,59 @@
 	<string name="s297">No internet connection...</string>
 
 
+
+	<string name="s298">Quantity needs to be positive!</string>
+	
+	<string name="s299">Data sent.</string>
+	
+	<string name="s301">Number of copies is not correct!</string>
+	<string name="s302">Number of copies needs to be positive!</string>
+
+	<string name="s303">Warning</string>
+
+	<string name="s304">Quantity sum</string>
+
+	<string name="s305">Serial number does not have prepared cards.</string>
+	<string name="s306">Card does not match serial number.</string>
+	<string name="s307">Card is already added to the pallet!</string>
+	<string name="s308">Sending data, please wait.</string>
+	<string name="s309">Palette leg is missing</string>
+	<string name="s310">Are you sure you want to continue?</string>
+	<string name="s311">Back</string>
+
+	<string name="s312">Invalid card: </string>
+	
+	
+	<string name="s313">Are you sure you want to continue?</string>
+
+	<string name="s314">Unable to retrieve serial number.</string>
+	<string name="s315">SSCC code already exists</string>
+
+	<string name="s316">Warehouse not available</string>
+
+	<string name="s317">Please wait.</string>
+
+	<string name="s318">Recalculation successful</string>
+	<string name="s319">Select device type</string>
+	<string name="s320">Tablet</string>
+	<string name="s321">Handheld</string>
+	<string name="s322">Do you want to reset the data on the server?</string>
+
+	<string name="s323">Successfully processed.</string>
+	<string name="s324">Palette successfully delivered</string>
+	<string name="s325">Return quantity exceeds previous pickup!</string>
+
+	<string name="s326">Printing</string>
+	<string name="s327">New quantity must not be 0!</string>
+	<string name="s328">New pickup quantity is too large!</string>
+
+	<string name="s329">Open transfer (none)</string>
+	<string name="s330">Open issued (none)</string>
+	
+	
+	<string name="s331">Open takeover (none)</string>
+
+	<string name="s332">Palette successfully wrapped</string>
+
+
 </resources>

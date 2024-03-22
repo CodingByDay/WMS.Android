@@ -267,7 +267,7 @@ namespace WMS
                             var existsSerial = exists.GetBool("Exists");
                             if (existsSerial)
                             {
-                                Toast.MakeText(this, "Serijska številka je že uporabljena", ToastLength.Long).Show();
+                                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s217)}", ToastLength.Long).Show();
                                 tbSerialNum.Text = string.Empty;
                             }
                             else
@@ -285,7 +285,6 @@ namespace WMS
           
         }
 
-        // Updating 
         private async Task Update()
         {
             try
@@ -327,7 +326,7 @@ namespace WMS
                             var existsSerial = exists.GetBool("Exists");
                             if (existsSerial)
                             {
-                                Toast.MakeText(this, "Serijska številka je že uporabljena", ToastLength.Long).Show();
+                                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s217)}", ToastLength.Long).Show();
                                 tbSerialNum.Text = string.Empty;
                             }
                             
@@ -403,7 +402,6 @@ namespace WMS
 
         private async void Button4_Click(object sender, EventArgs e)
         {
-            // Revision
             var resutAsync = SaveMoveItem().Result;
             if (resutAsync)
             {
@@ -429,9 +427,7 @@ namespace WMS
                     StartActivity(typeof(TakeOverSerialOrSSCCEntry));
                     HelpfulMethods.clearTheStack(this);
                 }
-
-                Finish();
-                
+                Finish();             
             }
         }
 
@@ -467,8 +463,8 @@ namespace WMS
                                     progress.StopDialogSync();
                                     var id = result.Split('+')[1];
                                     AlertDialog.Builder alert = new AlertDialog.Builder(this);
-                                    alert.SetTitle("Uspešno zaključevanje");
-                                    alert.SetMessage("Zaključevanje uspešno! Št. prevzema:\r\n" + id);
+                                    alert.SetTitle($"{Resources.GetString(Resource.String.s263)}");
+                                    alert.SetMessage($"{Resources.GetString(Resource.String.s264)}" + id);
                                     alert.SetPositiveButton("Ok", (senderAlert, args) =>
                                     {
                                         alert.Dispose();
@@ -503,9 +499,7 @@ namespace WMS
                         }
                         else
                         {
-                            // Toast.MakeText(this, $"{Resources.GetString(Resource.String.s218)}" + result, ToastLength.Long).Show();
                             DialogHelper.ShowDialogError(this, this, $"{Resources.GetString(Resource.String.s218)}" + result);
-
                         }
                     }
                     finally
@@ -524,10 +518,8 @@ namespace WMS
             popupDialogConfirm.SetContentView(Resource.Layout.Confirmation);
             popupDialogConfirm.Window.SetSoftInputMode(SoftInput.AdjustResize);
             popupDialogConfirm.Show();
-
             popupDialogConfirm.Window.SetLayout(LayoutParams.MatchParent, LayoutParams.WrapContent);
             popupDialogConfirm.Window.SetBackgroundDrawable(new ColorDrawable(Color.ParseColor("#081a45")));
-
             // Access Popup layout fields like below
             btnYesConfirm = popupDialogConfirm.FindViewById<Button>(Resource.Id.btnYes);
             btnNoConfirm = popupDialogConfirm.FindViewById<Button>(Resource.Id.btnNo);
@@ -580,7 +572,7 @@ namespace WMS
             {
                 RunOnUiThread(() =>
                 {
-                    string errorWebAppIssued = string.Format("SSCC koda je obvezan podatek. ");
+                    string errorWebAppIssued = string.Format($"{Resources.GetString(Resource.String.s270)}");
                     DialogHelper.ShowDialogError(this, this, errorWebAppIssued);
                     tbSSCC.RequestFocus();
                 });
@@ -594,7 +586,7 @@ namespace WMS
                 {
                     RunOnUiThread(() =>
                     {
-                        string errorWebAppIssued = string.Format("Serijska številka je obvezan podatek.");
+                        string errorWebAppIssued = string.Format($"{Resources.GetString(Resource.String.s270)}");
                         DialogHelper.ShowDialogError(this, this, errorWebAppIssued);
                         tbSerialNum.RequestFocus();
                     });
@@ -607,7 +599,7 @@ namespace WMS
             {
                 RunOnUiThread(() =>
                 {
-                    string errorWebAppIssued = string.Format("Količina je obvezen podatek.");
+                    string errorWebAppIssued = string.Format($"{Resources.GetString(Resource.String.s270)}");
                     DialogHelper.ShowDialogError(this, this, errorWebAppIssued);
                     tbPacking.RequestFocus();
                 });
@@ -624,7 +616,7 @@ namespace WMS
                     {
                         RunOnUiThread(() =>
                         {
-                            string errorWebAppIssued = string.Format("Količina je obvezen podatek in mora biti različna od nič");
+                            string errorWebAppIssued = string.Format($"{Resources.GetString(Resource.String.s270)}");
                             DialogHelper.ShowDialogError(this, this, errorWebAppIssued);
                             tbPacking.RequestFocus();
                         });
@@ -667,7 +659,7 @@ namespace WMS
             {
                 RunOnUiThread(() =>
                 {
-                    string errorWebAppIssued = string.Format(lbUnits.Text + " je obvezen podatek!");
+                    string errorWebAppIssued = string.Format($"{Resources.GetString(Resource.String.s270)}");
                     DialogHelper.ShowDialogError(this, this, errorWebAppIssued);
                     tbUnits.RequestFocus();
                 });
@@ -683,7 +675,7 @@ namespace WMS
                     {
                         RunOnUiThread(() =>
                         {
-                            string errorWebAppIssued = string.Format(lbUnits.Text + " je obvezen podatek in mora biti različna od nič!");
+                            string errorWebAppIssued = string.Format($"{Resources.GetString(Resource.String.s270)}");
                             DialogHelper.ShowDialogError(this, this, errorWebAppIssued);
 
                             tbUnits.RequestFocus();
@@ -696,7 +688,7 @@ namespace WMS
 
                     RunOnUiThread(() =>
                     {
-                        string errorWebAppIssued = string.Format(lbUnits.Text + " mora biti število (" + e.Message + ")!");
+                        string errorWebAppIssued = string.Format($"{Resources.GetString(Resource.String.s270)}");
                         DialogHelper.ShowDialogError(this, this, errorWebAppIssued);
                         tbUnits.RequestFocus();
                     });
@@ -925,7 +917,7 @@ namespace WMS
                                 var existsSerial = exists.GetBool("Exists");
                                 if (existsSerial)
                                 {
-                                    Toast.MakeText(this, "Serijska številka je že uporabljena", ToastLength.Long).Show();
+                                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s217)}", ToastLength.Long).Show();
                                     tbSerialNum.Text = string.Empty;
                                 }
                                 else

@@ -98,9 +98,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
 
             if (!string.IsNullOrEmpty(savedIdentsJson))
             {
-                // Deserialize the JSON string back to a List<string>
                 savedIdents = JsonConvert.DeserializeObject<List<string>>(savedIdentsJson);
-                // Now you have your list of idents in the savedIdents variable
             }
 
 
@@ -341,8 +339,8 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
 
                 if (openIdent == null)
                 {
-                    DialogHelper.ShowDialogError(this, this, "Napaka pri preverjanju identa");
-                    // Toast.MakeText(this, "Napaka pri preverjanju identa" + error, ToastLength.Long).Show();
+                    DialogHelper.ShowDialogError(this, this, $"{Resources.GetString(Resource.String.s216)}");
+                    // Toast.MakeText(this, $"{Resources.GetString(Resource.String.s216)}" + error, ToastLength.Long).Show();
                     tbIdent.Text = "";                   
                     tbNaziv.Text = "";
                     tbQty.Text = "";
@@ -368,9 +366,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                         openOrders = Services.GetObjectList("oo", out error, ident + "|" + moveHead.GetString("DocumentType") + "|" + moveHead.GetInt("HeadID"));
                         if (openOrders == null)
                         {
-                            // Napaka pri pridobivanju odprtih naročil: " + error
                             DialogHelper.ShowDialogError(this, this, $"{Resources.GetString(Resource.String.s216)}");
-                            //  Toast.MakeText(this, $"{Resources.GetString(Resource.String.s216)}" + error, ToastLength.Long).Show();
                             tbIdent.Text = "";                        
                             tbNaziv.Text = "";
                         }
@@ -469,7 +465,6 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             else
             {
                 tbIdent.Text = string.Empty;
-                Toast.MakeText(this, "Nepravilna koda pri skeniranju", ToastLength.Long).Show();
             }
         }
         private bool CheckIdent(string barcode)
@@ -540,7 +535,6 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
         {
             soundPool.Play(soundPoolId, 1, 1, 0, 0, 1);
         }
-        // Color
         private void color()
         {
             tbIdent.SetBackgroundColor(Android.Graphics.Color.Aqua);

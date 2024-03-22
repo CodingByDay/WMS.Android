@@ -181,7 +181,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                         if (result.StartsWith("OK!"))
                         {
                             var id = result.Split('+')[1];
-                            Toast.MakeText(this, "Zaključevanje uspešno! Št. prevzema:\r\n" + id, ToastLength.Long).Show();
+                            Toast.MakeText(this, $"{Resources.GetString(Resource.String.s264)}" + id, ToastLength.Long).Show();
                             AlertDialog.Builder alert = new AlertDialog.Builder(this);
                             alert.SetTitle($"{Resources.GetString(Resource.String.s263)}");
                             alert.SetMessage($"{Resources.GetString(Resource.String.s264)}" + id);
@@ -297,10 +297,10 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             {
                 
                 string error;
-                 dataItem = Services.GetObject("sscc", "20180316001", out error);
+                dataItem = Services.GetObject("sscc", sscc, out error);
                 if (dataItem == null)
                 {
-                    Toast.MakeText(this, "Napaka pri preverjanju sscc kode." + error, ToastLength.Long).Show();
+                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s216)}" + error, ToastLength.Long).Show();
 
                     tbSSCC.Text = "";
                     

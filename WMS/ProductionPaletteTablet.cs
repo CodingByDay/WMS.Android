@@ -109,10 +109,10 @@ namespace WMS
                     {
                         progress = new ProgressDialogClass();
 
-                        progress.ShowDialogSync(this, "Pošiljam podatke, prosim počakajte.");
+                        progress.ShowDialogSync(this, $"{Resources.GetString(Resource.String.s308)}");
                     });
+
                     var palInfo = new NameValueObject("PaletteInfo");
-                    System.Threading.Thread.Sleep(1000);
                     palInfo.SetString("WorkOrder", tbWorkOrder.Text);
                     palInfo.SetString("Ident", tbIdent.Text);
                     palInfo.SetInt("Clerk", Services.UserID());
@@ -131,7 +131,7 @@ namespace WMS
                         RunOnUiThread(() =>
                         {
                             progress.StopDialogSync();
-                            string WebError = string.Format("Napaka pri potrjevanju palete: " + error);
+                            string WebError = string.Format($"{Resources.GetString(Resource.String.s216)}" + error);
                             Toast.MakeText(this, WebError, ToastLength.Long).Show();
                         });
                     }
@@ -152,7 +152,7 @@ namespace WMS
                                 alert.SetPositiveButton("Ok", (senderAlert, args) =>
                                 {
                                     alert.Dispose();
-                                    System.Threading.Thread.Sleep(500);
+                                    Thread.Sleep(500);
                                     StartActivity(typeof(MainMenuTablet));
                                 });
                                 Dialog dialog = alert.Create();
@@ -166,12 +166,12 @@ namespace WMS
                                 progress.StopDialogSync();
                                 AlertDialog.Builder alert = new AlertDialog.Builder(this);
                                 alert.SetTitle($"{Resources.GetString(Resource.String.s265)}");
-                                alert.SetMessage("Napaka pri paletiranju: " + result);
+                                alert.SetMessage($"{Resources.GetString(Resource.String.s216)}" + result);
 
                                 alert.SetPositiveButton("Ok", (senderAlert, args) =>
                                 {
                                     alert.Dispose();
-                                    System.Threading.Thread.Sleep(500);                                
+                                    Thread.Sleep(500);                                
                                 });
 
                                 Dialog dialog = alert.Create();
@@ -221,7 +221,7 @@ namespace WMS
             lvCardList.Adapter = adapter;
             totalQty += qty;
             btConfirm.Enabled = true;
-            lbTotalQty.Text = $"Količina skupaj: {totalQty.ToString("###,###,##0.00")} / {collectiveAmount.ToString("###,###,##0.00")}";
+            lbTotalQty.Text = $"{Resources.GetString(Resource.String.s304)}: {totalQty.ToString("###,###,##0.00")} / {collectiveAmount.ToString("###,###,##0.00")}";
             popupDialog.Dismiss();
             popupDialog.Cancel();
         }
@@ -235,7 +235,7 @@ namespace WMS
                 var cardObj = Services.GetObject("cq", tbSerialNum.Text + "|1|" + tbIdent.Text, out error);
                 if (cardObj == null)
                 {
-                    string WebError = string.Format("Napaka pri preverjanju serijske št.: " + error);
+                    string WebError = string.Format($"{Resources.GetString(Resource.String.s216)}" + error);
                     Toast.MakeText(this, WebError, ToastLength.Long).Show();
                     return;
                 }
@@ -248,7 +248,7 @@ namespace WMS
                 }
                 else
                 {
-                    string WebError = string.Format("Serijska št. nima pripravljenih kartonov.");
+                    string WebError = string.Format($"{Resources.GetString(Resource.String.s305)}");
                     Toast.MakeText(this, WebError, ToastLength.Long).Show();
                     return;
                 }
@@ -284,9 +284,9 @@ namespace WMS
                     stKartona = Convert.ToInt32(data.Substring(tbSerialNum.Text.Length)).ToString();
 
                 }
-                catch (Exception error)
+                catch 
                 {
-                    Toast.MakeText(this, "Napaka...", ToastLength.Long).Show();
+                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s265)}", ToastLength.Long).Show();
                 }
             }
             else { stKartona = Convert.ToInt32(tbCard.Text).ToString(); }
@@ -298,7 +298,7 @@ namespace WMS
                 var next = true;
                 if (!data.StartsWith(tbSerialNum.Text) && tbSerialNum.Text.Length < tbCard.Text.Length)
                 {
-                    string WebError = string.Format("Karton ne ustreza serijski številki.");
+                    string WebError = string.Format($"{Resources.GetString(Resource.String.s306)}");
                     Toast.MakeText(this, WebError, ToastLength.Long).Show();
                 }
                 else
@@ -308,7 +308,7 @@ namespace WMS
                     {
                         if (existing.stKartona == stKartona)
                         {
-                            string WebError = string.Format("Karton je že dodan na paleto!");
+                            string WebError = string.Format($"{Resources.GetString(Resource.String.s307)}");
                             Toast.MakeText(this, WebError, ToastLength.Long).Show();
                             return;
                         }
@@ -319,7 +319,7 @@ namespace WMS
                         var cardObj = Services.GetObject("cq", tbSerialNum.Text + "|" + stKartona + "|" + tbIdent.Text, out error);
                         if (cardObj == null)
                         {
-                            string WebError = string.Format("Napaka pri preverjanju kartona: " + error);
+                            string WebError = string.Format($"{Resources.GetString(Resource.String.s216)}" + error);
                             Toast.MakeText(this, WebError, ToastLength.Long).Show();
                             return;
                         }
@@ -339,13 +339,13 @@ namespace WMS
                                 adapterListViewItem adapter = new adapterListViewItem(this, listItems);
                                 lvCardList.Adapter = adapter;
                                 totalQty += qty;
-                                lbTotalQty.Text = $"Količina skupaj: {totalQty.ToString("###,###,##0.00")} / {collectiveAmount.ToString("###,###,##0.00")}";
+                                lbTotalQty.Text = $"{Resources.GetString(Resource.String.s304)}: {totalQty.ToString("###,###,##0.00")} / {collectiveAmount.ToString("###,###,##0.00")}";
                                 btConfirm.Enabled = true;
                             }
                         }
                         else
                         {
-                            string WebError = string.Format("Neveljaven karton: " + data);
+                            string WebError = string.Format($"{Resources.GetString(Resource.String.s312)}" + data);
                             Toast.MakeText(this, WebError, ToastLength.Long).Show();
                             return;
                         }
@@ -358,7 +358,7 @@ namespace WMS
             }
             else
             {
-                Toast.MakeText(this, "Nepravilen vnos.", ToastLength.Long).Show();
+                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
             }
         }
 
@@ -492,7 +492,7 @@ namespace WMS
             ListViewItem itemPriorToDelete = listItems.ElementAt((int)selectedItemId);
             totalQty = totalQty - Convert.ToDouble(itemPriorToDelete.quantity);
             listItems.RemoveAt((int)selectedItemId);
-            lbTotalQty.Text = $"Količina skupaj: {totalQty.ToString("###,###,##0.00")} / {collectiveAmount.ToString("###,###,##0.00")}";
+            lbTotalQty.Text = $"{Resources.GetString(Resource.String.s304)}: {totalQty.ToString("###,###,##0.00")} / {collectiveAmount.ToString("###,###,##0.00")}";
 
             lvCardList.Adapter = null;
             adapterListViewItem adapter = new adapterListViewItem(this, listItems);

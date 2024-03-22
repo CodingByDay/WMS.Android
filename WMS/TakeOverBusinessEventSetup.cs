@@ -299,7 +299,7 @@ namespace WMS
             {
                 if (temporaryPositionWarehouse == -1)
                 {
-                    string toast = string.Format("Sladište more biti izbrano");
+                    string toast = string.Format($"{Resources.GetString(Resource.String.s270)}");
                     Toast.MakeText(this, toast, ToastLength.Long).Show();
                     return;
 
@@ -308,7 +308,7 @@ namespace WMS
                 var itemWH = adapter.GetItem(temporaryPositionWarehouse);
                 if (itemWH == null)
                 {
-                    string toast = string.Format("Sladište more biti izbrano");
+                    string toast = string.Format($"{Resources.GetString(Resource.String.s270)}");
                     Toast.MakeText(this, toast, ToastLength.Long).Show();
                     return;
 
@@ -320,7 +320,7 @@ namespace WMS
                     {
                         if (temporaryPositionSubject == -1)
                         {
-                            string toast = string.Format("Subjekt more bit izbran");
+                            string toast = string.Format($"{Resources.GetString(Resource.String.s270)}");
                             Toast.MakeText(this, toast, ToastLength.Long).Show();
 
                             return;
@@ -328,7 +328,7 @@ namespace WMS
                         itemSubj = adapterSubject.GetItem(temporaryPositionSubject);
                         if (itemSubj == null)
                         {
-                            string toast = string.Format("Subjekt more bit izbran");
+                            string toast = string.Format($"{Resources.GetString(Resource.String.s270)}");
                             Toast.MakeText(this, toast, ToastLength.Long).Show();
 
                             return;

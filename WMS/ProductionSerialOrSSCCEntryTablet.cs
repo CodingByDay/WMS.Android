@@ -210,7 +210,7 @@ namespace WMS
                 {
                     RunOnUiThread(() =>
                     {
-                        string SuccessMessage = string.Format("Ni mogoče pridobiti serijske št.");
+                        string SuccessMessage = string.Format($"{Resources.GetString(Resource.String.s314)}");
                         DialogHelper.ShowDialogError(this, this, SuccessMessage);
                         tbSerialNum.RequestFocus();
                     });
@@ -255,7 +255,7 @@ namespace WMS
                     {
                         RunOnUiThread(() =>
                         {
-                            string SuccessMessage = string.Format("SSCC koda že obstaja");
+                            string SuccessMessage = string.Format($"{Resources.GetString(Resource.String.s315)}");
                             DialogHelper.ShowDialogError(this, this, SuccessMessage);
                         });
 
@@ -267,7 +267,7 @@ namespace WMS
                 {
                     RunOnUiThread(() =>
                     {
-                        string SuccessMessage = string.Format("Količina je obvezan podatek");
+                        string SuccessMessage = string.Format($"{Resources.GetString(Resource.String.s270)}");
                         DialogHelper.ShowDialogError(this, this, SuccessMessage);
                     });
 
@@ -283,7 +283,7 @@ namespace WMS
                         {
                             RunOnUiThread(() =>
                             {
-                                string SuccessMessage = string.Format("Količina je obvezen podatek in mora bit različna od nič.");
+                                string SuccessMessage = string.Format($"{Resources.GetString(Resource.String.s298)}");
                                 DialogHelper.ShowDialogError(this, this, SuccessMessage);
                             });
 
@@ -325,7 +325,7 @@ namespace WMS
                 {
                     RunOnUiThread(() =>
                     {
-                        string SuccessMessage = string.Format("Št. enota je obvezen podatek!");
+                        string SuccessMessage = string.Format($"{Resources.GetString(Resource.String.s270)}");
                         DialogHelper.ShowDialogError(this, this, SuccessMessage);
                         tbUnits.RequestFocus();
                     });
@@ -342,7 +342,7 @@ namespace WMS
                         {
                             RunOnUiThread(() =>
                             {
-                                string SuccessMessage = string.Format("Št. enota je obvezen podatek, in more biti različit od nič.");
+                                string SuccessMessage = string.Format($"{Resources.GetString(Resource.String.s270)}");
                                 DialogHelper.ShowDialogError(this, this, SuccessMessage);
                                 tbUnits.RequestFocus();
                             });
@@ -631,21 +631,7 @@ namespace WMS
             tbLocation.Text = item;
         }
 
-        private void showPicture()
-        {
-            try
-            {
-                Android.Graphics.Bitmap show = Services.GetImageFromServer(moveHead.GetString("Wharehouse"));
-                Drawable d = new BitmapDrawable(Resources, show);
-                imagePNG.SetImageDrawable(d);
-                imagePNG.Visibility = ViewStates.Visible;
-                imagePNG.Click += (e, ev) => { ImageClick(d); };
-            }
-            catch (Exception error)
-            {
-                return;
-            }
-        }
+    
 
         private void ImageClick(Drawable d)
         {

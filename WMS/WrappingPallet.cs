@@ -115,7 +115,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 {
                     progress = new ProgressDialogClass();
 
-                    progress.ShowDialogSync(this, "Pošiljam podatke, prosim počakajte.");
+                    progress.ShowDialogSync(this, $"{Resources.GetString(Resource.String.s308)}");
                 });
                 string TextPallet = pallet.Text;
                 string result;
@@ -129,8 +129,8 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
 
                             progress.StopDialogSync();
                             AlertDialog.Builder alert = new AlertDialog.Builder(this);
-                            alert.SetTitle("Uspešno obdelano.");
-                            alert.SetMessage("Paleta uspešno zavita!");
+                            alert.SetTitle($"{Resources.GetString(Resource.String.s323)}");
+                            alert.SetMessage($"{Resources.GetString(Resource.String.s332)}");
 
                             alert.SetPositiveButton("Ok", (senderAlert, args) =>
                             {
@@ -156,7 +156,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                             progress.StopDialogSync();
                             AlertDialog.Builder alert = new AlertDialog.Builder(this);
                             alert.SetTitle($"{Resources.GetString(Resource.String.s265)}");
-                            alert.SetMessage($"Napaka pri zavijanju palete. {result}");
+                            alert.SetMessage($"{Resources.GetString(Resource.String.s216)}" + result);
 
                             alert.SetPositiveButton("Ok", (senderAlert, args) =>
                             {
@@ -183,7 +183,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                         progress.StopDialogSync();
                         AlertDialog.Builder alert = new AlertDialog.Builder(this);
                         alert.SetTitle($"{Resources.GetString(Resource.String.s265)}");
-                        alert.SetMessage($"Napaka pri dostopu do web aplikacije. {result}");
+                        alert.SetMessage($"{Resources.GetString(Resource.String.s216)}" + result);
 
                         alert.SetPositiveButton("Ok", (senderAlert, args) =>
                         {
@@ -211,7 +211,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             //{
             //    if (result == "OK")
             //    {
-            //        Toast.MakeText(this, "Paleta uspešno zavita!", ToastLength.Long).Show();
+            //        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s332)}", ToastLength.Long).Show();
             //    } else
             //    {
             //        Toast.MakeText(this, $"Napaka pri zavijanju palete. {result}", ToastLength.Long).Show();

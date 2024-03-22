@@ -106,7 +106,6 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             }
             else
             {
-                Toast.MakeText(this, "Napačen ident.", ToastLength.Long).Show();
                 tbIdent.Text = "";
             }
         }
@@ -225,10 +224,6 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             }
         }
 
-
-        /// <summary>
-        /// 
-        /// </summary>
         private void ProcessQty()
         {
             var ident = tbIdent.Text.Trim();
@@ -434,13 +429,13 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                         if (result.StartsWith("OK!"))
                         {
                             var id = result.Split('+')[1];
-                            Toast.MakeText(this, "Zaklučevanje uspešno! Št. prenosa \r\n" + id, ToastLength.Long).Show();
+                            Toast.MakeText(this, $"{Resources.GetString(Resource.String.s264)}" + id, ToastLength.Long).Show();
 
 
                         }
                         else
                         {
-                            Toast.MakeText(this, "Napaka pri zaključevanju" + result, ToastLength.Long).Show();
+                            Toast.MakeText(this, $"{Resources.GetString(Resource.String.s266)}" + result, ToastLength.Long).Show();
 
                         }
                     }

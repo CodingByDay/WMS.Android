@@ -176,13 +176,6 @@ namespace WMS
             FillDisplayedItem();
         }
 
-        /// <summary>
-        /// Writting a method to fill in all the positions in the right third of the screen...
-        /// positions
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        /// 
 
         private void DeleteFromTouch(int index)
         {
@@ -499,7 +492,7 @@ namespace WMS
         {
             if ((positions != null) && (positions.Items.Count > 0))
             {
-                lbInfo.Text = "Odprte odpreme na čitalcu (" + (displayedPosition + 1).ToString() + "/" + positions.Items.Count + ")";
+                lbInfo.Text = $"{Resources.GetString(Resource.String.s305)} (" + (displayedPosition + 1).ToString() + "/" + positions.Items.Count + ")";
                 var item = positions.Items[displayedPosition];
 
                 tbBusEvent.Text = item.GetString("DocumentTypeName");
@@ -532,7 +525,7 @@ namespace WMS
             }
             else
             {
-                lbInfo.Text = "Odprte odpreme na čitalcu (ni)";
+                lbInfo.Text = $"{Resources.GetString(Resource.String.s330)}";
 
                 tbBusEvent.Text = "";
                 tbOrder.Text = "";

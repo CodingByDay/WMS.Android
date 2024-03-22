@@ -267,11 +267,8 @@ namespace WMS
                     {
                         string errorWebAppIssued = string.Format($"{Resources.GetString(Resource.String.s212)}" + result);
                         DialogHelper.ShowDialogError(this, this, errorWebAppIssued);
-
-                        //Toast.MakeText(this, errorWebAppIssued, ToastLength.Long).Show();
                         positions = null;
                         LoadPositions();
-
                         popupDialog.Dismiss();
                         popupDialog.Hide();
                         return;
@@ -376,7 +373,7 @@ namespace WMS
                 }
                 else
                 {
-                    string errorWebAppProduction = string.Format("Napaka pri dostopo do web aplikacije: " + result);
+                    string errorWebAppProduction = string.Format($"{Resources.GetString(Resource.String.s216)}" + result);
                     DialogHelper.ShowDialogError(this, this, errorWebAppProduction);
                     System.Diagnostics.Process.GetCurrentProcess().Kill();
                     return;
@@ -389,9 +386,7 @@ namespace WMS
                 return;
 
             }
-
-            string errorWebApp = string.Format("Pozicija izbrisana.");
-            Toast.MakeText(this, errorWebApp, ToastLength.Long).Show();
+;
         }
 
         private void BtFinish_Click(object sender, EventArgs e)
@@ -478,7 +473,7 @@ namespace WMS
                     }
                     if (positions == null)
                     {
-                        string errorWebApp = string.Format("Napaka pri dostopu do web aplikacije. " + error);
+                        string errorWebApp = string.Format($"{Resources.GetString(Resource.String.s216)}" + error);
                         DialogHelper.ShowDialogError(this, this, errorWebApp);
                         return;
                     }
@@ -499,7 +494,7 @@ namespace WMS
         {
             if ((positions != null) && (positions.Items.Count > 0))
             {
-                lbInfo.Text = "Odprti prevzemi na čitalcu (" + (displayedPosition + 1).ToString() + "/" + positions.Items.Count + ")";
+                lbInfo.Text = $"{Resources.GetString(Resource.String.s12)} (" + (displayedPosition + 1).ToString() + "/" + positions.Items.Count + ")";
                 var item = positions.Items[displayedPosition];
 
                 tbWorkOrder.Text = item.GetString("LinkKey");
@@ -531,7 +526,7 @@ namespace WMS
             }
             else
             {
-                lbInfo.Text = "Odprti prevzemi na čitalcu (ni)";
+                lbInfo.Text = $"{Resources.GetString(Resource.String.s331)}";
 
                 tbWorkOrder.Text = "";
                 tbClient.Text = "";

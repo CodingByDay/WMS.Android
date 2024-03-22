@@ -58,9 +58,9 @@ namespace WMS
 
             SupportActionBar.SetDisplayShowTitleEnabled(false);
 
-            arrayData.Add("Izberite tip naprave");
-            arrayData.Add("TABLET");
-            arrayData.Add("PHONE");  
+            arrayData.Add($"{Resources.GetString(Resource.String.s319)}");
+            arrayData.Add($"{Resources.GetString(Resource.String.s320)}");
+            arrayData.Add($"{Resources.GetString(Resource.String.s321)}");  
 
             bluetooth = FindViewById<Button>(Resource.Id.bluetooth);
             bluetooth.Click += Bluetooth_Click;
@@ -71,7 +71,6 @@ namespace WMS
             ok.Click += Ok_Click;
             ID.Text = App.settings.ID;
             version = FindViewById<TextView>(Resource.Id.version);
-            version.Text = $"Verzija: {GetAppVersion()}";
             rootURL.Text = App.settings.RootURL;
             var adapter = new ArrayAdapter<String>(this,
             Android.Resource.Layout.SimpleSpinnerItem, arrayData);
@@ -109,8 +108,8 @@ namespace WMS
         private void Bin_Click(object sender, EventArgs e)
         {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.SetMessage("Ali želite resetirati podatke na strežniku?");
-            builder.SetPositiveButton("Da", (senderDialog, args) =>
+            builder.SetMessage($"{Resources.GetString(Resource.String.s322)}");
+            builder.SetPositiveButton($"{Resources.GetString(Resource.String.s201)}", (senderDialog, args) =>
             {
                 string result;
                 WebApp.Get("mode=clearCache", out result);
@@ -163,11 +162,9 @@ namespace WMS
 
         private void CbDevice_ItemSelected(object sender, AdapterView.ItemSelectedEventArgs e)
         {
-
-            Spinner spinner = (Spinner)sender;
             position = e.Position;
-            dev = arrayData[position];
-            if (dev == "TABLET")
+
+            if (position == 1)
             {
                 App.settings.tablet = true; 
             } else
@@ -183,7 +180,7 @@ namespace WMS
             App.settings.RootURL = rootURL.Text;
             App.settings.ID = ID.Text;
             ID.Text = App.settings.ID;
-            Toast.MakeText(this, "Podatki shranjeni uspešno", ToastLength.Long).Show();
+            Toast.MakeText(this, $"{Resources.GetString(Resource.String.settings_saved)}", ToastLength.Long).Show();
             //deviceURL.Text = App.settings.RootURL
             StartActivity(typeof(MainActivity));
         }

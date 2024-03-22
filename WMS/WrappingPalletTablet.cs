@@ -112,16 +112,17 @@ namespace WMS
             {
                 if (result == "OK")
                 {
-                    Toast.MakeText(this, "Paleta uspešno zavita!", ToastLength.Long).Show();
+
+                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s332)}", ToastLength.Long).Show();
                 }
                 else
                 {
-                    Toast.MakeText(this, $"Napaka pri zavijanju palete. {result}", ToastLength.Long).Show();
+                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s216)}" + result, ToastLength.Long).Show();
                 }
             }
             else
             {
-                Toast.MakeText(this, $"Napaka pri dostopu do web aplikacije. {result}", ToastLength.Long).Show();
+                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s216)}" + result, ToastLength.Long).Show();
             }
         }
     }

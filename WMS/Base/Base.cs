@@ -58,8 +58,9 @@ namespace WMS
 
         public Base(IntPtr javaReference, Android.Runtime.JniHandleOwnership transfer) : base(javaReference, transfer)
         {
-        
+
         }
+
 
         public override void OnCreate()
         {

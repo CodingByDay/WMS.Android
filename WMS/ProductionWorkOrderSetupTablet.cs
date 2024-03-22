@@ -210,7 +210,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 workOrder = Services.GetObject("wo", tbWorkOrder.Text.Trim(), out error);
                 if (workOrder == null)
                 {
-                    string SuccessMessage = string.Format("Uspešno poslani podatki.");
+                    string SuccessMessage = string.Format($"{Resources.GetString(Resource.String.s299)}");
                     Toast.MakeText(this, SuccessMessage, ToastLength.Long).Show();
                     return false;
                 }
@@ -237,19 +237,10 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                     var productionWarehouse = Services.GetObject("pw", workOrder.GetString("DocumentType") + "|" + ident.GetString("Set"), out error);
                     if ((productionWarehouse == null) || (string.IsNullOrEmpty(productionWarehouse.GetString("ProductionWarehouse"))))
                     {
-                        string SuccessMessage = string.Format("Skladisće ni dosegljivo.");
+                        string SuccessMessage = string.Format($"{Resources.GetString(Resource.String.s316)}");
                         Toast.MakeText(this, SuccessMessage, ToastLength.Long).Show();
                         return false;
                     }
-
-                    /*
-                    var dtObj = Services.Services.GetObject("dt", "", out error);
-                    if (dtObj == null)
-                    {
-                        MessageForm.Show("Ni mogoče pridobiti strežniškega časa: " + error);
-                        return false;
-                    }
-                    */
 
                     moveHead.SetInt("Clerk", Services.UserID());
                     moveHead.SetString("Type", "W");
@@ -341,7 +332,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 NameValueObject workOrder = Services.GetObject("wo", tbWorkOrder.Text.Trim(), out error);
                 if (workOrder == null)
                 {
-                    string SuccessMessage = string.Format("Napaka pri preverjanju delovnega naloga" + error);
+                    string SuccessMessage = string.Format($"{Resources.GetString(Resource.String.s216)}" + error);
                     Toast.MakeText(this, SuccessMessage, ToastLength.Long).Show();
 
                 }
@@ -350,7 +341,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                     ident = Services.GetObject("id", workOrder.GetString("Ident"), out error);
                     if (ident == null)
                     {
-                        string SuccessMessage = string.Format("Napaka pri preverjanju identa" + error);
+                        string SuccessMessage = string.Format($"{Resources.GetString(Resource.String.s216)}" + error);
                         Toast.MakeText(this, SuccessMessage, ToastLength.Long).Show();
                     }
                     else

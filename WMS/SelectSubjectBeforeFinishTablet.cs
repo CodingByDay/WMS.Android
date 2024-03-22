@@ -26,46 +26,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
         private Button btConfirm;
         List<ComboBoxItem> objectSubjects = new List<ComboBoxItem>();
         private int temporaryPositionReceive;
-        public static void ShowIfNeeded(int headID)
-        {
-            if ((CommonData.GetSetting("WorkOrderFinishWithSubject") ?? "0") == "1")
-            {
-                NameValueObjectList data;
-
-
-
-                try
-                {
-                    string error;
-                    data = Services.GetObjectList("hs", out error, headID.ToString());
-                    if (data == null)
-                    {
-                        string errorWebApp = string.Format("Napaka pri pridobivanju možnih subjektov: " + error);
-
-
-                        return;
-                    }
-                }
-                catch (Exception err)
-                {
-
-                    Crashes.TrackError(err);
-                    return;
-
-                }
-
-                if (data.Items.Count == 0) { return; }
-
-                var form = new SelectSubjectBeforeFinishTablet();
-                form.SetHeadID(headID);
-                form.objectSubjects.Clear();
-                form.objectSubjects.Add(new ComboBoxItem { Text = "" });
-                data.Items.ForEach(i => form.objectSubjects.Add(new ComboBoxItem { Text = i.GetString("Subject") }));
-                form.cbSubject.SetSelection(1);
-                form.ShowDialog(1, null);
-
-            }
-        }
+    
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -138,7 +99,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                     var result = Services.SetObject("hs", data, out error);
                     if (result == null)
                     {
-                        string errorWebApp = string.Format("Napaka pri nastavljanje subjekta" + error);
+                        string errorWebApp = string.Format($"{Resources.GetString(Resource.String.s247)}" + error);
                         Toast.MakeText(this, errorWebApp, ToastLength.Long).Show();
 
                     }

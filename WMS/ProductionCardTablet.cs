@@ -42,40 +42,8 @@ namespace WMS
         private bool target;
         private bool warning;
 
-        private bool Response()
-        {
-            popupDialog = new Dialog(this);
-            popupDialog.SetContentView(Resource.Layout.YesNoProductionCard);
-            popupDialog.Window.SetSoftInputMode(SoftInput.AdjustResize);
-            popupDialog.Show();
-            popupDialog.Window.SetLayout(LayoutParams.MatchParent, LayoutParams.WrapContent);
-            popupDialog.Window.SetBackgroundDrawable(new ColorDrawable(Color.ParseColor("#081a45")));
+ 
 
-            btnYes = popupDialog.FindViewById<Button>(Resource.Id.btnYes);
-            btnNo = popupDialog.FindViewById<Button>(Resource.Id.btnNo);
-            btnNo.Click += BtnNo_Click;
-            btnYes.Click += BtnYes_Click;
-            var res = target;
-
-
-
-
-            return target;
-        }
-
-        private void BtnNo_Click(object sender, EventArgs e)
-        {
-            target = false;
-            popupDialog.Hide();
-            popupDialog.Dismiss();
-        }
-
-        private void BtnYes_Click(object sender, EventArgs e)
-        {
-            target = true;
-            popupDialog.Hide();
-            popupDialog.Dismiss();
-        }
 
         public override bool OnKeyDown(Keycode keyCode, KeyEvent e)
         {
@@ -107,10 +75,6 @@ namespace WMS
         {
             base.OnCreate(savedInstanceState);
             SetTheme(Resource.Style.AppTheme_NoActionBar);
-
-
-
-
             SetContentView(Resource.Layout.ProductionCardTablet);
             AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
             var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
@@ -136,7 +100,7 @@ namespace WMS
                 var data = Services.GetObject("cwns", tbWorkOrder.Text + "|" + tbIdent.Text + "|0", out error);
                 if (data == null)
                 {
-                    string SuccessMessage = string.Format("Napaka pri pridobivanju podatkov: " + error);
+                    string SuccessMessage = string.Format($"{Resources.GetString(Resource.String.s247)}" + error);
                     Toast.MakeText(this, SuccessMessage, ToastLength.Long).Show();
 
                 }
@@ -146,7 +110,7 @@ namespace WMS
                     {
                         try
                         {
-                            warning = (bool)await DialogAsync.Show(this, "Opozorilo", "Izpisanih je bilo zadostno št. etiket, ali želite zamenjati serijsko številko?");
+                            warning = (bool)await DialogAsync.Show(this, $"{Resources.GetString(Resource.String.s303)}", $"{Resources.GetString(Resource.String.s210)}", Resources.GetString(Resource.String.s201), Resources.GetString(Resource.String.s202));
                         }
                         catch (Exception err)
                         {
@@ -161,7 +125,7 @@ namespace WMS
                             data = Services.GetObject("cwns", tbWorkOrder.Text + "|" + tbIdent.Text + "|1", out error);
                             if (data == null)
                             {
-                                string SuccessMessage = string.Format("Napaka pri pridobivanju podatkov: " + error);
+                                string SuccessMessage = string.Format($"{Resources.GetString(Resource.String.s247)}" + error);
                                 Toast.MakeText(this, SuccessMessage, ToastLength.Long).Show();
 
                             }
@@ -240,25 +204,17 @@ namespace WMS
                 nvo = Services.SetObject("cwns", nvo, out error);
                 if (nvo == null)
                 {
-
-
-
                     AlertDialog.Builder alert = new AlertDialog.Builder(this);
                     alert.SetTitle($"{Resources.GetString(Resource.String.s265)}");
-                    alert.SetMessage("Shranjevanje neuspešno, napaka: " + error);
-
+                    alert.SetMessage($"{Resources.GetString(Resource.String.s247)}" + error);
                     alert.SetPositiveButton("Ok", (senderAlert, args) =>
                     {
                         alert.Dispose();
                         System.Threading.Thread.Sleep(500);
                         this.Finish();
                     });
-
-
-
                     Dialog dialog = alert.Create();
                     dialog.Show();
-
                 }
                 else
                 {
@@ -268,8 +224,6 @@ namespace WMS
                     PrintingCommon.SendToServer(pr);
                     StartActivity(typeof(ProductionCardTablet));
                     this.Finish();
-
-                    //
                 }
             }
             catch (Exception err)
