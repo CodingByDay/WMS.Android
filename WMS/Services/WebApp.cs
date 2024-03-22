@@ -3,6 +3,7 @@ using Microsoft.AppCenter.Crashes;
 using System.Net;
 using System.Text;
 using TrendNET.WMS.Device.App;
+using WMS;
 using WMS.App;
 
 namespace TrendNET.WMS.Device.Services
@@ -70,7 +71,6 @@ namespace TrendNET.WMS.Device.Services
         public static bool Post(string rqURL, string data, out string result, int timeout)
         {
             WaitForPing();
-
             bool success = false;
             string threadResult = null;
             var t = new Thread(new ThreadStart(() =>
@@ -152,7 +152,7 @@ namespace TrendNET.WMS.Device.Services
             {
                 result = "";
 
-                var url = RandomizeURL(settings.RootURL + "/Services/Device/?" + rqURL + "&device=" + device);
+                var url = RandomizeURL(settings.RootURL + "/Services/Device/?" + rqURL + "&device=" + device + "&lang=" + Base.Store.language);
                 var startedAt = DateTime.Now;
                 try
                 {
@@ -227,7 +227,7 @@ namespace TrendNET.WMS.Device.Services
             {
                 result = "";
                 string device_updated = settings.ID;
-                var url = RandomizeURL(settings.RootURL + "/Services/Device/?" + rqURL + "&device=" + device_updated);
+                var url = RandomizeURL(settings.RootURL + "/Services/Device/?" + rqURL + "&device=" + device_updated + "&lang=" + Base.Store.language);
                 var startedAt = DateTime.Now;
                 try
                 {

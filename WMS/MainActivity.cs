@@ -66,7 +66,6 @@ namespace WMS
 
         public object MenuInflaterFinal { get; private set; }
 
-        // Internet connection method.
         public bool IsOnline()
         {
             var cm = (ConnectivityManager)GetSystemService(ConnectivityService);
@@ -217,6 +216,9 @@ namespace WMS
 
         private void SetUpLanguages()
         {
+            ISharedPreferences sharedPreferences = PreferenceManager.GetDefaultSharedPreferences(Application.Context);
+            ISharedPreferencesEditor editor = sharedPreferences.Edit();
+
             // Create a color matrix for the highlight effect
             float[] colorMatrixValues = {
                 2, 0, 0, 0, 0, // Red
@@ -224,20 +226,22 @@ namespace WMS
                 0, 0, 2, 0, 0, // Blue
                 0, 0, 0, 1, 0  // Alpha
             };
+
             ColorMatrix colorMatrix = new ColorMatrix(colorMatrixValues);
             highlightFilter = new ColorMatrixColorFilter(colorMatrix);
             txtVersion.Text = "v."+GetAppVersion();
-            var language = Resources.Configuration.Locale.Country; 
-                    
+            var language = Resources.Configuration.Locale.Country;      
+            
             if(language == "SI")
             {
                 imgSlovenian.SetColorFilter(highlightFilter);
+                Base.Store.language = "sl";
             }
-            else if(language == "EN")
+            else if(language == "US")
             {
                 imgEnglish.SetColorFilter(highlightFilter);
+                Base.Store.language = "en";
             }
-            
         }
 
         private void GetLogo()
@@ -262,7 +266,6 @@ namespace WMS
         {
             if (IsOnline())
             {
-
                 try
                 {
                     LoaderManifest.LoaderManifestLoopStop(this);
