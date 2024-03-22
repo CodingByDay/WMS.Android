@@ -278,7 +278,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
         }
 
 
-        private bool SaveMoveHead2D(NameValueObject data)
+        private bool SaveMoveHead2D(Row data)
         {
             if (!moveHead.GetBool("Saved"))
             {
@@ -286,14 +286,11 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 {
                     moveHead.SetInt("Clerk", Services.UserID());
                     moveHead.SetString("Type", "I");
-                    moveHead.SetString("LinkKey", data.GetString("Key"));
-                    moveHead.SetString("LinkNo", data.GetString("No"));
-                    moveHead.SetString("Document1", data.GetString("Document1"));
-                    moveHead.SetDateTime("Document1Date", data.GetDateTime("Document1Date"));
-                    moveHead.SetString("Note", data.GetString("Note"));
+                    moveHead.SetString("LinkKey", data.StringValue("acKey"));
+                    moveHead.SetString("LinkNo", data.IntValue("anNo").ToString());
                     if (moveHead.GetBool("ByOrder"))
                     {
-                        moveHead.SetString("Receiver", data.GetString("Receiver"));
+                       moveHead.SetString("Receiver", data.StringValue("acSubject"));
                     }
                     string error;
                     var savedMoveHead = Services.SetObject("mh", moveHead, out error);
@@ -319,13 +316,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             {
                 return true;
             }
-        }
-
-
-
-
-
-
+        
         private void ProcessIdent()
         {
             var ident = tbIdent.Text.Trim();
@@ -339,8 +330,6 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
 
                 if (openIdent == null)
                 {
-                    DialogHelper.ShowDialogError(this, this, $"{Resources.GetString(Resource.String.s216)}");
-                    // Toast.MakeText(this, $"{Resources.GetString(Resource.String.s216)}" + error, ToastLength.Long).Show();
                     tbIdent.Text = "";                   
                     tbNaziv.Text = "";
                     tbQty.Text = "";
@@ -409,7 +398,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             else
             {
                 InUseObjects.Invalidate("OpenOrder");
-                lbOrderInfo.Text = $"{Resources.GetString(Resource.String.s36)} (ni postavk)";
+                lbOrderInfo.Text = $"{Resources.GetString(Resource.String.s62)}";
                 tbOrder.Text = "";
                 tbConsignee.Text = "";
                 tbQty.Text = "";
@@ -498,36 +487,45 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             newKey = newKey.Replace("-", "");
             String qty = parser2DCode.netoWeight.ToString();
             String ident = parser2DCode.ident.ToString();
-
+            string errors;
+            openIdent = Services.GetObject("id", ident, out errors);
+            if (openIdent != null)
+            {
+                var convertedIdent = openIdent.GetString("Code");
+                ident = convertedIdent;
+            }
+            else
+            {
+                return;
+            }
             // Get all the order that are from that ident and have the right order number
-            if(!String.IsNullOrEmpty(ident)) {
-                string error;
-                openOrders = Services.GetObjectList("oo", out error, ident + "|" + moveHead.GetString("DocumentType") + "|" + moveHead.GetInt("HeadID"));
-                foreach (NameValueObject obj in openOrders.Items)
+            if (!String.IsNullOrEmpty(ident)) {
+                var parameters = new List<Services.Parameter>();
+                parameters.Add(new Services.Parameter { Name = "acKey", Type = "String", Value = newKey });
+                parameters.Add(new Services.Parameter { Name = "acIdent", Type = "String", Value = ident });
+                string query = $"SELECT * FROM uWMSOrderItemByKeyIn WHERE acKey = @acKey AND acIdent = @acIdent";
+                var resultQuery = Services.GetObjectListBySql(query, parameters);
+                if (resultQuery.Success && resultQuery.Rows.Count > 0)
                 {
-
-                    if (obj.GetString("Key") == newKey)
+                    var row = resultQuery.Rows[0];
+                    tbIdent.Text = ident;
+                    ProcessIdent();
+                    tbOrder.Text = row.StringValue("acKey");
+                    tbConsignee.Text = row.StringValue("acSubject");
+                    tbQty.Text = row.DoubleValue("anQty").ToString();
+                    var deadLine = row.DateTimeValue("adDeliveryDeadline");
+                    tbDeliveryDeadline.Text = deadLine == null ? "" : ((DateTime)deadLine).ToString("dd.MM.yyyy");
+                    intentClass = new Intent(Application.Context, typeof(TakeOverSerialOrSSCCEntry));
+                    intentClass.PutExtra("qty", qty);
+                    intentClass.PutExtra("serial", parser2DCode.charge);
+                    StartActivity(intentClass);
+                    if (SaveMoveHead2D(row))
                     {
-                        tbIdent.Text = ident;
-                        ProcessIdent();
-                        var correctOrder = obj;
-                        tbOrder.Text = correctOrder.GetString("Key");
-                        tbConsignee.Text = correctOrder.GetString("Consignee");
-                        tbQty.Text = correctOrder.GetDouble("OpenQty").ToString(CommonData.GetQtyPicture());
-                        var deadLine = correctOrder.GetDateTime("DeliveryDeadline");
-                        tbDeliveryDeadline.Text = deadLine == null ? "" : ((DateTime)deadLine).ToString("dd.MM.yyyy");
-                        intentClass = new Intent(Application.Context, typeof(TakeOverSerialOrSSCCEntry));
-                        intentClass.PutExtra("qty", qty);
-                        intentClass.PutExtra("serial", parser2DCode.charge);
                         StartActivity(intentClass);
-                        if (SaveMoveHead2D(obj))
-                        {
-                            StartActivity(intentClass);
-                            HelpfulMethods.clearTheStack(this);
-                            Finish();
-                        }
+                        HelpfulMethods.clearTheStack(this);
+                        Finish();
                     }
-                }
+                }            
             }
         }
 
