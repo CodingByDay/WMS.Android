@@ -21,7 +21,7 @@ using TrendNET.WMS.Device.Services;
 using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS
 {
     [Activity(Label = "RecalculateInventory")]
-    public class RecalculateInventory : AppCompatActivity, IBarcodeResult
+    public class RecalculateInventory : CustomBaseActivity, IBarcodeResult
     {
 
         private EditText ident;

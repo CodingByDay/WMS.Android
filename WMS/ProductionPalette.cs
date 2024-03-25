@@ -28,7 +28,7 @@ using Android.Graphics;
 namespace WMS
 {
     [Activity(Label = "ProductionPalette", ScreenOrientation = ScreenOrientation.Portrait)]
-    public class ProductionPalette : AppCompatActivity, IBarcodeResult
+    public class ProductionPalette : CustomBaseActivity, IBarcodeResult
 
     {
         private EditText tbCard;

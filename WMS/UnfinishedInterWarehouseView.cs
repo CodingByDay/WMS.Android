@@ -26,7 +26,7 @@ using Android.Graphics;
 namespace WMS
 {
     [Activity(Label = "UnfinishedInterWarehouseView", ScreenOrientation = ScreenOrientation.Portrait)]
-    public class UnfinishedInterWarehouseView : AppCompatActivity, ISwipeListener
+    public class UnfinishedInterWarehouseView : CustomBaseActivity, ISwipeListener
     {
 
         private TextView lbInfo;
@@ -315,8 +315,6 @@ namespace WMS
                             positions = Services.GetObjectList("mh", out error, "E");
                         }
                          catch (Exception) {
-
-                            var stop = true;
                         
                         }
                         InUseObjects.Set("InterWarehouseHeads", positions);

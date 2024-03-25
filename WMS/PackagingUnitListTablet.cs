@@ -27,7 +27,7 @@ using Android.Graphics;
 namespace WMS
 {
     [Activity(Label = "PackagingUnitListTablet", ScreenOrientation = Android.Content.PM.ScreenOrientation.Landscape)]
-    public class PackagingUnitListTablet : AppCompatActivity
+    public class PackagingUnitListTablet : CustomBaseActivity
 
     {
         private TextView lbInfo;

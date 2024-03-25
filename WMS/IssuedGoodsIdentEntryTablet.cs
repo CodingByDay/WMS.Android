@@ -26,7 +26,7 @@ using Microsoft.AppCenter.Analytics;
 namespace WMS
 {
     [Activity(Label = "IssuedGoodsIdentEntryTablet", ScreenOrientation = Android.Content.PM.ScreenOrientation.Landscape)]
-    public class IssuedGoodsIdentEntryTablet : AppCompatActivity, IBarcodeResult
+    public class IssuedGoodsIdentEntryTablet : CustomBaseActivity, IBarcodeResult
     {
        
         private CustomAutoCompleteTextView tbIdent;

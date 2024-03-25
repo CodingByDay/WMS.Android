@@ -20,7 +20,7 @@ using WebApp = TrendNET.WMS.Device.Services.WebApp;
 using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS
 {
     [Activity(Label = "InventoryOpenDocumentTablet", ScreenOrientation = Android.Content.PM.ScreenOrientation.Landscape)]
-    public class InventoryOpenDocumentTablet : AppCompatActivity
+    public class InventoryOpenDocumentTablet : CustomBaseActivity
     {
         private Spinner cbWarehouse;
         private EditText dtDate;

@@ -23,7 +23,7 @@ using TrendNET.WMS.Device.Services;
 using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS
 {
     [Activity(Label = "PrintingReprintLabelsTablet", ScreenOrientation = Android.Content.PM.ScreenOrientation.Landscape)]
-    public class PrintingReprintLabelsTablet : AppCompatActivity, IBarcodeResult
+    public class PrintingReprintLabelsTablet : CustomBaseActivity, IBarcodeResult
     {
         private EditText tbIdent;
         private EditText tbTitle;

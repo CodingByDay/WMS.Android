@@ -19,7 +19,7 @@ using TrendNET.WMS.Device.Services;
 using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS
 {
     [Activity(Label = "WrappingPallet")]
-    public class WrappingPallet : AppCompatActivity, IBarcodeResult
+    public class WrappingPallet : CustomBaseActivity, IBarcodeResult
     {
         private EditText pallet;
         private Button btConfirm;

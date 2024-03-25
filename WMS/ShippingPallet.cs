@@ -19,7 +19,7 @@ using TrendNET.WMS.Device.Services;
 using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS
 {
     [Activity(Label = "ShippingPallet", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
-    public class ShippingPallet : AppCompatActivity, IBarcodeResult
+    public class ShippingPallet : CustomBaseActivity, IBarcodeResult
     {
         private EditText pallet;
         private EditText machine;

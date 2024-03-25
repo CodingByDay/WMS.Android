@@ -41,7 +41,7 @@ using AndroidX.Core.Content;
 namespace WMS
 {
     [Activity(Label = "WMS", Theme = "@style/AppTheme", MainLauncher = true, Icon = "@drawable/barcode", NoHistory = true)]
-    public class MainActivity : AppCompatActivity
+    public class MainActivity : CustomBaseActivity
     {
         private Dialog popupDialog;
         public static bool isValid;

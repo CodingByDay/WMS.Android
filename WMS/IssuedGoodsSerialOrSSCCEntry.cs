@@ -39,7 +39,7 @@ using Android.Renderscripts;
 namespace WMS
 {
     [Activity(Label = "IssuedGoodsSerialOrSSCCEntry", ScreenOrientation = ScreenOrientation.Portrait)]
-    public class IssuedGoodsSerialOrSSCCEntry : AppCompatActivity, IBarcodeResult
+    public class IssuedGoodsSerialOrSSCCEntry : CustomBaseActivity, IBarcodeResult
     {
         private static bool? checkIssuedOpenQty = null;
         private MorePalletsAdapter adapter;

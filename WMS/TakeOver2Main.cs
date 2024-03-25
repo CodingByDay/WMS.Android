@@ -24,7 +24,7 @@ using TrendNET.WMS.Device.Services;
 using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS
 {
     [Activity(Label = "TakeOver2Main", ScreenOrientation = ScreenOrientation.Portrait)]
-    public class TakeOver2Main : AppCompatActivity, IBarcodeResult
+    public class TakeOver2Main : CustomBaseActivity, IBarcodeResult
     {
         SoundPool soundPool;
         int soundPoolId;

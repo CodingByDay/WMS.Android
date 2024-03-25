@@ -27,7 +27,7 @@ using Android.Speech.Tts;
 using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS
 {
     [Activity(Label = "IssuedGoodsBusinessEventSetupClientPicking", ScreenOrientation = ScreenOrientation.Portrait)]
-    public class IssuedGoodsBusinessEventSetupClientPicking : AppCompatActivity
+    public class IssuedGoodsBusinessEventSetupClientPicking : CustomBaseActivity
     {
         private int initial = 0;
         private CustomAutoCompleteTextView cbDocType;

@@ -36,7 +36,7 @@ using Android.Graphics.Drawables;
 namespace WMS
 {
     [Activity(Label = "IssuedGoodsSerialOrSSCCEntryClientPicking", ScreenOrientation = ScreenOrientation.Portrait)]
-    public class IssuedGoodsSerialOrSSCCEntryClientPicking : AppCompatActivity, IBarcodeResult
+    public class IssuedGoodsSerialOrSSCCEntryClientPicking : CustomBaseActivity, IBarcodeResult
     {
 
         private EditText tbIdent;

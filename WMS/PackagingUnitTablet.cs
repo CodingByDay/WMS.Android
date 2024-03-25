@@ -22,7 +22,7 @@ using WebApp = TrendNET.WMS.Device.Services.WebApp;
 using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS
 {
     [Activity(Label = "PackagingUnitTablet", ScreenOrientation = Android.Content.PM.ScreenOrientation.Landscape)]
-    public class PackagingUnitTablet : AppCompatActivity, IBarcodeResult
+    public class PackagingUnitTablet : CustomBaseActivity, IBarcodeResult
     {
 
         private NameValueObject stock = null;

@@ -22,7 +22,7 @@ using Microsoft.AppCenter.Crashes;
 using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS
 {
     [Activity(Label = "InterWarehouseBusinessEventSetupTablet", ScreenOrientation =Android.Content.PM.ScreenOrientation.Landscape)]
-    public class InterWarehouseBusinessEventSetupTablet : AppCompatActivity
+    public class InterWarehouseBusinessEventSetupTablet : CustomBaseActivity
     {
         private CustomAutoCompleteTextView cbDocType;
         public NameValueObjectList docTypes = null;

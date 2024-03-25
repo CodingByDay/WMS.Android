@@ -26,7 +26,7 @@ using Android.Graphics;
 namespace WMS
 {
     [Activity(Label = "TakeOverEnteredPositionsView", ScreenOrientation = ScreenOrientation.Portrait)]
-    public class TakeOverEnteredPositionsView : AppCompatActivity
+    public class TakeOverEnteredPositionsView : CustomBaseActivity
     {
         private TextView lbInfo;
         private EditText tbIdent; 

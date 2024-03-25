@@ -26,7 +26,7 @@ using Android.Graphics;
 namespace WMS
 {
     [Activity(Label = "InterWarehouseEnteredPositionsView", ScreenOrientation = ScreenOrientation.Portrait)]
-    public class InterWarehouseEnteredPositionsView : AppCompatActivity
+    public class InterWarehouseEnteredPositionsView : CustomBaseActivity
     {
         private EditText tbIdent;
         private EditText tbSSCC;

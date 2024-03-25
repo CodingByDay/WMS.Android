@@ -26,7 +26,7 @@ using Android.Graphics;
 namespace WMS
 {
     [Activity(Label = "ProductionPaletteTablet", ScreenOrientation = Android.Content.PM.ScreenOrientation.Landscape)]
-    public class ProductionPaletteTablet : AppCompatActivity, IBarcodeResult
+    public class ProductionPaletteTablet : CustomBaseActivity, IBarcodeResult
 
     {
         private EditText tbWorkOrder;

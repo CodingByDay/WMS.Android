@@ -16,7 +16,7 @@ using Stream = Android.Media.Stream;
 namespace WMS
 {
     [Activity(Label = "CheckStock", ScreenOrientation = ScreenOrientation.Portrait, NoHistory = true)]
-    public class CheckStock : AppCompatActivity, IBarcodeResult
+    public class CheckStock : CustomBaseActivity, IBarcodeResult
     {
         private CustomAutoCompleteTextView cbWarehouses;
         private CustomAutoCompleteTextView tbLocation;

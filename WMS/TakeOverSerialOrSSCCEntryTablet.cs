@@ -28,7 +28,7 @@ using Android.Graphics;
 namespace WMS
 {
     [Activity(Label = "TakeOverSerialOrSSCCEntryTablet", ScreenOrientation = Android.Content.PM.ScreenOrientation.Landscape)]
-    public class TakeOverSerialOrSSCCEntryTablet : AppCompatActivity, IBarcodeResult
+    public class TakeOverSerialOrSSCCEntryTablet : CustomBaseActivity, IBarcodeResult
     {
         private NameValueObject openIdent = (NameValueObject)InUseObjects.Get("OpenIdent");
         private NameValueObject openOrder = (NameValueObject)InUseObjects.Get("OpenOrder");

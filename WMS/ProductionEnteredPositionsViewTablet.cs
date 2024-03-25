@@ -26,7 +26,7 @@ using Android.Graphics;
 namespace WMS
 {
     [Activity(Label = "ProductionEnteredPositionsViewTablet", ScreenOrientation = Android.Content.PM.ScreenOrientation.Landscape)]
-    public class ProductionEnteredPositionsViewTablet : AppCompatActivity
+    public class ProductionEnteredPositionsViewTablet : CustomBaseActivity
     {
         private TextView lbInfo;
 

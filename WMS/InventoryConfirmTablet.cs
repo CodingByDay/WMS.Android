@@ -20,7 +20,7 @@ using WebApp = TrendNET.WMS.Device.Services.WebApp;
 using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS
 {
     [Activity(Label = "InventoryConfirmTablet", ScreenOrientation = Android.Content.PM.ScreenOrientation.Landscape)]
-    public class InventoryConfirmTablet : AppCompatActivity
+    public class InventoryConfirmTablet : CustomBaseActivity
     {
         private TextView lbInfo;
         private EditText tbWarehouse;

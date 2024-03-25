@@ -15,7 +15,7 @@ using System.Text;
 using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS
 {
     [Activity(Label = "MenuPallets")]
-    public class MenuPallets : AppCompatActivity
+    public class MenuPallets : CustomBaseActivity
     {
         private Button shipped;
         private Button wrapped;

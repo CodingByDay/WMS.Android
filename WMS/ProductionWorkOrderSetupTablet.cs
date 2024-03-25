@@ -22,7 +22,7 @@ using TrendNET.WMS.Device.Services;
 using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS
 {
     [Activity(Label = "ProductionWorkOrderSetupTablet", ScreenOrientation = Android.Content.PM.ScreenOrientation.Landscape)]
-    public class ProductionWorkOrderSetupTablet : AppCompatActivity, IBarcodeResult
+    public class ProductionWorkOrderSetupTablet : CustomBaseActivity, IBarcodeResult
     {
         private NameValueObject moveHead = null;
         private NameValueObject ident = null;

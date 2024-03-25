@@ -22,7 +22,7 @@ using WebApp = TrendNET.WMS.Device.Services.WebApp;
 using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS
 {
     [Activity(Label = "PickingMenu", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
-    public class PickingMenu : AppCompatActivity
+    public class PickingMenu : CustomBaseActivity
     {
         private Button ident;
         private Button order;

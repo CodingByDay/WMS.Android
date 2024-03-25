@@ -15,7 +15,7 @@ using System.Text;
 using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS
 {
     [Activity(Label = "MenuPalletsTablet", ScreenOrientation = Android.Content.PM.ScreenOrientation.Landscape)]
-    public class MenuPalletsTablet : AppCompatActivity
+    public class MenuPalletsTablet : CustomBaseActivity
     {
         private Button shipped;
         private Button wrapped;

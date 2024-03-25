@@ -23,7 +23,7 @@ using TrendNET.WMS.Device.Services;
 using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS
 {
     [Activity(Label = "TakeOverIdentEntryTablet", ScreenOrientation = Android.Content.PM.ScreenOrientation.Landscape)]
-    public class TakeOverIdentEntryTablet : AppCompatActivity, IBarcodeResult, IDialogInterfaceOnClickListener
+    public class TakeOverIdentEntryTablet : CustomBaseActivity, IBarcodeResult, IDialogInterfaceOnClickListener
 
     {
         private int displayedPosition;

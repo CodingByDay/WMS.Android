@@ -20,7 +20,7 @@ using TrendNET.WMS.Device.Services;
 using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS
 {
     [Activity(Label = "InventoryPrint", ScreenOrientation = ScreenOrientation.Portrait)]
-    public class InventoryPrint : AppCompatActivity, IBarcodeResult
+    public class InventoryPrint : CustomBaseActivity, IBarcodeResult
     {
         private Spinner cbWarehouse;
         private EditText tbLocation;

@@ -12,7 +12,7 @@ using System.Text;
 using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS
 {
     [Activity(Label = "Dashboard")]
-    public class Dashboard : AppCompatActivity
+    public class Dashboard : CustomBaseActivity
     {
         protected override void OnCreate(Bundle savedInstanceState)
         {

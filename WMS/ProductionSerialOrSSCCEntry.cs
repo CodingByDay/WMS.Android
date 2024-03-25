@@ -28,7 +28,7 @@ using Android.Graphics;
 namespace WMS
 {
     [Activity(Label = "ProductionSerialOrSSCCEntry", ScreenOrientation = ScreenOrientation.Portrait)]
-    public class ProductionSerialOrSSCCEntry : AppCompatActivity, IBarcodeResult
+    public class ProductionSerialOrSSCCEntry : CustomBaseActivity, IBarcodeResult
     {
         private NameValueObject moveHead = (NameValueObject)InUseObjects.Get("MoveHead");
         private NameValueObject moveItem = (NameValueObject)InUseObjects.Get("MoveItem");

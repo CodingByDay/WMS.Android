@@ -30,7 +30,7 @@ using Android.Graphics;
 namespace WMS
 {
     [Activity(Label = "UnfinishedTakeoversViewTablet", ScreenOrientation = Android.Content.PM.ScreenOrientation.Landscape)]
-    public class UnfinishedTakeoversViewTablet : AppCompatActivity, INotifyPropertyChanged, ISwipeListener
+    public class UnfinishedTakeoversViewTablet : CustomBaseActivity, INotifyPropertyChanged, ISwipeListener
     {
         private EditText tbBusEvent;
         private EditText tbOrder;

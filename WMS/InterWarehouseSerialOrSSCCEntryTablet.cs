@@ -33,7 +33,7 @@ using Android.Graphics;
 namespace WMS
 {
     [Activity(Label = "InterWarehouseSerialOrSSCCEntryTablet", ScreenOrientation = Android.Content.PM.ScreenOrientation.Landscape)]
-    public class InterWarehouseSerialOrSSCCEntryTablet : AppCompatActivity
+    public class InterWarehouseSerialOrSSCCEntryTablet : CustomBaseActivity
     {
         public string barcode;
         // Definitions

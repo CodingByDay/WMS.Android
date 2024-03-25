@@ -20,7 +20,7 @@ using AlertDialog = Android.App.AlertDialog;
 namespace WMS
 {
     [Activity(Label = "WrappingPalletTablet")]
-    public class WrappingPalletTablet : AppCompatActivity, IBarcodeResult
+    public class WrappingPalletTablet : CustomBaseActivity, IBarcodeResult
     {
         private EditText pallet;
         private Button btConfirm;

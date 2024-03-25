@@ -19,7 +19,7 @@ using Stream = Android.Media.Stream;
 namespace WMS
 {
     [Activity(Label = "CheckStockTablet", ScreenOrientation = Android.Content.PM.ScreenOrientation.Landscape)]
-    public class CheckStockTablet : AppCompatActivity, IBarcodeResult
+    public class CheckStockTablet : CustomBaseActivity, IBarcodeResult
     {
         private CustomAutoCompleteTextView cbWarehouses;
         private CustomAutoCompleteTextView tbLocation;

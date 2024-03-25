@@ -29,7 +29,7 @@ using Android.Graphics;
 namespace WMS
 {
     [Activity(Label = "IssuedGoodsSerialOrSSCCEntryTablet", ScreenOrientation = Android.Content.PM.ScreenOrientation.Landscape)]
-    public class IssuedGoodsSerialOrSSCCEntryTablet : AppCompatActivity, IBarcodeResult
+    public class IssuedGoodsSerialOrSSCCEntryTablet : CustomBaseActivity, IBarcodeResult
     {
         private EditText tbIdent;
         private EditText tbSSCC;

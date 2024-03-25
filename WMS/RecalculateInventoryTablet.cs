@@ -19,7 +19,7 @@ using TrendNET.WMS.Device.Services;
 using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS
 {
     [Activity(Label = "RecalculateInventoryTablet", ScreenOrientation = Android.Content.PM.ScreenOrientation.Landscape)]
-    public class RecalculateInventoryTablet : AppCompatActivity, IBarcodeResult
+    public class RecalculateInventoryTablet : CustomBaseActivity, IBarcodeResult
     {
 
         private EditText ident;

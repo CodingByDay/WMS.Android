@@ -26,7 +26,7 @@ using Android.Graphics;
 namespace WMS
 {
     [Activity(Label = "UnfinishedProductionView", ScreenOrientation = ScreenOrientation.Portrait)]
-    public class UnfinishedProductionView : AppCompatActivity, ISwipeListener
+    public class UnfinishedProductionView : CustomBaseActivity, ISwipeListener
 
 
 

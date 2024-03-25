@@ -27,7 +27,7 @@ using Microsoft.AppCenter.Analytics;
 namespace WMS
 {
     [Activity(Label = "IssuedGoodsIdentEntry", ScreenOrientation = ScreenOrientation.Portrait)]
-    public class IssuedGoodsIdentEntry : AppCompatActivity, IBarcodeResult
+    public class IssuedGoodsIdentEntry : CustomBaseActivity, IBarcodeResult
     {
         private CustomAutoCompleteTextView tbIdent;
         private EditText tbNaziv;

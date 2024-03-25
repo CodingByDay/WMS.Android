@@ -20,7 +20,7 @@ using WMS.Caching;
 using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS
 {
     [Activity(Label = "MainMenuTablet", ScreenOrientation = Android.Content.PM.ScreenOrientation.Landscape)]
-    public class MainMenuTablet : AppCompatActivity
+    public class MainMenuTablet : CustomBaseActivity
     {
 
         public static string IDdevice;

@@ -16,14 +16,11 @@ using Android.Content.PM;
 using WMS.App;
 using Android.Net;
 using Microsoft.AppCenter.Crashes;
-/// <summary>
-/// 
-/// </summary>
 
 using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS
 {
     [Activity(Label = "InterWarehouseBusinessEventSetup", ScreenOrientation = ScreenOrientation.Portrait)]
-    public class InterWarehouseBusinessEventSetup : AppCompatActivity
+    public class InterWarehouseBusinessEventSetup : CustomBaseActivity
     {
         private CustomAutoCompleteTextView cbDocType;
         public NameValueObjectList docTypes = null;
@@ -63,7 +60,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             cbDocType = FindViewById<CustomAutoCompleteTextView>(Resource.Id.cbDocType);
             cbIssueWH = FindViewById<CustomAutoCompleteTextView>(Resource.Id.cbIssueWH);
             cbReceiveWH = FindViewById<CustomAutoCompleteTextView>(Resource.Id.cbRecceiveWH);
-            objectDocType.Add(new ComboBoxItem { ID = "Default", Text = "Izberite poslovni dogodek." });
+            objectDocType.Add(new ComboBoxItem { ID = "Default", Text = Resources.GetString(Resource.String.s261) });
             docTypes = CommonData.ListDocTypes("E|");
             docTypes.Items.ForEach(dt =>
             {        
@@ -183,7 +180,6 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
         {
             if (IsOnline())
             {
-
                 try
                 {
                     LoaderManifest.LoaderManifestLoopStop(this);
@@ -210,8 +206,6 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                         Confirm_Click(this, null);
                     }
                     break;
-                // return true;
-
                 case Keycode.F8:
 
                     Logout_Click(this, null);
@@ -306,10 +300,6 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             }   
         }
         
-
-
-
-
         private void CbReceiveWH_ItemSelected(object sender, AdapterView.ItemSelectedEventArgs e)
         {
             Spinner spinner = (Spinner)sender;
@@ -319,8 +309,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
         private void CbIssueWH_ItemSelected(object sender, AdapterView.ItemSelectedEventArgs e)
         {
             Spinner spinner = (Spinner)sender;            
-                temporaryPositionIssue = e.Position;
-            
+                temporaryPositionIssue = e.Position;       
         }
 
         private void CbDocType_ItemSelected(object sender, AdapterView.ItemSelectedEventArgs e)

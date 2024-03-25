@@ -29,7 +29,7 @@ using Android.Graphics;
 namespace WMS
 {
     [Activity(Label = "TakeOverSerialOrSSCCEntry", ScreenOrientation = ScreenOrientation.Portrait)]
-    public class TakeOverSerialOrSSCCEntry : AppCompatActivity, IBarcodeResult
+    public class TakeOverSerialOrSSCCEntry : CustomBaseActivity, IBarcodeResult
     {
         private NameValueObject openIdent = (NameValueObject)InUseObjects.Get("OpenIdent");
         private NameValueObject openOrder = (NameValueObject)InUseObjects.Get("OpenOrder");

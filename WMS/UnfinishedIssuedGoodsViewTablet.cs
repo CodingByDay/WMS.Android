@@ -25,7 +25,7 @@ using Android.Graphics;
 namespace WMS
 {
     [Activity(Label = "UnfinishedIssuedGoodsViewTablet", ScreenOrientation = Android.Content.PM.ScreenOrientation.Landscape)]
-    public class UnfinishedIssuedGoodsViewTablet : AppCompatActivity, ISwipeListener
+    public class UnfinishedIssuedGoodsViewTablet : CustomBaseActivity, ISwipeListener
     {
 
         private TextView lbInfo;

@@ -30,7 +30,7 @@ using Android.Graphics;
 namespace WMS
 {
     [Activity(Label = "ProductionSerialOrSSCCEntryTablet", ScreenOrientation = Android.Content.PM.ScreenOrientation.Landscape)]
-    public class ProductionSerialOrSSCCEntryTablet : AppCompatActivity, IBarcodeResult
+    public class ProductionSerialOrSSCCEntryTablet : CustomBaseActivity, IBarcodeResult
     {
         private NameValueObject moveHead = (NameValueObject)InUseObjects.Get("MoveHead");
         private NameValueObject moveItem = (NameValueObject)InUseObjects.Get("MoveItem");

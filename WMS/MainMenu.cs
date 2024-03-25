@@ -28,7 +28,7 @@ using Android.Graphics;
 namespace WMS
 {
     [Activity(Label = "MainMenu", ScreenOrientation = ScreenOrientation.Portrait)]
-    public class MainMenu : AppCompatActivity
+    public class MainMenu : CustomBaseActivity
     {
         private List<Button> buttons = new List<Button>();
         public static string IDdevice;

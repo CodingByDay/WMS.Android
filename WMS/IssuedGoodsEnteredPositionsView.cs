@@ -27,7 +27,7 @@ using Android.Graphics;
 namespace WMS
 {
     [Activity(Label = "IssuedGoodsEnteredPositionsView", ScreenOrientation = ScreenOrientation.Portrait)]
-    public class IssuedGoodsEnteredPositionsView : AppCompatActivity
+    public class IssuedGoodsEnteredPositionsView : CustomBaseActivity
     {
         private int displayedPosition = 0;
         private NameValueObject moveHead = (NameValueObject)InUseObjects.Get("MoveHead");

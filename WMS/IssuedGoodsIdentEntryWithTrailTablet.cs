@@ -23,7 +23,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
 
 
     [Activity(Label = "IssuedGoodsIdentEntryWithTrailTablet", ScreenOrientation = Android.Content.PM.ScreenOrientation.Landscape)]
-    public class IssuedGoodsIdentEntryWithTrailTablet : AppCompatActivity, IBarcodeResult
+    public class IssuedGoodsIdentEntryWithTrailTablet : CustomBaseActivity, IBarcodeResult
     {
 
         private NameValueObject moveHead = (NameValueObject)InUseObjects.Get("MoveHead");

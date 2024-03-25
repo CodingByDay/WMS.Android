@@ -32,7 +32,7 @@ using Android.Graphics;
 namespace WMS
 {
     [Activity(Label = "InterWarehouseSerialOrSSCCEntry", ScreenOrientation = ScreenOrientation.Portrait)]
-    public class InterWarehouseSerialOrSSCCEntry : AppCompatActivity, IBarcodeResult
+    public class InterWarehouseSerialOrSSCCEntry : CustomBaseActivity, IBarcodeResult
     {
         public string barcode;
         private EditText tbIdent;

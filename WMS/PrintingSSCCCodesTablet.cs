@@ -19,7 +19,7 @@ using TrendNET.WMS.Core.Data;
 using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS
 {
     [Activity(Label = "PrintingSSCCCodesTablet", ScreenOrientation = Android.Content.PM.ScreenOrientation.Landscape)]
-    public class PrintingSSCCCodesTablet : AppCompatActivity
+    public class PrintingSSCCCodesTablet : CustomBaseActivity
     {
         private EditText tbNum;
         private Button button1;

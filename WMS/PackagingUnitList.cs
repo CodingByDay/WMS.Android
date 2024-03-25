@@ -27,7 +27,7 @@ using Android.Graphics;
 namespace WMS
 {
     [Activity(Label = "PackagingUnitList")]
-    public class PackagingUnitList : AppCompatActivity
+    public class PackagingUnitList : CustomBaseActivity
 
     {
         private TextView lbInfo;

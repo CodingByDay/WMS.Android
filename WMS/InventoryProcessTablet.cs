@@ -24,7 +24,7 @@ using WebApp = TrendNET.WMS.Device.Services.WebApp;
 using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS
 {
     [Activity(Label = "InventoryProcessTablet", ScreenOrientation = Android.Content.PM.ScreenOrientation.Landscape)]
-    public class InventoryProcessTablet : AppCompatActivity, IBarcodeResult
+    public class InventoryProcessTablet : CustomBaseActivity, IBarcodeResult
     {
         private Spinner cbWarehouse;
         private EditText tbLocation;

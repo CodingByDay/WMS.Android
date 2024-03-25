@@ -22,7 +22,7 @@ using WebApp = TrendNET.WMS.Device.Services.WebApp;
 using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS
 {
     [Activity(Label = "RapidTakeoverPhone", ScreenOrientation = ScreenOrientation.Portrait)]
-    public class RapidTakeoverPhone : AppCompatActivity, IBarcodeResult
+    public class RapidTakeoverPhone : CustomBaseActivity, IBarcodeResult
     {
         private EditText tbSSCC;
         private Spinner cbWarehouses;

@@ -20,7 +20,7 @@ using WMS.Printing;
 using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS
 {
     [Activity(Label = "InventoryPrintTablet", ScreenOrientation = Android.Content.PM.ScreenOrientation.Landscape)]
-    public class InventoryPrintTablet : AppCompatActivity, IBarcodeResult
+    public class InventoryPrintTablet : CustomBaseActivity, IBarcodeResult
     {
         private Spinner cbWarehouse;
         private EditText tbLocation;

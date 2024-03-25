@@ -21,7 +21,7 @@ using AlertDialog = Android.App.AlertDialog;
 namespace WMS
 {
     [Activity(Label = "TakeOverBusinessEventSetup", ScreenOrientation = ScreenOrientation.Portrait)]
-    public class TakeOverBusinessEventSetup : AppCompatActivity
+    public class TakeOverBusinessEventSetup : CustomBaseActivity
     {
         private CustomAutoCompleteTextView cbDocType;
         private CustomAutoCompleteTextView cbWarehouse;

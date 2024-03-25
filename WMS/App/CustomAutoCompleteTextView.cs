@@ -44,7 +44,7 @@ public class CustomAutoCompleteTextView : AutoCompleteTextView
         {
             if (e.Event.Action == Android.Views.MotionEventActions.Up)
             {
-                // Show the dropdown
+                ShowDropDown();
                 ShowKeyboard();
                 RequestFocus();
                 Handler handler = new Handler();
@@ -56,6 +56,8 @@ public class CustomAutoCompleteTextView : AutoCompleteTextView
             }
         };
     }
+
+   
 
     public void ShowKeyboard()
     {

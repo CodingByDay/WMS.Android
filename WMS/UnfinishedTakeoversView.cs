@@ -28,7 +28,7 @@ using Android.Graphics.Drawables;
 namespace WMS
 {
     [Activity(Label = "UnfinishedTakeoversView", ScreenOrientation = ScreenOrientation.Portrait)]
-    public class UnfinishedTakeoversView : AppCompatActivity, ISwipeListener
+    public class UnfinishedTakeoversView : CustomBaseActivity, ISwipeListener
     {
         private EditText tbBusEvent;
         private EditText tbOrder;

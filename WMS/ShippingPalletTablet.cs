@@ -19,7 +19,7 @@ using TrendNET.WMS.Device.Services;
 using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS
 {
     [Activity(Label = "ShippingPalletTablet")]
-    public class ShippingPalletTablet : AppCompatActivity, IBarcodeResult
+    public class ShippingPalletTablet : CustomBaseActivity, IBarcodeResult
     {
         private EditText pallet;
         private EditText machine;

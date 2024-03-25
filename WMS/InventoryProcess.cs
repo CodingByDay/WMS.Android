@@ -35,7 +35,7 @@ using AlertDialog = Android.App.AlertDialog;
 namespace WMS
 {
     [Activity(Label = "InventoryProcess", ScreenOrientation = ScreenOrientation.Portrait)]
-    public class InventoryProcess : AppCompatActivity, IBarcodeResult
+    public class InventoryProcess : CustomBaseActivity, IBarcodeResult
     {
         private Spinner cbWarehouse;
         private EditText tbLocation;

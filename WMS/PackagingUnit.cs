@@ -26,7 +26,7 @@ using AndroidX.AppCompat.App;
 namespace WMS
 {
     [Activity(Label = "PackagingUnit", ScreenOrientation = ScreenOrientation.Portrait)]
-    public class PackagingUnit : AppCompatActivity, IBarcodeResult
+    public class PackagingUnit : CustomBaseActivity, IBarcodeResult
     {
 
         private NameValueObject stock = null;

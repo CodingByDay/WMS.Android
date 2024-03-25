@@ -5,7 +5,7 @@ using WMS.App;
 namespace WMS
 {
     [Activity(Label = "choiceProduction")]
-    public class Choice : AppCompatActivity
+    public class Choice : CustomBaseActivity
     {
         private Button production;
         private Button rapid;

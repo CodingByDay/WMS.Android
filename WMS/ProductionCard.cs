@@ -27,7 +27,7 @@ using Android.Graphics;
 namespace WMS
 {
     [Activity(Label = "ProductionCard", ScreenOrientation = ScreenOrientation.Portrait)]
-    public class ProductionCard : AppCompatActivity
+    public class ProductionCard : CustomBaseActivity
     {
         private EditText tbWorkOrder;
         private EditText tbIdent;

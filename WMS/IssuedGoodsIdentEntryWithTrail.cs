@@ -37,7 +37,7 @@ namespace WMS
 
 
     [Activity(Label = "IssuedGoodsIdentEntryWithTrail")]
-    public class IssuedGoodsIdentEntryWithTrail : AppCompatActivity, IBarcodeResult
+    public class IssuedGoodsIdentEntryWithTrail : CustomBaseActivity, IBarcodeResult
     {
 
         private NameValueObject moveHead = (NameValueObject)InUseObjects.Get("MoveHead");

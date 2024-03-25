@@ -22,7 +22,7 @@ using AlertDialog = Android.App.AlertDialog;
 namespace WMS
 {
     [Activity(Label = "Settings", WindowSoftInputMode = SoftInput.AdjustResize)]
-    public class Settings : AppCompatActivity
+    public class Settings : CustomBaseActivity
     {
         private EditText ID;
         private EditText rootURL;
@@ -47,16 +47,14 @@ namespace WMS
         {
 
             base.OnCreate(savedInstanceState);
-            SetTheme(Resource.Style.AppTheme_NoActionBar);
-            
+            SetTheme(Resource.Style.AppTheme_NoActionBar);           
             SetContentView(Resource.Layout.Settings);
 
-            AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
-            var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
-            _customToolbar.SetNavigationIcon(settings.RootURL + "/Services/Logo");
-            SetSupportActionBar(_customToolbar._toolbar);
-
-            SupportActionBar.SetDisplayShowTitleEnabled(false);
+            // AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
+            // var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
+            // _customToolbar.SetNavigationIcon(settings.RootURL + "/Services/Logo");
+            // SetSupportActionBar(_customToolbar._toolbar);
+            // SupportActionBar.SetDisplayShowTitleEnabled(false);
 
             arrayData.Add($"{Resources.GetString(Resource.String.s319)}");
             arrayData.Add($"{Resources.GetString(Resource.String.s320)}");
@@ -181,7 +179,7 @@ namespace WMS
             App.settings.ID = ID.Text;
             ID.Text = App.settings.ID;
             Toast.MakeText(this, $"{Resources.GetString(Resource.String.settings_saved)}", ToastLength.Long).Show();
-            //deviceURL.Text = App.settings.RootURL
+            // deviceURL.Text = App.settings.RootURL
             StartActivity(typeof(MainActivity));
         }
 

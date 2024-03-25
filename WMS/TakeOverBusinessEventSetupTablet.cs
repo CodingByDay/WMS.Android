@@ -20,7 +20,7 @@ using TrendNET.WMS.Device.Services;
 using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS
 {
     [Activity(Label = "TakeOverBusinessEventSetupTablet", ScreenOrientation = Android.Content.PM.ScreenOrientation.Landscape)]
-    public class TakeOverBusinessEventSetupTablet : AppCompatActivity
+    public class TakeOverBusinessEventSetupTablet : CustomBaseActivity
     {
         private CustomAutoCompleteTextView cbDocType;
         private CustomAutoCompleteTextView cbWarehouse;

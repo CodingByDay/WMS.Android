@@ -18,7 +18,7 @@ using TrendNET.WMS.Device.Services;
 using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS
 {
     [Activity(Label = "InventoryMenu")]
-    public class InventoryMenu : AppCompatActivity
+    public class InventoryMenu : CustomBaseActivity
     {
 
 

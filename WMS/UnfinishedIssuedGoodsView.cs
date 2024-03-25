@@ -28,7 +28,7 @@ using Android.Graphics;
 namespace WMS
 {
     [Activity(Label = "UnfinishedIssuedGoodsView", ScreenOrientation = ScreenOrientation.Portrait)]
-    public class UnfinishedIssuedGoodsView : AppCompatActivity, ISwipeListener
+    public class UnfinishedIssuedGoodsView : CustomBaseActivity, ISwipeListener
     {
     
         private TextView lbInfo;

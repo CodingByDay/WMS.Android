@@ -15,7 +15,7 @@ using Stream = Android.Media.Stream;
 namespace WMS
 {
     [Activity(Label = "ClientPicking", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
-    public class ClientPicking : AppCompatActivity, IBarcodeResult
+    public class ClientPicking : CustomBaseActivity, IBarcodeResult
     {
         private NameValueObject moveHead = (NameValueObject)InUseObjects.Get("MoveHead");
         private NameValueObject openOrder = (NameValueObject)InUseObjects.Get("OpenOrder");

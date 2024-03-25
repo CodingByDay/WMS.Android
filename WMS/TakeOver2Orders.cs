@@ -20,7 +20,7 @@ using TrendNET.WMS.Device.Services;
 using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS
 {
     [Activity(Label = "TakeOver2Orders", ScreenOrientation = ScreenOrientation.Portrait)]
-    public class TakeOver2Orders : AppCompatActivity
+    public class TakeOver2Orders : CustomBaseActivity
     {
         private EditText tbIdent;
         private EditText tbNaziv;

@@ -22,7 +22,7 @@ using Android.Graphics;
 namespace WMS
 {
     [Activity(Label = "UnfinishedInterWarehouseViewTablet", ScreenOrientation = Android.Content.PM.ScreenOrientation.Landscape)]
-    public class UnfinishedInterWarehouseViewTablet : AppCompatActivity, ISwipeListener
+    public class UnfinishedInterWarehouseViewTablet : CustomBaseActivity, ISwipeListener
 
     {
 

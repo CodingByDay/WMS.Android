@@ -25,7 +25,7 @@ using Android.Graphics;
 namespace WMS
 {
     [Activity(Label = "PackagingEnteredPositionsViewTablet", ScreenOrientation = Android.Content.PM.ScreenOrientation.Landscape)]
-    public class PackagingEnteredPositionsViewTablet : AppCompatActivity
+    public class PackagingEnteredPositionsViewTablet : CustomBaseActivity
 
     {
         private Dialog popupDialog;

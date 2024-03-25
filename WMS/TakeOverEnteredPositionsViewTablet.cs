@@ -25,7 +25,7 @@ using Android.Graphics;
 namespace WMS
 {
     [Activity(Label = "TakeOverEnteredPositionsViewTablet", ScreenOrientation = Android.Content.PM.ScreenOrientation.Landscape)]
-    public class TakeOverEnteredPositionsViewTablet : AppCompatActivity
+    public class TakeOverEnteredPositionsViewTablet : CustomBaseActivity
     {
         private TextView lbInfo;
 

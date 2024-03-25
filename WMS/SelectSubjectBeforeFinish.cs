@@ -20,7 +20,7 @@ using TrendNET.WMS.Device.Services;
 using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS
 {
     [Activity(Label = "SelectSubjectBeforeFinish", ScreenOrientation = ScreenOrientation.Portrait)]
-    public class SelectSubjectBeforeFinish : AppCompatActivity
+    public class SelectSubjectBeforeFinish : CustomBaseActivity
     {
         private int HeadID;
         private Spinner cbSubject;
