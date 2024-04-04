@@ -36,25 +36,20 @@ namespace WMS
         private NameValueObject moveHead = (NameValueObject)InUseObjects.Get("MoveHead");
         private NameValueObject moveItem = (NameValueObject)InUseObjects.Get("MoveItem");
         private NameValueObjectList docTypes = null;
-        // Janko Jovičić 2021 
         private bool editMode = false;
         private bool isPackaging = false;
-        // Components definitions.
         private EditText tbIdent;
         private EditText tbSSCC;
         private EditText tbSerialNum;
         private EditText tbLocation;
         private EditText tbPacking;
-        private EditText tbUnits;
-        // Button definitions.
         private Button btSaveOrUpdate;
-        private Button button4;
-        private Button button6;
-        private Button button5;
-        private Button button7;
+        private Button btCreate;
+        private Button btFinish;
+        private Button btOverview;
+        private Button btBack;
         private TextView lbQty;
         private TextView lbUnits;
-        private Button button1;
         private List<string> locations = new List<string>();
         SoundPool soundPool;
         int soundPoolId;
@@ -69,37 +64,34 @@ namespace WMS
             _customToolbar.SetNavigationIcon(settings.RootURL + "/Services/Logo");
             SetSupportActionBar(_customToolbar._toolbar);
             SupportActionBar.SetDisplayShowTitleEnabled(false);
-            // Update the order // 
             await Update();
-
             tbIdent = FindViewById<EditText>(Resource.Id.tbIdent);
             tbSSCC = FindViewById<EditText>(Resource.Id.tbSSCC);
             tbSerialNum = FindViewById<EditText>(Resource.Id.tbSerialNum);
             tbLocation = FindViewById<EditText>(Resource.Id.tbLocation);
             tbPacking = FindViewById<EditText>(Resource.Id.tbPacking);
-            tbUnits = FindViewById<EditText>(Resource.Id.tbUnits);
             tbIdent.InputType = Android.Text.InputTypes.ClassNumber;
             tbSSCC.InputType = Android.Text.InputTypes.ClassNumber;
             tbLocation.InputType = Android.Text.InputTypes.ClassNumber;
-            tbUnits.InputType = Android.Text.InputTypes.ClassNumber;
             btSaveOrUpdate = FindViewById<Button>(Resource.Id.btSaveOrUpdate);
-            button4 = FindViewById<Button>(Resource.Id.button4);
-            button6 = FindViewById<Button>(Resource.Id.button6);
-            button5 = FindViewById<Button>(Resource.Id.button5);
-            button7 = FindViewById<Button>(Resource.Id.button7);
+            btCreate = FindViewById<Button>(Resource.Id.btCreate);
+            btFinish = FindViewById<Button>(Resource.Id.btFinish);
+            btOverview = FindViewById<Button>(Resource.Id.btOverview);
+            btBack = FindViewById<Button>(Resource.Id.btBack);
             lbQty = FindViewById<TextView>(Resource.Id.lbQty);
             lbUnits = FindViewById<TextView>(Resource.Id.lbUnits);
-            button1 = FindViewById<Button>(Resource.Id.button1);
-            button1.Click += Button1_Click;
+
             soundPool = new SoundPool(10, Stream.Music, 0);
             soundPoolId = soundPool.Load(this, Resource.Raw.beep, 1);
             Barcode2D barcode2D = new Barcode2D();
             barcode2D.open(this, this);
+
             btSaveOrUpdate.Click += BtSaveOrUpdate_Click;
-            button4.Click += Button4_Click;
-            button6.Click += Button6_Click;
-            button7.Click += Button7_Click;
-            button5.Click += Button5_Click;
+            btCreate.Click += BtCreate_Click;
+            btFinish.Click += BtFinish_Click;
+            btOverview.Click += BtOverview_Click;
+            btBack.Click += BtBack_Click;
+
             tbSerialNum.FocusChange += TbSerialNum_FocusChange;
 
             if (moveHead == null) { throw new ApplicationException("moveHead not known at this point?!"); }
@@ -135,7 +127,6 @@ namespace WMS
                 Crashes.TrackError(ex);
             }
 
-            // Next block.
             docTypes = CommonData.ListDocTypes("I|N");
             tbSSCC.Enabled = openIdent.GetBool("isSSCC");
             tbSerialNum.Enabled = openIdent.GetBool("HasSerialNumber");
@@ -149,12 +140,10 @@ namespace WMS
                 if (CommonData.GetSetting("ShowNumberOfUnitsField") == "1")
                 {
                     tbPacking.Text = moveItem.GetDouble("Packing").ToString();
-                    tbUnits.Text = moveItem.GetDouble("Factor").ToString();
                 }
                 else if (CommonData.GetSetting("ShowMorePrintsField") == "1")
                 {
                     tbPacking.Text = moveItem.GetDouble("Qty").ToString();
-                    tbUnits.Text = moveItem.GetDouble("MorePrints").ToString();
                 }
                 else
                 {
@@ -215,17 +204,7 @@ namespace WMS
                 // SelectNext(tbSSCC);
             } 
 
-            if (string.IsNullOrEmpty(tbUnits.Text.Trim())) { tbUnits.Text = "1"; }
-            if (CommonData.GetSetting("ShowNumberOfUnitsField") == "1")
-            {
-                lbUnits.Visibility = ViewStates.Invisible;
-                tbUnits.Visibility = ViewStates.Invisible;
-            }
-            else if (CommonData.GetSetting("ShowMorePrintsField") == "1")
-            {
-                lbUnits.Visibility = ViewStates.Invisible;
-                tbUnits.Visibility = ViewStates.Invisible;
-            }
+         
             FillRelatedData();
             if(tbLocation.Text=="")
             {
@@ -283,6 +262,44 @@ namespace WMS
                 }
             }
           
+        }
+
+        private void BtBack_Click(object? sender, EventArgs e)
+        {
+            StartActivity(typeof(MainMenu));
+            HelpfulMethods.clearTheStack(this);
+        }
+
+        private void BtOverview_Click(object? sender, EventArgs e)
+        {
+            StartActivity(typeof(TakeOverEnteredPositionsView));
+            HelpfulMethods.clearTheStack(this);
+        }
+
+        private void BtFinish_Click(object? sender, EventArgs e)
+        {
+            popupDialogConfirm = new Dialog(this);
+            popupDialogConfirm.SetContentView(Resource.Layout.Confirmation);
+            popupDialogConfirm.Window.SetSoftInputMode(SoftInput.AdjustResize);
+            popupDialogConfirm.Show();
+            popupDialogConfirm.Window.SetLayout(LayoutParams.MatchParent, LayoutParams.WrapContent);
+            popupDialogConfirm.Window.SetBackgroundDrawable(new ColorDrawable(Color.ParseColor("#081a45")));
+            // Access Popup layout fields like below
+            btnYesConfirm = popupDialogConfirm.FindViewById<Button>(Resource.Id.btnYes);
+            btnNoConfirm = popupDialogConfirm.FindViewById<Button>(Resource.Id.btnNo);
+            btnYesConfirm.Click += BtnYesConfirm_Click;
+            btnNoConfirm.Click += BtnNoConfirm_Click;
+        }
+
+        private void BtCreate_Click(object? sender, EventArgs e)
+        {
+            var resutAsync = SaveMoveItem().Result;
+            if (resutAsync)
+            {
+                StartActivity(typeof(TakeOverIdentEntry));
+                HelpfulMethods.clearTheStack(this);
+
+            }
         }
 
         private async Task Update()
@@ -366,25 +383,7 @@ namespace WMS
             }
         }
 
-        private void Button5_Click(object sender, EventArgs e)
-        {
-            StartActivity(typeof(TakeOverEnteredPositionsView));
-            HelpfulMethods.clearTheStack(this);
-        }
-
-        private void Button1_Click(object sender, EventArgs e)
-        {
-            var qty = tbPacking.Text;
-            if (qty.Trim().StartsWith("-"))
-            {
-                qty = qty.Trim().Substring(1);
-            }
-            else
-            {
-                qty = "-" + qty;
-            }
-            tbPacking.Text = qty;
-        }
+      
 
         private void Sound()
         {
@@ -393,23 +392,6 @@ namespace WMS
 
 
 
-        private void Button7_Click(object sender, EventArgs e)
-        {
-            StartActivity(typeof(MainMenu));
-            HelpfulMethods.clearTheStack(this);
-        }
-
-
-        private async void Button4_Click(object sender, EventArgs e)
-        {
-            var resutAsync = SaveMoveItem().Result;
-            if (resutAsync)
-            {
-                StartActivity(typeof(TakeOverIdentEntry));
-                HelpfulMethods.clearTheStack(this);
-
-            }
-        }
 
 
         private async void BtSaveOrUpdate_Click(object sender, EventArgs e)
@@ -512,23 +494,7 @@ namespace WMS
                 }
             });
         }
-        private async void Button6_Click(object sender, EventArgs e)
-        {
-            popupDialogConfirm = new Dialog(this);
-            popupDialogConfirm.SetContentView(Resource.Layout.Confirmation);
-            popupDialogConfirm.Window.SetSoftInputMode(SoftInput.AdjustResize);
-            popupDialogConfirm.Show();
-            popupDialogConfirm.Window.SetLayout(LayoutParams.MatchParent, LayoutParams.WrapContent);
-            popupDialogConfirm.Window.SetBackgroundDrawable(new ColorDrawable(Color.ParseColor("#081a45")));
-            // Access Popup layout fields like below
-            btnYesConfirm = popupDialogConfirm.FindViewById<Button>(Resource.Id.btnYes);
-            btnNoConfirm = popupDialogConfirm.FindViewById<Button>(Resource.Id.btnNo);
-            btnYesConfirm.Click += BtnYesConfirm_Click;
-            btnNoConfirm.Click += BtnNoConfirm_Click;
-
-           
-        }
-
+       
         private void BtnNoConfirm_Click(object sender, EventArgs e)
         {
             popupDialogConfirm.Dismiss();
@@ -655,48 +621,8 @@ namespace WMS
                 }
             }
 
-            if (string.IsNullOrEmpty(tbUnits.Text.Trim()))
-            {
-                RunOnUiThread(() =>
-                {
-                    string errorWebAppIssued = string.Format($"{Resources.GetString(Resource.String.s270)}");
-                    DialogHelper.ShowDialogError(this, this, errorWebAppIssued);
-                    tbUnits.RequestFocus();
-                });
-        
-                return false;
-            }
-            else
-            {
-                try
-                {
-                    var units = Convert.ToDouble(tbUnits.Text.Trim());
-                    if (units == 0.0)
-                    {
-                        RunOnUiThread(() =>
-                        {
-                            string errorWebAppIssued = string.Format($"{Resources.GetString(Resource.String.s270)}");
-                            DialogHelper.ShowDialogError(this, this, errorWebAppIssued);
-
-                            tbUnits.RequestFocus();
-                        });
-                      
-                        return false;
-                    }
-                }
-                catch (Exception e) {
-
-                    RunOnUiThread(() =>
-                    {
-                        string errorWebAppIssued = string.Format($"{Resources.GetString(Resource.String.s270)}");
-                        DialogHelper.ShowDialogError(this, this, errorWebAppIssued);
-                        tbUnits.RequestFocus();
-                    });
-
-                 
-                    return false;
-                }
-            }
+         
+       
 
             if (!CommonData.IsValidLocation(moveHead.GetString("Wharehouse"), tbLocation.Text.Trim()))
             {
@@ -725,8 +651,8 @@ namespace WMS
                 if (CommonData.GetSetting("ShowNumberOfUnitsField") == "1")
                 {
                     moveItem.SetDouble("Packing", Convert.ToDouble(tbPacking.Text.Trim()));
-                    moveItem.SetDouble("Factor", Convert.ToDouble(tbUnits.Text.Trim()));
-                    moveItem.SetDouble("Qty", Convert.ToDouble(tbUnits.Text.Trim()) * Convert.ToDouble(tbPacking.Text.Trim()));
+                    moveItem.SetDouble("Factor", 1);
+                    moveItem.SetDouble("Qty", 1 * Convert.ToDouble(tbPacking.Text.Trim()));
                     moveItem.SetInt("MorePrints", 0);
                 }
                 else if (CommonData.GetSetting("ShowMorePrintsField") == "1")
@@ -734,7 +660,7 @@ namespace WMS
                     moveItem.SetDouble("Packing", 0.0);
                     moveItem.SetDouble("Factor", 1.0);
                     moveItem.SetDouble("Qty", Convert.ToDouble(tbPacking.Text.Trim()));
-                    moveItem.SetInt("MorePrints", Convert.ToInt32(tbUnits.Text.Trim()));
+                    moveItem.SetInt("MorePrints", 1);
                 }
                 else
                 {
@@ -804,13 +730,8 @@ namespace WMS
         {
             switch (keyCode)
             {
-                // in smartphone
-                case Keycode.F1:
-                    if (button1.Enabled == true)
-                    {
-                        Button1_Click(this, null);
-                    }
-                    break;
+
+
                 // return true;
                 case Keycode.F2:
                     if (btSaveOrUpdate.Enabled == true)
@@ -819,30 +740,30 @@ namespace WMS
                     }
                     break;
                 case Keycode.F3:
-                    if (button4.Enabled == true)
+                    if (btCreate.Enabled == true)
                     {
-                        Button4_Click(this, null);
+                        BtCreate_Click(this, null);
                     }
                     break;
 
                 case Keycode.F4:
-                    if (button6.Enabled == true)
+                    if (btFinish.Enabled == true)
                     {
-                        Button6_Click(this, null);
+                        BtFinish_Click(this, null);
                     }
                     break;
 
                 case Keycode.F5:
-                    if (button5.Enabled == true)
+                    if (btOverview.Enabled == true)
                     {
-                        Button5_Click(this, null);
+                        BtOverview_Click(this, null);
                     }
                     break;
 
                 case Keycode.F8:
-                    if (button7.Enabled == true)
+                    if (btBack.Enabled == true)
                     {
-                        Button7_Click(this, null);
+                        BtBack_Click(this, null);
                     }
                     break;
 
