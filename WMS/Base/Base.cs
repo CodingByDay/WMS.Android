@@ -35,9 +35,11 @@ namespace WMS
         public bool isUpdate { get; set; } = false;
         // Open order object.
         public static Base Store { get; set; }
-        public IssueIdent OpenOrder { get; set; }
+        public OpenOrder OpenOrder { get; set; }
 
         public string language = string.Empty;
+
+        public bool is2DFlow { get; set; } = false;
 
         // Reset method using reflection
         public void ResetValues()

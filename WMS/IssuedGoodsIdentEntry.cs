@@ -46,7 +46,7 @@ namespace WMS
         private int displayedOrder = -1;
         private TextView lbOrderInfo;
         private NameValueObjectList openOrders = (NameValueObjectList)InUseObjects.Get("OpenOrders");
-        private List<IssueIdent> orders = new List<IssueIdent>();
+        private List<OpenOrder> orders = new List<OpenOrder>();
         private List<string> returnList = new List<string>();
         private List<string> identData = new List<string>();
         private CustomAutoCompleteAdapter<string> tbIdentAdapter;
@@ -137,7 +137,7 @@ namespace WMS
                                     
                                     var row = subjects.Rows[i];
 
-                                    orders.Add(new IssueIdent
+                                    orders.Add(new OpenOrder
                                     {
                                         Client = row.StringValue("acSubject"),
                                         Order = row.StringValue("acKey"),

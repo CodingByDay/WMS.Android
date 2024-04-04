@@ -50,7 +50,7 @@ namespace WMS
         private List<string> identData = new List<string>();
         private List<string> savedIdents;
         private CustomAutoCompleteAdapter<string> tbIdentAdapter;
-        private List<IssueIdent> orders = new List<IssueIdent>();
+        private List<OpenOrder> orders = new List<OpenOrder>();
 
         private void Sound()
         {
@@ -137,7 +137,7 @@ namespace WMS
 
                                     var row = subjects.Rows[i];
 
-                                    orders.Add(new IssueIdent
+                                    orders.Add(new OpenOrder
                                     {
                                         Client = row.StringValue("acSubject"),
                                         Order = row.StringValue("acKey"),

@@ -25,7 +25,10 @@ using TrendNET.WMS.Core.Data;
 using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
 
-using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS
+using AndroidX.AppCompat.App;
+using AlertDialog = Android.App.AlertDialog;
+using Microsoft.AppCenter.Analytics;
+namespace WMS
 {
     [Activity(Label = "TakeOverIdentEntry", ScreenOrientation = ScreenOrientation.Portrait)]
     public class TakeOverIdentEntry : CustomBaseActivity, IBarcodeResult
@@ -33,7 +36,6 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
     {
         private NameValueObject moveHead = (NameValueObject)InUseObjects.Get("MoveHead");
         private NameValueObject openIdent = null;
-        private NameValueObjectList openOrders = null;
         private int displayedOrder = -1;
         Button btScan;
         public string barcode;
@@ -55,6 +57,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
         private Intent intentClass;
         private List<string> savedIdents;
         private CustomAutoCompleteAdapter<string> tbIdentAdapter;
+        private List<OpenOrder> orders;
 
         protected async override void OnCreate(Bundle savedInstanceState)
         {
@@ -109,6 +112,10 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             imm.ShowSoftInput(tbIdent, ShowFlags.Forced);
             tbIdent.KeyPress += TbIdent_KeyPress;
             tbIdent.AfterTextChanged += TbIdent_AfterTextChanged;
+
+
+            // Reseting the 2d flag
+            Base.Store.is2DFlow = false;
         }
 
         private void TbIdent_KeyPress(object? sender, View.KeyEventArgs e)
@@ -221,38 +228,33 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
         private void BtNext_Click(object sender, EventArgs e)
         {
             displayedOrder++;
-            if (displayedOrder >= openOrders.Items.Count) { displayedOrder = 0; }
+            if (displayedOrder >= orders.Count)
+            {
+                displayedOrder = 0;
+            }
             FillDisplayedOrderInfo();
         }
 
     
         private bool SaveMoveHead()
         {
+
+            var order = Base.Store.OpenOrder;
+
             if (!moveHead.GetBool("Saved"))
             {     
                 try
                 {
-                    NameValueObject order;
-                    if ((openOrders == null) || (openOrders.Items.Count == 0))
-                    {
-                        order = new NameValueObject("OpenOrder");
-                        InUseObjects.Set("OpenOrder", order);
-                    }
-                    else
-                    {
-                        order = openOrders.Items[displayedOrder];
-                        InUseObjects.Set("OpenOrder", order);
-                    }
+
+
                     moveHead.SetInt("Clerk", Services.UserID());
                     moveHead.SetString("Type", "I");
-                    moveHead.SetString("LinkKey", order.GetString("Key"));
-                    moveHead.SetString("LinkNo", order.GetString("No"));
-                    moveHead.SetString("Document1", order.GetString("Document1"));
-                    moveHead.SetDateTime("Document1Date", order.GetDateTime("Document1Date"));
-                    moveHead.SetString("Note", order.GetString("Note"));
+                    moveHead.SetString("LinkKey", order.Order);
+
+
                     if (moveHead.GetBool("ByOrder"))
                     {
-                        moveHead.SetString("Receiver", order.GetString("Receiver"));
+                        moveHead.SetString("Receiver", order.Client);
                     }
                     string error;
                     var savedMoveHead = Services.SetObject("mh", moveHead, out error);
@@ -331,15 +333,13 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             {
                 string error;
                 openIdent = Services.GetObject("id", ident, out error);
-      
-
-
                 if (openIdent == null)
                 {
-                    tbIdent.Text = "";                   
+                    string SuccessMessage = string.Format($"{Resources.GetString(Resource.String.s229)}" + error);
+                    Toast.MakeText(this, SuccessMessage, ToastLength.Long).Show();
+                    tbIdent.Text = "";
+                    tbIdent.RequestFocus();
                     tbNaziv.Text = "";
-                    tbQty.Text = "";
-                    openOrders = null;
                 }
                 else
                 {
@@ -351,73 +351,97 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                     {
                         if (SaveMoveHead())
                         {
-                            StartActivity(typeof(TakeOverSerialOrSSCCEntry));   
+                            StartActivity(typeof(IssuedGoodsSerialOrSSCCEntry));
+                            Finish();
                         }
                         return;
                     }
                     else
                     {
-                        tbNaziv.Text = openIdent.GetString("Name");               
-                        openOrders = Services.GetObjectList("oo", out error, ident + "|" + moveHead.GetString("DocumentType") + "|" + moveHead.GetInt("HeadID"));
-                        if (openOrders == null)
+                        tbNaziv.Text = openIdent.GetString("Name");
+
+                        var parameters = new List<Services.Parameter>();
+                        string debug = $"SELECT * from uWMSOrderItemByItemTypeWarehouseOut WHERE acIdent = {ident} AND acDocType = {moveHead.GetString("DocumentType")} AND acWarehouse = {moveHead.GetString("Wharehouse")};";
+
+                        parameters.Add(new Services.Parameter { Name = "acIdent", Type = "String", Value = ident });
+                        parameters.Add(new Services.Parameter { Name = "acDocType", Type = "String", Value = moveHead.GetString("DocumentType") });
+                        parameters.Add(new Services.Parameter { Name = "acWarehouse", Type = "String", Value = moveHead.GetString("Wharehouse") });
+
+
+
+
+                        var subjects = Services.GetObjectListBySql($"SELECT * from uWMSOrderItemByItemTypeWarehouseOut WHERE acIdent = @acIdent AND acDocType = @acDocType AND acWarehouse = @acWarehouse ORDER BY acKey, anNo;", parameters);
+
+                        if (!subjects.Success)
                         {
-                            DialogHelper.ShowDialogError(this, this, $"{Resources.GetString(Resource.String.s216)}");
-                            tbIdent.Text = "";                        
-                            tbNaziv.Text = "";
+                            RunOnUiThread(() =>
+                            {
+                                Analytics.TrackEvent(subjects.Error);
+                                return;
+                            });
                         }
                         else
                         {
-                            InUseObjects.Set("openOrders", openOrders);
-                            displayedOrder = 0;
+                            if (subjects.Rows.Count > 0)
+                            {
+                                for (int i = 0; i < subjects.Rows.Count; i++)
+                                {
+
+                                    var row = subjects.Rows[i];
+
+                                    orders.Add(new OpenOrder
+                                    {
+                                        Client = row.StringValue("acSubject"),
+                                        Order = row.StringValue("acKey"),
+                                        Position = (int?)row.IntValue("anNo"),
+                                        Quantity = row.DoubleValue("anQty"),
+                                        Date = row.DateTimeValue("DeliveryDeadline"),
+                                        Ident = row.StringValue("acIdent")
+                                    });
+
+                                }
+
+                                displayedOrder = 0;
+
+
+                            }
                         }
                     }
                 }
                 FillDisplayedOrderInfo();
-            } catch (Exception ex)
-            {
-                Crashes.TrackError(ex);
+                tbIdent.SetSelection(0, tbIdent.Text.Length);
             }
-
+            catch (Exception err)
+            {
+                Crashes.TrackError(err);
+                return;
+            }
         }
         private void FillDisplayedOrderInfo()
         {
-            if ((openIdent != null) && (openOrders != null) && (openOrders.Items.Count > 0))
+            if ((openIdent != null) && (orders != null) && (orders.Count > 0))
             {
 
-                lbOrderInfo.Text = $"{Resources.GetString(Resource.String.s36)} (" + (displayedOrder + 1).ToString() + "/" + openOrders.Items.Count.ToString() + ")";
-                var order = openOrders.Items[displayedOrder];
-                InUseObjects.Set("OpenOrder", order);
-                tbOrder.Text = order.GetString("Key");
-                tbConsignee.Text = order.GetString("Consignee");
-                tbQty.Text = order.GetDouble("OpenQty").ToString(CommonData.GetQtyPicture());
-
-                var deadLine = order.GetDateTime("DeliveryDeadline");
+                lbOrderInfo.Text = $"{Resources.GetString(Resource.String.s36)} (" + (displayedOrder + 1).ToString() + "/" + orders.Count.ToString() + ")";
+                var order = orders.ElementAt(displayedOrder);
+                Base.Store.OpenOrder = order;
+                tbOrder.Text = order.Order + " / " + order.Position;
+                tbConsignee.Text = order.Client;
+                tbQty.Text = order.Quantity.ToString();
+                var deadLine = order.Date;
                 tbDeliveryDeadline.Text = deadLine == null ? "" : ((DateTime)deadLine).ToString("dd.MM.yyyy");
-
                 btNext.Enabled = true;
                 btConfirm.Enabled = true;
-                tbOrder.Enabled = false;
-                tbConsignee.Enabled = false;
-                tbQty.Enabled = false;
-                tbDeliveryDeadline.Enabled = false;
-
-
-                tbIdent.RequestFocus();
-                tbIdent.SelectAll();
             }
             else
             {
-                InUseObjects.Invalidate("OpenOrder");
-                lbOrderInfo.Text = $"{Resources.GetString(Resource.String.s62)}";
+                lbOrderInfo.Text = $"{Resources.GetString(Resource.String.s289)}";
                 tbOrder.Text = "";
                 tbConsignee.Text = "";
                 tbQty.Text = "";
                 tbDeliveryDeadline.Text = "";
                 btNext.Enabled = false;
                 btConfirm.Enabled = false;
-
-                tbIdent.RequestFocus();
-                tbIdent.SelectAll();
 
             }
         }
