@@ -504,6 +504,8 @@ namespace WMS
                     moveItem.SetInt("Clerk", Services.UserID());
                     moveItem.SetString("Location", tbLocation.Text.Trim());
                     moveItem.SetString("Palette", tbPalette.Text.Trim());
+
+
                     string error;
                     moveItem = Services.SetObject("mi", moveItem, out error);
                     if (moveItem != null && error == string.Empty)
@@ -517,6 +519,20 @@ namespace WMS
                             lbQty.Text = $"{Resources.GetString(Resource.String.s155)} ( " + stock.ToString(CommonData.GetQtyPicture()) + " )";
                         });
 
+                        // Check to see if the maximum is already reached.
+                        if(stock <= 0)
+                        {
+                            if (Base.Store.modeIssuing == 2)
+                            {
+                                StartActivity(typeof(IssuedGoodsIdentEntryWithTrail));
+                                Finish();
+                            }
+                            else if (Base.Store.modeIssuing == 1)
+                            {
+                                StartActivity(typeof(IssuedGoodsIdentEntry));
+                                Finish();
+                            }
+                        }
                         
                         RunOnUiThread(() =>
                         {

@@ -82,7 +82,6 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             soundPoolId = soundPool.Load(this, Resource.Raw.beep, 1);
             Barcode2D barcode2D = new Barcode2D();
             barcode2D.open(this, this);
-            tbIdent.FocusChange += TbIdent_FocusChange;
             if (moveHead == null) { throw new ApplicationException("moveHead not known at this point!?"); }
             displayedOrder = 0;
             FillDisplayedOrderInfo();
@@ -90,40 +89,45 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             btConfirm.Click += BtConfirm_Click;
             button4.Click += Button4_Click;
             button5.Click += Button5_Click;
-            tbIdent.RequestFocus();
             ISharedPreferences sharedPreferences = PreferenceManager.GetDefaultSharedPreferences(Application.Context);
             ISharedPreferencesEditor editor = sharedPreferences.Edit();
             string savedIdentsJson = sharedPreferences.GetString("idents", "");
-
 
             if (!string.IsNullOrEmpty(savedIdentsJson))
             {
                 savedIdents = JsonConvert.DeserializeObject<List<string>>(savedIdentsJson);
             }
 
-
-            tbIdent.LongClick += ClearTheFields;
             tbIdentAdapter = new CustomAutoCompleteAdapter<string>(this, Android.Resource.Layout.SimpleDropDownItem1Line, new List<string>());
             tbIdent.Adapter = tbIdentAdapter;
-            tbIdent.TextChanged += (sender, e) =>
-            {
-                string userInput = e.Text.ToString();
-                UpdateSuggestions(userInput);
-            };
-            
-
-            tbIdent.LongClick += ClearTheFields;
             var _broadcastReceiver = new NetworkStatusBroadcastReceiver();
             _broadcastReceiver.ConnectionStatusChanged += OnNetworkStatusChanged;
             Application.Context.RegisterReceiver(_broadcastReceiver,
             new IntentFilter(ConnectivityManager.ConnectivityAction));
-
-
-
-            UpdateSuggestions(string.Empty);
+            // UpdateSuggestions(string.Empty);
             InputMethodManager imm = (InputMethodManager)GetSystemService(Context.InputMethodService);
             imm.ShowSoftInput(tbIdent, ShowFlags.Forced);
+            tbIdent.KeyPress += TbIdent_KeyPress;
+            tbIdent.AfterTextChanged += TbIdent_AfterTextChanged;
         }
+
+        private void TbIdent_KeyPress(object? sender, View.KeyEventArgs e)
+        {
+            if(e.KeyCode == Keycode.Enter && e.Event.Action == KeyEventActions.Down)
+            {
+                e.Handled = true;
+                ProcessIdent();
+            }
+        }
+
+        private void TbIdent_AfterTextChanged(object? sender, Android.Text.AfterTextChangedEventArgs e)
+        {
+            string newText = tbIdent.Text;
+            UpdateSuggestions(newText);
+        }
+
+
+
         public bool IsOnline()
         {
             var cm = (ConnectivityManager)GetSystemService(ConnectivityService);
@@ -169,7 +173,6 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
         }
         private void SpinnerIdent_ItemSelected(object sender, AdapterView.ItemSelectedEventArgs e)
         {
- 
             var item = e.Position;
             var chosen = identData.ElementAt(item);
             if (chosen != "")
@@ -397,6 +400,10 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 tbConsignee.Enabled = false;
                 tbQty.Enabled = false;
                 tbDeliveryDeadline.Enabled = false;
+
+
+                tbIdent.RequestFocus();
+                tbIdent.SelectAll();
             }
             else
             {
@@ -408,6 +415,10 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 tbDeliveryDeadline.Text = "";
                 btNext.Enabled = false;
                 btConfirm.Enabled = false;
+
+                tbIdent.RequestFocus();
+                tbIdent.SelectAll();
+
             }
         }
 
