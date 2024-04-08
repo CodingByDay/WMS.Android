@@ -99,14 +99,13 @@ namespace WMS
         private EditText tbIdent;
         private EditText tbLocation;
         private EditText tbPacking;
-        private EditText tbPalette;
         private EditText tbSerialNum;
         private EditText tbSSCC;
         private EditText tbSSCCpopup;
 
         private string warehouse;
         private List<IssuedGoods> data;
-        private double serialOverflowQuantity;
+        private double serialOverflowQuantity = 0;
 
 
         public static List<IssuedGoods> FilterIssuedGoods(List<IssuedGoods> issuedGoodsList, string acSSCC = null, string acSerialNo = null, string acLocation = null)
@@ -207,21 +206,16 @@ namespace WMS
             SetSupportActionBar(_customToolbar._toolbar);
             SupportActionBar.SetDisplayShowTitleEnabled(false);
             tbIdent = FindViewById<EditText>(Resource.Id.tbIdent);
-
             Window.SetSoftInputMode(Android.Views.SoftInput.AdjustResize);
-
             tbIdent.Enabled = false;
             tbSSCC = FindViewById<EditText>(Resource.Id.tbSSCC);
             tbSerialNum = FindViewById<EditText>(Resource.Id.tbSerialNum);
             tbLocation = FindViewById<EditText>(Resource.Id.tbLocation);
             tbPacking = FindViewById<EditText>(Resource.Id.tbPacking);
-            tbPalette = FindViewById<EditText>(Resource.Id.tbPalette);
             tbIdent.InputType = Android.Text.InputTypes.ClassNumber;
             tbSSCC.InputType = Android.Text.InputTypes.ClassNumber;
             tbLocation.InputType = Android.Text.InputTypes.ClassText;
-            tbPalette.InputType = Android.Text.InputTypes.ClassNumber;
             lbQty = FindViewById<TextView>(Resource.Id.lbQty);
-            lbPalette = FindViewById<TextView>(Resource.Id.lbPalette);
             soundPool = new SoundPool(10, Stream.Music, 0);
             soundPoolId = soundPool.Load(this, Resource.Raw.beep, 1);
             Barcode2D barcode2D = new Barcode2D();
@@ -259,6 +253,7 @@ namespace WMS
 
             // Stop the loader
             LoaderManifest.LoaderManifestLoopStop(this);
+
 
             SetUpUpdate();
         }
@@ -453,7 +448,7 @@ namespace WMS
                     moveItem.SetDouble("Qty", Convert.ToDouble(tbPacking.Text.Trim()));
                     moveItem.SetInt("Clerk", Services.UserID());
                     moveItem.SetString("Location", tbLocation.Text.Trim());
-                    moveItem.SetString("Palette", tbPalette.Text.Trim());
+                    moveItem.SetString("Palette", "1");
 
                     string error;
 
@@ -505,7 +500,7 @@ namespace WMS
                     moveItem.SetDouble("Qty", Convert.ToDouble(tbPacking.Text.Trim()));
                     moveItem.SetInt("Clerk", Services.UserID());
                     moveItem.SetString("Location", tbLocation.Text.Trim());
-                    moveItem.SetString("Palette", tbPalette.Text.Trim());
+                    moveItem.SetString("Palette", "1");
 
 
                     string error;
@@ -782,7 +777,6 @@ namespace WMS
                 tbSerialNum.Text = moveItem.GetString("SerialNo");
                 tbSSCC.Text = moveItem.GetString("SSCC");
                 tbLocation.Text = moveItem.GetString("Location");
-                tbPalette.Text = moveItem.GetString("Palette");
                 tbPacking.Text = moveItem.GetDouble("Qty").ToString();
                 lbQty.Text = $"{Resources.GetString(Resource.String.s155)} ( " + moveItem.GetDouble("Qty").ToString() + " )";
                 btCreateSame.Text = $"{Resources.GetString(Resource.String.s293)}";
@@ -791,7 +785,6 @@ namespace WMS
                 tbSerialNum.Enabled = false;
                 tbSSCC.Enabled = false;
                 tbLocation.Enabled = false;
-                tbPalette.Enabled = false;
             }
             else
             {
@@ -829,11 +822,7 @@ namespace WMS
                 ssccRow.Visibility = ViewStates.Gone;
                 serialRow.Visibility = ViewStates.Gone;
             }
-            if (CommonData.GetSetting("ShowPaletteField") == "1")
-            {
-                lbPalette.Visibility = ViewStates.Visible;
-                tbPalette.Visibility = ViewStates.Visible;
-            }
+
 
         }
 

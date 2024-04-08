@@ -60,6 +60,7 @@ namespace WMS
         private double qtyCheck;
         private double stock;
         private List<Takeover> connectedPositions = new List<Takeover>();
+        private double serialOverflowQuantity = 0;
 
         protected async override void OnCreate(Bundle savedInstanceState)
         {
@@ -170,15 +171,16 @@ namespace WMS
             }
             else
             {
-
-                    // This flow is for idents.
-
-                    var order = Base.Store.OpenOrder;
-                    qtyCheck = order.Quantity ?? 0;
-                    lbQty.Text = $"{Resources.GetString(Resource.String.s155)} ( " + qtyCheck.ToString(CommonData.GetQtyPicture()) + " )";
-                    stock = qtyCheck;
-                    GetConnectedPositions(order.Order, order.Position ?? -1, order.Ident);
                 
+                tbIdent.Text = openIdent.GetString("Code") + " " + openIdent.GetString("Name");
+                // This flow is for idents.
+                var order = Base.Store.OpenOrder;
+                qtyCheck = order.Quantity ?? 0;
+                lbQty.Text = $"{Resources.GetString(Resource.String.s155)} ( " + qtyCheck.ToString(CommonData.GetQtyPicture()) + " )";
+                tbPacking.Text = qtyCheck.ToString();
+                stock = qtyCheck;
+                GetConnectedPositions(order.Order, order.Position ?? -1, order.Ident);
+                                  
             }
 
             isPackaging = openIdent.GetBool("IsPackaging");
@@ -189,18 +191,8 @@ namespace WMS
                 serialRow.Visibility = ViewStates.Gone;
             }
    
-
         }
-        /// <summary>
-        /// Podatke preneseš v masko - kličeš NE isti view ampak vedno "uWMSOrderItemByKeyOut", ker moraš
-        /// tudi pri subjektih zapisati na katero naročilo z pozicijo(acKey in anNo) se vrši izdaja.
-        /// uWMSOrderItemByKeyOut; vhodni parameter acKey varchar(13), anNo int, acIdent varchar(16), acLocation varchar(50);
-        /// izhod: acName varchar(80), acSubject varchar(30), acSerialNo varchar(100), acSSCC varchar(18), anQty decimal (19,6)
-        /// če je zapis 1 potem prikažeš tiste podatke in uporabnik le potrdi
-        /// če je zapisov več si jih shraniš in z dodatnimi vpisi/skeniranji(SSCC ali serijska) "filtriraš" podatke, ko prideš na enega izpolniš vse podatke, uporabnik lahko spremeni količino - v oklepaju je že od vsega začetka vpisan anQty.
-        /// če uporabnik klikne na gumb serijska, se iz seznama pobriše ta vrsitca in maska ostane kot je bila po koncu koraka 4.
-        /// lahko pa enostavno ponoviš klic view-a ki bi že moral imeti zapisane podatke in osvežene, če ne bo kaj težav z asinhronimi klici...
-        ///
+
         /// </summary>
         /// <param name="acKey">Številka naročila</param>
         /// <param name="anNo">Pozicija znotraj naročila</param>
@@ -282,17 +274,185 @@ namespace WMS
 
         }
 
-        private void BtCreate_Click(object? sender, EventArgs e)
+        private async void BtCreate_Click(object? sender, EventArgs e)
         {
+            double parsed;
+            if (double.TryParse(tbPacking.Text, out parsed) && stock >= parsed)
+            {
+                if (!Base.Store.isUpdate)
+                {
+                    await CreateMethodFromStart();
 
+                } else
+                {
+                      // Update flow.
+                double newQty;
+                if (Double.TryParse(tbPacking.Text, out newQty))
+                {
+                    if (newQty > moveItem.GetDouble("Qty"))
+                    {
+                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s291)}", ToastLength.Long).Show();
+                    }
+                    else
+                    {
+                        var parameters = new List<Services.Parameter>();
+                        var tt = moveItem.GetInt("ItemID");
+                        parameters.Add(new Services.Parameter { Name = "anQty", Type = "Decimal", Value = newQty });
+                        parameters.Add(new Services.Parameter { Name = "anItemID", Type = "Int32", Value = moveItem.GetInt("ItemID") });
+                        string debugString = $"UPDATE uWMSMoveItem SET anQty = {newQty} WHERE anIDItem = {moveItem.GetInt("ItemID")}";
+                        var subjects = Services.Update($"UPDATE uWMSMoveItem SET anQty = @anQty WHERE anIDItem = @anItemID;", parameters);
+                        if (!subjects.Success)
+                        {
+                            RunOnUiThread(() =>
+                            {
+                                Analytics.TrackEvent(subjects.Error);
+                                return;
+                            });
+                        }
+                        else
+                        {
+                            StartActivity(typeof(TakeOverEnteredPositionsView));
+                            Finish();
+                        }
+                    }
+                }
+                else
+                {
+                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
+                }
+                }
+            } 
         }
 
-        private void BtSaveOrUpdate_Click(object sender, EventArgs e)
+        private async Task CreateMethodFromStart()
         {
-      
+            await Task.Run(() =>
+            {
+                if (connectedPositions.Count == 1)
+                {
+                    var element = connectedPositions.ElementAt(0);
+                    moveItem = new NameValueObject("MoveItem");
+                    moveItem.SetInt("HeadID", moveHead.GetInt("HeadID"));
+                    moveItem.SetString("LinkKey", element.acKey);
+                    moveItem.SetInt("LinkNo", element.anNo);
+                    moveItem.SetString("Ident", openIdent.GetString("Code"));
+                    moveItem.SetString("SSCC", tbSSCC.Text.Trim());
+                    moveItem.SetString("SerialNo", tbSerialNum.Text.Trim());
+                    moveItem.SetDouble("Packing", Convert.ToDouble(tbPacking.Text.Trim()));
+                    moveItem.SetDouble("Factor", 1);
+                    moveItem.SetDouble("Qty", Convert.ToDouble(tbPacking.Text.Trim()));
+                    moveItem.SetInt("Clerk", Services.UserID());
+                    moveItem.SetString("Location", tbLocation.Text.Trim());
+                    moveItem.SetString("Palette", "1");
+
+                    string error;
+
+                    moveItem = Services.SetObject("mi", moveItem, out error);
+
+                    if (moveItem != null && error == string.Empty)
+                    {
+                        RunOnUiThread(() =>
+                        {
+
+                            StartActivity(typeof(TakeOverIdentEntry));
+                            Finish();
+                          
+                        });
+
+                    }
+                }
+                else
+                {
+                    return;
+                }
+            });
         }
 
+        private async void BtSaveOrUpdate_Click(object sender, EventArgs e)
+        {
+            double parsed;
+            if(double.TryParse(tbPacking.Text, out parsed) && stock>=parsed)
+            {
+                await CreateMethodSame();
+            }
+        }
 
+        private async Task CreateMethodSame()
+        {
+            await Task.Run(() =>
+            {
+                if (connectedPositions.Count == 1)
+                {
+                    var element = connectedPositions.ElementAt(0);
+                    // This solves the problem of updating the item. The problem occurs because of the old way of passing data.
+                    moveItem = new NameValueObject("MoveItem");
+                    moveItem.SetInt("HeadID", moveHead.GetInt("HeadID"));
+                    moveItem.SetString("LinkKey", element.acKey);
+                    moveItem.SetInt("LinkNo", element.anNo);
+                    moveItem.SetString("Ident", openIdent.GetString("Code"));
+                    moveItem.SetString("SSCC", tbSSCC.Text.Trim());
+                    moveItem.SetString("SerialNo", tbSerialNum.Text.Trim());
+                    moveItem.SetDouble("Packing", Convert.ToDouble(tbPacking.Text.Trim()));
+                    moveItem.SetDouble("Factor", 1);
+                    moveItem.SetDouble("Qty", Convert.ToDouble(tbPacking.Text.Trim()));
+                    moveItem.SetInt("Clerk", Services.UserID());
+                    moveItem.SetString("Location", tbLocation.Text.Trim());
+                    moveItem.SetString("Palette", "1");
+
+
+                    string error;
+                    moveItem = Services.SetObject("mi", moveItem, out error);
+                    if (moveItem != null && error == string.Empty)
+                    {
+
+                        serialOverflowQuantity += Convert.ToDouble(tbPacking.Text.Trim());
+                        stock -= serialOverflowQuantity;
+
+                        RunOnUiThread(() =>
+                        {
+                            lbQty.Text = $"{Resources.GetString(Resource.String.s155)} ( " + stock.ToString(CommonData.GetQtyPicture()) + " )";
+                        });
+
+                        // Check to see if the maximum is already reached.
+                        if (stock <= 0)
+                        {
+                         
+                            StartActivity(typeof(TakeOverIdentEntry));
+                            Finish();
+                            
+                        }
+
+                        RunOnUiThread(() =>
+                        {
+                            // Succesfull position creation
+                            if (ssccRow.Visibility == ViewStates.Visible)
+                            {
+                                tbSSCC.Text = string.Empty;
+                                tbSSCC.RequestFocus();
+                            }
+                            if (serialRow.Visibility == ViewStates.Visible)
+                            {
+                                tbSerialNum.Text = string.Empty;
+
+                                if (ssccRow.Visibility == ViewStates.Gone)
+                                {
+                                    tbSerialNum.RequestFocus();
+                                }
+                            }
+
+                            tbLocation.Text = string.Empty;
+                            tbPacking.Text = string.Empty;
+
+                        });
+
+                    }
+                }
+                else
+                {
+                    return;
+                }
+            });
+        }
 
         public bool IsOnline()
         {
