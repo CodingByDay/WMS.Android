@@ -59,7 +59,7 @@ namespace WMS
         private Trail? receivedTrail;
         private double qtyCheck;
         private double stock;
-        private List<Takeover> connectedPositions;
+        private List<Takeover> connectedPositions = new List<Takeover>();
 
         protected async override void OnCreate(Bundle savedInstanceState)
         {
@@ -87,6 +87,7 @@ namespace WMS
             btBack = FindViewById<Button>(Resource.Id.btBack);
             lbQty = FindViewById<TextView>(Resource.Id.lbQty);
             lbUnits = FindViewById<TextView>(Resource.Id.lbUnits);
+            Window.SetSoftInputMode(Android.Views.SoftInput.AdjustResize);
             soundPool = new SoundPool(10, Stream.Music, 0);
             soundPoolId = soundPool.Load(this, Resource.Raw.beep, 1);
             Barcode2D barcode2D = new Barcode2D();

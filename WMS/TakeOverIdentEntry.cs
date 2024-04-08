@@ -57,7 +57,7 @@ namespace WMS
         private Intent intentClass;
         private List<string> savedIdents;
         private CustomAutoCompleteAdapter<string> tbIdentAdapter;
-        private List<OpenOrder> orders;
+        private List<OpenOrder> orders = new List<OpenOrder>();
 
         protected async override void OnCreate(Bundle savedInstanceState)
         {
@@ -361,16 +361,13 @@ namespace WMS
                         tbNaziv.Text = openIdent.GetString("Name");
 
                         var parameters = new List<Services.Parameter>();
+
                         string debug = $"SELECT * from uWMSOrderItemByItemTypeWarehouseOut WHERE acIdent = {ident} AND acDocType = {moveHead.GetString("DocumentType")} AND acWarehouse = {moveHead.GetString("Wharehouse")};";
 
                         parameters.Add(new Services.Parameter { Name = "acIdent", Type = "String", Value = ident });
-                        parameters.Add(new Services.Parameter { Name = "acDocType", Type = "String", Value = moveHead.GetString("DocumentType") });
-                        parameters.Add(new Services.Parameter { Name = "acWarehouse", Type = "String", Value = moveHead.GetString("Wharehouse") });
 
 
-
-
-                        var subjects = Services.GetObjectListBySql($"SELECT * from uWMSOrderItemByItemTypeWarehouseOut WHERE acIdent = @acIdent AND acDocType = @acDocType AND acWarehouse = @acWarehouse ORDER BY acKey, anNo;", parameters);
+                        var subjects = Services.GetObjectListBySql($"SELECT * FROM uWMSOrderItemByKeyIn WHERE acIdent = @acIdent;", parameters);
 
                         if (!subjects.Success)
                         {
@@ -386,24 +383,19 @@ namespace WMS
                             {
                                 for (int i = 0; i < subjects.Rows.Count; i++)
                                 {
-
                                     var row = subjects.Rows[i];
-
                                     orders.Add(new OpenOrder
                                     {
                                         Client = row.StringValue("acSubject"),
                                         Order = row.StringValue("acKey"),
                                         Position = (int?)row.IntValue("anNo"),
                                         Quantity = row.DoubleValue("anQty"),
-                                        Date = row.DateTimeValue("DeliveryDeadline"),
+                                        Date = row.DateTimeValue("adDeliveryDeadline"),
                                         Ident = row.StringValue("acIdent")
                                     });
 
                                 }
-
                                 displayedOrder = 0;
-
-
                             }
                         }
                     }
@@ -432,6 +424,14 @@ namespace WMS
                 tbDeliveryDeadline.Text = deadLine == null ? "" : ((DateTime)deadLine).ToString("dd.MM.yyyy");
                 btNext.Enabled = true;
                 btConfirm.Enabled = true;
+
+
+                btNext.Enabled = true;
+                btConfirm.Enabled = true;
+                tbOrder.Enabled = false;
+                tbConsignee.Enabled = false;
+                tbQty.Enabled = false;
+                tbDeliveryDeadline.Enabled = false;
             }
             else
             {

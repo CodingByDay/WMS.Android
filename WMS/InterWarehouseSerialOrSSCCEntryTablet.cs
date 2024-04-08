@@ -747,10 +747,8 @@ namespace WMS
             tbLocation = FindViewById<EditText>(Resource.Id.tbLocation);
             tbPacking = FindViewById<EditText>(Resource.Id.tbPacking);
             tbUnits = FindViewById<EditText>(Resource.Id.tbUnits);
-
-
             tbSSCC.InputType = Android.Text.InputTypes.ClassNumber;
-  
+            Window.SetSoftInputMode(Android.Views.SoftInput.AdjustResize);
             tbUnits.InputType = Android.Text.InputTypes.ClassNumber;
             listData = FindViewById<ListView>(Resource.Id.listData);
             // labels
@@ -763,7 +761,6 @@ namespace WMS
             wh = new NameValueObject();
             tbIdent.KeyPress += TbIdent_KeyPress;
             tbPacking.KeyPress += TbPacking_KeyPress;
-
             tbPacking.FocusChange += TbPacking_FocusChange;
             button1 = FindViewById<Button>(Resource.Id.button1);
             button3 = FindViewById<Button>(Resource.Id.button3);

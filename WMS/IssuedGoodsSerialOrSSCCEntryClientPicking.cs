@@ -91,6 +91,7 @@ namespace WMS
             _customToolbar.SetNavigationIcon(settings.RootURL + "/Services/Logo");
             SetSupportActionBar(_customToolbar._toolbar);
             SupportActionBar.SetDisplayShowTitleEnabled(false);
+            Window.SetSoftInputMode(Android.Views.SoftInput.AdjustResize);
             tbIdent = FindViewById<EditText>(Resource.Id.tbIdent);
             tbSSCC = FindViewById<EditText>(Resource.Id.tbSSCC);
             tbSerialNum = FindViewById<EditText>(Resource.Id.tbSerialNum);

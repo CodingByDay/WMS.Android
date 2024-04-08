@@ -208,6 +208,8 @@ namespace WMS
             SupportActionBar.SetDisplayShowTitleEnabled(false);
             tbIdent = FindViewById<EditText>(Resource.Id.tbIdent);
 
+            Window.SetSoftInputMode(Android.Views.SoftInput.AdjustResize);
+
             tbIdent.Enabled = false;
             tbSSCC = FindViewById<EditText>(Resource.Id.tbSSCC);
             tbSerialNum = FindViewById<EditText>(Resource.Id.tbSerialNum);
