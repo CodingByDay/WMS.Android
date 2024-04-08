@@ -277,7 +277,7 @@ namespace WMS
         private async void BtCreate_Click(object? sender, EventArgs e)
         {
             double parsed;
-            if (double.TryParse(tbPacking.Text, out parsed) && stock >= parsed)
+            if (double.TryParse(tbPacking.Text, out parsed) && stock >= parsed && dataIsCorrect())
             {
                 if (!Base.Store.isUpdate)
                 {
@@ -285,8 +285,12 @@ namespace WMS
 
                 } else
                 {
-                      // Update flow.
+
+
+                // Update flow. 08.04.2024
+
                 double newQty;
+
                 if (Double.TryParse(tbPacking.Text, out newQty))
                 {
                     if (newQty > moveItem.GetDouble("Qty"))
@@ -316,12 +320,31 @@ namespace WMS
                         }
                     }
                 }
-                else
-                {
-                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
+                    else
+                    {
+                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
+                    }
                 }
-                }
-            } 
+            } else
+            {
+                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
+            }
+        }
+
+        private bool dataIsCorrect()
+        {
+            // TODO: Add a way to check serial numbers
+            string location = tbLocation.Text;
+            string serial = tbSerialNum.Text;
+            string sscc = tbSSCC.Text;
+
+            if (!CommonData.IsValidLocation(moveHead.GetString("Wharehouse"), location))
+            {
+                return false;
+            } else
+            {
+                return true;
+            }
         }
 
         private async Task CreateMethodFromStart()
