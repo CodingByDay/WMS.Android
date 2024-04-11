@@ -367,10 +367,8 @@ namespace WMS
             popupDialogConfirm.SetContentView(Resource.Layout.Confirmation);
             popupDialogConfirm.Window.SetSoftInputMode(SoftInput.AdjustResize);
             popupDialogConfirm.Show();
-
             popupDialogConfirm.Window.SetLayout(LayoutParams.MatchParent, LayoutParams.WrapContent);
             popupDialogConfirm.Window.SetBackgroundDrawable(new ColorDrawable(Color.ParseColor("#081a45")));
-
             // Access Popup layout fields like below
             btnYesConfirm = popupDialogConfirm.FindViewById<Button>(Resource.Id.btnYes);
             btnNoConfirm = popupDialogConfirm.FindViewById<Button>(Resource.Id.btnNo);
@@ -381,15 +379,32 @@ namespace WMS
         private async void BtCreate_Click(object? sender, EventArgs e)
         {
             double parsed;
-            if (double.TryParse(tbPacking.Text, out parsed) && stock >= parsed && dataIsCorrect())
+            if (double.TryParse(tbPacking.Text, out parsed) && stock >= parsed)
             {
+
+                var isCorrectLocation = IsLocationCorrect();
+                if(!isCorrectLocation)
+                {                   
+                    // Nepravilna lokacija za izbrano skladišče
+                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s333)}", ToastLength.Long).Show();
+                    return;
+                }
+
+                var isDuplicatedSerial = IsDuplicatedSerialOrAndSSCC(tbSerialNum.Text ?? string.Empty, tbSSCC.Text ?? string.Empty);
+                if(isDuplicatedSerial)
+                {
+                    // Duplicirana serijska in/ali sscc koda.
+                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s334)}", ToastLength.Long).Show();
+                    return;
+                }
+
                 if (!Base.Store.isUpdate)
                 {
                     await CreateMethodFromStart();
 
                 } else
                 {
-                // Update flow. 08.04.2024
+
                 double newQty;
 
                 if (Double.TryParse(tbPacking.Text, out newQty))
@@ -401,10 +416,8 @@ namespace WMS
                     else
                     {
                         var parameters = new List<Services.Parameter>();
-                        var tt = moveItem.GetInt("ItemID");
                         parameters.Add(new Services.Parameter { Name = "anQty", Type = "Decimal", Value = newQty });
                         parameters.Add(new Services.Parameter { Name = "anItemID", Type = "Int32", Value = moveItem.GetInt("ItemID") });
-                        string debugString = $"UPDATE uWMSMoveItem SET anQty = {newQty} WHERE anIDItem = {moveItem.GetInt("ItemID")}";
                         var subjects = Services.Update($"UPDATE uWMSMoveItem SET anQty = @anQty WHERE anIDItem = @anItemID;", parameters);
                         if (!subjects.Success)
                         {
@@ -432,12 +445,49 @@ namespace WMS
             }
         }
 
-        private bool dataIsCorrect()
+        private bool IsDuplicatedSerialOrAndSSCC(string? serial = null, string? sscc = null)
+        {
+            bool result = false;
+
+
+            string ident = string.Empty;
+    
+            ident = openIdent.GetString("Code");
+            
+
+            var parameters = new List<Services.Parameter>();
+            parameters.Add(new Services.Parameter { Name = "acIdent", Type = "String", Value = ident });
+
+            string sql = "SELECT COUNT(*) AS anResult FROM uWMSMoveItemInClick WHERE acIdent = @acIdent";
+            if (serial != null && serial != string.Empty)
+            {
+                parameters.Add(new Services.Parameter { Name = "acSerialno", Type = "String", Value = serial });
+                sql += " AND acSerialNo = @acSerialno";
+            }
+            if (sscc != null && sscc != string.Empty)
+            {
+                parameters.Add(new Services.Parameter { Name = "acSSCC", Type = "String", Value = sscc });
+                sql += " AND acSSCC = @acSSCC;";
+            }
+
+            var duplicates = Services.GetObjectListBySql(sql, parameters);
+
+            if(duplicates.Success)
+            {
+                int numberRows = (int)(duplicates.Rows[0].IntValue("anResult") ?? 0);
+                if(numberRows>0)
+                {
+                    result = true;
+                }
+            }
+
+            return result;
+        }
+
+        private bool IsLocationCorrect()
         {
             // TODO: Add a way to check serial numbers
             string location = tbLocation.Text;
-            string serial = tbSerialNum.Text;
-            string sscc = tbSSCC.Text;
 
             if (!CommonData.IsValidLocation(moveHead.GetString("Wharehouse"), location))
             {

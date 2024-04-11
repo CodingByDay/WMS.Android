@@ -397,5 +397,8 @@
 
 	<string name="s332">Palette successfully wrapped</string>
 
+	<string name="s333">Incorrect location for the selected warehouse.</string>
+	<string name="s334">Duplicate serial and/or SSCC code.</string>
+
 
 </resources>
