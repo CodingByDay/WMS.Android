@@ -547,6 +547,23 @@ namespace WMS
             double parsed;
             if(double.TryParse(tbPacking.Text, out parsed) && stock>=parsed)
             {
+                var isCorrectLocation = IsLocationCorrect();
+                if (!isCorrectLocation)
+                {
+                    // Nepravilna lokacija za izbrano skladišče
+                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s333)}", ToastLength.Long).Show();
+                    return;
+                }
+
+                var isDuplicatedSerial = IsDuplicatedSerialOrAndSSCC(tbSerialNum.Text ?? string.Empty, tbSSCC.Text ?? string.Empty);
+                if (isDuplicatedSerial)
+                {
+                    // Duplicirana serijska in/ali sscc koda.
+                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s334)}", ToastLength.Long).Show();
+                    return;
+                }
+
+
                 await CreateMethodSame();
             }
         }
