@@ -378,35 +378,42 @@ namespace WMS
 
         private async void BtCreate_Click(object? sender, EventArgs e)
         {
-            double parsed;
-            if (double.TryParse(tbPacking.Text, out parsed) && stock >= parsed)
+            if (!Base.Store.isUpdate)
             {
 
-                var isCorrectLocation = IsLocationCorrect();
-                if(!isCorrectLocation)
-                {                   
-                    // Nepravilna lokacija za izbrano skladišče
-                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s333)}", ToastLength.Long).Show();
-                    return;
-                }
-
-                var isDuplicatedSerial = IsDuplicatedSerialOrAndSSCC(tbSerialNum.Text ?? string.Empty, tbSSCC.Text ?? string.Empty);
-                if(isDuplicatedSerial)
+                double parsed;
+                if (double.TryParse(tbPacking.Text, out parsed) && stock >= parsed)
                 {
-                    // Duplicirana serijska in/ali sscc koda.
-                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s334)}", ToastLength.Long).Show();
-                    return;
-                }
 
-                if (!Base.Store.isUpdate)
-                {
+                    var isCorrectLocation = IsLocationCorrect();
+                    if (!isCorrectLocation)
+                    {
+                        // Nepravilna lokacija za izbrano skladišče
+                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s333)}", ToastLength.Long).Show();
+                        return;
+                    }
+
+                    var isDuplicatedSerial = IsDuplicatedSerialOrAndSSCC(tbSerialNum.Text ?? string.Empty, tbSSCC.Text ?? string.Empty);
+                    if (isDuplicatedSerial)
+                    {
+                        // Duplicirana serijska in/ali sscc koda.
+                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s334)}", ToastLength.Long).Show();
+                        return;
+                    }
+
+
                     await CreateMethodFromStart();
-
-                } else
+                                      
+                }
+                else
                 {
+                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
+                }
 
+            } else
+            {
+                // Update flow.
                 double newQty;
-
                 if (Double.TryParse(tbPacking.Text, out newQty))
                 {
                     if (newQty > moveItem.GetDouble("Qty"))
@@ -416,8 +423,10 @@ namespace WMS
                     else
                     {
                         var parameters = new List<Services.Parameter>();
+                        var tt = moveItem.GetInt("ItemID");
                         parameters.Add(new Services.Parameter { Name = "anQty", Type = "Decimal", Value = newQty });
                         parameters.Add(new Services.Parameter { Name = "anItemID", Type = "Int32", Value = moveItem.GetInt("ItemID") });
+                        string debugString = $"UPDATE uWMSMoveItem SET anQty = {newQty} WHERE anIDItem = {moveItem.GetInt("ItemID")}";
                         var subjects = Services.Update($"UPDATE uWMSMoveItem SET anQty = @anQty WHERE anIDItem = @anItemID;", parameters);
                         if (!subjects.Success)
                         {
@@ -429,19 +438,15 @@ namespace WMS
                         }
                         else
                         {
-                            StartActivity(typeof(TakeOverEnteredPositionsView));
+                            StartActivity(typeof(IssuedGoodsEnteredPositionsView));
                             Finish();
                         }
                     }
                 }
-                    else
-                    {
-                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
-                    }
+                else
+                {
+                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
                 }
-            } else
-            {
-                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
             }
         }
 

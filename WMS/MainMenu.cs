@@ -113,6 +113,12 @@ namespace WMS
             DownloadResources();
 
             Analytics.TrackEvent($"Login from the id-{settings.ID}, url-{settings.RootURL}, version-0.{GetAppVersion()}");
+
+
+            // Reseting the global update variable.
+            Base.Store.isUpdate = true;
+
+
         }
         public string GetAppVersion()
         {

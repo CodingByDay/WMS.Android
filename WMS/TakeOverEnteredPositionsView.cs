@@ -343,6 +343,7 @@ namespace WMS
                 {
                     item.SetString("Ident", openIdent.GetString("Code"));
                     InUseObjects.Set("OpenIdent", openIdent);
+                    Base.Store.isUpdate = true;
                     StartActivity(typeof(TakeOverSerialOrSSCCEntry));
                     HelpfulMethods.clearTheStack(this);
                 }
