@@ -202,7 +202,9 @@ namespace WMS
         private bool SaveMoveHead()
         {
             var order = Base.Store.OpenOrder;
-
+            string key = string.Empty;
+            string client = string.Empty;
+            int no = 0;
 
             if (!moveHead.GetBool("Saved"))
             {
@@ -212,12 +214,20 @@ namespace WMS
 
                     moveHead.SetInt("Clerk", Services.UserID());
                     moveHead.SetString("Type", "P");
-                    moveHead.SetString("LinkKey", order.Order);
-                    moveHead.SetString("LinkNo", order.Position.ToString());
+
+                    if (order != null)
+                    {
+                        key = order.Order;
+                        client = order.Client;
+                        no = order.Position ?? 0;
+                    }
+
+                    moveHead.SetString("LinkKey", key);
+                    moveHead.SetString("LinkNo", no.ToString());
 
                     if (moveHead.GetBool("ByOrder"))
                     {
-                        moveHead.SetString("Receiver", order.Client);
+                        moveHead.SetString("Receiver", client);
                     }
 
                     string error;

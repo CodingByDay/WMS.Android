@@ -176,17 +176,23 @@ namespace WMS
             }
             else
             {
-                
+
                 tbIdent.Text = openIdent.GetString("Code") + " " + openIdent.GetString("Name");
                 // This flow is for idents.
                 var order = Base.Store.OpenOrder;
-                qtyCheck = order.Quantity ?? 0;
-                lbQty.Text = $"{Resources.GetString(Resource.String.s155)} ( " + qtyCheck.ToString(CommonData.GetQtyPicture()) + " )";
-                tbPacking.Text = qtyCheck.ToString();
-                stock = qtyCheck;
-                GetConnectedPositions(order.Order, order.Position ?? -1, order.Ident);
-                tbLocation.Text = CommonData.GetSetting("DefaultPaletteLocation");
-                
+                if (order != null)
+                {
+                    qtyCheck = order.Quantity ?? 0;
+                    lbQty.Text = $"{Resources.GetString(Resource.String.s155)} ( " + qtyCheck.ToString(CommonData.GetQtyPicture()) + " )";
+                    tbPacking.Text = qtyCheck.ToString();
+                    stock = qtyCheck;
+                    GetConnectedPositions(order.Order, order.Position ?? -1, order.Ident);
+                    tbLocation.Text = CommonData.GetSetting("DefaultPaletteLocation");
+                } else
+                {
+                    tbLocation.Text = CommonData.GetSetting("DefaultPaletteLocation");
+                }
+
             }
 
             isPackaging = openIdent.GetBool("IsPackaging");
@@ -197,6 +203,15 @@ namespace WMS
                 serialRow.Visibility = ViewStates.Gone;
             }
    
+        }
+
+
+
+
+        private double CheckStock(string ident, string location, string warehouse, string serial = null, string sscc = null)
+        {
+            // TODO: New view implementation
+            return 0;
         }
 
         /// </summary>
@@ -648,7 +663,6 @@ namespace WMS
         {
             if (IsOnline())
             {
-
                 try
                 {
                     LoaderManifest.LoaderManifestLoopStop(this);
@@ -669,9 +683,59 @@ namespace WMS
             soundPool.Play(soundPoolId, 1, 1, 0, 0, 1);
         }
 
+
+
         public void GetBarcode(string barcode)
         {
-            throw new NotImplementedException();
+            try
+            {
+                if (tbSSCC.HasFocus)
+                {
+                    if (barcode != "Scan fail")
+                    {
+                        Sound();
+
+                        tbSSCC.Text = barcode;
+
+                        if (serialRow.Visibility == ViewStates.Visible)
+                        {
+                            tbSerialNum.RequestFocus();
+                        }
+                        else
+                        {
+                            tbPacking.RequestFocus();
+                        }
+
+                    }
+                }
+                else if (tbSerialNum.HasFocus)
+                {
+                    if (barcode != "Scan fail")
+                    {
+                        Sound();
+
+                        tbSerialNum.Text = barcode;
+
+                        tbPacking.RequestFocus();
+
+                    }
+                }
+                else if (tbLocation.HasFocus)
+                {
+                    if (barcode != "Scan fail")
+                    {
+                        Sound();
+
+                        tbLocation.Text = barcode;
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Crashes.TrackError(ex);
+                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s225)}", ToastLength.Long).Show();
+            }
         }
     }
         

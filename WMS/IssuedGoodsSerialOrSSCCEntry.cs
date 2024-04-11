@@ -808,10 +808,14 @@ namespace WMS
                     // This flow is for idents.
 
                     var order = Base.Store.OpenOrder;
-                    qtyCheck = order.Quantity ?? 0;
-                    lbQty.Text = $"{Resources.GetString(Resource.String.s155)} ( " + qtyCheck.ToString(CommonData.GetQtyPicture()) + " )";
-                    stock = qtyCheck;
-                    GetConnectedPositions(order.Order, order.Position ?? -1, order.Ident);
+
+                    if (order != null)
+                    {
+                        qtyCheck = order.Quantity ?? 0;
+                        lbQty.Text = $"{Resources.GetString(Resource.String.s155)} ( " + qtyCheck.ToString(CommonData.GetQtyPicture()) + " )";
+                        stock = qtyCheck;
+                        GetConnectedPositions(order.Order, order.Position ?? -1, order.Ident);
+                    }
                 }
             }
 

@@ -250,7 +250,7 @@ namespace WMS
                     lbSubject.Visibility = ViewStates.Visible;
                     cbSubject.Visibility = ViewStates.Visible;
 
-                    if ( cbSubject.Adapter == null || cbSubject.Count() == 0)
+                    if ( cbSubject.Adapter == null || cbSubject.Count() == 0 )
                     {
                         var subjects = CommonData.ListSubjects();
                         subjects.Items.ForEach(s =>
