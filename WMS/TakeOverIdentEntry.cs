@@ -238,19 +238,15 @@ namespace WMS
     
         private bool SaveMoveHead()
         {
-
             var order = Base.Store.OpenOrder;
 
             if (!moveHead.GetBool("Saved"))
             {     
                 try
                 {
-
-
                     moveHead.SetInt("Clerk", Services.UserID());
                     moveHead.SetString("Type", "I");
                     moveHead.SetString("LinkKey", order.Order);
-
 
                     if (moveHead.GetBool("ByOrder"))
                     {
@@ -362,12 +358,11 @@ namespace WMS
 
                         var parameters = new List<Services.Parameter>();
 
-                        string debug = $"SELECT * from uWMSOrderItemByItemTypeWarehouseOut WHERE acIdent = {ident} AND acDocType = {moveHead.GetString("DocumentType")} AND acWarehouse = {moveHead.GetString("Wharehouse")};";
-
                         parameters.Add(new Services.Parameter { Name = "acIdent", Type = "String", Value = ident });
+                        parameters.Add(new Services.Parameter { Name = "acDocType", Type = "String", Value = moveHead.GetString("DocumentType") });
+                        parameters.Add(new Services.Parameter { Name = "acWarehouse", Type = "String", Value = moveHead.GetString("Wharehouse") });
 
-
-                        var subjects = Services.GetObjectListBySql($"SELECT * FROM uWMSOrderItemByKeyIn WHERE acIdent = @acIdent;", parameters);
+                        var subjects = Services.GetObjectListBySql($"SELECT * FROM uWMSOrderItemByWarehouseTypeIn WHERE acIdent = @acIdent AND acDocType = @acDocType AND acWarehouse = @acWarehouse;", parameters);
 
                         if (!subjects.Success)
                         {
@@ -424,8 +419,6 @@ namespace WMS
                 tbDeliveryDeadline.Text = deadLine == null ? "" : ((DateTime)deadLine).ToString("dd.MM.yyyy");
                 btNext.Enabled = true;
                 btConfirm.Enabled = true;
-
-
                 btNext.Enabled = true;
                 btConfirm.Enabled = true;
                 tbOrder.Enabled = false;
@@ -510,9 +503,7 @@ namespace WMS
             {
                 return false;
             }
-
             return false;
-
         }
 
         private void jumpAhead(Parser2DCode parser2DCode)
@@ -541,7 +532,7 @@ namespace WMS
                 var parameters = new List<Services.Parameter>();
                 parameters.Add(new Services.Parameter { Name = "acKey", Type = "String", Value = newKey });
                 parameters.Add(new Services.Parameter { Name = "acIdent", Type = "String", Value = ident });
-                string query = $"SELECT * FROM uWMSOrderItemByKeyIn WHERE acKey = @acKey AND acIdent = @acIdent";
+                string query = $"SELECT * FROM uWMSOrderItemByWarehouseTypeIn WHERE acKey = @acKey AND acIdent = @acIdent";
                 var resultQuery = Services.GetObjectListBySql(query, parameters);
                 if (resultQuery.Success && resultQuery.Rows.Count > 0)
                 {

@@ -27,6 +27,7 @@ using AlertDialog = Android.App.AlertDialog;
 using Android.Graphics.Drawables;
 using Android.Graphics;
 using Newtonsoft.Json;
+using System;
 namespace WMS
 {
     [Activity(Label = "TakeOverSerialOrSSCCEntry", ScreenOrientation = ScreenOrientation.Portrait)]
@@ -61,6 +62,10 @@ namespace WMS
         private double stock;
         private List<Takeover> connectedPositions = new List<Takeover>();
         private double serialOverflowQuantity = 0;
+        private Dialog popupDialogConfirm;
+        private Button? btnYesConfirm;
+        private Button? btnNoConfirm;
+        private ProgressDialogClass progress;
 
         protected async override void OnCreate(Bundle savedInstanceState)
         {
@@ -180,7 +185,8 @@ namespace WMS
                 tbPacking.Text = qtyCheck.ToString();
                 stock = qtyCheck;
                 GetConnectedPositions(order.Order, order.Position ?? -1, order.Ident);
-                                  
+                tbLocation.Text = CommonData.GetSetting("DefaultPaletteLocation");
+                
             }
 
             isPackaging = openIdent.GetBool("IsPackaging");
@@ -261,17 +267,115 @@ namespace WMS
         }
         private void BtBack_Click(object? sender, EventArgs e)
         {
-
+            StartActivity(typeof(MainMenu));
+            HelpfulMethods.clearTheStack(this);
+            Finish();
         }
 
         private void BtOverview_Click(object? sender, EventArgs e)
         {
+            StartActivity(typeof(TakeOverEnteredPositionsView));
+            HelpfulMethods.clearTheStack(this);
+            Finish();
+        }
 
+
+        private void BtnNoConfirm_Click(object sender, EventArgs e)
+        {
+            popupDialogConfirm.Dismiss();
+            popupDialogConfirm.Hide();
+        }
+
+        private async void BtnYesConfirm_Click(object sender, EventArgs e)
+        {
+            await FinishMethod();
+        }
+
+        private async Task FinishMethod()
+        {
+            await Task.Run(async () =>
+            {
+                    RunOnUiThread(() =>
+                    {
+                        progress = new ProgressDialogClass();
+                        progress.ShowDialogSync(this, $"{Resources.GetString(Resource.String.s262)}");
+                    });
+                    try
+                    {
+                        var headID = moveHead.GetInt("HeadID");
+                        string result;
+                        if (WebApp.Get("mode=finish&stock=add&print=" + Services.DeviceUser() + "&id=" + headID.ToString(), out result))
+                        {
+                            if (result.StartsWith("OK!"))
+                            {
+                                RunOnUiThread(() =>
+                                {
+                                    progress.StopDialogSync();
+                                    var id = result.Split('+')[1];
+                                    AlertDialog.Builder alert = new AlertDialog.Builder(this);
+                                    alert.SetTitle($"{Resources.GetString(Resource.String.s263)}");
+                                    alert.SetMessage($"{Resources.GetString(Resource.String.s264)}" + id);
+                                    alert.SetPositiveButton("Ok", (senderAlert, args) =>
+                                    {
+                                        alert.Dispose();
+                                        System.Threading.Thread.Sleep(500);
+                                        StartActivity(typeof(MainMenu));
+                                        HelpfulMethods.clearTheStack(this);
+                                    });
+                                    Dialog dialog = alert.Create();
+                                    dialog.Show();
+                                });
+                            }
+                            else
+                            {
+                                RunOnUiThread(() =>
+                                {
+                                    progress.StopDialogSync();
+                                    AlertDialog.Builder alert = new AlertDialog.Builder(this);
+                                    alert.SetTitle($"{Resources.GetString(Resource.String.s265)}");
+                                    alert.SetMessage($"{Resources.GetString(Resource.String.s266)}" + result);
+                                    alert.SetPositiveButton("Ok", (senderAlert, args) =>
+                                    {
+                                        alert.Dispose();
+                                        System.Threading.Thread.Sleep(500);
+                                        StartActivity(typeof(MainMenu));
+                                        HelpfulMethods.clearTheStack(this);
+                                    });
+                                    Dialog dialog = alert.Create();
+                                    dialog.Show();
+                                });
+                            }
+                        }
+                        else
+                        {
+                            DialogHelper.ShowDialogError(this, this, $"{Resources.GetString(Resource.String.s218)}" + result);
+                        }
+                    }
+                    finally
+                    {
+                        RunOnUiThread(() =>
+                        {
+                            progress.StopDialogSync();
+                        });
+                    }               
+            });
         }
 
         private void BtFinish_Click(object? sender, EventArgs e)
         {
+            popupDialogConfirm = new Dialog(this);
+            popupDialogConfirm.SetContentView(Resource.Layout.Confirmation);
+            popupDialogConfirm.Window.SetSoftInputMode(SoftInput.AdjustResize);
+            popupDialogConfirm.Show();
 
+            popupDialogConfirm.Window.SetLayout(LayoutParams.MatchParent, LayoutParams.WrapContent);
+            popupDialogConfirm.Window.SetBackgroundDrawable(new ColorDrawable(Color.ParseColor("#081a45")));
+
+            // Access Popup layout fields like below
+            btnYesConfirm = popupDialogConfirm.FindViewById<Button>(Resource.Id.btnYes);
+            btnNoConfirm = popupDialogConfirm.FindViewById<Button>(Resource.Id.btnNo);
+            btnYesConfirm.Click += BtnYesConfirm_Click;
+            btnNoConfirm.Click += BtnNoConfirm_Click;
         }
 
         private async void BtCreate_Click(object? sender, EventArgs e)
@@ -285,10 +389,7 @@ namespace WMS
 
                 } else
                 {
-
-
                 // Update flow. 08.04.2024
-
                 double newQty;
 
                 if (Double.TryParse(tbPacking.Text, out newQty))
@@ -421,30 +522,22 @@ namespace WMS
                     moveItem.SetInt("Clerk", Services.UserID());
                     moveItem.SetString("Location", tbLocation.Text.Trim());
                     moveItem.SetString("Palette", "1");
-
-
                     string error;
                     moveItem = Services.SetObject("mi", moveItem, out error);
                     if (moveItem != null && error == string.Empty)
                     {
-
-                        serialOverflowQuantity += Convert.ToDouble(tbPacking.Text.Trim());
-                        stock -= serialOverflowQuantity;
-
+                        var currentQty = Convert.ToDouble(tbPacking.Text.Trim());
+                        stock -= currentQty;
                         RunOnUiThread(() =>
                         {
                             lbQty.Text = $"{Resources.GetString(Resource.String.s155)} ( " + stock.ToString(CommonData.GetQtyPicture()) + " )";
                         });
-
                         // Check to see if the maximum is already reached.
                         if (stock <= 0)
-                        {
-                         
+                        {                         
                             StartActivity(typeof(TakeOverIdentEntry));
-                            Finish();
-                            
+                            Finish();                           
                         }
-
                         RunOnUiThread(() =>
                         {
                             // Succesfull position creation
@@ -462,12 +555,8 @@ namespace WMS
                                     tbSerialNum.RequestFocus();
                                 }
                             }
-
-                            tbLocation.Text = string.Empty;
                             tbPacking.Text = string.Empty;
-
                         });
-
                     }
                 }
                 else
