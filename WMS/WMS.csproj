@@ -15,13 +15,13 @@
     <AndroidPackageFormat>apk</AndroidPackageFormat>
     <NoWarn>1701;1702;8765;8602;8601,8622,8600,8604,8618</NoWarn>
     <RunAOTCompilation>True</RunAOTCompilation>
-    <AndroidCreatePackagePerAbi>True</AndroidCreatePackagePerAbi>
+    <AndroidCreatePackagePerAbi>False</AndroidCreatePackagePerAbi>
     <AndroidEnableMultiDex>False</AndroidEnableMultiDex>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <NoWarn>1701;1702;8765;8602;8601,8622,8600,8604,8618</NoWarn>
     <RunAOTCompilation>False</RunAOTCompilation>
-    <AndroidCreatePackagePerAbi>True</AndroidCreatePackagePerAbi>
+    <AndroidCreatePackagePerAbi>False</AndroidCreatePackagePerAbi>
     <AndroidEnableMultiDex>False</AndroidEnableMultiDex>
   </PropertyGroup>
   <ItemGroup>
