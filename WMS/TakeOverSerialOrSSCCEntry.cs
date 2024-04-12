@@ -119,18 +119,22 @@ namespace WMS
             // Stop the loader
             LoaderManifest.LoaderManifestLoopStop(this);
 
-            SetUpUpdate();
+            SetUpProcessDependentButtons();
 
         }
 
 
-        private void SetUpUpdate()
+        private void SetUpProcessDependentButtons()
         {
             // This method changes the UI so it shows in a visible way that it is the update screen. - 18.03.2024
             if (Base.Store.isUpdate)
             {
                 btSaveOrUpdate.Visibility = ViewStates.Gone;
                 btCreate.Text = $"{Resources.GetString(Resource.String.s290)}";
+            } else if(Base.Store.code2D!=null)
+            {
+                btSaveOrUpdate.Visibility = ViewStates.Gone;
+                // 2d code reading process.
             }
         }
 
