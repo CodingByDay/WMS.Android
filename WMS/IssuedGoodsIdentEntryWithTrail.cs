@@ -112,6 +112,7 @@ namespace WMS
                         if (HelperMethods.is2D(barcode))
                         {
                             Parser2DCode parser2DCode = new Parser2DCode(barcode.Trim());
+                            
                             chooseIdent(parser2DCode);
                         }
                         else if (!CheckIdent(barcode) && barcode.Length > 17 && barcode.Contains("400"))
@@ -202,35 +203,31 @@ namespace WMS
             int numberOfHits = adapterObj.returnNumberOfItems();
             if (numberOfHits == 0)
             {
+
                 adapterObj.Filter(trails, true, string.Empty, false);
                 return;
+
             } else if (numberOfHits == 1)
             {
                 Trail trail = adapterObj.returnData().ElementAt(0);
-
 
                 if (trail.Location == string.Empty)
                 {
                     Toast.MakeText(this, $"{Resources.GetString(Resource.String.s230)}", ToastLength.Long).Show();
                     return;
                 }
-                InUseObjects.Set("OpenOrder", trails.ElementAt(adapterObj.returnSelected().originalIndex));
+
 
                 if (SaveMoveHeadObjectMode(trail))
                 {
-                    if (trails.Count - 1 == 1)
-                    {
-                        var lastItem = new NameValueObject("LastItem");
-                        lastItem.SetBool("IsLastItem", true);
-                        InUseObjects.Set("LastItem", lastItem);
-                    }
-
-
+ 
                     Intent i = new Intent(Application.Context, typeof(IssuedGoodsSerialOrSSCCEntry));
+                    code.__helper__position = trail.No;
+                    code.__helper__convertedOrder = trail.Key;
+                    code.ident = trail.Ident;
                     Base.Store.code2D = code;
                     StartActivity(typeof(IssuedGoodsSerialOrSSCCEntry));
                     this.Finish();
-
                 }
 
             } else if (numberOfHits > 1)

@@ -209,10 +209,14 @@ namespace WMS
 
                     }
 
-                    
+                    GetConnectedPositions(code2d.__helper__convertedOrder, code2d.__helper__position, code2d.ident);
+
                     tbLocation.Text = CommonData.GetSetting("DefaultPaletteLocation");
                     // Reset the 2d code to nothing
                     Base.Store.code2D = null;
+
+                    tbPacking.RequestFocus();
+                    tbPacking.SelectAll();
                 }                 
                 else
                 {
@@ -231,7 +235,6 @@ namespace WMS
             }
    
         }
-
 
 
 
@@ -447,9 +450,7 @@ namespace WMS
 
                     // Only if its an ordered takeover. 12.04.2024 Janko
 
-
-                    await CreateMethodFromStart();
-                                      
+                    await CreateMethodFromStart();                                     
                 }
                 else
                 {

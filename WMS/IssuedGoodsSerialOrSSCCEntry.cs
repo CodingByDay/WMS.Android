@@ -248,23 +248,31 @@ namespace WMS
             // Color the fields that can be scanned
             ColorFields();
 
-            // Main logic for the entry
-            SetUpForm();
+
 
             // Stop the loader
             LoaderManifest.LoaderManifestLoopStop(this);
 
 
-            SetUpUpdate();
+            SetUpProcessDependentButtons();
+
+
+            // Main logic for the entry
+            SetUpForm();
         }
 
-        private void SetUpUpdate()
+        private void SetUpProcessDependentButtons()
         {
             // This method changes the UI so it shows in a visible way that it is the update screen. - 18.03.2024
             if (Base.Store.isUpdate)
             {
                 btCreateSame.Visibility = ViewStates.Gone;
                 btCreate.Text = $"{Resources.GetString(Resource.String.s290)}";
+            }
+            else if (Base.Store.code2D != null)
+            {
+                btCreateSame.Visibility = ViewStates.Gone;
+                // 2d code reading process.
             }
         }
 
@@ -363,6 +371,15 @@ namespace WMS
             }
             else if (createPositionAllowed && double.TryParse(tbPacking.Text, out parsed) && stock >= parsed)
             {
+                var isCorrectLocation = IsLocationCorrect();
+
+                if (!isCorrectLocation)
+                {
+                    // Nepravilna lokacija za izbrano skladišče
+                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s333)}", ToastLength.Long).Show();
+                    return;
+                }
+
                 await CreateMethodSame();
             } 
             else
@@ -370,7 +387,20 @@ namespace WMS
                 Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
             }
         }
+        private bool IsLocationCorrect()
+        {
+            // TODO: Add a way to check serial numbers
+            string location = tbLocation.Text;
 
+            if (!CommonData.IsValidLocation(moveHead.GetString("Wharehouse"), location))
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
         private void BtExit_Click(object? sender, EventArgs e)
         {
             StartActivity(typeof(MainMenu));
@@ -470,7 +500,6 @@ namespace WMS
                         });
 
                         createPositionAllowed = false;
-                        GetConnectedPositions(element.acKey, element.anNo, element.acIdent, element.aclocation);
                     }
                 }
                 else
@@ -804,16 +833,30 @@ namespace WMS
                     GetConnectedPositions(receivedTrail.Key, receivedTrail.No, receivedTrail.Ident, receivedTrail.Location);
                 } else if (Base.Store.modeIssuing == 2 && Base.Store.code2D != null)
                 {
-                    // This flow is for orders by the means of scanning the 2d code.
+                    var code2d = Base.Store.code2D;
+                    tbSerialNum.Text = code2d.charge;
+                    qtyCheck = 0;
+                    double result;
 
-                    string trailBytes = Intent.Extras.GetString("selected");
-                    receivedTrail = JsonConvert.DeserializeObject<Trail>(trailBytes);
-                    qtyCheck = Double.Parse(receivedTrail.Qty);
-                    tbLocation.Text = receivedTrail.Location;
-                    lbQty.Text = $"{Resources.GetString(Resource.String.s155)} ( " + qtyCheck.ToString(CommonData.GetQtyPicture()) + " )";
-                    stock = qtyCheck;
-                    tbPacking.Text = qtyCheck.ToString();
-                    GetConnectedPositions(receivedTrail.Key, receivedTrail.No, receivedTrail.Ident, receivedTrail.Location);
+                    // Try to parse the string to a double
+                    if (Double.TryParse(code2d.netoWeight, out result))
+                    {
+                        qtyCheck = result;
+                        lbQty.Text = $"{Resources.GetString(Resource.String.s155)} ( " + qtyCheck.ToString(CommonData.GetQtyPicture()) + " )";
+                        tbPacking.Text = qtyCheck.ToString();
+                        stock = qtyCheck;
+
+                    }
+
+                    GetConnectedPositions(code2d.__helper__convertedOrder, code2d.__helper__position, code2d.ident);
+
+                    // Reset the 2d code to nothing
+                    Base.Store.code2D = null;
+
+                    tbPacking.RequestFocus();
+                    tbPacking.SelectAll();
+
+                    FilterData();
                 }
                 else if (Base.Store.modeIssuing == 1)
                 {

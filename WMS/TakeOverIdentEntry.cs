@@ -560,6 +560,9 @@ namespace WMS
                     tbDeliveryDeadline.Text = deadLine == null ? "" : ((DateTime)deadLine).ToString("dd.MM.yyyy");
                     intentClass = new Intent(Application.Context, typeof(TakeOverSerialOrSSCCEntry));
 
+                    parser2DCode.__helper__convertedOrder = newKey;
+                    parser2DCode.__helper__position = (int) (row.IntValue("anNo") ?? 0);
+                    parser2DCode.ident = ident;
                     Base.Store.code2D = parser2DCode;
 
                     if (SaveMoveHead2D(row))
