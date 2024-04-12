@@ -180,16 +180,40 @@ namespace WMS
                 tbIdent.Text = openIdent.GetString("Code") + " " + openIdent.GetString("Name");
                 // This flow is for idents.
                 var order = Base.Store.OpenOrder;
+                var code2d = Base.Store.code2D;
                 if (order != null)
                 {
-                    qtyCheck = order.Quantity ?? 0;
-                    lbQty.Text = $"{Resources.GetString(Resource.String.s155)} ( " + qtyCheck.ToString(CommonData.GetQtyPicture()) + " )";
-                    tbPacking.Text = qtyCheck.ToString();
-                    stock = qtyCheck;
-                    GetConnectedPositions(order.Order, order.Position ?? -1, order.Ident);
-                    tbLocation.Text = CommonData.GetSetting("DefaultPaletteLocation");
+                    if (code2d != null)
+                    {
+                        tbSerialNum.Text = Base.Store.code2D.charge;
+                        qtyCheck = 0;
+                        double result;
+                        // Try to parse the string to a double
+                        if (Double.TryParse(code2d.netoWeight, out result))
+                        {
+                            
+                            qtyCheck = result;
+                            lbQty.Text = $"{Resources.GetString(Resource.String.s155)} ( " + qtyCheck.ToString(CommonData.GetQtyPicture()) + " )";
+                            tbPacking.Text = qtyCheck.ToString();
+                            stock = qtyCheck;
+                        }
+                        // Reset the 2d code to nothing
+                        Base.Store.code2D = null;
+                    }
+                    else
+                    {
+
+                        qtyCheck = order.Quantity ?? 0;
+                        lbQty.Text = $"{Resources.GetString(Resource.String.s155)} ( " + qtyCheck.ToString(CommonData.GetQtyPicture()) + " )";
+                        tbPacking.Text = qtyCheck.ToString();
+                        stock = qtyCheck;
+                        GetConnectedPositions(order.Order, order.Position ?? -1, order.Ident);
+                        tbLocation.Text = CommonData.GetSetting("DefaultPaletteLocation");
+
+                    }
                 } else
                 {
+                    // This is the orderless process.
                     tbLocation.Text = CommonData.GetSetting("DefaultPaletteLocation");
                 }
 
@@ -503,6 +527,50 @@ namespace WMS
 
             return result;
         }
+
+        private bool IsDuplicatedSerialOrAndSSCCOrderless(string? serial = null, string? sscc = null)
+        {
+            bool result = false;
+
+
+            string ident = string.Empty;
+
+            ident = openIdent.GetString("Code");
+
+
+            var parameters = new List<Services.Parameter>();
+            parameters.Add(new Services.Parameter { Name = "acIdent", Type = "String", Value = ident });
+
+            string sql = "SELECT COUNT(*) AS anResult FROM uWMSMoveItemInClick WHERE acIdent = @acIdent";
+            if (serial != null && serial != string.Empty)
+            {
+                parameters.Add(new Services.Parameter { Name = "acSerialno", Type = "String", Value = serial });
+                sql += " AND acSerialNo = @acSerialno";
+            }
+            if (sscc != null && sscc != string.Empty)
+            {
+                parameters.Add(new Services.Parameter { Name = "acSSCC", Type = "String", Value = sscc });
+                sql += " AND acSSCC = @acSSCC;";
+            }
+
+            var duplicates = Services.GetObjectListBySql(sql, parameters);
+
+            if (duplicates.Success)
+            {
+                int numberRows = (int) (duplicates.Rows[0].IntValue("anResult") ?? 0);
+                if (numberRows > 0)
+                {
+                    result = true;
+                }
+            }
+
+            return result;
+        }
+
+
+
+
+
 
         private bool IsLocationCorrect()
         {

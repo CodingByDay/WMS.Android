@@ -112,10 +112,7 @@ namespace WMS
             imm.ShowSoftInput(tbIdent, ShowFlags.Forced);
             tbIdent.KeyPress += TbIdent_KeyPress;
             tbIdent.AfterTextChanged += TbIdent_AfterTextChanged;
-
-
-            // Reseting the 2d flag
-            Base.Store.is2DFlow = false;
+            
         }
 
         private void TbIdent_KeyPress(object? sender, View.KeyEventArgs e)
@@ -552,6 +549,7 @@ namespace WMS
                 var resultQuery = Services.GetObjectListBySql(query, parameters);
                 if (resultQuery.Success && resultQuery.Rows.Count > 0)
                 {
+
                     var row = resultQuery.Rows[0];
                     tbIdent.Text = ident;
                     ProcessIdent();
@@ -561,15 +559,16 @@ namespace WMS
                     var deadLine = row.DateTimeValue("adDeliveryDeadline");
                     tbDeliveryDeadline.Text = deadLine == null ? "" : ((DateTime)deadLine).ToString("dd.MM.yyyy");
                     intentClass = new Intent(Application.Context, typeof(TakeOverSerialOrSSCCEntry));
-                    intentClass.PutExtra("qty", qty);
-                    intentClass.PutExtra("serial", parser2DCode.charge);
-                    StartActivity(intentClass);
+
+                    Base.Store.code2D = parser2DCode;
+
                     if (SaveMoveHead2D(row))
                     {
-                        StartActivity(intentClass);
+                        StartActivity(typeof(TakeOverSerialOrSSCCEntry));
                         HelpfulMethods.clearTheStack(this);
                         Finish();
                     }
+
                 }            
             }
         }

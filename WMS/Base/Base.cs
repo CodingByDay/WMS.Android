@@ -39,7 +39,8 @@ namespace WMS
 
         public string language = string.Empty;
 
-        public bool is2DFlow { get; set; } = false;
+        public Parser2DCode? code2D {get; set;}
+
 
         // Reset method using reflection
         public void ResetValues()
@@ -54,7 +55,6 @@ namespace WMS
                 }
             }
         }
-
 
 
 
