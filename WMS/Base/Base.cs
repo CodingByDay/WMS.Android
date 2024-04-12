@@ -41,6 +41,7 @@ namespace WMS
 
         public Parser2DCode? code2D {get; set;}
 
+        public bool byOrder { get; set; } = true;
 
         // Reset method using reflection
         public void ResetValues()

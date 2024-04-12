@@ -28,6 +28,7 @@ using Android.Graphics.Drawables;
 using Android.Graphics;
 using Newtonsoft.Json;
 using System;
+using Java.IO;
 namespace WMS
 {
     [Activity(Label = "TakeOverSerialOrSSCCEntry", ScreenOrientation = ScreenOrientation.Portrait)]
@@ -221,7 +222,12 @@ namespace WMS
                 else
                 {
                     // This is the orderless process.
+                    qtyCheck = 10000000;
                     tbLocation.Text = CommonData.GetSetting("DefaultPaletteLocation");
+                    lbQty.Text = $"{Resources.GetString(Resource.String.s155)} ( " + Resources.GetString(Resource.String.s335) + " )";                   
+                    stock = qtyCheck;
+                    tbPacking.RequestFocus();
+                    tbPacking.SelectAll();
                 }
 
             }
@@ -536,45 +542,7 @@ namespace WMS
             return result;
         }
 
-        private bool IsDuplicatedSerialOrAndSSCCOrderless(string? serial = null, string? sscc = null)
-        {
-            bool result = false;
-
-
-            string ident = string.Empty;
-
-            ident = openIdent.GetString("Code");
-
-
-            var parameters = new List<Services.Parameter>();
-            parameters.Add(new Services.Parameter { Name = "acIdent", Type = "String", Value = ident });
-
-            string sql = "SELECT COUNT(*) AS anResult FROM uWMSMoveItemInClick WHERE acIdent = @acIdent";
-            if (serial != null && serial != string.Empty)
-            {
-                parameters.Add(new Services.Parameter { Name = "acSerialno", Type = "String", Value = serial });
-                sql += " AND acSerialNo = @acSerialno";
-            }
-            if (sscc != null && sscc != string.Empty)
-            {
-                parameters.Add(new Services.Parameter { Name = "acSSCC", Type = "String", Value = sscc });
-                sql += " AND acSSCC = @acSSCC;";
-            }
-
-            var duplicates = Services.GetObjectListBySql(sql, parameters);
-
-            if (duplicates.Success)
-            {
-                int numberRows = (int) (duplicates.Rows[0].IntValue("anResult") ?? 0);
-                if (numberRows > 0)
-                {
-                    result = true;
-                }
-            }
-
-            return result;
-        }
-
+    
 
 
 
@@ -650,17 +618,52 @@ namespace WMS
                     Toast.MakeText(this, $"{Resources.GetString(Resource.String.s333)}", ToastLength.Long).Show();
                     return;
                 }
-
-                var isDuplicatedSerial = IsDuplicatedSerialOrAndSSCC(tbSerialNum.Text ?? string.Empty, tbSSCC.Text ?? string.Empty);
-                if (isDuplicatedSerial)
+                if (Base.Store.byOrder)
                 {
-                    // Duplicirana serijska in/ali sscc koda.
-                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s334)}", ToastLength.Long).Show();
-                    return;
+                    var isDuplicatedSerial = IsDuplicatedSerialOrAndSSCC(tbSerialNum.Text ?? string.Empty, tbSSCC.Text ?? string.Empty);
+                    if (isDuplicatedSerial)
+                    {
+                        // Duplicirana serijska in/ali sscc koda.
+                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s334)}", ToastLength.Long).Show();
+                        return;
+                    }
+                } else
+                {
+                    string ident = openIdent.GetString("Code");
+                    var isDuplicatedSerial = IsDuplicatedSerialOrAndSSCCNotByOrder();
+                    if (isDuplicatedSerial)
+                    {
+                        // Duplicirana serijska in/ali sscc koda.
+                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s334)}", ToastLength.Long).Show();
+                        return;
+                    }
                 }
 
 
                 await CreateMethodSame();
+            }
+        }
+
+        private bool IsDuplicatedSerialOrAndSSCCNotByOrder(string ident, string warehouse, string serial = null, string sscc = null, )
+        {
+
+            if (CommonData.GetSetting("NoSerialnoDupOut") == "1")
+            {
+
+                if (openIdent.GetString("SerialNo") == "O")
+                {
+
+
+                    string sql = "SELECT COUNT(*) FROM uWMSMoveItemInClickNoOrder WHERE acIdent = @acIdent AND ";
+                    return true;
+
+                } else
+                {
+                    return false;
+                }
+            } else
+            {
+                return false;
             }
         }
 

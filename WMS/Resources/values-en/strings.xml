@@ -399,6 +399,8 @@
 
 	<string name="s333">Incorrect location for the selected warehouse.</string>
 	<string name="s334">Duplicate serial and/or SSCC code.</string>
+	<string name="s335">No limit</string>
+
 
 
 </resources>

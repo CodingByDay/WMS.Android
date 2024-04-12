@@ -118,6 +118,8 @@ namespace WMS
             // Reseting the global update variable.
             Base.Store.isUpdate = false;
             Base.Store.OpenOrder = null;
+            Base.Store.byOrder = true;
+            Base.Store.code2D = null;
 
         }
         public string GetAppVersion()

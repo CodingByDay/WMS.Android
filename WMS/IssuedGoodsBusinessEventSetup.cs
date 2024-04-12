@@ -342,6 +342,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
         private async void BtnOrderMode_Click(object sender, EventArgs e)
         {
             await FillOpenOrdersAsync();
+            Base.Store.byOrder = byOrder;
             byOrder = !byOrder;
             UpdateForm();
         }

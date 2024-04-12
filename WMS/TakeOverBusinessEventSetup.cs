@@ -217,6 +217,7 @@ namespace WMS
         {
      
             byOrder = !byOrder;
+            Base.Store.byOrder = byOrder;
             UpdateForm();
             
         }
