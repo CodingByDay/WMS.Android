@@ -112,7 +112,7 @@ namespace WMS
                         if (HelperMethods.is2D(barcode))
                         {
                             Parser2DCode parser2DCode = new Parser2DCode(barcode.Trim());
-                            chooseIdent(parser2DCode.ident, parser2DCode.charge, parser2DCode.netoWeight);
+                            chooseIdent(parser2DCode);
                         }
                         else if (!CheckIdent(barcode) && barcode.Length > 17 && barcode.Contains("400"))
                         {
@@ -180,12 +180,13 @@ namespace WMS
         }
 
 
-        private void chooseIdent(string ident, string serial, string qty)
+        private void chooseIdent(Parser2DCode code)
         {
 
-            var convertedIdent = string.Empty;
+            string convertedIdent = string.Empty;
+            string ident = string.Empty;
             string error;
-            openIdent = Services.GetObject("id", ident, out error);
+            openIdent = Services.GetObject("id", code.ident, out error);
 
             if (openIdent != null)
             {
@@ -226,12 +227,8 @@ namespace WMS
 
 
                     Intent i = new Intent(Application.Context, typeof(IssuedGoodsSerialOrSSCCEntry));
-                    i.PutExtra("ident", ident);
-                    i.PutExtra("qty", qty);
-                    i.PutExtra("serial", serial);
-                    i.PutExtra("scan", true);
-                    i.PutExtra("selected", Trail.Serialize(trail));
-                    StartActivity(i);
+                    Base.Store.code2D = code;
+                    StartActivity(typeof(IssuedGoodsSerialOrSSCCEntry));
                     this.Finish();
 
                 }

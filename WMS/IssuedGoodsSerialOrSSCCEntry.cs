@@ -802,6 +802,18 @@ namespace WMS
                     stock = qtyCheck;
                     tbPacking.Text = qtyCheck.ToString();
                     GetConnectedPositions(receivedTrail.Key, receivedTrail.No, receivedTrail.Ident, receivedTrail.Location);
+                } else if (Base.Store.modeIssuing == 2 && Base.Store.code2D != null)
+                {
+                    // This flow is for orders by the means of scanning the 2d code.
+
+                    string trailBytes = Intent.Extras.GetString("selected");
+                    receivedTrail = JsonConvert.DeserializeObject<Trail>(trailBytes);
+                    qtyCheck = Double.Parse(receivedTrail.Qty);
+                    tbLocation.Text = receivedTrail.Location;
+                    lbQty.Text = $"{Resources.GetString(Resource.String.s155)} ( " + qtyCheck.ToString(CommonData.GetQtyPicture()) + " )";
+                    stock = qtyCheck;
+                    tbPacking.Text = qtyCheck.ToString();
+                    GetConnectedPositions(receivedTrail.Key, receivedTrail.No, receivedTrail.Ident, receivedTrail.Location);
                 }
                 else if (Base.Store.modeIssuing == 1)
                 {

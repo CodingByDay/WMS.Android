@@ -111,16 +111,15 @@ namespace WMS
             CheckIfApplicationStopingException();
 
             // Color the fields that can be scanned
-            ColorFields();
-
-            // Main logic for the entry
-            SetUpForm();
+            ColorFields();            
 
             // Stop the loader
             LoaderManifest.LoaderManifestLoopStop(this);
 
             SetUpProcessDependentButtons();
 
+            // Main logic for the entry
+            SetUpForm();
         }
 
 
@@ -180,42 +179,42 @@ namespace WMS
             }
             else
             {
-
                 tbIdent.Text = openIdent.GetString("Code") + " " + openIdent.GetString("Name");
                 // This flow is for idents.
                 var order = Base.Store.OpenOrder;
                 var code2d = Base.Store.code2D;
                 if (order != null)
                 {
-                    if (code2d != null)
-                    {
-                        tbSerialNum.Text = Base.Store.code2D.charge;
-                        qtyCheck = 0;
-                        double result;
-                        // Try to parse the string to a double
-                        if (Double.TryParse(code2d.netoWeight, out result))
-                        {
-                            
-                            qtyCheck = result;
-                            lbQty.Text = $"{Resources.GetString(Resource.String.s155)} ( " + qtyCheck.ToString(CommonData.GetQtyPicture()) + " )";
-                            tbPacking.Text = qtyCheck.ToString();
-                            stock = qtyCheck;
-                        }
-                        // Reset the 2d code to nothing
-                        Base.Store.code2D = null;
-                    }
-                    else
-                    {
+                    qtyCheck = order.Quantity ?? 0;
+                    lbQty.Text = $"{Resources.GetString(Resource.String.s155)} ( " + qtyCheck.ToString(CommonData.GetQtyPicture()) + " )";
+                    tbPacking.Text = qtyCheck.ToString();
+                    stock = qtyCheck;
+                    GetConnectedPositions(order.Order, order.Position ?? -1, order.Ident);
+                    tbLocation.Text = CommonData.GetSetting("DefaultPaletteLocation");
+                    
+                } else if (code2d != null)
+                {
+                   
+                    tbSerialNum.Text = code2d.charge;
+                    qtyCheck = 0;
+                    double result;
 
-                        qtyCheck = order.Quantity ?? 0;
+                    // Try to parse the string to a double
+                    if (Double.TryParse(code2d.netoWeight, out result))
+                    {
+                        qtyCheck = result;
                         lbQty.Text = $"{Resources.GetString(Resource.String.s155)} ( " + qtyCheck.ToString(CommonData.GetQtyPicture()) + " )";
                         tbPacking.Text = qtyCheck.ToString();
                         stock = qtyCheck;
-                        GetConnectedPositions(order.Order, order.Position ?? -1, order.Ident);
-                        tbLocation.Text = CommonData.GetSetting("DefaultPaletteLocation");
 
                     }
-                } else
+
+                    
+                    tbLocation.Text = CommonData.GetSetting("DefaultPaletteLocation");
+                    // Reset the 2d code to nothing
+                    Base.Store.code2D = null;
+                }                 
+                else
                 {
                     // This is the orderless process.
                     tbLocation.Text = CommonData.GetSetting("DefaultPaletteLocation");
@@ -436,6 +435,8 @@ namespace WMS
                         return;
                     }
 
+                    // Only if its an ordered takeover. 12.04.2024 Janko
+
                     var isDuplicatedSerial = IsDuplicatedSerialOrAndSSCC(tbSerialNum.Text ?? string.Empty, tbSSCC.Text ?? string.Empty);
                     if (isDuplicatedSerial)
                     {
@@ -443,6 +444,8 @@ namespace WMS
                         Toast.MakeText(this, $"{Resources.GetString(Resource.String.s334)}", ToastLength.Long).Show();
                         return;
                     }
+
+                    // Only if its an ordered takeover. 12.04.2024 Janko
 
 
                     await CreateMethodFromStart();
@@ -599,7 +602,7 @@ namespace WMS
                     var element = connectedPositions.ElementAt(0);
                     moveItem = new NameValueObject("MoveItem");
                     moveItem.SetInt("HeadID", moveHead.GetInt("HeadID"));
-                    moveItem.SetString("LinkKey", element.acKey);
+                    moveItem.SetString("LinkKey", element.acKey); // here
                     moveItem.SetInt("LinkNo", element.anNo);
                     moveItem.SetString("Ident", openIdent.GetString("Code"));
                     moveItem.SetString("SSCC", tbSSCC.Text.Trim());

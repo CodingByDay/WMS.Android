@@ -19,6 +19,10 @@
 
         public string ident { get; set; }
 
+        public string __helper__convertedOrder { get; set; }
+
+        public int __helper__position { get; set; }
+
         public Parser2DCode(string code)
         {
             string input = code; // this is your input string
