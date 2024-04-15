@@ -473,6 +473,7 @@ namespace WMS
                     {
                         Toast.MakeText(this, $"{Resources.GetString(Resource.String.s291)}", ToastLength.Long).Show();
                     }
+
                     else
                     {
                         var parameters = new List<Services.Parameter>();
@@ -630,9 +631,7 @@ namespace WMS
                 } else
                 {
                     string ident = openIdent.GetString("Code");
-
-                    string warehouse = string.Empty;
-      
+                    string warehouse = string.Empty;     
                     
                     if(Base.Store.isUpdate)
                     {
@@ -660,14 +659,11 @@ namespace WMS
         {
             string serialDuplication = CommonData.GetSetting("NoSerialnoDupOut");
             string identType = openIdent.GetString("SerialNo");
-
-           
-
+         
             if (serialDuplication == "1")
             {
                 if (identType == "O")
                 {
-
                     string sql = "SELECT COUNT(*) FROM uWMSMoveItemInClickNoOrder WHERE acIdent = @acIdent AND ";
 
                     if(serial!=null)
@@ -717,7 +713,6 @@ namespace WMS
                     moveItem = new NameValueObject("MoveItem");
                     moveItem.SetInt("HeadID", moveHead.GetInt("HeadID"));
 
-
                     if (Base.Store.byOrder)
                     {
                         moveItem.SetString("LinkKey", element.acKey);
@@ -742,13 +737,19 @@ namespace WMS
                     moveItem = Services.SetObject("mi", moveItem, out error);
                     if (moveItem != null && error == string.Empty)
                     {
-                        var currentQty = Convert.ToDouble(tbPacking.Text.Trim());
-                        stock -= currentQty;
 
-                        RunOnUiThread(() =>
+                        if(Base.Store.byOrder)
                         {
-                            lbQty.Text = $"{Resources.GetString(Resource.String.s155)} ( " + stock.ToString(CommonData.GetQtyPicture()) + " )";
-                        });
+
+                            var currentQty = Convert.ToDouble(tbPacking.Text.Trim());
+                            stock -= currentQty;
+                                        
+                            RunOnUiThread(() =>
+                            {
+                                lbQty.Text = $"{Resources.GetString(Resource.String.s155)} ( " + stock.ToString(CommonData.GetQtyPicture()) + " )";
+                            });
+
+                        }
 
                         // Check to see if the maximum is already reached.
                         if (stock <= 0)
