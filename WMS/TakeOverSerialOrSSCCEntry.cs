@@ -512,7 +512,6 @@ namespace WMS
     
             ident = openIdent.GetString("Code");
             
-
             var parameters = new List<Services.Parameter>();
             parameters.Add(new Services.Parameter { Name = "acIdent", Type = "String", Value = ident });
 
@@ -621,6 +620,7 @@ namespace WMS
                 if (Base.Store.byOrder)
                 {
                     var isDuplicatedSerial = IsDuplicatedSerialOrAndSSCC(tbSerialNum.Text ?? string.Empty, tbSSCC.Text ?? string.Empty);
+
                     if (isDuplicatedSerial)
                     {
                         // Duplicirana serijska in/ali sscc koda.
@@ -630,7 +630,21 @@ namespace WMS
                 } else
                 {
                     string ident = openIdent.GetString("Code");
-                    var isDuplicatedSerial = IsDuplicatedSerialOrAndSSCCNotByOrder();
+
+                    string warehouse = string.Empty;
+      
+                    
+                    if(Base.Store.isUpdate)
+                    {
+                        warehouse = moveItem.GetString("Wharehouse");
+
+                    } else
+                    {
+                        warehouse = moveHead.GetString("Wharehouse");
+                    }
+
+                    var isDuplicatedSerial = IsDuplicatedSerialOrAndSSCCNotByOrder(ident, tbSerialNum.Text, tbSSCC.Text);
+
                     if (isDuplicatedSerial)
                     {
                         // Duplicirana serijska in/ali sscc koda.
@@ -638,24 +652,43 @@ namespace WMS
                         return;
                     }
                 }
-
-
                 await CreateMethodSame();
             }
         }
 
-        private bool IsDuplicatedSerialOrAndSSCCNotByOrder(string ident, string warehouse, string serial = null, string sscc = null, )
+        private bool IsDuplicatedSerialOrAndSSCCNotByOrder(string ident, string serial = null, string sscc = null)
         {
+            string serialDuplication = CommonData.GetSetting("NoSerialnoDupOut");
+            string identType = openIdent.GetString("SerialNo");
 
-            if (CommonData.GetSetting("NoSerialnoDupOut") == "1")
+           
+
+            if (serialDuplication == "1")
             {
-
-                if (openIdent.GetString("SerialNo") == "O")
+                if (identType == "O")
                 {
 
-
                     string sql = "SELECT COUNT(*) FROM uWMSMoveItemInClickNoOrder WHERE acIdent = @acIdent AND ";
-                    return true;
+
+                    if(serial!=null)
+                    {
+                        sql += "AND acSerialno = @acSerialno";
+                    }
+
+                    if(sscc!=null)
+                    {
+                        sql += "AND acSSCC = @acSSCC;";
+                    }
+
+                    var parameters = new List<Services.Parameter>();
+
+                    parameters.Add(new Services.Parameter { Name = "acIdent", Type = "String", Value = ident });
+                    parameters.Add(new Services.Parameter { Name = "acSerialno", Type = "String", Value = serial });
+                    parameters.Add(new Services.Parameter { Name = "acSSCC", Type = "String", Value = sscc });
+
+                    var duplicates = Services.GetObjectListBySql(sql, parameters);
+
+                    return false;
 
                 } else
                 {
@@ -671,14 +704,30 @@ namespace WMS
         {
             await Task.Run(() =>
             {
-                if (connectedPositions.Count == 1)
+                if (connectedPositions.Count == 1 || !Base.Store.byOrder)
                 {
-                    var element = connectedPositions.ElementAt(0);
+                    var element = new Takeover { };
+
+                    if(Base.Store.byOrder)
+                    {
+                        element = connectedPositions.ElementAt(0);
+                    }
+
                     // This solves the problem of updating the item. The problem occurs because of the old way of passing data.
                     moveItem = new NameValueObject("MoveItem");
                     moveItem.SetInt("HeadID", moveHead.GetInt("HeadID"));
-                    moveItem.SetString("LinkKey", element.acKey);
-                    moveItem.SetInt("LinkNo", element.anNo);
+
+
+                    if (Base.Store.byOrder)
+                    {
+                        moveItem.SetString("LinkKey", element.acKey);
+                        moveItem.SetInt("LinkNo", element.anNo);
+                    } else
+                    {
+                        moveItem.SetString("LinkKey", string.Empty);
+                        moveItem.SetInt("LinkNo", 0);
+                    }
+
                     moveItem.SetString("Ident", openIdent.GetString("Code"));
                     moveItem.SetString("SSCC", tbSSCC.Text.Trim());
                     moveItem.SetString("SerialNo", tbSerialNum.Text.Trim());
@@ -688,16 +737,19 @@ namespace WMS
                     moveItem.SetInt("Clerk", Services.UserID());
                     moveItem.SetString("Location", tbLocation.Text.Trim());
                     moveItem.SetString("Palette", "1");
+
                     string error;
                     moveItem = Services.SetObject("mi", moveItem, out error);
                     if (moveItem != null && error == string.Empty)
                     {
                         var currentQty = Convert.ToDouble(tbPacking.Text.Trim());
                         stock -= currentQty;
+
                         RunOnUiThread(() =>
                         {
                             lbQty.Text = $"{Resources.GetString(Resource.String.s155)} ( " + stock.ToString(CommonData.GetQtyPicture()) + " )";
                         });
+
                         // Check to see if the maximum is already reached.
                         if (stock <= 0)
                         {                         
