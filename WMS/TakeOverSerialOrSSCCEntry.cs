@@ -242,14 +242,6 @@ namespace WMS
    
         }
 
-
-
-        private double CheckStock(string ident, string location, string warehouse, string serial = null, string sscc = null)
-        {
-            // TODO: New view implementation
-            return 0;
-        }
-
         /// </summary>
         /// <param name="acKey">Številka naročila</param>
         /// <param name="anNo">Pozicija znotraj naročila</param>
@@ -447,6 +439,7 @@ namespace WMS
                     // Only if its an ordered takeover. 12.04.2024 Janko
 
                     var isDuplicatedSerial = IsDuplicatedSerialOrAndSSCC(tbSerialNum.Text ?? string.Empty, tbSSCC.Text ?? string.Empty);
+
                     if (isDuplicatedSerial)
                     {
                         // Duplicirana serijska in/ali sscc koda.
@@ -508,7 +501,6 @@ namespace WMS
         {
             bool result = false;
 
-
             string ident = string.Empty;
     
             ident = openIdent.GetString("Code");
@@ -541,11 +533,6 @@ namespace WMS
 
             return result;
         }
-
-    
-
-
-
 
 
         private bool IsLocationCorrect()
@@ -631,8 +618,7 @@ namespace WMS
                 } else
                 {
                     string ident = openIdent.GetString("Code");
-                    string warehouse = string.Empty;     
-                    
+                    string warehouse = string.Empty;                                         
                     if(Base.Store.isUpdate)
                     {
                         warehouse = moveItem.GetString("Wharehouse");
@@ -641,9 +627,7 @@ namespace WMS
                     {
                         warehouse = moveHead.GetString("Wharehouse");
                     }
-
                     var isDuplicatedSerial = IsDuplicatedSerialOrAndSSCCNotByOrder(ident, tbSerialNum.Text, tbSSCC.Text);
-
                     if (isDuplicatedSerial)
                     {
                         // Duplicirana serijska in/ali sscc koda.
@@ -664,36 +648,35 @@ namespace WMS
             {
                 if (identType == "O")
                 {
-                    string sql = "SELECT COUNT(*) FROM uWMSMoveItemInClickNoOrder WHERE acIdent = @acIdent AND ";
-
+                    string sql = "SELECT COUNT(*) as anResult FROM uWMSMoveItemInClickNoOrder WHERE acIdent = @acIdent";
                     if(serial!=null)
                     {
-                        sql += "AND acSerialno = @acSerialno";
+                        sql += " AND acSerialno = @acSerialno";
                     }
-
                     if(sscc!=null)
                     {
-                        sql += "AND acSSCC = @acSSCC;";
+                        sql += " AND acSSCC = @acSSCC;";
                     }
-
                     var parameters = new List<Services.Parameter>();
-
                     parameters.Add(new Services.Parameter { Name = "acIdent", Type = "String", Value = ident });
                     parameters.Add(new Services.Parameter { Name = "acSerialno", Type = "String", Value = serial });
                     parameters.Add(new Services.Parameter { Name = "acSSCC", Type = "String", Value = sscc });
-
                     var duplicates = Services.GetObjectListBySql(sql, parameters);
-
+                    if(duplicates.Success)
+                    {
+                        int numberOfDuplicates = (int?) duplicates.Rows[0].IntValue("anResult") ?? 0;
+                        if(numberOfDuplicates>0)
+                        {
+                            return true;
+                        } else
+                        {
+                            return false;
+                        }
+                    }
                     return false;
-
-                } else
-                {
-                    return false;
-                }
-            } else
-            {
-                return false;
+                } 
             }
+            return false;
         }
 
         private async Task CreateMethodSame()
@@ -757,6 +740,7 @@ namespace WMS
                             StartActivity(typeof(TakeOverIdentEntry));
                             Finish();                           
                         }
+
                         RunOnUiThread(() =>
                         {
                             // Succesfull position creation
