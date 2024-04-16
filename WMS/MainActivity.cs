@@ -362,6 +362,7 @@ namespace WMS
             progressBar1.Visibility = ViewStates.Visible;
             ProcessRegistration();
         }
+
         public override bool OnKeyDown(Keycode keyCode, KeyEvent e)
         {
             switch (keyCode)
@@ -374,6 +375,7 @@ namespace WMS
             }
             return base.OnKeyDown(keyCode, e);
         }
+
         /* Android specific permissions */
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
         {

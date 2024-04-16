@@ -248,14 +248,11 @@ namespace WMS
             // Color the fields that can be scanned
             ColorFields();
 
-
-
             // Stop the loader
             LoaderManifest.LoaderManifestLoopStop(this);
 
-
+            // 
             SetUpProcessDependentButtons();
-
 
             // Main logic for the entry
             SetUpForm();
@@ -814,6 +811,7 @@ namespace WMS
                 tbSerialNum.Enabled = false;
                 tbSSCC.Enabled = false;
                 tbLocation.Enabled = false;
+
             }
             else
             {
@@ -831,6 +829,7 @@ namespace WMS
                     stock = qtyCheck;
                     tbPacking.Text = qtyCheck.ToString();
                     GetConnectedPositions(receivedTrail.Key, receivedTrail.No, receivedTrail.Ident, receivedTrail.Location);
+
                 } else if (Base.Store.modeIssuing == 2 && Base.Store.code2D != null)
                 {
                     var code2d = Base.Store.code2D;

@@ -145,6 +145,7 @@ namespace WMS
             tbSerialNum.SetBackgroundColor(Android.Graphics.Color.Aqua);
             tbLocation.SetBackgroundColor(Android.Graphics.Color.Aqua);
         }
+
         private void SetUpForm()
         {
             // This is the default focus of the view.
@@ -436,18 +437,43 @@ namespace WMS
                         return;
                     }
 
-                    // Only if its an ordered takeover. 12.04.2024 Janko
-
-                    var isDuplicatedSerial = IsDuplicatedSerialOrAndSSCC(tbSerialNum.Text ?? string.Empty, tbSSCC.Text ?? string.Empty);
-
-                    if (isDuplicatedSerial)
+                    if (Base.Store.byOrder)
                     {
-                        // Duplicirana serijska in/ali sscc koda.
-                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s334)}", ToastLength.Long).Show();
-                        return;
+                        var isDuplicatedSerial = IsDuplicatedSerialOrAndSSCC(tbSerialNum.Text ?? string.Empty, tbSSCC.Text ?? string.Empty);
+
+                        if (isDuplicatedSerial)
+                        {
+                            // Duplicirana serijska in/ali sscc koda.
+                            Toast.MakeText(this, $"{Resources.GetString(Resource.String.s334)}", ToastLength.Long).Show();
+                            return;
+                        }
+                    }
+                    else
+                    {
+
+                        string ident = openIdent.GetString("Code");
+                        string warehouse = string.Empty;
+
+                        if (Base.Store.isUpdate)
+                        {
+                            warehouse = moveItem.GetString("Wharehouse");
+
+                        }
+                        else
+                        {
+                            warehouse = moveHead.GetString("Wharehouse");
+                        }
+
+                        var isDuplicatedSerial = IsDuplicatedSerialOrAndSSCCNotByOrder(ident, warehouse, tbSerialNum.Text, tbSSCC.Text);
+
+                        if (isDuplicatedSerial)
+                        {
+                            // Duplicirana serijska in/ali sscc koda.
+                            Toast.MakeText(this, $"{Resources.GetString(Resource.String.s334)}", ToastLength.Long).Show();
+                            return;
+                        }
                     }
 
-                    // Only if its an ordered takeover. 12.04.2024 Janko
 
                     await CreateMethodFromStart();                                     
                 }
@@ -618,7 +644,8 @@ namespace WMS
                 } else
                 {
                     string ident = openIdent.GetString("Code");
-                    string warehouse = string.Empty;                                         
+                    string warehouse = string.Empty;     
+                    
                     if(Base.Store.isUpdate)
                     {
                         warehouse = moveItem.GetString("Wharehouse");
@@ -627,7 +654,7 @@ namespace WMS
                     {
                         warehouse = moveHead.GetString("Wharehouse");
                     }
-                    var isDuplicatedSerial = IsDuplicatedSerialOrAndSSCCNotByOrder(ident, tbSerialNum.Text, tbSSCC.Text);
+                    var isDuplicatedSerial = IsDuplicatedSerialOrAndSSCCNotByOrder(ident, warehouse, tbSerialNum.Text, tbSSCC.Text);
                     if (isDuplicatedSerial)
                     {
                         // Duplicirana serijska in/ali sscc koda.
@@ -636,10 +663,14 @@ namespace WMS
                     }
                 }
                 await CreateMethodSame();
+            } else
+            {
+                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
+                return;
             }
         }
 
-        private bool IsDuplicatedSerialOrAndSSCCNotByOrder(string ident, string serial = null, string sscc = null)
+        private bool IsDuplicatedSerialOrAndSSCCNotByOrder(string ident, string warehouse, string serial = null, string sscc = null)
         {
             string serialDuplication = CommonData.GetSetting("NoSerialnoDupOut");
             string identType = openIdent.GetString("SerialNo");
@@ -648,24 +679,37 @@ namespace WMS
             {
                 if (identType == "O")
                 {
-                    string sql = "SELECT COUNT(*) as anResult FROM uWMSMoveItemInClickNoOrder WHERE acIdent = @acIdent";
+
+                    string sql = "SELECT COUNT(*) as anResult FROM uWMSMoveItemInClickNoOrder WHERE acIdent = @acIdent and acWharehouse = @acWharehouse";
+
                     if(serial!=null)
                     {
                         sql += " AND acSerialno = @acSerialno";
                     }
+
                     if(sscc!=null)
                     {
-                        sql += " AND acSSCC = @acSSCC;";
+                        sql += " AND acSSCC = @acSSCC";
                     }
+
+                    if (warehouse!=null)
+                    {
+                        sql += " AND acWharehouse = @acWharehouse";
+                    }
+
                     var parameters = new List<Services.Parameter>();
+
                     parameters.Add(new Services.Parameter { Name = "acIdent", Type = "String", Value = ident });
                     parameters.Add(new Services.Parameter { Name = "acSerialno", Type = "String", Value = serial });
                     parameters.Add(new Services.Parameter { Name = "acSSCC", Type = "String", Value = sscc });
+                    parameters.Add(new Services.Parameter { Name = "acWharehouse", Type = "String", Value = warehouse });
+
                     var duplicates = Services.GetObjectListBySql(sql, parameters);
+
                     if(duplicates.Success)
                     {
                         int numberOfDuplicates = (int?) duplicates.Rows[0].IntValue("anResult") ?? 0;
-                        if(numberOfDuplicates>0)
+                        if(numberOfDuplicates > 0)
                         {
                             return true;
                         } else
@@ -673,6 +717,7 @@ namespace WMS
                             return false;
                         }
                     }
+
                     return false;
                 } 
             }
