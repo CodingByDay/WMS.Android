@@ -505,41 +505,16 @@
 
 	<string name="s330">Odprte odpreme (ni)</string>
 
-
 	<string name="s331">Odprti prevzemi (ni)</string>
 	<string name="s332">Paleta uspešno zavita</string>
 
 	<string name="s333">Nepravilna lokacija za izbrano skladišče.</string>
+	
 	<string name="s334">Duplicirana serijska in/ali sscc koda.</string>
 
 	<string name="s335">Brez omejitve</string>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	
+	<string name="s336">Vpišite lokacijo</string>
 
 
 

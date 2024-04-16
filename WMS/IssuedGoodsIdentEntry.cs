@@ -115,9 +115,6 @@ namespace WMS
                         parameters.Add(new Services.Parameter { Name = "acDocType", Type = "String", Value = moveHead.GetString("DocumentType") });
                         parameters.Add(new Services.Parameter { Name = "acWarehouse", Type = "String", Value = moveHead.GetString("Wharehouse") });
 
-
-
-
                         var subjects = Services.GetObjectListBySql($"SELECT * from uWMSOrderItemByItemTypeWarehouseOut WHERE acIdent = @acIdent AND acDocType = @acDocType AND acWarehouse = @acWarehouse ORDER BY acKey, anNo;", parameters);
 
                         if (!subjects.Success)
@@ -150,8 +147,6 @@ namespace WMS
                                 }
 
                                 displayedOrder = 0;
-
-
                             }
                         }
                     }
@@ -185,7 +180,6 @@ namespace WMS
                 tbDeliveryDeadline.Text = deadLine == null ? "" : ((DateTime)deadLine).ToString("dd.MM.yyyy");
                 btNext.Enabled = true;
                 btConfirm.Enabled = true;
-
             }
             else
             {
@@ -281,7 +275,6 @@ namespace WMS
             button5 = FindViewById<Button>(Resource.Id.button5);
             lbOrderInfo = FindViewById<TextView>(Resource.Id.lbOrderInfo);
             tbQty = FindViewById<EditText>(Resource.Id.tbQty);
-
             color();
             btNext.Enabled = false;
             btConfirm.Enabled = false;
@@ -290,7 +283,7 @@ namespace WMS
             Barcode2D barcode2D = new Barcode2D();
             barcode2D.open(this, this);
             btNext.Click += BtNext_Click;
-            tbIdent.KeyPress += TbIdent_KeyPress; ;
+            tbIdent.KeyPress += TbIdent_KeyPress; 
             btConfirm.Click += BtConfirm_Click;
             button4.Click += Button4_Click;
             button5.Click += Button5_Click;
@@ -301,8 +294,7 @@ namespace WMS
             if (!string.IsNullOrEmpty(savedIdentsJson))
             {
                 savedIdents = JsonConvert.DeserializeObject<List<string>>(savedIdentsJson);
-            }
-        
+            }       
             tbIdentAdapter = new CustomAutoCompleteAdapter<string>(this, Android.Resource.Layout.SimpleDropDownItem1Line, new List<string>());
             tbIdent.Adapter = tbIdentAdapter;
             tbIdent.TextChanged += (sender, e) =>

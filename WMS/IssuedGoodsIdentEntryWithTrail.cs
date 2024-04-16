@@ -48,7 +48,6 @@ namespace WMS
         private EditText tbIdentFilter;
         private EditText tbLocationFilter;
         private ListView ivTrail;
-        private List<Trail> ChosenOnes = new List<Trail>();
         private Button btConfirm;
         private Button btBack;
         private Button btDisplayPositions;
@@ -217,10 +216,8 @@ namespace WMS
                     return;
                 }
 
-
                 if (SaveMoveHeadObjectMode(trail))
                 {
- 
                     Intent i = new Intent(Application.Context, typeof(IssuedGoodsSerialOrSSCCEntry));
                     code.__helper__position = trail.No;
                     code.__helper__convertedOrder = trail.Key;
@@ -710,6 +707,9 @@ namespace WMS
         {
             adapterObj.setSelected(e.Position);
             chosen = adapterObj.returnSelected();
+
+            // Save this to the global state variable // 16.04.2024
+            // Base.Store.OpenOrder = new OpenOrder { Order = chosen.Key, Position = chosen.No, Client = chosen.}
         }
 
         private bool SaveMoveHeadObjectMode(Trail trail)

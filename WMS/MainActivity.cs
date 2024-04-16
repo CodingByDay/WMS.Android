@@ -202,12 +202,7 @@ namespace WMS
             btnRegistrationEvent.Enabled = true;
             btnRegistrationEvent.Click += BtnRegistrationEvent_Click;
             settings.login = false;
-
         }
-
-     
-
-    
 
         public string GetAppVersion()
         {
@@ -229,7 +224,7 @@ namespace WMS
 
             ColorMatrix colorMatrix = new ColorMatrix(colorMatrixValues);
             highlightFilter = new ColorMatrixColorFilter(colorMatrix);
-            txtVersion.Text = "v."+GetAppVersion();
+            txtVersion.Text = "v." + GetAppVersion();
             var language = Resources.Configuration.Locale.Country;      
             
             if(language == "SI")
@@ -259,7 +254,6 @@ namespace WMS
               return;
             }
         }
-
 
 
         private void OnNetworkStatusChanged(object sender, EventArgs e)
@@ -376,7 +370,7 @@ namespace WMS
             return base.OnKeyDown(keyCode, e);
         }
 
-        /* Android specific permissions */
+
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
         {
             Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);

@@ -59,13 +59,11 @@ namespace WMS
 
         public void GetBarcode(string barcode)
         {
-            // pass
             if (tbIdent.HasFocus)
             {
                 Sound();
                 tbIdent.Text = barcode;
                 ProcessIdent();
-
             }
         }
         public void color()
@@ -115,9 +113,6 @@ namespace WMS
                         parameters.Add(new Services.Parameter { Name = "acDocType", Type = "String", Value = moveHead.GetString("DocumentType") });
                         parameters.Add(new Services.Parameter { Name = "acWarehouse", Type = "String", Value = moveHead.GetString("Wharehouse") });
 
-
-
-
                         var subjects = Services.GetObjectListBySql($"SELECT * from uWMSOrderItemByItemTypeWarehouseOut WHERE acIdent = @acIdent AND acDocType = @acDocType AND acWarehouse = @acWarehouse ORDER BY acKey, anNo;", parameters);
 
                         if (!subjects.Success)
@@ -132,8 +127,7 @@ namespace WMS
                         {
                             if (subjects.Rows.Count > 0)
                             {
-                                for (int i = 0; i < subjects.Rows.Count; i++)
-                                {
+                                for (int i = 0; i < subjects.Rows.Count; i++)                               {
 
                                     var row = subjects.Rows[i];
 
@@ -150,8 +144,6 @@ namespace WMS
                                 }
 
                                 displayedOrder = 0;
-
-
                             }
                         }
                     }

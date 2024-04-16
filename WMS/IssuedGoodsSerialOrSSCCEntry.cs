@@ -286,6 +286,7 @@ namespace WMS
 
                 if (createPositionAllowed && double.TryParse(tbPacking.Text, out parsed) && stock == 0)
                 {
+
                     if (Base.Store.modeIssuing == 2)
                     {
                         StartActivity(typeof(IssuedGoodsIdentEntryWithTrail));
@@ -296,6 +297,7 @@ namespace WMS
                         StartActivity(typeof(IssuedGoodsIdentEntry));
                         Finish();
                     }
+
                 }
                 else if (createPositionAllowed && double.TryParse(tbPacking.Text, out parsed) && stock >= parsed)
                 {
@@ -811,64 +813,85 @@ namespace WMS
                 tbSerialNum.Enabled = false;
                 tbSSCC.Enabled = false;
                 tbLocation.Enabled = false;
-
             }
             else
             {
-                // Not the update ?? it seems to be true
-                tbIdent.Text = openIdent.GetString("Code") + " " + openIdent.GetString("Name");
-                if (Intent.Extras != null && !String.IsNullOrEmpty(Intent.Extras.GetString("selected")) && Base.Store.modeIssuing == 2)
-                {
-                    // This flow is for orders.
 
-                    string trailBytes = Intent.Extras.GetString("selected");
-                    receivedTrail = JsonConvert.DeserializeObject<Trail>(trailBytes);
-                    qtyCheck = Double.Parse(receivedTrail.Qty);
-                    tbLocation.Text = receivedTrail.Location;
-                    lbQty.Text = $"{Resources.GetString(Resource.String.s155)} ( " + qtyCheck.ToString(CommonData.GetQtyPicture()) + " )";
+                var orderLess = 
+                    Base.Store.OpenOrder == null && 
+                    Intent.Extras == null && 
+                    String.IsNullOrEmpty(Intent.Extras.GetString("selected")
+                );
+
+                if (orderLess)
+                {
+                    qtyCheck = 10000000;
+                    lbQty.Text = $"{Resources.GetString(Resource.String.s155)} ( " + Resources.GetString(Resource.String.s155) + " )";
                     stock = qtyCheck;
-                    tbPacking.Text = qtyCheck.ToString();
-                    GetConnectedPositions(receivedTrail.Key, receivedTrail.No, receivedTrail.Ident, receivedTrail.Location);
-
-                } else if (Base.Store.modeIssuing == 2 && Base.Store.code2D != null)
+                }
+                else
                 {
-                    var code2d = Base.Store.code2D;
-                    tbSerialNum.Text = code2d.charge;
-                    qtyCheck = 0;
-                    double result;
 
-                    // Try to parse the string to a double
-                    if (Double.TryParse(code2d.netoWeight, out result))
+
+                    // Not the update ?? it seems to be true
+                    tbIdent.Text = openIdent.GetString("Code") + " " + openIdent.GetString("Name");
+                    if (Intent.Extras != null && !String.IsNullOrEmpty(Intent.Extras.GetString("selected")) && Base.Store.modeIssuing == 2)
                     {
-                        qtyCheck = result;
+                        // This flow is for orders.
+
+                        string trailBytes = Intent.Extras.GetString("selected");
+                        receivedTrail = JsonConvert.DeserializeObject<Trail>(trailBytes);
+                        qtyCheck = Double.Parse(receivedTrail.Qty);
+                        tbLocation.Text = receivedTrail.Location;
                         lbQty.Text = $"{Resources.GetString(Resource.String.s155)} ( " + qtyCheck.ToString(CommonData.GetQtyPicture()) + " )";
-                        tbPacking.Text = qtyCheck.ToString();
                         stock = qtyCheck;
+                        tbPacking.Text = qtyCheck.ToString();
+                        GetConnectedPositions(receivedTrail.Key, receivedTrail.No, receivedTrail.Ident, receivedTrail.Location);
+
 
                     }
-
-                    GetConnectedPositions(code2d.__helper__convertedOrder, code2d.__helper__position, code2d.ident);
-
-                    // Reset the 2d code to nothing
-                    Base.Store.code2D = null;
-
-                    tbPacking.RequestFocus();
-                    tbPacking.SelectAll();
-
-                    FilterData();
-                }
-                else if (Base.Store.modeIssuing == 1)
-                {
-                    // This flow is for idents.
-
-                    var order = Base.Store.OpenOrder;
-
-                    if (order != null)
+                    else if (Base.Store.modeIssuing == 2 && Base.Store.code2D != null)
                     {
-                        qtyCheck = order.Quantity ?? 0;
-                        lbQty.Text = $"{Resources.GetString(Resource.String.s155)} ( " + qtyCheck.ToString(CommonData.GetQtyPicture()) + " )";
-                        stock = qtyCheck;
-                        GetConnectedPositions(order.Order, order.Position ?? -1, order.Ident);
+                        var code2d = Base.Store.code2D;
+                        tbSerialNum.Text = code2d.charge;
+                        qtyCheck = 0;
+                        double result;
+
+                        // Try to parse the string to a double
+                        if (Double.TryParse(code2d.netoWeight, out result))
+                        {
+                            qtyCheck = result;
+                            lbQty.Text = $"{Resources.GetString(Resource.String.s155)} ( " + qtyCheck.ToString(CommonData.GetQtyPicture()) + " )";
+                            tbPacking.Text = qtyCheck.ToString();
+                            stock = qtyCheck;
+
+                        }
+
+                        GetConnectedPositions(code2d.__helper__convertedOrder, code2d.__helper__position, code2d.ident);
+
+                        // Reset the 2d code to nothing
+                        Base.Store.code2D = null;
+
+                        tbPacking.RequestFocus();
+                        tbPacking.SelectAll();
+
+                        FilterData();
+                    }
+                    else if (Base.Store.modeIssuing == 1)
+                    {
+                        // This flow is for idents.
+
+                        var order = Base.Store.OpenOrder;
+
+                        if (order != null)
+                        {
+                            qtyCheck = order.Quantity ?? 0;
+                            lbQty.Text = $"{Resources.GetString(Resource.String.s155)} ( " + qtyCheck.ToString(CommonData.GetQtyPicture()) + " )";
+                            stock = qtyCheck;
+                            GetConnectedPositions(order.Order, order.Position ?? -1, order.Ident);
+                        }
+
+
                     }
                 }
             }
