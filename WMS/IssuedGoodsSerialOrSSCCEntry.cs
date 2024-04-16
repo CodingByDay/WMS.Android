@@ -106,7 +106,7 @@ namespace WMS
         private string warehouse;
         private List<IssuedGoods> data;
         private double serialOverflowQuantity = 0;
-
+        private bool isProccessOrderless = false;
 
         public static List<IssuedGoods> FilterIssuedGoods(List<IssuedGoods> issuedGoodsList, string acSSCC = null, string acSerialNo = null, string acLocation = null)
         {
@@ -176,6 +176,12 @@ namespace WMS
                         tbLocation.Text = barcode;
 
                         FilterData();
+
+                        if(isProccessOrderless)
+                        {
+                            GetQuantityOrderLess();
+                        }
+
                     }
                 }
             }
@@ -184,6 +190,34 @@ namespace WMS
                 Crashes.TrackError(ex);
                 Toast.MakeText(this, $"{Resources.GetString(Resource.String.s225)}", ToastLength.Long).Show();
             }
+        }
+
+        private void GetQuantityOrderLess()
+        {
+
+            string location = tbLocation.Text;
+            string ident = openIdent.GetString("Code");
+            string warehouse = moveHead.GetString("Wharehouse");
+
+
+            LoadStock();
+
+        }
+
+
+        private double LoadStock()
+        {
+            try
+            {
+
+
+            }
+            catch (Exception)
+            {
+
+            }
+
+            return 5;
         }
 
         public bool IsOnline()
@@ -226,6 +260,7 @@ namespace WMS
             btOverview = FindViewById<Button>(Resource.Id.btOverview);
             btExit = FindViewById<Button>(Resource.Id.btExit);
             // Events
+            tbLocation.KeyPress += TbLocation_KeyPress;
             tbPacking.KeyPress += TbPacking_KeyPress;
             tbSSCC.KeyPress += TbSSCC_KeyPress;
             tbSerialNum.KeyPress += TbSerialNum_KeyPress;
@@ -251,12 +286,15 @@ namespace WMS
             // Stop the loader
             LoaderManifest.LoaderManifestLoopStop(this);
 
-            // 
+            
             SetUpProcessDependentButtons();
 
             // Main logic for the entry
             SetUpForm();
         }
+
+
+
 
         private void SetUpProcessDependentButtons()
         {
@@ -800,6 +838,7 @@ namespace WMS
 
             if (Base.Store.isUpdate)
             {
+
                 // Update logic ?? it seems to be true.
                 tbIdent.Text = moveItem.GetString("IdentName");
                 tbSerialNum.Text = moveItem.GetString("SerialNo");
@@ -813,32 +852,30 @@ namespace WMS
                 tbSerialNum.Enabled = false;
                 tbSSCC.Enabled = false;
                 tbLocation.Enabled = false;
+
             }
             else
             {
 
-                var orderLess = 
-                    Base.Store.OpenOrder == null && 
-                    Intent.Extras == null && 
-                    String.IsNullOrEmpty(Intent.Extras.GetString("selected")
-                );
+                isProccessOrderless =
+                 (Base.Store.OpenOrder == null && Intent.Extras == null) &&
+                 (Intent.Extras == null || String.IsNullOrEmpty(Intent.Extras.GetString("selected")));
 
-                if (orderLess)
+
+                if (isProccessOrderless)
                 {
+                    tbIdent.Text = openIdent.GetString("Code") + " " + openIdent.GetString("Name");
                     qtyCheck = 10000000;
-                    lbQty.Text = $"{Resources.GetString(Resource.String.s155)} ( " + Resources.GetString(Resource.String.s155) + " )";
+                    lbQty.Text = $"{Resources.GetString(Resource.String.s155)} ( " + Resources.GetString(Resource.String.s336) + " )";
                     stock = qtyCheck;
                 }
                 else
                 {
-
-
                     // Not the update ?? it seems to be true
                     tbIdent.Text = openIdent.GetString("Code") + " " + openIdent.GetString("Name");
                     if (Intent.Extras != null && !String.IsNullOrEmpty(Intent.Extras.GetString("selected")) && Base.Store.modeIssuing == 2)
                     {
                         // This flow is for orders.
-
                         string trailBytes = Intent.Extras.GetString("selected");
                         receivedTrail = JsonConvert.DeserializeObject<Trail>(trailBytes);
                         qtyCheck = Double.Parse(receivedTrail.Qty);
@@ -847,7 +884,6 @@ namespace WMS
                         stock = qtyCheck;
                         tbPacking.Text = qtyCheck.ToString();
                         GetConnectedPositions(receivedTrail.Key, receivedTrail.No, receivedTrail.Ident, receivedTrail.Location);
-
 
                     }
                     else if (Base.Store.modeIssuing == 2 && Base.Store.code2D != null)
@@ -941,5 +977,31 @@ namespace WMS
 
             e.Handled = false;
         }
+
+
+        private void TbLocation_KeyPress(object? sender, View.KeyEventArgs e)
+        {
+            if (e.KeyCode == Keycode.Enter && e.Event.Action == KeyEventActions.Down)
+            {
+                if (isProccessOrderless)
+                {
+                    var isCorrectLocation = IsLocationCorrect();
+
+                    if (!isCorrectLocation)
+                    {
+                        // Nepravilna lokacija za izbrano skladišče
+                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s333)}", ToastLength.Long).Show();
+                        return;
+                    }
+                    else
+                    {
+                        GetQuantityOrderLess();
+                    }
+
+                }
+            }
+            e.Handled = false;
+        }
+
     }
 }
