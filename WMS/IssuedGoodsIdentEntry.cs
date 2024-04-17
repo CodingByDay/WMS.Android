@@ -328,18 +328,26 @@ namespace WMS
 
         private void UpdateSuggestions(string userInput)
         {
-            // Provide custom suggestions based on user input
-            List<string> suggestions = GetCustomSuggestions(userInput);
-            // Clear the existing suggestions and add the new ones
-            tbIdentAdapter.Clear();
-            tbIdentAdapter.AddAll(suggestions);
-            tbIdentAdapter.NotifyDataSetChanged();
+            if (userInput.Length < 3)
+            {
+                tbIdentAdapter.Clear();
+                return;
+            }
+            else
+            {
+                // Provide custom suggestions based on user input
+                List<string> suggestions = GetCustomSuggestions(userInput);
+                // Clear the existing suggestions and add the new ones
+                tbIdentAdapter.Clear();
+                tbIdentAdapter.AddAll(suggestions);
+                tbIdentAdapter.NotifyDataSetChanged();
+            }
         }
 
         private List<string> GetCustomSuggestions(string userInput)
         {
             return savedIdents
-                .Where(suggestion => suggestion.ToLower().Contains(userInput.ToLower())).Take(10000)
+                .Where(suggestion => suggestion.ToLower().Contains(userInput.ToLower())).Take(1000)
                 .ToList();
         }
 

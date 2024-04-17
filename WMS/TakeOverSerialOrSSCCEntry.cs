@@ -579,13 +579,27 @@ namespace WMS
         {
             await Task.Run(() =>
             {
-                if (connectedPositions.Count == 1)
+                if (connectedPositions.Count == 1 || !Base.Store.byOrder)
                 {
-                    var element = connectedPositions.ElementAt(0);
+                    var element = new Takeover { };
+                    if (Base.Store.byOrder)
+                    {
+                        element = connectedPositions.ElementAt(0);
+                    }
                     moveItem = new NameValueObject("MoveItem");
                     moveItem.SetInt("HeadID", moveHead.GetInt("HeadID"));
-                    moveItem.SetString("LinkKey", element.acKey); // here
-                    moveItem.SetInt("LinkNo", element.anNo);
+
+                    if (Base.Store.byOrder)
+                    {
+                        moveItem.SetString("LinkKey", element.acKey);
+                        moveItem.SetInt("LinkNo", element.anNo);
+                    }
+                    else
+                    {
+                        moveItem.SetString("LinkKey", string.Empty);
+                        moveItem.SetInt("LinkNo", 0);
+                    }
+
                     moveItem.SetString("Ident", openIdent.GetString("Code"));
                     moveItem.SetString("SSCC", tbSSCC.Text.Trim());
                     moveItem.SetString("SerialNo", tbSerialNum.Text.Trim());

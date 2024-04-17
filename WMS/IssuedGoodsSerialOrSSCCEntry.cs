@@ -194,30 +194,64 @@ namespace WMS
 
         private void GetQuantityOrderLess()
         {
-
-            string location = tbLocation.Text;
-            string ident = openIdent.GetString("Code");
-            string warehouse = moveHead.GetString("Wharehouse");
-
-
-            LoadStock();
-
+            if (openIdent != null && moveHead != null)
+            {
+                string location = tbLocation.Text;
+                string ident = openIdent.GetString("Code");
+                string warehouse = moveHead.GetString("Wharehouse");
+                string sscc = string.IsNullOrEmpty(tbSSCC.Text) ? null : tbSSCC.Text;
+                string serial = string.IsNullOrEmpty(tbSerialNum.Text) ? null : tbSerialNum.Text;
+                LoadStock(location, ident, warehouse, sscc, serial);
+            }
         }
 
 
-        private double LoadStock()
+        private void LoadStock(string location, string ident, string warehouse, string sscc = null, string serial = null)
         {
-            try
+            var parameters = new List<Services.Parameter>();
+
+            parameters.Add(new Services.Parameter { Name = "acIdent", Type = "String", Value = ident });
+            parameters.Add(new Services.Parameter { Name = "aclocation", Type = "String", Value = location });
+            parameters.Add(new Services.Parameter { Name = "acWarehouse", Type = "String", Value = warehouse });
+
+            string sql = "SELECT TOP 1 anQty FROM uWMSStockByWarehouse WHERE acIdent = @acIdent AND aclocation = @aclocation AND acWarehouse = @acWarehouse";
+
+            if(sscc!=null)
+            {
+                sql += " AND acSSCC = @acSSCC";
+                parameters.Add(new Services.Parameter { Name = "acSSCC", Type = "String", Value = sscc });
+            }
+
+            if (serial != null)
+            {
+                sql += " AND acSerialNo = @acSerialNo;";
+                parameters.Add(new Services.Parameter { Name = "acSerialNo", Type = "String", Value = serial });
+            }
+
+            var qty = Services.GetObjectListBySql(sql, parameters);
+
+            if(qty.Success)
             {
 
+                if (qty.Rows.Count > 0)
+                {
+                    double result = (double?)qty.Rows[0].DoubleValue("anQty") ?? 0;
+                    qtyCheck = result;
+                    lbQty.Text = $"{Resources.GetString(Resource.String.s155)} ( " + qtyCheck.ToString(CommonData.GetQtyPicture()) + " )";
+                    tbPacking.Text = qtyCheck.ToString();
+                    stock = qtyCheck;
+                } else
+                {
+                    double result =  0;
+                    qtyCheck = result;
+                    lbQty.Text = $"{Resources.GetString(Resource.String.s155)} ( " + qtyCheck.ToString(CommonData.GetQtyPicture()) + " )";
+                    tbPacking.Text = qtyCheck.ToString();
+                    stock = qtyCheck;
+                }
 
-            }
-            catch (Exception)
-            {
-
-            }
-
-            return 5;
+                tbPacking.RequestFocus();
+                tbPacking.SelectAll();
+            } 
         }
 
         public bool IsOnline()
@@ -261,7 +295,6 @@ namespace WMS
             btExit = FindViewById<Button>(Resource.Id.btExit);
             // Events
             tbLocation.KeyPress += TbLocation_KeyPress;
-            tbPacking.KeyPress += TbPacking_KeyPress;
             tbSSCC.KeyPress += TbSSCC_KeyPress;
             tbSerialNum.KeyPress += TbSerialNum_KeyPress;
             btCreateSame.Click += BtCreateSame_Click;
@@ -419,7 +452,10 @@ namespace WMS
 
                 await CreateMethodSame();
             } 
-            else
+            else if (isProccessOrderless && double.TryParse(tbPacking.Text, out parsed) && stock >= parsed)
+            {
+                var result = 9 + 9;
+            } else
             {
                 Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
             }
@@ -864,10 +900,12 @@ namespace WMS
 
                 if (isProccessOrderless)
                 {
+
                     tbIdent.Text = openIdent.GetString("Code") + " " + openIdent.GetString("Name");
                     qtyCheck = 10000000;
                     lbQty.Text = $"{Resources.GetString(Resource.String.s155)} ( " + Resources.GetString(Resource.String.s336) + " )";
                     stock = qtyCheck;
+                    tbLocation.RequestFocus();
                 }
                 else
                 {
@@ -948,16 +986,8 @@ namespace WMS
             soundPool.Play(soundPoolId, 1, 1, 0, 0, 1);
         }
 
-        private void TbPacking_KeyPress(object? sender, View.KeyEventArgs e)
-        {
-            /* Ignore for now due to user experience.
-             * if (e.KeyCode == Keycode.Enter && e.Event.Action == KeyEventActions.Down)
-            {
-                FilterData();
-            }
-            e.Handled = false;
-            */
-        }
+  
+        
 
         private void TbSerialNum_KeyPress(object? sender, View.KeyEventArgs e)
         {
