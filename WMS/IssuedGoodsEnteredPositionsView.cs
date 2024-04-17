@@ -181,7 +181,7 @@ namespace WMS
                         BtLogout_Click(this, null);
                     }
                     break;
-                    //return true;
+                    // return true;
             }
             return base.OnKeyDown(keyCode, e);
         }
@@ -240,10 +240,10 @@ namespace WMS
                     }
                     else
                     {
-                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s213)}" + result, ToastLength.Long).Show();
-                    popupDialog.Dismiss();
-                    popupDialog.Hide();
-                    return;
+                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s213)}" + result, ToastLength.Long).Show();
+                        popupDialog.Dismiss();
+                        popupDialog.Hide();
+                        return;
                     }
                 }
                 catch (Exception err)
@@ -407,6 +407,9 @@ namespace WMS
             if (moveHead.GetBool("ByOrder") && flow == "2")
             {            
                 StartActivity(typeof(IssuedGoodsIdentEntryWithTrail));
+                this.Finish();
+            } else if (!moveHead.GetBool("ByOrder") && flow == "2") {
+                StartActivity(typeof(IssuedGoodsIdentEntry));
                 this.Finish();
             }
             else if(flow == "1")

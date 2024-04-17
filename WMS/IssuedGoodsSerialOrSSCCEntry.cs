@@ -104,7 +104,7 @@ namespace WMS
         private EditText tbSSCCpopup;
 
         private string warehouse;
-        private List<IssuedGoods> data;
+        private List<IssuedGoods> data = new List<IssuedGoods>();
         private double serialOverflowQuantity = 0;
         private bool isProccessOrderless = false;
 
@@ -374,6 +374,19 @@ namespace WMS
                 {
                     await CreateMethodFromStart();
                 }
+                else if (isProccessOrderless && double.TryParse(tbPacking.Text, out parsed) && stock >= parsed)
+                {
+                    var isCorrectLocation = IsLocationCorrect();
+
+                    if (!isCorrectLocation)
+                    {
+                        // Nepravilna lokacija za izbrano skladišče
+                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s333)}", ToastLength.Long).Show();
+                        return;
+                    }
+
+                    await CreateMethodFromStart();
+                }
                 else
                 {
                     Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
@@ -454,7 +467,16 @@ namespace WMS
             } 
             else if (isProccessOrderless && double.TryParse(tbPacking.Text, out parsed) && stock >= parsed)
             {
-                var result = 9 + 9;
+                var isCorrectLocation = IsLocationCorrect();
+
+                if (!isCorrectLocation)
+                {
+                    // Nepravilna lokacija za izbrano skladišče
+                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s333)}", ToastLength.Long).Show();
+                    return;
+                }
+
+                await CreateMethodSame();
             } else
             {
                 Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
@@ -536,13 +558,29 @@ namespace WMS
         {
             await Task.Run(() =>
             {
-                if (data.Count == 1)
+                if (data.Count == 1 || isProccessOrderless)
                 {
-                    var element = data.ElementAt(0);
+                    var element = new IssuedGoods { };
+
+                    if (!isProccessOrderless)
+                    {
+                        element = data.ElementAt(0);
+                    }
+
                     moveItem = new NameValueObject("MoveItem");                   
                     moveItem.SetInt("HeadID", moveHead.GetInt("HeadID"));
-                    moveItem.SetString("LinkKey", element.acKey);
-                    moveItem.SetInt("LinkNo", element.anNo);
+
+                    if (!isProccessOrderless)
+                    {
+                        moveItem.SetString("LinkKey", element.acKey);
+                        moveItem.SetInt("LinkNo", element.anNo);
+                    }
+                    else
+                    {
+                        moveItem.SetString("LinkKey", string.Empty);
+                        moveItem.SetInt("LinkNo", 0);
+                    }
+
                     moveItem.SetString("Ident", openIdent.GetString("Code"));
                     moveItem.SetString("SSCC", tbSSCC.Text.Trim());
                     moveItem.SetString("SerialNo", tbSerialNum.Text.Trim());
@@ -561,15 +599,24 @@ namespace WMS
                     {
                         RunOnUiThread(() =>
                         {
-                            if (Base.Store.modeIssuing == 2)
-                            {
-                                StartActivity(typeof(IssuedGoodsIdentEntryWithTrail));
-                                Finish();
-                            } else if (Base.Store.modeIssuing == 1)
+                            if (isProccessOrderless)
                             {
                                 StartActivity(typeof(IssuedGoodsIdentEntry));
                                 Finish();
-                            } 
+                            }
+                            else
+                            {
+                                if (Base.Store.modeIssuing == 2)
+                                {
+                                    StartActivity(typeof(IssuedGoodsIdentEntryWithTrail));
+                                    Finish();
+                                }
+                                else if (Base.Store.modeIssuing == 1)
+                                {
+                                    StartActivity(typeof(IssuedGoodsIdentEntry));
+                                    Finish();
+                                }
+                            }
                         });
 
                         createPositionAllowed = false;
@@ -586,14 +633,28 @@ namespace WMS
         {
             await Task.Run(() =>
             {
-                if (data.Count == 1)
+                if (data.Count == 1 || isProccessOrderless)
                 {
-                    var element = data.ElementAt(0);
+                    var element = new IssuedGoods();
+
+                    if(!isProccessOrderless)
+                    {
+                        element = data.ElementAt(0);
+                    }
                     // This solves the problem of updating the item. The problem occurs because of the old way of passing data.
                     moveItem = new NameValueObject("MoveItem");                   
                     moveItem.SetInt("HeadID", moveHead.GetInt("HeadID"));
-                    moveItem.SetString("LinkKey", element.acKey);
-                    moveItem.SetInt("LinkNo", element.anNo);
+                    if (!isProccessOrderless)
+                    {
+                        moveItem.SetString("LinkKey", element.acKey);
+                        moveItem.SetInt("LinkNo", element.anNo);
+                    }
+                    else
+                    {
+                        moveItem.SetString("LinkKey", string.Empty);
+                        moveItem.SetInt("LinkNo", 0);
+                    }
+
                     moveItem.SetString("Ident", openIdent.GetString("Code"));
                     moveItem.SetString("SSCC", tbSSCC.Text.Trim());
                     moveItem.SetString("SerialNo", tbSerialNum.Text.Trim());
@@ -603,10 +664,9 @@ namespace WMS
                     moveItem.SetInt("Clerk", Services.UserID());
                     moveItem.SetString("Location", tbLocation.Text.Trim());
                     moveItem.SetString("Palette", "1");
-
-
                     string error;
                     moveItem = Services.SetObject("mi", moveItem, out error);
+
                     if (moveItem != null && error == string.Empty)
                     {
 
@@ -621,12 +681,19 @@ namespace WMS
                         // Check to see if the maximum is already reached.
                         if(stock <= 0)
                         {
-                            if (Base.Store.modeIssuing == 2)
+                            if (!isProccessOrderless)
                             {
-                                StartActivity(typeof(IssuedGoodsIdentEntryWithTrail));
-                                Finish();
-                            }
-                            else if (Base.Store.modeIssuing == 1)
+                                if (Base.Store.modeIssuing == 2)
+                                {
+                                    StartActivity(typeof(IssuedGoodsIdentEntryWithTrail));
+                                    Finish();
+                                }
+                                else if (Base.Store.modeIssuing == 1)
+                                {
+                                    StartActivity(typeof(IssuedGoodsIdentEntry));
+                                    Finish();
+                                }
+                            } else
                             {
                                 StartActivity(typeof(IssuedGoodsIdentEntry));
                                 Finish();
@@ -655,9 +722,11 @@ namespace WMS
                             tbPacking.Text = string.Empty;
 
                         });
-
-                        createPositionAllowed = false;
-                        GetConnectedPositions(element.acKey, element.anNo, element.acIdent, element.aclocation);
+                        if (!isProccessOrderless)
+                        {
+                            createPositionAllowed = false;
+                            GetConnectedPositions(element.acKey, element.anNo, element.acIdent, element.aclocation);
+                        }
                     }
                 }
                 else
