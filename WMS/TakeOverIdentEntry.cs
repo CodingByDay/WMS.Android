@@ -473,12 +473,12 @@ namespace WMS
         {
             if (barcode != "Scan fail" && barcode != "")
             {
-                if (HelperMethods.is2D(barcode))
+                if (HelperMethods.is2D(barcode) && tbIdent.HasFocus)
                 {
                     Parser2DCode parser2DCode = new Parser2DCode(barcode.Trim());
                     jumpAhead(parser2DCode);
                 }
-                else if (!CheckIdent(barcode) && barcode.Length > 17 && barcode.Contains("400"))
+                else if (!CheckIdent(barcode) && barcode.Length > 17 && barcode.Contains("400") && tbIdent.HasFocus)
                 {
                     var ident = barcode.Substring(0, barcode.Length - 16);
                     Sound();
@@ -549,7 +549,6 @@ namespace WMS
                 var resultQuery = Services.GetObjectListBySql(query, parameters);
                 if (resultQuery.Success && resultQuery.Rows.Count > 0)
                 {
-
                     var row = resultQuery.Rows[0];
                     tbIdent.Text = ident;
                     ProcessIdent();
@@ -558,7 +557,6 @@ namespace WMS
                     tbQty.Text = row.DoubleValue("anQty").ToString();
                     var deadLine = row.DateTimeValue("adDeliveryDeadline");
                     tbDeliveryDeadline.Text = deadLine == null ? "" : ((DateTime)deadLine).ToString("dd.MM.yyyy");
-                    intentClass = new Intent(Application.Context, typeof(TakeOverSerialOrSSCCEntry));
 
                     parser2DCode.__helper__convertedOrder = newKey;
                     parser2DCode.__helper__position = (int) (row.IntValue("anNo") ?? 0);
