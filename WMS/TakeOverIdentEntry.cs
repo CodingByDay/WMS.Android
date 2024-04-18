@@ -332,7 +332,20 @@ namespace WMS
             }
         }
 
-
+        private void SaveIdent2DCode()
+        {
+            var ident = tbIdent.Text.Trim();
+            string error;
+            openIdent = Services.GetObject("id", ident, out error);
+            if (openIdent == null)
+            {
+                InUseObjects.Set("OpenIdent", new NameValueObject());
+            }
+            else
+            {
+                InUseObjects.Set("OpenIdent", openIdent);
+            }
+        }
 
         private void ProcessIdent()
         {
@@ -468,15 +481,20 @@ namespace WMS
                 }
             }
         }
-
+        private bool preventDuplicate = false;
         public void GetBarcode(string barcode)
         {
             if (barcode != "Scan fail" && barcode != "")
             {
-                if (HelperMethods.is2D(barcode) && tbIdent.HasFocus)
+                if (HelperMethods.is2D(barcode) && tbIdent.HasFocus && preventDuplicate == false)
                 {
                     Parser2DCode parser2DCode = new Parser2DCode(barcode.Trim());
                     jumpAhead(parser2DCode);
+                    preventDuplicate = true;
+                }
+                else if (HelperMethods.is2D(barcode) && tbIdent.HasFocus && preventDuplicate == true)
+                {
+                    return;
                 }
                 else if (!CheckIdent(barcode) && barcode.Length > 17 && barcode.Contains("400") && tbIdent.HasFocus)
                 {
@@ -493,12 +511,12 @@ namespace WMS
                         tbIdent.Text = barcode;
                         ProcessIdent();
                     }
-                }
+                }        
             }
             else
             {
                 tbIdent.Text = string.Empty;
-            }
+            }         
         }
         private bool CheckIdent(string barcode)
         {
@@ -551,7 +569,7 @@ namespace WMS
                 {
                     var row = resultQuery.Rows[0];
                     tbIdent.Text = ident;
-                    ProcessIdent();
+                    SaveIdent2DCode();
                     tbOrder.Text = row.StringValue("acKey");
                     tbConsignee.Text = row.StringValue("acSubject");
                     tbQty.Text = row.DoubleValue("anQty").ToString();
@@ -566,7 +584,6 @@ namespace WMS
                     if (SaveMoveHead2D(row))
                     {
                         StartActivity(typeof(TakeOverSerialOrSSCCEntry));
-                        HelpfulMethods.clearTheStack(this);
                         Finish();
                     }
 
