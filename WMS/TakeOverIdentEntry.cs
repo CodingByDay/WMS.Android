@@ -112,7 +112,7 @@ namespace WMS
             imm.ShowSoftInput(tbIdent, ShowFlags.Forced);
             tbIdent.KeyPress += TbIdent_KeyPress;
             tbIdent.AfterTextChanged += TbIdent_AfterTextChanged;
-            
+            tbIdent.RequestFocus();
         }
 
         private void TbIdent_KeyPress(object? sender, View.KeyEventArgs e)

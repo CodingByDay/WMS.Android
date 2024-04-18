@@ -59,7 +59,7 @@ namespace WMS
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        protected override void OnCreate(Bundle savedInstanceState)
+        protected async override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             SetTheme(Resource.Style.AppTheme_NoActionBar);
@@ -97,7 +97,7 @@ namespace WMS
             dataList.ItemSelected += DataList_ItemSelected;
             InUseObjects.Clear();
             dataList.ItemLongClick += DataList_ItemLongClick;
-            LoadPositions();
+            await LoadPositions();
             FillItemsList();
             dataList.PerformItemClick(dataList, 0, 0);
             var _broadcastReceiver = new NetworkStatusBroadcastReceiver();
@@ -112,7 +112,6 @@ namespace WMS
             LinearLayout yourLinearLayout = FindViewById<LinearLayout>(Resource.Id.app);
             // Initialize the GestureDetector
             yourLinearLayout.SetOnTouchListener(gestureListener);
-
 
         }
 
@@ -166,9 +165,7 @@ namespace WMS
         }
         public override void OnBackPressed()
         {
-
             HelpfulMethods.releaseLock();
-
             base.OnBackPressed();
         }
         private void BtNext_Click1(object sender, EventArgs e)
@@ -176,8 +173,6 @@ namespace WMS
             displayedPosition++;
             if (displayedPosition >= positions.Items.Count) { displayedPosition = 0; }
             FillDisplayedItem();
-
-
             // Change the highlight position.
             dataList.RequestFocusFromTouch();
             dataList.SetItemChecked(displayedPosition, true);
@@ -287,7 +282,7 @@ namespace WMS
             popupDialog.Hide();
         }
 
-        private void BtnYes_Click(object sender, EventArgs e)
+        private async void BtnYes_Click(object sender, EventArgs e)
         {
             var item = positions.Items[displayedPosition];
             var id = item.GetInt("HeadID");
@@ -302,7 +297,7 @@ namespace WMS
                     if (result == "OK!")
                     {
                         positions = null;
-                        LoadPositions();
+                        await LoadPositions();
                         dataSource.Clear();
                         FillItemsList();
                         popupDialog.Dismiss();
@@ -313,7 +308,7 @@ namespace WMS
                         string errorWebApp = string.Format($"{Resources.GetString(Resource.String.s212)}" + result);
                         Toast.MakeText(this, errorWebApp, ToastLength.Long).Show();
                         positions = null;
-                        LoadPositions();
+                        await LoadPositions();
                         popupDialog.Dismiss();
                         popupDialog.Hide();
                         return;
@@ -337,12 +332,10 @@ namespace WMS
 
         }
 
-        private void Yes(int index)
+        private async void Yes(int index)
         {
             var item = positions.Items[index];
             var id = item.GetInt("HeadID");
-
-
             try
             {
 
@@ -352,7 +345,7 @@ namespace WMS
                     if (result == "OK!")
                     {
                         positions = null;
-                        LoadPositions();
+                        await LoadPositions();
                         dataSource.Clear();
                         FillItemsList();
                         popupDialog.Dismiss();
@@ -363,8 +356,7 @@ namespace WMS
                         string errorWebAppIssued = string.Format($"{Resources.GetString(Resource.String.s212)}" + result);
                         Toast.MakeText(this, errorWebAppIssued, ToastLength.Long).Show();
                         positions = null;
-                        LoadPositions();
-
+                        await LoadPositions();
                         popupDialog.Dismiss();
                         popupDialog.Hide();
                         return;
@@ -469,29 +461,23 @@ namespace WMS
             FillDisplayedItem();
         }
 
-
-        // Load position method...
-        private void LoadPositions()
+        private async Task LoadPositions()
         {
-
             try
             {
-
                 if (positions == null)
                 {
                     var error = "";
                     if (positions == null)
                     {
-                        positions = Services.GetObjectList("mh", out error, "I");
+                        positions = await AsyncServices.AsyncServices.GetObjectListAsync("mh", "I");
                         InUseObjects.Set("TakeOverHeads", positions);
                     }
                     if (positions == null)
                     {
-                        // exit 0
                         return;
                     }
                 }
-
                 displayedPosition = 0;
                 FillDisplayedItem();
             }

@@ -52,7 +52,7 @@ namespace WMS
         private UnfinishedProductionAdapter adapter;
         private GestureDetector gestureDetector;
 
-        protected override void OnCreate(Bundle savedInstanceState)
+        protected async override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             SetTheme(Resource.Style.AppTheme_NoActionBar);
@@ -84,7 +84,7 @@ namespace WMS
             btNew.Click += BtNew_Click;
             listData.ItemClick += ListData_ItemClick;
             InUseObjects.Clear();
-            LoadPositions();
+            await LoadPositions();
             listData.ItemLongClick += ListData_ItemLongClick;
             FillItemsList();
             listData.PerformItemClick(listData, 0, 0);
@@ -242,7 +242,7 @@ namespace WMS
         }
 
 
-        private void Yes(int index)
+        private async void Yes(int index)
         {
             var item = positions.Items[index];
             var id = item.GetInt("HeadID");
@@ -257,7 +257,7 @@ namespace WMS
                     if (result == "OK!")
                     {
                         positions = null;
-                        LoadPositions();
+                        await LoadPositions();
                         data.Clear();
                         FillItemsList();
                         popupDialog.Dismiss();
@@ -268,7 +268,7 @@ namespace WMS
                         string errorWebAppIssued = string.Format($"{Resources.GetString(Resource.String.s212)}" + result);
                         DialogHelper.ShowDialogError(this, this, errorWebAppIssued);
                         positions = null;
-                        LoadPositions();
+                        await LoadPositions();
                         popupDialog.Dismiss();
                         popupDialog.Hide();
                         return;
@@ -338,7 +338,7 @@ namespace WMS
             popupDialog.Hide();
         }
 
-        private void BtnYes_Click(object sender, EventArgs e)
+        private async void BtnYes_Click(object sender, EventArgs e)
         {
             var item = positions.Items[displayedPosition];
             var id = item.GetInt("HeadID");
@@ -353,7 +353,7 @@ namespace WMS
                     if (result == "OK!")
                     {
                         positions = null;
-                        LoadPositions();
+                        await LoadPositions();
                         data.Clear();
                         FillItemsList();
                         popupDialog.Dismiss();
@@ -364,8 +364,7 @@ namespace WMS
                         string errorWebAppProduction = string.Format($"{Resources.GetString(Resource.String.s212)}" + result);
                         DialogHelper.ShowDialogError(this, this, errorWebAppProduction);
                         positions = null;
-                        LoadPositions();
-
+                        await LoadPositions();
                         popupDialog.Dismiss();
                         popupDialog.Hide();
                         return;
@@ -457,7 +456,7 @@ namespace WMS
             //listData.Adapter = adapter;
 
         }
-        private void LoadPositions()
+        private async Task LoadPositions()
         {
 
             try
@@ -468,7 +467,7 @@ namespace WMS
                     var error = "";
                     if (positions == null)
                     {
-                        positions = Services.GetObjectList("mh", out error, "W");
+                        positions = await AsyncServices.AsyncServices.GetObjectListAsync("mh", "W");
                         InUseObjects.Set("ProductionHeads", positions);
                     }
                     if (positions == null)

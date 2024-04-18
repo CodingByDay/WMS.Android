@@ -52,7 +52,7 @@ namespace WMS
         private int selectedItem = -1;
         private GestureDetector gestureDetector;
 
-        protected override void OnCreate(Bundle savedInstanceState)
+        protected async override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             SetTheme(Resource.Style.AppTheme_NoActionBar);
@@ -78,15 +78,15 @@ namespace WMS
             adapter = new UnfinishedIssuedAdapter(this, data);
             issuedData.Adapter = adapter;
             issuedData.ItemClick += IssuedData_ItemClick;
-            btFinish.Click += BtFinish_Click; //
-            btDelete.Click += BtDelete_Click; // 
-            btNew.Click += BtNew_Click;       //
-            btLogout.Click += BtLogout_Click; //
+            btFinish.Click += BtFinish_Click; 
+            btDelete.Click += BtDelete_Click; 
+            btNew.Click += BtNew_Click;       
+            btLogout.Click += BtLogout_Click; 
             issuedData.ItemLongClick += IssuedData_ItemLongClick;
             btNext = FindViewById<Button>(Resource.Id.btNext);
             btNext.Click += BtNext_Click;           
             InUseObjects.Clear();
-            LoadPositions();
+            await LoadPositions();
             FillItemsList();
             issuedData.PerformItemClick(issuedData, 0, 0);
             var _broadcastReceiver = new NetworkStatusBroadcastReceiver();
@@ -200,7 +200,7 @@ namespace WMS
             popupDialog.Hide();
         }
 
-        private void Yes(int index)
+        private async void Yes(int index)
         {
             var item = positions.Items[index];
             var id = item.GetInt("HeadID");
@@ -215,7 +215,7 @@ namespace WMS
                     if (result == "OK!")
                     {
                         positions = null;
-                        LoadPositions();
+                        await LoadPositions();
                         data.Clear();
                         FillItemsList();
                         popupDialog.Dismiss();
@@ -226,7 +226,7 @@ namespace WMS
                         string errorWebAppIssued = string.Format($"{Resources.GetString(Resource.String.s212)}" + result);
                         Toast.MakeText(this, errorWebAppIssued, ToastLength.Long).Show();
                         positions = null;
-                        LoadPositions();
+                        await LoadPositions();
 
                         popupDialog.Dismiss();
                         popupDialog.Hide();
@@ -318,7 +318,7 @@ namespace WMS
             popupDialog.Hide();
         }
 
-        private void BtnYes_Click(object sender, EventArgs e)
+        private async void BtnYes_Click(object sender, EventArgs e)
         {
             var item = positions.Items[displayedPosition];
             var id = item.GetInt("HeadID");
@@ -333,7 +333,7 @@ namespace WMS
                     if (result == "OK!")
                     {
                         positions = null;
-                        LoadPositions();
+                        await LoadPositions();
                         data.Clear();
                         FillItemsList();
                         popupDialog.Dismiss();
@@ -344,8 +344,7 @@ namespace WMS
                         string errorWebAppIssued = string.Format($"{Resources.GetString(Resource.String.s212)}" + result);
                         Toast.MakeText(this, errorWebAppIssued, ToastLength.Long).Show();
                         positions = null;
-                        LoadPositions();
-
+                        await LoadPositions();
                         popupDialog.Dismiss();
                         popupDialog.Hide();
                         return;
@@ -437,7 +436,7 @@ namespace WMS
               
             }
         }
-        private void LoadPositions()
+        private async Task LoadPositions()
         {
 
             try
@@ -447,7 +446,7 @@ namespace WMS
                     var error = "";
                     if (positions == null)
                     {
-                        positions = Services.GetObjectList("mh", out error, "P");
+                        positions = await AsyncServices.AsyncServices.GetObjectListAsync("mh", "P");
                         InUseObjects.Set("IssuedGoodHeads", positions);
                     }
                     if (positions == null)

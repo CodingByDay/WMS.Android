@@ -52,7 +52,7 @@ namespace WMS
         private List<UnfinishedTakeoverList> dataSource = new List<UnfinishedTakeoverList>();
         private GestureDetector gestureDetector;
 
-        protected override void OnCreate(Bundle savedInstanceState)
+        protected async override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             SetTheme(Resource.Style.AppTheme_NoActionBar);
@@ -83,7 +83,7 @@ namespace WMS
 
             InUseObjects.Clear();
 
-            LoadPositions();
+            await LoadPositions();
 
 
             // Try to get the bitmap
@@ -224,7 +224,7 @@ namespace WMS
             popupDialog.Hide();
         }
 
-        private void BtnYes_Click(object sender, EventArgs e)
+        private async void BtnYes_Click(object sender, EventArgs e)
         {
             var item = positions.Items[displayedPosition];
             var id = item.GetInt("HeadID");
@@ -239,7 +239,7 @@ namespace WMS
                     if (result == "OK!")
                     {
                         positions = null;
-                        LoadPositions();
+                        await LoadPositions();
                         popupDialog.Dismiss();
                         popupDialog.Hide();
                     }
@@ -248,7 +248,7 @@ namespace WMS
                         string errorWebApp = string.Format($"{Resources.GetString(Resource.String.s212)}" + result);
                         Toast.MakeText(this, errorWebApp, ToastLength.Long).Show();
                         positions = null;
-                        LoadPositions();
+                        await LoadPositions();
                         popupDialog.Dismiss();
                         popupDialog.Hide();
                         return;
@@ -290,7 +290,7 @@ namespace WMS
         }
 
 
-        private void LoadPositions()
+        private async Task LoadPositions()
         {
 
             try
@@ -299,9 +299,10 @@ namespace WMS
                 if (positions == null)
                 {
                     var error = "";
+
                     if (positions == null)
                     {
-                        positions = Services.GetObjectList("mh", out error, "I");
+                        positions = await AsyncServices.AsyncServices.GetObjectListAsync("mh", "I");
                         InUseObjects.Set("TakeOverHeads", positions);
                     }
                     if (positions == null)
