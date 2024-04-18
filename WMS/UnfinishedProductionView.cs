@@ -339,7 +339,7 @@ namespace WMS
         {
             if ((positions != null) && (positions.Items.Count > 0))
             {
-                lbInfo.Text = $"{Resources.GetString(Resource.String.s12)}" + (displayedPosition + 1).ToString() + "/" + positions.Items.Count + ")";
+                lbInfo.Text = $"{Resources.GetString(Resource.String.s12)} (" + (displayedPosition + 1).ToString() + "/" + positions.Items.Count + ")";
                 var item = positions.Items[displayedPosition];
 
                 tbWorkOrder.Text = item.GetString("LinkKey");

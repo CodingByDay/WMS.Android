@@ -184,7 +184,7 @@ namespace WMS
 
     
                 stock = element.anQty ?? 0;
-                lbQty.Text = $"{Resources.GetString(Resource.String.s155)} ( " + element.anQty.ToString() + " )";
+                lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + element.anQty.ToString() + " )";
                 tbPacking.Text = element.anQty.ToString();
                 
 
@@ -261,7 +261,7 @@ namespace WMS
                 tbLocation.Text = moveItem.GetString("Location");
                 tbPalette.Text = moveItem.GetString("Palette");
                 tbPacking.Text = moveItem.GetDouble("Qty").ToString();
-                lbQty.Text = $"{Resources.GetString(Resource.String.s155)} ( " + moveItem.GetDouble("Qty").ToString() + " )";
+                lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + moveItem.GetDouble("Qty").ToString() + " )";
                 btCreateSame.Text = $"{Resources.GetString(Resource.String.s293)}";
                 // Lock down all other fields
                 tbIdent.Enabled = false;

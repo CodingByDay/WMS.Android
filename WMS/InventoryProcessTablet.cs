@@ -689,13 +689,13 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 double q = dataObject.DoubleValue("anQty") ?? 0;
                 if (dataObject != null)
                 {
-                    lbPacking.Text = $"{Resources.GetString(Resource.String.s155)} ({q.ToString(CommonData.GetQtyPicture())})";
+                    lbPacking.Text = $"{Resources.GetString(Resource.String.s83)} ({q.ToString(CommonData.GetQtyPicture())})";
                     tbPacking.Text = q.ToString(CommonData.GetQtyPicture());
 
                 }
                 else if (result != null)
                 {
-                    lbPacking.Text = $"{Resources.GetString(Resource.String.s155)} ({result})";
+                    lbPacking.Text = $"{Resources.GetString(Resource.String.s83)} ({result})";
                     tbPacking.Text = result;
                 }
             }

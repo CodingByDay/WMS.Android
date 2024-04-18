@@ -237,14 +237,14 @@ namespace WMS
                 {
                     double result = (double?)qty.Rows[0].DoubleValue("anQty") ?? 0;
                     qtyCheck = result;
-                    lbQty.Text = $"{Resources.GetString(Resource.String.s155)} ( " + qtyCheck.ToString(CommonData.GetQtyPicture()) + " )";
+                    lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + qtyCheck.ToString(CommonData.GetQtyPicture()) + " )";
                     tbPacking.Text = qtyCheck.ToString();
                     stock = qtyCheck;
                 } else
                 {
                     double result =  0;
                     qtyCheck = result;
-                    lbQty.Text = $"{Resources.GetString(Resource.String.s155)} ( " + qtyCheck.ToString(CommonData.GetQtyPicture()) + " )";
+                    lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + qtyCheck.ToString(CommonData.GetQtyPicture()) + " )";
                     tbPacking.Text = qtyCheck.ToString();
                     stock = qtyCheck;
                 }
@@ -484,7 +484,6 @@ namespace WMS
         }
         private bool IsLocationCorrect()
         {
-            // TODO: Add a way to check serial numbers
             string location = tbLocation.Text;
 
             if (!CommonData.IsValidLocation(moveHead.GetString("Wharehouse"), location))
@@ -496,10 +495,37 @@ namespace WMS
                 return true;
             }
         }
+
+
         private void BtExit_Click(object? sender, EventArgs e)
         {
             StartActivity(typeof(MainMenu));
         }
+
+
+        public override bool OnKeyDown(Keycode keyCode, KeyEvent e)
+        {
+            switch (keyCode)
+            {
+                case Keycode.F2:
+                    BtCreateSame_Click(this, null);
+                    break;
+                case Keycode.F3:
+                    BtCreate_Click(this, null);
+                    break;
+                case Keycode.F4:
+                    BtFinish_Click(this, null);
+                    break;
+                case Keycode.F5:
+                    BtOverview_Click(this, null);
+                    break;
+                case Keycode.F8:
+                    BtExit_Click(this, null);
+                    break;
+            }
+            return base.OnKeyDown(keyCode, e);
+        }
+
 
         private void BtFinish_Click(object? sender, EventArgs e)
         {
@@ -675,7 +701,7 @@ namespace WMS
 
                         RunOnUiThread(() =>
                         {
-                            lbQty.Text = $"{Resources.GetString(Resource.String.s155)} ( " + stock.ToString(CommonData.GetQtyPicture()) + " )";
+                            lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + stock.ToString(CommonData.GetQtyPicture()) + " )";
                         });
 
                         // Check to see if the maximum is already reached.
@@ -743,7 +769,7 @@ namespace WMS
             {
                 var element = data.ElementAt(0);
 
-                // This is perhaps not needed due to the quantity checking requirments. lbQty.Text = $"{Resources.GetString(Resource.String.s155)} ( " + element.anQty.ToString() + " )";
+                // This is perhaps not needed due to the quantity checking requirments. lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + element.anQty.ToString() + " )";
                 tbPacking.Text = element.anQty.ToString();
                 
 
@@ -950,7 +976,7 @@ namespace WMS
                 tbSSCC.Text = moveItem.GetString("SSCC");
                 tbLocation.Text = moveItem.GetString("Location");
                 tbPacking.Text = moveItem.GetDouble("Qty").ToString();
-                lbQty.Text = $"{Resources.GetString(Resource.String.s155)} ( " + moveItem.GetDouble("Qty").ToString() + " )";
+                lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + moveItem.GetDouble("Qty").ToString() + " )";
                 btCreateSame.Text = $"{Resources.GetString(Resource.String.s293)}";
                 // Lock down all other fields
                 tbIdent.Enabled = false;
@@ -972,7 +998,7 @@ namespace WMS
 
                     tbIdent.Text = openIdent.GetString("Code") + " " + openIdent.GetString("Name");
                     qtyCheck = 10000000;
-                    lbQty.Text = $"{Resources.GetString(Resource.String.s155)} ( " + Resources.GetString(Resource.String.s336) + " )";
+                    lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + Resources.GetString(Resource.String.s336) + " )";
                     stock = qtyCheck;
                     tbLocation.RequestFocus();
                 }
@@ -987,7 +1013,7 @@ namespace WMS
                         receivedTrail = JsonConvert.DeserializeObject<Trail>(trailBytes);
                         qtyCheck = Double.Parse(receivedTrail.Qty);
                         tbLocation.Text = receivedTrail.Location;
-                        lbQty.Text = $"{Resources.GetString(Resource.String.s155)} ( " + qtyCheck.ToString(CommonData.GetQtyPicture()) + " )";
+                        lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + qtyCheck.ToString(CommonData.GetQtyPicture()) + " )";
                         stock = qtyCheck;
                         tbPacking.Text = qtyCheck.ToString();
                         GetConnectedPositions(receivedTrail.Key, receivedTrail.No, receivedTrail.Ident, receivedTrail.Location);
@@ -1004,7 +1030,7 @@ namespace WMS
                         if (Double.TryParse(code2d.netoWeight, out result))
                         {
                             qtyCheck = result;
-                            lbQty.Text = $"{Resources.GetString(Resource.String.s155)} ( " + qtyCheck.ToString(CommonData.GetQtyPicture()) + " )";
+                            lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + qtyCheck.ToString(CommonData.GetQtyPicture()) + " )";
                             tbPacking.Text = qtyCheck.ToString();
                             stock = qtyCheck;
 
@@ -1029,7 +1055,7 @@ namespace WMS
                         if (order != null)
                         {
                             qtyCheck = order.Quantity ?? 0;
-                            lbQty.Text = $"{Resources.GetString(Resource.String.s155)} ( " + qtyCheck.ToString(CommonData.GetQtyPicture()) + " )";
+                            lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + qtyCheck.ToString(CommonData.GetQtyPicture()) + " )";
                             stock = qtyCheck;
                             GetConnectedPositions(order.Order, order.Position ?? -1, order.Ident);
                         }

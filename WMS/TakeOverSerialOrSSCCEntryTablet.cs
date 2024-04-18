@@ -35,17 +35,14 @@ namespace WMS
         private NameValueObject moveHead = (NameValueObject)InUseObjects.Get("MoveHead");
         private NameValueObject moveItem = (NameValueObject)InUseObjects.Get("MoveItem");
         private NameValueObjectList docTypes = null;
-        // Janko Jovičić 2021 
         private bool editMode = false;
         private bool isPackaging = false;
-        // Components definitions.
         private EditText tbIdent;
         private EditText tbSSCC;
         private EditText tbSerialNum;
         private EditText tbLocation;
         private EditText tbPacking;
         private EditText tbUnits;
-        // Button definitions.
         private Button btSaveOrUpdate;
         private Button button4;
         private Button button6;

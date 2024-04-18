@@ -564,7 +564,7 @@ namespace WMS
                     receivedTrail = ClientPickingPosition.Deserialize<ClientPickingPosition>(trailBytes);
                     qtyCheck = Double.Parse(receivedTrail.Quantity);
                     tbLocation.Text = receivedTrail.Location;
-                    lbQty.Text = $"{Resources.GetString(Resource.String.s155)} ( " + qtyCheck.ToString(CommonData.GetQtyPicture()) + " )";
+                    lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + qtyCheck.ToString(CommonData.GetQtyPicture()) + " )";
                     stock = qtyCheck;
                     tbPacking.Text = qtyCheck.ToString();
                     GetConnectedPositions(receivedTrail.Order, receivedTrail.No, receivedTrail.Ident, receivedTrail.Location);

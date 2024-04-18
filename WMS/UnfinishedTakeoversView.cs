@@ -94,8 +94,6 @@ namespace WMS
             // Initialize the GestureDetector
             yourLinearLayout.SetOnTouchListener(gestureListener);
 
-    
-
             var _broadcastReceiver = new NetworkStatusBroadcastReceiver();
             _broadcastReceiver.ConnectionStatusChanged += OnNetworkStatusChanged;
             Application.Context.RegisterReceiver(_broadcastReceiver,

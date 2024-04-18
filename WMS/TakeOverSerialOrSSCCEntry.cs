@@ -171,8 +171,8 @@ namespace WMS
                 tbSSCC.Text = moveItem.GetString("SSCC");
                 tbLocation.Text = moveItem.GetString("Location");
                 tbPacking.Text = moveItem.GetDouble("Qty").ToString();
-                lbQty.Text = $"{Resources.GetString(Resource.String.s155)} ( " + moveItem.GetDouble("Qty").ToString() + " )";
-                btCreate.Text = $"{Resources.GetString(Resource.String.s293)}";
+                lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + moveItem.GetDouble("Qty").ToString() + " )";
+                btCreate.Text = $"{Resources.GetString(Resource.String.s290)}";
                 // Lock down all other fields
                 tbIdent.Enabled = false;
                 tbSerialNum.Enabled = false;
@@ -188,7 +188,7 @@ namespace WMS
                 if (order != null)
                 {
                     qtyCheck = order.Quantity ?? 0;
-                    lbQty.Text = $"{Resources.GetString(Resource.String.s155)} ( " + qtyCheck.ToString(CommonData.GetQtyPicture()) + " )";
+                    lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + qtyCheck.ToString(CommonData.GetQtyPicture()) + " )";
                     tbPacking.Text = qtyCheck.ToString();
                     stock = qtyCheck;
                     GetConnectedPositions(order.Order, order.Position ?? -1, order.Ident);
@@ -205,7 +205,7 @@ namespace WMS
                     if (Double.TryParse(code2d.netoWeight, out result))
                     {
                         qtyCheck = result;
-                        lbQty.Text = $"{Resources.GetString(Resource.String.s155)} ( " + qtyCheck.ToString(CommonData.GetQtyPicture()) + " )";
+                        lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + qtyCheck.ToString(CommonData.GetQtyPicture()) + " )";
                         tbPacking.Text = qtyCheck.ToString();
                         stock = qtyCheck;
 
@@ -225,7 +225,7 @@ namespace WMS
                     // This is the orderless process.
                     qtyCheck = 10000000;
                     tbLocation.Text = CommonData.GetSetting("DefaultPaletteLocation");
-                    lbQty.Text = $"{Resources.GetString(Resource.String.s155)} ( " + Resources.GetString(Resource.String.s335) + " )";                   
+                    lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + Resources.GetString(Resource.String.s335) + " )";                   
                     stock = qtyCheck;
                     tbPacking.RequestFocus();
                     tbPacking.SelectAll();
@@ -457,7 +457,6 @@ namespace WMS
                         if (Base.Store.isUpdate)
                         {
                             warehouse = moveItem.GetString("Wharehouse");
-
                         }
                         else
                         {
@@ -788,7 +787,7 @@ namespace WMS
                                         
                             RunOnUiThread(() =>
                             {
-                                lbQty.Text = $"{Resources.GetString(Resource.String.s155)} ( " + stock.ToString(CommonData.GetQtyPicture()) + " )";
+                                lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + stock.ToString(CommonData.GetQtyPicture()) + " )";
                             });
 
                         }
@@ -858,7 +857,28 @@ namespace WMS
             soundPool.Play(soundPoolId, 1, 1, 0, 0, 1);
         }
 
-
+        public override bool OnKeyDown(Keycode keyCode, KeyEvent e)
+        {
+            switch (keyCode)
+            {
+                case Keycode.F2:
+                    BtSaveOrUpdate_Click(this, null);
+                    break;
+                case Keycode.F3:
+                    BtCreate_Click(this, null);
+                    break;
+                case Keycode.F4:
+                    BtFinish_Click(this, null);
+                    break;
+                case Keycode.F5:
+                    BtOverview_Click(this, null);
+                    break;
+                case Keycode.F8:
+                    BtBack_Click(this, null);
+                    break;
+            }
+            return base.OnKeyDown(keyCode, e);
+        }
 
         public void GetBarcode(string barcode)
         {
