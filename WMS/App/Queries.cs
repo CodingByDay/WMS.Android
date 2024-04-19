@@ -1,18 +1,19 @@
 ﻿using TrendNET.WMS.Device.Services;
+using WMS.AsyncServices;
 
 public static class Queries
 { // This static class should be used for specific interaction with the API through query style new implementation //
 #nullable enable
 
-    public static AutocompleteResponse DefaultIssueWarehouse(string docType)
+    public static async Task<AutocompleteResponse> DefaultIssueWarehouse(string docType)
     {
         AutocompleteResponse response = new AutocompleteResponse();
         ApiResultSet rs = new ApiResultSet();
         var parameters = new List<Services.Parameter>();
         parameters.Add(new Services.Parameter { Name = "acDocType", Type = "String", Value = docType });
         string query = $"SELECT acWarehouse FROM uWMSOrderDocTypeOut WHERE acDocType = @acDocType";
-        rs = Services.GetObjectListBySql(query, parameters);
-        if (rs.Success && rs.Rows.Count > 0 && !string.IsNullOrEmpty(rs.Rows[0].StringValue("acWarehouse")))
+        rs = await AsyncServices.GetObjectListBySqlAsync(query, parameters);
+        if (rs != null && rs.Success && rs.Rows.Count > 0 && !string.IsNullOrEmpty(rs.Rows[0].StringValue("acWarehouse")))
         {
             response.warehouse = rs.Rows[0].StringValue("acWarehouse");
             response.main = true;
@@ -25,15 +26,15 @@ public static class Queries
         return response;
     }
 
-    public static AutocompleteResponse DefaultTakeoverWarehouse(string docType)
+    public static async Task<AutocompleteResponse> DefaultTakeoverWarehouse(string docType)
     {
         AutocompleteResponse response = new AutocompleteResponse();
         ApiResultSet rs = new ApiResultSet();
         var parameters = new List<Services.Parameter>();
         parameters.Add(new Services.Parameter { Name = "acDocType", Type = "String", Value = docType });
         string query = $"SELECT acWarehouse FROM uWMSOrderDocTypeIn WHERE acDocType = @acDocType";
-        rs = Services.GetObjectListBySql(query, parameters);
-        if (rs.Success && rs.Rows.Count > 0 && !string.IsNullOrEmpty(rs.Rows[0].StringValue("acWarehouse")))
+        rs = await AsyncServices.GetObjectListBySqlAsync(query, parameters);
+        if (rs != null && rs.Success && rs.Rows.Count > 0 && !string.IsNullOrEmpty(rs.Rows[0].StringValue("acWarehouse")))
         {
             response.warehouse = rs.Rows[0].StringValue("acWarehouse");
             response.main = true;
@@ -45,6 +46,7 @@ public static class Queries
         }
         return response;
     }
+
 
 #nullable disable
 }

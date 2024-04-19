@@ -253,7 +253,7 @@ namespace WMS
                     parameters.Add(new Services.Parameter { Name = "acWarehouse", Type = "String", Value = moveHead.GetString("Wharehouse") });
 
                     string sql = $"SELECT * FROM uWMSOrderItemBySubjectTypeWarehouseOut WHERE acDocType = @acDocType AND acSubject = @acSubject AND acWarehouse = @acWarehouse;";
-                    result = Services.GetObjectListBySql(sql, parameters);
+                    result = await AsyncServices.AsyncServices.GetObjectListBySqlAsync(sql, parameters);
                 }
                 if (moveHead != null && result.Success && result.Rows.Count > 0)
                 {

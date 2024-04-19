@@ -113,7 +113,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
         {
             cbDocType.SelectAtPosition(0);
             cbExtra.SelectAtPosition(0);
-            var dws = Queries.DefaultIssueWarehouse(adapterDocType.GetItem(0).ID);
+            var dws = await Queries.DefaultIssueWarehouse(adapterDocType.GetItem(0).ID);
 
             temporaryPositionWarehouse = cbWarehouse.SetItemByString(dws.warehouse);
             if (dws.main)
@@ -215,7 +215,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             try
             {
                 temporaryPositionDoc = e.Position;
-                var dws = Queries.DefaultIssueWarehouse(adapterDocType.GetItem(temporaryPositionDoc).ID);
+                var dws = await Queries.DefaultIssueWarehouse(adapterDocType.GetItem(temporaryPositionDoc).ID);
                 temporaryPositionWarehouse = cbWarehouse.SetItemByString(dws.warehouse);
                 if (dws.main)
                 {

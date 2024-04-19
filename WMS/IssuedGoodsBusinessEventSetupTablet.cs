@@ -101,11 +101,11 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             InitializeAutocompleteControls();
         }
 
-        private void InitializeAutocompleteControls()
+        private async void InitializeAutocompleteControls()
         {
             cbDocType.SelectAtPosition(0);
             cbExtra.SelectAtPosition(0);
-            var dws = Queries.DefaultIssueWarehouse(objectDocType.ElementAt(0).ID);
+            var dws = await Queries.DefaultIssueWarehouse(objectDocType.ElementAt(0).ID);
             temporaryPositionWarehouse = cbWarehouse.SetItemByString(dws.warehouse);
             if (dws.main)
             {
@@ -141,13 +141,13 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             }
         }
 
-        private void CbDocType_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
+        private async void CbDocType_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
         {
             try
             {
                 temporaryPositionDoc = e.Position;
                 FillOpenOrders();
-                var dws = Queries.DefaultIssueWarehouse(objectDocType.ElementAt(temporaryPositionDoc).ID);
+                var dws = await Queries.DefaultIssueWarehouse(objectDocType.ElementAt(temporaryPositionDoc).ID);
                 if (dws.main)
                 {
                     cbWarehouse.Enabled = false;

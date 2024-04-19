@@ -228,6 +228,8 @@ namespace TrendNET.WMS.Device.Services
             public string Type { get; set; }
             public object Value { get; set; }
         }
+
+
         /*
           var parameterId = {
           Name: props.selectedTable.id,

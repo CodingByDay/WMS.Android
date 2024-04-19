@@ -83,9 +83,7 @@ namespace WMS
             Android.Resource.Layout.SimpleSpinnerItem, objectcbWarehouse);
             adapter.SetDropDownViewResource(Android.Resource.Layout.SimpleSpinnerItem);
             cbWarehouse.Adapter = adapter;
-            UpdateForm();
-
-         
+            UpdateForm();   
             adapterDoc = new CustomAutoCompleteAdapter<ComboBoxItem>(this,
             Android.Resource.Layout.SimpleSpinnerItem, objectcbDocType);
 
@@ -111,12 +109,12 @@ namespace WMS
             InitializeAutocompleteControls();
         }
 
-        private void InitializeAutocompleteControls()
+        private async void InitializeAutocompleteControls()
         {
             try
             {
                 cbDocType.SelectAtPosition(0);
-                var dws = Queries.DefaultTakeoverWarehouse(objectcbDocType.ElementAt(0).ID);
+                var dws = await Queries.DefaultTakeoverWarehouse(objectcbDocType.ElementAt(0).ID);
                 temporaryPositionWarehouse = cbWarehouse.SetItemByString(dws.warehouse);
                 if (dws.main)
                 {
@@ -138,13 +136,14 @@ namespace WMS
             temporaryPositionSubject = e.Position;
         }
 
-        private void CbDocType_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
+
+        private async void CbDocType_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
         {
             var selected = objectcbDocType.ElementAt(e.Position);
 
             temporaryPositioncbDoc = e.Position;
 
-            var dws = Queries.DefaultTakeoverWarehouse(objectcbDocType.ElementAt(temporaryPositioncbDoc).ID);
+            var dws = await Queries.DefaultTakeoverWarehouse(objectcbDocType.ElementAt(temporaryPositioncbDoc).ID);
 
             temporaryPositionWarehouse = cbWarehouse.SetItemByString(dws.warehouse);
 
@@ -153,6 +152,8 @@ namespace WMS
                 cbWarehouse.Enabled = false;
             }
         }
+
+
 
         public bool IsOnline()
         {

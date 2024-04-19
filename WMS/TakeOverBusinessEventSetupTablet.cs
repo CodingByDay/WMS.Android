@@ -108,10 +108,10 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
         }
 
 
-        private void InitializeAutocompleteControls()
+        private async void InitializeAutocompleteControls()
         {
             cbDocType.SelectAtPosition(0);
-            var dws = Queries.DefaultTakeoverWarehouse(objectcbDocType.ElementAt(0).ID);
+            var dws = await Queries.DefaultTakeoverWarehouse(objectcbDocType.ElementAt(0).ID);
             temporaryPositionWarehouse = cbWarehouse.SetItemByString(dws.warehouse);
             if (dws.main)
             {
@@ -129,10 +129,10 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             temporaryPositionSubject = e.Position;
         }
 
-        private void CbDocType_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
+        private async void CbDocType_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
         {
             temporaryPositioncbDoc = e.Position;
-            var dws = Queries.DefaultTakeoverWarehouse(objectcbDocType.ElementAt(temporaryPositioncbDoc).ID);
+            var dws = await Queries.DefaultTakeoverWarehouse(objectcbDocType.ElementAt(temporaryPositioncbDoc).ID);
             temporaryPositionWarehouse = cbWarehouse.SetItemByString(dws.warehouse);
             if (dws.main)
             {

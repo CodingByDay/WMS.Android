@@ -165,7 +165,7 @@ namespace WMS.AsyncServices
 
                 if (getResult.Success)
                 {
-                    return CompactSerializer.Deserialize<ApiResultSet>(getResult.Result);
+                    return JsonConvert.DeserializeObject<ApiResultSet>(getResult.Result); 
                 }
                 else
                 {
