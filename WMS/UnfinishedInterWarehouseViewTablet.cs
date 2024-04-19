@@ -84,7 +84,6 @@ namespace WMS
             dataList.ItemClick += DataList_ItemClick;
             dataList.ItemLongClick += DataList_ItemLongClick;
             InUseObjects.Clear();
-
             await LoadPositions();
             FillItemsList();
             dataList.PerformItemClick(dataList, 0, 0);
@@ -92,12 +91,8 @@ namespace WMS
             _broadcastReceiver.ConnectionStatusChanged += OnNetworkStatusChanged;
             Application.Context.RegisterReceiver(_broadcastReceiver,
             new IntentFilter(ConnectivityManager.ConnectivityAction));
-
-
-
             GestureListener gestureListener = new GestureListener(this);
             gestureDetector = new GestureDetector(this, new GestureListener(this));
-
             LinearLayout yourLinearLayout = FindViewById<LinearLayout>(Resource.Id.app);
             // Initialize the GestureDetector
             yourLinearLayout.SetOnTouchListener(gestureListener);
@@ -122,8 +117,9 @@ namespace WMS
         {
             var cm = (ConnectivityManager)GetSystemService(ConnectivityService);
             return cm.ActiveNetworkInfo == null ? false : cm.ActiveNetworkInfo.IsConnected;
-
         }
+
+
         private void OnNetworkStatusChanged(object sender, EventArgs e)
         {
             if (IsOnline())
@@ -147,18 +143,14 @@ namespace WMS
 
         public override void OnBackPressed()
         {
-
             HelpfulMethods.releaseLock();
-
             base.OnBackPressed();
         }
+
+
         private void DataList_ItemLongClick(object sender, AdapterView.ItemLongClickEventArgs e)
         {
-            
             var index = e.Position;
-           
-            var test = 23;
-
             DeleteFromTouch(Convert.ToInt32(index));
         }
 
@@ -172,8 +164,6 @@ namespace WMS
         {
             var item = positions.Items[index];
             var id = item.GetInt("HeadID");
-
-
             try
             {
 
@@ -263,32 +253,24 @@ namespace WMS
         {
             switch (keyCode)
             {
-         
-
-
                 case Keycode.F2:
                     if (btFinish.Enabled == true)
                     {
                         BtFinish_Click(this, null);
                     }
                     break;
-
-
                 case Keycode.F3:
                     if (btDelete.Enabled == true)
                     {
                         BtDelete_Click(this, null);
                     }
                     break;
-
                 case Keycode.F4:
                     if (btnNew.Enabled == true)
                     {
                         BtnNew_Click(this, null);
                     }
                     break;
-
-
                 case Keycode.F5:
                     if (btnLogout.Enabled == true)
                     {
@@ -296,11 +278,11 @@ namespace WMS
                     }
                     break;
 
-
-
             }
             return base.OnKeyDown(keyCode, e);
         }
+
+
         private void BtnLogout_Click(object sender, EventArgs e)
         {
             StartActivity(typeof(MainMenuTablet));
@@ -346,7 +328,6 @@ namespace WMS
         {
             var item = positions.Items[displayedPosition];
             var id = item.GetInt("HeadID");
-
 
             try
             {
@@ -432,10 +413,7 @@ namespace WMS
                         CreatedBy = item.GetString("ClerkName"),
                         Date = date,
                         NumberOfPositions = item.GetInt("ItemCount").ToString(),
-                        // tbItemCount.Text = item.GetInt("ItemCount").ToString();
                     });
-
-
 
                      adapter.NotifyDataSetChanged(); 
                 }

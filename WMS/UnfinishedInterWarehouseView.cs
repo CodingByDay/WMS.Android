@@ -346,7 +346,7 @@ namespace WMS
         {
             if ((positions != null) && (positions.Items.Count > 0))
             {
-                lbInfo.Text = $"{Resources.GetString(Resource.String.s61)}" + (displayedPosition + 1).ToString() + "/" + positions.Items.Count + ")";
+                lbInfo.Text = $"{Resources.GetString(Resource.String.s61)}" + " (" + (displayedPosition + 1).ToString() + "/" + positions.Items.Count + ")";
                 var item = positions.Items[displayedPosition];
 
                 tbBusEvent.Text = item.GetString("DocumentTypeName");

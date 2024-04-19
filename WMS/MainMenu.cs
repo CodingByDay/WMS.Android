@@ -225,12 +225,7 @@ namespace WMS
             
         }
 
-        private void RapidTakeover_Click(object sender, EventArgs e)
-        {
-
-           StartActivity(typeof(RapidTakeover));
-                        
-        }
+ 
 
         public override bool OnKeyDown(Keycode keyCode, KeyEvent e)
         {
