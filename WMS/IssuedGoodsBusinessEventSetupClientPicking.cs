@@ -77,7 +77,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             btnOrder.Click += BtnOrder_Click;
 
 
-            var warehouses = Services.GetObjectListBySql($"SELECT acWarehouse, acName FROM uWMSWarehouse");
+            var warehouses = await AsyncServices.AsyncServices.GetObjectListBySqlAsync($"SELECT acWarehouse, acName FROM uWMSWarehouse");
 
             if (warehouses.Success)
             {
@@ -147,7 +147,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                                 parameters.Add(new Services.Parameter { Name = "acDocType", Type = "String", Value = dt.ID });
                                 parameters.Add(new Services.Parameter { Name = "acWarehouse", Type = "String", Value = wh.ID });
 
-                                var subjects = Services.GetObjectListBySql($"SELECT * FROM uWMSOrderSubjectByTypeWarehouseOut WHERE acDocType = @acDocType AND acWarehouse = @acWarehouse", parameters);
+                                var subjects = await AsyncServices.AsyncServices.GetObjectListBySqlAsync($"SELECT * FROM uWMSOrderSubjectByTypeWarehouseOut WHERE acDocType = @acDocType AND acWarehouse = @acWarehouse", parameters);
                                 if (!subjects.Success)
                                 {
                                     RunOnUiThread(() =>
@@ -320,12 +320,12 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
 
     
 
-        private void UpdateForm()
+        private async void UpdateForm()
         {
             objectExtra.Clear();
             docTypes = CommonData.ListDocTypes("P|N");
             initial += 1;
-            var result = Services.GetObjectListBySql("SELECT * FROM uWMSOrderDocTypeOut;");
+            var result = await AsyncServices.AsyncServices.GetObjectListBySqlAsync("SELECT * FROM uWMSOrderDocTypeOut;");
             foreach (Row row in result.Rows)
             {
                 objectDocType.Add(new ComboBoxItem { ID = row.StringValue("acDocType"), Text = row.StringValue("acDocType") + " - " + row.StringValue("acName") });

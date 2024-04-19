@@ -320,7 +320,7 @@ namespace WMS
                         var parameters = new List<Services.Parameter>();
                         parameters.Add(new Services.Parameter { Name = "acKey", Type = "String", Value = password });
                         string sql = $"SELECT * FROM uWMSOrderItemByKeyOut WHERE acKey = @acKey;";
-                        result = Services.GetObjectListBySql(sql, parameters);                                                                                         
+                        result = await AsyncServices.AsyncServices.GetObjectListBySqlAsync(sql, parameters);                                                                                         
                         NameValueObjectVariableList = result.ConvertToNameValueObjectList("OpenOrder");
                         if (result.Success && result.Rows.Count > 0)
                         {

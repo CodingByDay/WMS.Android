@@ -537,7 +537,7 @@ namespace WMS
             return false;
         }
 
-        private void jumpAhead(Parser2DCode parser2DCode)
+        private async void jumpAhead(Parser2DCode parser2DCode)
         {
             String order = parser2DCode.clientOrder.ToString();
             string key = order;
@@ -564,7 +564,7 @@ namespace WMS
                 parameters.Add(new Services.Parameter { Name = "acKey", Type = "String", Value = newKey });
                 parameters.Add(new Services.Parameter { Name = "acIdent", Type = "String", Value = ident });
                 string query = $"SELECT * FROM uWMSOrderItemByWarehouseTypeIn WHERE acKey = @acKey AND acIdent = @acIdent";
-                var resultQuery = Services.GetObjectListBySql(query, parameters);
+                var resultQuery = await AsyncServices.AsyncServices.GetObjectListBySqlAsync(query, parameters);
                 if (resultQuery.Success && resultQuery.Rows.Count > 0)
                 {
                     var row = resultQuery.Rows[0];

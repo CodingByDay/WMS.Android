@@ -296,7 +296,7 @@ namespace WMS
 
 
 
-        private void GetConnectedPositions(string acKey, int anNo, string acIdent, string acLocation = null)
+        private async void GetConnectedPositions(string acKey, int anNo, string acIdent, string acLocation = null)
         {
             var sql = "SELECT * from uWMSOrderItemByKeyOut WHERE acKey = @acKey AND anNo = @anNo AND acIdent = @acIdent";
             var parameters = new List<Services.Parameter>();
@@ -308,7 +308,7 @@ namespace WMS
                 parameters.Add(new Services.Parameter { Name = "acLocation", Type = "String", Value = acLocation });
                 sql += " AND acLocation = @acLocation;";
             }
-            var subjects = Services.GetObjectListBySql(sql, parameters);
+            var subjects = await AsyncServices.AsyncServices.GetObjectListBySqlAsync(sql, parameters);
             if (!subjects.Success)
             {
                 RunOnUiThread(() =>

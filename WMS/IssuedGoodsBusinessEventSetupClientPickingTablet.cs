@@ -48,7 +48,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             private Button btnHidden;
             private bool initialLoad;
 
-            protected override void OnCreate(Bundle savedInstanceState)
+            protected async override void OnCreate(Bundle savedInstanceState)
             {
                 base.OnCreate(savedInstanceState);
                 SetTheme(Resource.Style.AppTheme_NoActionBar);
@@ -69,7 +69,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             
                 btnLogout.Click += BtnLogout_Click;
                 btnOrder.Click += BtnOrder_Click;
-                var warehouses = Services.GetObjectListBySql($"SELECT acWarehouse, acName FROM uWMSWarehouse");
+                var warehouses = await AsyncServices.AsyncServices.GetObjectListBySqlAsync($"SELECT acWarehouse, acName FROM uWMSWarehouse");
 
                 if (warehouses.Success)
                 {
@@ -331,7 +331,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             }
         }
 
-        private void UpdateForm()
+        private async void UpdateForm()
         {
 
             objectExtra.Clear();
@@ -340,7 +340,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
 
             initial += 1;
 
-            var result = Services.GetObjectListBySql("SELECT * FROM uWMSOrderDocTypeOut;");
+            var result = await AsyncServices.AsyncServices.GetObjectListBySqlAsync("SELECT * FROM uWMSOrderDocTypeOut;");
 
             foreach (Row row in result.Rows)
             {

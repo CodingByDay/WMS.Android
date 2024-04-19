@@ -608,7 +608,7 @@ namespace WMS
         /// <param name="acKey">Številka naročila</param>
         /// <param name="anNo">Pozicija znotraj naročila</param>
         /// <param name="acIdent">Ident</param>
-        private void GetConnectedPositions(string acKey, int anNo, string acIdent, string acLocation)
+        private async void GetConnectedPositions(string acKey, int anNo, string acIdent, string acLocation)
         {
             var parameters = new List<Services.Parameter>();
 
@@ -617,7 +617,7 @@ namespace WMS
             parameters.Add(new Services.Parameter { Name = "acIdent", Type = "String", Value = acIdent });
             parameters.Add(new Services.Parameter { Name = "acLocation", Type = "String", Value = acLocation });
 
-            var subjects = Services.GetObjectListBySql($"SELECT * from uWMSOrderItemByKeyOut WHERE acKey = @acKey AND anNo = @anNo AND acIdent = @acIdent and acLocation=@acLocation;", parameters);
+            var subjects = await AsyncServices.AsyncServices.GetObjectListBySqlAsync($"SELECT * from uWMSOrderItemByKeyOut WHERE acKey = @acKey AND anNo = @anNo AND acIdent = @acIdent and acLocation=@acLocation;", parameters);
 
             if (!subjects.Success)
             {

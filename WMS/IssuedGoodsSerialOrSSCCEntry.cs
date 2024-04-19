@@ -206,7 +206,7 @@ namespace WMS
         }
 
 
-        private void LoadStock(string location, string ident, string warehouse, string sscc = null, string serial = null)
+        private async void LoadStock(string location, string ident, string warehouse, string sscc = null, string serial = null)
         {
             var parameters = new List<Services.Parameter>();
 
@@ -228,7 +228,7 @@ namespace WMS
                 parameters.Add(new Services.Parameter { Name = "acSerialNo", Type = "String", Value = serial });
             }
 
-            var qty = Services.GetObjectListBySql(sql, parameters);
+            var qty = await AsyncServices.AsyncServices.GetObjectListBySqlAsync(sql, parameters);
 
             if(qty.Success)
             {
@@ -885,7 +885,7 @@ namespace WMS
         /// <param name="acKey">Številka naročila</param>
         /// <param name="anNo">Pozicija znotraj naročila</param>
         /// <param name="acIdent">Ident</param>
-        private void GetConnectedPositions(string acKey, int anNo, string acIdent, string acLocation = null)
+        private async void GetConnectedPositions(string acKey, int anNo, string acIdent, string acLocation = null)
         {
             connectedPositions.Clear();
             var sql = "SELECT * from uWMSOrderItemByKeyOut WHERE acKey = @acKey AND anNo = @anNo AND acIdent = @acIdent";
@@ -898,7 +898,7 @@ namespace WMS
                 parameters.Add(new Services.Parameter { Name = "acLocation", Type = "String", Value = acLocation });
                 sql += " AND acLocation = @acLocation;";
             }
-            var subjects = Services.GetObjectListBySql(sql, parameters);
+            var subjects = await AsyncServices.AsyncServices.GetObjectListBySqlAsync(sql, parameters);
             if (!subjects.Success)
             {
                 RunOnUiThread(() =>
