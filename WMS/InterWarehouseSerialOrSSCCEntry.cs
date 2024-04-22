@@ -29,6 +29,7 @@ using WebApp = TrendNET.WMS.Device.Services.WebApp;
 using AndroidX.AppCompat.App;
 using AlertDialog = Android.App.AlertDialog;
 using Android.Graphics;
+using static AndroidX.ConstraintLayout.Widget.ConstraintSet;
 
 namespace WMS
 {
@@ -82,6 +83,7 @@ namespace WMS
             btOverview.Click += BtOverview_Click;
             btExit.Click += BtExit_Click;
 
+           
 
             tbIdent = FindViewById<EditText>(Resource.Id.tbIdent);
             tbSSCC = FindViewById<EditText>(Resource.Id.tbSSCC);
@@ -106,6 +108,11 @@ namespace WMS
             Application.Context.RegisterReceiver(_broadcastReceiver,
             new IntentFilter(ConnectivityManager.ConnectivityAction));
 
+            tbIdent.KeyPress += TbIdent_KeyPress;
+            tbSSCC.KeyPress += TbSSCC_KeyPress;
+            tbSerialNum.KeyPress += TbSerialNum_KeyPress;
+            tbIssueLocation.KeyPress += TbIssueLocation_KeyPress;
+            tbLocation.KeyPress += TbLocation_KeyPress;
             // Method calls
 
             CheckIfApplicationStopingException();
@@ -117,6 +124,31 @@ namespace WMS
 
             // Main logic for the entry
             SetUpForm();
+        }
+
+        private void TbLocation_KeyPress(object? sender, View.KeyEventArgs e)
+        {
+        }
+
+        private void TbIssueLocation_KeyPress(object? sender, View.KeyEventArgs e)
+        {
+        }
+
+        private void TbSerialNum_KeyPress(object? sender, View.KeyEventArgs e)
+        {
+        }
+
+        private void TbSSCC_KeyPress(object? sender, View.KeyEventArgs e)
+        {
+        }
+
+        private void TbIdent_KeyPress(object? sender, View.KeyEventArgs e)
+        {
+            if (e.KeyCode == Keycode.Enter && e.Event.Action == KeyEventActions.Down)
+            {
+                ProcessIdent();
+            }
+            e.Handled = false;
         }
 
         private void BtExit_Click(object? sender, EventArgs e)
@@ -174,6 +206,112 @@ namespace WMS
 
         }
 
+        private void Sound()
+        {
+            soundPool.Play(soundPoolId, 1, 1, 0, 0, 1);
+        }
+
+
+        public void GetBarcode(string barcode)
+        {
+            if (barcode != "Scan fail")
+            {
+                if (tbIdent.HasFocus)
+                {
+                    Sound();
+                    tbIdent.Text = barcode;
+                    ProcessIdent();
+                    tbSSCC.RequestFocus();
+                }
+                else if (tbSSCC.HasFocus)
+                {
+                    FillDataBySSCC(barcode);
+                    Sound();
+                    tbSSCC.Text = barcode;
+                }
+                else if (tbSerialNum.HasFocus)
+                {
+                    Sound();
+                    tbSerialNum.Text = barcode;
+                    tbIssueLocation.RequestFocus();
+                }
+                else if (tbIssueLocation.HasFocus)
+                {
+                    Sound();
+                    tbIssueLocation.Text = barcode;
+                    tbLocation.RequestFocus();
+
+                }
+                else if (tbLocation.HasFocus)
+                {
+                    Sound();
+                    tbLocation.Text = barcode;
+                    tbPacking.RequestFocus();
+                }
+            }
+     
+        }
+
+        private async void FillDataBySSCC(string sscc)
+        {
+
+            var parameters = new List<Services.Parameter>();
+
+            string warehouse = moveHead.GetString("Issuer");
+
+            parameters.Add(new Services.Parameter { Name = "acSSCC", Type = "String", Value = sscc });
+            parameters.Add(new Services.Parameter { Name = "acWarehouse", Type = "String", Value = warehouse });
+
+            string sql = $"SELECT * FROM uWMSItemBySSCCWarehouse WHERE acSSCC = @acSSCC AND acWarehouse = @acWarehouse";
+
+            var ssccResult = Services.GetObjectListBySql(sql, parameters);
+
+            if (ssccResult.Success && ssccResult.Rows.Count > 0)
+            {
+                tbIssueLocation.Text = ssccResult.Rows[0].StringValue("aclocation");
+                tbSerialNum.Text = ssccResult.Rows[0].StringValue("acSerialNo");
+                lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + ssccResult.Rows[0].DoubleValue("anQty").ToString() + " )";
+                tbPacking.Text = ssccResult.Rows[0].DoubleValue("anQty").ToString();
+            }
+            
+        }
+
+        private void ProcessIdent()
+        {
+            var ident = CommonData.LoadIdent(tbIdent.Text.Trim());
+
+            if (ident == null)
+            {
+                tbIdent.Text = "";
+                lbIdentName.Text = "";
+                return;
+            }
+
+            if (CommonData.GetSetting("IgnoreStockHistory") != "1")
+            {
+                try
+                {
+                    string error;
+                    var recommededLocation = Services.GetObject("rl", ident.GetString("Code") + "|" + moveHead.GetString("Receiver"), out error);
+                    if (recommededLocation != null)
+                    {
+                        tbLocation.Text = recommededLocation.GetString("Location");
+                    }
+                }
+                catch (Exception err)
+                {
+
+                    Crashes.TrackError(err);
+                    return;
+
+                }
+            }
+    
+            lbIdentName.Text = ident.GetString("Name");
+            tbSSCC.Enabled = ident.GetBool("isSSCC");
+            tbSerialNum.Enabled = ident.GetBool("HasSerialNumber");
+        }
+
 
         private void ColorFields()
         {
@@ -204,9 +342,6 @@ namespace WMS
             
         }
 
-        public void GetBarcode(string barcode)
-        {
-            
-        }
+
     }
 }
