@@ -21,7 +21,6 @@ using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
 using static Android.App.ActionBar;
 using WebApp = TrendNET.WMS.Device.Services.WebApp;
-
 using AndroidX.AppCompat.App;
 using AlertDialog = Android.App.AlertDialog;
 using Android.Graphics;
@@ -42,22 +41,17 @@ namespace WMS
         private EditText tbSerialNum;
         private EditText tbLocation;
         private EditText tbPacking;
-        private EditText tbUnits;
         private Button btSaveOrUpdate;
         private Button button4;
         private Button button6;
         private Button button5;
         private Button button7;
         private TextView lbQty;
-        private Spinner spLocation;
-        private TextView lbUnits;
-        private Button button1;
         private ListView listData;
         SoundPool soundPool;
         int soundPoolId;
         private NameValueObjectList positions = null;
         private string ident;
-        private List<string> locList = new List<string>();
         private ZoomageView warehousePNG;
         private List<TakeOverSerialOrSSCCEntryList> data = new List<TakeOverSerialOrSSCCEntryList>();
         private List<TakeoverDocument> items = new List<TakeoverDocument>();
@@ -81,24 +75,17 @@ namespace WMS
             tbSerialNum = FindViewById<EditText>(Resource.Id.tbSerialNum);
             tbLocation = FindViewById<EditText>(Resource.Id.tbLocation);
             tbPacking = FindViewById<EditText>(Resource.Id.tbPacking);
-            tbUnits = FindViewById<EditText>(Resource.Id.tbUnits);
             warehousePNG = FindViewById<ZoomageView>(Resource.Id.warehousePNG);
             tbIdent.InputType = Android.Text.InputTypes.ClassNumber;
             tbSSCC.InputType = Android.Text.InputTypes.ClassNumber;
             tbSerialNum.InputType = Android.Text.InputTypes.ClassNumber;
-            tbLocation.InputType = Android.Text.InputTypes.ClassNumber;
-            tbUnits.InputType = Android.Text.InputTypes.ClassNumber;
             TakeoverDocumentAdapter adapter = new TakeoverDocumentAdapter(this, items);
-            spLocation = FindViewById<Spinner>(Resource.Id.spLocation);
             btSaveOrUpdate = FindViewById<Button>(Resource.Id.btSaveOrUpdate);
             button4 = FindViewById<Button>(Resource.Id.button4);
             button6 = FindViewById<Button>(Resource.Id.button6);
             button5 = FindViewById<Button>(Resource.Id.button5);
             button7 = FindViewById<Button>(Resource.Id.button7);
             lbQty = FindViewById<TextView>(Resource.Id.lbQty);
-            lbUnits = FindViewById<TextView>(Resource.Id.lbUnits);
-            button1 = FindViewById<Button>(Resource.Id.button1);
-            button1.Click += Button1_Click;
             soundPool = new SoundPool(10, Stream.Music, 0);
             soundPoolId = soundPool.Load(this, Resource.Raw.beep, 1);
             Barcode2D barcode2D = new Barcode2D();
@@ -109,7 +96,6 @@ namespace WMS
             button6.Click += Button6_Click;
             button7.Click += Button7_Click;
             button5.Click += Button5_Click;
-            spLocation.ItemSelected += SpLocation_ItemSelected;
             warehousePNG.Visibility = ViewStates.Invisible;         
             if (moveHead == null) { throw new ApplicationException("moveHead not known at this point?!"); }
             if (openIdent == null) { throw new ApplicationException("openIdent not known at this point?!"); }   
@@ -141,9 +127,9 @@ namespace WMS
                 }
 
             }
-            catch
+            catch(Exception error)
             {
-            
+                Crashes.TrackError(error);
             }
             docTypes = CommonData.ListDocTypes("I|N");
             tbSSCC.Enabled = openIdent.GetBool("isSSCC");
@@ -156,12 +142,10 @@ namespace WMS
                 if (CommonData.GetSetting("ShowNumberOfUnitsField") == "1")
                 {
                     tbPacking.Text = moveItem.GetDouble("Packing").ToString();
-                    tbUnits.Text = moveItem.GetDouble("Factor").ToString();
                 }
                 else if (CommonData.GetSetting("ShowMorePrintsField") == "1")
                 {
                     tbPacking.Text = moveItem.GetDouble("Qty").ToString();
-                    tbUnits.Text = moveItem.GetDouble("MorePrints").ToString();
                 }
                 else
                 {
@@ -219,35 +203,13 @@ namespace WMS
                 tbSSCC.Text = CommonData.GetNextSSCC();
               
             }
-
-            if (string.IsNullOrEmpty(tbUnits.Text.Trim())) { tbUnits.Text = "1"; }
-            if (CommonData.GetSetting("ShowNumberOfUnitsField") == "1")
-            {
-                lbUnits.Visibility = ViewStates.Invisible;
-                tbUnits.Visibility = ViewStates.Invisible;
-            }
-            else if (CommonData.GetSetting("ShowMorePrintsField") == "1")
-            {
-                lbUnits.Text = "Koli";
-                lbUnits.Visibility = ViewStates.Invisible;
-                tbUnits.Visibility = ViewStates.Invisible;
-            }
             tbLocation.RequestFocus();
             FillRelatedData();
-            tbSerialNum.RequestFocus();
-        
-            await GetLocationsForGivenWarehouse(moveHead.GetString("Wharehouse"));
-            var DataAdapter = new CustomAutoCompleteAdapter<string>(this,
-            Android.Resource.Layout.SimpleSpinnerItem, locList);
-            DataAdapter.SetDropDownViewResource(Android.Resource.Layout.SimpleSpinnerDropDownItem);
-            spLocation.Adapter = DataAdapter;
+            tbSerialNum.RequestFocus();       
             tbSerialNum.RequestFocus();
             showPictureIdent(openIdent.GetString("Code"));
-          //  listData.PerformItemClick(listData, 0, 0);
-            spLocation.SetSelection(locList.IndexOf(CommonData.GetSetting("DefaultPaletteLocation")), true);
+            // listData.PerformItemClick(listData, 0, 0);
             FillTheList();
-
-
             var _broadcastReceiver = new NetworkStatusBroadcastReceiver();
             _broadcastReceiver.ConnectionStatusChanged += OnNetworkStatusChanged;
             Application.Context.RegisterReceiver(_broadcastReceiver,
@@ -257,7 +219,6 @@ namespace WMS
         {
             var cm = (ConnectivityManager)GetSystemService(ConnectivityService);
             return cm.ActiveNetworkInfo == null ? false : cm.ActiveNetworkInfo.IsConnected;
-
         }
 
         private async Task Update()
@@ -341,11 +302,8 @@ namespace WMS
                         sscc = item.GetString("SSCC"),
                         location = item.GetString("Location"),
                         quantity =tempUnit,
-
-
-
                     });
-                    ;
+                    
                 }
                 else
                 {
@@ -358,9 +316,7 @@ namespace WMS
             listData.Adapter = null;    listData.Adapter = adapter; ;
         }
         private void FillTheList()
-        {
-          
-
+        { 
                 try
                 {
 
@@ -379,16 +335,12 @@ namespace WMS
 
                             return;
                         }
-                    }
-
-             
+                    }            
                 }
                 finally
                 {
                     fillListAdapter();
                 }
-            
-
         }
 
         private void WarehousePNG_Click(object sender, EventArgs e)
@@ -421,30 +373,9 @@ namespace WMS
             base.OnBackPressed();
         }
 
-        private void SpLocation_ItemSelected(object sender, AdapterView.ItemSelectedEventArgs e)
-        {
-            int element = e.Position;
-            var item = locList.ElementAt(element);
-            tbLocation.Text = item;
-            /// Make a check to see if it is the update.
-            if (String.IsNullOrEmpty(tbSerialNum.Text))
-            {
-                tbSerialNum.RequestFocus();
-            }
-            else {
+     
 
-                tbPacking.RequestFocus(); 
-            }
-        }
-
-        // moveHead.GetString("Wharehouse")
-        private void FillTheIdentLocationList()
-        {
-           var ident = openIdent.GetString("Code");
-           var wh = moveHead.GetString("Wharehouse");
-           var list =  GetIdentLocationList.fillItemsOfList(wh, ident);                 
-           Fill(list);
-        }
+ 
 
         private void Fill(List<TakeoverDocument> list)
         {
@@ -537,7 +468,6 @@ namespace WMS
                         else
                         {
                             Toast.MakeText(this, $"{Resources.GetString(Resource.String.s218)}" + result, ToastLength.Long).Show();
-
                         }
                     }
                     finally
@@ -547,12 +477,7 @@ namespace WMS
                             progress.StopDialogSync();
                         });
                     }
-
-
                 }
-
-
-
             });
         }
 
@@ -571,8 +496,7 @@ namespace WMS
             } catch(Exception)
             {
                 return;
-            }
-            
+            }            
         }
 
 
@@ -609,9 +533,7 @@ namespace WMS
             image.SetMinimumHeight(500);
             image.SetMinimumWidth(800);
             image.SetImageDrawable(d);
-
             // Access Pop up layout fields like below
-
         }
 
         private void BtnOK_Click1(object sender, EventArgs e)
@@ -629,33 +551,8 @@ namespace WMS
             //tbLocation.Text = item.location;
             //listData.SetItemChecked(selected, true);
             //listData.SetSelection(selected);
-
         }
-        private async Task GetLocationsForGivenWarehouse(string warehouse)
-        {
-            await Task.Run(() =>
-            {
-                string error;
-                var locations = Services.GetObjectList("lo", out error, warehouse);
-
-                if (locations == null)
-                {
-                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s225)}", ToastLength.Long).Show();
-                }
-                else
-                {
-                    locations.Items.ForEach(x =>
-                    {
-                        var location = x.GetString("LocationID");
-
-                        locList.Add(location);
-                        
-                    });
-                }
-
-
-            });
-        }
+  
         private void fillItems()
         {
          
@@ -771,11 +668,8 @@ namespace WMS
             popupDialogConfirm.SetContentView(Resource.Layout.Confirmation);
             popupDialogConfirm.Window.SetSoftInputMode(SoftInput.AdjustResize);
             popupDialogConfirm.Show();
-
             popupDialogConfirm.Window.SetLayout(LayoutParams.MatchParent, LayoutParams.WrapContent);
             popupDialogConfirm.Window.SetBackgroundDrawable(new ColorDrawable(Color.ParseColor("#081a45")));
-
-
             // Access Popup layout fields like below
             btnYesConfirm = popupDialogConfirm.FindViewById<Button>(Resource.Id.btnYes);
             btnNoConfirm = popupDialogConfirm.FindViewById<Button>(Resource.Id.btnNo);
@@ -939,48 +833,7 @@ namespace WMS
                 }
             }
 
-            if (string.IsNullOrEmpty(tbUnits.Text.Trim()))
-            {
-                RunOnUiThread(() =>
-                {
-                    string errorWebAppIssued = string.Format($"{Resources.GetString(Resource.String.s270)}");
-                    Toast.MakeText(this, errorWebAppIssued, ToastLength.Long).Show();
-                    tbUnits.RequestFocus();
-                });
 
-                return false;
-            }
-            else
-            {
-                try
-                {
-                    var units = Convert.ToDouble(tbUnits.Text.Trim());
-                    if (units == 0.0)
-                    {
-                        RunOnUiThread(() =>
-                        {
-                            string errorWebAppIssued = string.Format($"{Resources.GetString(Resource.String.s270)}");
-                            Toast.MakeText(this, errorWebAppIssued, ToastLength.Long).Show();
-
-                            tbUnits.RequestFocus();
-                        });
-
-                        return false;
-                    }
-                }
-                catch (Exception)
-                {
-                    RunOnUiThread(() =>
-                    {
-                        string errorWebAppIssued = string.Format($"{Resources.GetString(Resource.String.s270)}");
-                        Toast.MakeText(this, errorWebAppIssued, ToastLength.Long).Show();
-                        tbUnits.RequestFocus();
-                    });
-
-
-                    return false;
-                }
-            }
 
             if (!CommonData.IsValidLocation(moveHead.GetString("Wharehouse"), tbLocation.Text.Trim()))
             {
@@ -1011,8 +864,8 @@ namespace WMS
                 if (CommonData.GetSetting("ShowNumberOfUnitsField") == "1")
                 {
                     moveItem.SetDouble("Packing", Convert.ToDouble(tbPacking.Text.Trim()));
-                    moveItem.SetDouble("Factor", Convert.ToDouble(tbUnits.Text.Trim()));
-                    moveItem.SetDouble("Qty", Convert.ToDouble(tbUnits.Text.Trim()) * Convert.ToDouble(tbPacking.Text.Trim()));
+                    moveItem.SetDouble("Factor", 1);
+                    moveItem.SetDouble("Qty", Convert.ToDouble(tbPacking.Text.Trim()));
                     moveItem.SetInt("MorePrints", 0);
                 }
                 else if (CommonData.GetSetting("ShowMorePrintsField") == "1")
@@ -1020,7 +873,7 @@ namespace WMS
                     moveItem.SetDouble("Packing", 0.0);
                     moveItem.SetDouble("Factor", 1.0);
                     moveItem.SetDouble("Qty", Convert.ToDouble(tbPacking.Text.Trim()));
-                    moveItem.SetInt("MorePrints", Convert.ToInt32(tbUnits.Text.Trim()));
+                    moveItem.SetInt("MorePrints", 1);
                 }
                 else
                 {
@@ -1072,15 +925,6 @@ namespace WMS
         {
             switch (keyCode)
             {
-                // in smartphone
-                case Keycode.F1:
-                    if (button1.Enabled == true)
-                    {
-                        Button1_Click(this, null);
-                    }
-                    break;
-                // return true;
-
 
                 case Keycode.F2:
                     if (btSaveOrUpdate.Enabled == true)

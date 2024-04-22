@@ -70,7 +70,7 @@
             android:id="@+id/sscc" />
 
         <TextView
-            android:text="@string/s120"
+            android:text="@string/s80"
             android:textSize="18dp"
             android:textStyle="bold"
             android:layout_weight="1"
@@ -245,10 +245,7 @@
                     android:textSize="18dp"
                     android:id="@+id/tbLocation" />
 
-                <Spinner
-                    android:layout_width="60.0dp"
-                    android:layout_height="match_parent"
-                    android:id="@+id/spLocation" />
+
             </LinearLayout>
 
         </LinearLayout>
@@ -281,62 +278,15 @@
                 android:textSize="18dp"
                 android:id="@+id/tbPacking" />
 
-            <Button
-                android:text="@string/s94"
-                android:layout_width="74.0dp"
-                android:layout_height="33dp"
-                android:id="@+id/button1"
-                android:layout_marginTop="-5dp"
-                android:background="@color/rikoMain"
-                android:textColor="@color/white"
-                android:layout_marginLeft="4dp"
-             />
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingTop="5dp">
+  
 
-            <TextView
-                android:textSize="18dp"
-                android:textStyle="bold"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:paddingLeft="10dp"
-                android:paddingTop="5dp"
-                android:text="@string/s51"
-                android:layout_marginRight="0.0dp"
-                android:id="@+id/lbUnits" />
-
-            <EditText
-                android:textStyle="bold"
-                android:singleLine="true"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.50"
-                android:paddingTop="5dp"
-                android:background="@drawable/editText_bg_grey"
-                android:layout_marginRight="2dp"
-                android:textSize="18dp"
-                android:id="@+id/tbUnits" />
-
-        </LinearLayout>
-
-        <TextView
-            android:textSize="18dp"
-            android:textStyle="bold"
-            android:layout_width="wrap_content"
-            android:layout_height="0.0dp"
-            android:paddingLeft="10dp"
-            android:paddingTop="5dp"
-            android:layout_marginRight="24.5dp"
-            android:id="@+id/lbUnitss" />
         <com.jsibbold.zoomage.ZoomageView
             android:src="@android:drawable/ic_menu_gallery"
             android:layout_width="match_parent"
+            android:layout_marginTop="20dp"
             android:layout_height="200dp"
             android:id="@+id/warehousePNG" />
         <TextView

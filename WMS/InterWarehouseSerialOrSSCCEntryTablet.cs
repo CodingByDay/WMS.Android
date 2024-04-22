@@ -65,7 +65,7 @@ namespace WMS
         private bool editMode = false;
         private EditText lbIdentName;
         private Button finish;
-     
+
         private ListView listData;
         private List<ProductionEnteredPositionViewList> data = new List<ProductionEnteredPositionViewList>();
         SoundPool soundPool;
@@ -142,7 +142,7 @@ namespace WMS
                 tbIdent.Text = ident;
                 lbIdentName.Text = name;
 
-              
+
                 if (tbIdent.Text != null && lbIdentName.Text != null) { return true; } else { return false; }
 
 
@@ -184,7 +184,7 @@ namespace WMS
                     DialogHelper.ShowDialogError(this, this, WebError);
                     tbSSCC.RequestFocus();
                 });
-              
+
                 return false;
             }
 
@@ -197,7 +197,7 @@ namespace WMS
 
                     tbSerialNum.RequestFocus();
                 });
-             
+
                 return false;
             }
 
@@ -210,7 +210,7 @@ namespace WMS
 
                     tbPacking.RequestFocus();
                 });
-               
+
                 return false;
             }
             else
@@ -227,7 +227,7 @@ namespace WMS
 
                             tbPacking.RequestFocus();
                         });
-                       
+
                         return false;
                     }
 
@@ -239,7 +239,7 @@ namespace WMS
                             string WebError = string.Format($"{Resources.GetString(Resource.String.s269)}");
                             DialogHelper.ShowDialogError(this, this, WebError);
                         });
-                     
+
 
                         //  SelectNext(tbIdent);
                         return false;
@@ -253,7 +253,7 @@ namespace WMS
 
                             tbPacking.RequestFocus();
                         });
-                      
+
                         return false;
                     }
                 }
@@ -265,7 +265,7 @@ namespace WMS
                         DialogHelper.ShowDialogError(this, this, WebError);
                         tbPacking.RequestFocus();
                     });
-                  
+
                     return false;
                 }
             }
@@ -277,7 +277,7 @@ namespace WMS
                     string WebError = string.Format($"{Resources.GetString(Resource.String.s270)}");
                     DialogHelper.ShowDialogError(this, this, WebError);
                 });
-              
+
                 return false;
             }
             else
@@ -293,20 +293,21 @@ namespace WMS
                             DialogHelper.ShowDialogError(this, this, WebError);
                             tbUnits.RequestFocus();
                         });
-                     
+
                         return false;
                     }
                 }
-                catch (Exception e) { 
+                catch (Exception e)
+                {
 
 
-                   RunOnUiThread(() =>
-                   {
-                       string WebError = string.Format($"{Resources.GetString(Resource.String.s270)}");
-                       DialogHelper.ShowDialogError(this, this, WebError);
-                       tbPacking.RequestFocus();
-                   });
-            
+                    RunOnUiThread(() =>
+                    {
+                        string WebError = string.Format($"{Resources.GetString(Resource.String.s270)}");
+                        DialogHelper.ShowDialogError(this, this, WebError);
+                        tbPacking.RequestFocus();
+                    });
+
                     return false;
                 }
             }
@@ -319,7 +320,7 @@ namespace WMS
                     DialogHelper.ShowDialogError(this, this, WebError);
                     tbIssueLocation.RequestFocus();
                 });
-             
+
                 return false;
             }
 
@@ -331,13 +332,13 @@ namespace WMS
                     DialogHelper.ShowDialogError(this, this, WebError);
                     tbLocation.RequestFocus();
                 });
-             
+
                 return false;
             }
 
             try
             {
-                
+
                 if (moveItem == null) { moveItem = new NameValueObject("MoveItem"); }
 
                 var dTest = moveHead.GetInt("HeadID");
@@ -356,21 +357,21 @@ namespace WMS
                 moveItem.SetString("IssueLocation", tbIssueLocation.Text.Trim());
 
 
-                
-                
+
+
 
                 var t = true;
                 string error;
                 moveItem = Services.SetObject("mi", moveItem, out error);
 
-            
+
                 if (moveItem == null)
                 {
                     RunOnUiThread(() =>
                     {
                         string WebError = string.Format($"{Resources.GetString(Resource.String.s213)}" + error);
                         DialogHelper.ShowDialogError(this, this, WebError);
-                       
+
                     });
                     return false;
                 }
@@ -380,7 +381,7 @@ namespace WMS
                     return true;
                 }
             }
-            catch(Exception err)
+            catch (Exception err)
             {
                 Crashes.TrackError(err);
                 return false;
@@ -390,7 +391,7 @@ namespace WMS
         private async Task<bool> SaveMoveItemBatch(MorePallets obj)
         {
             try
-            {       
+            {
                 double doubleQuantity = Convert.ToDouble(obj.Quantity.Trim());
                 moveItemBatch = new NameValueObject("MoveItem");
                 moveItemBatch.SetInt("HeadID", moveHead.GetInt("HeadID"));
@@ -407,7 +408,7 @@ namespace WMS
                 moveItemBatch.SetString("IssueLocation", obj.Location.Trim());
                 string error;
                 moveItem = Services.SetObject("mi", moveItemBatch, out error);
-           
+
                 if (moveItem == null)
                 {
 
@@ -429,21 +430,23 @@ namespace WMS
         private void ProcessQty()
         {
             var sscc = tbSSCC.Text.Trim();
-            if (tbSSCC.Enabled && string.IsNullOrEmpty(sscc)) 
-            {               
-                return;           
+            if (tbSSCC.Enabled && string.IsNullOrEmpty(sscc))
+            {
+                return;
             }
 
             var serialNo = tbSerialNum.Text.Trim();
-            if (tbSerialNum.Enabled && string.IsNullOrEmpty(serialNo)) { 
-                
-                return;         
+            if (tbSerialNum.Enabled && string.IsNullOrEmpty(serialNo))
+            {
+
+                return;
             }
 
             var ident = tbIdent.Text.Trim();
-            if (string.IsNullOrEmpty(ident)) {
-                
-                return;           
+            if (string.IsNullOrEmpty(ident))
+            {
+
+                return;
             }
 
             var identObj = CommonData.LoadIdent(ident);
@@ -475,7 +478,7 @@ namespace WMS
                 tbPacking.Text = "";
                 lbQty.Text = $"{Resources.GetString(Resource.String.s40)} (?)";
             }
-           
+
         }
 
 
@@ -504,7 +507,8 @@ namespace WMS
 
                     }
                 });
-            } catch
+            }
+            catch
             {
                 return;
             }
@@ -631,7 +635,7 @@ namespace WMS
             if (!wh.GetBool("HasStock"))
                 if (tbSerialNum.Enabled)
                 {
-            
+
                     return LoadStockFromPAStockSerialNo(warehouse, ident, serialNum);
                 }
                 else
@@ -645,7 +649,7 @@ namespace WMS
             }
 
         }
-      
+
 
         private Double LoadStockFromStockSerialNo(string warehouse, string location, string sscc, string serialNum, string ident)
         {
@@ -663,11 +667,11 @@ namespace WMS
                 }
                 else
                 {
-                    
+
                     return stock.GetDouble("RealStock");
                 }
             }
-            catch(Exception ex) 
+            catch (Exception ex)
             {
                 Crashes.TrackError(ex);
                 return Double.NaN;
@@ -692,7 +696,7 @@ namespace WMS
                     return stock.GetDouble("Qty");
                 }
             }
-            catch(Exception err)
+            catch (Exception err)
             {
                 Crashes.TrackError(err);
                 return Double.NaN;
@@ -770,7 +774,7 @@ namespace WMS
             imagePNG = FindViewById<ImageView>(Resource.Id.imagePNG);
             spIssue = FindViewById<Spinner>(Resource.Id.spIssue);
             spReceive = FindViewById<Spinner>(Resource.Id.spReceive);
-            color();        
+            color();
             tbIdent.KeyPress += TbIdent_KeyPress1;
             spReceive.ItemSelected += SpReceive_ItemSelected;
             spIssue.ItemSelected += SpIssue_ItemSelected;
@@ -785,7 +789,7 @@ namespace WMS
             imagePNG.Visibility = ViewStates.Invisible;
             lbIdentName = FindViewById<EditText>(Resource.Id.lbIdentName);
             soundPool = new SoundPool(10, Stream.Music, 0);
-            soundPoolId = soundPool.Load(this, Resource.Raw.beep, 1);  
+            soundPoolId = soundPool.Load(this, Resource.Raw.beep, 1);
             tbLocation.SetSelectAllOnFocus(true);
             tbSSCC.SetSelectAllOnFocus(true);
             btMorePallets = FindViewById<Button>(Resource.Id.btMorePallets);
@@ -796,7 +800,7 @@ namespace WMS
             {
                 string toast = string.Format(moveHead.GetString("Issuer"));
                 Toast.MakeText(this, toast, ToastLength.Long).Show();
-              
+
             }
 
             if (moveHead == null) { throw new ApplicationException("moveHead not known at this point?!"); }
@@ -843,8 +847,8 @@ namespace WMS
             adapterReceive.SetDropDownViewResource(Android.Resource.Layout.SimpleSpinnerDropDownItem);
             spReceive.Adapter = adapterReceive;
             tbSSCC.LongClick += TbSSCC_LongClick;
-            tbSSCC.RequestFocus(); 
-            tbPacking.InputType = Android.Text.InputTypes.ClassNumber;         
+            tbSSCC.RequestFocus();
+            tbPacking.InputType = Android.Text.InputTypes.ClassNumber;
             spIssue.SetSelection(receiver.IndexOf("P01"), true);
             spReceive.SetSelection(receiver.IndexOf("P01"), true);
             showPicture();
@@ -868,7 +872,7 @@ namespace WMS
             };
 
 
-            if(editMode)
+            if (editMode)
             {
                 btMorePallets.Visibility = ViewStates.Gone;
             }
@@ -895,7 +899,7 @@ namespace WMS
         {
             if (IsOnline())
             {
-                
+
                 try
                 {
                     LoaderManifest.LoaderManifestLoopStop(this);
@@ -918,7 +922,7 @@ namespace WMS
             return true;
         }
 
-       
+
 
         private void BtMorePallets_Click(object sender, EventArgs e)
         {
@@ -946,7 +950,7 @@ namespace WMS
 
         private void TbSSCCpopup_LongClick(object sender, View.LongClickEventArgs e)
         {
-            tbSSCCpopup.Text = ""; 
+            tbSSCCpopup.Text = "";
         }
 
         private void BtExit_Click(object sender, EventArgs e)
@@ -970,7 +974,8 @@ namespace WMS
                 popupDialogMain.Dismiss();
                 popupDialogMain.Hide();
                 TransportObjectsToBackgroundListView(datax);
-            } else
+            }
+            else
             {
                 popupDialogMain.Dismiss();
                 popupDialogMain.Hide();
@@ -985,9 +990,9 @@ namespace WMS
             progress.ShowDialogSync(this, $"{Resources.GetString(Resource.String.s262)}");
             foreach (var x in datax)
             {
-           
-                    await SaveMoveItemBatch(x);
-         
+
+                await SaveMoveItemBatch(x);
+
             }
             progress.StopDialogSync();
         }
@@ -1017,9 +1022,9 @@ namespace WMS
                     items.Add(new LocationClass(currentDataObject.Ident, formatted, currentDataObject.Location));
                     /* Should work without problems */
                     listData.Adapter = null;
-                    listData.Adapter = adapterNew;       
-                });                     
-           });
+                    listData.Adapter = adapterNew;
+                });
+            });
         }
 
         private void LvCardMore_ItemSelected(object sender, AdapterView.ItemSelectedEventArgs e)
@@ -1164,9 +1169,9 @@ namespace WMS
                     pallets.Quantity = qty;
                     pallets.SSCC = sscc;
                     pallets.Serial = serial;
-                 
+
                     pallets.friendlySSCC = pallets.SSCC;
-                    
+
 
                     enabledSerial = loadIdent.GetBool("HasSerialNumber");
 
@@ -1182,7 +1187,7 @@ namespace WMS
                     }
                     else
                     {
-                        datax.Add(obj);                    
+                        datax.Add(obj);
                     }
                 }
                 else
@@ -1249,14 +1254,14 @@ namespace WMS
         {
             e.Handled = false;
             if (e.KeyCode == Keycode.Enter && !String.IsNullOrEmpty(tbSSCCpopup.Text))
-            {         
+            {
                 FilData(tbSSCCpopup.Text, false);
                 // Add your logic here 
                 adapter.NotifyDataSetChanged();
             }
         }
 
-      
+
         private void TbSSCC_LongClick(object sender, View.LongClickEventArgs e)
         {
             tbSSCC.Text = "";
@@ -1267,7 +1272,7 @@ namespace WMS
             tbSSCC.RequestFocus();
         }
 
-     
+
 
         private void TbSerialNum_FocusChange(object sender, View.FocusChangeEventArgs e)
         {
@@ -1290,15 +1295,16 @@ namespace WMS
             tbLocation.Text = item;
         }
 
-    
+
 
         private void TbIdent_KeyPress1(object sender, View.KeyEventArgs e)
         {
-            if(e.KeyCode == Keycode.Enter)
+            if (e.KeyCode == Keycode.Enter)
             {
                 ProcessIdent();
                 e.Handled = true;
-            } else
+            }
+            else
             {
                 e.Handled = false;
             }
@@ -1307,7 +1313,7 @@ namespace WMS
         private void ListData_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
         {
             selected = e.Position;
-            var item = items.ElementAt(selected);   
+            var item = items.ElementAt(selected);
         }
 
 
@@ -1334,13 +1340,14 @@ namespace WMS
                         });
                     }
                 });
-            } catch
+            }
+            catch
             {
                 return;
             }
         }
 
-   
+
         private void TbPacking_FocusChange(object sender, View.FocusChangeEventArgs e)
         {
             if (!editMode)
@@ -1357,11 +1364,11 @@ namespace WMS
                 // add your logic here 
                 ProcessQty();
                 e.Handled = true;
-            }           
+            }
         }
 
         private void FillTheIdentLocationList(string ident)
-        {         
+        {
             var wh = moveHead.GetString("Receiver");
             var list = GetIdentLocationList.fillItemsOfList(wh, ident);
             Fill(list);
@@ -1371,8 +1378,8 @@ namespace WMS
         {
             foreach (var obj in list)
             {
-                items.Add(new LocationClass { ident = obj.ident, location = obj.location, quantity = obj.quantity});
-    
+                items.Add(new LocationClass { ident = obj.ident, location = obj.location, quantity = obj.quantity });
+
             }
             listData.Adapter = null;
             AdapterLocation adapter = new AdapterLocation(this, items);
@@ -1440,12 +1447,12 @@ namespace WMS
             image.SetMinimumWidth(800);
             image.SetImageDrawable(d);
             // Access Pop-up layout fields like below
-     
+
         }
 
         private void PopupDialog_KeyPress(object sender, DialogKeyEventArgs e)
         {
-           if(e.KeyCode == Keycode.Back)
+            if (e.KeyCode == Keycode.Back)
             {
                 popupDialog.Dismiss();
                 popupDialog.Hide();
@@ -1456,7 +1463,7 @@ namespace WMS
         public override void OnBackPressed()
         {
 
-      
+
 
             base.OnBackPressed();
         }
@@ -1495,7 +1502,8 @@ namespace WMS
                     }
                     this.Finish();
                 }
-            } else
+            }
+            else
             {
                 if (!editMode)
                 {
@@ -1533,7 +1541,8 @@ namespace WMS
                     }
 
                 }
-            } else
+            }
+            else
             {
                 if (!editMode)
                 {
@@ -1589,7 +1598,7 @@ namespace WMS
             }
         }
 
-     
+
 
         private async Task<bool> SaveMoveItemWithParams(MorePallets objectItem)
         {
@@ -1600,7 +1609,7 @@ namespace WMS
             }
 
             if (string.IsNullOrEmpty(objectItem.SSCC))
-            {         
+            {
                 return false;
             }
 
@@ -1698,12 +1707,12 @@ namespace WMS
 
             try
             {
-                InUseObjects.Invalidate("MoveItem");           
+                InUseObjects.Invalidate("MoveItem");
                 moveItemCurrent = new NameValueObject("MoveItem");
-                moveHead= (NameValueObject)InUseObjects.Get("MoveHead");
+                moveHead = (NameValueObject)InUseObjects.Get("MoveHead");
                 moveItemCurrent.SetInt("HeadID", moveHead.GetInt("HeadID"));
                 // updateTheHead();
-                moveItemCurrent.SetInt("HeadID", moveHead.GetInt("HeadID"));               
+                moveItemCurrent.SetInt("HeadID", moveHead.GetInt("HeadID"));
                 var number = moveHead.GetInt("HeadID");
                 moveItemCurrent.SetString("LinkKey", "");
                 moveItemCurrent.SetInt("LinkNo", 0);
@@ -1719,7 +1728,7 @@ namespace WMS
 
                 string error;
                 moveItemCurrent = Services.SetObject("mi", moveItem, out error);
-           
+
 
                 if (moveItemCurrent == null)
                 {
@@ -1727,7 +1736,7 @@ namespace WMS
                     {
                         string WebError = string.Format($"{Resources.GetString(Resource.String.s213)}" + error);
                         DialogHelper.ShowDialogError(this, this, WebError);
-       
+
                     });
                     return false;
                 }
@@ -1751,77 +1760,77 @@ namespace WMS
         {
             await Task.Run(async () =>
             {
-                        
+
                 RunOnUiThread(() =>
                 {
                     progress = new ProgressDialogClass();
                     progress.ShowDialogSync(this, $"{Resources.GetString(Resource.String.s262)}");
                 });
 
-                        try
+                try
+                {
+
+                    var headID = moveHead.GetInt("HeadID");
+
+                    string result;
+                    if (WebApp.Get("mode=finish&stock=move&print=" + Services.DeviceUser() + "&id=" + headID.ToString(), out result))
+                    {
+                        if (result.StartsWith("OK!"))
                         {
 
-                            var headID = moveHead.GetInt("HeadID");
-
-                            string result;
-                            if (WebApp.Get("mode=finish&stock=move&print=" + Services.DeviceUser() + "&id=" + headID.ToString(), out result))
+                            RunOnUiThread(() =>
                             {
-                                if (result.StartsWith("OK!"))
+                                progress.StopDialogSync();
+                                var id = result.Split('+')[1];
+                                AlertDialog.Builder alert = new AlertDialog.Builder(this);
+                                alert.SetTitle($"{Resources.GetString(Resource.String.s263)}");
+                                alert.SetMessage($"{Resources.GetString(Resource.String.s264)}" + id);
+                                alert.SetPositiveButton("Ok", (senderAlert, args) =>
                                 {
-                                
-                                    RunOnUiThread(() =>
-                                    {
-                                        progress.StopDialogSync();
-                                        var id = result.Split('+')[1];
-                                        AlertDialog.Builder alert = new AlertDialog.Builder(this);
-                                        alert.SetTitle($"{Resources.GetString(Resource.String.s263)}");
-                                        alert.SetMessage($"{Resources.GetString(Resource.String.s264)}" + id);
-                                        alert.SetPositiveButton("Ok", (senderAlert, args) =>
-                                        {
-                                                Thread.Sleep(500);                                          
-                                                StartActivity(typeof(MainMenuTablet));                                                                                   
-                                        });
-                                        Dialog dialog = alert.Create();
-                                        dialog.Show();
-                                    });
-                                }
-                                else
-                                {
-                                    RunOnUiThread(() =>
-                                    {
-                                        progress.StopDialogSync();
-                                        AlertDialog.Builder alert = new AlertDialog.Builder(this);
-                                        alert.SetTitle($"{Resources.GetString(Resource.String.s265)}");
-                                        alert.SetMessage($"{Resources.GetString(Resource.String.s266)}" + result);
-
-                                        alert.SetPositiveButton("Ok", (senderAlert, args) =>
-                                        {
-                                            alert.Dispose();
-                                            System.Threading.Thread.Sleep(500);
-                                          
-
-                                        });
-
-                                        Dialog dialog = alert.Create();
-                                        dialog.Show();
-                                    });
-
-                                }
-                            }
-                            else
-                            {
-                                string SuccessMessage = string.Format($"{Resources.GetString(Resource.String.s218)}");
-                                DialogHelper.ShowDialogError(this, this, SuccessMessage);
-                            }
+                                    Thread.Sleep(500);
+                                    StartActivity(typeof(MainMenuTablet));
+                                });
+                                Dialog dialog = alert.Create();
+                                dialog.Show();
+                            });
                         }
-                        finally
+                        else
                         {
-                        RunOnUiThread(() =>
-                        {
-                            progress.StopDialogSync();
+                            RunOnUiThread(() =>
+                            {
+                                progress.StopDialogSync();
+                                AlertDialog.Builder alert = new AlertDialog.Builder(this);
+                                alert.SetTitle($"{Resources.GetString(Resource.String.s265)}");
+                                alert.SetMessage($"{Resources.GetString(Resource.String.s266)}" + result);
 
-                        });
-                      }                                                  
+                                alert.SetPositiveButton("Ok", (senderAlert, args) =>
+                                {
+                                    alert.Dispose();
+                                    System.Threading.Thread.Sleep(500);
+
+
+                                });
+
+                                Dialog dialog = alert.Create();
+                                dialog.Show();
+                            });
+
+                        }
+                    }
+                    else
+                    {
+                        string SuccessMessage = string.Format($"{Resources.GetString(Resource.String.s218)}");
+                        DialogHelper.ShowDialogError(this, this, SuccessMessage);
+                    }
+                }
+                finally
+                {
+                    RunOnUiThread(() =>
+                    {
+                        progress.StopDialogSync();
+
+                    });
+                }
             });
         }
         private void losesFocusSSCC()
@@ -1835,10 +1844,10 @@ namespace WMS
             tbIssueLocation.Text = "";
             tbLocation.Text = "";
             tbSSCC.Text = tbSSCC.Text;
- 
+
             data.Clear();
-           
-       
+
+
             if (dataResponse != null)
             {
                 var loadIdent = CommonData.LoadIdent(dataResponse.Ident);
@@ -1847,7 +1856,7 @@ namespace WMS
                 lbIdentName.Text = idname;
                 tbSerialNum.Text = dataResponse.Serial;
                 tbIssueLocation.Text = dataResponse.Location;
-                
+
                 if (!String.IsNullOrEmpty(idname))
                 {
                     ProcessQty();
@@ -1859,14 +1868,14 @@ namespace WMS
                     return;
                 }
             }
-         
+
         }
 
-       
+
         private void Button4_Click(object sender, EventArgs e)
         {
             StartActivity(typeof(InterWarehouseEnteredPositionsViewTablet));
-            HelpfulMethods.clearTheStack(this); 
+            HelpfulMethods.clearTheStack(this);
 
         }
 
@@ -1926,7 +1935,7 @@ namespace WMS
                         Button1_Click(this, null);
                     }
                     break;
-              
+
 
 
                 case Keycode.F2:
