@@ -1,5 +1,6 @@
 ﻿using Android.Content;
 using Android.Views;
+using TrendNET.WMS.Device.App;
 
 public class CustomAutoCompleteAdapter<T> : ArrayAdapter<T>
 {
@@ -24,5 +25,12 @@ public class CustomAutoCompleteAdapter<T> : ArrayAdapter<T>
         text.Text = GetItem(position).ToString();
 
         return view;
+    }
+
+
+    public ComboBoxItem GetComboBoxItem(int position)
+    {
+        ComboBoxItem? comboBoxItem = base.GetItem(position) as ComboBoxItem;
+        return comboBoxItem ?? new ComboBoxItem();
     }
 }

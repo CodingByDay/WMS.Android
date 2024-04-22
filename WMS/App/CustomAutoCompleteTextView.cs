@@ -7,6 +7,7 @@ using Android.Views;
 using Android.Views.InputMethods;
 using Microsoft.AppCenter.Crashes;
 using System.ComponentModel.DataAnnotations;
+using TrendNET.WMS.Device.App;
 using Keycode = Android.Views.Keycode;
 
 public class CustomAutoCompleteTextView : AutoCompleteTextView
@@ -106,16 +107,9 @@ public class CustomAutoCompleteTextView : AutoCompleteTextView
         }
     }
 
-    // Function to check if options exist (replace this with your logic)
 
-    public string GetItemAtPosition(int position)
-    {
-        if (position >= 0 && position < Adapter.Count)
-        {
-            return Adapter.GetItem(position).ToString();
-        }
-        return null;
-    }
+
+
 
     public void SelectAtPosition(int position)
     {
@@ -129,31 +123,25 @@ public class CustomAutoCompleteTextView : AutoCompleteTextView
     public int SetItemByString(string value)
     {
         int index = -1;
-        for (int i = 0; i < Adapter.Count; i++)
+
+        // Type conversion for the adapter.
+        var cbAdapter = Adapter as CustomAutoCompleteAdapter<ComboBoxItem>;
+        if (cbAdapter != null)
         {
-            if (Adapter.GetItem(i).ToString() == value)
+            index = -1;
+            for (int i = 0; i < cbAdapter.Count; i++)
             {
-                SetText(Adapter.GetItem(i).ToString(), false);
-                index = i;
-                break;
+                var item = cbAdapter.GetComboBoxItem(i);
+
+                if (item.ID == value)
+                {
+                    SetText(Adapter.GetItem(i).ToString(), false);
+                    index = i;
+                    break;
+                }
             }
         }
         return index;
     }
 
-    public int GetIndexOfElement(string value)
-    {
-        int index = -1;
-
-        for (int i = 0; i < Adapter.Count; i++)
-        {
-            if (Adapter.GetItem(i).ToString() == value)
-            {
-                index = i;
-                break;
-            }
-        }
-
-        return index;
-    }
 }
