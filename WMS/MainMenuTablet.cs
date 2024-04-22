@@ -229,17 +229,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             
         }
 
-        private void updateList()
-        {
-
-        }
-        private void RapidTakeover_Click(object sender, EventArgs e)
-        {
-
-              StartActivity(typeof(RapidTakeover));
-               
-            
-        }
+  
 
         public override bool OnKeyDown(Keycode keyCode, KeyEvent e)
         {

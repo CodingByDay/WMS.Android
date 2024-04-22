@@ -32,7 +32,7 @@
         android:layout_toRightOf="@id/app"
         android:id="@+id/dataList"
         android:choiceMode="singleChoice"
-        android:listSelector="@android:color/holo_blue_light"
+        android:listSelector="@android:drawable/screen_background_dark_transparent"
         />
 
     <LinearLayout

@@ -28,7 +28,7 @@
         android:choiceMode="singleChoice"
         android:drawSelectorOnTop="false"
         android:keyboardNavigationCluster="true"
-        android:listSelector="@android:color/holo_blue_light"
+        android:listSelector="@android:drawable/screen_background_dark_transparent"
         android:clipChildren="false"
         />
 

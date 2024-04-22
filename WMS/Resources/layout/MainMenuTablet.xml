@@ -403,7 +403,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
-            android:text="@string/s120"
+            android:text="@string/s49"
             android:layout_marginRight="28.0dp"
             android:id="@+id/serial" />
 
@@ -414,7 +414,7 @@
         android:layout_width="match_parent"
         android:layout_height="552.0dp"
         android:id="@+id/rapidListview"
-        android:listSelector="@android:color/holo_blue_light"
+        android:listSelector="@android:drawable/screen_background_dark_transparent"
         android:choiceMode="singleChoice" />
 
 </LinearLayout>

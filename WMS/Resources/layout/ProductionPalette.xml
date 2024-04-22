@@ -226,7 +226,7 @@
         android:id="@+id/lvCardList"
         android:layout_height="0dip"
         android:layout_weight="1"
-        android:listSelector="@android:color/holo_blue_light" />
+        android:listSelector="@android:drawable/screen_background_dark_transparent" />
 
     <LinearLayout
         android:layout_width="fill_parent"

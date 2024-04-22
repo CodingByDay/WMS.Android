@@ -62,7 +62,7 @@
         android:layout_width="match_parent"
         android:id="@+id/lvCardMore"
         android:layout_height="312.0dp"
-        android:listSelector="@android:color/holo_blue_light"
+        android:listSelector="@android:drawable/screen_background_dark_transparent"
         />
 
     <LinearLayout
