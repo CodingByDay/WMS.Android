@@ -17,7 +17,6 @@ using BarCode2D_Receiver;
 using Com.Barcode;
 using Microsoft.AppCenter.Crashes;
 using Newtonsoft.Json;
-
 using WMS.App;
 using TrendNET.WMS.Core.Data;
 using TrendNET.WMS.Device.App;
@@ -25,7 +24,6 @@ using TrendNET.WMS.Device.Services;
 using static Android.App.ActionBar;
 using static Android.App.DownloadManager;
 using WebApp = TrendNET.WMS.Device.Services.WebApp;
-
 using AndroidX.AppCompat.App;
 using AlertDialog = Android.App.AlertDialog;
 using Android.Graphics;
@@ -73,7 +71,11 @@ namespace WMS
         {
             base.OnCreate(savedInstanceState);
             SetTheme(Resource.Style.AppTheme_NoActionBar);
+
             SetContentView(Resource.Layout.InterWarehouseSerialOrSSCCEntry);
+
+
+
             AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
             var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
             _customToolbar.SetNavigationIcon(settings.RootURL + "/Services/Logo");
@@ -92,9 +94,7 @@ namespace WMS
             btFinish.Click += BtFinish_Click;
             btOverview.Click += BtOverview_Click;
             btExit.Click += BtExit_Click;
-
-           
-
+        
             tbIdent = FindViewById<EditText>(Resource.Id.tbIdent);
             tbSSCC = FindViewById<EditText>(Resource.Id.tbSSCC);
             tbSerialNum = FindViewById<EditText>(Resource.Id.tbSerialNum);
@@ -117,7 +117,6 @@ namespace WMS
             _broadcastReceiver.ConnectionStatusChanged += OnNetworkStatusChanged;
             Application.Context.RegisterReceiver(_broadcastReceiver,
             new IntentFilter(ConnectivityManager.ConnectivityAction));
-
             tbIdent.KeyPress += TbIdent_KeyPress;
             tbSSCC.KeyPress += TbSSCC_KeyPress;
             tbSerialNum.KeyPress += TbSerialNum_KeyPress;
