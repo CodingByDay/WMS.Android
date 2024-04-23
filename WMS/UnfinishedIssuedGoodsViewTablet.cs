@@ -409,7 +409,6 @@ namespace WMS
         }
         private void FillItemsList()
         {
-
             for (int i = 0; i < positions.Items.Count; i++)
             {
                 if (i < positions.Items.Count && positions.Items.Count > 0)
@@ -417,7 +416,6 @@ namespace WMS
                     var item = positions.Items.ElementAt(i);
                     var created = item.GetDateTime("DateInserted");
                     tbCreatedAt.Text = created == null ? "" : ((DateTime)created).ToString("dd.MM.yyyy");
-
                     var date = created == null ? "" : ((DateTime)created).ToString("dd.MM.yyyy");
                     data.Add(new UnfinishedIssuedList
                     {
