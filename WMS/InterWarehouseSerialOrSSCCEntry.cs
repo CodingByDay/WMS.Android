@@ -62,6 +62,7 @@ namespace WMS
         private NameValueObject moveItem = (NameValueObject)InUseObjects.Get("MoveItem");
         private double? stock;
         private NameValueObject activityIdent;
+        private double qtyCheck;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -130,13 +131,18 @@ namespace WMS
             SetUpForm();
         }
 
-        private void TbLocation_KeyPress(object? sender, View.KeyEventArgs e)
+        private async void TbLocation_KeyPress(object? sender, View.KeyEventArgs e)
         {
+           
             e.Handled = false;
         }
 
         private void TbIssueLocation_KeyPress(object? sender, View.KeyEventArgs e)
         {
+            if (e.KeyCode == Keycode.Enter && e.Event.Action == KeyEventActions.Down)
+            {
+                LoadStock(tbIssueLocation.Text, tbIdent.Text, moveHead.GetString("Issuer"), tbSSCC.Text, tbSerialNum.Text);
+            }
             e.Handled = false;
         }
 
@@ -239,6 +245,56 @@ namespace WMS
             }
         }
 
+        private async void LoadStock(string location, string ident, string warehouse, string sscc = null, string serial = null)
+        {
+
+            var parameters = new List<Services.Parameter>();
+
+            parameters.Add(new Services.Parameter { Name = "acIdent", Type = "String", Value = ident });
+            parameters.Add(new Services.Parameter { Name = "aclocation", Type = "String", Value = location });
+            parameters.Add(new Services.Parameter { Name = "acWarehouse", Type = "String", Value = warehouse });
+
+            string sql = "SELECT TOP 1 anQty FROM uWMSStockByWarehouse WHERE acIdent = @acIdent AND aclocation = @aclocation AND acWarehouse = @acWarehouse";
+
+            if (sscc != null)
+            {
+                sql += " AND acSSCC = @acSSCC";
+                parameters.Add(new Services.Parameter { Name = "acSSCC", Type = "String", Value = sscc });
+            }
+
+            if (serial != null)
+            {
+                sql += " AND acSerialNo = @acSerialNo;";
+                parameters.Add(new Services.Parameter { Name = "acSerialNo", Type = "String", Value = serial });
+            }
+
+            var qty = await AsyncServices.AsyncServices.GetObjectListBySqlAsync(sql, parameters);
+
+            if (qty.Success)
+            {
+
+                if (qty.Rows.Count > 0)
+                {
+                    double result = (double?)qty.Rows[0].DoubleValue("anQty") ?? 0;
+                    qtyCheck = result;
+                    lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + qtyCheck.ToString(CommonData.GetQtyPicture()) + " )";
+                    tbPacking.Text = qtyCheck.ToString();
+                    stock = qtyCheck;
+                }
+                else
+                {
+                    double result = 0;
+                    qtyCheck = result;
+                    lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + qtyCheck.ToString(CommonData.GetQtyPicture()) + " )";
+                    tbPacking.Text = qtyCheck.ToString();
+                    stock = qtyCheck;
+                }
+
+                tbPacking.RequestFocus();
+                tbPacking.SelectAll();
+            }
+        }
+
 
         private bool IsLocationCorrect()
         {
@@ -287,33 +343,33 @@ namespace WMS
             await Task.Run(() =>
             {
 
-                    moveItem = new NameValueObject("MoveItem");
-                    moveItem.SetInt("HeadID", moveHead.GetInt("HeadID"));
-                    moveItem.SetString("LinkKey", string.Empty);
-                    moveItem.SetInt("LinkNo", 0);
-                    moveItem.SetString("Ident", tbIdent.Text);
-                    moveItem.SetString("SSCC", tbSSCC.Text.Trim());
-                    moveItem.SetString("SerialNo", tbSerialNum.Text.Trim());
-                    moveItem.SetDouble("Packing", Convert.ToDouble(tbPacking.Text.Trim()));
-                    moveItem.SetDouble("Factor", 1);
-                    moveItem.SetDouble("Qty", Convert.ToDouble(tbPacking.Text.Trim()));
-                    moveItem.SetInt("Clerk", Services.UserID());
-                    moveItem.SetString("Location", tbLocation.Text.Trim());
-                    moveItem.SetString("IssueLocation", tbIssueLocation.Text.Trim());
-                    moveItem.SetString("Palette", "1");
+                moveItem = new NameValueObject("MoveItem");
+                moveItem.SetInt("HeadID", moveHead.GetInt("HeadID"));
+                moveItem.SetString("LinkKey", string.Empty);
+                moveItem.SetInt("LinkNo", 0);
+                moveItem.SetString("Ident", tbIdent.Text);
+                moveItem.SetString("SSCC", tbSSCC.Text.Trim());
+                moveItem.SetString("SerialNo", tbSerialNum.Text.Trim());
+                moveItem.SetDouble("Packing", Convert.ToDouble(tbPacking.Text.Trim()));
+                moveItem.SetDouble("Factor", 1);
+                moveItem.SetDouble("Qty", Convert.ToDouble(tbPacking.Text.Trim()));
+                moveItem.SetInt("Clerk", Services.UserID());
+                moveItem.SetString("Location", tbLocation.Text.Trim());
+                moveItem.SetString("IssueLocation", tbIssueLocation.Text.Trim());
+                moveItem.SetString("Palette", "1");
 
-                    string error;
+                string error;
 
-                    moveItem = Services.SetObject("mi", moveItem, out error);
+                moveItem = Services.SetObject("mi", moveItem, out error);
 
-                    if (moveItem != null && error == string.Empty)
+                if (moveItem != null && error == string.Empty)
+                {
+                    RunOnUiThread(() =>
                     {
-                        RunOnUiThread(() =>
-                        {
-                            StartActivity(typeof(InterWarehouseSerialOrSSCCEntry));
-                        });
+                        StartActivity(typeof(InterWarehouseSerialOrSSCCEntry));
+                    });
                         
-                    }                     
+                }                     
             });
         }
 
@@ -344,12 +400,7 @@ namespace WMS
                 tbPacking.RequestFocus();
                 tbPacking.SelectAll();
             }
-            else
-            {
-                // Not the update
-                
 
-            }
         }
 
         private void Sound()
@@ -415,13 +466,12 @@ namespace WMS
                     ProcessIdent(false);
                     tbIssueLocation.Text = ssccResult.Rows[0].StringValue("aclocation");
                     tbSerialNum.Text = ssccResult.Rows[0].StringValue("acSerialNo");
-                    tbSSCC.Text = ssccResult.Rows[0].StringValue("acSSCC").ToString();
-                    tbPacking.RequestFocus();
-                    tbPacking.SelectAll();
-
+                    tbSSCC.Text = ssccResult.Rows[0].StringValue("acSSCC").ToString();                
                     lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + ssccResult.Rows[0].DoubleValue("anQty").ToString() + " )";
                     tbPacking.Text = ssccResult.Rows[0].DoubleValue("anQty").ToString();
                     stock = ssccResult.Rows[0].DoubleValue("anQty");
+                    tbPacking.RequestFocus();
+                    tbPacking.SelectAll();
                 }
                 else
                 {
