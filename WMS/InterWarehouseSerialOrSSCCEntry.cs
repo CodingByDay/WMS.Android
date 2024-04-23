@@ -302,7 +302,6 @@ namespace WMS
                         return;
                     }
 
-
                     await CreateMethodFromStart();
                 }
             }
@@ -310,13 +309,13 @@ namespace WMS
             {
                 // Update flow.
                 double newQty;
+
                 if (Double.TryParse(tbPacking.Text, out newQty))
                 {
                     if (newQty > moveItem.GetDouble("Qty"))
                     {
                         Toast.MakeText(this, $"{Resources.GetString(Resource.String.s291)}", ToastLength.Long).Show();
                     }
-
                     else
                     {
                         var parameters = new List<Services.Parameter>();
@@ -587,52 +586,56 @@ namespace WMS
         {
             activityIdent = CommonData.LoadIdent(tbIdent.Text.Trim());
 
-            if(!activityIdent.GetBool("isSSCC"))
+            if (activityIdent != null)
             {
-                ssccRow.Visibility = ViewStates.Gone;
-            }
-
-            if (!activityIdent.GetBool("HasSerialNumber"))
-            {
-                serialRow.Visibility = ViewStates.Gone;
-            }
-
-            if (activityIdent == null)
-            {
-                tbIdent.Text = "";
-                lbIdentName.Text = "";
-                return;
-            }
-
-            if (CommonData.GetSetting("IgnoreStockHistory") != "1" && !update)
-            {
-                try
+                if (!activityIdent.GetBool("isSSCC"))
                 {
-                    string error;
-                    var recommededLocation = Services.GetObject("rl", activityIdent.GetString("Code") + "|" + moveHead.GetString("Receiver"), out error);
-                    if (recommededLocation != null)
+                    ssccRow.Visibility = ViewStates.Gone;
+                }
+
+                if (!activityIdent.GetBool("HasSerialNumber"))
+                {
+                    serialRow.Visibility = ViewStates.Gone;
+                }
+
+                if (activityIdent == null)
+                {
+                    tbIdent.Text = "";
+                    lbIdentName.Text = "";
+                    return;
+                }
+
+                if (CommonData.GetSetting("IgnoreStockHistory") != "1" && !update)
+                {
+                    try
                     {
-                        tbLocation.Text = recommededLocation.GetString("Location");
+                        string error;
+                        var recommededLocation = Services.GetObject("rl", activityIdent.GetString("Code") + "|" + moveHead.GetString("Receiver"), out error);
+                        if (recommededLocation != null)
+                        {
+                            tbLocation.Text = recommededLocation.GetString("Location");
+                        }
+                    }
+                    catch (Exception err)
+                    {
+
+                        Crashes.TrackError(err);
+                        return;
+
                     }
                 }
-                catch (Exception err)
+
+                lbIdentName.Text = activityIdent.GetString("Name");
+
+                if (!update)
                 {
-
-                    Crashes.TrackError(err);
-                    return;
-
+                    tbSSCC.Enabled = activityIdent.GetBool("isSSCC");
+                    tbSerialNum.Enabled = activityIdent.GetBool("HasSerialNumber");
                 }
-            }
-    
-            lbIdentName.Text = activityIdent.GetString("Name");
-
-            if (!update)
-            {
-                tbSSCC.Enabled = activityIdent.GetBool("isSSCC");
-                tbSerialNum.Enabled = activityIdent.GetBool("HasSerialNumber");
-            } else
-            {
-                lbIdentName.Enabled = false;
+                else
+                {
+                    lbIdentName.Enabled = false;
+                }
             }
         }
 
