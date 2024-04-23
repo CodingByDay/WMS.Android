@@ -83,8 +83,6 @@ namespace WMS
             Application.Context.RegisterReceiver(_broadcastReceiver,
             new IntentFilter(ConnectivityManager.ConnectivityAction));
 
-
-
             GestureListener gestureListener = new GestureListener(this);
             gestureDetector = new GestureDetector(this, new GestureListener(this));
 

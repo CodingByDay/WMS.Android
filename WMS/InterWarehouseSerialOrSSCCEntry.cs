@@ -30,6 +30,7 @@ using AndroidX.AppCompat.App;
 using AlertDialog = Android.App.AlertDialog;
 using Android.Graphics;
 using static AndroidX.ConstraintLayout.Widget.ConstraintSet;
+using Org.Xml.Sax;
 
 namespace WMS
 {
@@ -58,7 +59,9 @@ namespace WMS
         private NameValueObject openOrder = (NameValueObject)InUseObjects.Get("OpenOrder");
         private NameValueObject moveHead = (NameValueObject)InUseObjects.Get("MoveHead");
         private NameValueObject moveItem = (NameValueObject)InUseObjects.Get("MoveItem");
-        
+        private double? stock;
+        private NameValueObject activityIdent;
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -128,18 +131,26 @@ namespace WMS
 
         private void TbLocation_KeyPress(object? sender, View.KeyEventArgs e)
         {
+            e.Handled = false;
         }
 
         private void TbIssueLocation_KeyPress(object? sender, View.KeyEventArgs e)
         {
+            e.Handled = false;
         }
 
         private void TbSerialNum_KeyPress(object? sender, View.KeyEventArgs e)
         {
+            e.Handled = false;
         }
 
-        private void TbSSCC_KeyPress(object? sender, View.KeyEventArgs e)
+        private async void TbSSCC_KeyPress(object? sender, View.KeyEventArgs e)
         {
+            if (e.KeyCode == Keycode.Enter && e.Event.Action == KeyEventActions.Down)
+            {
+                await FillDataBySSCC(tbSSCC.Text);
+            }
+            e.Handled = false;
         }
 
         private void TbIdent_KeyPress(object? sender, View.KeyEventArgs e)
@@ -166,14 +177,61 @@ namespace WMS
             
         }
 
-        private void BtCreate_Click(object? sender, EventArgs e)
+        private async void BtCreate_Click(object? sender, EventArgs e)
         {
-            
+            if (!Base.Store.isUpdate)
+            {
+                double parsed;
+                if (double.TryParse(tbPacking.Text, out parsed) && stock >= parsed)
+                {
+
+                    var isCorrectLocation = IsLocationCorrect();
+                    if (!isCorrectLocation)
+                    {
+                        // Nepravilna lokacija za izbrano skladišče
+                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s333)}", ToastLength.Long).Show();
+                        return;
+                    }
+
+
+                    await CreateMethodFromStart();
+                }
+            }
+            else
+            {
+
+            }
         }
 
-        private void BtSaveOrUpdate_Click(object? sender, EventArgs e)
+
+        private bool IsLocationCorrect()
         {
-            
+            string location = tbLocation.Text;
+
+            if (CommonData.IsValidLocation(moveHead.GetString("Issuer"), location) && CommonData.IsValidLocation(moveHead.GetString("Receiver"), location))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+
+        private async void BtSaveOrUpdate_Click(object? sender, EventArgs e)
+        {
+            if(activityIdent!=null)
+            {
+                if(activityIdent.GetBool("isSSCC")&&tbSSCC.Text!=string.Empty)
+                {
+                    await CreateMethodFromStart();
+                }
+                else
+                {
+                    tbSerialNum.Text = string.Empty;
+                }
+            }
         }
 
         private void CheckIfApplicationStopingException()
@@ -187,6 +245,44 @@ namespace WMS
         }
 
 
+        private async Task CreateMethodFromStart()
+        {
+            await Task.Run(() =>
+            {
+
+                    moveItem = new NameValueObject("MoveItem");
+                    moveItem.SetInt("HeadID", moveHead.GetInt("HeadID"));
+                    moveItem.SetString("LinkKey", string.Empty);
+                    moveItem.SetInt("LinkNo", 0);
+                    moveItem.SetString("Ident", tbIdent.Text);
+                    moveItem.SetString("SSCC", tbSSCC.Text.Trim());
+                    moveItem.SetString("SerialNo", tbSerialNum.Text.Trim());
+                    moveItem.SetDouble("Packing", Convert.ToDouble(tbPacking.Text.Trim()));
+                    moveItem.SetDouble("Factor", 1);
+                    moveItem.SetDouble("Qty", Convert.ToDouble(tbPacking.Text.Trim()));
+                    moveItem.SetInt("Clerk", Services.UserID());
+                    moveItem.SetString("Location", tbLocation.Text.Trim());
+                    moveItem.SetString("IssueLocation", tbIssueLocation.Text.Trim());
+                    moveItem.SetString("Palette", "1");
+
+                    string error;
+
+                    moveItem = Services.SetObject("mi", moveItem, out error);
+
+                    if (moveItem != null && error == string.Empty)
+                    {
+                        RunOnUiThread(() =>
+                        {
+                            StartActivity(typeof(InterWarehouseSerialOrSSCCEntry));
+                        });
+                        
+                    }                     
+            });
+        }
+
+
+
+
         private void SetUpForm()
         {
             // This is the default focus of the view.
@@ -196,6 +292,7 @@ namespace WMS
             {
 
             }
+
             else
             {
                
@@ -212,7 +309,7 @@ namespace WMS
         }
 
 
-        public void GetBarcode(string barcode)
+        public async void GetBarcode(string barcode)
         {
             if (barcode != "Scan fail")
             {
@@ -225,8 +322,8 @@ namespace WMS
                 }
                 else if (tbSSCC.HasFocus)
                 {
-                    FillDataBySSCC(barcode);
                     Sound();
+                    await FillDataBySSCC(barcode);         
                     tbSSCC.Text = barcode;
                 }
                 else if (tbSerialNum.HasFocus)
@@ -252,35 +349,44 @@ namespace WMS
      
         }
 
-        private async void FillDataBySSCC(string sscc)
+        private async Task FillDataBySSCC(string sscc)
         {
-
             var parameters = new List<Services.Parameter>();
-
             string warehouse = moveHead.GetString("Issuer");
-
             parameters.Add(new Services.Parameter { Name = "acSSCC", Type = "String", Value = sscc });
             parameters.Add(new Services.Parameter { Name = "acWarehouse", Type = "String", Value = warehouse });
-
             string sql = $"SELECT * FROM uWMSItemBySSCCWarehouse WHERE acSSCC = @acSSCC AND acWarehouse = @acWarehouse";
-
-            var ssccResult = Services.GetObjectListBySql(sql, parameters);
-
-            if (ssccResult.Success && ssccResult.Rows.Count > 0)
+            var ssccResult = await AsyncServices.AsyncServices.GetObjectListBySqlAsync(sql, parameters);
+            RunOnUiThread(() =>
             {
-                tbIssueLocation.Text = ssccResult.Rows[0].StringValue("aclocation");
-                tbSerialNum.Text = ssccResult.Rows[0].StringValue("acSerialNo");
-                lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + ssccResult.Rows[0].DoubleValue("anQty").ToString() + " )";
-                tbPacking.Text = ssccResult.Rows[0].DoubleValue("anQty").ToString();
-            }
-            
+                if (ssccResult.Success && ssccResult.Rows.Count > 0)
+                {
+                    tbIdent.Text = ssccResult.Rows[0].StringValue("acIdent");
+                    // Process ident, recommended location is processed as well. 23.04.2024 Janko Jovičić
+                    ProcessIdent();
+                    tbIssueLocation.Text = ssccResult.Rows[0].StringValue("aclocation");
+                    tbSerialNum.Text = ssccResult.Rows[0].StringValue("acSerialNo");
+                    tbSSCC.Text = ssccResult.Rows[0].StringValue("acSSCC").ToString();
+                    tbPacking.RequestFocus();
+                    tbPacking.SelectAll();
+
+                    lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + ssccResult.Rows[0].DoubleValue("anQty").ToString() + " )";
+                    tbPacking.Text = ssccResult.Rows[0].DoubleValue("anQty").ToString();
+                    stock = ssccResult.Rows[0].DoubleValue("anQty");
+                }
+                else
+                {
+                    Toast.MakeText(this, Resources.GetString(Resource.String.s337), ToastLength.Long).Show();
+                }
+            });
         }
+
 
         private void ProcessIdent()
         {
-            var ident = CommonData.LoadIdent(tbIdent.Text.Trim());
+            activityIdent = CommonData.LoadIdent(tbIdent.Text.Trim());
 
-            if (ident == null)
+            if (activityIdent == null)
             {
                 tbIdent.Text = "";
                 lbIdentName.Text = "";
@@ -292,7 +398,7 @@ namespace WMS
                 try
                 {
                     string error;
-                    var recommededLocation = Services.GetObject("rl", ident.GetString("Code") + "|" + moveHead.GetString("Receiver"), out error);
+                    var recommededLocation = Services.GetObject("rl", activityIdent.GetString("Code") + "|" + moveHead.GetString("Receiver"), out error);
                     if (recommededLocation != null)
                     {
                         tbLocation.Text = recommededLocation.GetString("Location");
@@ -307,9 +413,9 @@ namespace WMS
                 }
             }
     
-            lbIdentName.Text = ident.GetString("Name");
-            tbSSCC.Enabled = ident.GetBool("isSSCC");
-            tbSerialNum.Enabled = ident.GetBool("HasSerialNumber");
+            lbIdentName.Text = activityIdent.GetString("Name");
+            tbSSCC.Enabled = activityIdent.GetBool("isSSCC");
+            tbSerialNum.Enabled = activityIdent.GetBool("HasSerialNumber");
         }
 
 
