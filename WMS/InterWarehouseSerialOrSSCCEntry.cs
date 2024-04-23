@@ -31,6 +31,7 @@ using AlertDialog = Android.App.AlertDialog;
 using Android.Graphics;
 using static AndroidX.ConstraintLayout.Widget.ConstraintSet;
 using Org.Xml.Sax;
+using Microsoft.AppCenter.Analytics;
 
 namespace WMS
 {
@@ -157,7 +158,7 @@ namespace WMS
         {
             if (e.KeyCode == Keycode.Enter && e.Event.Action == KeyEventActions.Down)
             {
-                ProcessIdent();
+                ProcessIdent(false);
             }
             e.Handled = false;
         }
@@ -199,7 +200,42 @@ namespace WMS
             }
             else
             {
+                // Update flow.
+                double newQty;
+                if (Double.TryParse(tbPacking.Text, out newQty))
+                {
+                    if (newQty > moveItem.GetDouble("Qty"))
+                    {
+                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s291)}", ToastLength.Long).Show();
+                    }
 
+                    else
+                    {
+                        var parameters = new List<Services.Parameter>();
+                        var tt = moveItem.GetInt("ItemID");
+                        parameters.Add(new Services.Parameter { Name = "anQty", Type = "Decimal", Value = newQty });
+                        parameters.Add(new Services.Parameter { Name = "anItemID", Type = "Int32", Value = moveItem.GetInt("ItemID") });
+                        string debugString = $"UPDATE uWMSMoveItem SET anQty = {newQty} WHERE anIDItem = {moveItem.GetInt("ItemID")}";
+                        var subjects = Services.Update($"UPDATE uWMSMoveItem SET anQty = @anQty WHERE anIDItem = @anItemID;", parameters);
+                        if (!subjects.Success)
+                        {
+                            RunOnUiThread(() =>
+                            {
+                                Analytics.TrackEvent(subjects.Error);
+                                return;
+                            });
+                        }
+                        else
+                        {
+                            StartActivity(typeof(IssuedGoodsEnteredPositionsView));
+                            Finish();
+                        }
+                    }
+                }
+                else
+                {
+                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
+                }
             }
         }
 
@@ -223,12 +259,13 @@ namespace WMS
         {
             if(activityIdent!=null)
             {
-                if(activityIdent.GetBool("isSSCC")&&tbSSCC.Text!=string.Empty)
+                if(activityIdent.GetBool("isSSCC") && tbSSCC.Text!=string.Empty)
                 {
                     await CreateMethodFromStart();
                 }
                 else
                 {
+                    lbQty.Text = Resources.GetString(Resource.String.s83);
                     tbSerialNum.Text = string.Empty;
                 }
             }
@@ -288,19 +325,31 @@ namespace WMS
             // This is the default focus of the view.
             tbSSCC.RequestFocus();
 
-            if (Base.Store.isUpdate)
+            if (Base.Store.isUpdate && moveItem != null)
             {
-
+                tbIdent.Text = moveItem.GetString("Ident");
+                ProcessIdent(true); 
+                tbSerialNum.Text = moveItem.GetString("SerialNo");
+                tbPacking.Text = moveItem.GetDouble("Qty").ToString();
+                tbSSCC.Text = moveItem.GetString("SSCC");
+                tbIssueLocation.Text = moveItem.GetString("IssueLocation");
+                tbLocation.Text = moveItem.GetString("Location");
+                lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + moveItem.GetDouble("Qty").ToString() + " )";
+                tbIdent.Enabled = false;
+                tbSerialNum.Enabled = false;
+                tbSSCC.Enabled = false;
+                tbIssueLocation.Enabled = false;
+                tbLocation.Enabled = false;
+                stock = moveItem.GetDouble("Qty");
+                tbPacking.RequestFocus();
+                tbPacking.SelectAll();
             }
-
             else
             {
-               
+                // Not the update
                 
 
             }
-
-
         }
 
         private void Sound()
@@ -317,7 +366,7 @@ namespace WMS
                 {
                     Sound();
                     tbIdent.Text = barcode;
-                    ProcessIdent();
+                    ProcessIdent(false);
                     tbSSCC.RequestFocus();
                 }
                 else if (tbSSCC.HasFocus)
@@ -363,7 +412,7 @@ namespace WMS
                 {
                     tbIdent.Text = ssccResult.Rows[0].StringValue("acIdent");
                     // Process ident, recommended location is processed as well. 23.04.2024 Janko Jovičić
-                    ProcessIdent();
+                    ProcessIdent(false);
                     tbIssueLocation.Text = ssccResult.Rows[0].StringValue("aclocation");
                     tbSerialNum.Text = ssccResult.Rows[0].StringValue("acSerialNo");
                     tbSSCC.Text = ssccResult.Rows[0].StringValue("acSSCC").ToString();
@@ -382,9 +431,19 @@ namespace WMS
         }
 
 
-        private void ProcessIdent()
+        private void ProcessIdent(bool update)
         {
             activityIdent = CommonData.LoadIdent(tbIdent.Text.Trim());
+
+            if(!activityIdent.GetBool("isSSCC"))
+            {
+                ssccRow.Visibility = ViewStates.Gone;
+            }
+
+            if (!activityIdent.GetBool("HasSerialNumber"))
+            {
+                serialRow.Visibility = ViewStates.Gone;
+            }
 
             if (activityIdent == null)
             {
@@ -393,7 +452,7 @@ namespace WMS
                 return;
             }
 
-            if (CommonData.GetSetting("IgnoreStockHistory") != "1")
+            if (CommonData.GetSetting("IgnoreStockHistory") != "1" && !update)
             {
                 try
                 {
@@ -414,8 +473,15 @@ namespace WMS
             }
     
             lbIdentName.Text = activityIdent.GetString("Name");
-            tbSSCC.Enabled = activityIdent.GetBool("isSSCC");
-            tbSerialNum.Enabled = activityIdent.GetBool("HasSerialNumber");
+
+            if (!update)
+            {
+                tbSSCC.Enabled = activityIdent.GetBool("isSSCC");
+                tbSerialNum.Enabled = activityIdent.GetBool("HasSerialNumber");
+            } else
+            {
+                lbIdentName.Enabled = false;
+            }
         }
 
 

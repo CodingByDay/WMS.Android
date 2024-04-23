@@ -402,9 +402,9 @@ namespace WMS
         {
             var item = positions.Items[displayedPosition];
             InUseObjects.Set("MoveItem", item);
-
-             StartActivity(typeof(InterWarehouseSerialOrSSCCEntry));
-             HelpfulMethods.clearTheStack(this);
+            Base.Store.isUpdate = true;
+            StartActivity(typeof(InterWarehouseSerialOrSSCCEntry));
+            HelpfulMethods.clearTheStack(this);
         }
 
         private void BtNext_Click(object sender, EventArgs e)
