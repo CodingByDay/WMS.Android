@@ -288,7 +288,9 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                     InUseObjects.Set("MoveHead", moveHead);
                 }
 
-                StartActivity(typeof(InterWarehouseSerialOrSSCCEntryTablet));
+
+                // Testing new tablet idea.
+                StartActivity(typeof(InterWarehouseSerialOrSSCCEntry));
 
             }
             finally
