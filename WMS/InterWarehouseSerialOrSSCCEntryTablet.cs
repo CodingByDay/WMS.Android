@@ -47,13 +47,10 @@ namespace WMS
         private TextView lbQty;
         private TextView lbUnits;
         private AdapterLocation adapterNew;
-        private Button button1;
         private Button btSaveOrUpdate;
         private Button button3;
         private Button button5;
         private Button button4;
-        private Spinner spIssue;
-        private Spinner spReceive;
         private List<string> issuer = new List<string>();
         private List<string> receiver = new List<string>();
         private Button button6;
@@ -79,7 +76,6 @@ namespace WMS
         private Dialog popupDialog;
         private ZoomageView image;
         private Button btnOK;
-        private Button btMorePallets;
         private Dialog popupDialogMain;
         private Button btConfirm;
         private Button btExit;
@@ -766,25 +762,18 @@ namespace WMS
             tbIdent.KeyPress += TbIdent_KeyPress;
             tbPacking.KeyPress += TbPacking_KeyPress;
             tbPacking.FocusChange += TbPacking_FocusChange;
-            button1 = FindViewById<Button>(Resource.Id.button1);
             button3 = FindViewById<Button>(Resource.Id.button3);
             button5 = FindViewById<Button>(Resource.Id.button5);
             button4 = FindViewById<Button>(Resource.Id.button4);
             button6 = FindViewById<Button>(Resource.Id.button6);
             imagePNG = FindViewById<ImageView>(Resource.Id.imagePNG);
-            spIssue = FindViewById<Spinner>(Resource.Id.spIssue);
-            spReceive = FindViewById<Spinner>(Resource.Id.spReceive);
             color();
             tbIdent.KeyPress += TbIdent_KeyPress1;
-            spReceive.ItemSelected += SpReceive_ItemSelected;
-            spIssue.ItemSelected += SpIssue_ItemSelected;
             listData.ItemClick += ListData_ItemClick;
-
             button6.Click += Button6_Click;
             button4.Click += Button4_Click;
             button5.Click += Button5_Click;
             button3.Click += Button3_Click;
-            button1.Click += Button1_Click;
             btSaveOrUpdate.Click += BtSaveOrUpdate_Click;
             imagePNG.Visibility = ViewStates.Invisible;
             lbIdentName = FindViewById<EditText>(Resource.Id.lbIdentName);
@@ -792,8 +781,6 @@ namespace WMS
             soundPoolId = soundPool.Load(this, Resource.Raw.beep, 1);
             tbLocation.SetSelectAllOnFocus(true);
             tbSSCC.SetSelectAllOnFocus(true);
-            btMorePallets = FindViewById<Button>(Resource.Id.btMorePallets);
-            btMorePallets.Click += BtMorePallets_Click;
             btSaveOrUpdate.LongClick += BtSaveOrUpdate_LongClick;
             button3.LongClick += Button3_LongClick;
             if (InterWarehouseBusinessEventSetup.success == true)
@@ -837,20 +824,12 @@ namespace WMS
                 lbUnits.Visibility = ViewStates.Visible;
                 tbUnits.Visibility = ViewStates.Visible;
             }
-            await GetLocationsForGivenWarehouseIssuer(moveHead.GetString("Issuer"));
-            await GetLocationsForGivenWarehouseReceiver(moveHead.GetString("Receiver"));
-            adapterIssue = new CustomAutoCompleteAdapter<String>(this,
-            Android.Resource.Layout.SimpleSpinnerItem, issuer);
-            adapterIssue.SetDropDownViewResource(Android.Resource.Layout.SimpleSpinnerDropDownItem);
-            spIssue.Adapter = adapterIssue;
-            adapterReceive = new CustomAutoCompleteAdapter<String>(this, Android.Resource.Layout.SimpleSpinnerItem, receiver);
-            adapterReceive.SetDropDownViewResource(Android.Resource.Layout.SimpleSpinnerDropDownItem);
-            spReceive.Adapter = adapterReceive;
+
+
             tbSSCC.LongClick += TbSSCC_LongClick;
             tbSSCC.RequestFocus();
             tbPacking.InputType = Android.Text.InputTypes.ClassNumber;
-            spIssue.SetSelection(receiver.IndexOf("P01"), true);
-            spReceive.SetSelection(receiver.IndexOf("P01"), true);
+
             showPicture();
             var _broadcastReceiver = new NetworkStatusBroadcastReceiver();
             _broadcastReceiver.ConnectionStatusChanged += OnNetworkStatusChanged;
@@ -872,10 +851,7 @@ namespace WMS
             };
 
 
-            if (editMode)
-            {
-                btMorePallets.Visibility = ViewStates.Gone;
-            }
+
         }
 
         private void Button3_LongClick(object sender, View.LongClickEventArgs e)
@@ -1276,7 +1252,7 @@ namespace WMS
 
         private void TbSerialNum_FocusChange(object sender, View.FocusChangeEventArgs e)
         {
-            //losesFocusSSCC();
+            // losesFocusSSCC();
         }
 
         private void SpIssue_ItemSelected(object sender, AdapterView.ItemSelectedEventArgs e)
@@ -1928,15 +1904,6 @@ namespace WMS
         {
             switch (keyCode)
             {
-                // in smartphone
-                case Keycode.F1:
-                    if (button1.Enabled == true)
-                    {
-                        Button1_Click(this, null);
-                    }
-                    break;
-
-
 
                 case Keycode.F2:
                     if (btSaveOrUpdate.Enabled == true)
