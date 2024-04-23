@@ -422,7 +422,7 @@ namespace WMS
                     data.Add(new UnfinishedIssuedList
                     {
                         Document = item.GetString("DocumentTypeName").Substring(0, 5),
-                        Orderer = item.GetString("Issuer"),
+                        Orderer = item.GetString("Receiver"),
                         Date = date,
                         NumberOfPositions = item.GetInt("ItemCount").ToString(),
                         // tbItemCount.Text = item.GetInt("ItemCount").ToString();
