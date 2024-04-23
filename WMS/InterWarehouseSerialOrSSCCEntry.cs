@@ -32,6 +32,7 @@ using Android.Graphics;
 using static AndroidX.ConstraintLayout.Widget.ConstraintSet;
 using Org.Xml.Sax;
 using Microsoft.AppCenter.Analytics;
+using System;
 
 namespace WMS
 {
@@ -63,6 +64,10 @@ namespace WMS
         private double? stock;
         private NameValueObject activityIdent;
         private double qtyCheck;
+        private Dialog popupDialogConfirm;
+        private Button? btnYesConfirm;
+        private Button? btnNoConfirm;
+        private ProgressDialogClass progress;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -171,18 +176,115 @@ namespace WMS
 
         private void BtExit_Click(object? sender, EventArgs e)
         {
-            
+            StartActivity(typeof(MainMenu));
+            HelpfulMethods.clearTheStack(this);
         }
 
         private void BtOverview_Click(object? sender, EventArgs e)
         {
-            
+            StartActivity(typeof(InterWarehouseEnteredPositionsView));
+            HelpfulMethods.clearTheStack(this);
         }
 
         private void BtFinish_Click(object? sender, EventArgs e)
         {
-            
+            popupDialogConfirm = new Dialog(this);
+            popupDialogConfirm.SetContentView(Resource.Layout.Confirmation);
+            popupDialogConfirm.Window.SetSoftInputMode(SoftInput.AdjustResize);
+            popupDialogConfirm.Show();
+            popupDialogConfirm.Window.SetLayout(LayoutParams.MatchParent, LayoutParams.WrapContent);
+            popupDialogConfirm.Window.SetBackgroundDrawable(new ColorDrawable(Color.ParseColor("#081a45")));
+            // Access Popup layout fields like below
+            btnYesConfirm = popupDialogConfirm.FindViewById<Button>(Resource.Id.btnYes);
+            btnNoConfirm = popupDialogConfirm.FindViewById<Button>(Resource.Id.btnNo);
+            btnYesConfirm.Click += BtnYesConfirm_Click;
+            btnNoConfirm.Click += BtnNoConfirm_Click;
         }
+
+
+        private void BtnNoConfirm_Click(object sender, EventArgs e)
+        {
+            popupDialogConfirm.Dismiss();
+            popupDialogConfirm.Hide();
+        }
+
+        private async void BtnYesConfirm_Click(object sender, EventArgs e)
+        {
+            await FinishMethod();
+        }
+
+
+
+        private async Task FinishMethod()
+        {
+            await Task.Run(async () =>
+            {
+                RunOnUiThread(() =>
+                {
+                    progress = new ProgressDialogClass();
+                    progress.ShowDialogSync(this, $"{Resources.GetString(Resource.String.s262)}");
+                });
+                try
+                {
+                    var headID = moveHead.GetInt("HeadID");
+                    string result;
+                    if (WebApp.Get("mode=finish&stock=add&print=" + Services.DeviceUser() + "&id=" + headID.ToString(), out result))
+                    {
+                        if (result.StartsWith("OK!"))
+                        {
+                            RunOnUiThread(() =>
+                            {
+                                progress.StopDialogSync();
+                                var id = result.Split('+')[1];
+                                AlertDialog.Builder alert = new AlertDialog.Builder(this);
+                                alert.SetTitle($"{Resources.GetString(Resource.String.s263)}");
+                                alert.SetMessage($"{Resources.GetString(Resource.String.s264)}" + id);
+                                alert.SetPositiveButton("Ok", (senderAlert, args) =>
+                                {
+                                    alert.Dispose();
+                                    System.Threading.Thread.Sleep(500);
+                                    StartActivity(typeof(MainMenu));
+                                    HelpfulMethods.clearTheStack(this);
+                                });
+                                Dialog dialog = alert.Create();
+                                dialog.Show();
+                            });
+                        }
+                        else
+                        {
+                            RunOnUiThread(() =>
+                            {
+                                progress.StopDialogSync();
+                                AlertDialog.Builder alert = new AlertDialog.Builder(this);
+                                alert.SetTitle($"{Resources.GetString(Resource.String.s265)}");
+                                alert.SetMessage($"{Resources.GetString(Resource.String.s266)}" + result);
+                                alert.SetPositiveButton("Ok", (senderAlert, args) =>
+                                {
+                                    alert.Dispose();
+                                    System.Threading.Thread.Sleep(500);
+                                    StartActivity(typeof(MainMenu));
+                                    HelpfulMethods.clearTheStack(this);
+                                });
+                                Dialog dialog = alert.Create();
+                                dialog.Show();
+                            });
+                        }
+                    }
+                    else
+                    {
+                        DialogHelper.ShowDialogError(this, this, $"{Resources.GetString(Resource.String.s218)}" + result);
+                    }
+                }
+                finally
+                {
+                    RunOnUiThread(() =>
+                    {
+                        progress.StopDialogSync();
+                    });
+                }
+            });
+        }
+
 
         private async void BtCreate_Click(object? sender, EventArgs e)
         {
@@ -436,8 +538,8 @@ namespace WMS
                 {
                     Sound();
                     tbIssueLocation.Text = barcode;
+                    LoadStock(tbIssueLocation.Text, tbIdent.Text, moveHead.GetString("Issuer"), tbSSCC.Text, tbSerialNum.Text);
                     tbLocation.RequestFocus();
-
                 }
                 else if (tbLocation.HasFocus)
                 {
