@@ -556,6 +556,7 @@ namespace WMS
             tbSSCC.FocusChange += TbSSCC_FocusChange;
             Barcode2D barcode2D = new Barcode2D();
             barcode2D.open(this, this);
+
             try
             {
                 string SuccessMessage = string.Format("Preverjam povezovani DN");
@@ -568,11 +569,9 @@ namespace WMS
             }
             catch (Exception err)
             {
-
-                Crashes.TrackError(err);
-               
-
+                Crashes.TrackError(err);             
             }
+
             var ident = CommonData.LoadIdent(openWorkOrder.GetString("Ident"));
             identCode = ident.GetString("Code");
             tbIdent.Text = ident.GetString("Code") + " " + ident.GetString("Name");

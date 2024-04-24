@@ -75,6 +75,7 @@ namespace WMS
         private List<IssuedGoods> connectedPositions = new List<IssuedGoods>();
         private bool createPositionAllowed = false;
         private double stock;
+        private ListView listData;
 
 
 
@@ -88,6 +89,7 @@ namespace WMS
             {
                 RequestedOrientation = ScreenOrientation.Landscape;
                 SetContentView(Resource.Layout.IssuedGoodsSerialOrSSCCEntryClientPickingTablet);
+                listData = FindViewById<ListView>(Resource.Id.listData);
             }
             else
             {
@@ -153,6 +155,12 @@ namespace WMS
 
             // Stop the loader
             LoaderManifest.LoaderManifestLoopStop(this);
+
+
+            if (settings.tablet)
+            {
+                fillItems();
+            }
         }
 
         private void BtOverview_Click(object? sender, EventArgs e)

@@ -17,6 +17,16 @@
             layout="@layout/toolbar" />
     </LinearLayout>
 
+     <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/test"
+        android:layout_toRightOf="@id/fling"
+        android:id="@+id/listData"
+        android:choiceMode="singleChoice"
+        android:listSelector="@android:drawable/screen_background_dark_transparent"
+        />
+
     <TextView
         android:textSize="18dp"
         android:textStyle="bold"
@@ -41,7 +51,7 @@
         android:orientation="horizontal"
         android:layout_marginTop="60dp"
         android:layout_toRightOf="@id/fling"
-        android:weightSum="3"
+        android:weightSum="5"
         android:id="@+id/text"
         android:paddingTop="5dp">
 
@@ -53,12 +63,11 @@
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
             android:layout_marginRight="28.0dp"
-            android:id="@+id/ident"
             android:layout_width="match_parent"
             android:text="@string/s47" />
 
         <TextView
-            android:text="@string/s40"
+            android:text="@string/s79"
             android:textSize="18dp"
             android:textStyle="bold"
             android:layout_weight="1"
@@ -66,8 +75,29 @@
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
             android:layout_width="match_parent"
-            android:layout_marginRight="28.0dp"
-            android:id="@+id/name" />
+            android:layout_marginRight="28.0dp" />
+
+        <TextView
+            android:text="@string/s80"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:layout_width="match_parent"
+            android:layout_marginRight="28.0dp" />
+
+        <TextView
+            android:text="@string/s103"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:layout_width="match_parent"
+            android:layout_marginRight="28.0dp" />
 
         <TextView
             android:text="@string/s50"
@@ -78,8 +108,7 @@
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
             android:layout_width="match_parent"
-            android:layout_marginRight="28.0dp"
-            android:id="@+id/quantity" />
+            android:layout_marginRight="28.0dp" />
 
     </LinearLayout>
     <LinearLayout
@@ -93,281 +122,237 @@
         tools:context=".LinearLayout"
         android:foregroundGravity="center">
 
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingTop="5dp">
+      <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="15dp">
 
-            <TextView
-                android:textStyle="bold"
-                android:textSize="18dp"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:paddingLeft="10dp"
-                android:paddingTop="5dp"
-                android:text="@string/s47"
-            />
-
-            <EditText
-                android:textStyle="bold"
-                android:singleLine="true"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.50"
-                android:paddingTop="5dp"
-                android:background="@drawable/editText_bg_grey"
-                android:layout_marginRight="2dp"
-                android:textSize="18dp"
-                android:id="@+id/tbIdent" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingTop="5dp"
-                                     >
-
-            <TextView
-                android:textStyle="bold"
-                android:textSize="18dp"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:text="@string/s79"
-                android:paddingTop="5dp"
-                android:paddingLeft="10dp"
-                android:id="@+id/textView1"
-                 />
-
-            <EditText
-                android:textStyle="bold"
-                android:singleLine="true"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.50"
-                android:paddingTop="5dp"
-                android:background="@drawable/editText_bg_grey"
-                android:layout_marginRight="2dp"
-                android:textSize="18dp"
-                android:id="@+id/tbSSCC" />
-
-            <Button
-                android:text="..."
-                android:layout_width="39.0dp"
-                android:layout_height="30dp"
-                android:layout_marginTop="-5dp"
-                android:background="@color/rikoMain"
-                android:textColor="@color/white"
-                android:layout_marginLeft="4dp"
-                android:layout_marginBottom="4dp"
-                android:id="@+id/btMorePallets" />
-
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingTop="5dp">
-
-            <TextView
-                android:textStyle="bold"
-                android:textSize="18dp"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:paddingLeft="10dp"
-                android:paddingTop="5dp"
-                android:text="@string/s80"
-                />
-
-            <EditText
-                android:textStyle="bold"
-                android:singleLine="true"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.50"
-                android:paddingTop="5dp"
-                android:background="@drawable/editText_bg_grey"
-                android:layout_marginRight="2dp"
-                android:textSize="18dp"
-                android:id="@+id/tbSerialNum" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingTop="5dp"
-                                     >
-
-            <TextView
-                android:textStyle="bold"
-                android:textSize="18dp"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:text="@string/s140"
-                android:paddingTop="5dp"
-                android:paddingLeft="10dp"
-                 />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="0dp"
-                android:background="@drawable/edittext_bg_aqua"
-                android:orientation="horizontal"
-        >
-                <EditText
-                    android:textStyle="bold"
-                    android:singleLine="true"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.50"
-                    android:paddingTop="5dp"
-                    android:background="@drawable/editText_bg_grey"
-                    android:layout_marginRight="2dp"
-                    android:textSize="18dp"
-                    android:id="@+id/tbLocation" />
-
-                <Spinner
-                    android:layout_width="71.0dp"
-                    android:layout_height="match_parent"
-                    android:id="@+id/spLocation" />
-            </LinearLayout>
-
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingTop="5dp">
-
-            <TextView
-                android:textStyle="bold"
-                android:textSize="18dp"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:paddingLeft="10dp"
-                android:paddingTop="5dp"
-                android:text="@string/s40"
-                android:id="@+id/lbQty" />
-
-            <EditText
-                android:textStyle="bold"
-                android:singleLine="true"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.50"
-                android:paddingTop="5dp"
-                android:background="@drawable/editText_bg_grey"
-                android:layout_marginRight="2dp"
-                android:textSize="18dp"
-                android:enabled="true"
-                android:editable="true"
-                android:inputType="number"
-                android:id="@+id/tbPackingField" />
-
-            <Button
-                android:text="@string/s94"
-                android:layout_width="74.0dp"
-                android:layout_height="33dp"
-                android:id="@+id/button1"
-                android:layout_marginTop="-5dp"
-                android:background="@color/rikoMain"
-                android:textColor="@color/white"
-                android:layout_marginLeft="4dp"
-                 />
-
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingTop="5dp">
-
-            <TextView
-                android:textStyle="bold"
-                android:textSize="18dp"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:paddingLeft="10dp"
-                android:paddingTop="5dp"
-                android:text="@string/s51"
-                android:id="@+id/lbUnits" />
-
-            <EditText
-                android:textStyle="bold"
-                android:singleLine="true"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.50"
-                android:paddingTop="5dp"
-                android:background="@drawable/editText_bg_grey"
-                android:layout_marginRight="2dp"
-                android:textSize="18dp"
-                android:id="@+id/tbUnits" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingTop="5dp">
-
-            <TextView
-                android:textStyle="bold"
-                android:textSize="18dp"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:paddingLeft="10dp"
-                android:paddingTop="5dp"
-                android:text="@string/s142"
-                android:id="@+id/lbPalette" />
-
-            <EditText
-                android:textStyle="bold"
-                android:singleLine="true"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.50"
-                android:paddingTop="5dp"
-                android:background="@drawable/editText_bg_grey"
-                android:layout_marginRight="2dp"
-                android:textSize="18dp"
-                android:id="@+id/tbPalette" />
-
-        </LinearLayout>
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="5.5dp"
-            android:paddingLeft="10dp"
+            android:textStyle="bold"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:paddingLeft="4dp"
             android:paddingTop="5dp"
-            android:layout_marginRight="49.5dp"
-            android:id="@+id/space" />
+            android:text="@string/s47"
+            android:gravity="bottom"
+           />
 
-        <com.jsibbold.zoomage.ZoomageView
-            android:src="@android:drawable/ic_menu_gallery"
+        <EditText
+            android:textStyle="bold"
+            android:singleLine="true"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:id="@+id/imagePNG" />
+            android:layout_height="wrap_content"
+            android:layout_weight="0.50"
+            android:paddingTop="5dp"
+            android:background="@drawable/editText_bg_grey"
+            android:layout_marginRight="2dp"
+            android:id="@+id/tbIdent" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/sscc-row"
+        android:orientation="horizontal"
+        android:paddingTop="5dp"
+                                     >
+
         <TextView
-            android:layout_height="0dip"
-            android:layout_width="fill_parent"
-            android:layout_weight="1" />
+            android:textStyle="bold"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:text="@string/s79"
+            android:paddingTop="5dp"
+            android:paddingLeft="4dp"
+            android:id="@+id/textView1"
+            android:gravity="bottom"
+             />
+
+        <EditText
+            android:textStyle="bold"
+            android:singleLine="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.50"
+            android:paddingTop="5dp"
+            android:background="@drawable/editText_bg_grey"
+            android:layout_marginRight="2dp"
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/tbSSCC" />
+ 
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/serial-row"
+        android:orientation="horizontal"
+        android:paddingTop="5dp">
+
+        <TextView
+            android:textStyle="bold"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:paddingLeft="4dp"
+            android:paddingTop="5dp"
+            android:text="@string/s80"
+        />
+
+        <EditText
+            android:textStyle="bold"
+            android:singleLine="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.50"
+            android:paddingTop="5dp"
+            android:background="@drawable/editText_bg_grey"
+            android:layout_marginRight="2dp"
+            android:id="@+id/tbSerialNum" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="5dp"
+                                     >
+
+        <TextView
+            android:textStyle="bold"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="@string/s140"
+            android:paddingTop="5dp"
+            android:paddingLeft="4dp"
+    />
+
+        <EditText
+            android:textStyle="bold"
+            android:singleLine="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.50"
+            android:paddingTop="5dp"
+            android:background="@drawable/editText_bg_grey"
+            android:layout_marginRight="2dp"
+            android:id="@+id/tbLocation" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="100dp"
+
+        android:orientation="horizontal"
+        android:paddingTop="5dp"
+        >
+
+        <TextView
+            android:textStyle="bold"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:paddingLeft="4dp"
+            android:paddingTop="5dp"
+            android:text="@string/s40"
+            android:id="@+id/lbQty" />
+
+        <EditText
+            android:textStyle="bold"
+            android:singleLine="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.50"
+            android:paddingTop="5dp"
+            android:background="@drawable/editText_bg_grey"
+            android:layout_marginRight="2dp"
+            android:id="@+id/tbPacking" />
+
+ 
+
+    </LinearLayout>
+     <TextView
+        android:layout_height="0dip"
+        android:layout_width="fill_parent"
+        android:layout_weight="1" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="5dp">
+
+        <TextView
+            android:textStyle="bold"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:paddingLeft="4dp"
+            android:paddingTop="5dp"
+            android:text="@string/s51"
+            android:id="@+id/lbUnits" />
+
+        <EditText
+            android:textStyle="bold"
+            android:singleLine="true"
+            android:enabled="false"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.50"
+            android:paddingTop="5dp"
+            android:background="@drawable/editText_bg_grey"
+            android:layout_marginRight="2dp"
+            android:id="@+id/tbUnits" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        android:paddingTop="5dp">
+
+        <TextView
+            android:textStyle="bold"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:paddingLeft="4dp"
+            android:paddingTop="5dp"
+            android:text="@string/s142"
+            android:id="@+id/lbPalette" />
+
+        <EditText
+            android:textStyle="bold"
+            android:singleLine="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.50"
+            android:paddingTop="5dp"
+            android:background="@drawable/editText_bg_grey"
+            android:layout_marginRight="2dp"
+            android:id="@+id/tbPalette" />
+
+    </LinearLayout>
+
+   
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:weightSum="3"
+        android:paddingTop="5dp">
 
         <LinearLayout
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="horizontal"
             android:weightSum="2"
-            android:paddingTop="0dp"
-            android:layout_marginLeft="2dp">
+            android:layout_weight="1"
+            android:paddingTop="5dp"
+            android:layout_marginBottom="4dp">
 
             <Button
-                android:text="@string/s120"
                 android:layout_weight="1"
                 android:textSize="20dp"
                 android:paddingLeft="10dp"
@@ -375,16 +360,14 @@
                 android:layout_height="match_parent"
                 android:background="@color/rikoMain"
                 android:textColor="@color/white"
-                android:layout_marginLeft="2dp"
+                android:layout_marginLeft="4dp"
                 android:layout_marginRight="2dp"
+                android:text="@string/s52"
                 android:drawableLeft="@drawable/newitem_white"
-                android:id="@+id/btSaveOrUpdate"
-                />
+                android:id="@+id/btCreateSame"
+                 />
 
             <Button
-                android:text="@string/s116"
-                android:drawableLeft="@drawable/newitem_white"
-                android:id="@+id/button4"
                 android:layout_weight="1"
                 android:textSize="20dp"
                 android:paddingLeft="10dp"
@@ -393,20 +376,24 @@
                 android:background="@color/rikoMain"
                 android:textColor="@color/white"
                 android:layout_marginLeft="2dp"
-                android:layout_marginRight="2dp" />
+                android:layout_marginRight="4dp"
+                android:text="@string/s86"
+                android:drawableLeft="@drawable/newitem_white"
+                android:id="@+id/btCreate"
+                />
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:weightSum="2"
+            android:layout_weight="1"
             android:orientation="horizontal"
-            android:paddingTop="4dp"
-            android:layout_marginLeft="2dp">
+            android:paddingTop="0dp"
+            android:layout_marginBottom="4dp">
 
             <Button
-                android:text="@string/s117"
                 android:layout_weight="1"
                 android:textSize="20dp"
                 android:paddingLeft="10dp"
@@ -414,15 +401,13 @@
                 android:layout_height="match_parent"
                 android:background="@color/rikoMain"
                 android:textColor="@color/white"
-                android:layout_marginLeft="2dp"
+                android:layout_marginLeft="4dp"
                 android:layout_marginRight="2dp"
+                android:text="@string/s87"
                 android:drawableLeft="@drawable/shipped_white"
-                android:id="@+id/button6" />
+                android:id="@+id/btFinish" />
 
             <Button
-                android:text="@string/s121"
-                android:drawableLeft="@drawable/focus_white"
-                android:id="@+id/button5"
                 android:layout_weight="1"
                 android:textSize="20dp"
                 android:paddingLeft="10dp"
@@ -431,25 +416,28 @@
                 android:background="@color/rikoMain"
                 android:textColor="@color/white"
                 android:layout_marginLeft="2dp"
-                android:layout_marginRight="2dp" />
+                android:layout_marginRight="4dp"
+                android:text="@string/s55"
+                android:drawableLeft="@drawable/focus_white"
+                android:id="@+id/btOverview"
+                />
 
         </LinearLayout>
         <Button
-            android:text="@string/s110"
-            android:drawableLeft="@drawable/logout_white"
-            android:id="@+id/button7"
             android:layout_weight="1"
             android:textSize="20dp"
             android:paddingLeft="10dp"
             android:layout_width="match_parent"
-            android:layout_height="55dp"
+            android:layout_height="match_parent"
             android:background="@color/rikoMain"
             android:textColor="@color/white"
             android:layout_marginLeft="4dp"
-            android:layout_marginRight="2dp"
-            android:layout_marginTop="4dp"
-            android:layout_marginBottom="4dp"/>
-
+            android:layout_marginRight="4dp"
+            android:layout_marginBottom="4dp"
+            android:text="@string/s77"
+            android:drawableLeft="@drawable/logout_white"
+            android:id="@+id/btExit"
+       />
     </LinearLayout>
 
 </androidx.percentlayout.widget.PercentRelativeLayout>
