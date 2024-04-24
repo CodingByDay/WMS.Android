@@ -67,6 +67,9 @@ namespace WMS
         private Button? btnYesConfirm;
         private Button? btnNoConfirm;
         private ProgressDialogClass progress;
+        private ListView listData;
+        private List<TakeoverDocument> items;
+        private List<TakeOverSerialOrSSCCEntryList> data = new List<TakeOverSerialOrSSCCEntryList>();
 
         protected async override void OnCreate(Bundle savedInstanceState)
         {
@@ -76,6 +79,10 @@ namespace WMS
             {
                 RequestedOrientation = ScreenOrientation.Landscape;
                 SetContentView(Resource.Layout.TakeOverSerialOrSSCCEntryTablet);
+
+                listData = FindViewById<ListView>(Resource.Id.listData);
+                TakeoverDocumentAdapter adapter = new TakeoverDocumentAdapter(this, items);
+                fillItems();
             }
             else
             {
@@ -131,6 +138,39 @@ namespace WMS
             // Main logic for the entry
             SetUpForm();
         }
+
+        private void fillItems()
+        {
+
+            string error;
+            var stock = Services.GetObjectList("str", out error, moveHead.GetString("Wharehouse") + "||" + openIdent.GetString("Code")); 
+            var number = stock.Items.Count();
+
+
+            if (stock != null)
+            {
+                stock.Items.ForEach(x =>
+                {
+                    data.Add(new TakeOverSerialOrSSCCEntryList
+                    {
+                        Ident = x.GetString("Ident"),
+                        Location = x.GetString("Location"),
+                        Qty = x.GetDouble("RealStock").ToString(),
+                        SerialNumber = x.GetString("SerialNo")
+
+                    });
+                });
+
+            }
+
+            TakeOverSerialOrSSCCEntryAdapter adapter = new TakeOverSerialOrSSCCEntryAdapter(this, data);
+
+            listData.Adapter = null;
+            listData.Adapter = adapter;
+
+
+        }
+
 
 
         private void SetUpProcessDependentButtons()

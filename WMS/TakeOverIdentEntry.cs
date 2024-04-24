@@ -58,6 +58,8 @@ namespace WMS
         private List<string> savedIdents;
         private CustomAutoCompleteAdapter<string> tbIdentAdapter;
         private List<OpenOrder> orders = new List<OpenOrder>();
+        private ListView listData;
+        private List<TakeOverIdentList> data = new List<TakeOverIdentList>();
 
         protected async override void OnCreate(Bundle savedInstanceState)
         {
@@ -67,6 +69,11 @@ namespace WMS
             {
                 RequestedOrientation = ScreenOrientation.Landscape;
                 SetContentView(Resource.Layout.TakeOverIdentEntryTablet);
+                listData = FindViewById<ListView>(Resource.Id.listData);
+                TakeOverIdentAdapter adapter = new TakeOverIdentAdapter(this, data);
+                listData.Adapter = adapter;
+                listData.ItemClick += ListData_ItemClick;
+
             }
             else
             {
@@ -123,7 +130,26 @@ namespace WMS
             tbIdent.AfterTextChanged += TbIdent_AfterTextChanged;
             tbIdent.RequestFocus();
         }
+        private void ListData_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
+        {
+            selected = e.Position;
+            Select(selected);
+            selectedItem = selected;
+        }
 
+
+        private void fillList(string ident)
+        {
+
+                 
+        }
+        private void Select(int postionOfTheItemInTheList)
+        {
+
+            displayedOrder = postionOfTheItemInTheList;
+
+            FillDisplayedOrderInfo();
+        }
         private void TbIdent_KeyPress(object? sender, View.KeyEventArgs e)
         {
             if(e.KeyCode == Keycode.Enter && e.Event.Action == KeyEventActions.Down)
@@ -491,6 +517,9 @@ namespace WMS
             }
         }
         private bool preventDuplicate = false;
+        private int selected;
+        private int selectedItem;
+
         public void GetBarcode(string barcode)
         {
             if (barcode != "Scan fail" && barcode != "")

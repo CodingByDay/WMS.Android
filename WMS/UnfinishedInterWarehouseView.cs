@@ -47,6 +47,11 @@ namespace WMS
         private Button btnYes;
         private Button btnNo;
         private GestureDetector gestureDetector;
+        private ListView dataList;
+        private UnfinishedInterwarehouseAdapter adapter;
+        private List<UnfinishedInterWarehouseList> dataMapping;
+        private int selected;
+        private int selectedItem;
 
         protected async override void OnCreate(Bundle savedInstanceState)
         {
@@ -57,6 +62,11 @@ namespace WMS
             {
                 RequestedOrientation = ScreenOrientation.Landscape;
                 SetContentView(Resource.Layout.UnfinishedInterWarehouseViewTablet);
+                dataList = FindViewById<ListView>(Resource.Id.dataList);
+                adapter = new UnfinishedInterwarehouseAdapter(this, dataMapping);
+                dataList.Adapter = adapter;
+                dataList.ItemClick += DataList_ItemClick;
+                dataList.ItemLongClick += DataList_ItemLongClick;
             }
             else
             {
@@ -87,6 +97,12 @@ namespace WMS
             btnLogout.Click += BtnLogout_Click;
             InUseObjects.Clear();
             await LoadPositions();
+            if (settings.tablet)
+            {
+                FillItemsList();
+                dataList.PerformItemClick(dataList, 0, 0);
+
+            }
             var _broadcastReceiver = new NetworkStatusBroadcastReceiver();
             _broadcastReceiver.ConnectionStatusChanged += OnNetworkStatusChanged;
             Application.Context.RegisterReceiver(_broadcastReceiver,
@@ -100,7 +116,137 @@ namespace WMS
             yourLinearLayout.SetOnTouchListener(gestureListener);
         }
 
+        private void DataList_ItemLongClick(object sender, AdapterView.ItemLongClickEventArgs e)
+        {
+            var index = e.Position;
+            DeleteFromTouch(Convert.ToInt32(index));
+        }
 
+        private void No(int index)
+        {
+            popupDialog.Dismiss();
+            popupDialog.Hide();
+        }
+        private void FillItemsList()
+        {
+
+            for (int i = 0; i < positions.Items.Count; i++)
+            {
+                if (i < positions.Items.Count && positions.Items.Count > 0)
+                {
+                    var item = positions.Items.ElementAt(i);
+                    var created = item.GetDateTime("DateInserted");
+                    tbCreatedAt.Text = created == null ? "" : ((DateTime)created).ToString("dd.MM.yyyy");
+
+                    var date = created == null ? "" : ((DateTime)created).ToString("dd.MM.yyyy");
+                    dataMapping.Add(new UnfinishedInterWarehouseList
+                    {
+                        Document = item.GetString("DocumentTypeName"),
+                        CreatedBy = item.GetString("ClerkName"),
+                        Date = date,
+                        NumberOfPositions = item.GetInt("ItemCount").ToString(),
+                    });
+
+                    adapter.NotifyDataSetChanged();
+                }
+                else
+                {
+                    string errorWebApp = string.Format($"{Resources.GetString(Resource.String.s247)}");
+                    Toast.MakeText(this, errorWebApp, ToastLength.Long).Show();
+                }
+
+            }
+
+
+        }
+        private async void Yes(int index)
+        {
+            var item = positions.Items[index];
+            var id = item.GetInt("HeadID");
+            try
+            {
+
+                string result;
+                if (WebApp.Get("mode=delMoveHead&head=" + id.ToString() + "&deleter=" + Services.UserID().ToString(), out result))
+                {
+                    if (result == "OK!")
+                    {
+                        positions = null;
+                        await LoadPositions();
+                        dataMapping.Clear();
+                        FillItemsList();
+                        popupDialog.Dismiss();
+                        popupDialog.Hide();
+                    }
+                    else
+                    {
+                        string errorWebAppIssued = string.Format($"{Resources.GetString(Resource.String.s212)}" + result);
+                        Toast.MakeText(this, errorWebAppIssued, ToastLength.Long).Show();
+                        positions = null;
+                        await LoadPositions();
+
+                        popupDialog.Dismiss();
+                        popupDialog.Hide();
+                        return;
+                    }
+                }
+                else
+                {
+                    string errorWebAppIssued = string.Format($"{Resources.GetString(Resource.String.s213)}" + result);
+                    Toast.MakeText(this, errorWebAppIssued, ToastLength.Long).Show();
+                    popupDialog.Dismiss();
+                    popupDialog.Hide();
+
+                    return;
+                }
+            }
+            catch (Exception err)
+            {
+
+                Crashes.TrackError(err);
+                return;
+
+            }
+
+            string errorWebApp = string.Format($"{Resources.GetString(Resource.String.s214)}");
+            Toast.MakeText(this, errorWebApp, ToastLength.Long).Show();
+        }
+
+
+        private void DeleteFromTouch(int index)
+        {
+            popupDialog = new Dialog(this);
+            popupDialog.SetContentView(Resource.Layout.YesNoPopUp);
+            popupDialog.Window.SetSoftInputMode(SoftInput.AdjustResize);
+            popupDialog.Show();
+
+            popupDialog.Window.SetLayout(LayoutParams.MatchParent, LayoutParams.WrapContent);
+            popupDialog.Window.SetBackgroundDrawable(new ColorDrawable(Color.ParseColor("#081a45")));
+
+
+            // Access Popup layout fields like below
+            btnYes = popupDialog.FindViewById<Button>(Resource.Id.btnYes);
+            btnNo = popupDialog.FindViewById<Button>(Resource.Id.btnNo);
+            btnYes.Click += (e, ev) => { Yes(index); };
+            btnNo.Click += (e, ev) => { No(index); };
+        }
+
+        private void DataList_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
+        {
+            selected = e.Position;
+            Select(selected);
+            selectedItem = selected;
+            dataList.RequestFocusFromTouch();
+            dataList.SetItemChecked(selected, true);
+            dataList.SetSelection(selected);
+        }
+
+        private void Select(int postionOfTheItemInTheList)
+        {
+            displayedPosition = postionOfTheItemInTheList;
+            if (displayedPosition >= positions.Items.Count) { displayedPosition = 0; }
+            FillDisplayedItem();
+        }
         public void OnSwipeLeft()
         {
             displayedPosition--;
@@ -302,6 +448,24 @@ namespace WMS
 
         private void BtNext_Click(object sender, EventArgs e)
         {
+            if(settings.tablet)
+            {
+                selectedItem++;
+
+                if (selectedItem <= (positions.Items.Count - 1))
+                {
+                    dataList.RequestFocusFromTouch();
+                    dataList.SetSelection(selectedItem);
+                    dataList.SetItemChecked(selectedItem, true);
+                }
+                else
+                {
+                    selectedItem = 0;
+                    dataList.RequestFocusFromTouch();
+                    dataList.SetSelection(selectedItem);
+                    dataList.SetItemChecked(selectedItem, true);
+                }
+            }
             displayedPosition++;
             if (displayedPosition >= positions.Items.Count) { displayedPosition = 0; }
             FillDisplayedItem();

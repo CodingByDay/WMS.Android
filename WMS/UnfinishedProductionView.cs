@@ -63,6 +63,7 @@ namespace WMS
                 RequestedOrientation = ScreenOrientation.Landscape;
                 SetContentView(Resource.Layout.UnfinishedProductionViewTablet);
 
+                listData = FindViewById<ListView>(Resource.Id.tbClient);
                 adapter = new UnfinishedProductionAdapter(this, data);
                 listData.Adapter = adapter;
                 listData.ItemClick += ListData_ItemClick;
