@@ -163,6 +163,11 @@ namespace WMS
             }
         }
 
+        private void fillItems()
+        {
+          // [Continue] // 
+        }
+
         private void BtOverview_Click(object? sender, EventArgs e)
         {
             StartActivity(typeof(IssuedGoodsEnteredPositionsView));

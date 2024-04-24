@@ -14,6 +14,7 @@ Keep in mind our formatting and variable naming conventions: we use camel case f
 
 [Eliminate] - Elimination needed in near future
 [Discusion needed] - Needs team discussion
+[Continue] - Continue development here
 
 ## Contributing
 
