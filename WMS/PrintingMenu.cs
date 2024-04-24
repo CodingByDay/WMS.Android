@@ -101,35 +101,23 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             switch (keyCode)
             {
                 // In smartphone
-                case Keycode.F2:
-
-              
-                        Button1_Click(this, null);
-
-                    
+                case Keycode.F2:              
+                        Button1_Click(this, null);                    
                     break;
                 // Return true;
 
                 case Keycode.F3:
-
-
-                    Button_Click(this, null);
-                    
-
+                    Button_Click(this, null);          
                     break;
 
 
                 case Keycode.F4:
-
-                    Button1_Click(this, null);
-               
+                    Button1_Click(this, null);              
                     break;
 
             
                 case Keycode.F8:
-
                     Button6_Click(this, null);
-
                     break;
 
                     // return true;
@@ -138,16 +126,8 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
         }
         private void Button6_Click(object sender, EventArgs e)
         {
-            if (result == true)
-            {
-                StartActivity(typeof(MainMenuTablet));
-                HelpfulMethods.clearTheStack(this);
-            }
-            else
-            {
-                StartActivity(typeof(MainMenu));
-                HelpfulMethods.clearTheStack(this);
-            }
+            StartActivity(typeof(MainMenu));
+            HelpfulMethods.clearTheStack(this);      
         }
 
 
@@ -155,29 +135,14 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
 
         private void Button_Click(object sender, EventArgs e)
         {
-            if (result == true)
-            {
-                StartActivity(typeof(PrintingSSCCCodesTablet));
-                HelpfulMethods.clearTheStack(this);
-            } else
-            {
-                StartActivity(typeof(PrintingSSCCCodes));
-                HelpfulMethods.clearTheStack(this);
-            }
+            StartActivity(typeof(PrintingSSCCCodes));
+            HelpfulMethods.clearTheStack(this);       
         }
 
         private void Button1_Click(object sender, EventArgs e)
         {
-            if (result == true)
-            {
-
-                StartActivity(typeof(PrintingReprintLabelsTablet));
-                HelpfulMethods.clearTheStack(this);
-            } else
-            {
-                StartActivity(typeof(PrintingReprintLabels));
-                HelpfulMethods.clearTheStack(this);
-            }
+            StartActivity(typeof(PrintingReprintLabels));
+            HelpfulMethods.clearTheStack(this);
         }
     }
 }

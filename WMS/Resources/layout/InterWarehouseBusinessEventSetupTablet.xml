@@ -22,7 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/test"
-        android:layout_toRightOf="@id/app"
+        android:layout_toRightOf="@id/fling"
         android:layout_below="@id/text"
 
         />
@@ -31,7 +31,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/test"
-        android:layout_toRightOf="@id/app"
+        android:layout_toRightOf="@id/fling"
         android:id="@+id/listView1"
 
         />
@@ -40,7 +40,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_toRightOf="@id/app"
+        android:layout_toRightOf="@id/fling"
         android:layout_marginTop="63dp"
         android:weightSum="6"
         android:id="@+id/text"
@@ -53,7 +53,7 @@
         app:layout_widthPercent="30%"
         android:layout_gravity="center"
         android:orientation="vertical"
-        android:id="@+id/app"
+        android:id="@id/fling"
         tools:context=".LinearLayout"
         android:foregroundGravity="center"
         android:layout_marginTop="70dp">

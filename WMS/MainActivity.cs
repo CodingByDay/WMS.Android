@@ -115,11 +115,10 @@ namespace WMS
                         Analytics.TrackEvent("Valid login");
                         if (Services.HasPermission("TNET_WMS", "R"))
                         {
-                            if (tablet == true)
-                            {
-                                StartActivity(typeof(MainMenu));
-                                HelpfulMethods.clearTheStack(this);
-                            }
+
+                            StartActivity(typeof(MainMenu));
+                            HelpfulMethods.clearTheStack(this);
+                            
                             Password.Text = "";
                             isValid = true;
                             this.Finish();

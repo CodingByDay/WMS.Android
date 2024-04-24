@@ -23,7 +23,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/test"
-        android:layout_toRightOf="@id/app"
+        android:layout_toRightOf="@id/fling"
         android:layout_below="@id/text"
         android:text=""
 
@@ -33,7 +33,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/test"
-        android:layout_toRightOf="@id/app"
+        android:layout_toRightOf="@id/fling"
         android:id="@+id/dataList"
         android:choiceMode="singleChoice"
         android:listSelector="@android:drawable/screen_background_dark_transparent"
@@ -46,7 +46,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_marginTop="60dp"
-        android:layout_toRightOf="@id/app"
+        android:layout_toRightOf="@id/fling"
         android:paddingLeft="10dp"
         android:weightSum="4"
         android:id="@+id/text"
@@ -107,7 +107,7 @@
         android:layout_gravity="center"
         android:orientation="vertical"
         android:layout_marginTop="70dp"
-        android:id="@+id/app"
+        android:id="@id/fling"
         tools:context=".LinearLayout"
         android:foregroundGravity="center">
         <TextView

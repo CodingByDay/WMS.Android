@@ -157,81 +157,50 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
         }
         private void Logout_Click(object sender, EventArgs e)
         {
-            if (result == true)
-            {
-                StartActivity(typeof(MainMenuTablet));
-                HelpfulMethods.clearTheStack(this);
-            }
-            else
-            {
+
                 StartActivity(typeof(MainMenu));
                 HelpfulMethods.clearTheStack(this);
-            }
+            
         }
 
         private void Button7_Click(object sender, EventArgs e)
         {
-            if (result == true)
-            {
-                StartActivity(typeof(InventoryPrintTablet));
-                HelpfulMethods.clearTheStack(this);
-            } else
-            {
+
                 StartActivity(typeof(InventoryPrint));
                 HelpfulMethods.clearTheStack(this);
-            }
+            
         }
 
         private void Button4_Click(object sender, EventArgs e)
         {
-            if (result == true)
-            {
-                StartActivity(typeof(InventoryOpenTablet));
-                HelpfulMethods.clearTheStack(this);
-            } else
-            {
+ 
                 StartActivity(typeof(InventoryOpen));
                 HelpfulMethods.clearTheStack(this);
-            }
+            
         }
 
         private void Button3_Click(object sender, EventArgs e)
         {
-            if (result)
-            {
-                StartActivity(typeof(InventoryConfirmTablet));
-                HelpfulMethods.clearTheStack(this);
-            } else
-            {
+   
                 StartActivity(typeof(InventoryConfirm));
                 HelpfulMethods.clearTheStack(this);
-            }
+            
         }
 
         private void Button2_Click(object sender, EventArgs e)
         {
-            if (result == true)
-            {
-                StartActivity(typeof(InventoryProcessTablet));
-                HelpfulMethods.clearTheStack(this);
-            } else
-            {
+
                 StartActivity(typeof(InventoryProcess));
                 HelpfulMethods.clearTheStack(this);
-            }
+            
         }
 
         private void Button1_Click(object sender, EventArgs e)
         {
-            if (result == true)
-            {
-                StartActivity(typeof(InventoryOpenDocumentTablet));
-                HelpfulMethods.clearTheStack(this);
-            } else
-            {
+      
                 StartActivity(typeof(InventoryOpenDocument));
                 HelpfulMethods.clearTheStack(this);
-            }
+            
         }
     }
 }
