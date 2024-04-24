@@ -1,4 +1,5 @@
 ﻿using Android.Content;
+using Android.Content.PM;
 using Android.Media;
 using Android.Text;
 using Android.Views;
@@ -49,7 +50,16 @@ namespace WMS
         {
             base.OnCreate(savedInstanceState);
             SetTheme(Resource.Style.AppTheme_NoActionBar);
-            SetContentView(Resource.Layout.ClientPicking);
+            if (settings.tablet)
+            {
+                RequestedOrientation = ScreenOrientation.Landscape;
+                SetContentView(Resource.Layout.ClientPickingTablet);
+            }
+            else
+            {
+                RequestedOrientation = ScreenOrientation.Portrait;
+                SetContentView(Resource.Layout.ClientPicking);
+            }
             AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
             var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
             _customToolbar.SetNavigationIcon(settings.RootURL + "/Services/Logo");

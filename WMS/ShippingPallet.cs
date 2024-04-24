@@ -16,7 +16,10 @@ using System.Text;
 using System.Threading.Tasks;
 using TrendNET.WMS.Device.Services;
 
-using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS
+using AndroidX.AppCompat.App;
+using AlertDialog = Android.App.AlertDialog;
+using Android.Content.PM;
+namespace WMS
 {
     [Activity(Label = "ShippingPallet", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
     public class ShippingPallet : CustomBaseActivity, IBarcodeResult
@@ -69,7 +72,16 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
         {
             base.OnCreate(savedInstanceState);
             SetTheme(Resource.Style.AppTheme_NoActionBar);
-            SetContentView(Resource.Layout.ShippingPallet);
+            if (settings.tablet)
+            {
+                RequestedOrientation = ScreenOrientation.Landscape;
+                SetContentView(Resource.Layout.ShippingPalletTablet);
+            }
+            else
+            {
+                RequestedOrientation = ScreenOrientation.Portrait;
+                SetContentView(Resource.Layout.ShippingPallet);
+            }
             AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
             var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
             _customToolbar.SetNavigationIcon(settings.RootURL + "/Services/Logo");

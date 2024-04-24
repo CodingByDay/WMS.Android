@@ -84,7 +84,16 @@ namespace WMS
             SetTheme(Resource.Style.AppTheme_NoActionBar);
             // Start the loader
             LoaderManifest.LoaderManifestLoopResources(this);
-            SetContentView(Resource.Layout.IssuedGoodsSerialOrSSCCEntry);
+            if (settings.tablet)
+            {
+                RequestedOrientation = ScreenOrientation.Landscape;
+                SetContentView(Resource.Layout.IssuedGoodsSerialOrSSCCEntryClientPickingTablet);
+            }
+            else
+            {
+                RequestedOrientation = ScreenOrientation.Portrait;
+                SetContentView(Resource.Layout.IssuedGoodsSerialOrSSCCEntryClientPicking);
+            }
             // Definitions
             AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
             var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);

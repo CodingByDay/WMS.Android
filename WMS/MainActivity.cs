@@ -117,11 +117,6 @@ namespace WMS
                         {
                             if (tablet == true)
                             {
-                                StartActivity(typeof(MainMenuTablet));
-                                HelpfulMethods.clearTheStack(this);
-                            }
-                            else
-                            {
                                 StartActivity(typeof(MainMenu));
                                 HelpfulMethods.clearTheStack(this);
                             }

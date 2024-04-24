@@ -12,7 +12,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS
+using AndroidX.AppCompat.App;
+using AlertDialog = Android.App.AlertDialog;
+using Android.Content.PM;
+namespace WMS
 {
     [Activity(Label = "MenuPallets")]
     public class MenuPallets : CustomBaseActivity
@@ -23,7 +26,16 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
         {
             base.OnCreate(savedInstanceState);
             SetTheme(Resource.Style.AppTheme_NoActionBar);
-            SetContentView(Resource.Layout.MenuPallets);
+            if (settings.tablet)
+            {
+                RequestedOrientation = ScreenOrientation.Landscape;
+                SetContentView(Resource.Layout.MenuPalletsTablet);
+            }
+            else
+            {
+                RequestedOrientation = ScreenOrientation.Portrait;
+                SetContentView(Resource.Layout.MenuPallets);
+            }
             AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
             var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
             _customToolbar.SetNavigationIcon(settings.RootURL + "/Services/Logo");

@@ -31,6 +31,7 @@ using static EventBluetooth;
 using Exception = System.Exception;
 
 using AndroidX.AppCompat.App;
+using Android.Content.PM;
 
 namespace WMS
 {
@@ -393,7 +394,16 @@ namespace WMS
             base.OnCreate(savedInstanceState);
             SetTheme(Resource.Style.AppTheme_NoActionBar);
             // Create your application here
-            SetContentView(Resource.Layout.IssuedGoodsIdentEntryWithTrail);
+            if (settings.tablet)
+            {
+                RequestedOrientation = ScreenOrientation.Landscape;
+                SetContentView(Resource.Layout.IssuedGoodsIdentEntryWithTrailTablet);
+            }
+            else
+            {
+                RequestedOrientation = ScreenOrientation.Portrait;
+                SetContentView(Resource.Layout.IssuedGoodsIdentEntryWithTrail);
+            }
             AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
             var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
             _customToolbar.SetNavigationIcon(settings.RootURL + "/Services/Logo");

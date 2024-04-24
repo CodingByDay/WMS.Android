@@ -18,7 +18,10 @@ using System.Text;
 using System.Threading.Tasks;
 using TrendNET.WMS.Device.Services;
 
-using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS
+using AndroidX.AppCompat.App;
+using AlertDialog = Android.App.AlertDialog;
+using Android.Content.PM;
+namespace WMS
 {
     [Activity(Label = "RecalculateInventory")]
     public class RecalculateInventory : CustomBaseActivity, IBarcodeResult
@@ -62,7 +65,16 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             base.OnCreate(savedInstanceState);
             SetTheme(Resource.Style.AppTheme_NoActionBar);
             // Create your application here
-            SetContentView(Resource.Layout.RecalculateInventory);
+            if (settings.tablet)
+            {
+                RequestedOrientation = ScreenOrientation.Landscape;
+                SetContentView(Resource.Layout.RecalculateInventoryTablet);
+            }
+            else
+            {
+                RequestedOrientation = ScreenOrientation.Portrait;
+                SetContentView(Resource.Layout.RecalculateInventory);
+            }
             AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
             var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
             _customToolbar.SetNavigationIcon(settings.RootURL + "/Services/Logo");
