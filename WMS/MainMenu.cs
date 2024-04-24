@@ -49,6 +49,10 @@ namespace WMS
         private Button btnOkRestart;
         private bool isActive = false;
         private bool login = false;
+        private Button? buttonRapidTakeover;
+        private ListView rapidListview;
+        private List<CleanupLocation> dataCleanup;
+        private CleanupAdapter cleanupAdapter;
 
         protected override async void OnCreate(Bundle savedInstanceState)
         {     
@@ -60,6 +64,14 @@ namespace WMS
             {
                 RequestedOrientation = ScreenOrientation.Landscape;
                 SetContentView(Resource.Layout.MainMenuTablet);
+
+                buttonRapidTakeover = FindViewById<Button>(Resource.Id.rapidTakeover);
+                buttonRapidTakeover.Click += ButtonRapidTakeover_Click;
+
+                rapidListview = FindViewById<ListView>(Resource.Id.rapidListview);
+                dataCleanup = await FillTheCleanupList();
+                cleanupAdapter = new CleanupAdapter(this, dataCleanup);
+                rapidListview.Adapter = cleanupAdapter;
             }
             else
             {
@@ -133,6 +145,52 @@ namespace WMS
             Base.Store.code2D = null;
 
         }
+
+
+        private async Task<List<CleanupLocation>> FillTheCleanupList()
+        {
+            var location = CommonData.GetSetting("DefaultProductionLocation");
+            List<CleanupLocation> data = new List<CleanupLocation>();
+            await Task.Run(async () =>
+            {
+
+                string error;
+                var stock = Services.GetObjectList("strl", out error, location);
+                if (stock == null)
+                {
+                    string WebError = string.Format($"{Resources.GetString(Resource.String.s216)}" + error);
+                    RunOnUiThread(() =>
+                    {
+                        Toast.MakeText(this, WebError, ToastLength.Long).Show();
+                    });
+
+
+                }
+                else
+                {
+                    stock.Items.ForEach(x =>
+                    {
+                        var ident = x.GetString("Ident");
+                        var location = x.GetString("Location");
+                        var SSCC = x.GetString("SSCC");
+                        var Name = x.GetString("Name");
+                        var Serial = x.GetString("SerialNo");
+                        data.Add(new CleanupLocation { Ident = x.GetString("Ident"), Location = x.GetString("Location"), SSCC = x.GetString("SSCC"), Name = x.GetString("IdentName"), Serial = x.GetString("SerialNo") });
+                    });
+                }
+
+
+
+            });
+            return data;
+        }
+
+
+        private void ButtonRapidTakeover_Click(object? sender, EventArgs e)
+        {
+            StartActivity(typeof(RapidTakeover));
+        }
+
         public string GetAppVersion()
         {
             return AppInfo.BuildString;
