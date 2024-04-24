@@ -25,6 +25,7 @@ using AndroidX.AppCompat.App;
 using AlertDialog = Android.App.AlertDialog;
 using Android.Graphics.Drawables;
 using Android.Graphics;
+using Android.Mtp;
 namespace WMS
 {
     [Activity(Label = "ProductionSerialOrSSCCEntry", ScreenOrientation = ScreenOrientation.Portrait)]
@@ -47,6 +48,8 @@ namespace WMS
         private Button button5;
         SoundPool soundPool;
         int soundPoolId;
+        private ListView listData;
+
         public override bool OnKeyDown(Keycode keyCode, KeyEvent e)
         {
             switch (keyCode)
@@ -120,12 +123,39 @@ namespace WMS
             soundPool.Play(soundPoolId, 1, 1, 0, 0, 1);
         }
 
+        private void fillItems()
+        {
+
+            string error;
+            var stock = Services.GetObjectList("str", out error, moveHead.GetString("Wharehouse") + "||" + identCode); /* Defined at the beggining of the activity. */
+            var number = stock.Items.Count();
+
+
+            if (stock != null)
+            {
+                stock.Items.ForEach(x =>
+                {
+                    data.Add(new ProductionSerialOrSSCCList
+                    {
+                        Ident = x.GetString("Ident"),
+                        Location = x.GetString("Location"),
+                        Qty = x.GetDouble("RealStock").ToString(CommonData.GetQtyPicture()),
+                        SerialNumber = x.GetString("SerialNo")
+
+                    });
+                });
+
+            }
+
+        }
 
         private static bool? getWorkOrderDefaultQty = null;
         private ProgressDialogClass progress;
         private Dialog popupDialogConfirm;
         private Button btnYesConfirm;
         private Button btnNoConfirm;
+        private List<ProductionSerialOrSSCCList> data = new List<ProductionSerialOrSSCCList>();
+        private string identCode;
 
         private void GetWorkOrderDefaultQty()
         {
@@ -418,9 +448,8 @@ namespace WMS
                 }
             }
             GetWorkOrderDefaultQty();
-            // ---
         } 
-    private bool CheckWorkOrderOpenQty()
+        private bool CheckWorkOrderOpenQty()
         {
             if (checkWorkOrderOpenQty == null)
             {       
@@ -469,6 +498,14 @@ namespace WMS
 
             }
         }
+
+        private void ListData_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
+        {
+            var selected = e.Position;
+            var item = data.ElementAt(selected);
+            tbLocation.Text = item.Location;
+
+        }
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -477,6 +514,10 @@ namespace WMS
             {
                 RequestedOrientation = ScreenOrientation.Landscape;
                 SetContentView(Resource.Layout.ProductionSerialOrSSCCEntryTablet);
+                listData = FindViewById<ListView>(Resource.Id.listData);
+                ProductionSerialOrSSCCAdapter adapter = new ProductionSerialOrSSCCAdapter(this, data);
+                listData.Adapter = adapter;
+                listData.ItemClick += ListData_ItemClick;
             }
             else
             {
@@ -488,8 +529,6 @@ namespace WMS
             _customToolbar.SetNavigationIcon(settings.RootURL + "/Services/Logo");
             SetSupportActionBar(_customToolbar._toolbar);
             SupportActionBar.SetDisplayShowTitleEnabled(false);
-
-
             tbIdent = FindViewById<EditText>(Resource.Id.tbIdent);
             tbSSCC = FindViewById<EditText>(Resource.Id.tbSSCC);
             tbSerialNum = FindViewById<EditText>(Resource.Id.tbSerialNum);
@@ -506,7 +545,6 @@ namespace WMS
             tbSerialNum.InputType = Android.Text.InputTypes.ClassNumber;
             tbLocation.InputType = Android.Text.InputTypes.ClassNumber;
             tbUnits.InputType = Android.Text.InputTypes.ClassNumber;
-
             soundPool = new SoundPool(10, Stream.Music, 0);
             soundPoolId = soundPool.Load(this, Resource.Raw.beep, 1);
             color();
@@ -536,6 +574,7 @@ namespace WMS
 
             }
             var ident = CommonData.LoadIdent(openWorkOrder.GetString("Ident"));
+            identCode = ident.GetString("Code");
             tbIdent.Text = ident.GetString("Code") + " " + ident.GetString("Name");
             tbSSCC.Enabled = ident.GetBool("isSSCC");
             tbSerialNum.Enabled = ident.GetBool("HasSerialNumber");
@@ -583,36 +622,29 @@ namespace WMS
                 }
 
             }
-
-
-
             if (string.IsNullOrEmpty(tbUnits.Text.Trim())) { tbUnits.Text = "1"; }
 
             if (CommonData.GetSetting("ShowNumberOfUnitsField") == "1")
             {
                 tbUnits.Visibility = ViewStates.Visible;
             }
-
-
-
             if (tbSSCC.Enabled && (CommonData.GetSetting("AutoCreateSSCCProduction") == "1"))
-
             {
 
                 tbSSCC.Text = CommonData.GetNextSSCC();
                 tbPacking.RequestFocus();
 
             }
-
             ProcessSerialNum();
-
-
             if(String.IsNullOrEmpty(tbUnits.Text)) { tbUnits.Text = "1"; }
-
             var _broadcastReceiver = new NetworkStatusBroadcastReceiver();
             _broadcastReceiver.ConnectionStatusChanged += OnNetworkStatusChanged;
             Application.Context.RegisterReceiver(_broadcastReceiver,
             new IntentFilter(ConnectivityManager.ConnectivityAction));
+            if (settings.tablet)
+            {
+                fillItems();
+            }
         }
         public bool IsOnline()
         {

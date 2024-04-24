@@ -56,12 +56,6 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
 
         }
 
-
-
-  
-
-
-
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -70,6 +64,8 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             {
                 RequestedOrientation = ScreenOrientation.Landscape;
                 SetContentView(Resource.Layout.PackagingSetContextTablet);
+
+
             }
             else
             {

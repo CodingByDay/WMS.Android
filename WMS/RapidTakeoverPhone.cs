@@ -42,6 +42,8 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
         private int tempLocation;
         SoundPool soundPool;
         int soundPoolId;
+        private List<TakeOverSerialOrSSCCEntryList> dataX = new List<TakeOverSerialOrSSCCEntryList>();
+
         public void GetBarcode(string barcode)
         {
             if(tbSSCC.HasFocus)
@@ -85,7 +87,38 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
         {
             soundPool.Play(soundPoolId, 1, 1, 0, 0, 1);
         }
+        private void ListData_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
+        {
+            selected = e.Position;
+            var item = dataX.ElementAt(selected);
+            tbLocation.Text = item.Location;
+        }
 
+        private void fillItems()
+        {
+
+            string error;
+            var stock = Services.GetObjectList("str", out error, data.ElementAt(tempLocation).ID + "||" + tbIdent.Text); /* Defined at the beggining of the activity. */
+            var number = stock.Items.Count();
+
+
+            if (stock != null)
+            {
+                stock.Items.ForEach(x =>
+                {
+                    dataX.Add(new TakeOverSerialOrSSCCEntryList // Reusing this type
+                    {
+                        Ident = x.GetString("Ident"),
+                        Location = x.GetString("Location"),
+                        Qty = x.GetDouble("RealStock").ToString(),
+                        SerialNumber = x.GetString("SerialNo")
+
+                    });
+                });
+
+            }
+
+        }
         protected override void OnCreate(Bundle savedInstanceState)
         {
 
@@ -95,6 +128,11 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             {
                 RequestedOrientation = ScreenOrientation.Landscape;
                 SetContentView(Resource.Layout.RapidTakeover);
+                listData = FindViewById<ListView>(Resource.Id.listData);
+                TakeOverSerialOrSSCCEntryAdapter adapter = new TakeOverSerialOrSSCCEntryAdapter(this, dataX);
+                listData.Adapter = adapter;
+                listData.ItemClick += ListData_ItemClick;
+
             }
             else
             {
@@ -288,6 +326,8 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
 
         private void ProcessSSCC()
         {
+            dataX.Clear();
+
             var sscc = tbSSCC.Text.Trim();
             if (string.IsNullOrEmpty(sscc)) { return; }
 
@@ -310,6 +350,8 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                     tbReceiveLocation.Text = dataItem.GetString("Location");
                     tbRealStock.Text = dataItem.GetDouble("RealStock").ToString();
                     colorLocation();
+                    fillItems();
+
                 }
 
             }

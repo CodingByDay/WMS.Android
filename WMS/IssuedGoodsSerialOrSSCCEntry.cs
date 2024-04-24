@@ -107,6 +107,8 @@ namespace WMS
         private List<IssuedGoods> data = new List<IssuedGoods>();
         private double serialOverflowQuantity = 0;
         private bool isProccessOrderless = false;
+        private ListView listData;
+        private List<LocationClass> items = new List<LocationClass>();
 
         public static List<IssuedGoods> FilterIssuedGoods(List<IssuedGoods> issuedGoodsList, string acSSCC = null, string acSerialNo = null, string acLocation = null)
         {
@@ -270,6 +272,9 @@ namespace WMS
             {
                 RequestedOrientation = ScreenOrientation.Landscape;
                 SetContentView(Resource.Layout.IssuedGoodsSerialOrSSCCEntryTablet);
+                listData = FindViewById<ListView>(Resource.Id.listData);
+                AdapterLocation adapter = new AdapterLocation(this, items);
+                listData.Adapter = adapter;
             }
             else
             {

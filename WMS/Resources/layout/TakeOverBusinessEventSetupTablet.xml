@@ -52,7 +52,7 @@
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
             android:layout_marginRight="28.0dp"
-            android:id="@+id/ident"
+      
             android:layout_width="match_parent" />
 
         <TextView
@@ -64,7 +64,7 @@
             android:paddingTop="5dp"
             android:layout_width="match_parent"
             android:layout_marginRight="28.0dp"
-            android:id="@+id/name" />
+           />
 
         <TextView
             android:textSize="18dp"
@@ -75,7 +75,7 @@
             android:paddingTop="5dp"
             android:layout_width="match_parent"
             android:layout_marginRight="28.0dp"
-            android:id="@+id/quantity" />
+         />
         <TextView
             android:textSize="18dp"
             android:textStyle="bold"
@@ -85,7 +85,7 @@
             android:paddingTop="5dp"
             android:layout_width="match_parent"
             android:layout_marginRight="28.0dp"
-            android:id="@+id/position" />
+            />
 
         <TextView
             android:layout_weight="1"
@@ -96,7 +96,7 @@
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
             android:layout_marginRight="28.0dp"
-            android:id="@+id/serial" />
+        />
 
     </LinearLayout>
     <LinearLayout
