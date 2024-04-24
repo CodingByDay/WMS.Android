@@ -46,18 +46,22 @@ namespace WMS.App
                 Ident.Text = sList[position].Ident;
                 Ident.SetTextColor(Android.Graphics.Color.Black);
 
-                TextView Name = row.FindViewById<TextView>(Resource.Id.Name);
-                Name.Text = sList[position].Name;
-                Name.SetTextColor(Android.Graphics.Color.Black);
-                TextView Open = row.FindViewById<TextView>(Resource.Id.Open);
-                Open.Text = sList[position].Open;
-                Open.SetTextColor(Android.Graphics.Color.Black);
-                TextView Ordered = row.FindViewById<TextView>(Resource.Id.Ordered);
-                Ordered.Text = sList[position].Ordered;
-                Ordered.SetTextColor(Android.Graphics.Color.Black);
-                TextView Received = row.FindViewById<TextView>(Resource.Id.Received);
-                Received.Text = sList[position].Received;
-                Received.SetTextColor(Android.Graphics.Color.Black);
+                TextView Order = row.FindViewById<TextView>(Resource.Id.Order);
+                Order.Text = sList[position].Order;
+                Order.SetTextColor(Android.Graphics.Color.Black);
+
+                TextView Position = row.FindViewById<TextView>(Resource.Id.Position);
+                Position.Text = sList[position].Position.ToString();
+                Position.SetTextColor(Android.Graphics.Color.Black);
+
+                TextView Subject = row.FindViewById<TextView>(Resource.Id.Subject);
+                Subject.Text = sList[position].Subject;
+                Subject.SetTextColor(Android.Graphics.Color.Black);
+
+                TextView Quantity = row.FindViewById<TextView>(Resource.Id.Quantity);
+                Quantity.Text = sList[position].Quantity.ToString();
+                Quantity.SetTextColor(Android.Graphics.Color.Black);
+
             }
             catch (Exception ex)
             {

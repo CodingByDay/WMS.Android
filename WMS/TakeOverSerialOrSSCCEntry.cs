@@ -29,6 +29,7 @@ using Android.Graphics;
 using Newtonsoft.Json;
 using System;
 using Java.IO;
+using WMS.External;
 namespace WMS
 {
     [Activity(Label = "TakeOverSerialOrSSCCEntry", ScreenOrientation = ScreenOrientation.Portrait)]
@@ -68,8 +69,11 @@ namespace WMS
         private Button? btnNoConfirm;
         private ProgressDialogClass progress;
         private ListView listData;
-        private List<TakeoverDocument> items;
+        private List<TakeoverDocument> items = new List<TakeoverDocument>();
         private List<TakeOverSerialOrSSCCEntryList> data = new List<TakeOverSerialOrSSCCEntryList>();
+        private NameValueObjectList positions;
+        private string tempUnit;
+        private List<TakeoverDocument> dataDocuments = new List<TakeoverDocument>();
 
         protected async override void OnCreate(Bundle savedInstanceState)
         {
@@ -79,17 +83,16 @@ namespace WMS
             {
                 RequestedOrientation = ScreenOrientation.Landscape;
                 SetContentView(Resource.Layout.TakeOverSerialOrSSCCEntryTablet);
-
                 listData = FindViewById<ListView>(Resource.Id.listData);
                 TakeoverDocumentAdapter adapter = new TakeoverDocumentAdapter(this, items);
-                fillItems();
+
+                
             }
             else
             {
                 RequestedOrientation = ScreenOrientation.Portrait;
                 SetContentView(Resource.Layout.TakeOverSerialOrSSCCEntry);
             }
-            // Definitions
             AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
             var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
             _customToolbar.SetNavigationIcon(settings.RootURL + "/Services/Logo");
@@ -137,40 +140,90 @@ namespace WMS
 
             // Main logic for the entry
             SetUpForm();
+
+
+            if(settings.tablet)
+            {
+                FillTheList();
+            }
         }
 
-        private void fillItems()
+        private void fillListAdapter()
         {
 
-            string error;
-            var stock = Services.GetObjectList("str", out error, moveHead.GetString("Wharehouse") + "||" + openIdent.GetString("Code")); 
-            var number = stock.Items.Count();
-
-
-            if (stock != null)
+            for (int i = 0; i < positions.Items.Count; i++)
             {
-                stock.Items.ForEach(x =>
+                if (i < positions.Items.Count && positions.Items.Count > 0)
                 {
-                    data.Add(new TakeOverSerialOrSSCCEntryList
-                    {
-                        Ident = x.GetString("Ident"),
-                        Location = x.GetString("Location"),
-                        Qty = x.GetDouble("RealStock").ToString(),
-                        SerialNumber = x.GetString("SerialNo")
+                    var item = positions.Items.ElementAt(i);
+                    var created = item.GetDateTime("DateInserted");
+                    var numbering = i + 1;
+                    bool setting;
 
+                    if (CommonData.GetSetting("ShowNumberOfUnitsField") == "1")
+                    {
+                        setting = false;
+                    }
+                    else
+                    {
+                        setting = true;
+                    }
+                    if (setting)
+                    {
+                        tempUnit = item.GetDouble("Qty").ToString();
+
+                    }
+                    else
+                    {
+                        tempUnit = item.GetDouble("Factor").ToString();
+                    }
+                    string error;
+                    var ident = item.GetString("Ident").Trim();
+                    var openIdent = Services.GetObject("id", ident, out error);
+                    //  var ident = CommonData.LoadIdent(item.GetString("Ident"));
+                    var identName = openIdent.GetString("Name");
+                    var date = created == null ? "" : ((DateTime)created).ToString("dd.MM.yyyy");
+                    dataDocuments.Add(new TakeoverDocument
+                    {
+                        ident = item.GetString("Ident"),
+                        serial = item.GetString("SerialNo"),
+                        sscc = item.GetString("SSCC"),
+                        location = item.GetString("Location"),
+                        quantity = tempUnit,
                     });
-                });
+
+                }
+                else
+                {
+                    string errorWebApp = string.Format($"{Resources.GetString(Resource.String.s247)}");
+                    Toast.MakeText(this, errorWebApp, ToastLength.Long).Show();
+                }
 
             }
-
-            TakeOverSerialOrSSCCEntryAdapter adapter = new TakeOverSerialOrSSCCEntryAdapter(this, data);
-
-            listData.Adapter = null;
-            listData.Adapter = adapter;
-
-
+            TakeoverDocumentAdapter adapter = new TakeoverDocumentAdapter(this, dataDocuments);
+            listData.Adapter = null; listData.Adapter = adapter; ;
         }
+        private async void FillTheList()
+        {
+            try
+            {
 
+                positions = await AsyncServices.AsyncServices.GetObjectListAsync("mi",  moveHead.GetInt("HeadID").ToString());
+                InUseObjects.Set("TakeOverEnteredPositions", positions);
+                    
+                if (positions == null)
+                {
+                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s213)}" , ToastLength.Long).Show();
+
+                    return;
+                }
+                
+            }
+            finally
+            {
+                fillListAdapter();
+            }
+        }
 
 
         private void SetUpProcessDependentButtons()

@@ -46,7 +46,6 @@
             android:paddingTop="5dp"
             android:text="@string/s47"
             android:layout_marginRight="28.0dp"
-            android:id="@+id/ident"
             android:layout_width="match_parent" />
 
         <TextView
@@ -56,10 +55,10 @@
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
-            android:text="@string/s35"
+            android:text="@string/s36"
             android:layout_width="match_parent"
             android:layout_marginRight="28.0dp"
-            android:id="@+id/name" />
+         />
 
         <TextView
             android:textSize="18dp"
@@ -69,9 +68,9 @@
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
-            android:text="@string/s177"
+            android:text="@string/s106"
             android:layout_marginRight="28.0dp"
-            android:id="@+id/ordered" />
+            />
 
         <TextView
             android:textSize="18dp"
@@ -81,9 +80,9 @@
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
-            android:text="@string/s143"
+            android:text="@string/s33"
             android:layout_marginRight="28.0dp"
-            android:id="@+id/received" />
+             />
 
         <TextView
             android:textSize="18dp"
@@ -93,9 +92,9 @@
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
-            android:text="@string/s181"
+            android:text="@string/s103"
             android:layout_marginRight="28.0dp"
-            android:id="@+id/open" />
+             />
 
     </LinearLayout>
     <LinearLayout

@@ -59,6 +59,7 @@ namespace WMS
         private CustomAutoCompleteAdapter<string> tbIdentAdapter;
         private List<OpenOrder> orders = new List<OpenOrder>();
         private ListView listData;
+        private TakeOverIdentAdapter adapter;
         private List<TakeOverIdentList> data = new List<TakeOverIdentList>();
 
         protected async override void OnCreate(Bundle savedInstanceState)
@@ -70,7 +71,7 @@ namespace WMS
                 RequestedOrientation = ScreenOrientation.Landscape;
                 SetContentView(Resource.Layout.TakeOverIdentEntryTablet);
                 listData = FindViewById<ListView>(Resource.Id.listData);
-                TakeOverIdentAdapter adapter = new TakeOverIdentAdapter(this, data);
+                adapter = new TakeOverIdentAdapter(this, data);
                 listData.Adapter = adapter;
                 listData.ItemClick += ListData_ItemClick;
 
@@ -140,8 +141,23 @@ namespace WMS
 
         private void fillList(string ident)
         {
+            if(orders!=null)
+            {
+                orders.ForEach(x =>
+                {
+                    data.Add(new TakeOverIdentList
+                    {
+                        Ident = x.Ident,
+                        Subject = x.Client,
+                        Order = x.Order,
+                        Position = x.Position,
+                        Quantity = x.Quantity
 
-                 
+                    });
+                });
+
+                adapter.NotifyDataSetChanged();
+            }                
         }
         private void Select(int postionOfTheItemInTheList)
         {
@@ -260,11 +276,20 @@ namespace WMS
         private void BtNext_Click(object sender, EventArgs e)
         {
             displayedOrder++;
+
             if (displayedOrder >= orders.Count)
             {
                 displayedOrder = 0;
             }
+
             FillDisplayedOrderInfo();
+
+            // Change the highlight position.
+            listData.RequestFocusFromTouch();
+            listData.SetItemChecked(displayedOrder, true);
+            listData.SetSelection(displayedOrder);
+
+
         }
 
     
@@ -457,6 +482,7 @@ namespace WMS
                     }
                 }
                 FillDisplayedOrderInfo();
+                fillList(ident);
                 tbIdent.SetSelection(0, tbIdent.Text.Length);
             }
             catch (Exception err)

@@ -53,6 +53,8 @@ namespace WMS.App
                 TextView Location = row.FindViewById<TextView>(Resource.Id.Location);
                 Location.Text = sList[position].Location;
                 Location.SetTextColor(Android.Graphics.Color.Black);
+
+
                 TextView Qty = row.FindViewById<TextView>(Resource.Id.Qty);
                 Qty.Text = sList[position].Qty;
                 Qty.SetTextColor(Android.Graphics.Color.Black);

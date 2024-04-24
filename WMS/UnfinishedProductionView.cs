@@ -407,7 +407,11 @@ namespace WMS
                     {
                         positions = null;
                         await LoadPositions();
-
+                        if (settings.tablet)
+                        {
+                            data.Clear();
+                            FillItemsList();
+                        }
                         popupDialog.Dismiss();
                         popupDialog.Hide();
                     }
