@@ -100,7 +100,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             Android.Resource.Layout.SimpleSpinnerItem, objectWarehouse);
             adapterWarehouse.SetDropDownViewResource(Android.Resource.Layout.SimpleSpinnerItem);
             cbWarehouse.Adapter = adapterWarehouse;
-            UpdateForm();       
+            await UpdateForm();       
             adapterDocType = new CustomAutoCompleteAdapter<ComboBoxItem>(this,
             Android.Resource.Layout.SimpleSpinnerItem, objectDocType);
             adapterDocType.SetDropDownViewResource(Android.Resource.Layout.SimpleSpinnerItem);
@@ -331,7 +331,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
 
     
 
-        private async void UpdateForm()
+        private async Task UpdateForm()
         {
             objectExtra.Clear();
             docTypes = CommonData.ListDocTypes("P|N");
