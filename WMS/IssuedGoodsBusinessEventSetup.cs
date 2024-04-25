@@ -50,7 +50,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
         private Button hidden;
         private TextView focus;
         private NameValueObjectList positions = null;
-        private Button btnHidden;
+
         private bool initialLoad;
 
      
@@ -82,12 +82,10 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             btnOrderMode = FindViewById<Button>(Resource.Id.btnOrderMode);
             btnOrder = FindViewById<Button>(Resource.Id.btnOrder);
             btnLogout = FindViewById<Button>(Resource.Id.btnLogout);
-            btnHidden = FindViewById<Button>(Resource.Id.btnHidden);
             btnOrder.Click += BtnOrder_Click;
             btnOrderMode.Click += BtnOrderMode_Click;
             btnLogout.Click += BtnLogout_Click;
             hidden = FindViewById<Button>(Resource.Id.hidden);
-            hidden.Click += Hidden_Click;
             focus = FindViewById<TextView>(Resource.Id.focus);
             var warehouses = CommonData.ListWarehouses();
             warehouses.Items.ForEach(wh =>
@@ -101,7 +99,6 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             string dw = CommonData.GetSetting("DefaultWarehouse");
             cbWarehouse.SetText(dw, false);
             UpdateForm();
-            btnHidden.Click += BtnHidden_Click;
             adapterDocType = new CustomAutoCompleteAdapter<ComboBoxItem>(this,
             Android.Resource.Layout.SimpleSpinnerItem, objectDocType);
             adapterDocType.SetDropDownViewResource(Android.Resource.Layout.SimpleSpinnerItem);
@@ -234,10 +231,6 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
 
         }
 
-        private void BtnHidden_Click(object sender, EventArgs e)
-        {
-      
-        }
 
         private void Hidden_Click(object sender, EventArgs e)
         {

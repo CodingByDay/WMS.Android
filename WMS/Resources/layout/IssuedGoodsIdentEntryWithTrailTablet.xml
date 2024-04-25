@@ -100,7 +100,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
-            android:text="@string/s120"
+            android:text="@string/s49"
             android:layout_marginRight="28.0dp"
             android:id="@+id/serial" />
 
@@ -117,6 +117,7 @@
             android:id="@+id/sscc" />
 
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -128,225 +129,205 @@
         tools:context=".LinearLayout"
         android:foregroundGravity="center">
 
-      
-        <LinearLayout
-            android:layout_width="fill_parent"
+      <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        android:paddingTop="0dp">
+
+        <TextView
+            android:singleLine="true"
+            android:textStyle="bold"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingTop="5dp">
+            android:paddingLeft="4dp"
+            android:paddingTop="5dp"
+            android:text="@string/s38"
+         />
 
-            <TextView
-                android:textStyle="bold"
-                android:textSize="18dp"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:paddingLeft="10dp"
-                android:paddingTop="5dp"
-                android:text="@string/s38"
-           />
-
-            <EditText
-                android:textStyle="bold"
-                android:singleLine="true"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.50"
-                android:paddingTop="5dp"
-                android:background="@drawable/editText_bg_grey"
-                android:layout_marginRight="2dp"
-                android:textSize="18dp"
-                android:id="@+id/tbOrder" />
-
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingTop="5dp">
-
-            <TextView
-                android:textStyle="bold"
-                android:textSize="18dp"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:paddingLeft="10dp"
-                android:paddingTop="5dp"
-                android:text="@string/s101"
-            />
-
-            <EditText
-                android:textStyle="bold"
-                android:singleLine="true"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.50"
-                android:paddingTop="5dp"
-                android:background="@drawable/editText_bg_grey"
-                android:layout_marginRight="2dp"
-                android:textSize="18dp"
-                android:id="@+id/tbReceiver" />
-
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingTop="5dp">
-
-            <TextView
-                android:textStyle="bold"
-                android:textSize="18dp"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:paddingLeft="10dp"
-                android:paddingTop="5dp"
-                android:text="@string/s47"
-            />
-
-            <EditText
-                android:textStyle="bold"
-                android:singleLine="true"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.50"
-                android:paddingTop="5dp"
-                android:background="@drawable/editText_bg_grey"
-                android:layout_marginRight="2dp"
-                android:textSize="18dp"
-                android:id="@+id/tbIdentFilter" />
-
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingTop="5dp">
-
-            <TextView
-                android:textStyle="bold"
-                android:textSize="18dp"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:paddingLeft="10dp"
-                android:paddingTop="5dp"
-                android:text="@string/s50"
- />
-
-            <EditText
-                android:textStyle="bold"
-                android:singleLine="true"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.50"
-                android:paddingTop="5dp"
-                android:background="@drawable/editText_bg_grey"
-                android:layout_marginRight="2dp"
-                android:textSize="18dp"
-                android:id="@+id/tbLocationFilter" />
-
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingTop="5dp">
-
-            <TextView
-                android:textStyle="bold"
-                android:textSize="18dp"
-                android:layout_weight="25"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="10dp"
-                android:paddingTop="5dp"
-                android:text="@string/s47"
-                android:layout_marginRight="28.0dp"
-                android:id="@+id/Ident" />
-
-            <TextView
-                android:textStyle="bold"
-                android:textSize="18dp"
-                android:layout_weight="25"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="10dp"
-                android:paddingTop="5dp"
-                android:text="@string/s50"
-                android:layout_marginRight="28.0dp"
-                android:id="@+id/Location" />
-
-            <TextView
-                android:layout_weight="25"
-                android:textSize="18dp"
-                android:textStyle="bold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="10dp"
-                android:paddingTop="5dp"
-                android:text="@string/s40"
-                android:layout_marginRight="28.0dp"
-                android:id="@+id/Qty" />
-
-            <TextView
-                android:textStyle="bold"
-                android:textSize="18dp"
-                android:layout_weight="25"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="10dp"
-                android:paddingTop="5dp"
-                android:text="@string/s35"
-                android:layout_marginRight="28.0dp"
-                android:id="@+id/Name" />
-
-        </LinearLayout>
-        <HorizontalScrollView
+        <EditText
+            android:textStyle="bold"
+            android:singleLine="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-         >
-            <LinearLayout
-                xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:weightSum="100">
-                <ListView
-                    android:background="?android:attr/activatedBackgroundIndicator"
-                    android:minWidth="25dp"
-                    android:minHeight="25dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/ivTrail"
-                    android:layout_weight="45"
-                    android:choiceMode="singleChoice"
-                    android:isScrollContainer="true"
-                    android:scrollbarSize="100dp"
-                    android:drawSelectorOnTop="true"
-                    android:divider="@android:color/black"
-                    android:dividerHeight="1dp"
-                    android:defaultFocusHighlightEnabled="true"
-                    android:scrollbars="horizontal|vertical"
-                    android:layout_marginRight="0.0dp"
-                    android:listSelector="@android:drawable/screen_background_dark_transparent"
-        />
-            </LinearLayout>
-        </HorizontalScrollView>
+            android:layout_weight="0.50"
+            android:paddingTop="5dp"
+            android:background="@drawable/editText_bg_grey"
+            android:layout_marginRight="2dp"
+            android:id="@+id/tbOrder" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="5dp">
+
         <TextView
-            android:layout_height="0dip"
-            android:layout_width="fill_parent"
-            android:layout_weight="1" />
+            android:singleLine="true"
+            android:textStyle="bold"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:paddingLeft="4dp"
+            android:paddingTop="5dp"
+            android:text="@string/s101"
+           />
+
+        <EditText
+            android:textStyle="bold"
+            android:singleLine="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.50"
+            android:paddingTop="5dp"
+            android:background="@drawable/editText_bg_grey"
+            android:layout_marginRight="2dp"
+            android:id="@+id/tbReceiver" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="5dp">
+
+        <TextView
+            android:textStyle="bold"
+            android:singleLine="true"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:paddingLeft="4dp"
+            android:paddingTop="5dp"
+            android:text="@string/s34"
+             />
+
+        <EditText
+            android:textStyle="bold"
+            android:singleLine="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.50"
+            android:paddingTop="5dp"
+            android:background="@drawable/editText_bg_grey"
+            android:layout_marginRight="2dp"
+            android:id="@+id/tbIdentFilter" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="5dp">
+
+        <TextView
+            android:textStyle="bold"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:paddingLeft="4dp"
+            android:paddingTop="5dp"
+            android:text="@string/s50"
+          />
+
+        <EditText
+            android:textStyle="bold"
+            android:singleLine="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.50"
+            android:paddingTop="5dp"
+            android:background="@drawable/editText_bg_grey"
+            android:layout_marginRight="2dp"
+            android:id="@+id/tbLocationFilter" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="5dp">
+
+        <TextView
+            android:textStyle="bold"
+            android:layout_weight="25"
+            android:layout_width="match_parent"
+            android:textSize="12dp"
+            android:maxLength="5"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:text="@string/s47"
+            android:layout_marginRight="28.0dp"
+            android:id="@+id/Ident" />
+
+        <TextView
+            android:maxLength="5"
+            android:textStyle="bold"
+            android:layout_weight="25"
+            android:layout_width="match_parent"
+            android:textSize="12dp"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:text="@string/s102"
+            android:layout_marginRight="28.0dp"
+            android:id="@+id/Location" />
+
+        <TextView                     
+            android:maxLength="5"
+            android:textStyle="bold"
+            android:layout_weight="25"
+            android:layout_width="match_parent"
+            android:textSize="12dp"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:text="@string/s103"
+            android:layout_marginRight="28.0dp"
+            android:id="@+id/Qty" />
+
+        <TextView
+            android:maxLength="5"
+            android:textStyle="bold"
+            android:layout_weight="25"
+            android:textSize="12dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:text="@string/s35"
+            android:layout_marginRight="28.0dp"
+            android:id="@+id/Name" />
+
+    </LinearLayout>
+
+    <ListView
+        android:background="?android:attr/activatedBackgroundIndicator"
+        android:choiceMode="singleChoice"
+        android:layout_width="match_parent"
+        android:id="@+id/ivTrail"
+        android:layout_height="0dip"
+        android:layout_weight="1"
+        android:listSelector="@android:drawable/screen_background_dark_transparent"
+        />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:weightSum="2"
+        android:paddingTop="5dp">
+
         <LinearLayout
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="horizontal"
+            android:layout_weight="1"
             android:weightSum="2"
-            android:layout_marginLeft="2dp"
-            android:paddingTop="5dp">
+            android:paddingTop="5dp"
+            android:layout_marginBottom="0dp">
 
             <Button
-                android:text="@string/s107"
-                android:drawableLeft="@drawable/confirmation_white"
                 android:layout_weight="1"
                 android:textSize="20dp"
                 android:paddingLeft="10dp"
@@ -354,13 +335,13 @@
                 android:layout_height="match_parent"
                 android:background="@color/rikoMain"
                 android:textColor="@color/white"
-                android:layout_marginLeft="2dp"
+                android:layout_marginLeft="4dp"
                 android:layout_marginRight="2dp"
+                android:text="@string/s76"
+                android:drawableLeft="@drawable/confirmation_white"
                 android:id="@+id/btConfirm" />
 
             <Button
-                android:text="@string/s121"
-                android:drawableLeft="@drawable/focus_white"
                 android:layout_weight="1"
                 android:textSize="20dp"
                 android:paddingLeft="10dp"
@@ -369,25 +350,54 @@
                 android:background="@color/rikoMain"
                 android:textColor="@color/white"
                 android:layout_marginLeft="2dp"
-                android:layout_marginRight="2dp"
+                android:layout_marginRight="4dp"
+                android:text="@string/s43"
+                android:drawableLeft="@drawable/focus_white"
                 android:id="@+id/btDisplayPositions" />
 
         </LinearLayout>
-        <Button
-            android:textSize="20dp"
-            android:paddingLeft="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="55dp"
-            android:background="@color/rikoMain"
-            android:textColor="@color/white"
-            android:layout_marginLeft="4dp"
-            android:layout_marginTop="4dp"
-            android:layout_marginBottom="4dp"
-            android:layout_marginRight="2dp"
-            android:text="@string/s110"
-            android:drawableLeft="@drawable/logout_white"
-            android:id="@+id/btLogout"
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_weight="1"
+            android:weightSum="2"
+            android:paddingTop="5dp"
+            android:layout_marginBottom="4dp">
+            <Button
+                android:layout_weight="1"
+                android:background="@color/rikoMain"
+                android:textColor="@color/white"
+                android:text="@string/s105"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textSize="20dp"
+                android:drawableLeft="@drawable/left_white"
+                android:paddingLeft="10dp"
+                android:layout_marginBottom="4dp"
+                android:id="@+id/btBack"
+                android:layout_marginLeft="4dp"
+                android:layout_marginRight="2dp"
+                android:layout_marginTop="0.0dp" />
+            <Button
+                android:layout_weight="1"
+                android:textSize="20dp"
+                android:paddingLeft="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/rikoMain"
+                android:textColor="@color/white"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="4dp"
+                android:text="@string/s77"
+                android:layout_marginBottom="4dp"
+                android:drawableLeft="@drawable/logout_white"
+                android:id="@+id/btLogout"
             />
+
+          </LinearLayout>
+        </LinearLayout>
 
     </LinearLayout>
 

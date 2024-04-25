@@ -2,8 +2,9 @@
 using WMS.AsyncServices;
 
 public static class Queries
-{ // This static class should be used for specific interaction with the API through query style new implementation //
+{ // This static class should be used for specific interaction with the API with the query style of implementation //
 #nullable enable
+
 
     public static async Task<AutocompleteResponse> DefaultIssueWarehouse(string docType)
     {

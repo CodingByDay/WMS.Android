@@ -22,14 +22,12 @@ using Microsoft.SqlServer.Server;
 using Newtonsoft.Json;
 using WMS.App;
 using AlertDialog = Android.App.AlertDialog;
-
 using TrendNET.WMS.Core.Data;
 using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
 using static BluetoothService;
 using static EventBluetooth;
 using Exception = System.Exception;
-
 using AndroidX.AppCompat.App;
 using Android.Content.PM;
 
@@ -416,8 +414,12 @@ namespace WMS
             ivTrail = FindViewById<ListView>(Resource.Id.ivTrail);
             btConfirm = FindViewById<Button>(Resource.Id.btConfirm);
             btDisplayPositions = FindViewById<Button>(Resource.Id.btDisplayPositions);
+
+
             btBack = FindViewById<Button>(Resource.Id.btBack);
             btBack.Click += BtBack_Click;
+
+
             btLogout = FindViewById<Button>(Resource.Id.btLogout);
             soundPool = new SoundPool(10, Stream.Music, 0);
             soundPoolId = soundPool.Load(this, Resource.Raw.beep, 1);

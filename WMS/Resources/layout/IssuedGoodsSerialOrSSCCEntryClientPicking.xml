@@ -168,63 +168,9 @@
         android:layout_width="fill_parent"
         android:layout_weight="1" />
 
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingTop="5dp">
+  
 
-        <TextView
-            android:textStyle="bold"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:paddingLeft="4dp"
-            android:paddingTop="5dp"
-            android:text="@string/s51"
-            android:id="@+id/lbUnits" />
 
-        <EditText
-            android:textStyle="bold"
-            android:singleLine="true"
-            android:enabled="false"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.50"
-            android:paddingTop="5dp"
-            android:background="@drawable/editText_bg_grey"
-            android:layout_marginRight="2dp"
-            android:id="@+id/tbUnits" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:visibility="gone"
-        android:paddingTop="5dp">
-
-        <TextView
-            android:textStyle="bold"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:paddingLeft="4dp"
-            android:paddingTop="5dp"
-            android:text="@string/s142"
-            android:id="@+id/lbPalette" />
-
-        <EditText
-            android:textStyle="bold"
-            android:singleLine="true"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.50"
-            android:paddingTop="5dp"
-            android:background="@drawable/editText_bg_grey"
-            android:layout_marginRight="2dp"
-            android:id="@+id/tbPalette" />
-
-    </LinearLayout>
 
    
     <LinearLayout

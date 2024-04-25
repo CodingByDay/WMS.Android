@@ -83,10 +83,7 @@ namespace WMS
             {
                 RequestedOrientation = ScreenOrientation.Landscape;
                 SetContentView(Resource.Layout.TakeOverSerialOrSSCCEntryTablet);
-                listData = FindViewById<ListView>(Resource.Id.listData);
-                TakeoverDocumentAdapter adapter = new TakeoverDocumentAdapter(this, items);
-
-                
+                listData = FindViewById<ListView>(Resource.Id.listData);               
             }
             else
             {
@@ -201,7 +198,8 @@ namespace WMS
 
             }
             TakeoverDocumentAdapter adapter = new TakeoverDocumentAdapter(this, dataDocuments);
-            listData.Adapter = null; listData.Adapter = adapter; ;
+            listData.Adapter = null;
+            listData.Adapter = adapter; ;
         }
         private async void FillTheList()
         {

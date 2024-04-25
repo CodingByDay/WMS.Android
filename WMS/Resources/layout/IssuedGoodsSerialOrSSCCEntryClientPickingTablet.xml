@@ -38,8 +38,7 @@
         />
 
  
-
-    <LinearLayout
+<LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -58,10 +57,33 @@
             android:paddingTop="5dp"
             android:layout_marginRight="28.0dp"
             android:layout_width="match_parent"
-            android:text="@string/s47" />
+            android:text="@string/s47" 
+            />
+        <TextView
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:layout_marginRight="28.0dp"
+            android:layout_width="match_parent"
+            android:text="@string/s49" 
+            />
+        <TextView
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:layout_marginRight="28.0dp"
+            android:layout_width="match_parent"
+            android:text="@string/s192" 
+            />
 
         <TextView
-            android:text="@string/s79"
+            android:text="@string/s40"
             android:textSize="18dp"
             android:textStyle="bold"
             android:layout_weight="1"
@@ -69,29 +91,8 @@
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
             android:layout_width="match_parent"
-            android:layout_marginRight="28.0dp" />
-
-        <TextView
-            android:text="@string/s80"
-            android:textSize="18dp"
-            android:textStyle="bold"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:paddingLeft="10dp"
-            android:paddingTop="5dp"
-            android:layout_width="match_parent"
-            android:layout_marginRight="28.0dp" />
-
-        <TextView
-            android:text="@string/s103"
-            android:textSize="18dp"
-            android:textStyle="bold"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:paddingLeft="10dp"
-            android:paddingTop="5dp"
-            android:layout_width="match_parent"
-            android:layout_marginRight="28.0dp" />
+            android:layout_marginRight="28.0dp"
+            />
 
         <TextView
             android:text="@string/s50"
@@ -102,7 +103,8 @@
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
             android:layout_width="match_parent"
-            android:layout_marginRight="28.0dp" />
+            android:layout_marginRight="28.0dp"
+            />
 
     </LinearLayout>
     <LinearLayout
@@ -271,63 +273,8 @@
         android:layout_width="fill_parent"
         android:layout_weight="1" />
 
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingTop="5dp">
+   
 
-        <TextView
-            android:textStyle="bold"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:paddingLeft="4dp"
-            android:paddingTop="5dp"
-            android:text="@string/s51"
-            android:id="@+id/lbUnits" />
-
-        <EditText
-            android:textStyle="bold"
-            android:singleLine="true"
-            android:enabled="false"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.50"
-            android:paddingTop="5dp"
-            android:background="@drawable/editText_bg_grey"
-            android:layout_marginRight="2dp"
-            android:id="@+id/tbUnits" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:visibility="gone"
-        android:paddingTop="5dp">
-
-        <TextView
-            android:textStyle="bold"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:paddingLeft="4dp"
-            android:paddingTop="5dp"
-            android:text="@string/s142"
-            android:id="@+id/lbPalette" />
-
-        <EditText
-            android:textStyle="bold"
-            android:singleLine="true"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.50"
-            android:paddingTop="5dp"
-            android:background="@drawable/editText_bg_grey"
-            android:layout_marginRight="2dp"
-            android:id="@+id/tbPalette" />
-
-    </LinearLayout>
 
    
     <LinearLayout

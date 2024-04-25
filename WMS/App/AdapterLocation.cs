@@ -45,12 +45,23 @@ namespace WMS.App
                 TextView Ident = row.FindViewById<TextView>(Resource.Id.ident);
                 Ident.Text = sList[position].ident;
                 Ident.SetTextColor(Android.Graphics.Color.Black);
+
                 TextView Qty = row.FindViewById<TextView>(Resource.Id.quantity);
                 Qty.Text = sList[position].quantity;
                 Qty.SetTextColor(Android.Graphics.Color.Black);
+
                 TextView Location = row.FindViewById<TextView>(Resource.Id.location);
                 Location.Text = sList[position].location;
                 Location.SetTextColor(Android.Graphics.Color.Black);
+
+                TextView Serial = row.FindViewById<TextView>(Resource.Id.serial);
+                Serial.Text = sList[position].serial;
+                Serial.SetTextColor(Android.Graphics.Color.Black);
+
+
+                TextView SSCC = row.FindViewById<TextView>(Resource.Id.sscc);
+                SSCC.Text = sList[position].sscc;
+                SSCC.SetTextColor(Android.Graphics.Color.Black);
             }
             catch (Exception ex)
             {

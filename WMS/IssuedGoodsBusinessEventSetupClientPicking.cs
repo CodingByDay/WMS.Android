@@ -123,7 +123,6 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             cbDocType.SelectAtPosition(0);
             cbExtra.SelectAtPosition(0);
 
-            // [Continue]
             var dws = await Queries.DefaultIssueWarehouse(adapterDocType.GetItem(0).ID);
 
             temporaryPositionWarehouse = cbWarehouse.SetItemByString(dws.warehouse);

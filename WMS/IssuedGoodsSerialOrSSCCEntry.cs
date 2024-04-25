@@ -109,6 +109,7 @@ namespace WMS
         private bool isProccessOrderless = false;
         private ListView listData;
         private List<LocationClass> items = new List<LocationClass>();
+        private AdapterLocation lcAdapter;
 
         public static List<IssuedGoods> FilterIssuedGoods(List<IssuedGoods> issuedGoodsList, string acSSCC = null, string acSerialNo = null, string acLocation = null)
         {
@@ -273,8 +274,7 @@ namespace WMS
                 RequestedOrientation = ScreenOrientation.Landscape;
                 SetContentView(Resource.Layout.IssuedGoodsSerialOrSSCCEntryTablet);
                 listData = FindViewById<ListView>(Resource.Id.listData);
-                AdapterLocation adapter = new AdapterLocation(this, items);
-                listData.Adapter = adapter;
+
             }
             else
             {
@@ -338,9 +338,21 @@ namespace WMS
 
             // Main logic for the entry
             SetUpForm();
+
+            if (settings.tablet)
+            {
+                fillItems();
+            }
         }
 
-
+        private async void fillItems()
+        {
+            var code = openIdent.GetString("Code");
+            var wh = moveHead.GetString("Wharehouse");
+            items = await AdapterStore.getStockForWarehouseAndIdent(code, wh);
+            lcAdapter = new AdapterLocation(this, items);
+            listData.Adapter = lcAdapter;
+        }
 
 
         private void SetUpProcessDependentButtons()

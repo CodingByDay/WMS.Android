@@ -44,8 +44,7 @@ namespace WMS
         private EditText tbSerialNum;
         private EditText tbLocation;
         private EditText tbPacking;
-        private EditText tbUnits;
-        private EditText tbPalette;
+
         private NameValueObject openIdent = (NameValueObject)InUseObjects.Get("OpenIdent");
         private NameValueObject openOrder = (NameValueObject)InUseObjects.Get("OpenOrder");
         private ApiResultSet OpenOrderItem = (ApiResultSet)InUseObjects.Get("OpenOrderItem");
@@ -60,10 +59,42 @@ namespace WMS
         private Button btOverview;
         private Button btExit;
 
+        private static bool? checkIssuedOpenQty = null;
+        private ProgressDialogClass progress;
+        private Dialog popupDialogMain;
+        private Button btConfirm;
+        private EditText tbSSCCpopup;
+        private ListView lvCardMore;
+        private MorePalletsAdapter adapter;
+        private Dialog popupDialog;
+        private Button btnYes;
+        private Button btnNo;
+        private bool isFirst;
+        private bool isMorePalletsMode = false;
+        private bool isBatch;
+        private int check;
+        private bool isOkayToCallBarcode;
+        private MorePalletsAdapter adapterNew;
+        private NameValueObject moveItemNew;
+        private Dialog popupDialogConfirm;
+        private Button btnYesConfirm;
+        private Button btnNoConfirm;
+        private CustomAutoCompleteAdapter<string> DataAdapter;
+        private string qtyStock;
+        private MorePallets existsDuplicate;
+        private string error;
+        private string query;
+        private ApiResultSet result;
+        private NameValueObject dataObject;
+        private string ident;
+        private string sscc;
+        private string warehouse;
+        private Dialog popupDialogMainIssueing;
+        private List<IssuedGoods> dist;
+        private List<LocationClass> items = new List<LocationClass>();
         private TextView lbQty;
         private bool isPackaging = false;
-        private TextView lbUnits;
-        private TextView lbPalette;
+
         private SoundPool soundPool;
         private int soundPoolId;
         private bool isOpened = false;
@@ -76,8 +107,7 @@ namespace WMS
         private bool createPositionAllowed = false;
         private double stock;
         private ListView listData;
-
-
+        private AdapterLocation lcAdapter;
 
         protected override async void OnCreate(Bundle savedInstanceState)
         {
@@ -90,6 +120,7 @@ namespace WMS
                 RequestedOrientation = ScreenOrientation.Landscape;
                 SetContentView(Resource.Layout.IssuedGoodsSerialOrSSCCEntryClientPickingTablet);
                 listData = FindViewById<ListView>(Resource.Id.listData);
+            
             }
             else
             {
@@ -108,16 +139,10 @@ namespace WMS
             tbSerialNum = FindViewById<EditText>(Resource.Id.tbSerialNum);
             tbLocation = FindViewById<EditText>(Resource.Id.tbLocation);
             tbPacking = FindViewById<EditText>(Resource.Id.tbPacking);
-            tbUnits = FindViewById<EditText>(Resource.Id.tbUnits);
-            tbPalette = FindViewById<EditText>(Resource.Id.tbPalette);
             tbIdent.InputType = Android.Text.InputTypes.ClassNumber;
             tbSSCC.InputType = Android.Text.InputTypes.ClassNumber;
             tbLocation.InputType = Android.Text.InputTypes.ClassText;
-            tbUnits.InputType = Android.Text.InputTypes.ClassNumber;
-            tbPalette.InputType = Android.Text.InputTypes.ClassNumber;
             lbQty = FindViewById<TextView>(Resource.Id.lbQty);
-            lbUnits = FindViewById<TextView>(Resource.Id.lbUnits);
-            lbPalette = FindViewById<TextView>(Resource.Id.lbPalette);
             soundPool = new SoundPool(10, Stream.Music, 0);
             soundPoolId = soundPool.Load(this, Resource.Raw.beep, 1);
             Barcode2D barcode2D = new Barcode2D();
@@ -163,9 +188,13 @@ namespace WMS
             }
         }
 
-        private void fillItems()
+        private async void fillItems()
         {
-          // [Continue] // 
+            var code = openIdent.GetString("Code");
+            var wh = moveHead.GetString("Wharehouse");
+            items = await AdapterStore.getStockForWarehouseAndIdent(code, wh);
+            lcAdapter = new AdapterLocation(this, items);
+            listData.Adapter = lcAdapter;
         }
 
         private void BtOverview_Click(object? sender, EventArgs e)
@@ -214,11 +243,6 @@ namespace WMS
                 Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
             }
         }
-
-
-
-
-
 
         private async void BtCreateSame_Click(object? sender, EventArgs e)
         {
@@ -324,11 +348,11 @@ namespace WMS
                     moveItem.SetString("SSCC", tbSSCC.Text.Trim());
                     moveItem.SetString("SerialNo", tbSerialNum.Text.Trim());
                     moveItem.SetDouble("Packing", Convert.ToDouble(tbPacking.Text.Trim()));
-                    moveItem.SetDouble("Factor", Convert.ToDouble(tbUnits.Text.Trim()));
-                    moveItem.SetDouble("Qty", Convert.ToDouble(tbUnits.Text.Trim()) * Convert.ToDouble(tbPacking.Text.Trim()));
+                    moveItem.SetDouble("Factor", 1);
+                    moveItem.SetDouble("Qty", Convert.ToDouble(tbPacking.Text.Trim()));
                     moveItem.SetInt("Clerk", Services.UserID());
                     moveItem.SetString("Location", tbLocation.Text.Trim());
-                    moveItem.SetString("Palette", tbPalette.Text.Trim());
+                    moveItem.SetString("Palette", "1");
 
                     string error;
                     moveItem = Services.SetObject("mi", moveItem, out error);
@@ -383,11 +407,11 @@ namespace WMS
                     moveItem.SetString("SSCC", tbSSCC.Text.Trim());
                     moveItem.SetString("SerialNo", tbSerialNum.Text.Trim());
                     moveItem.SetDouble("Packing", Convert.ToDouble(tbPacking.Text.Trim()));
-                    moveItem.SetDouble("Factor", Convert.ToDouble(tbUnits.Text.Trim()));
-                    moveItem.SetDouble("Qty", Convert.ToDouble(tbUnits.Text.Trim()) * Convert.ToDouble(tbPacking.Text.Trim()));
+                    moveItem.SetDouble("Factor", 1);
+                    moveItem.SetDouble("Qty", Convert.ToDouble(tbPacking.Text.Trim()));
                     moveItem.SetInt("Clerk", Services.UserID());
                     moveItem.SetString("Location", tbLocation.Text.Trim());
-                    moveItem.SetString("Palette", tbPalette.Text.Trim());
+                    moveItem.SetString("Palette", "1");
 
                     string error;
                     moveItem = Services.SetObject("mi", moveItem, out error);
@@ -534,20 +558,11 @@ namespace WMS
 
 
 
-        private bool update = false;
 
         private void SetUpForm()
         {
 
-            string? isUpdate = Intent.Extras.GetString("update");
 
-            if (isUpdate != null)
-            {
-                if (isUpdate == "1")
-                {
-                    update = true;
-                }
-            }
             // This is the default focus of the view.
             tbSSCC.RequestFocus();
 
@@ -563,16 +578,14 @@ namespace WMS
                 tbPacking.RequestFocus();
             }
 
-            if (update && moveItem != null)
+            if (Base.Store.isUpdate && moveItem != null)
             {
                 // Update logic ?? it seems to be true.
                 tbIdent.Text = moveItem.GetString("IdentName");
                 tbSerialNum.Text = moveItem.GetString("SerialNo");
                 tbSSCC.Text = moveItem.GetString("SSCC");
                 tbLocation.Text = moveItem.GetString("Location");
-                tbPalette.Text = moveItem.GetString("Palette");
                 tbPacking.Text = moveItem.GetDouble("Packing").ToString();
-                tbUnits.Text = moveItem.GetDouble("Factor").ToString();
                 btCreateSame.Text = $"{Resources.GetString(Resource.String.s293)}";
             }
             else
@@ -600,19 +613,10 @@ namespace WMS
                 ssccRow.Visibility = ViewStates.Gone;
                 serialRow.Visibility = ViewStates.Gone;
             }
-            if (CommonData.GetSetting("ShowPaletteField") == "1")
-            {
-                lbPalette.Visibility = ViewStates.Visible;
-                tbPalette.Visibility = ViewStates.Visible;
-            }
-            if (string.IsNullOrEmpty(tbUnits.Text.Trim())) { tbUnits.Text = "1"; }
-            if (CommonData.GetSetting("ShowNumberOfUnitsField") == "1")
-            {
-                lbUnits.Visibility = ViewStates.Visible;
-                tbUnits.Visibility = ViewStates.Visible;
-            }
 
-            // Test this function based on the proccess
+   
+
+
         }
 
 
@@ -693,38 +697,6 @@ namespace WMS
         }
 
 
-        private static bool? checkIssuedOpenQty = null;
-        private ProgressDialogClass progress;
-        private Dialog popupDialogMain;
-        private Button btConfirm;
-        private EditText tbSSCCpopup;
-        private ListView lvCardMore;
-        private MorePalletsAdapter adapter;
-        private Dialog popupDialog;
-        private Button btnYes;
-        private Button btnNo;
-        private bool isFirst;
-        private bool isMorePalletsMode = false;
-        private bool isBatch;
-        private int check;
-        private bool isOkayToCallBarcode;
-        private MorePalletsAdapter adapterNew;
-        private NameValueObject moveItemNew;
-        private Dialog popupDialogConfirm;
-        private Button btnYesConfirm;
-        private Button btnNoConfirm;
-        private CustomAutoCompleteAdapter<string> DataAdapter;
-        private string qtyStock;
-        private MorePallets existsDuplicate;
-        private string error;
-        private string query;
-        private ApiResultSet result;
-        private NameValueObject dataObject;
-        private string ident;
-        private string sscc;
-        private string warehouse;
-        private Dialog popupDialogMainIssueing;
-        private List<IssuedGoods> dist;
 
         private void ColorFields()
         {
