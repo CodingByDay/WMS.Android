@@ -260,13 +260,14 @@
                 android:paddingTop="5dp"
                 android:text="@string/s82"
                 android:layout_marginRight="0dp" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="0dp"
                 android:orientation="horizontal"
                 android:background="@drawable/edittext_bg_aqua"
-        >
+            >
 
                 <EditText
                     android:textStyle="bold"
@@ -360,6 +361,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:id="@+id/imagePNG" />
+
         </LinearLayout>
         <TextView
             android:layout_height="0dip"

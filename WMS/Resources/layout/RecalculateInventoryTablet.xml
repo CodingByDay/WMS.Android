@@ -4,7 +4,6 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
     <include
         android:id="@+id/toolbar"
         layout="@layout/toolbar" />
@@ -26,36 +25,26 @@
 
         <TextView
             android:textStyle="bold"
-            android:layout_width="66.5dp"
-            android:layout_height="wrap_content"
-            android:paddingLeft="10dp"
-            android:paddingTop="5dp"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:gravity="bottom"
+            android:paddingLeft="4dp"
+            android:paddingTop="4dp"
             android:text="@string/s47"
             android:layout_marginRight="28.5dp" />
-        <LinearLayout
+
+        <CustomAutoCompleteTextView
+            android:textStyle="bold"
+            android:singleLine="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="0dp"
-            android:background="@drawable/edittext_bg_aqua"
-            android:orientation="horizontal"
-        >
-            <EditText
-                android:textStyle="bold"
-                android:singleLine="true"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.50"
-                android:paddingTop="5dp"
-                android:background="@drawable/editText_bg_grey"
-                android:layout_marginRight="2dp"
-                android:textSize="18dp"
-                android:id="@+id/ident" />
-            <Spinner
-                android:layout_width="50dp"
-                android:layout_height="wrap_content"
-                android:id="@+id/spinnerIdent"
-                android:spinnerMode="dialog" />
-        </LinearLayout>
+            android:layout_weight="0.50"
+            android:maxLength="30"
+            android:paddingTop="5dp"
+            android:background="@drawable/editText_bg_grey"
+            android:layout_marginRight="2dp"
+            android:id="@+id/ident" />
+
     </LinearLayout>
 
     <TextView
@@ -66,20 +55,30 @@
         android:paddingTop="5dp"
         android:text=""
         android:layout_marginRight="28.5dp" />
-
-    <Button
-        android:text="Izračunaj"
-        android:drawableLeft="@drawable/confirmation_white"
-        android:layout_gravity="center_horizontal"
-        android:textSize="20dp"
-        android:paddingLeft="10dp"
-        android:layout_width="300dp"
-        android:layout_height="50dp"
-        android:background="@color/rikoMain"
-        android:textColor="@color/white"
-        android:layout_marginLeft="2dp"
-        android:layout_marginRight="2dp"
-        android:id="@+id/btCalculate"
+    <TextView
+        android:layout_height="0dip"
+        android:layout_width="fill_parent"
+        android:layout_weight="1" />
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:weightSum="1"
+        android:paddingTop="5dp"
+        android:layout_marginBottom="4dp">
+        <Button
+            android:layout_weight="1"
+            android:textSize="20dp"
+            android:paddingLeft="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/rikoMain"
+            android:textColor="@color/white"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
+            android:text="@string/s183"
+            android:drawableLeft="@drawable/confirmation_white"
+            android:id="@+id/btCalculate"
              />
-
+    </LinearLayout>
 </LinearLayout>

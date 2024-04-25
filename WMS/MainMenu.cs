@@ -137,7 +137,6 @@ namespace WMS
 
             Analytics.TrackEvent($"Login from the id-{settings.ID}, url-{settings.RootURL}, version-0.{GetAppVersion()}");
 
-
             // Reseting the global update variable.
             Base.Store.isUpdate = false;
             Base.Store.OpenOrder = null;
@@ -235,9 +234,9 @@ namespace WMS
         }
     
         protected override void OnResume()
-        {
-      
+        {     
             var restartNeeded = settings.restart;
+
             if (restartNeeded)
             {
                 popupDialog = new Dialog(this);
@@ -253,6 +252,7 @@ namespace WMS
                 btnOkRestart.Click += BtnOkRestart_Click;
 
             }
+
             base.OnResume();
         }
 
@@ -260,11 +260,7 @@ namespace WMS
         {
             System.Diagnostics.Process.GetCurrentProcess().Kill();      
         }
-
-     
-
-
-
+    
         private void BtRecalculate_Click(object sender, EventArgs e)
         {
 
@@ -288,10 +284,7 @@ namespace WMS
 
         private void PalletsMenu_Click(object sender, EventArgs e)
         {
-
-           StartActivity(typeof(MenuPallets));
-              
-            
+           StartActivity(typeof(MenuPallets));                     
         }
 
  
@@ -309,6 +302,7 @@ namespace WMS
 
                     }
                     break;
+
                 // Return true;
 
                 case Keycode.F2:

@@ -26,6 +26,7 @@ using AlertDialog = Android.App.AlertDialog;
 using Android.Graphics.Drawables;
 using Android.Graphics;
 using Android.Mtp;
+using Com.Jsibbold.Zoomage;
 namespace WMS
 {
     [Activity(Label = "ProductionSerialOrSSCCEntry", ScreenOrientation = ScreenOrientation.Portrait)]
@@ -49,6 +50,7 @@ namespace WMS
         SoundPool soundPool;
         int soundPoolId;
         private ListView listData;
+        private ImageView imagePNG;
 
         public override bool OnKeyDown(Keycode keyCode, KeyEvent e)
         {
@@ -156,6 +158,8 @@ namespace WMS
         private Button btnNoConfirm;
         private List<ProductionSerialOrSSCCList> data = new List<ProductionSerialOrSSCCList>();
         private string identCode;
+        private Dialog popupDialog;
+        private ZoomageView? image;
 
         private void GetWorkOrderDefaultQty()
         {
@@ -518,6 +522,8 @@ namespace WMS
                 ProductionSerialOrSSCCAdapter adapter = new ProductionSerialOrSSCCAdapter(this, data);
                 listData.Adapter = adapter;
                 listData.ItemClick += ListData_ItemClick;
+                imagePNG = FindViewById<ImageView>(Resource.Id.imagePNG);
+
             }
             else
             {
@@ -556,7 +562,6 @@ namespace WMS
             tbSSCC.FocusChange += TbSSCC_FocusChange;
             Barcode2D barcode2D = new Barcode2D();
             barcode2D.open(this, this);
-
             try
             {
                 string SuccessMessage = string.Format("Preverjam povezovani DN");
@@ -573,6 +578,8 @@ namespace WMS
             }
 
             var ident = CommonData.LoadIdent(openWorkOrder.GetString("Ident"));
+
+            showPictureIdent(ident.GetString("Code"));
             identCode = ident.GetString("Code");
             tbIdent.Text = ident.GetString("Code") + " " + ident.GetString("Name");
             tbSSCC.Enabled = ident.GetBool("isSSCC");
@@ -650,6 +657,44 @@ namespace WMS
             var cm = (ConnectivityManager)GetSystemService(ConnectivityService);
             return cm.ActiveNetworkInfo == null ? false : cm.ActiveNetworkInfo.IsConnected;
 
+        }
+
+        private void showPictureIdent(string ident)
+        {
+            try
+            {
+                Android.Graphics.Bitmap show = Services.GetImageFromServerIdent(moveHead.GetString("Wharehouse"), ident);
+                var debug = moveHead.GetString("Wharehouse");
+                Drawable d = new BitmapDrawable(Resources, show);
+
+                imagePNG.SetImageDrawable(d);
+                imagePNG.Visibility = ViewStates.Visible;
+
+
+                imagePNG.Click += (e, ev) => { ImageClick(d); };
+
+            }
+            catch (Exception error)
+            {
+                return;
+            }
+
+        }
+
+
+        private void ImageClick(Drawable d)
+        {
+            popupDialog = new Dialog(this);
+            popupDialog.SetContentView(Resource.Layout.WarehousePicture);
+            popupDialog.Window.SetSoftInputMode(SoftInput.AdjustResize);
+            popupDialog.Show();
+            popupDialog.Window.SetLayout(LayoutParams.MatchParent, LayoutParams.WrapContent);
+            popupDialog.Window.SetBackgroundDrawableResource(Android.Resource.Color.HoloBlueBright);
+            image = popupDialog.FindViewById<ZoomageView>(Resource.Id.image);
+            image.SetMinimumHeight(500);
+            image.SetMinimumWidth(800);
+            image.SetImageDrawable(d);
+            
         }
 
         private void OnNetworkStatusChanged(object sender, EventArgs e)

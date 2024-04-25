@@ -35,6 +35,7 @@ using AlertDialog = Android.App.AlertDialog;
 using Aspose.Words.Drawing;
 using Android.Graphics.Drawables;
 using Android.Renderscripts;
+using Com.Jsibbold.Zoomage;
 
 namespace WMS
 {
@@ -108,8 +109,10 @@ namespace WMS
         private double serialOverflowQuantity = 0;
         private bool isProccessOrderless = false;
         private ListView listData;
+        private ZoomageView? imagePNG;
         private List<LocationClass> items = new List<LocationClass>();
         private AdapterLocation lcAdapter;
+        private ZoomageView? image;
 
         public static List<IssuedGoods> FilterIssuedGoods(List<IssuedGoods> issuedGoodsList, string acSSCC = null, string acSerialNo = null, string acLocation = null)
         {
@@ -274,6 +277,8 @@ namespace WMS
                 RequestedOrientation = ScreenOrientation.Landscape;
                 SetContentView(Resource.Layout.IssuedGoodsSerialOrSSCCEntryTablet);
                 listData = FindViewById<ListView>(Resource.Id.listData);
+                imagePNG = FindViewById<ZoomageView>(Resource.Id.imagePNG);
+                imagePNG.Visibility = ViewStates.Invisible;
 
             }
             else
@@ -344,6 +349,48 @@ namespace WMS
                 fillItems();
             }
         }
+
+
+
+        private void showPictureIdent(string ident)
+        {
+            try
+            {
+                Android.Graphics.Bitmap show = Services.GetImageFromServerIdent(moveHead.GetString("Wharehouse"), ident);
+                var debug = moveHead.GetString("Wharehouse");
+                Drawable d = new BitmapDrawable(Resources, show);
+                imagePNG.SetImageDrawable(d);
+                imagePNG.Visibility = ViewStates.Visible;
+                imagePNG.Click += (e, ev) => { ImageClick(d); };
+
+            }
+            catch (Exception error)
+            {
+                return;
+            }
+
+        }
+
+   
+
+
+        private void ImageClick(Drawable d)
+        {
+            popupDialog = new Dialog(this);
+            popupDialog.SetContentView(Resource.Layout.WarehousePicture);
+            popupDialog.Window.SetSoftInputMode(SoftInput.AdjustResize);
+            popupDialog.Show();
+
+            popupDialog.Window.SetLayout(LayoutParams.MatchParent, LayoutParams.WrapContent);
+            popupDialog.Window.SetBackgroundDrawableResource(Android.Resource.Color.HoloBlueBright);
+            image = popupDialog.FindViewById<ZoomageView>(Resource.Id.image);
+            image.SetMinimumHeight(500);
+            image.SetMinimumWidth(800);
+            image.SetImageDrawable(d);
+            // Access Popup layout fields like below
+
+        }
+
 
         private async void fillItems()
         {
@@ -978,6 +1025,11 @@ namespace WMS
 
         private void SetUpForm()
         {
+
+            if(settings.tablet)
+            {
+                showPictureIdent(openIdent.GetString("Code"));
+            }
             // This is the default focus of the view.
             tbSSCC.RequestFocus();
 

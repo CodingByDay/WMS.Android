@@ -156,12 +156,13 @@ namespace WMS
         {
             base.OnCreate(savedInstanceState);
             SetTheme(Resource.Style.AppTheme_NoActionBar);
+
             // Create your application here.
             if (settings.tablet)
             {
                 RequestedOrientation = ScreenOrientation.Landscape;
                 SetContentView(Resource.Layout.CheckStockTablet);
-
+                listData = FindViewById<ListView>(Resource.Id.listData);
                 CheckStockAddonAdapter adapter = new CheckStockAddonAdapter(this, data);
                 listData.Adapter = adapter;
             }
@@ -170,6 +171,7 @@ namespace WMS
                 RequestedOrientation = ScreenOrientation.Portrait;
                 SetContentView(Resource.Layout.CheckStock);
             }
+
             AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
             var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
             _customToolbar.SetNavigationIcon(settings.RootURL + "/Services/Logo");
