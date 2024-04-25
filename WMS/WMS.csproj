@@ -25,6 +25,9 @@
     <AndroidEnableMultiDex>False</AndroidEnableMultiDex>
   </PropertyGroup>
   <ItemGroup>
+    <AndroidResource Remove="Resources\layout\ClientPickingAdapterView.xml" />
+  </ItemGroup>
+  <ItemGroup>
     <None Remove="Resources\anim\fade_in.xml" />
     <None Remove="Resources\anim\fade_out.xml" />
     <None Remove="Resources\drawable\check_mark.png" />
@@ -40,6 +43,7 @@
     <None Remove="Resources\layout\Choice.xml" />
     <None Remove="Resources\layout\CleanupView.xml" />
     <None Remove="Resources\layout\ClientPicking.xml" />
+    <None Remove="Resources\layout\ClientPickingAdapterView.xml" />
     <None Remove="Resources\layout\ClientPickingRow.xml" />
     <None Remove="Resources\layout\ClientPickingTablet.xml" />
     <None Remove="Resources\layout\Confirmation.xml" />

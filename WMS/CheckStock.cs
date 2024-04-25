@@ -38,6 +38,8 @@ namespace WMS
         private bool initial = true;
         private List<string> savedIdents;
         private CustomAutoCompleteAdapter<string> tbIdentAdapter;
+        private ListView listData;
+        private List<CheckStockAddonList> data = new List<CheckStockAddonList>();
 
         public void GetBarcode(string barcode)
         {
@@ -159,6 +161,9 @@ namespace WMS
             {
                 RequestedOrientation = ScreenOrientation.Landscape;
                 SetContentView(Resource.Layout.CheckStockTablet);
+
+                CheckStockAddonAdapter adapter = new CheckStockAddonAdapter(this, data);
+                listData.Adapter = adapter;
             }
             else
             {
@@ -182,6 +187,7 @@ namespace WMS
             lbStock = FindViewById<TextView>(Resource.Id.lbStock);
 
             color();
+
             soundPool = new SoundPool(10, Stream.Music, 0);
             soundPoolId = soundPool.Load(this, Resource.Raw.beep, 1);
             Barcode2D barcode2D = new Barcode2D();
@@ -329,7 +335,27 @@ namespace WMS
 
         private void BtShowStock_Click(object sender, System.EventArgs e)
         {
+            data.Clear();
             ProcessStock();
+            fillItemsOfList();
+
+        }
+
+        private void fillItemsOfList()
+        {
+            var wh = spinnerAdapterList.ElementAt(temporaryPositionWarehouse);
+            string error;
+            var stock = Services.GetObjectList("str", out error, wh.ID + "||" + tbIdent.Text);
+            // return string.Join("\r\n", stock.Items.Select(x => "L:" + x.GetString("Location") + " = " + x.GetDouble("RealStock").ToString(CommonData.GetQtyPicture())).ToArray());
+            stock.Items.ForEach(x =>
+            {
+                data.Add(new CheckStockAddonList
+                {
+                    Ident = x.GetString("Ident"),
+                    Location = x.GetString("Location"),
+                    Quantity = x.GetDouble("RealStock").ToString(CommonData.GetQtyPicture())
+                });
+            });
         }
 
         private async Task GetLocationsForGivenWarehouse(string warehouse)

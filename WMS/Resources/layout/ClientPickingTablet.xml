@@ -26,7 +26,7 @@
         android:id="@+id/test"
         android:layout_toRightOf="@id/fling"
         android:layout_below="@id/text"
-        />
+    />
 
     <ListView
         android:layout_width="match_parent"
@@ -38,54 +38,41 @@
         android:choiceMode="singleChoice"
         />
 
-    <LinearLayout
+     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:layout_marginTop="60dp"
         android:layout_toRightOf="@id/fling"
-        android:layout_marginTop="65dp"
-        android:weightSum="6"
+        android:weightSum="5"
         android:id="@+id/text"
         android:paddingTop="5dp">
 
         <TextView
-            android:textSize="18dp"
             android:textStyle="bold"
+            android:textSize="18dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
-            android:text="@string/s47"
+            android:text="@string/s257"
             android:layout_marginRight="28.0dp"
-            android:id="@+id/ident"
             android:layout_width="match_parent" />
 
-        <TextView
-            android:textSize="18dp"
+           <TextView
             android:textStyle="bold"
+            android:textSize="18dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
-            android:text="@string/s35"
+            android:text="@string/s160"
             android:layout_width="match_parent"
             android:layout_marginRight="28.0dp"
-            android:id="@+id/name" />
-
-        <TextView
-            android:textSize="18dp"
+ />
+         <TextView
             android:textStyle="bold"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:paddingLeft="10dp"
-            android:paddingTop="5dp"
-            android:text="@string/s40"
-            android:layout_width="match_parent"
-            android:layout_marginRight="28.0dp"
-            android:id="@+id/quantity" />
-        <TextView
             android:textSize="18dp"
-            android:textStyle="bold"
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
@@ -93,31 +80,34 @@
             android:text="@string/s106"
             android:layout_width="match_parent"
             android:layout_marginRight="28.0dp"
-            android:id="@+id/position" />
-
+ />
         <TextView
+            android:textStyle="bold"
             android:textSize="18dp"
             android:layout_weight="1"
-            android:layout_width="match_parent"
-            android:textStyle="bold"
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
-            android:text="@string/s80"
+            android:text="@string/s102"
+            android:layout_width="match_parent"
             android:layout_marginRight="28.0dp"
-            android:id="@+id/serial" />
+ />
 
         <TextView
+            android:textStyle="bold"
             android:textSize="18dp"
             android:layout_weight="1"
-            android:layout_width="match_parent"
-            android:textStyle="bold"
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
-            android:text="@string/s79"
+            android:text="@string/s103"
+            android:layout_width="match_parent"
             android:layout_marginRight="28.0dp"
-            android:id="@+id/sscc" />
+ />
+
+
+ 
+ 
 
     </LinearLayout>
     <LinearLayout

@@ -66,6 +66,10 @@ namespace WMS
         private Button? btnYesConfirm;
         private Button? btnNoConfirm;
         private ProgressDialogClass progress;
+        private ListView listData;
+        private AdapterLocation adapterNew;
+        private List<LocationClass> items = new List<LocationClass>();
+        private int selected;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -80,7 +84,13 @@ namespace WMS
             {
                 RequestedOrientation = ScreenOrientation.Landscape;
                 SetContentView(Resource.Layout.InterWarehouseSerialOrSSCCEntryTablet);
-            } else
+                listData = FindViewById<ListView>(Resource.Id.listData);
+                adapterNew = new AdapterLocation(this, items);
+                listData.Adapter = adapterNew;
+                listData.ItemClick += ListData_ItemClick;
+
+            }
+            else
             {
                 RequestedOrientation = ScreenOrientation.Portrait;
                 SetContentView(Resource.Layout.InterWarehouseSerialOrSSCCEntry);
@@ -145,10 +155,33 @@ namespace WMS
             // Main logic for the entry
             SetUpForm();
         }
+        private void Fill(List<LocationClass> list)
+        {
+            foreach (var obj in list)
+            {
+                items.Add(new LocationClass { ident = obj.ident, location = obj.location, quantity = obj.quantity });
+
+            }
+
+            listData.Adapter = null;
+            AdapterLocation adapter = new AdapterLocation(this, items);
+            listData.Adapter = adapter;
+        }
+
+        private void ListData_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
+        {
+            selected = e.Position;
+            var item = items.ElementAt(selected);
+        }
+        private async void FillTheIdentLocationList(string ident)
+        {
+            var wh = moveHead.GetString("Receiver");
+            var list = await AdapterStore.getStockForWarehouseAndIdent(wh, ident);
+            Fill(list);
+        }
 
         private async void TbLocation_KeyPress(object? sender, View.KeyEventArgs e)
-        {
-           
+        {          
             e.Handled = false;
         }
 
@@ -646,7 +679,12 @@ namespace WMS
                 {
                     lbIdentName.Enabled = false;
                 }
+
+                FillTheIdentLocationList(activityIdent.GetString("Code"));
+
+
             }
+
         }
 
 

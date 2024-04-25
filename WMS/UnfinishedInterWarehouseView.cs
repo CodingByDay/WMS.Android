@@ -49,7 +49,7 @@ namespace WMS
         private GestureDetector gestureDetector;
         private ListView dataList;
         private UnfinishedInterwarehouseAdapter adapter;
-        private List<UnfinishedInterWarehouseList> dataMapping;
+        private List<UnfinishedInterWarehouseList> dataMapping = new List<UnfinishedInterWarehouseList>();
         private int selected;
         private int selectedItem;
 

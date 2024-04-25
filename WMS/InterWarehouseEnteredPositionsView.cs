@@ -47,10 +47,16 @@ namespace WMS
         private Dialog popupDialog;
         private Button btnYes;
         private Button btnNo;
+        private ListView listData;
         private ProgressDialogClass progress;
         private Dialog popupDialogConfirm;
         private Button btnYesConfirm;
         private Button btnNoConfirm;
+        private int selected;
+        private int selectedItem;
+        private string tempUnit;
+        private InterWarehouseEnteredPositionViewAdapter adapter;
+        private List<InterWarehouseEnteredPositionsViewList> data;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -60,12 +66,16 @@ namespace WMS
             {
                 RequestedOrientation = ScreenOrientation.Landscape;
                 SetContentView(Resource.Layout.InterWarehouseEnteredPositionsViewTablet);
+                listData.ItemLongClick += ListData_ItemLongClick;
+                adapter = new InterWarehouseEnteredPositionViewAdapter(this, data);
+                listData.Adapter = adapter;
             }
             else
             {
                 RequestedOrientation = ScreenOrientation.Portrait;
                 SetContentView(Resource.Layout.InterWarehouseEnteredPositionsView);
             }
+
             AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
             var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
             _customToolbar.SetNavigationIcon(settings.RootURL + "/Services/Logo");
@@ -96,6 +106,180 @@ namespace WMS
             if (moveHead == null) { throw new ApplicationException("moveHead not known at this point!?"); }
 
             LoadPositions();
+
+            if(settings.tablet)
+            {
+                fillItems();
+                listData.PerformItemClick(listData, 0, 0);
+            }
+
+        }
+
+
+
+
+        private void ListData_ItemLongClick(object sender, AdapterView.ItemLongClickEventArgs e)
+        {
+            var index = e.Position;
+            DeleteFromTouch(index);
+        }
+        private void DeleteFromTouch(int index)
+        {
+            popupDialog = new Dialog(this);
+            popupDialog.SetContentView(Resource.Layout.YesNoPopUp);
+            popupDialog.Window.SetSoftInputMode(SoftInput.AdjustResize);
+            popupDialog.Show();
+
+            popupDialog.Window.SetLayout(LayoutParams.MatchParent, LayoutParams.WrapContent);
+            popupDialog.Window.SetBackgroundDrawableResource(Android.Resource.Color.HoloOrangeLight);
+
+            // Access Popup layout fields like below
+            btnYes = popupDialog.FindViewById<Button>(Resource.Id.btnYes);
+            btnNo = popupDialog.FindViewById<Button>(Resource.Id.btnNo);
+            btnYes.Click += (e, ev) => { Yes(index); };
+            btnNo.Click += (e, ev) => { No(index); };
+        }
+
+
+
+
+        private void No(int index)
+        {
+            popupDialog.Dismiss();
+            popupDialog.Hide();
+        }
+
+
+        private void Yes(int index)
+        {
+            var item = positions.Items[index];
+            var id = item.GetInt("HeadID");
+
+
+            try
+            {
+
+                string result;
+                if (WebApp.Get("mode=delMoveHead&head=" + id.ToString() + "&deleter=" + Services.UserID().ToString(), out result))
+                {
+                    if (result == "OK!")
+                    {
+                        positions = null;
+                        LoadPositions();
+                        data.Clear();
+                        fillItems();
+                        popupDialog.Dismiss();
+                        popupDialog.Hide();
+                    }
+                    else
+                    {
+                        string errorWebAppIssued = string.Format("Napaka pri brisanju pozicije " + result);
+                        DialogHelper.ShowDialogError(this, this, errorWebAppIssued);
+                        positions = null;
+                        LoadPositions();
+
+                        popupDialog.Dismiss();
+                        popupDialog.Hide();
+                        return;
+                    }
+                }
+                else
+                {
+                    string errorWebAppIssued = string.Format("Napaka pri dostopu web aplikacije: " + result);
+
+                    DialogHelper.ShowDialogError(this, this, errorWebAppIssued);
+                    popupDialog.Dismiss();
+                    popupDialog.Hide();
+
+                    return;
+                }
+            }
+            finally
+            {
+
+            }
+
+            string errorWebApp = string.Format("Pozicija uspešno zbrisana.");
+
+            Toast.MakeText(this, errorWebApp, ToastLength.Long).Show();
+        }
+
+
+        private void ListData_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
+        {
+            selected = e.Position;
+            Select(selected);
+            selectedItem = selected;
+
+            listData.RequestFocusFromTouch();
+            listData.SetItemChecked(selected, true);
+            listData.SetSelection(selected);
+
+        }
+        private void Select(int postionOfTheItemInTheList)
+        {
+            displayedPosition = postionOfTheItemInTheList;
+            if (displayedPosition >= positions.Items.Count) { displayedPosition = 0; }
+            FillDisplayedItem();
+        }
+
+        private void fillItems()
+        {
+            for (int i = 0; i < positions.Items.Count; i++)
+            {
+                if (i < positions.Items.Count && positions.Items.Count > 0)
+                {
+                    var item = positions.Items.ElementAt(i);
+                    var created = item.GetDateTime("DateInserted");
+                    var numbering = i + 1;
+                    bool setting;
+
+                    if (CommonData.GetSetting("ShowNumberOfUnitsField") == "1")
+                    {
+                        setting = false;
+                    }
+                    else // random comment number 23
+                    {
+                        setting = true;
+                    }
+                    if (setting)
+                    { // Saved data.
+                        tempUnit = item.GetDouble("Qty").ToString();
+
+                    }
+                    else
+                    {
+                        tempUnit = item.GetDouble("Factor").ToString();
+                    }
+                    string error;
+                    var ident = item.GetString("Ident").Trim();
+                    var openIdent = Services.GetObject("id", ident, out error);
+                    //  var ident = CommonData.LoadIdent(item.GetString("Ident"));
+                    var identName = openIdent.GetString("Name");
+                    var date = created == null ? "" : ((DateTime)created).ToString("dd.MM.yyyy");
+                    data.Add(new InterWarehouseEnteredPositionsViewList
+                    {
+                        Ident = item.GetString("Ident"),
+                        SerialNumber = item.GetString("SerialNo"),
+                        SSCC = item.GetString("SSCC"),
+                        Quantity = tempUnit,
+                        Position = numbering.ToString(),
+                        Name = identName.Trim(),
+
+
+                    }); // Add adapter handler.
+
+                    adapter.NotifyDataSetChanged();
+                }
+                else
+                {
+                    string errorWebApp = string.Format("Kritična napaka...");
+                    DialogHelper.ShowDialogError(this, this, errorWebApp);
+                }
+
+            }
+
+
 
 
         }
@@ -225,7 +409,14 @@ namespace WMS
                     if (result == "OK!")
                     {
                         positions = null;
+
                         LoadPositions();
+
+                        if (settings.tablet)
+                        {
+                            data.Clear();
+                            fillItems();
+                        }
                         popupDialog.Dismiss();
                         popupDialog.Hide();
                     }
@@ -415,6 +606,22 @@ namespace WMS
 
         private void BtNext_Click(object sender, EventArgs e)
         {
+            selectedItem++;
+
+            if (selectedItem <= (positions.Items.Count - 1))
+            {
+                listData.RequestFocusFromTouch();
+                listData.SetSelection(selectedItem);
+                listData.SetItemChecked(selectedItem, true);
+            }
+            else
+            {
+                selectedItem = 0;
+                listData.RequestFocusFromTouch();
+                listData.SetSelection(selectedItem);
+                listData.SetItemChecked(selectedItem, true);
+            }
+
             displayedPosition++;
             if (displayedPosition >= positions.Items.Count) { displayedPosition = 0; }
             FillDisplayedItem();
