@@ -53,22 +53,40 @@ namespace WMS
         private Button btnYesConfirm;
         private Button btnNoConfirm;
         private string flow;
+        private ListView listData;
+        private int selected;
+        private int selectedItem;
+        private string tempUnit;
+        private List<IssuedEnteredPositionViewList> data = new List<IssuedEnteredPositionViewList>();
+        private IssuedEnterAdapter adapterX;
+
 
         protected override async void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             SetTheme(Resource.Style.AppTheme_NoActionBar);
             // Create your application here
+
+
             if (settings.tablet)
             {
                 RequestedOrientation = ScreenOrientation.Landscape;
                 SetContentView(Resource.Layout.IssuedGoodsEnteredPositionsViewTablet);
+
+                listData = FindViewById<ListView>(Resource.Id.listData);
+                listData.ItemLongClick += ListData_ItemLongClick;
+                adapterX = new IssuedEnterAdapter(this, data);
+                listData.Adapter = adapterX;
+                listData.ItemClick += ListData_ItemClick;
+
             }
             else
             {
                 RequestedOrientation = ScreenOrientation.Portrait;
                 SetContentView(Resource.Layout.IssuedGoodsEnteredPositionsView);
             }
+
+
             AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
             var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
             _customToolbar.SetNavigationIcon(settings.RootURL + "/Services/Logo");
@@ -100,13 +118,193 @@ namespace WMS
                 throw new ApplicationException("Data error");
             }
             LoadPositions();
+
+            if(settings.tablet)
+            {
+                await fillList();
+                listData.PerformItemClick(listData, 0, 0);
+            }
+
             var _broadcastReceiver = new NetworkStatusBroadcastReceiver();
             _broadcastReceiver.ConnectionStatusChanged += OnNetworkStatusChanged;
             Application.Context.RegisterReceiver(_broadcastReceiver,
             new IntentFilter(ConnectivityManager.ConnectivityAction));
             GetFlowValue();
+
+
+
         }
 
+
+        private void DeleteFromTouch(int index)
+        {
+            popupDialog = new Dialog(this);
+            popupDialog.SetContentView(Resource.Layout.YesNoPopUp);
+            popupDialog.Window.SetSoftInputMode(SoftInput.AdjustResize);
+            popupDialog.Show();
+
+            popupDialog.Window.SetLayout(LayoutParams.MatchParent, LayoutParams.WrapContent);
+            popupDialog.Window.SetBackgroundDrawableResource(Android.Resource.Color.HoloOrangeLight);
+
+            // Access Popup layout fields like below
+            btnYes = popupDialog.FindViewById<Button>(Resource.Id.btnYes);
+            btnNo = popupDialog.FindViewById<Button>(Resource.Id.btnNo);
+            btnYes.Click += (e, ev) => { Yes(index); };
+            btnNo.Click += (e, ev) => { No(index); };
+        }
+
+
+
+
+        private void No(int index)
+        {
+            popupDialog.Dismiss();
+            popupDialog.Hide();
+        }
+
+
+        private async void Yes(int index)
+        {
+            var item = positions.Items[index];
+            var id = item.GetInt("HeadID");
+
+
+            try
+            {
+
+                string result;
+                if (WebApp.Get("mode=delMoveHead&head=" + id.ToString() + "&deleter=" + Services.UserID().ToString(), out result))
+                {
+                    if (result == "OK!")
+                    {
+                        positions = null;
+                        LoadPositions();
+                        data.Clear();
+                        adapterX.NotifyDataSetChanged();
+                        await fillList();
+                        popupDialog.Dismiss();
+                        popupDialog.Hide();
+                    }
+                    else
+                    {
+                        string errorWebAppIssued = string.Format("Napaka pri brisanju pozicije " + result);
+                        Toast.MakeText(this, errorWebAppIssued, ToastLength.Long).Show();
+                        positions = null;
+                        LoadPositions();
+
+                        popupDialog.Dismiss();
+                        popupDialog.Hide();
+                        return;
+                    }
+                }
+                else
+                {
+                    string errorWebAppIssued = string.Format("Napaka pri dostopu web aplikacije: " + result);
+                    Toast.MakeText(this, errorWebAppIssued, ToastLength.Long).Show();
+                    popupDialog.Dismiss();
+                    popupDialog.Hide();
+
+                    return;
+                }
+            }
+            finally
+            {
+
+            }
+
+            string errorWebApp = string.Format("Pozicija uspešno zbrisana.");
+            Toast.MakeText(this, errorWebApp, ToastLength.Long).Show();
+        }
+
+
+        private void ListData_ItemLongClick(object sender, AdapterView.ItemLongClickEventArgs e)
+        {
+            var index = e.Position;
+            DeleteFromTouch(index);
+        }
+
+        private void Select(int postionOfTheItemInTheList)
+        {
+            displayedPosition = postionOfTheItemInTheList;
+            if (displayedPosition >= positions.Items.Count) { displayedPosition = 0; }
+            FillDisplayedItem();
+        }
+        private void ListData_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
+        {
+            selected = e.Position;
+            Select(selected);
+            selectedItem = selected;
+            listData.RequestFocusFromTouch();
+            listData.SetItemChecked(selected, true);
+            listData.SetSelection(selected);
+        }
+
+        private async Task fillList()
+        {
+            await Task.Run(() =>
+            {
+                for (int i = 0; i < positions.Items.Count; i++)
+                {
+                    if (i < positions.Items.Count && positions.Items.Count > 0)
+                    {
+                        var item = positions.Items.ElementAt(i);
+                        var created = item.GetDateTime("DateInserted");
+                        var numbering = i + 1;
+                        bool setting;
+
+                        if (CommonData.GetSetting("ShowNumberOfUnitsField") == "1")
+                        {
+                            setting = false;
+                        }
+                        else
+                        {
+                            setting = true;
+                        }
+                        if (setting)
+                        {
+                            tempUnit = item.GetDouble("Qty").ToString();
+                        }
+                        else
+                        {
+                            tempUnit = item.GetDouble("Factor").ToString();
+                        }
+                        string error;
+                        var ident = item.GetString("Ident").Trim();
+                        var openIdent = Services.GetObject("id", ident, out error);
+                        //var ident = CommonData.LoadIdent(item.GetString("Ident"));
+                        var identName = openIdent.GetString("Name");
+                        var date = created == null ? "" : ((DateTime)created).ToString("dd.MM.yyyy");
+
+                        RunOnUiThread(() =>
+                        {
+                            data.Add(new IssuedEnteredPositionViewList
+                            {
+                                Ident = item.GetString("Ident").Trim(),
+                                SerialNumber = item.GetString("SerialNo"),
+                                SSCC = item.GetString("SSCC"),
+                                Quantity = tempUnit,
+                                Position = numbering.ToString(),
+                                Name = identName,
+                            });
+
+                            adapterX.NotifyDataSetChanged();
+                        });
+                    }
+                    else
+                    {
+                        RunOnUiThread(() =>
+                        {
+                            string errorWebApp = string.Format("Kritična napaka...");
+                            Toast.MakeText(this, errorWebApp, ToastLength.Long).Show();
+                        });
+                    }
+                }
+            });
+            RunOnUiThread(() =>
+            {
+                LoaderManifest.LoaderManifestLoopStop(this);
+            });
+        }
         private void GetFlowValue()
         {
             flow = moveHead.GetString("CurrentFlow");

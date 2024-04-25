@@ -68,6 +68,8 @@ namespace WMS
         private MyOnItemLongClickListener listener;
         private ApiResultSet result;
         private NameValueObjectList NameValueObjectVariableList;
+        private ListView listData;
+        private AdapterTrail trailAdapter;
 
         public override bool OnKeyDown(Keycode keyCode, KeyEvent e)
         {
@@ -360,9 +362,14 @@ namespace WMS
                             listener = new MyOnItemLongClickListener(this, adapterObj.returnData(), adapterObj);
                             ivTrail.OnItemLongClickListener = listener;
 
+                            if (settings.tablet)
+                            {
+                                fillItems(trails);
+                            }
 
                             // Bluetooth
-                           /* try
+                           
+                            /* try
                             {
                                 sendDataToDevice();
                             } catch (Exception ex)
@@ -396,12 +403,15 @@ namespace WMS
             {
                 RequestedOrientation = ScreenOrientation.Landscape;
                 SetContentView(Resource.Layout.IssuedGoodsIdentEntryWithTrailTablet);
+                listData = FindViewById<ListView>(Resource.Id.listData);
+
             }
             else
             {
                 RequestedOrientation = ScreenOrientation.Portrait;
                 SetContentView(Resource.Layout.IssuedGoodsIdentEntryWithTrail);
             }
+            
             AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
             var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
             _customToolbar.SetNavigationIcon(settings.RootURL + "/Services/Logo");
@@ -414,12 +424,8 @@ namespace WMS
             ivTrail = FindViewById<ListView>(Resource.Id.ivTrail);
             btConfirm = FindViewById<Button>(Resource.Id.btConfirm);
             btDisplayPositions = FindViewById<Button>(Resource.Id.btDisplayPositions);
-
-
             btBack = FindViewById<Button>(Resource.Id.btBack);
             btBack.Click += BtBack_Click;
-
-
             btLogout = FindViewById<Button>(Resource.Id.btLogout);
             soundPool = new SoundPool(10, Stream.Music, 0);
             soundPoolId = soundPool.Load(this, Resource.Raw.beep, 1);
@@ -451,7 +457,7 @@ namespace WMS
                 tbLocationFilter.Text = trailFilters.GetString("Location");
             }
 
-            FillDisplayedOrderInfo();
+            await FillDisplayedOrderInfo();
 
             var _broadcastReceiver = new NetworkStatusBroadcastReceiver();
             _broadcastReceiver.ConnectionStatusChanged += OnNetworkStatusChanged;
@@ -479,7 +485,11 @@ namespace WMS
         }
 
 
-
+        private async void fillItems(List<Trail> data)
+        {
+            trailAdapter = new AdapterTrail(this, data);
+            listData.Adapter = trailAdapter;
+        }
 
         public class MyOnItemLongClickListener : Java.Lang.Object, AdapterView.IOnItemLongClickListener
         {

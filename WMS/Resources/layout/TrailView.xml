@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="fill_parent"
+    android:minWidth="30dp"
+    android:minHeight="30dp"
+    android:paddingLeft="5dp"
+    android:paddingBottom="2dp"
+    android:paddingTop="2dp"
+    android:weightSum="100"
+    android:layout_height="fill_parent">
+
+      <TextView
+        android:singleLine="true"
+        android:textSize="16dp"
+        android:layout_weight="20"
+        android:textStyle="bold"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:paddingTop="5dp"
+        android:layout_marginRight="28.0dp"
+        android:id="@id/ident" />
+
+     <TextView
+        android:layout_weight="20"
+        android:textSize="16dp"
+        android:textStyle="bold"
+        android:layout_width="100dp"
+        android:singleLine="true"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:paddingTop="5dp"
+        android:layout_marginRight="28.0dp"
+        android:id="@id/name" />
+
+      <TextView
+        android:layout_weight="20"
+        android:textSize="16dp"
+        android:textStyle="bold"
+        android:layout_width="100dp"
+        android:singleLine="true"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:paddingTop="5dp"
+        android:layout_marginRight="28.0dp"
+        android:id="@id/position" />
+
+
+    <TextView
+        android:layout_weight="20"
+        android:textSize="16dp"
+        android:textStyle="bold"
+        android:singleLine="true"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:paddingTop="5dp"
+        android:layout_marginRight="28.0dp"
+        android:id="@id/location" />
+
+
+    <TextView
+        android:layout_weight="20"
+        android:textSize="16dp"
+        android:textStyle="bold"
+        android:singleLine="true"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:paddingTop="5dp"
+        android:layout_marginRight="28.0dp"
+        android:id="@id/quantity" />
+
+
+</LinearLayout>

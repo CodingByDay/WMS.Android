@@ -24,6 +24,7 @@ using TrendNET.WMS.Device.Services;
 using AndroidX.AppCompat.App;
 using AlertDialog = Android.App.AlertDialog;
 using Microsoft.AppCenter.Analytics;
+using AndroidX.Lifecycle;
 namespace WMS
 {
     [Activity(Label = "IssuedGoodsIdentEntry", ScreenOrientation = ScreenOrientation.Portrait)]
@@ -51,6 +52,8 @@ namespace WMS
         private List<string> identData = new List<string>();
         private CustomAutoCompleteAdapter<string> tbIdentAdapter;
         private List<string> savedIdents;
+        private ListView? listData;
+        private OpenOrderAdapter orderAdapter;
 
         private void Sound()
         {
@@ -147,6 +150,11 @@ namespace WMS
                                 }
 
                                 displayedOrder = 0;
+
+                                if(settings.tablet)
+                                {
+                                    fillItems(orders);
+                                }
                             }
                         }
                     }
@@ -261,6 +269,7 @@ namespace WMS
             {
                 RequestedOrientation = ScreenOrientation.Landscape;
                 SetContentView(Resource.Layout.IssuedGoodsIdentEntryTablet);
+                listData = FindViewById<ListView>(Resource.Id.listData);
             }
             else
             {
@@ -327,7 +336,12 @@ namespace WMS
             e.Handled = false;
         }
 
- 
+
+        private async void fillItems(List<OpenOrder> data)
+        {
+            orderAdapter = new OpenOrderAdapter(this, data);
+            listData.Adapter = orderAdapter;
+        }
 
         public bool IsOnline()
         {

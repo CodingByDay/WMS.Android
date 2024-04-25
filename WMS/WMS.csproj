@@ -90,6 +90,7 @@
     <None Remove="Resources\layout\MorePalletsClass.xml" />
     <None Remove="Resources\layout\MorePalletsView.xml" />
     <None Remove="Resources\layout\nicelookingbutton.xml" />
+    <None Remove="Resources\layout\OpenOrderView.xml" />
     <None Remove="Resources\layout\PackagingEnteredPositionsView.xml" />
     <None Remove="Resources\layout\PackagingEnteredPositionsViewTablet.xml" />
     <None Remove="Resources\layout\PackagingListAdapterView.xml" />
@@ -149,6 +150,7 @@
     <None Remove="Resources\layout\TakeOverSerialOrSSCCEntryView.xml" />
     <None Remove="Resources\layout\TakeOverSerialOrSSCCListView.xml" />
     <None Remove="Resources\layout\Toolbar.xml" />
+    <None Remove="Resources\layout\TrailView.xml" />
     <None Remove="Resources\layout\TransportPopup.xml" />
     <None Remove="Resources\layout\UnfinishedInterWarehouseList.xml" />
     <None Remove="Resources\layout\UnfinishedInterWarehouseView.xml" />
