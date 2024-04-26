@@ -51,7 +51,6 @@ namespace WMS
         private Button btnNo;
         private ListView listData;
         private UniversalAdapter<UnfinishedProductionList> dataAdapter;
-        private UnfinishedProductionAdapter adapter;
         private List<UnfinishedProductionList> data = new List<UnfinishedProductionList>();
         private int selected;
         private int selectedItem;
@@ -154,7 +153,7 @@ namespace WMS
                         Ident = item.GetString("FirstIdent"),
                         NumberOfPositions = item.GetInt("ItemCount").ToString(),
                         // tbItemCount.Text = item.GetInt("ItemCount").ToString();
-                    }); adapter.NotifyDataSetChanged();
+                    }); 
                 }
                 else
                 {

@@ -55,7 +55,7 @@ namespace WMS
         SoundPool soundPool;
         int soundPoolId;
         private List<Trail> trails;
-        private adapter adapterObj;
+        private TrailAdapter adapterObj;
         public int selected;
         private string password;
         private Trail chosen;
@@ -71,7 +71,6 @@ namespace WMS
         private NameValueObjectList NameValueObjectVariableList;
         private ListView listData;
         private UniversalAdapter<Trail> dataAdapter;
-        private AdapterTrail trailAdapter;
 
         public override bool OnKeyDown(Keycode keyCode, KeyEvent e)
         {
@@ -435,7 +434,7 @@ namespace WMS
             color();
             tbLocationFilter.FocusChange += TbLocationFilter_FocusChange;
             trails = new List<Trail>();
-            adapterObj = new adapter(this, trails);
+            adapterObj = new TrailAdapter(this, trails);
             ivTrail.Adapter = adapterObj;
             ivTrail.ItemClick += IvTrail_ItemClick;
             btConfirm.Click += BtConfirm_Click;
@@ -492,7 +491,7 @@ namespace WMS
         {
             Context context_;
             List<Trail> data_;
-            adapter adapter_;
+            TrailAdapter adapter_;
 
 
             public void updateData(List<Trail> data)
@@ -500,7 +499,7 @@ namespace WMS
                 data_ = data;
             }
 
-            public MyOnItemLongClickListener(Context context, List<Trail> data, adapter adapter) {
+            public MyOnItemLongClickListener(Context context, List<Trail> data, TrailAdapter adapter) {
                 context_ = context;
                 data_ = data;
                 adapter_ = adapter;

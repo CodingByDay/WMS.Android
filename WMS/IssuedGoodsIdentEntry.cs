@@ -55,7 +55,6 @@ namespace WMS
         private List<string> savedIdents;
         private ListView? listData;
         private UniversalAdapter<OpenOrder> dataAdapter;
-        private OpenOrderAdapter orderAdapter;
 
         private void Sound()
         {
@@ -340,8 +339,7 @@ namespace WMS
         }
 
 
-      
-
+  
         public bool IsOnline()
         {
             var cm = (ConnectivityManager)GetSystemService(ConnectivityService);

@@ -109,7 +109,6 @@ namespace WMS
         private double stock;
         private ListView listData;
         private UniversalAdapter<LocationClass> dataAdapter;
-        private AdapterLocation lcAdapter;
 
         protected override async void OnCreate(Bundle savedInstanceState)
         {

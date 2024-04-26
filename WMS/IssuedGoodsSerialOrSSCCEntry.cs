@@ -114,7 +114,6 @@ namespace WMS
         private UniversalAdapter<LocationClass> dataAdapter;
         private ZoomageView? imagePNG;
         private List<LocationClass> items = new List<LocationClass>();
-        private AdapterLocation lcAdapter;
         private ZoomageView? image;
 
         public static List<IssuedGoods> FilterIssuedGoods(List<IssuedGoods> issuedGoodsList, string acSSCC = null, string acSerialNo = null, string acLocation = null)

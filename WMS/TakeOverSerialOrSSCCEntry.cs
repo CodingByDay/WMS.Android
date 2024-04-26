@@ -183,7 +183,7 @@ namespace WMS
                     //  var ident = CommonData.LoadIdent(item.GetString("Ident"));
                     var identName = openIdent.GetString("Name");
                     var date = created == null ? "" : ((DateTime)created).ToString("dd.MM.yyyy");
-                    dataDocuments.Add(new TakeoverDocument
+                    data.Add(new TakeoverDocument
                     {
                         ident = item.GetString("Ident"),
                         serial = item.GetString("SerialNo"),

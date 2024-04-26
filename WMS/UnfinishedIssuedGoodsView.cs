@@ -53,7 +53,6 @@ namespace WMS
         private NameValueObject choice;
         private GestureDetector gestureDetector;
         private ListView issuedData;
-        private UnfinishedIssuedAdapter adapter;
         private List<UnfinishedIssuedList> data = new List<UnfinishedIssuedList>();
         private int selected;
         private int selectedItem;
@@ -77,7 +76,7 @@ namespace WMS
                         Date = date,
                         NumberOfPositions = item.GetInt("ItemCount").ToString(),
                         // tbItemCount.Text = item.GetInt("ItemCount").ToString();
-                    }); adapter.NotifyDataSetChanged();
+                    });
                 }
                 else
                 {

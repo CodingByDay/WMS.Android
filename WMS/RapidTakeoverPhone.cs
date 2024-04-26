@@ -128,11 +128,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             {
                 RequestedOrientation = ScreenOrientation.Landscape;
                 SetContentView(Resource.Layout.RapidTakeover);
-                listData = FindViewById<ListView>(Resource.Id.listData);
-                TakeOverSerialOrSSCCEntryAdapter adapter = new TakeOverSerialOrSSCCEntryAdapter(this, dataX);
-                listData.Adapter = adapter;
-                listData.ItemClick += ListData_ItemClick;
-
+                // TODO: Add a adapter 
             }
             else
             {

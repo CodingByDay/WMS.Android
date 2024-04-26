@@ -57,7 +57,6 @@ namespace WMS
         private int selected;
         private int selectedItem;
         private string tempUnit;
-        private InterWarehouseEnteredPositionViewAdapter adapter;
         private List<InterWarehouseEnteredPositionsViewList> data = new List<InterWarehouseEnteredPositionsViewList>();
 
         protected override void OnCreate(Bundle savedInstanceState)
@@ -271,7 +270,6 @@ namespace WMS
 
                     }); // Add adapter handler.
 
-                    adapter.NotifyDataSetChanged();
                 }
                 else
                 {

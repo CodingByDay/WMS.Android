@@ -9,13 +9,6 @@
         public string Serial { get; set; }
 
 
-        public CleanupLocation(string Name, string Ident, string Location, string SSCC, string Serial)
-        {
-            this.Name = Name;
-            this.Ident = Ident;
-            this.Location = Location;
-            this.SSCC = SSCC;
-            this.Serial = Serial;
-        }
+     
     }
 }

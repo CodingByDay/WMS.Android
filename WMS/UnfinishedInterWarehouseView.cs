@@ -50,7 +50,6 @@ namespace WMS
         private Button btnNo;
         private GestureDetector gestureDetector;
         private ListView dataList;
-        private UnfinishedInterwarehouseAdapter adapter;
         private List<UnfinishedInterWarehouseList> data = new List<UnfinishedInterWarehouseList>();
         private int selected;
         private int selectedItem;
@@ -150,7 +149,6 @@ namespace WMS
                         NumberOfPositions = item.GetInt("ItemCount").ToString(),
                     });
 
-                    adapter.NotifyDataSetChanged();
                 }
                 else
                 {

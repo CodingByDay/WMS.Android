@@ -48,7 +48,7 @@ namespace WMS
         private ClientPickingPosition orderCurrent;
         private object mItem;
         private ListView? listData;
-        private object dataAdapter;
+        private UniversalAdapter<ClientPickingPosition> dataAdapter;
         private ClientPickingAdapter clientAdapter;
 
         protected override async void OnCreate(Bundle savedInstanceState)
@@ -60,7 +60,7 @@ namespace WMS
                 RequestedOrientation = ScreenOrientation.Landscape;
                 SetContentView(Resource.Layout.ClientPickingTablet);
                 listData = FindViewById<ListView>(Resource.Id.listData);
-                dataAdapter = UniversalAdapterHelper.GetClientPickingy(this, positions);
+                dataAdapter = UniversalAdapterHelper.GetClientPicking(this, positions);
                 listData.Adapter = dataAdapter;
             }
             else

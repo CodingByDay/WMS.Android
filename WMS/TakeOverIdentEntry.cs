@@ -61,7 +61,6 @@ namespace WMS
         private List<OpenOrder> orders = new List<OpenOrder>();
         private ListView listData;
         private UniversalAdapter<TakeOverIdentList> dataAdapter;
-        private TakeOverIdentAdapter adapter;
         private List<TakeOverIdentList> data = new List<TakeOverIdentList>();
 
         protected async override void OnCreate(Bundle savedInstanceState)
@@ -132,12 +131,7 @@ namespace WMS
             tbIdent.AfterTextChanged += TbIdent_AfterTextChanged;
             tbIdent.RequestFocus();
         }
-        private void ListData_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
-        {
-            selected = e.Position;
-            Select(selected);
-            selectedItem = selected;
-        }
+    
 
 
         private void fillList(string ident)
@@ -157,7 +151,6 @@ namespace WMS
                     });
                 });
 
-                adapter.NotifyDataSetChanged();
             }                
         }
         private void Select(int postionOfTheItemInTheList)

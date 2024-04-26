@@ -4,14 +4,14 @@ using Exception = Java.Lang.Exception;
 
 namespace WMS.App
 {
-    public class adapter : BaseAdapter
+    public class TrailAdapter : BaseAdapter
     {
         public List<Trail> sList;
         private Context sContext;
 
         private Trail selected;
 
-        public adapter(Context context, List<Trail> list)
+        public TrailAdapter(Context context, List<Trail> list)
         {
             sList = list;
             sContext = context;

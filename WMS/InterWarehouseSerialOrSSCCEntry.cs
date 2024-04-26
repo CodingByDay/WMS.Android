@@ -70,7 +70,6 @@ namespace WMS
         private ProgressDialogClass progress;
         private ListView listData;
         private UniversalAdapter<LocationClass> dataAdapter;
-        private AdapterLocation adapterNew;
         private List<LocationClass> items = new List<LocationClass>();
         private int selected;
         private Dialog popupDialog;

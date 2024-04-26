@@ -55,7 +55,6 @@ namespace WMS
         private ListView rapidListview;
         private List<CleanupLocation> dataCleanup;
         private UniversalAdapter<CleanupLocation> dataAdapter;
-        private CleanupAdapter cleanupAdapter;
 
         protected override async void OnCreate(Bundle savedInstanceState)
         {     
@@ -177,7 +176,7 @@ namespace WMS
                         var SSCC = x.GetString("SSCC");
                         var Name = x.GetString("Name");
                         var Serial = x.GetString("SerialNo");
-                        data.Add(new CleanupLocation { Ident = x.GetString("Ident"), Location = x.GetString("Location"), SSCC = x.GetString("SSCC"), Name = x.GetString("IdentName"), Serial = x.GetString("SerialNo") });
+                        data.Add(new CleanupLocation { Name = Name, Ident = ident, Location = location, Serial = Serial, SSCC = SSCC  });
                     });
                 }
 
@@ -190,7 +189,7 @@ namespace WMS
 
         private void ButtonRapidTakeover_Click(object? sender, EventArgs e)
         {
-            StartActivity(typeof(RapidTakeover));
+            StartActivity(typeof(RapidTakeoverPhone));
         }
 
         public string GetAppVersion()

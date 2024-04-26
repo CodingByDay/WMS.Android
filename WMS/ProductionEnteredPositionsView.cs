@@ -75,8 +75,7 @@ namespace WMS
                 listData = FindViewById<ListView>(Resource.Id.listData);
                 dataAdapter = UniversalAdapterHelper.GetProductionEnteredPositionsView(this, data);
                 listData.Adapter = dataAdapter;
-                ProductionEnteredPositionViewAdapter adapter = new ProductionEnteredPositionViewAdapter(this, data);
-                listData.Adapter = adapter;
+              
             }
             else
             {
