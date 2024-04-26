@@ -48,10 +48,10 @@ namespace WMS
         private Button btnNo;
         private Button btNew;
         private ListView dataList;
+        private UniversalAdapter<UnfinishedTakeoverList> dataAdapter;
         private NameValueObjectList positions = (NameValueObjectList)InUseObjects.Get("TakeOverHeads");
         private List<UnfinishedTakeoverList> dataSource = new List<UnfinishedTakeoverList>();
         private GestureDetector gestureDetector;
-        private UnfinishedTakeoverAdapter adapter;
         private string finalString;
         private int selected;
         private int selectedItem;
@@ -65,8 +65,9 @@ namespace WMS
                 RequestedOrientation = ScreenOrientation.Landscape;
                 SetContentView(Resource.Layout.UnfinishedTakeoversViewTablet);
                 dataList = FindViewById<ListView>(Resource.Id.dataList);
-                adapter = new UnfinishedTakeoverAdapter(this, dataSource);
-                dataList.Adapter = adapter;
+
+                dataAdapter = UniversalAdapterHelper.GetUnfinishedTakeover(this, dataSource);
+                dataList.Adapter = dataAdapter;
                 dataList.ItemClick += DataList_ItemClick;
                 dataList.ItemSelected += DataList_ItemSelected;
                 dataList.ItemLongClick += DataList_ItemLongClick;
@@ -264,7 +265,7 @@ namespace WMS
 
                         // tbItemCount.Text = item.GetInt("ItemCount").ToString();
                     });
-                    adapter.NotifyDataSetChanged();
+                    dataAdapter.NotifyDataSetChanged();
                 }
                 else
                 {

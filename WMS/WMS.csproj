@@ -48,6 +48,7 @@
     <None Remove="Resources\layout\ClientPickingTablet.xml" />
     <None Remove="Resources\layout\Confirmation.xml" />
     <None Remove="Resources\layout\custom_dropdown_item.xml" />
+    <None Remove="Resources\layout\FourElements.xml" />
     <None Remove="Resources\layout\InterWarehouseBusinessEventSetup.xml" />
     <None Remove="Resources\layout\InterWarehouseBusinessEventSetupTablet.xml" />
     <None Remove="Resources\layout\InterWarehouseEnteredPositionsView.xml" />

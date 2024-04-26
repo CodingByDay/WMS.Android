@@ -31,6 +31,7 @@ using static AndroidX.ConstraintLayout.Widget.ConstraintSet;
 using Org.Xml.Sax;
 using Microsoft.AppCenter.Analytics;
 using System;
+using Com.Jsibbold.Zoomage;
 
 namespace WMS
 {
@@ -70,6 +71,8 @@ namespace WMS
         private AdapterLocation adapterNew;
         private List<LocationClass> items = new List<LocationClass>();
         private int selected;
+        private Dialog popupDialog;
+        private ZoomageView image;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -88,7 +91,8 @@ namespace WMS
                 adapterNew = new AdapterLocation(this, items);
                 listData.Adapter = adapterNew;
                 listData.ItemClick += ListData_ItemClick;
-
+                imagePNG = FindViewById<ImageView>(Resource.Id.imagePNG);
+                imagePNG.Visibility = ViewStates.Invisible;
             }
             else
             {
@@ -96,7 +100,6 @@ namespace WMS
                 SetContentView(Resource.Layout.InterWarehouseSerialOrSSCCEntry);
             }
             
-
             AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
             var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
             _customToolbar.SetNavigationIcon(settings.RootURL + "/Services/Logo");
@@ -154,6 +157,48 @@ namespace WMS
 
             // Main logic for the entry
             SetUpForm();
+        }
+        private void ImageClick(Drawable d)
+        {
+            popupDialog = new Dialog(this);
+            popupDialog.SetContentView(Resource.Layout.WarehousePicture);
+            popupDialog.Window.SetSoftInputMode(SoftInput.AdjustResize);
+            popupDialog.Show();
+            popupDialog.KeyPress += PopupDialog_KeyPress;
+            popupDialog.Window.SetLayout(LayoutParams.MatchParent, LayoutParams.WrapContent);
+            popupDialog.Window.SetBackgroundDrawableResource(Android.Resource.Color.HoloBlueBright);
+            image = popupDialog.FindViewById<ZoomageView>(Resource.Id.image);
+            image.SetMinimumHeight(500);
+            image.SetMinimumWidth(800);
+            image.SetImageDrawable(d);
+
+        }
+        private void PopupDialog_KeyPress(object sender, DialogKeyEventArgs e)
+        {
+            if (e.KeyCode == Keycode.Back)
+            {
+                popupDialog.Dismiss();
+                popupDialog.Hide();
+                popupDialog.Window.Dispose();
+            }
+        }
+        private void showPicture()
+        {
+            try
+            {
+                Android.Graphics.Bitmap show = Services.GetImageFromServer(moveHead.GetString("Receiver"));
+                Drawable d = new BitmapDrawable(Resources, show);
+                imagePNG.SetImageDrawable(d);
+                imagePNG.Visibility = ViewStates.Visible;
+                imagePNG.Click += (e, ev) => { ImageClick(d); };
+
+            }
+            catch (Exception error)
+            {
+                var log = error;
+                return;
+            }
+
         }
         private void Fill(List<LocationClass> list)
         {
