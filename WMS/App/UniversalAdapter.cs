@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using Android.Content;
+﻿using Android.Content;
+using Android.Graphics;
 using Android.Views;
-using Android.Widget;
 
 public class UniversalAdapter<T> : BaseAdapter<T>
 {
@@ -11,6 +9,7 @@ public class UniversalAdapter<T> : BaseAdapter<T>
     private readonly int layoutResource;
     private readonly LayoutInflater inflater;
     private readonly Action<View, T> bindAction;
+    private int selectedPosition = -1;
 
     public UniversalAdapter(Context context, List<T> items, int layoutResource, Action<View, T> bindAction)
     {
@@ -32,6 +31,40 @@ public class UniversalAdapter<T> : BaseAdapter<T>
         View view = convertView ?? inflater.Inflate(layoutResource, parent, false);
         var item = items[position];
         bindAction?.Invoke(view, item);
+
+        // Set background color for selected item
+        if (position == selectedPosition)
+        {
+            view.SetBackgroundColor(Color.Argb(128, 169, 169, 169)); // Gray with transparency
+        }
+        else
+        {
+            view.SetBackgroundColor(Color.Transparent);
+        }
+
         return view;
+    }
+
+    public void SetSelected(int position)
+    {
+        selectedPosition = position;
+        NotifyDataSetChanged();
+    }
+
+    public T GetSelectedItem()
+    {
+        if (selectedPosition >= 0 && selectedPosition < items.Count)
+        {
+            return items[selectedPosition];
+        }
+        else
+        {
+            return default(T);
+        }
+    }
+
+    public int GetSelectedIndex()
+    {
+        return selectedPosition;
     }
 }

@@ -48,6 +48,7 @@
     <None Remove="Resources\layout\ClientPickingTablet.xml" />
     <None Remove="Resources\layout\Confirmation.xml" />
     <None Remove="Resources\layout\custom_dropdown_item.xml" />
+    <None Remove="Resources\layout\FiveElements.xml" />
     <None Remove="Resources\layout\FourElements.xml" />
     <None Remove="Resources\layout\InterWarehouseBusinessEventSetup.xml" />
     <None Remove="Resources\layout\InterWarehouseBusinessEventSetupTablet.xml" />
@@ -136,6 +137,7 @@
     <None Remove="Resources\layout\Settings.xml" />
     <None Remove="Resources\layout\ShippingPallet.xml" />
     <None Remove="Resources\layout\ShippingPalletTablet.xml" />
+    <None Remove="Resources\layout\SixElements.xml" />
     <None Remove="Resources\layout\squaredbutton.xml" />
     <None Remove="Resources\layout\TakeOver2Main.xml" />
     <None Remove="Resources\layout\TakeOver2MainTablet.xml" />
@@ -154,6 +156,7 @@
     <None Remove="Resources\layout\TakeOverSerialOrSSCCEntryTablet.xml" />
     <None Remove="Resources\layout\TakeOverSerialOrSSCCEntryView.xml" />
     <None Remove="Resources\layout\TakeOverSerialOrSSCCListView.xml" />
+    <None Remove="Resources\layout\ThreeElements.xml" />
     <None Remove="Resources\layout\Toolbar.xml" />
     <None Remove="Resources\layout\TrailView.xml" />
     <None Remove="Resources\layout\TransportPopup.xml" />

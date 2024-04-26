@@ -68,9 +68,7 @@ namespace WMS
 
                 dataAdapter = UniversalAdapterHelper.GetUnfinishedTakeover(this, dataSource);
                 dataList.Adapter = dataAdapter;
-                dataList.ItemClick += DataList_ItemClick;
-                dataList.ItemSelected += DataList_ItemSelected;
-                dataList.ItemLongClick += DataList_ItemLongClick;
+
 
             }
             else
@@ -220,22 +218,8 @@ namespace WMS
             string errorWebApp = string.Format($"{Resources.GetString(Resource.String.s214)}");
             Toast.MakeText(this, errorWebApp, ToastLength.Long).Show();
         }
-        private void Select(int postionOfTheItemInTheList)
-        {
-            selected = postionOfTheItemInTheList;
-            displayedPosition = postionOfTheItemInTheList;
-            if (displayedPosition >= positions.Items.Count) { displayedPosition = 0; }
-            FillDisplayedItem();
-        }
-        private void DataList_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
-        {
-            selected = e.Position;
-            Select(selected);
-            selectedItem = selected;
-            dataList.RequestFocusFromTouch();
-            dataList.SetItemChecked(selected, true);
-            dataList.SetSelection(selected);
-        }
+
+   
         private void FillItemsList()
         {
 
@@ -257,12 +241,10 @@ namespace WMS
                         finalString = item.GetString("LinkKey");
                     dataSource.Add(new UnfinishedTakeoverList
                     {
-
                         Document = finalString,
                         Issuer = item.GetString("Receiver"),
                         Date = date,
                         NumberOfPositions = item.GetInt("ItemCount").ToString(),
-
                         // tbItemCount.Text = item.GetInt("ItemCount").ToString();
                     });
                     dataAdapter.NotifyDataSetChanged();
