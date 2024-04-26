@@ -25,6 +25,7 @@ using Microsoft.AppCenter.Crashes;
 using AndroidX.AppCompat.App;
 using AlertDialog = Android.App.AlertDialog;
 using Android.Graphics.Drawables;
+using AndroidX.Lifecycle;
 namespace WMS
 {
     [Activity(Label = "UnfinishedTakeoversView", ScreenOrientation = ScreenOrientation.Portrait)]
@@ -53,7 +54,7 @@ namespace WMS
         private List<UnfinishedTakeoverList> dataSource = new List<UnfinishedTakeoverList>();
         private GestureDetector gestureDetector;
         private string finalString;
-        private int selected;
+        private int selected = 0;
         private int selectedItem;
 
         protected async override void OnCreate(Bundle savedInstanceState)
@@ -64,11 +65,14 @@ namespace WMS
             {
                 RequestedOrientation = ScreenOrientation.Landscape;
                 SetContentView(Resource.Layout.UnfinishedTakeoversViewTablet);
-                dataList = FindViewById<ListView>(Resource.Id.dataList);
 
+
+
+                dataList = FindViewById<ListView>(Resource.Id.dataList);
                 dataAdapter = UniversalAdapterHelper.GetUnfinishedTakeover(this, dataSource);
                 dataList.Adapter = dataAdapter;
-
+                dataList.ItemClick += DataList_ItemClick;
+                dataList.ItemLongClick += DataList_ItemLongClick;
 
             }
             else
@@ -76,6 +80,7 @@ namespace WMS
                 RequestedOrientation = ScreenOrientation.Portrait;
                 SetContentView(Resource.Layout.UnfinishedTakeoversView);
             }
+
             AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
             var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
             _customToolbar.SetNavigationIcon(settings.RootURL + "/Services/Logo");
@@ -122,25 +127,38 @@ namespace WMS
             Application.Context.RegisterReceiver(_broadcastReceiver,
             new IntentFilter(ConnectivityManager.ConnectivityAction));
         }
+
+        private void DataList_ItemClick(object? sender, AdapterView.ItemClickEventArgs e)
+        {
+            selected = e.Position;
+            Select(selected);
+            selectedItem = selected;
+        }
+        private void Select(int postionOfTheItemInTheList)
+        {
+            if (positions != null)
+            {
+                selected = postionOfTheItemInTheList;
+                displayedPosition = postionOfTheItemInTheList;
+                if (displayedPosition >= positions.Items.Count) { displayedPosition = 0; }
+                FillDisplayedItem();
+            }
+        }
+
+        private void DataList_ItemLongClick(object? sender, AdapterView.ItemLongClickEventArgs e)
+        {
+            var index = e.Position;
+            DeleteFromTouch(index);
+        }
+
         public bool IsOnline()
         {
             var cm = (ConnectivityManager)GetSystemService(ConnectivityService);
             return cm.ActiveNetworkInfo == null ? false : cm.ActiveNetworkInfo.IsConnected;
 
         }
-        private void DataList_ItemSelected(object sender, AdapterView.ItemSelectedEventArgs e)
-        {
-            var position = e.Position;
-            dataList.RequestFocusFromTouch();
-            dataList.SetItemChecked(position, true);
-            dataList.SetSelection(position);
-        }
-        private void DataList_ItemLongClick(object sender, AdapterView.ItemLongClickEventArgs e)
-        {
-            var index = e.Position;
-            DeleteFromTouch(index);
+      
 
-        }
 
         private void DeleteFromTouch(int index)
         {
@@ -246,7 +264,10 @@ namespace WMS
                         NumberOfPositions = item.GetInt("ItemCount").ToString(),
                         // tbItemCount.Text = item.GetInt("ItemCount").ToString();
                     });
+
                     dataAdapter.NotifyDataSetChanged();
+                    UniversalAdapterHelper.SelectPositionProgramaticaly(dataList, 0);
+
                 }
                 else
                 {
@@ -454,10 +475,7 @@ namespace WMS
 
                     dataList.CheckedItemPositions.Clear();
                     dataList.ClearChoices();
-                    dataList.RequestFocusFromTouch();
-                    dataList.SetSelection(selected);
-
-                    dataList.SetItemChecked(selected, true);
+                    UniversalAdapterHelper.SelectPositionProgramaticaly(dataList, selected);
                 }
                 else
                 {
@@ -465,9 +483,8 @@ namespace WMS
                     dataList.CheckedItemPositions.Clear();
                     dataList.ClearChoices();
                     selected = 0;
-                    dataList.RequestFocusFromTouch();
-                    dataList.SetSelection(selected);
-                    dataList.SetItemChecked(selected, true);
+                    UniversalAdapterHelper.SelectPositionProgramaticaly(dataList, selected);
+
 
                 }
 
@@ -514,71 +531,78 @@ namespace WMS
 
         private void FillDisplayedItem()
         {
-            if ((positions != null) && (positions.Items.Count > 0))
+            try
             {
-                lbInfo.Text = $"{Resources.GetString(Resource.String.s12)} (" + (displayedPosition + 1).ToString() + "/" + positions.Items.Count + ")";
-                var item = positions.Items[displayedPosition];
+                if ((positions != null) && (positions.Items.Count > 0))
+                {
+                    lbInfo.Text = $"{Resources.GetString(Resource.String.s12)} (" + (displayedPosition + 1).ToString() + "/" + positions.Items.Count + ")";
+                    var item = positions.Items[displayedPosition];
 
-                tbBusEvent.Text = item.GetString("DocumentTypeName");
-                tbOrder.Text = item.GetString("LinkKey");
-                tbSupplier.Text = item.GetString("Issuer");
-                tbItemCount.Text = item.GetInt("ItemCount").ToString();
-                tbCreatedBy.Text = item.GetString("ClerkName");
+                    tbBusEvent.Text = item.GetString("DocumentTypeName");
+                    tbOrder.Text = item.GetString("LinkKey");
+                    tbSupplier.Text = item.GetString("Issuer");
+                    tbItemCount.Text = item.GetInt("ItemCount").ToString();
+                    tbCreatedBy.Text = item.GetString("ClerkName");
 
-                var created = item.GetDateTime("DateInserted");
-                tbCreatedAt.Text = created == null ? "" : ((DateTime)created).ToString("dd.MM.yyyy");
+                    var created = item.GetDateTime("DateInserted");
+                    tbCreatedAt.Text = created == null ? "" : ((DateTime)created).ToString("dd.MM.yyyy");
 
-                tbBusEvent.Enabled = false;
-                tbOrder.Enabled = false;
-                tbSupplier.Enabled = false;
-                tbItemCount.Enabled = false;
-                tbCreatedBy.Enabled = false;
-                tbCreatedAt.Enabled = false;
-
-
-                tbBusEvent.SetTextColor(Android.Graphics.Color.Black);
-                tbOrder.SetTextColor(Android.Graphics.Color.Black);
-                tbSupplier.SetTextColor(Android.Graphics.Color.Black);
-                tbItemCount.SetTextColor(Android.Graphics.Color.Black);
-                tbCreatedBy.SetTextColor(Android.Graphics.Color.Black);
-                tbCreatedAt.SetTextColor(Android.Graphics.Color.Black);
+                    tbBusEvent.Enabled = false;
+                    tbOrder.Enabled = false;
+                    tbSupplier.Enabled = false;
+                    tbItemCount.Enabled = false;
+                    tbCreatedBy.Enabled = false;
+                    tbCreatedAt.Enabled = false;
 
 
-                btNext.Enabled = true;
-                btDelete.Enabled = true;
-                btFinish.Enabled = true;
+                    tbBusEvent.SetTextColor(Android.Graphics.Color.Black);
+                    tbOrder.SetTextColor(Android.Graphics.Color.Black);
+                    tbSupplier.SetTextColor(Android.Graphics.Color.Black);
+                    tbItemCount.SetTextColor(Android.Graphics.Color.Black);
+                    tbCreatedBy.SetTextColor(Android.Graphics.Color.Black);
+                    tbCreatedAt.SetTextColor(Android.Graphics.Color.Black);
+
+
+                    btNext.Enabled = true;
+                    btDelete.Enabled = true;
+                    btFinish.Enabled = true;
+                }
+                else
+                {
+                    lbInfo.Text = $"{Resources.GetString(Resource.String.s331)}";
+
+                    tbBusEvent.Text = "";
+                    tbOrder.Text = "";
+                    tbSupplier.Text = "";
+                    tbItemCount.Text = "";
+                    tbCreatedBy.Text = "";
+                    tbCreatedAt.Text = "";
+
+                    tbBusEvent.Enabled = false;
+                    tbOrder.Enabled = false;
+                    tbSupplier.Enabled = false;
+                    tbItemCount.Enabled = false;
+                    tbCreatedBy.Enabled = false;
+                    tbCreatedAt.Enabled = false;
+
+
+
+
+                    tbBusEvent.SetTextColor(Android.Graphics.Color.Black);
+                    tbOrder.SetTextColor(Android.Graphics.Color.Black);
+                    tbSupplier.SetTextColor(Android.Graphics.Color.Black);
+                    tbItemCount.SetTextColor(Android.Graphics.Color.Black);
+                    tbCreatedBy.SetTextColor(Android.Graphics.Color.Black);
+                    tbCreatedAt.SetTextColor(Android.Graphics.Color.Black);
+
+                    btNext.Enabled = false;
+                    btDelete.Enabled = false;
+                    btFinish.Enabled = false;
+                }
             }
-            else
-            {
-                lbInfo.Text = $"{Resources.GetString(Resource.String.s331)}";
-
-                tbBusEvent.Text = "";
-                tbOrder.Text = "";
-                tbSupplier.Text = "";
-                tbItemCount.Text = "";
-                tbCreatedBy.Text = "";
-                tbCreatedAt.Text = "";
-
-                tbBusEvent.Enabled = false;
-                tbOrder.Enabled = false;
-                tbSupplier.Enabled = false;
-                tbItemCount.Enabled = false;
-                tbCreatedBy.Enabled = false;
-                tbCreatedAt.Enabled = false;
-
-
-
-
-                tbBusEvent.SetTextColor(Android.Graphics.Color.Black);
-                tbOrder.SetTextColor(Android.Graphics.Color.Black);
-                tbSupplier.SetTextColor(Android.Graphics.Color.Black);
-                tbItemCount.SetTextColor(Android.Graphics.Color.Black);
-                tbCreatedBy.SetTextColor(Android.Graphics.Color.Black);
-                tbCreatedAt.SetTextColor(Android.Graphics.Color.Black);
-
-                btNext.Enabled = false;
-                btDelete.Enabled = false;
-                btFinish.Enabled = false;
+            catch { 
+                // Not loaded yet.
+                return; 
             }
         }
 

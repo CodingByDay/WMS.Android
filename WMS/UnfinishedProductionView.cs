@@ -65,9 +65,9 @@ namespace WMS
                 SetContentView(Resource.Layout.UnfinishedProductionViewTablet);
 
                 listData = FindViewById<ListView>(Resource.Id.listData);
-
                 dataAdapter = UniversalAdapterHelper.GetUnfinishedProduction(this, data);
                 listData.Adapter = dataAdapter;
+   
 
             }
             else
