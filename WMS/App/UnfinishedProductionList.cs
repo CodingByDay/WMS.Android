@@ -1,6 +1,6 @@
 ﻿namespace WMS.App
 {
-    internal class UnfinishedProductionList
+    public class UnfinishedProductionList
     {
         public string WorkOrder { get; set; }
 

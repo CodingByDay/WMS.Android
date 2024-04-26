@@ -197,9 +197,7 @@ namespace WMS
                 }
 
             }
-            TakeoverDocumentAdapter adapter = new TakeoverDocumentAdapter(this, dataDocuments);
-            listData.Adapter = null;
-            listData.Adapter = adapter; ;
+
         }
         private async void FillTheList()
         {

@@ -1,6 +1,6 @@
 ﻿namespace WMS.App
 {
-    internal class UnfinishedIssuedList
+    public class UnfinishedIssuedList
     {
         public string Document { get; set; }
 

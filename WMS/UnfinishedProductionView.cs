@@ -23,6 +23,7 @@ using AndroidX.AppCompat.App;
 using AlertDialog = Android.App.AlertDialog;
 using Android.Graphics.Drawables;
 using Android.Graphics;
+using System.Data.Common;
 namespace WMS
 {
     [Activity(Label = "UnfinishedProductionView", ScreenOrientation = ScreenOrientation.Portrait)]
@@ -49,6 +50,7 @@ namespace WMS
         private Button btnYes;
         private Button btnNo;
         private ListView listData;
+        private UniversalAdapter<UnfinishedProductionList> dataAdapter;
         private UnfinishedProductionAdapter adapter;
         private List<UnfinishedProductionList> data = new List<UnfinishedProductionList>();
         private int selected;
@@ -63,12 +65,10 @@ namespace WMS
                 RequestedOrientation = ScreenOrientation.Landscape;
                 SetContentView(Resource.Layout.UnfinishedProductionViewTablet);
 
-                listData = FindViewById<ListView>(Resource.Id.tbClient);
-                adapter = new UnfinishedProductionAdapter(this, data);
-                listData.Adapter = adapter;
-                listData.ItemClick += ListData_ItemClick;
-                listData.ItemLongClick += ListData_ItemLongClick;
+                listData = FindViewById<ListView>(Resource.Id.listData);
 
+                dataAdapter = UniversalAdapterHelper.GetUnfinishedProduction(this, data);
+                listData.Adapter = dataAdapter;
 
             }
             else
@@ -105,7 +105,6 @@ namespace WMS
             if (settings.tablet)
             {
                 FillItemsList();
-                listData.PerformItemClick(listData, 0, 0);
             }
             var _broadcastReceiver = new NetworkStatusBroadcastReceiver();
             _broadcastReceiver.ConnectionStatusChanged += OnNetworkStatusChanged;
@@ -133,23 +132,7 @@ namespace WMS
                 FillDisplayedItem();
             }
 
-        private void ListData_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
-        {
-            selected = e.Position;
-            Select(selected);
-            selectedItem = selected;
-            listData.RequestFocusFromTouch();
-            listData.SetItemChecked(selected, true);
-            listData.SetSelection(selected);
-
-        }
-
-        private void ListData_ItemLongClick(object sender, AdapterView.ItemLongClickEventArgs e)
-        {
-            var index = e.Position;
-            DeleteFromTouch(index);
-
-        }
+     
 
 
         private void FillItemsList()

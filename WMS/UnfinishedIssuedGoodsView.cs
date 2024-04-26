@@ -25,6 +25,8 @@ using AndroidX.AppCompat.App;
 using AlertDialog = Android.App.AlertDialog;
 using Android.Graphics.Drawables;
 using Android.Graphics;
+using AndroidX.Lifecycle;
+using System.Data.Common;
 namespace WMS
 {
     [Activity(Label = "UnfinishedIssuedGoodsView", ScreenOrientation = ScreenOrientation.Portrait)]
@@ -55,53 +57,9 @@ namespace WMS
         private List<UnfinishedIssuedList> data = new List<UnfinishedIssuedList>();
         private int selected;
         private int selectedItem;
+        private ListView? listData;
+        private UniversalAdapter<UnfinishedIssuedList> dataAdapter;
 
-        private void IssuedData_ItemLongClick(object sender, AdapterView.ItemLongClickEventArgs e)
-        {
-            var index = e.Position;
-            DeleteFromTouch(index);
-        }
-
-        private void IssuedData_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
-        {
-            selected = e.Position;
-            Select(selected);
-            selectedItem = selected;
-            issuedData.RequestFocusFromTouch();
-            issuedData.SetItemChecked(selected, true);
-            issuedData.SetSelection(selected);
-        }
-
-        private void Select(int postionOfTheItemInTheList)
-        {
-            displayedPosition = postionOfTheItemInTheList;
-            if (displayedPosition >= positions.Items.Count) { displayedPosition = 0; }
-            FillDisplayedItem();
-        }
-
-
-        private void DeleteFromTouch(int index)
-        {
-            popupDialog = new Dialog(this);
-            popupDialog.SetContentView(Resource.Layout.YesNoPopUp);
-            popupDialog.Window.SetSoftInputMode(SoftInput.AdjustResize);
-            popupDialog.Show();
-            popupDialog.Window.SetLayout(LayoutParams.MatchParent, LayoutParams.WrapContent);
-            popupDialog.Window.SetBackgroundDrawable(new ColorDrawable(Color.ParseColor("#081a45")));
-
-            // Access Popup layout fields like below
-            btnYes = popupDialog.FindViewById<Button>(Resource.Id.btnYes);
-            btnNo = popupDialog.FindViewById<Button>(Resource.Id.btnNo);
-            btnYes.Click += (e, ev) => { Yes(index); };
-            btnNo.Click += (e, ev) => { No(index); };
-
-        }
-
-        private void No(int index)
-        {
-            popupDialog.Dismiss();
-            popupDialog.Hide();
-        }
         private void FillItemsList()
         {
             for (int i = 0; i < positions.Items.Count; i++)
@@ -193,11 +151,9 @@ namespace WMS
                 RequestedOrientation = ScreenOrientation.Landscape;
                 SetContentView(Resource.Layout.UnfinishedIssuedGoodsViewTablet);
 
-                issuedData = FindViewById<ListView>(Resource.Id.issuedData);
-                adapter = new UnfinishedIssuedAdapter(this, data);
-                issuedData.Adapter = adapter;
-                issuedData.ItemClick += IssuedData_ItemClick;
-                issuedData.ItemLongClick += IssuedData_ItemLongClick;
+                listData = FindViewById<ListView>(Resource.Id.listData);
+                dataAdapter = UniversalAdapterHelper.GetUnfinishedIssued(this, data);
+                listData.Adapter = dataAdapter;
 
             }
             else

@@ -1,11 +1,7 @@
 ﻿namespace WMS.App
 {
-    internal class UnfinishedInterWarehouseList
+    public class UnfinishedInterWarehouseList
     {
-        /// <summary>
-        /// List for unfinished Interwarehouse adapter...
-        /// </summary>
-
         public string Document { get; set; }
         public string CreatedBy { get; set; }
 

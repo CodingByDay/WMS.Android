@@ -23,6 +23,8 @@ using AndroidX.AppCompat.App;
 using AlertDialog = Android.App.AlertDialog;
 using Android.Graphics.Drawables;
 using Android.Graphics;
+using AndroidX.Lifecycle;
+using System.Data.Common;
 namespace WMS
 {
     [Activity(Label = "UnfinishedInterWarehouseView", ScreenOrientation = ScreenOrientation.Portrait)]
@@ -49,9 +51,11 @@ namespace WMS
         private GestureDetector gestureDetector;
         private ListView dataList;
         private UnfinishedInterwarehouseAdapter adapter;
-        private List<UnfinishedInterWarehouseList> dataMapping = new List<UnfinishedInterWarehouseList>();
+        private List<UnfinishedInterWarehouseList> data = new List<UnfinishedInterWarehouseList>();
         private int selected;
         private int selectedItem;
+        private ListView? listData;
+        private UniversalAdapter<UnfinishedInterWarehouseList> dataAdapter;
 
         protected async override void OnCreate(Bundle savedInstanceState)
         {
@@ -62,11 +66,10 @@ namespace WMS
             {
                 RequestedOrientation = ScreenOrientation.Landscape;
                 SetContentView(Resource.Layout.UnfinishedInterWarehouseViewTablet);
-                dataList = FindViewById<ListView>(Resource.Id.dataList);
-                adapter = new UnfinishedInterwarehouseAdapter(this, dataMapping);
-                dataList.Adapter = adapter;
-                dataList.ItemClick += DataList_ItemClick;
-                dataList.ItemLongClick += DataList_ItemLongClick;
+
+                listData = FindViewById<ListView>(Resource.Id.listData);
+                dataAdapter = UniversalAdapterHelper.GetUnfinishedInterwarehouse(this, data);
+                listData.Adapter = dataAdapter;
             }
             else
             {
@@ -139,7 +142,7 @@ namespace WMS
                     tbCreatedAt.Text = created == null ? "" : ((DateTime)created).ToString("dd.MM.yyyy");
 
                     var date = created == null ? "" : ((DateTime)created).ToString("dd.MM.yyyy");
-                    dataMapping.Add(new UnfinishedInterWarehouseList
+                    data.Add(new UnfinishedInterWarehouseList
                     {
                         Document = item.GetString("DocumentTypeName"),
                         CreatedBy = item.GetString("ClerkName"),
@@ -173,7 +176,7 @@ namespace WMS
                     {
                         positions = null;
                         await LoadPositions();
-                        dataMapping.Clear();
+                        data.Clear();
                         FillItemsList();
                         popupDialog.Dismiss();
                         popupDialog.Hide();
@@ -394,7 +397,7 @@ namespace WMS
 
                         if (settings.tablet)
                         {
-                            dataMapping.Clear();
+                            data.Clear();
                             FillItemsList();
                         }
                         popupDialog.Dismiss();

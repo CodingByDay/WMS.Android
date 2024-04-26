@@ -170,7 +170,6 @@
     <None Remove="Resources\layout\UnfinishedProduction.xml" />
     <None Remove="Resources\layout\UnfinishedProductionView.xml" />
     <None Remove="Resources\layout\UnfinishedProductionViewTablet.xml" />
-    <None Remove="Resources\layout\UnfinishedTakeover.xml" />
     <None Remove="Resources\layout\UnfinishedTakeoversView.xml" />
     <None Remove="Resources\layout\UnfinishedTakeoversViewTablet.xml" />
     <None Remove="Resources\layout\update.xml" />

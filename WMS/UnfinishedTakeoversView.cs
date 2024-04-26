@@ -107,7 +107,6 @@ namespace WMS
             if (settings.tablet)
             {
                 FillItemsList();
-                dataList.PerformItemClick(dataList, 0, 0);
             }
 
             // Try to get the bitmap
