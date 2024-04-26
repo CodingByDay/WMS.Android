@@ -30,6 +30,7 @@ using static EventBluetooth;
 using Exception = System.Exception;
 using AndroidX.AppCompat.App;
 using Android.Content.PM;
+using System.Data.Common;
 
 namespace WMS
 {
@@ -69,6 +70,7 @@ namespace WMS
         private ApiResultSet result;
         private NameValueObjectList NameValueObjectVariableList;
         private ListView listData;
+        private UniversalAdapter<Trail> dataAdapter;
         private AdapterTrail trailAdapter;
 
         public override bool OnKeyDown(Keycode keyCode, KeyEvent e)
@@ -362,10 +364,7 @@ namespace WMS
                             listener = new MyOnItemLongClickListener(this, adapterObj.returnData(), adapterObj);
                             ivTrail.OnItemLongClickListener = listener;
 
-                            if (settings.tablet)
-                            {
-                                fillItems(trails);
-                            }
+                          
 
                             // Bluetooth
                            
@@ -404,6 +403,8 @@ namespace WMS
                 RequestedOrientation = ScreenOrientation.Landscape;
                 SetContentView(Resource.Layout.IssuedGoodsIdentEntryWithTrailTablet);
                 listData = FindViewById<ListView>(Resource.Id.listData);
+                dataAdapter = UniversalAdapterHelper.GetIssueGoodsIdentWithTrail(this, trails);
+                listData.Adapter = dataAdapter;
 
             }
             else
@@ -485,11 +486,7 @@ namespace WMS
         }
 
 
-        private async void fillItems(List<Trail> data)
-        {
-            trailAdapter = new AdapterTrail(this, data);
-            listData.Adapter = trailAdapter;
-        }
+      
 
         public class MyOnItemLongClickListener : Java.Lang.Object, AdapterView.IOnItemLongClickListener
         {

@@ -8,6 +8,7 @@ using AndroidX.AppCompat.App;
 using BarCode2D_Receiver;
 using Microsoft.AppCenter.Crashes;
 using Newtonsoft.Json;
+using System.Data.Common;
 using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
 using WMS.App;
@@ -39,6 +40,7 @@ namespace WMS
         private List<string> savedIdents;
         private CustomAutoCompleteAdapter<string> tbIdentAdapter;
         private ListView listData;
+        private UniversalAdapter<CheckStockAddonList> dataAdapter;
         private List<CheckStockAddonList> data = new List<CheckStockAddonList>();
 
         public void GetBarcode(string barcode)
@@ -163,8 +165,8 @@ namespace WMS
                 RequestedOrientation = ScreenOrientation.Landscape;
                 SetContentView(Resource.Layout.CheckStockTablet);
                 listData = FindViewById<ListView>(Resource.Id.listData);
-                CheckStockAddonAdapter adapter = new CheckStockAddonAdapter(this, data);
-                listData.Adapter = adapter;
+                dataAdapter = UniversalAdapterHelper.GetCheckStock(this, data);
+                listData.Adapter = dataAdapter;
             }
             else
             {

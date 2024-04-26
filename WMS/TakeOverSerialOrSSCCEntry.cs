@@ -30,6 +30,7 @@ using Newtonsoft.Json;
 using System;
 using Java.IO;
 using WMS.External;
+using System.Data.Common;
 namespace WMS
 {
     [Activity(Label = "TakeOverSerialOrSSCCEntry", ScreenOrientation = ScreenOrientation.Portrait)]
@@ -69,11 +70,11 @@ namespace WMS
         private Button? btnNoConfirm;
         private ProgressDialogClass progress;
         private ListView listData;
+        private UniversalAdapter<TakeoverDocument> dataAdapter;
         private List<TakeoverDocument> items = new List<TakeoverDocument>();
-        private List<TakeOverSerialOrSSCCEntryList> data = new List<TakeOverSerialOrSSCCEntryList>();
         private NameValueObjectList positions;
         private string tempUnit;
-        private List<TakeoverDocument> dataDocuments = new List<TakeoverDocument>();
+        private List<TakeoverDocument> data = new List<TakeoverDocument>();
 
         protected async override void OnCreate(Bundle savedInstanceState)
         {
@@ -83,7 +84,9 @@ namespace WMS
             {
                 RequestedOrientation = ScreenOrientation.Landscape;
                 SetContentView(Resource.Layout.TakeOverSerialOrSSCCEntryTablet);
-                listData = FindViewById<ListView>(Resource.Id.listData);               
+                listData = FindViewById<ListView>(Resource.Id.listData);
+                dataAdapter = UniversalAdapterHelper.GetTakeoverSerialOrSSCCEntry(this, data);
+                listData.Adapter = dataAdapter;
             }
             else
             {

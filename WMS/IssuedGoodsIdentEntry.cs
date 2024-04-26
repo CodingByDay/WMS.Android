@@ -25,6 +25,7 @@ using AndroidX.AppCompat.App;
 using AlertDialog = Android.App.AlertDialog;
 using Microsoft.AppCenter.Analytics;
 using AndroidX.Lifecycle;
+using System.Data.Common;
 namespace WMS
 {
     [Activity(Label = "IssuedGoodsIdentEntry", ScreenOrientation = ScreenOrientation.Portrait)]
@@ -53,6 +54,7 @@ namespace WMS
         private CustomAutoCompleteAdapter<string> tbIdentAdapter;
         private List<string> savedIdents;
         private ListView? listData;
+        private UniversalAdapter<OpenOrder> dataAdapter;
         private OpenOrderAdapter orderAdapter;
 
         private void Sound()
@@ -153,7 +155,6 @@ namespace WMS
 
                                 if(settings.tablet)
                                 {
-                                    fillItems(orders);
                                 }
                             }
                         }
@@ -270,6 +271,8 @@ namespace WMS
                 RequestedOrientation = ScreenOrientation.Landscape;
                 SetContentView(Resource.Layout.IssuedGoodsIdentEntryTablet);
                 listData = FindViewById<ListView>(Resource.Id.listData);
+                dataAdapter = UniversalAdapterHelper.GetIssuedGoodsIdentEntry(this, orders);
+                listData.Adapter = dataAdapter;
             }
             else
             {
@@ -337,11 +340,7 @@ namespace WMS
         }
 
 
-        private async void fillItems(List<OpenOrder> data)
-        {
-            orderAdapter = new OpenOrderAdapter(this, data);
-            listData.Adapter = orderAdapter;
-        }
+      
 
         public bool IsOnline()
         {

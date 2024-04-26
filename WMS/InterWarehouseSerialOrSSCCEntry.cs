@@ -32,6 +32,7 @@ using Org.Xml.Sax;
 using Microsoft.AppCenter.Analytics;
 using System;
 using Com.Jsibbold.Zoomage;
+using System.Data.Common;
 
 namespace WMS
 {
@@ -68,6 +69,7 @@ namespace WMS
         private Button? btnNoConfirm;
         private ProgressDialogClass progress;
         private ListView listData;
+        private UniversalAdapter<LocationClass> dataAdapter;
         private AdapterLocation adapterNew;
         private List<LocationClass> items = new List<LocationClass>();
         private int selected;
@@ -88,9 +90,8 @@ namespace WMS
                 RequestedOrientation = ScreenOrientation.Landscape;
                 SetContentView(Resource.Layout.InterWarehouseSerialOrSSCCEntryTablet);
                 listData = FindViewById<ListView>(Resource.Id.listData);
-                adapterNew = new AdapterLocation(this, items);
-                listData.Adapter = adapterNew;
-                listData.ItemClick += ListData_ItemClick;
+                dataAdapter = UniversalAdapterHelper.GetInterWarehouseSerialOrSSCCEntry(this, items);
+                listData.Adapter = dataAdapter;
                 imagePNG = FindViewById<ImageView>(Resource.Id.imagePNG);
                 imagePNG.Visibility = ViewStates.Invisible;
             }
@@ -208,9 +209,7 @@ namespace WMS
 
             }
 
-            listData.Adapter = null;
-            AdapterLocation adapter = new AdapterLocation(this, items);
-            listData.Adapter = adapter;
+       
         }
 
         private void ListData_ItemClick(object sender, AdapterView.ItemClickEventArgs e)

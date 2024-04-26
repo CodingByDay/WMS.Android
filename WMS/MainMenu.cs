@@ -25,6 +25,8 @@ using AndroidX.AppCompat.App;
 using AlertDialog = Android.App.AlertDialog;
 using Android.Graphics.Drawables;
 using Android.Graphics;
+using AndroidX.Lifecycle;
+using System.Data.Common;
 namespace WMS
 {
     [Activity(Label = "MainMenu", ScreenOrientation = ScreenOrientation.Portrait)]
@@ -52,6 +54,7 @@ namespace WMS
         private Button? buttonRapidTakeover;
         private ListView rapidListview;
         private List<CleanupLocation> dataCleanup;
+        private UniversalAdapter<CleanupLocation> dataAdapter;
         private CleanupAdapter cleanupAdapter;
 
         protected override async void OnCreate(Bundle savedInstanceState)
@@ -70,8 +73,8 @@ namespace WMS
 
                 rapidListview = FindViewById<ListView>(Resource.Id.rapidListview);
                 dataCleanup = await FillTheCleanupList();
-                cleanupAdapter = new CleanupAdapter(this, dataCleanup);
-                rapidListview.Adapter = cleanupAdapter;
+                dataAdapter = UniversalAdapterHelper.GetMainMenu(this, dataCleanup);
+                rapidListview.Adapter = dataAdapter;
             }
             else
             {

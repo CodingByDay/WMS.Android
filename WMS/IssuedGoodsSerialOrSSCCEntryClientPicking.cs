@@ -33,6 +33,7 @@ using WebApp = TrendNET.WMS.Device.Services.WebApp;
 using AndroidX.AppCompat.App;
 using AlertDialog = Android.App.AlertDialog;
 using Android.Graphics.Drawables;
+using System.Data.Common;
 namespace WMS
 {
     [Activity(Label = "IssuedGoodsSerialOrSSCCEntryClientPicking", ScreenOrientation = ScreenOrientation.Portrait)]
@@ -107,6 +108,7 @@ namespace WMS
         private bool createPositionAllowed = false;
         private double stock;
         private ListView listData;
+        private UniversalAdapter<LocationClass> dataAdapter;
         private AdapterLocation lcAdapter;
 
         protected override async void OnCreate(Bundle savedInstanceState)
@@ -120,7 +122,9 @@ namespace WMS
                 RequestedOrientation = ScreenOrientation.Landscape;
                 SetContentView(Resource.Layout.IssuedGoodsSerialOrSSCCEntryClientPickingTablet);
                 listData = FindViewById<ListView>(Resource.Id.listData);
-            
+                dataAdapter = UniversalAdapterHelper.GetIssuedGoodsSerialOrSSCCEntryClientPicking(this, items);
+                listData.Adapter = dataAdapter;
+
             }
             else
             {
@@ -193,8 +197,6 @@ namespace WMS
             var code = openIdent.GetString("Code");
             var wh = moveHead.GetString("Wharehouse");
             items = await AdapterStore.getStockForWarehouseAndIdent(code, wh);
-            lcAdapter = new AdapterLocation(this, items);
-            listData.Adapter = lcAdapter;
         }
 
         private void BtOverview_Click(object? sender, EventArgs e)

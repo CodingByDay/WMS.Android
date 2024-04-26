@@ -534,7 +534,7 @@ namespace WMS.App
         }
 
 
-        public static UniversalAdapter<IssuedEnteredPositionViewList> GetIssuedGoodsIdentEntry(Context context, List<IssuedEnteredPositionViewList> data)
+        public static UniversalAdapter<IssuedEnteredPositionViewList> GetIssuedGoodsEnteredPositionsView(Context context, List<IssuedEnteredPositionViewList> data)
         {
 
             var adapter = new UniversalAdapter<IssuedEnteredPositionViewList>(context, data,

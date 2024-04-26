@@ -28,6 +28,7 @@ using TrendNET.WMS.Device.Services;
 using AndroidX.AppCompat.App;
 using AlertDialog = Android.App.AlertDialog;
 using Microsoft.AppCenter.Analytics;
+using System.Data.Common;
 namespace WMS
 {
     [Activity(Label = "TakeOverIdentEntry", ScreenOrientation = ScreenOrientation.Portrait)]
@@ -59,6 +60,7 @@ namespace WMS
         private CustomAutoCompleteAdapter<string> tbIdentAdapter;
         private List<OpenOrder> orders = new List<OpenOrder>();
         private ListView listData;
+        private UniversalAdapter<TakeOverIdentList> dataAdapter;
         private TakeOverIdentAdapter adapter;
         private List<TakeOverIdentList> data = new List<TakeOverIdentList>();
 
@@ -71,9 +73,8 @@ namespace WMS
                 RequestedOrientation = ScreenOrientation.Landscape;
                 SetContentView(Resource.Layout.TakeOverIdentEntryTablet);
                 listData = FindViewById<ListView>(Resource.Id.listData);
-                adapter = new TakeOverIdentAdapter(this, data);
-                listData.Adapter = adapter;
-                listData.ItemClick += ListData_ItemClick;
+                dataAdapter = UniversalAdapterHelper.GetTakeoverIdentEntry(this, data);
+                listData.Adapter = dataAdapter;
 
             }
             else

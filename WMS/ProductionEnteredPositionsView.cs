@@ -23,6 +23,7 @@ using AlertDialog = Android.App.AlertDialog;
 using AndroidX.AppCompat.App;
 using Android.Graphics.Drawables;
 using Android.Graphics;
+using System.Data.Common;
 
 namespace WMS
 {
@@ -56,6 +57,7 @@ namespace WMS
         private Button btnYesConfirm;
         private Button btnNoConfirm;
         private ListView listData;
+        private UniversalAdapter<ProductionEnteredPositionList> dataAdapter;
         private int selected;
         private int selectedItem;
         private string tempUnit;
@@ -71,8 +73,8 @@ namespace WMS
                 RequestedOrientation = ScreenOrientation.Landscape;
                 SetContentView(Resource.Layout.ProductionEnteredPositionsViewTablet);
                 listData = FindViewById<ListView>(Resource.Id.listData);
-                listData.ItemLongClick += ListData_ItemLongClick;
-                listData.ItemClick += ListData_ItemClick;
+                dataAdapter = UniversalAdapterHelper.GetProductionEnteredPositionsView(this, data);
+                listData.Adapter = dataAdapter;
                 ProductionEnteredPositionViewAdapter adapter = new ProductionEnteredPositionViewAdapter(this, data);
                 listData.Adapter = adapter;
             }
@@ -290,9 +292,6 @@ namespace WMS
 
             }
 
-            listData.Adapter = null;
-            ProductionEnteredPositionViewAdapter adapter = new ProductionEnteredPositionViewAdapter(this, data);
-            listData.Adapter = adapter;
         }
 
         public bool IsOnline()

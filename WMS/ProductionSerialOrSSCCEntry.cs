@@ -27,6 +27,7 @@ using Android.Graphics.Drawables;
 using Android.Graphics;
 using Android.Mtp;
 using Com.Jsibbold.Zoomage;
+using System.Data.Common;
 namespace WMS
 {
     [Activity(Label = "ProductionSerialOrSSCCEntry", ScreenOrientation = ScreenOrientation.Portrait)]
@@ -50,6 +51,7 @@ namespace WMS
         SoundPool soundPool;
         int soundPoolId;
         private ListView listData;
+        private UniversalAdapter<ProductionSerialOrSSCCList> dataAdapter;
         private ImageView imagePNG;
 
         public override bool OnKeyDown(Keycode keyCode, KeyEvent e)
@@ -519,9 +521,8 @@ namespace WMS
                 RequestedOrientation = ScreenOrientation.Landscape;
                 SetContentView(Resource.Layout.ProductionSerialOrSSCCEntryTablet);
                 listData = FindViewById<ListView>(Resource.Id.listData);
-                ProductionSerialOrSSCCAdapter adapter = new ProductionSerialOrSSCCAdapter(this, data);
-                listData.Adapter = adapter;
-                listData.ItemClick += ListData_ItemClick;
+                dataAdapter = UniversalAdapterHelper.GetProductionSerialOrSSCCEntry(this, data);
+                listData.Adapter = dataAdapter;
                 imagePNG = FindViewById<ImageView>(Resource.Id.imagePNG);
 
             }

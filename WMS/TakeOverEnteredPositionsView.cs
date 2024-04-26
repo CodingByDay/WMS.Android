@@ -23,6 +23,8 @@ using AndroidX.AppCompat.App;
 using AlertDialog = Android.App.AlertDialog;
 using Android.Graphics.Drawables;
 using Android.Graphics;
+using AndroidX.Lifecycle;
+using System.Data.Common;
 namespace WMS
 {
     [Activity(Label = "TakeOverEnteredPositionsView", ScreenOrientation = ScreenOrientation.Portrait)]
@@ -52,6 +54,7 @@ namespace WMS
         private Button btnYesConfirm;
         private Button btnNoConfirm;
         private ListView dataList;
+        private UniversalAdapter<TakeOverEnteredPositionsViewListItems> dataAdapter;
         private List<TakeOverEnteredPositionsViewListItems> data = new List<TakeOverEnteredPositionsViewListItems>();
         private int selected;
         private int selectedItem;
@@ -66,10 +69,8 @@ namespace WMS
                 RequestedOrientation = ScreenOrientation.Landscape;
                 SetContentView(Resource.Layout.TakeOverEnteredPositionsViewTablet);
                 dataList = FindViewById<ListView>(Resource.Id.dataList);
-                dataList.ItemLongClick += DataList_ItemLongClick;
-                dataList.ItemClick += DataList_ItemClick;
-                TakeOverEnteredPositionsViewAdapter adapter = new TakeOverEnteredPositionsViewAdapter(this, data);
-                dataList.Adapter = adapter;
+                dataAdapter = UniversalAdapterHelper.GetTakeOverEnteredPositionsView(this, data);
+                dataList.Adapter = dataAdapter;
             }
             else
             {
@@ -119,7 +120,6 @@ namespace WMS
             if (settings.tablet)
             {
                 fillList();
-                dataList.PerformItemClick(dataList, 0, 0);
             }
 
 

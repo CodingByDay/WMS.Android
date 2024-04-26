@@ -36,6 +36,8 @@ using Aspose.Words.Drawing;
 using Android.Graphics.Drawables;
 using Android.Renderscripts;
 using Com.Jsibbold.Zoomage;
+using AndroidX.Lifecycle;
+using System.Data.Common;
 
 namespace WMS
 {
@@ -109,6 +111,7 @@ namespace WMS
         private double serialOverflowQuantity = 0;
         private bool isProccessOrderless = false;
         private ListView listData;
+        private UniversalAdapter<LocationClass> dataAdapter;
         private ZoomageView? imagePNG;
         private List<LocationClass> items = new List<LocationClass>();
         private AdapterLocation lcAdapter;
@@ -277,6 +280,8 @@ namespace WMS
                 RequestedOrientation = ScreenOrientation.Landscape;
                 SetContentView(Resource.Layout.IssuedGoodsSerialOrSSCCEntryTablet);
                 listData = FindViewById<ListView>(Resource.Id.listData);
+                dataAdapter = UniversalAdapterHelper.GetIssuedGoodsSerialOrSSCCEntry(this, items);
+                listData.Adapter = dataAdapter;
                 imagePNG = FindViewById<ZoomageView>(Resource.Id.imagePNG);
                 imagePNG.Visibility = ViewStates.Invisible;
 
@@ -397,8 +402,7 @@ namespace WMS
             var code = openIdent.GetString("Code");
             var wh = moveHead.GetString("Wharehouse");
             items = await AdapterStore.getStockForWarehouseAndIdent(code, wh);
-            lcAdapter = new AdapterLocation(this, items);
-            listData.Adapter = lcAdapter;
+
         }
 
 

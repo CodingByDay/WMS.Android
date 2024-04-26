@@ -23,6 +23,7 @@ using AndroidX.AppCompat.App;
 using AlertDialog = Android.App.AlertDialog;
 using Android.Graphics.Drawables;
 using Android.Graphics;
+using System.Data.Common;
 namespace WMS
 {
     [Activity(Label = "InterWarehouseEnteredPositionsView", ScreenOrientation = ScreenOrientation.Portrait)]
@@ -48,6 +49,7 @@ namespace WMS
         private Button btnYes;
         private Button btnNo;
         private ListView listData;
+        private UniversalAdapter<InterWarehouseEnteredPositionsViewList> dataAdapter;
         private ProgressDialogClass progress;
         private Dialog popupDialogConfirm;
         private Button btnYesConfirm;
@@ -56,7 +58,7 @@ namespace WMS
         private int selectedItem;
         private string tempUnit;
         private InterWarehouseEnteredPositionViewAdapter adapter;
-        private List<InterWarehouseEnteredPositionsViewList> data;
+        private List<InterWarehouseEnteredPositionsViewList> data = new List<InterWarehouseEnteredPositionsViewList>();
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -66,9 +68,9 @@ namespace WMS
             {
                 RequestedOrientation = ScreenOrientation.Landscape;
                 SetContentView(Resource.Layout.InterWarehouseEnteredPositionsViewTablet);
-                listData.ItemLongClick += ListData_ItemLongClick;
-                adapter = new InterWarehouseEnteredPositionViewAdapter(this, data);
-                listData.Adapter = adapter;
+                listData = FindViewById<ListView>(Resource.Id.listData);
+                dataAdapter = UniversalAdapterHelper.GetInterWarehouseEnteredPositionsView(this, data);
+                listData.Adapter = dataAdapter;
             }
             else
             {

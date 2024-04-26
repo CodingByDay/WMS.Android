@@ -24,6 +24,7 @@ using AndroidX.AppCompat.App;
 using AlertDialog = Android.App.AlertDialog;
 using Android.Graphics.Drawables;
 using Android.Graphics;
+using System.Data.Common;
 namespace WMS
 {
     [Activity(Label = "IssuedGoodsEnteredPositionsView", ScreenOrientation = ScreenOrientation.Portrait)]
@@ -54,6 +55,7 @@ namespace WMS
         private Button btnNoConfirm;
         private string flow;
         private ListView listData;
+        private UniversalAdapter<IssuedEnteredPositionViewList> dataAdapter;
         private int selected;
         private int selectedItem;
         private string tempUnit;
@@ -74,10 +76,8 @@ namespace WMS
                 SetContentView(Resource.Layout.IssuedGoodsEnteredPositionsViewTablet);
 
                 listData = FindViewById<ListView>(Resource.Id.listData);
-                listData.ItemLongClick += ListData_ItemLongClick;
-                adapterX = new IssuedEnterAdapter(this, data);
-                listData.Adapter = adapterX;
-                listData.ItemClick += ListData_ItemClick;
+                dataAdapter = UniversalAdapterHelper.GetIssuedGoodsEnteredPositionsView(this, data);
+                listData.Adapter = dataAdapter;
 
             }
             else

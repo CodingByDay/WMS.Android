@@ -7,6 +7,7 @@ using AndroidX.AppCompat.App;
 using AndroidX.Lifecycle;
 using BarCode2D_Receiver;
 using Microsoft.AppCenter.Crashes;
+using System.Data.Common;
 using TrendNET.WMS.Core.Data;
 using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
@@ -47,6 +48,7 @@ namespace WMS
         private ClientPickingPosition orderCurrent;
         private object mItem;
         private ListView? listData;
+        private object dataAdapter;
         private ClientPickingAdapter clientAdapter;
 
         protected override async void OnCreate(Bundle savedInstanceState)
@@ -58,6 +60,8 @@ namespace WMS
                 RequestedOrientation = ScreenOrientation.Landscape;
                 SetContentView(Resource.Layout.ClientPickingTablet);
                 listData = FindViewById<ListView>(Resource.Id.listData);
+                dataAdapter = UniversalAdapterHelper.GetClientPickingy(this, positions);
+                listData.Adapter = dataAdapter;
             }
             else
             {
@@ -111,11 +115,7 @@ namespace WMS
             HelpfulMethods.clearTheStack(this);
         }
 
-        private async void fillItems(List<ClientPickingPosition> data)
-        {
-            clientAdapter = new ClientPickingAdapter(this, data);
-            listData.Adapter = clientAdapter;
-        }
+     
 
         private void BtConfirm_Click(object sender, EventArgs e)
         {
@@ -309,7 +309,6 @@ namespace WMS
                         ivTrail.OnItemLongClickListener = listener;
                         if(settings.tablet)
                         {
-                            fillItems(positions);
                         }
                     });
                 }
