@@ -65,7 +65,6 @@ namespace WMS
             {
                 RequestedOrientation = ScreenOrientation.Landscape;
                 SetContentView(Resource.Layout.UnfinishedInterWarehouseViewTablet);
-
                 listData = FindViewById<ListView>(Resource.Id.listData);
                 dataAdapter = UniversalAdapterHelper.GetUnfinishedInterwarehouse(this, data);
                 listData.Adapter = dataAdapter;
@@ -75,6 +74,7 @@ namespace WMS
                 RequestedOrientation = ScreenOrientation.Portrait;
                 SetContentView(Resource.Layout.UnfinishedInterWarehouseView);
             }
+
             AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
             var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
             _customToolbar.SetNavigationIcon(settings.RootURL + "/Services/Logo");
@@ -98,13 +98,15 @@ namespace WMS
             btnNew.Click += BtnNew_Click;
             btnLogout.Click += BtnLogout_Click;
             InUseObjects.Clear();
+
             await LoadPositions();
+
             if (settings.tablet)
             {
                 FillItemsList();
-                dataList.PerformItemClick(dataList, 0, 0);
-
+                UniversalAdapterHelper.SelectPositionProgramaticaly(dataList, 0);
             }
+
             var _broadcastReceiver = new NetworkStatusBroadcastReceiver();
             _broadcastReceiver.ConnectionStatusChanged += OnNetworkStatusChanged;
             Application.Context.RegisterReceiver(_broadcastReceiver,
@@ -197,7 +199,6 @@ namespace WMS
                     Toast.MakeText(this, errorWebAppIssued, ToastLength.Long).Show();
                     popupDialog.Dismiss();
                     popupDialog.Hide();
-
                     return;
                 }
             }
@@ -248,6 +249,7 @@ namespace WMS
             if (displayedPosition >= positions.Items.Count) { displayedPosition = 0; }
             FillDisplayedItem();
         }
+
         public void OnSwipeLeft()
         {
             displayedPosition--;

@@ -74,6 +74,8 @@ namespace WMS
                 dataCleanup = await FillTheCleanupList();
                 dataAdapter = UniversalAdapterHelper.GetMainMenu(this, dataCleanup);
                 rapidListview.Adapter = dataAdapter;
+                UniversalAdapterHelper.SelectPositionProgramaticaly(rapidListview, 0);
+
             }
             else
             {

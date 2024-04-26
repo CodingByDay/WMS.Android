@@ -20,6 +20,8 @@ public class UniversalAdapter<T> : BaseAdapter<T>
         this.inflater = LayoutInflater.From(context);
     }
 
+
+
     public override T this[int position] => items[position];
 
     public override int Count => items.Count;

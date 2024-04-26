@@ -75,6 +75,7 @@ namespace WMS
                 RequestedOrientation = ScreenOrientation.Portrait;
                 SetContentView(Resource.Layout.UnfinishedProductionView);
             }
+
             AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
             var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
             _customToolbar.SetNavigationIcon(settings.RootURL + "/Services/Logo");
@@ -101,9 +102,12 @@ namespace WMS
             InUseObjects.Clear();
 
             await LoadPositions();
+
             if (settings.tablet)
             {
                 FillItemsList();
+                UniversalAdapterHelper.SelectPositionProgramaticaly(listData, 0);
+
             }
             var _broadcastReceiver = new NetworkStatusBroadcastReceiver();
             _broadcastReceiver.ConnectionStatusChanged += OnNetworkStatusChanged;
@@ -116,7 +120,7 @@ namespace WMS
             LinearLayout yourLinearLayout = FindViewById<LinearLayout>(Resource.Id.fling);
             // Initialize the GestureDetector
             yourLinearLayout.SetOnTouchListener(gestureListener);
-        }
+            }
             public void OnSwipeLeft()
             {
                 displayedPosition--;

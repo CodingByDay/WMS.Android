@@ -187,7 +187,8 @@ namespace WMS
             if(settings.tablet)
             {
                 FillItemsList();
-                issuedData.PerformItemClick(issuedData, 0, 0);
+                UniversalAdapterHelper.SelectPositionProgramaticaly(listData, 0);
+
 
             }
             var _broadcastReceiver = new NetworkStatusBroadcastReceiver();

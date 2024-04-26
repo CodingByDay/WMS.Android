@@ -111,7 +111,10 @@ namespace WMS
 
             if (settings.tablet)
             {
+
                 FillItemsList();
+                UniversalAdapterHelper.SelectPositionProgramaticaly(dataList, 0);
+
             }
 
             // Try to get the bitmap
@@ -255,7 +258,7 @@ namespace WMS
                         finalString = $"Brez-št. {headID} ";
                     }
                     else
-                        finalString = item.GetString("LinkKey");
+                    finalString = item.GetString("LinkKey");
                     dataSource.Add(new UnfinishedTakeoverList
                     {
                         Document = finalString,
@@ -266,7 +269,7 @@ namespace WMS
                     });
 
                     dataAdapter.NotifyDataSetChanged();
-                    UniversalAdapterHelper.SelectPositionProgramaticaly(dataList, 0);
+
 
                 }
                 else
