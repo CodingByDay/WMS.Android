@@ -1,6 +1,6 @@
 ﻿namespace WMS.App
 {
-    internal class TakeOverIdentList
+    public class TakeOverIdentList
     {
         public string Ident { get; set; }
         public string? Order { get; set; }

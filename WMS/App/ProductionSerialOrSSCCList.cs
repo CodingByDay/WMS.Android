@@ -1,6 +1,6 @@
 ﻿namespace WMS.App
 {
-    internal class ProductionSerialOrSSCCList
+    public class ProductionSerialOrSSCCList
     {
         public string Ident { get; set; }
 

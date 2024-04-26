@@ -17,13 +17,10 @@ namespace WMS.App
 
         public void recalculatePickingPositions()
         {
-            // change property locatioQty //
-            //
+    
         }
 
-        /// <summary>
-        ///  Empty constructor.
-        /// </summary>
+
         public ClientPickingPosition()
         {
         }

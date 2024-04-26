@@ -1,6 +1,6 @@
 ﻿namespace WMS.App
 {
-    internal class TakeOverEnteredPositionsViewListItems
+    public class TakeOverEnteredPositionsViewListItems
     {
         public string Ident { get; set; }
         public string Name { get; set; }

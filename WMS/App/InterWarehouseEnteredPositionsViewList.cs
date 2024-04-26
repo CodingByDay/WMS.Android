@@ -1,6 +1,6 @@
 ﻿namespace WMS.App
 {
-    internal class InterWarehouseEnteredPositionsViewList
+    public class InterWarehouseEnteredPositionsViewList
     {
         public string Ident { get; set; }
         public string Name { get; set; }
