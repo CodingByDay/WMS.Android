@@ -55,6 +55,8 @@ namespace WMS
         private List<string> savedIdents;
         private ListView? listData;
         private UniversalAdapter<OpenOrder> dataAdapter;
+        private int selected;
+        private int selectedItem;
 
         private void Sound()
         {
@@ -154,6 +156,8 @@ namespace WMS
 
                                 if(settings.tablet)
                                 {
+                                    dataAdapter.NotifyDataSetChanged();
+                                    UniversalAdapterHelper.SelectPositionProgramaticaly(listData, 0);
                                 }
                             }
                         }
@@ -271,6 +275,8 @@ namespace WMS
                 SetContentView(Resource.Layout.IssuedGoodsIdentEntryTablet);
                 listData = FindViewById<ListView>(Resource.Id.listData);
                 dataAdapter = UniversalAdapterHelper.GetIssuedGoodsIdentEntry(this, orders);
+                listData.ItemClick += ListData_ItemClick;
+                listData.ItemLongClick += ListData_ItemLongClick;
                 listData.Adapter = dataAdapter;
             }
             else
@@ -326,6 +332,29 @@ namespace WMS
             _broadcastReceiver.ConnectionStatusChanged += OnNetworkStatusChanged;
             Application.Context.RegisterReceiver(_broadcastReceiver,
             new IntentFilter(ConnectivityManager.ConnectivityAction));
+        }
+
+        private void ListData_ItemLongClick(object? sender, AdapterView.ItemLongClickEventArgs e)
+        {
+            selected = e.Position;
+            Select(selected);
+            selectedItem = selected;
+
+            btConfirm.PerformClick();
+        }
+
+        private void ListData_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
+        {
+            selected = e.Position;
+            Select(selected);
+            selectedItem = selected;
+        }
+        private void Select(int postionOfTheItemInTheList)
+        {
+
+            displayedOrder = postionOfTheItemInTheList;
+
+            FillDisplayedOrderInfo();
         }
 
         private void TbIdent_KeyPress(object? sender, View.KeyEventArgs e)

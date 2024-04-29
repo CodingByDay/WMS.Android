@@ -53,7 +53,7 @@ namespace WMS
         private Dialog popupDialogConfirm;
         private Button btnYesConfirm;
         private Button btnNoConfirm;
-        private ListView dataList;
+        private ListView listData;
         private UniversalAdapter<TakeOverEnteredPositionsViewListItems> dataAdapter;
         private List<TakeOverEnteredPositionsViewListItems> data = new List<TakeOverEnteredPositionsViewListItems>();
         private int selected;
@@ -68,9 +68,11 @@ namespace WMS
             {
                 RequestedOrientation = ScreenOrientation.Landscape;
                 SetContentView(Resource.Layout.TakeOverEnteredPositionsViewTablet);
-                dataList = FindViewById<ListView>(Resource.Id.dataList);
+                listData = FindViewById<ListView>(Resource.Id.listData);
                 dataAdapter = UniversalAdapterHelper.GetTakeOverEnteredPositionsView(this, data);
-                dataList.Adapter = dataAdapter;
+                listData.ItemClick += ListData_ItemClick;
+                listData.ItemLongClick += ListData_ItemLongClick; 
+                listData.Adapter = dataAdapter;
             }
             else
             {
@@ -111,111 +113,35 @@ namespace WMS
             InUseObjects.ClearExcept(new string[] { "MoveHead" });
             if (moveHead == null) { throw new ApplicationException("moveHead not known at this point!?"); }
             LoadPositions();
-            var _broadcastReceiver = new NetworkStatusBroadcastReceiver();
-            _broadcastReceiver.ConnectionStatusChanged += OnNetworkStatusChanged;
-            Application.Context.RegisterReceiver(_broadcastReceiver,
-            new IntentFilter(ConnectivityManager.ConnectivityAction));
-
 
             if (settings.tablet)
             {
                 fillList();
             }
 
-
+            var _broadcastReceiver = new NetworkStatusBroadcastReceiver();
+            _broadcastReceiver.ConnectionStatusChanged += OnNetworkStatusChanged;
+            Application.Context.RegisterReceiver(_broadcastReceiver,
+            new IntentFilter(ConnectivityManager.ConnectivityAction));
+        
         }
 
-        private void DeleteFromTouch(int index)
+        private void ListData_ItemLongClick(object? sender, AdapterView.ItemLongClickEventArgs e)
         {
-            popupDialog = new Dialog(this);
-            popupDialog.SetContentView(Resource.Layout.YesNoPopUp);
-            popupDialog.Window.SetSoftInputMode(SoftInput.AdjustResize);
-            popupDialog.Show();
-
-            popupDialog.Window.SetLayout(LayoutParams.MatchParent, LayoutParams.WrapContent);
-            popupDialog.Window.SetBackgroundDrawable(new ColorDrawable(Color.ParseColor("#081a45")));
-
-
-            // Access Popup layout fields like below
-            btnYes = popupDialog.FindViewById<Button>(Resource.Id.btnYes);
-            btnNo = popupDialog.FindViewById<Button>(Resource.Id.btnNo);
-            btnYes.Click += (e, ev) => { Yes(index); };
-            btnNo.Click += (e, ev) => { No(index); };
+            selected = e.Position;
+            Select(selected);
+            selectedItem = selected;
+            btUpdate.PerformClick();
         }
 
-
-
-
-        private void No(int index)
+        private void ListData_ItemClick(object? sender, AdapterView.ItemClickEventArgs e)
         {
-            popupDialog.Dismiss();
-            popupDialog.Hide();
+            selected = e.Position;
+            Select(selected);
+            selectedItem = selected;
         }
 
-
-        private void Yes(int index)
-        {
-            var item = positions.Items[index];
-            var id = item.GetInt("HeadID");
-
-
-            try
-            {
-
-                string result;
-                if (WebApp.Get("mode=delMoveHead&head=" + id.ToString() + "&deleter=" + Services.UserID().ToString(), out result))
-                {
-                    if (result == "OK!")
-                    {
-                        positions = null;
-                        LoadPositions();
-                        data.Clear();
-                        fillList();
-                        popupDialog.Dismiss();
-                        popupDialog.Hide();
-                    }
-                    else
-                    {
-                        string errorWebAppIssued = string.Format($"{Resources.GetString(Resource.String.s212)}" + result);
-                        Toast.MakeText(this, errorWebAppIssued, ToastLength.Long).Show();
-                        positions = null;
-                        LoadPositions();
-
-                        popupDialog.Dismiss();
-                        popupDialog.Hide();
-                        return;
-                    }
-                }
-                else
-                {
-                    string errorWebAppIssued = string.Format($"{Resources.GetString(Resource.String.s213)}" + result);
-                    Toast.MakeText(this, errorWebAppIssued, ToastLength.Long).Show();
-                    popupDialog.Dismiss();
-                    popupDialog.Hide();
-
-                    return;
-                }
-            }
-            catch (Exception err)
-            {
-
-                Crashes.TrackError(err);
-                return;
-
-            }
-
-            string errorWebApp = string.Format($"{Resources.GetString(Resource.String.s214)}");
-            Toast.MakeText(this, errorWebApp, ToastLength.Long).Show();
-        }
-        private void DataList_ItemLongClick(object sender, AdapterView.ItemLongClickEventArgs e)
-        {
-
-            var index = e.Position;
-            DeleteFromTouch(index);
-
-
-
-        }
+   
         private void fillList()
         {
 
@@ -244,6 +170,8 @@ namespace WMS
                     {
                         tempUnit = item.GetDouble("Factor").ToString();
                     }
+
+
                     string error;
                     var ident = item.GetString("Ident").Trim();
                     var openIdent = Services.GetObject("id", ident, out error);
@@ -267,24 +195,20 @@ namespace WMS
                     string errorWebApp = string.Format($"{Resources.GetString(Resource.String.s247)}");
                     Toast.MakeText(this, errorWebApp, ToastLength.Long).Show();
                 }
-
             }
+
+            dataAdapter.NotifyDataSetChanged();
+
+            UniversalAdapterHelper.SelectPositionProgramaticaly(listData, 0);
         }
-        private void DataList_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
-        {
-            selected = e.Position;
-            Select(selected);
-            selectedItem = selected;
-            dataList.RequestFocusFromTouch();
-            dataList.SetItemChecked(selected, true);
-            dataList.SetSelection(selected);
-        }
+    
         private void Select(int postionOfTheItemInTheList)
         {
             displayedPosition = postionOfTheItemInTheList;
             if (displayedPosition >= positions.Items.Count) { displayedPosition = 0; }
             FillDisplayedItem();
         }
+
         public bool IsOnline()
         {
             var cm = (ConnectivityManager)GetSystemService(ConnectivityService);
@@ -557,16 +481,12 @@ namespace WMS
 
                 if (selectedItem <= (positions.Items.Count - 1))
                 {
-                    dataList.RequestFocusFromTouch();
-                    dataList.SetSelection(selectedItem);
-                    dataList.SetItemChecked(selectedItem, true);
+                    UniversalAdapterHelper.SelectPositionProgramaticaly(listData, selectedItem);
                 }
                 else
                 {
                     selectedItem = 0;
-                    dataList.RequestFocusFromTouch();
-                    dataList.SetSelection(selectedItem);
-                    dataList.SetItemChecked(selectedItem, true);
+                    UniversalAdapterHelper.SelectPositionProgramaticaly(listData,selectedItem);
                 }
             }
 

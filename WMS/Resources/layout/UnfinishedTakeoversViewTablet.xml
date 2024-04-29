@@ -24,7 +24,7 @@
         android:layout_height="match_parent"
         android:layout_below="@id/test"
         android:layout_toRightOf="@id/fling"
-        android:id="@+id/dataList"
+        android:id="@+id/listData"
         android:choiceMode="singleChoice"
         android:drawSelectorOnTop="false"
         android:keyboardNavigationCluster="true"

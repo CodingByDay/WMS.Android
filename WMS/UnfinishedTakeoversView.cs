@@ -48,7 +48,7 @@ namespace WMS
         private Button btnConfirm;
         private Button btnNo;
         private Button btNew;
-        private ListView dataList;
+        private ListView listData;
         private UniversalAdapter<UnfinishedTakeoverList> dataAdapter;
         private NameValueObjectList positions = (NameValueObjectList)InUseObjects.Get("TakeOverHeads");
         private List<UnfinishedTakeoverList> dataSource = new List<UnfinishedTakeoverList>();
@@ -65,11 +65,11 @@ namespace WMS
             {
                 RequestedOrientation = ScreenOrientation.Landscape;
                 SetContentView(Resource.Layout.UnfinishedTakeoversViewTablet);
-                dataList = FindViewById<ListView>(Resource.Id.dataList);
+                listData = FindViewById<ListView>(Resource.Id.listData);
                 dataAdapter = UniversalAdapterHelper.GetUnfinishedTakeover(this, dataSource);
-                dataList.Adapter = dataAdapter;
-                dataList.ItemClick += DataList_ItemClick;
-                dataList.ItemLongClick += DataList_ItemLongClick;
+                listData.Adapter = dataAdapter;
+                listData.ItemClick += DataList_ItemClick;
+                listData.ItemLongClick += DataList_ItemLongClick;
             }
             else
             {
@@ -108,7 +108,7 @@ namespace WMS
             {
 
                 FillItemsList();
-                UniversalAdapterHelper.SelectPositionProgramaticaly(dataList, 0);
+                UniversalAdapterHelper.SelectPositionProgramaticaly(listData, 0);
 
             }
 
@@ -263,7 +263,6 @@ namespace WMS
                         // tbItemCount.Text = item.GetInt("ItemCount").ToString();
                     });
 
-                    dataAdapter.NotifyDataSetChanged();
 
 
                 }
@@ -274,6 +273,8 @@ namespace WMS
                 }
 
             }
+            dataAdapter.NotifyDataSetChanged();
+            UniversalAdapterHelper.SelectPositionProgramaticaly(listData, 0);
 
 
         }
@@ -465,28 +466,28 @@ namespace WMS
         {
             if(settings.tablet)
             {
-                dataList.RequestFocusFromTouch();
+                listData.RequestFocusFromTouch();
                 selected++;
-                dataList.Clickable = false;
+                listData.Clickable = false;
                 if (selected <= (positions.Items.Count - 1))
                 {
 
-                    dataList.CheckedItemPositions.Clear();
-                    dataList.ClearChoices();
-                    UniversalAdapterHelper.SelectPositionProgramaticaly(dataList, selected);
+                    listData.CheckedItemPositions.Clear();
+                    listData.ClearChoices();
+                    UniversalAdapterHelper.SelectPositionProgramaticaly(listData, selected);
                 }
                 else
                 {
 
-                    dataList.CheckedItemPositions.Clear();
-                    dataList.ClearChoices();
+                    listData.CheckedItemPositions.Clear();
+                    listData.ClearChoices();
                     selected = 0;
-                    UniversalAdapterHelper.SelectPositionProgramaticaly(dataList, selected);
+                    UniversalAdapterHelper.SelectPositionProgramaticaly(listData, selected);
 
 
                 }
 
-                dataList.Clickable = true;
+                listData.Clickable = true;
             }
             displayedPosition++;
             if (displayedPosition >= positions.Items.Count) { displayedPosition = 0; }
