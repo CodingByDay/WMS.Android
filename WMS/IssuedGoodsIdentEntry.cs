@@ -471,7 +471,11 @@ namespace WMS
                 }
 
                 FillDisplayedOrderInfo();
-            } catch { return; }
+
+                UniversalAdapterHelper.SelectPositionProgramaticaly(listData, displayedOrder);
+
+            }
+            catch { return; }
         }
 
 

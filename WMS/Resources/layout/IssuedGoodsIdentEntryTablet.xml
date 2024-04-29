@@ -30,6 +30,7 @@
         android:layout_height="match_parent"
         android:layout_below="@id/test"
         android:layout_toRightOf="@id/fling"
+        android:listSelector="@android:drawable/screen_background_dark_transparent"
         android:id="@+id/listData"
         />
 

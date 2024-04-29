@@ -295,10 +295,7 @@ namespace WMS
 
             FillDisplayedOrderInfo();
 
-            // Change the highlight position.
-            listData.RequestFocusFromTouch();
-            listData.SetItemChecked(displayedOrder, true);
-            listData.SetSelection(displayedOrder);
+            UniversalAdapterHelper.SelectPositionProgramaticaly(listData, displayedOrder);
 
 
         }
