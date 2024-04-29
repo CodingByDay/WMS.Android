@@ -287,7 +287,7 @@ namespace WMS
                                 Name = identName,
                             });
 
-                            adapterX.NotifyDataSetChanged();
+                            dataAdapter.NotifyDataSetChanged();
                         });
                     }
                     else

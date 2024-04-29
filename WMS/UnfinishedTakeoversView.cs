@@ -65,22 +65,17 @@ namespace WMS
             {
                 RequestedOrientation = ScreenOrientation.Landscape;
                 SetContentView(Resource.Layout.UnfinishedTakeoversViewTablet);
-
-
-
                 dataList = FindViewById<ListView>(Resource.Id.dataList);
                 dataAdapter = UniversalAdapterHelper.GetUnfinishedTakeover(this, dataSource);
                 dataList.Adapter = dataAdapter;
                 dataList.ItemClick += DataList_ItemClick;
                 dataList.ItemLongClick += DataList_ItemLongClick;
-
             }
             else
             {
                 RequestedOrientation = ScreenOrientation.Portrait;
                 SetContentView(Resource.Layout.UnfinishedTakeoversView);
             }
-
             AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
             var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
             _customToolbar.SetNavigationIcon(settings.RootURL + "/Services/Logo");

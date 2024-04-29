@@ -77,6 +77,9 @@ namespace WMS
                         NumberOfPositions = item.GetInt("ItemCount").ToString(),
                         // tbItemCount.Text = item.GetInt("ItemCount").ToString();
                     });
+
+             
+
                 }
                 else
                 {
@@ -84,8 +87,19 @@ namespace WMS
                     Toast.MakeText(this, errorWebApp, ToastLength.Long).Show();
                 }
 
+
             }
+
+            dataAdapter.NotifyDataSetChanged();
+            UniversalAdapterHelper.SelectPositionProgramaticaly(listData, 0);
         }
+
+        private void No(int index)
+        {
+            popupDialog.Dismiss();
+            popupDialog.Hide();
+        }
+
         private async void Yes(int index)
         {
             var item = positions.Items[index];
@@ -149,9 +163,10 @@ namespace WMS
             {
                 RequestedOrientation = ScreenOrientation.Landscape;
                 SetContentView(Resource.Layout.UnfinishedIssuedGoodsViewTablet);
-
                 listData = FindViewById<ListView>(Resource.Id.listData);
                 dataAdapter = UniversalAdapterHelper.GetUnfinishedIssued(this, data);
+                listData.ItemClick += ListData_ItemClick;
+                listData.ItemLongClick += ListData_ItemLongClick;
                 listData.Adapter = dataAdapter;
 
             }
@@ -187,9 +202,6 @@ namespace WMS
             if(settings.tablet)
             {
                 FillItemsList();
-                UniversalAdapterHelper.SelectPositionProgramaticaly(listData, 0);
-
-
             }
             var _broadcastReceiver = new NetworkStatusBroadcastReceiver();
             _broadcastReceiver.ConnectionStatusChanged += OnNetworkStatusChanged;
@@ -202,8 +214,44 @@ namespace WMS
             yourLinearLayout.SetOnTouchListener(gestureListener);
         }
 
+        private void ListData_ItemLongClick(object? sender, AdapterView.ItemLongClickEventArgs e)
+        {
+            var index = e.Position;
+            DeleteFromTouch(index);
+        }
+        private void DeleteFromTouch(int index)
+        {
+            popupDialog = new Dialog(this);
+            popupDialog.SetContentView(Resource.Layout.YesNoPopUp);
+            popupDialog.Window.SetSoftInputMode(SoftInput.AdjustResize);
+            popupDialog.Show();
+
+            popupDialog.Window.SetLayout(LayoutParams.MatchParent, LayoutParams.WrapContent);
+            popupDialog.Window.SetBackgroundDrawable(new ColorDrawable(Color.ParseColor("#081a45")));
 
 
+            // Access Popup layout fields like below
+            btnYes = popupDialog.FindViewById<Button>(Resource.Id.btnYes);
+            btnNo = popupDialog.FindViewById<Button>(Resource.Id.btnNo);
+            btnYes.Click += (e, ev) => { Yes(index); };
+            btnNo.Click += (e, ev) => { No(index); };
+        }
+        private void ListData_ItemClick(object? sender, AdapterView.ItemClickEventArgs e)
+        {
+            selected = e.Position;
+            Select(selected);
+            selectedItem = selected;
+        }
+        private void Select(int postionOfTheItemInTheList)
+        {
+            if (positions != null)
+            {
+                selected = postionOfTheItemInTheList;
+                displayedPosition = postionOfTheItemInTheList;
+                if (displayedPosition >= positions.Items.Count) { displayedPosition = 0; }
+                FillDisplayedItem();
+            }
+        }
         public void OnSwipeLeft()
         {
             displayedPosition--;
@@ -425,16 +473,16 @@ namespace WMS
 
                 if (selectedItem <= (positions.Items.Count - 1))
                 {
-                    issuedData.RequestFocusFromTouch();
-                    issuedData.SetSelection(selectedItem);
-                    issuedData.SetItemChecked(selectedItem, true);
+                    listData.RequestFocusFromTouch();
+                    listData.SetSelection(selectedItem);
+                    listData.SetItemChecked(selectedItem, true);
                 }
                 else
                 {
                     selectedItem = 0;
-                    issuedData.RequestFocusFromTouch();
-                    issuedData.SetSelection(selectedItem);
-                    issuedData.SetItemChecked(selectedItem, true);
+                    listData.RequestFocusFromTouch();
+                    listData.SetSelection(selectedItem);
+                    listData.SetItemChecked(selectedItem, true);
                 }
             }
             displayedPosition++;

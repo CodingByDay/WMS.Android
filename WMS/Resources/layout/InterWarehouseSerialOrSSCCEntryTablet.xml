@@ -317,37 +317,9 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingTop="5dp">
+    
 
-            <TextView
-                android:textStyle="bold"
-                android:textSize="18dp"
-                android:layout_width="100.0dp"
-                android:layout_height="wrap_content"
-                android:paddingLeft="10dp"
-                android:paddingTop="5dp"
-                android:text="@string/s84"
-                android:id="@+id/lbUnits" />
-
-            <EditText
-                android:textStyle="bold"
-                android:singleLine="true"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.50"
-                android:paddingTop="5dp"
-                android:background="@drawable/editText_bg_grey"
-                android:layout_marginRight="2dp"
-                android:textSize="18dp"
-                android:id="@+id/tbUnits" />
-
-        </LinearLayout>
-
-
+          
 
         <LinearLayout
             android:layout_width="fill_parent"

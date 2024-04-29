@@ -73,8 +73,9 @@ namespace WMS
                 SetContentView(Resource.Layout.TakeOverIdentEntryTablet);
                 listData = FindViewById<ListView>(Resource.Id.listData);
                 dataAdapter = UniversalAdapterHelper.GetTakeoverIdentEntry(this, data);
+                listData.ItemClick += ListData_ItemClick;
+                listData.ItemLongClick += ListData_ItemLongClick;
                 listData.Adapter = dataAdapter;
-
             }
             else
             {
@@ -131,7 +132,22 @@ namespace WMS
             tbIdent.AfterTextChanged += TbIdent_AfterTextChanged;
             tbIdent.RequestFocus();
         }
-    
+
+        private void ListData_ItemLongClick(object? sender, AdapterView.ItemLongClickEventArgs e)
+        {
+            selected = e.Position;
+            Select(selected);
+            selectedItem = selected;
+
+            btConfirm.PerformClick();
+        }
+
+        private void ListData_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
+        {
+            selected = e.Position;
+            Select(selected);
+            selectedItem = selected;
+        }
 
 
         private void fillList(string ident)
@@ -150,7 +166,8 @@ namespace WMS
 
                     });
                 });
-
+                dataAdapter.NotifyDataSetChanged();
+                UniversalAdapterHelper.SelectPositionProgramaticaly(listData, 0);
             }                
         }
         private void Select(int postionOfTheItemInTheList)
@@ -475,8 +492,14 @@ namespace WMS
                         }
                     }
                 }
+
                 FillDisplayedOrderInfo();
-                fillList(ident);
+
+                if (settings.tablet)
+                {
+                    fillList(ident);
+                }
+
                 tbIdent.SetSelection(0, tbIdent.Text.Length);
             }
             catch (Exception err)
@@ -522,20 +545,7 @@ namespace WMS
 
  
 
-        protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
-        {
-            if (requestCode == 2) {
-                if (resultCode == Result.Ok)
-                {
-                    Toast.MakeText(this, data.Data.ToString(), ToastLength.Long).Show();
-                    barcode = data.Data.ToString();
-                    tbIdent.Text = barcode; // Change this later...
-                } else
-                {
-                    Toast.MakeText(this, "Napačno branje", ToastLength.Long).Show();
-                }
-            }
-        }
+
         private bool preventDuplicate = false;
         private int selected;
         private int selectedItem;

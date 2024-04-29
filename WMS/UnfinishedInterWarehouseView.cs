@@ -49,7 +49,6 @@ namespace WMS
         private Button btnYes;
         private Button btnNo;
         private GestureDetector gestureDetector;
-        private ListView dataList;
         private List<UnfinishedInterWarehouseList> data = new List<UnfinishedInterWarehouseList>();
         private int selected;
         private int selectedItem;
@@ -68,6 +67,8 @@ namespace WMS
                 listData = FindViewById<ListView>(Resource.Id.listData);
                 dataAdapter = UniversalAdapterHelper.GetUnfinishedInterwarehouse(this, data);
                 listData.Adapter = dataAdapter;
+                listData.ItemClick += DataList_ItemClick;
+                listData.ItemLongClick += DataList_ItemLongClick;
             }
             else
             {
@@ -104,7 +105,6 @@ namespace WMS
             if (settings.tablet)
             {
                 FillItemsList();
-                UniversalAdapterHelper.SelectPositionProgramaticaly(dataList, 0);
             }
 
             var _broadcastReceiver = new NetworkStatusBroadcastReceiver();
@@ -159,8 +159,8 @@ namespace WMS
                 }
 
             }
-
-
+            dataAdapter.NotifyDataSetChanged();
+            UniversalAdapterHelper.SelectPositionProgramaticaly(listData, 0);
         }
         private async void Yes(int index)
         {
@@ -187,7 +187,6 @@ namespace WMS
                         Toast.MakeText(this, errorWebAppIssued, ToastLength.Long).Show();
                         positions = null;
                         await LoadPositions();
-
                         popupDialog.Dismiss();
                         popupDialog.Hide();
                         return;
@@ -238,9 +237,6 @@ namespace WMS
             selected = e.Position;
             Select(selected);
             selectedItem = selected;
-            dataList.RequestFocusFromTouch();
-            dataList.SetItemChecked(selected, true);
-            dataList.SetSelection(selected);
         }
 
         private void Select(int postionOfTheItemInTheList)
@@ -463,16 +459,16 @@ namespace WMS
 
                 if (selectedItem <= (positions.Items.Count - 1))
                 {
-                    dataList.RequestFocusFromTouch();
-                    dataList.SetSelection(selectedItem);
-                    dataList.SetItemChecked(selectedItem, true);
+                    listData.RequestFocusFromTouch();
+                    listData.SetSelection(selectedItem);
+                    listData.SetItemChecked(selectedItem, true);
                 }
                 else
                 {
                     selectedItem = 0;
-                    dataList.RequestFocusFromTouch();
-                    dataList.SetSelection(selectedItem);
-                    dataList.SetItemChecked(selectedItem, true);
+                    listData.RequestFocusFromTouch();
+                    listData.SetSelection(selectedItem);
+                    listData.SetItemChecked(selectedItem, true);
                 }
             }
             displayedPosition++;
