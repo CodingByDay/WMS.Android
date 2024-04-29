@@ -42,7 +42,6 @@ namespace WMS
         private EditText tbSerialNum;
         private EditText tbLocation;
         private EditText tbPacking;
-        private EditText tbUnits;
         private TextView lbQty;
         private Button btSaveOrUpdate;
         private Button button3;
@@ -352,46 +351,7 @@ namespace WMS
                     }
                 }
 
-                if (string.IsNullOrEmpty(tbUnits.Text.Trim())) {
-                    RunOnUiThread(() =>
-                    {
-                        string SuccessMessage = string.Format($"{Resources.GetString(Resource.String.s270)}");
-                        DialogHelper.ShowDialogError(this, this, SuccessMessage);
-                        tbUnits.RequestFocus();
-                    });
-                   
-
-                    return false;
-                }
-                else
-                {
-                    try
-                    {
-                        var qty = Convert.ToDouble(tbUnits.Text.Trim());
-                        if (qty == 0.0)
-                        {
-                            RunOnUiThread(() =>
-                            {
-                                string SuccessMessage = string.Format($"{Resources.GetString(Resource.String.s270)}");
-                                DialogHelper.ShowDialogError(this, this, SuccessMessage);
-                                tbUnits.RequestFocus();
-                            });
-                          
-                            return false;
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        RunOnUiThread(() =>
-                        {
-                            string SuccessMessage = string.Format($"{Resources.GetString(Resource.String.s270)}");
-                            DialogHelper.ShowDialogError(this, this, SuccessMessage);
-                            tbUnits.RequestFocus();
-                        });
-                     
-                        return false;
-                    }
-                }
+          
 
                 if (moveItem == null) { moveItem = new NameValueObject("MoveItem"); }
                 moveItem.SetInt("HeadID", moveHead.GetInt("HeadID"));
@@ -401,8 +361,8 @@ namespace WMS
                 moveItem.SetString("SSCC", tbSSCC.Text.Trim());
                 moveItem.SetString("SerialNo", tbSerialNum.Text.Trim());
                 moveItem.SetDouble("Packing", Convert.ToDouble(tbPacking.Text.Trim()));
-                moveItem.SetDouble("Factor", Convert.ToDouble(tbUnits.Text.Trim()));
-                moveItem.SetDouble("Qty", Convert.ToDouble(tbPacking.Text.Trim()) * Convert.ToDouble(tbUnits.Text.Trim()));
+                moveItem.SetDouble("Factor", 1);
+                moveItem.SetDouble("Qty", Convert.ToDouble(tbPacking.Text.Trim()) * 1);
                 moveItem.SetString("Location", tbLocation.Text.Trim());
                 moveItem.SetInt("Clerk", Services.UserID());
 
@@ -541,7 +501,6 @@ namespace WMS
             tbSerialNum = FindViewById<EditText>(Resource.Id.tbSerialNum);
             tbLocation = FindViewById<EditText>(Resource.Id.tbLocation);
             tbPacking = FindViewById<EditText>(Resource.Id.tbPacking);
-            tbUnits = FindViewById<EditText>(Resource.Id.tbUnits);
             lbQty = FindViewById<TextView>(Resource.Id.lbQty);
             btSaveOrUpdate = FindViewById<Button>(Resource.Id.btSaveOrUpdate);
             button3 = FindViewById<Button>(Resource.Id.button3);
@@ -551,7 +510,6 @@ namespace WMS
             tbSSCC.InputType = Android.Text.InputTypes.ClassNumber;
             tbSerialNum.InputType = Android.Text.InputTypes.ClassNumber;
             tbLocation.InputType = Android.Text.InputTypes.ClassNumber;
-            tbUnits.InputType = Android.Text.InputTypes.ClassNumber;
             soundPool = new SoundPool(10, Stream.Music, 0);
             soundPoolId = soundPool.Load(this, Resource.Raw.beep, 1);
             color();
@@ -597,7 +555,6 @@ namespace WMS
 
                 tbPacking.Text = moveItem.GetDouble("Packing").ToString(CommonData.GetQtyPicture());
 
-                tbUnits.Text = moveItem.GetDouble("Factor").ToString("###,###,##0.00");
 
                 tbPacking.RequestFocus();
 
@@ -629,12 +586,8 @@ namespace WMS
                 }
 
             }
-            if (string.IsNullOrEmpty(tbUnits.Text.Trim())) { tbUnits.Text = "1"; }
 
-            if (CommonData.GetSetting("ShowNumberOfUnitsField") == "1")
-            {
-                tbUnits.Visibility = ViewStates.Visible;
-            }
+     
             if (tbSSCC.Enabled && (CommonData.GetSetting("AutoCreateSSCCProduction") == "1"))
             {
 
@@ -643,7 +596,6 @@ namespace WMS
 
             }
             ProcessSerialNum();
-            if(String.IsNullOrEmpty(tbUnits.Text)) { tbUnits.Text = "1"; }
             var _broadcastReceiver = new NetworkStatusBroadcastReceiver();
             _broadcastReceiver.ConnectionStatusChanged += OnNetworkStatusChanged;
             Application.Context.RegisterReceiver(_broadcastReceiver,

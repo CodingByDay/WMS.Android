@@ -316,7 +316,9 @@ namespace WMS
             btFinish = FindViewById<Button>(Resource.Id.btFinish);
             btOverview = FindViewById<Button>(Resource.Id.btOverview);
             btExit = FindViewById<Button>(Resource.Id.btExit);
+
             // Events
+
             tbLocation.KeyPress += TbLocation_KeyPress;
             tbSSCC.KeyPress += TbSSCC_KeyPress;
             tbSerialNum.KeyPress += TbSerialNum_KeyPress;
@@ -368,7 +370,7 @@ namespace WMS
                 imagePNG.Click += (e, ev) => { ImageClick(d); };
 
             }
-            catch (Exception error)
+            catch (Exception)
             {
                 return;
             }

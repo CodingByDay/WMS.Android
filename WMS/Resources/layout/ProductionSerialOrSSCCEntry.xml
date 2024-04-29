@@ -130,72 +130,41 @@
 
     </LinearLayout>
 
+   
     <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="100dp"
         android:orientation="horizontal"
-        android:paddingTop="5dp">
+        android:paddingTop="4dp"
+        android:layout_marginRight="2dp">
 
         <TextView
             android:textStyle="bold"
             android:layout_width="100dp"
-            android:layout_height="match_parent"
-            android:gravity="bottom"
-            android:paddingLeft="4dp"
+            android:layout_height="wrap_content"
+            android:paddingLeft="5dp"
             android:paddingTop="4dp"
-            android:text="@string/s40"
+            android:text="@string/s83"
+            android:layout_marginRight="0dp"
             android:id="@+id/lbQty" />
 
         <EditText
             android:textStyle="bold"
             android:singleLine="true"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0.50"
-            android:paddingTop="5dp"
-            android:background="@drawable/editText_bg_grey"
-            android:layout_marginRight="2dp"
-            android:id="@+id/tbPacking" />
-
-        <Button
-            android:text="@string/s94"
-            android:layout_width="74.0dp"
-            android:layout_height="33dp"
-            android:id="@+id/button1"
-            android:layout_marginTop="-5dp"
-            android:background="@color/rikoMain"
-            android:textColor="@color/white"
-            android:layout_marginLeft="4dp" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingTop="5dp">
-
-        <TextView
-            android:textStyle="bold"
-            android:layout_width="100dp"
-            android:layout_height="match_parent"
-            android:gravity="bottom"
-            android:paddingLeft="4dp"
+            android:layout_marginLeft="0dp"
             android:paddingTop="4dp"
-            android:text="@string/s51" />
-
-        <EditText
-            android:textStyle="bold"
-            android:singleLine="true"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.50"
-            android:paddingTop="5dp"
+            android:id="@+id/tbPacking"
             android:background="@drawable/editText_bg_grey"
-            android:layout_marginRight="2dp"
-            android:id="@+id/tbUnits" />
+            />
+
+ 
 
     </LinearLayout>
+
+
     <TextView
         android:layout_height="0dip"
         android:layout_width="fill_parent"

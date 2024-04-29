@@ -136,7 +136,6 @@ namespace WMS
             soundPoolId = soundPool.Load(this, Resource.Raw.beep, 1);
             Barcode2D barcode2D = new Barcode2D();
             barcode2D.open(this, this);
-            tbLocation.FocusChange += TbLocation_FocusChange;
             var _broadcastReceiver = new NetworkStatusBroadcastReceiver();
             _broadcastReceiver.ConnectionStatusChanged += OnNetworkStatusChanged;
             Application.Context.RegisterReceiver(_broadcastReceiver,
@@ -146,6 +145,7 @@ namespace WMS
             tbSerialNum.KeyPress += TbSerialNum_KeyPress;
             tbIssueLocation.KeyPress += TbIssueLocation_KeyPress;
             tbLocation.KeyPress += TbLocation_KeyPress;
+            tbPacking.FocusChange += TbPacking_FocusChange;
             // Method calls
 
             CheckIfApplicationStopingException();
@@ -158,6 +158,15 @@ namespace WMS
             // Main logic for the entry
             SetUpForm();
         }
+
+        private void TbPacking_FocusChange(object? sender, View.FocusChangeEventArgs e)
+        {
+            if(e.HasFocus)
+            {
+                LoadStock(tbIssueLocation.Text, tbIdent.Text, moveHead.GetString("Issuer"), tbSSCC.Text, tbSerialNum.Text);
+            }
+        }
+
         private void ImageClick(Drawable d)
         {
             popupDialog = new Dialog(this);
@@ -182,33 +191,14 @@ namespace WMS
                 popupDialog.Window.Dispose();
             }
         }
-        private void showPicture()
-        {
-            try
-            {
-                Android.Graphics.Bitmap show = Services.GetImageFromServer(moveHead.GetString("Receiver"));
-                Drawable d = new BitmapDrawable(Resources, show);
-                imagePNG.SetImageDrawable(d);
-                imagePNG.Visibility = ViewStates.Visible;
-                imagePNG.Click += (e, ev) => { ImageClick(d); };
-
-            }
-            catch (Exception error)
-            {
-                var log = error;
-                return;
-            }
-
-        }
+   
         private void Fill(List<LocationClass> list)
         {
             foreach (var obj in list)
             {
                 items.Add(new LocationClass { ident = obj.ident, location = obj.location, quantity = obj.quantity });
 
-            }
-
-       
+            }    
         }
 
         private void ListData_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
@@ -230,10 +220,7 @@ namespace WMS
 
         private void TbIssueLocation_KeyPress(object? sender, View.KeyEventArgs e)
         {
-            if (e.KeyCode == Keycode.Enter && e.Event.Action == KeyEventActions.Down)
-            {
-                LoadStock(tbIssueLocation.Text, tbIdent.Text, moveHead.GetString("Issuer"), tbSSCC.Text, tbSerialNum.Text);
-            }
+
             e.Handled = false;
         }
 
@@ -739,6 +726,8 @@ namespace WMS
             tbLocation.SetBackgroundColor(Android.Graphics.Color.Aqua);
             tbIssueLocation.SetBackgroundColor(Android.Graphics.Color.Aqua);
         }
+
+
         private void SetUpProcessDependentButtons()
         {
             // This method changes the UI so it shows in a visible way that it is the update screen. - 18.03.2024
@@ -750,16 +739,32 @@ namespace WMS
 
         }
 
-        private void TbLocation_FocusChange(object? sender, View.FocusChangeEventArgs e)
-        {
-            
-        }
 
         private void OnNetworkStatusChanged(object? sender, EventArgs e)
         {
-            
+            if (IsOnline())
+            {
+                try
+                {
+                    LoaderManifest.LoaderManifestLoopStop(this);
+                }
+                catch (Exception err)
+                {
+                    Crashes.TrackError(err);
+                }
+            }
+            else
+            {
+                LoaderManifest.LoaderManifestLoop(this);
+            }
         }
 
+
+        public bool IsOnline()
+        {
+            var cm = (ConnectivityManager)GetSystemService(ConnectivityService);
+            return cm.ActiveNetworkInfo == null ? false : cm.ActiveNetworkInfo.IsConnected;
+        }
 
     }
 }

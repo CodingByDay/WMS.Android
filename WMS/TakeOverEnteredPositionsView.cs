@@ -117,6 +117,8 @@ namespace WMS
             if (settings.tablet)
             {
                 fillList();
+                UniversalAdapterHelper.SelectPositionProgramaticaly(listData, 0);
+
             }
 
             var _broadcastReceiver = new NetworkStatusBroadcastReceiver();
@@ -199,7 +201,6 @@ namespace WMS
 
             dataAdapter.NotifyDataSetChanged();
 
-            UniversalAdapterHelper.SelectPositionProgramaticaly(listData, 0);
         }
     
         private void Select(int postionOfTheItemInTheList)

@@ -525,20 +525,20 @@ namespace WMS
 
         private void BtNext_Click(object sender, EventArgs e)
         {
-            selectedItem++;
+            if (settings.tablet)
+            {
 
-            if (selectedItem <= (positions.Items.Count - 1))
-            {
-                listData.RequestFocusFromTouch();
-                listData.SetSelection(selectedItem);
-                listData.SetItemChecked(selectedItem, true);
-            }
-            else
-            {
-                selectedItem = 0;
-                listData.RequestFocusFromTouch();
-                listData.SetSelection(selectedItem);
-                listData.SetItemChecked(selectedItem, true);
+                selectedItem++;
+
+                if (selectedItem <= (positions.Items.Count - 1))
+                {
+                    UniversalAdapterHelper.SelectPositionProgramaticaly(listData, selectedItem); 
+                }
+                else
+                {
+                    selectedItem = 0;
+                    UniversalAdapterHelper.SelectPositionProgramaticaly(listData, selectedItem);
+                }
             }
 
             displayedPosition++;
