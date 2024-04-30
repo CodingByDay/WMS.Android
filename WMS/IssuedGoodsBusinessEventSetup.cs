@@ -52,8 +52,9 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
         private NameValueObjectList positions = null;
 
         private bool initialLoad;
+        private RelativeLayout rlExtra;
 
-     
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -63,6 +64,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             {
                 RequestedOrientation = ScreenOrientation.Landscape;
                 SetContentView(Resource.Layout.IssuedGoodsBusinessEventSetupTablet);
+                rlExtra = FindViewById<RelativeLayout>(Resource.Id.rlExtra);
             }
             else
             {
@@ -374,26 +376,37 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 if (selectedFlow == 2)
                 {
                     lbExtra.Visibility = ViewStates.Visible;
-                    cbExtra.Visibility = ViewStates.Visible;
+                    rlExtra.Visibility = ViewStates.Visible;
+
                     lbExtra.Text = Resources.GetString(Resource.String.s36);
                 }
                 else
                 {
                     lbExtra.Visibility = ViewStates.Invisible;
-                    cbExtra.Visibility = ViewStates.Invisible;
+                    rlExtra.Visibility = ViewStates.Invisible;
                 }
                 if (initial > 0)
                 {
                     await FillOpenOrdersAsync();
                 }
                 docTypes = CommonData.ListDocTypes("P|N");
-                btnOrderMode.Text = Resources.GetString(Resource.String.s30);
+
+                if (settings.tablet)
+                {
+                    btnOrderMode.Text = Resources.GetString(Resource.String.s342);
+
+                }
+                else
+                {
+                    btnOrderMode.Text = Resources.GetString(Resource.String.s30);
+                }
+
                 initial += 1;
             }
             else
             {
                 lbExtra.Visibility = ViewStates.Visible;
-                cbExtra.Visibility = ViewStates.Visible;
+                rlExtra.Visibility = ViewStates.Visible;
                 lbExtra.Text = Resources.GetString(Resource.String.s33);
                 objectExtra.Clear();
                 var subjects = CommonData.ListSubjects();
@@ -408,7 +421,16 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
 
                 adapterExtra.NotifyDataSetChanged();
                 docTypes = CommonData.ListDocTypes("I;M|F");
-                btnOrderMode.Text = Resources.GetString(Resource.String.s32);
+
+                if(settings.tablet)
+                {
+                    btnOrderMode.Text = Resources.GetString(Resource.String.s340);
+
+                }
+                else
+                {
+                    btnOrderMode.Text = Resources.GetString(Resource.String.s32);
+                }
             }
             docTypes.Items.ForEach(dt =>
             {

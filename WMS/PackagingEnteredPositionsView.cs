@@ -361,10 +361,11 @@ namespace WMS
                 btDelete.Visibility = ViewStates.Gone;
                 btNext.Visibility = ViewStates.Gone;
 
-                tbPackNum.Visibility = ViewStates.Gone;
-                tbSSCC.Visibility = ViewStates.Gone;
-                tbItemCount.Visibility = ViewStates.Gone;
-                tbCreatedBy.Visibility = ViewStates.Gone;
+
+                tbPackNum.Enabled = false;
+                tbSSCC.Enabled = false;
+                tbItemCount.Enabled = false;
+                tbCreatedBy.Enabled = false;
 
 
 

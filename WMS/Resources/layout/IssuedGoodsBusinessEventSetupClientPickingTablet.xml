@@ -195,7 +195,7 @@
             android:textSize="20dp"
             android:background="@color/rikoMain"
             android:textColor="@color/white"
-            android:text="@string/s76"
+            android:text="@string/s107"
             android:layout_marginLeft="4dp"
             android:layout_marginRight="4dp"
             android:drawableLeft="@drawable/confirmation_white"

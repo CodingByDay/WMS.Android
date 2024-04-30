@@ -31,21 +31,28 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             ChangeTheOrientation(); 
             base.OnCreate(savedInstanceState);
             SetTheme(Resource.Style.AppTheme_NoActionBar);
-            SetContentView(Resource.Layout.PrintingMenu);
+
+            if (settings.tablet)
+            {
+                RequestedOrientation = ScreenOrientation.Landscape;
+                SetContentView(Resource.Layout.PrintingMenuTablet);
+
+            }
+            else
+            {
+                RequestedOrientation = ScreenOrientation.Portrait;
+                SetContentView(Resource.Layout.PrintingMenu);
+            }
             AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
             var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
             _customToolbar.SetNavigationIcon(settings.RootURL + "/Services/Logo");
             SetSupportActionBar(_customToolbar._toolbar);
             SupportActionBar.SetDisplayShowTitleEnabled(false);
-            // button1 PrintingReprintLabels());
             button1 = FindViewById<Button>(Resource.Id.button1);
             button1.Click += Button1_Click;
-            // button2 PrintingSSCCCodes());
             button2 = FindViewById<Button>(Resource.Id.button2);
             button2.Click += Button_Click;
-            // button3 PrintingProcessControl());
-          
-            // button6 logout
+
             button6 = FindViewById<Button>(Resource.Id.button6);
             button6.Click += Button6_Click;
 

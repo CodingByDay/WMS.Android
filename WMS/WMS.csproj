@@ -10,6 +10,8 @@
     <SupportedOSPlatformVersion>28.0</SupportedOSPlatformVersion>
     <Configurations>Debug;Release</Configurations>
     <Platforms>AnyCPU</Platforms>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PackageIcon></PackageIcon>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <AndroidPackageFormat>apk</AndroidPackageFormat>
@@ -31,6 +33,7 @@
     <None Remove="Resources\anim\fade_in.xml" />
     <None Remove="Resources\anim\fade_out.xml" />
     <None Remove="Resources\drawable\check_mark.png" />
+    <None Remove="Resources\drawable\logo.jpg" />
     <None Remove="Resources\drawable\slovenia.png" />
     <None Remove="Resources\drawable\system_update.png" />
     <None Remove="Resources\drawable\united_kingdom.png" />
@@ -110,6 +113,7 @@
     <None Remove="Resources\layout\PickingMenuTablet.xml" />
     <None Remove="Resources\layout\popup_action.xml" />
     <None Remove="Resources\layout\PrintingMenu.xml" />
+    <None Remove="Resources\layout\PrintingMenuTablet.xml" />
     <None Remove="Resources\layout\PrintingReprintLabels.xml" />
     <None Remove="Resources\layout\PrintingReprintLabelsTablet.xml" />
     <None Remove="Resources\layout\PrintingSSCCCodes.xml" />

@@ -200,7 +200,7 @@
 	<string name="s158">Dostava palete</string>
 	<string name="s159">Zavijanje palete</string>
 	<string name="s160">Naziv</string>
-	<string name="s161">Odprta pakiranja</string>
+	<string name="s161">Pakiranja</string>
 	<string name="s162">Št. pakiranja</string>
 	<string name="s163">Kreiraj F2</string>
 	<string name="s164">Pregled F3</string>
@@ -531,7 +531,9 @@
 	<string name="s339">IDENT</string>
 	<string name="s340">NAROČILO</string>
 	<string name="s341">KLIENT</string>
-
+	<string name="s342">BREZ</string>
+	<string name="s343">PON.</string>
+	<string name="s344">SSCC</string>
 
 
 

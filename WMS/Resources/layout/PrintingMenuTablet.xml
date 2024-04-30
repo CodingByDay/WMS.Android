@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <androidx.percentlayout.widget.PercentRelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -110,54 +110,86 @@
         tools:context=".LinearLayout"
         android:foregroundGravity="center">
     
-    
-    <LinearLayout
+        <LinearLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center_vertical"
+        android:padding="16dp">
+
+     <TextView
+        android:layout_height="0dip"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingTop="5dp">
+        android:layout_weight="1" />
 
-        <TextView
-            android:textStyle="bold"
-            android:layout_width="100dp"
-            android:layout_height="match_parent"
-            android:gravity="bottom"
-            android:paddingLeft="4dp"
-            android:paddingTop="4dp"
-            android:text="@string/s142"/>
-
-        <EditText
-            android:textStyle="bold"
-            android:singleLine="true"
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0.50"
-            android:paddingTop="5dp"
-            android:background="@drawable/editText_bg_grey"
-            android:layout_marginRight="2dp"
-            android:id="@+id/pallet" />
+            android:gravity="center_horizontal"
+            android:weightSum="2"
+            android:orientation="horizontal">
 
+            <Button
+                android:bottomLeftRadius="7dp"
+                android:bottomRightRadius="7dp"
+                android:topLeftRadius="7dp"
+                android:topRightRadius="7dp"
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:layout_height="60dp"
+                android:background="@color/rikoMain"
+                android:paddingBottom="5dp"
+                android:textSize="13dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="20dp"
+                android:paddingTop="8dp"
+                android:drawableLeft="@drawable/repeat_white"
+                android:text="@string/s343"
+                android:layout_marginBottom="5dp"
+                android:textColor="#ffffff"
+                android:id="@+id/button1" />
+
+            <Button
+                android:layout_weight="1"
+                android:bottomLeftRadius="7dp"
+                android:bottomRightRadius="7dp"
+                android:topLeftRadius="7dp"
+                android:topRightRadius="7dp"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginLeft="5dp"
+                android:textSize="13dp"
+                android:layout_marginBottom="5dp"
+                android:background="@color/rikoMain"
+                android:drawableLeft="@drawable/note_white"
+                android:paddingBottom="5dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="20dp"
+                android:paddingTop="8dp"
+                android:text="@string/s344"
+                android:textColor="#ffffff"
+                android:id="@+id/button2" />
+
+        </LinearLayout>
+
+        <Button
+            android:bottomLeftRadius="7dp"
+            android:bottomRightRadius="7dp"
+            android:topLeftRadius="7dp"
+            android:topRightRadius="7dp"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="@string/s110"
+            android:textSize="13dp"
+            android:id="@+id/button6"
+            android:paddingLeft="16dp"
+            android:drawableLeft="@drawable/logout_white"
+            android:layout_marginRight="0.0dp"
+            android:background="@color/rikoMain"
+            android:textColor="#ffffff"/>
     </LinearLayout>
-    <TextView
-        android:textStyle="bold"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingLeft="10dp"
-        android:paddingTop="5dp"
-        android:layout_marginRight="28.5dp" />
-    <Button
-        android:background="@color/rikoMain"
-        android:textColor="#ffffff"
-        android:text="@string/s29"
-        android:layout_width="200dp"
-        android:layout_height="70.0dp"
-        android:drawableLeft="@drawable/confirmation_white"
-        android:textSize="16dp"
-        android:layout_gravity="center_horizontal"
-        android:paddingLeft="10dp"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/btConfirm"
-             />
+    
 
     </LinearLayout>
 

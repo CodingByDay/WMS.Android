@@ -172,7 +172,7 @@
 	<string name="s158">Issuing pallet</string>
 	<string name="s159">Wrapping pallet</string>
 	<string name="s160">Name</string>
-	<string name="s161">Open packaging</string>
+	<string name="s161">Packaging</string>
 	<string name="s162">Packaging no.</string>
 	<string name="s163">Create F2</string>
 	<string name="s164">Overview F3</string>
@@ -409,6 +409,8 @@
 	<string name="s339">IDENT</string>
 	<string name="s340">ORDER</string>
 	<string name="s341">CLIENT</string>
-
+	<string name="s342">WITHOUT</string>
+	<string name="s343">AGAIN.</string>
+	<string name="s344">SSCC</string>
 
 </resources>

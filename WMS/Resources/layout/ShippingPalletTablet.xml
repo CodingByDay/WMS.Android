@@ -126,7 +126,7 @@
 
             <TextView
                 android:textStyle="bold"
-                android:layout_width="70dp"
+                android:layout_width="100dp"
                 android:textSize="18dp"
                 android:layout_height="wrap_content"
                 android:paddingLeft="10dp"
@@ -155,7 +155,7 @@
 
             <TextView
                 android:textStyle="bold"
-                android:layout_width="70.0dp"
+                android:layout_width="100.0dp"
                 android:textSize="18dp"
                 android:layout_height="wrap_content"
                 android:paddingLeft="10dp"
