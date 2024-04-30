@@ -220,7 +220,6 @@ namespace WMS
 
         private void TbIssueLocation_KeyPress(object? sender, View.KeyEventArgs e)
         {
-
             e.Handled = false;
         }
 

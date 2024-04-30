@@ -19,7 +19,10 @@ using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
 using WebApp = TrendNET.WMS.Device.Services.WebApp;
 
-using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS
+using AndroidX.AppCompat.App;
+using AlertDialog = Android.App.AlertDialog;
+using Android.Content.PM;
+namespace WMS
 {
     [Activity(Label = "PickingMenu", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
     public class PickingMenu : CustomBaseActivity
@@ -34,7 +37,16 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
         {
             base.OnCreate(savedInstanceState);
             SetTheme(Resource.Style.AppTheme_NoActionBar);
-            SetContentView(Resource.Layout.PickingMenu);
+            if (settings.tablet)
+            {
+                RequestedOrientation = ScreenOrientation.Landscape;
+                SetContentView(Resource.Layout.PickingMenuTablet);
+            }
+            else
+            {
+                RequestedOrientation = ScreenOrientation.Portrait;
+                SetContentView(Resource.Layout.PickingMenu);
+            }
             AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
             var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
             _customToolbar.SetNavigationIcon(settings.RootURL + "/Services/Logo");

@@ -97,17 +97,7 @@
         tools:context=".LinearLayout"
         android:foregroundGravity="center">
 
-        <TextView
-            android:textStyle="bold"
-            android:textSize="18dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:paddingLeft="10dp"
-            android:paddingTop="5dp"
-            android:text="@string/s95"
-            android:layout_marginBottom="20dp"
-            android:textColor="@color/rikoMain"/>
+9602
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -228,8 +218,8 @@
             android:paddingLeft="10dp"
             android:paddingTop="5dp"/>
         <TextView
-            android:layout_width="296.0dp"
-            android:layout_height="191.0dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:textAlignment="center"
             android:textSize="30dp"
@@ -241,9 +231,11 @@
             android:foregroundGravity="center"
             android:gravity="center" />
         <ImageView
+            android:visibility="invisible"
+            android:layout_gravity="center"
             android:src="@android:drawable/ic_menu_gallery"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:id="@+id/imagePNG" />
         <TextView
             android:layout_height="0dip"

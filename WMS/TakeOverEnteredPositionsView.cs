@@ -60,7 +60,7 @@ namespace WMS
         private int selectedItem;
         private string tempUnit;
 
-        protected override void OnCreate(Bundle savedInstanceState)
+        protected async override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             SetTheme(Resource.Style.AppTheme_NoActionBar);
@@ -112,7 +112,9 @@ namespace WMS
             button5.Click += Button5_Click;
             InUseObjects.ClearExcept(new string[] { "MoveHead" });
             if (moveHead == null) { throw new ApplicationException("moveHead not known at this point!?"); }
-            LoadPositions();
+
+
+            await LoadPositions();
 
             if (settings.tablet)
             {
@@ -264,7 +266,7 @@ namespace WMS
             popupDialog.Hide();
         }
 
-        private void BtnYes_Click(object sender, EventArgs e)
+        private async void BtnYes_Click(object sender, EventArgs e)
         {
 
             {
@@ -280,7 +282,7 @@ namespace WMS
                         if (result == "OK!")
                         {
                             positions = null;
-                            LoadPositions();
+                            await LoadPositions();
                             if(settings.tablet)
                             {
                                 data.Clear();
@@ -293,7 +295,7 @@ namespace WMS
                         {
                             Toast.MakeText(this, $"{Resources.GetString(Resource.String.s212)}" + result, ToastLength.Long).Show();
                             positions = null;
-                            LoadPositions();
+                            await LoadPositions();
                             popupDialog.Dismiss();
                             popupDialog.Hide();
                             return;
@@ -496,7 +498,7 @@ namespace WMS
             FillDisplayedItem();
         }
 
-        private void LoadPositions()
+        private async Task LoadPositions()
         {
            
             try
@@ -508,7 +510,7 @@ namespace WMS
 
                     if (positions == null)
                     {
-                        positions = Services.GetObjectList("mi", out error, moveHead.GetInt("HeadID").ToString());
+                        positions = await AsyncServices.AsyncServices.GetObjectListAsync("mi", moveHead.GetInt("HeadID").ToString());
                         InUseObjects.Set("TakeOverEnteredPositions", positions);
                     }
                     if (positions == null)

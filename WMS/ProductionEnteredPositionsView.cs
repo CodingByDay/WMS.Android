@@ -74,6 +74,8 @@ namespace WMS
                 SetContentView(Resource.Layout.ProductionEnteredPositionsViewTablet);
                 listData = FindViewById<ListView>(Resource.Id.listData);
                 dataAdapter = UniversalAdapterHelper.GetProductionEnteredPositionsView(this, data);
+                listData.ItemClick += ListData_ItemClick;
+                listData.ItemLongClick += ListData_ItemLongClick;
                 listData.Adapter = dataAdapter;
               
             }
@@ -153,7 +155,10 @@ namespace WMS
                         positions = null;
                         LoadPositions();
                         data.Clear();
-                        fillList();
+                        if (settings.tablet)
+                        {
+                            fillList();
+                        }
                         popupDialog.Dismiss();
                         popupDialog.Hide();
                     }
@@ -193,30 +198,15 @@ namespace WMS
 
 
 
-        private void DeleteFromTouch(int index)
-        {
-            popupDialog = new Dialog(this);
-            popupDialog.SetContentView(Resource.Layout.YesNoPopUp);
-            popupDialog.Window.SetSoftInputMode(SoftInput.AdjustResize);
-            popupDialog.Show();
-
-            popupDialog.Window.SetLayout(LayoutParams.MatchParent, LayoutParams.WrapContent);
-            popupDialog.Window.SetBackgroundDrawable(new ColorDrawable(Color.ParseColor("#081a45")));
-
-
-            // Access Popup layout fields like below
-            btnYes = popupDialog.FindViewById<Button>(Resource.Id.btnYes);
-            btnNo = popupDialog.FindViewById<Button>(Resource.Id.btnNo);
-            btnYes.Click += (e, ev) => { Yes(index); };
-            btnNo.Click += (e, ev) => { No(index); };
-        }
-
+   
 
         private void ListData_ItemLongClick(object sender, AdapterView.ItemLongClickEventArgs e)
         {
-            var index = e.Position;
-            DeleteFromTouch(index);
-
+            selected = e.Position;
+            Select(selected);
+            selectedItem = selected;
+            UniversalAdapterHelper.SelectPositionProgramaticaly(listData, selected);
+            btUpdate.PerformClick();
         }
 
         private void ListData_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
@@ -224,9 +214,7 @@ namespace WMS
             selected = e.Position;
             Select(selected);
             selectedItem = selected;
-            listData.RequestFocusFromTouch();
-            listData.SetItemChecked(selected, true);
-            listData.SetSelection(selected);
+            UniversalAdapterHelper.SelectPositionProgramaticaly(listData, selected);
         }
 
         private void Select(int selected)
@@ -239,11 +227,11 @@ namespace WMS
 
         private void fillList()
         {
-
             for (int i = 0; i < positions.Items.Count; i++)
             {
                 if (i < positions.Items.Count && positions.Items.Count > 0)
                 {
+
                     var item = positions.Items.ElementAt(i);
                     var created = item.GetDateTime("DateInserted");
                     var numbering = i + 1;
@@ -266,12 +254,14 @@ namespace WMS
                     {
                         tempUnit = item.GetDouble("Factor").ToString();
                     }
+
                     string error;
                     var ident = item.GetString("Ident").Trim();
                     var openIdent = Services.GetObject("id", ident, out error);
                     //  var ident = CommonData.LoadIdent(item.GetString("Ident"));
                     var identName = openIdent.GetString("Name");
                     var date = created == null ? "" : ((DateTime)created).ToString("dd.MM.yyyy");
+
                     data.Add(new ProductionEnteredPositionList
                     {
                         Ident = item.GetString("Ident"),
@@ -281,23 +271,21 @@ namespace WMS
                         Location = item.GetString("LocationName")
 
                     });
-
                 }
                 else
                 {
                     string errorWebApp = string.Format($"{Resources.GetString(Resource.String.s247)}");
                     Toast.MakeText(this, errorWebApp, ToastLength.Long).Show();
                 }
-
             }
-
+            dataAdapter.NotifyDataSetChanged();
+            UniversalAdapterHelper.SelectPositionProgramaticaly(listData, 0);
         }
 
         public bool IsOnline()
         {
             var cm = (ConnectivityManager)GetSystemService(ConnectivityService);
             return cm.ActiveNetworkInfo == null ? false : cm.ActiveNetworkInfo.IsConnected;
-
         }
         private void OnNetworkStatusChanged(object sender, EventArgs e)
         {

@@ -1,17 +1,20 @@
 ﻿using Android.Content;
 using Android.Content.PM;
+using Android.Graphics.Drawables;
 using Android.Media;
 using Android.Net;
 using Android.Preferences;
 using Android.Views;
 using AndroidX.AppCompat.App;
 using BarCode2D_Receiver;
+using Com.Jsibbold.Zoomage;
 using Microsoft.AppCenter.Crashes;
 using Newtonsoft.Json;
 using System.Data.Common;
 using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
 using WMS.App;
+using static Android.App.ActionBar;
 using Stream = Android.Media.Stream;
 
 namespace WMS
@@ -42,6 +45,9 @@ namespace WMS
         private ListView listData;
         private UniversalAdapter<CheckStockAddonList> dataAdapter;
         private List<CheckStockAddonList> data = new List<CheckStockAddonList>();
+        private ImageView imagePNG;
+        private Dialog popupDialog;
+        private ZoomageView? image;
 
         public void GetBarcode(string barcode)
         {
@@ -50,6 +56,7 @@ namespace WMS
                 Sound();
                 tbIdent.Text = barcode;
                 ProcessStock();
+                showPictureIdent(tbIdent.Text);
             }
             else if (tbLocation.HasFocus)
             {
@@ -58,6 +65,27 @@ namespace WMS
             }
         }
 
+
+
+        private void ImageClick(Drawable d)
+        {
+            popupDialog = new Dialog(this);
+            popupDialog.SetContentView(Resource.Layout.WarehousePicture);
+            popupDialog.Window.SetSoftInputMode(SoftInput.AdjustResize);
+            popupDialog.Show();
+
+            popupDialog.Window.SetLayout(LayoutParams.MatchParent, LayoutParams.WrapContent);
+            popupDialog.Window.SetBackgroundDrawableResource(Android.Resource.Color.HoloBlueBright);
+            image = popupDialog.FindViewById<ZoomageView>(Resource.Id.image);
+            image.SetMinimumHeight(500);
+
+            image.SetMinimumWidth(800);
+
+            image.SetImageDrawable(d);
+
+            // Access Popup layout fields like below
+
+        }
         private string LoadStockFromStockSerialNo(string warehouse, string location, string ident)
         {
             try
@@ -164,6 +192,7 @@ namespace WMS
             {
                 RequestedOrientation = ScreenOrientation.Landscape;
                 SetContentView(Resource.Layout.CheckStockTablet);
+                imagePNG = FindViewById<ImageView>(Resource.Id.imagePNG);
                 listData = FindViewById<ListView>(Resource.Id.listData);
                 dataAdapter = UniversalAdapterHelper.GetCheckStock(this, data);
                 listData.Adapter = dataAdapter;
@@ -245,7 +274,29 @@ namespace WMS
             cbWarehouses.ItemClick += CbWarehouses_ItemClick;
             tbLocation.ItemClick += TbLocation_ItemClick;
         }
+        private void showPictureIdent(string ident)
+        {
+            try
+            {
+                string wh = spinnerAdapterList.ElementAt(temporaryPositionWarehouse).ID;
+                Android.Graphics.Bitmap show = Services.GetImageFromServerIdent(wh, ident);
 
+                Drawable d = new BitmapDrawable(Resources, show);
+
+                imagePNG.SetImageDrawable(d);
+                imagePNG.Visibility = ViewStates.Visible;
+
+
+                imagePNG.Click += (e, ev) => { ImageClick(d); };
+
+            }
+            catch (Exception error)
+            {
+                var log = error;
+                return;
+            }
+
+        }
         private void TbLocation_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
         {
         }
@@ -256,7 +307,7 @@ namespace WMS
             {
                 temporaryPositionWarehouse = e.Position;
             }
-            await GetLocationsForGivenWarehouse(spinnerAdapterList.ElementAt(temporaryPositionWarehouse).Text);
+            await GetLocationsForGivenWarehouse(spinnerAdapterList.ElementAt(temporaryPositionWarehouse).ID);
             DataAdapterLocation = new CustomAutoCompleteAdapter<string>(this,
             Android.Resource.Layout.SimpleSpinnerItem, locationData);
             tbLocation.Adapter = null;
@@ -341,7 +392,11 @@ namespace WMS
         {
             data.Clear();
             ProcessStock();
-            fillItemsOfList();
+            if (settings.tablet)
+            {
+                fillItemsOfList();
+                showPictureIdent(tbIdent.Text);
+            }
 
         }
 
@@ -360,6 +415,7 @@ namespace WMS
                     Quantity = x.GetDouble("RealStock").ToString(CommonData.GetQtyPicture())
                 });
             });
+            dataAdapter.NotifyDataSetChanged();
         }
 
         private async Task GetLocationsForGivenWarehouse(string warehouse)

@@ -9,6 +9,7 @@
     android:orientation="vertical"
     tools:context=".LinearLayout"
     android:foregroundGravity="center">
+
     <include
         android:id="@+id/toolbar"
         layout="@layout/toolbar" />

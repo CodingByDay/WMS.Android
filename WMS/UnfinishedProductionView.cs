@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
@@ -18,7 +17,6 @@ using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
 using static Android.App.ActionBar;
 using WebApp = TrendNET.WMS.Device.Services.WebApp;
-
 using AndroidX.AppCompat.App;
 using AlertDialog = Android.App.AlertDialog;
 using Android.Graphics.Drawables;
@@ -63,12 +61,11 @@ namespace WMS
             {
                 RequestedOrientation = ScreenOrientation.Landscape;
                 SetContentView(Resource.Layout.UnfinishedProductionViewTablet);
-
                 listData = FindViewById<ListView>(Resource.Id.listData);
+                listData.ItemClick += DataList_ItemClick;
+                listData.ItemLongClick += DataList_ItemLongClick;
                 dataAdapter = UniversalAdapterHelper.GetUnfinishedProduction(this, data);
                 listData.Adapter = dataAdapter;
-   
-
             }
             else
             {
@@ -135,9 +132,19 @@ namespace WMS
                 FillDisplayedItem();
             }
 
-     
 
-
+        private void DataList_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
+        {
+            selected = e.Position;
+            Select(selected);
+            selectedItem = selected;
+            UniversalAdapterHelper.SelectPositionProgramaticaly(listData, selected);
+        }
+        private void DataList_ItemLongClick(object sender, AdapterView.ItemLongClickEventArgs e)
+        {
+            var index = e.Position;
+            DeleteFromTouch(index);
+        }
         private void FillItemsList()
         {
 
@@ -452,16 +459,12 @@ namespace WMS
 
                 if (selectedItem <= (positions.Items.Count - 1))
                 {
-                    listData.RequestFocusFromTouch();
-                    listData.SetSelection(selectedItem);
-                    listData.SetItemChecked(selectedItem, true);
+                    UniversalAdapterHelper.SelectPositionProgramaticaly(listData, selectedItem);
                 }
                 else
                 {
                     selectedItem = 0;
-                    listData.RequestFocusFromTouch();
-                    listData.SetSelection(selectedItem);
-                    listData.SetItemChecked(selectedItem, true);
+                    UniversalAdapterHelper.SelectPositionProgramaticaly(listData, selectedItem);
                 }
 
             }

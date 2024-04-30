@@ -148,6 +148,8 @@ namespace WMS
                     });
                 });
 
+                dataAdapter.NotifyDataSetChanged();
+
             }
 
         }
@@ -523,12 +525,13 @@ namespace WMS
             barcode2D.open(this, this);
             try
             {
-                string SuccessMessage = string.Format("Preverjam povezovani DN");
-                Toast.MakeText(this, SuccessMessage, ToastLength.Long).Show();
+
                 var key = moveHead.GetString("LinkKey");
                 string error;
                 openWorkOrder = Services.GetObject("wo", key, out error);
-                if (openWorkOrder == null) { throw new ApplicationException("Neveljaven povezan dokument: " + key); }
+                if (openWorkOrder == null) {
+                    StartActivity(typeof(MainMenu));
+                }
                 lbQty.Text = $"{Resources.GetString(Resource.String.s40)} (" + openWorkOrder.GetDouble("OpenQty").ToString(CommonData.GetQtyPicture()) + ")";
             }
             catch (Exception err)

@@ -404,6 +404,11 @@
 	<string name="s336">Enter the location</string>
 
 	<string name="s337">No data for that sscc code</string>
+	<string name="s338">Order</string>
+
+	<string name="s339">IDENT</string>
+	<string name="s340">ORDER</string>
+	<string name="s341">CLIENT</string>
 
 
 </resources>

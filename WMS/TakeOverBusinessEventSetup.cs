@@ -43,7 +43,7 @@ namespace WMS
         private CustomAutoCompleteAdapter<ComboBoxItem> adapterSubject;
         private CustomAutoCompleteAdapter<ComboBoxItem> adapter;
         private CustomAutoCompleteAdapter<ComboBoxItem> adapterDoc;
-
+        private RelativeLayout rlExtra;
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -53,6 +53,7 @@ namespace WMS
             {
                 RequestedOrientation = ScreenOrientation.Landscape;
                 SetContentView(Resource.Layout.TakeOverBusinessEventSetupTablet);
+                rlExtra = FindViewById<RelativeLayout>(Resource.Id.rlExtra);
             }
             else
             {
@@ -251,16 +252,22 @@ namespace WMS
                 if (byOrder)
                 {
                     lbSubject.Visibility = ViewStates.Invisible;
-                    cbSubject.Visibility = ViewStates.Invisible;
-
+                    rlExtra.Visibility = ViewStates.Invisible;
                     docTypes = CommonData.ListDocTypes("I|N");
-                    btnOrderMode.Text = Resources.GetString(Resource.String.s30);
+                    if(settings.tablet)
+                    {
+                        btnOrderMode.Text = Resources.GetString(Resource.String.s138);
+
+                    }
+                    else
+                    {
+                        btnOrderMode.Text = Resources.GetString(Resource.String.s30);
+                    }
                 }
                 else
                 {
                     lbSubject.Visibility = ViewStates.Visible;
-                    cbSubject.Visibility = ViewStates.Visible;
-
+                    rlExtra.Visibility = ViewStates.Visible;
                     if ( cbSubject.Adapter == null || cbSubject.Count() == 0 )
                     {
                         var subjects = CommonData.ListSubjects();
@@ -278,7 +285,15 @@ namespace WMS
 
                     docTypes = CommonData.ListDocTypes("P|F");
 
-                    btnOrderMode.Text = Resources.GetString(Resource.String.s32);
+                    if(settings.tablet)
+                    {
+                        btnOrderMode.Text = Resources.GetString(Resource.String.s338);
+
+                    }
+                    else
+                    {
+                        btnOrderMode.Text = Resources.GetString(Resource.String.s32);
+                    }
                 }
 
                 docTypes.Items.ForEach(dt =>
