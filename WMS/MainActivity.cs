@@ -17,7 +17,6 @@ using static Android.App.ActionBar;
 using Microsoft.AppCenter.Distribute;
 using Uri = System.Uri;
 using System.Threading.Tasks;
-
 using AlertDialog = Android.App.AlertDialog;
 using Square.Picasso;
 using Aspose.Words.Tables;
@@ -27,8 +26,6 @@ using Android;
 using TrendNET.WMS.Device.Services;
 using WMS.App;
 using WMS.Background;
-
-
 using AndroidX.AppCompat.App;
 using FFImageLoading;
 using Android.Graphics.Drawables;
@@ -40,6 +37,7 @@ using AndroidX.Core.Content;
 
 namespace WMS
 {
+
     [Activity(Label = "WMS", Theme = "@style/AppTheme", MainLauncher = true, Icon = "@drawable/barcode", NoHistory = true)]
     public class MainActivity : CustomBaseActivity
     {

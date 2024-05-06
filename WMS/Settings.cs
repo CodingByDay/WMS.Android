@@ -76,20 +76,23 @@ namespace WMS
             Application.Context.RegisterReceiver(_broadcastReceiver,
             new IntentFilter(ConnectivityManager.ConnectivityAction));
 
-            try
-            {
-                if (CommonData.GetSetting("Bluetooth") != "1")
-                {
-                    bluetooth.Visibility = ViewStates.Invisible;
-                }
+            /*  try
+              {
+                  if (CommonData.GetSetting("Bluetooth") != "1")
+                  {
+                      bluetooth.Visibility = ViewStates.Invisible;
+                  }
 
-            } catch {
+              } catch {
 
-                bluetooth.Visibility = ViewStates.Invisible;
+                  bluetooth.Visibility = ViewStates.Invisible;
 
 
-            } 
-            
+              } * // For now hide it  */
+
+            bluetooth.Visibility = ViewStates.Invisible;
+
+
         }
 
         private void Bluetooth_Click(object sender, EventArgs e)
