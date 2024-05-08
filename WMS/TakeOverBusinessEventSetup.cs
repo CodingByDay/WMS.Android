@@ -93,12 +93,16 @@ namespace WMS
             Android.Resource.Layout.SimpleSpinnerItem, objectcbWarehouse);
             adapter.SetDropDownViewResource(Android.Resource.Layout.SimpleSpinnerItem);
             cbWarehouse.Adapter = adapter;
-            UpdateForm();   
+             
             adapterDoc = new CustomAutoCompleteAdapter<ComboBoxItem>(this,
             Android.Resource.Layout.SimpleSpinnerItem, objectcbDocType);
 
             adapter.SetDropDownViewResource(Android.Resource.Layout.SimpleSpinnerItem);
             cbDocType.Adapter = adapterDoc;
+            adapterDoc.SetNotifyOnChange(true);
+
+            UpdateForm();
+
 
             var dw = CommonData.GetSetting("DefaultWarehouse");
             if (!string.IsNullOrEmpty(dw))
@@ -240,19 +244,23 @@ namespace WMS
         }
 
         private void UpdateForm()
-        {
-       
-           
+        {         
             try
             {
-              
-      
+                  
                 objectcbDocType.Clear();
 
                 if (byOrder)
                 {
                     lbSubject.Visibility = ViewStates.Invisible;
-                    rlExtra.Visibility = ViewStates.Invisible;
+                    if (settings.tablet)
+                    {
+                        rlExtra.Visibility = ViewStates.Invisible;
+                    }
+                    else
+                    {
+                        cbSubject.Visibility = ViewStates.Invisible;
+                    }
                     docTypes = CommonData.ListDocTypes("I|N");
                     if(settings.tablet)
                     {
@@ -267,7 +275,14 @@ namespace WMS
                 else
                 {
                     lbSubject.Visibility = ViewStates.Visible;
-                    rlExtra.Visibility = ViewStates.Visible;
+
+                    if (settings.tablet)
+                    {
+                        rlExtra.Visibility = ViewStates.Visible;
+                    } else
+                    {
+                        cbSubject.Visibility = ViewStates.Visible;
+                    }
                     if ( cbSubject.Adapter == null || cbSubject.Count() == 0 )
                     {
                         var subjects = CommonData.ListSubjects();
@@ -300,6 +315,18 @@ namespace WMS
                 {
                     objectcbDocType.Add(new ComboBoxItem { ID = dt.GetString("Code"), Text = dt.GetString("Code") + " " + dt.GetString("Name") });
                 });
+
+
+                // Refresh the data
+                adapterDoc.Clear();
+                adapterDoc.AddAll(objectcbDocType);
+                adapterDoc.NotifyDataSetChanged();
+
+                if(objectcbDocType.Count == 0)
+                {
+                    cbDocType.Text = string.Empty;
+                } 
+
             }
             catch (Exception err)
             {

@@ -849,7 +849,12 @@ namespace WMS
 
                 // This is perhaps not needed due to the quantity checking requirments. lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + element.anQty.ToString() + " )";
                 tbPacking.Text = element.anQty.ToString();
-                
+
+                if (serialRow.Visibility == ViewStates.Visible)
+                {
+                    tbSerialNum.Text = element.acSerialNo ?? string.Empty;
+                }
+
 
                 tbLocation.Text = element.aclocation;
                 tbLocation.Enabled = false;
@@ -857,7 +862,7 @@ namespace WMS
                 // Do stuff and allow creating the position
                 createPositionAllowed = true;
                 tbPacking.Text = data.ElementAt(0).anQty.ToString();
-
+                tbPacking.RequestFocus();
                 tbPacking.SetSelection(0, tbPacking.Text.Length);
 
                 // This flow should end up with correct data in the fields and the select focus on the qty field. 

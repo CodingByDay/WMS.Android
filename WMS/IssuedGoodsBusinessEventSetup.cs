@@ -76,7 +76,6 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             _customToolbar.SetNavigationIcon(settings.RootURL + "/Services/Logo");
             SetSupportActionBar(_customToolbar._toolbar);
             SupportActionBar.SetDisplayShowTitleEnabled(false);
-            LoaderManifest.LoaderManifestLoopResources(this);
             cbDocType = FindViewById<CustomAutoCompleteTextView>(Resource.Id.cbDocType);
             cbWarehouse = FindViewById<CustomAutoCompleteTextView>(Resource.Id.cbWarehouse);
             cbExtra = FindViewById<CustomAutoCompleteTextView>(Resource.Id.cbExtra);
@@ -100,11 +99,11 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             cbWarehouse.Adapter = adapterWarehouse;
             string dw = CommonData.GetSetting("DefaultWarehouse");
             cbWarehouse.SetText(dw, false);
-            UpdateForm();
             adapterDocType = new CustomAutoCompleteAdapter<ComboBoxItem>(this,
             Android.Resource.Layout.SimpleSpinnerItem, objectDocType);
             adapterDocType.SetDropDownViewResource(Android.Resource.Layout.SimpleSpinnerItem);
             cbDocType.Adapter = adapterDocType;
+            UpdateForm();
             btnOrderMode.Enabled = Services.HasPermission("TNET_WMS_BLAG_SND_NORDER", "R");
             cbWarehouse.Enabled = true;
             BottomSheetActions bottomSheetActions = new BottomSheetActions();
@@ -154,7 +153,6 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
         {
             try
             {
-
                 temporaryPositionExtra = e.Position;
             }
             catch (Exception ex)
@@ -287,7 +285,11 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
 
                             if (dt != null)
                             {
-                                var wh = cbWarehouse.Text;
+
+
+                                var whAdapter = cbWarehouse.Adapter as CustomAutoCompleteAdapter<ComboBoxItem>;
+                                string wh = whAdapter.GetComboBoxItem(temporaryPositionWarehouse).ID ?? cbWarehouse.Text;
+                                
                                 if (wh != null && !string.IsNullOrEmpty(wh))
                                 {
                                     string error;
@@ -369,21 +371,32 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
         private async void UpdateForm()
         {
             objectExtra.Clear();
-      
+            adapterDocType.Clear();
             if (byOrder)
             {
                 int selectedFlow = Base.Store.modeIssuing;
                 if (selectedFlow == 2)
                 {
                     lbExtra.Visibility = ViewStates.Visible;
-                    rlExtra.Visibility = ViewStates.Visible;
-
+                    if (settings.tablet)
+                    {
+                        rlExtra.Visibility = ViewStates.Visible;
+                    } else
+                    {
+                        cbExtra.Visibility = ViewStates.Visible;
+                    }
                     lbExtra.Text = Resources.GetString(Resource.String.s36);
                 }
                 else
                 {
                     lbExtra.Visibility = ViewStates.Invisible;
-                    rlExtra.Visibility = ViewStates.Invisible;
+                    if (settings.tablet)
+                    {
+                        rlExtra.Visibility = ViewStates.Invisible;
+                    } else
+                    {
+                        cbExtra.Visibility = ViewStates.Invisible;
+                    }
                 }
                 if (initial > 0)
                 {
@@ -406,7 +419,14 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             else
             {
                 lbExtra.Visibility = ViewStates.Visible;
-                rlExtra.Visibility = ViewStates.Visible;
+                if (settings.tablet)
+                {
+                    rlExtra.Visibility = ViewStates.Visible;
+                }
+                else
+                {
+                    cbExtra.Visibility = ViewStates.Visible;
+                }
                 lbExtra.Text = Resources.GetString(Resource.String.s33);
                 objectExtra.Clear();
                 var subjects = CommonData.ListSubjects();
@@ -436,6 +456,18 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             {
                 objectDocType.Add(new ComboBoxItem { ID = dt.GetString("Code"), Text = dt.GetString("Code") + " " + dt.GetString("Name") });
             });
+
+
+            // Refresh the data
+            adapterDocType.Clear();
+            adapterDocType.AddAll(objectDocType);
+            adapterDocType.NotifyDataSetChanged();
+
+            if (objectDocType.Count == 0)
+            {
+                cbDocType.Text = string.Empty;
+            }
+
         }
 
 
