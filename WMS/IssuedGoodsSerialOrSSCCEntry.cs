@@ -848,8 +848,14 @@ namespace WMS
                 var element = data.ElementAt(0);
 
                 // This is perhaps not needed due to the quantity checking requirments. lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + element.anQty.ToString() + " )";
-                tbPacking.Text = element.anQty.ToString();
-
+                if (element.anPackQty != -1)
+                {
+                    tbPacking.Text = element.anPackQty.ToString();
+                }
+                else
+                {
+                    tbPacking.Text = element.anQty.ToString();
+                }
                 if (serialRow.Visibility == ViewStates.Visible)
                 {
                     tbSerialNum.Text = element.acSerialNo ?? string.Empty;
@@ -861,7 +867,6 @@ namespace WMS
 
                 // Do stuff and allow creating the position
                 createPositionAllowed = true;
-                tbPacking.Text = data.ElementAt(0).anQty.ToString();
                 tbPacking.RequestFocus();
                 tbPacking.SetSelection(0, tbPacking.Text.Length);
 
@@ -1007,7 +1012,8 @@ namespace WMS
                             aclocation = row.StringValue("aclocation"),
                             anNo = (int) (row.IntValue("anNo") ?? -1),
                             acKey = row.StringValue("acKey"),    
-                            acIdent = row.StringValue("acIdent")
+                            acIdent = row.StringValue("acIdent"),
+                            anPackQty = row.DoubleValue("anPackQty") ?? -1
                         });
                     }
                 }
@@ -1099,11 +1105,23 @@ namespace WMS
                         // This flow is for orders.
                         string trailBytes = Intent.Extras.GetString("selected");
                         receivedTrail = JsonConvert.DeserializeObject<Trail>(trailBytes);
-                        qtyCheck = Double.Parse(receivedTrail.Qty);
                         tbLocation.Text = receivedTrail.Location;
-                        lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + qtyCheck.ToString(CommonData.GetQtyPicture()) + " )";
-                        stock = qtyCheck;
-                        tbPacking.Text = qtyCheck.ToString();
+
+                        if(receivedTrail.Packaging!=-1)
+                        {
+                            qtyCheck = receivedTrail.Packaging;
+                            lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + qtyCheck.ToString(CommonData.GetQtyPicture()) + " )";
+                            stock = qtyCheck;
+                            tbPacking.Text = qtyCheck.ToString();
+                        } else
+                        {
+                            qtyCheck = Double.Parse(receivedTrail.Qty);
+                            lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + qtyCheck.ToString(CommonData.GetQtyPicture()) + " )";
+                            stock = qtyCheck;
+                            tbPacking.Text = qtyCheck.ToString();
+                        }
+                    
+
                         GetConnectedPositions(receivedTrail.Key, receivedTrail.No, receivedTrail.Ident, receivedTrail.Location);
 
                     }
@@ -1142,9 +1160,19 @@ namespace WMS
 
                         if (order != null)
                         {
-                            qtyCheck = order.Quantity ?? 0;
-                            lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + qtyCheck.ToString(CommonData.GetQtyPicture()) + " )";
-                            stock = qtyCheck;
+                            if (order.Packaging != -1)
+                            {
+                                qtyCheck = order.Packaging ?? 0;
+                                lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + qtyCheck.ToString(CommonData.GetQtyPicture()) + " )";
+                                stock = qtyCheck;
+                            }
+                            else
+                            {
+                                qtyCheck = order.Quantity ?? 0;
+                                lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + qtyCheck.ToString(CommonData.GetQtyPicture()) + " )";
+                                stock = qtyCheck;
+                            }
+
                             GetConnectedPositions(order.Order, order.Position ?? -1, order.Ident);
                         }
 

@@ -17,7 +17,7 @@ namespace WMS.App
         public string Key { get; set; }
 
         public int No { get; set; }
-
+        public double Packaging { get; set; }
         public int originalIndex { get; set; }
 
         public Dictionary<string, double> locationQty { get; set; } = new Dictionary<string, double>();
@@ -31,6 +31,7 @@ namespace WMS.App
             Name = info.GetString("Name");
             Key = info.GetString("Key");
             No = info.GetInt32("No");
+            Packaging = info.GetDouble("Packaging");
             locationQty = (Dictionary<string, double>)info.GetValue("locationQty", typeof(Dictionary<string, double>));
         }
 
@@ -48,6 +49,7 @@ namespace WMS.App
             info.AddValue("Name", Name);
             info.AddValue("Key", Key);
             info.AddValue("No", No);
+            info.AddValue("Packaging", Packaging);
            // info.AddValue("locationQty", locationQty, typeof(Dictionary<string, double>));
         }
 

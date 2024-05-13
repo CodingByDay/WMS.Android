@@ -25,5 +25,7 @@ namespace WMS.App
 
         public string acIdent { get; set; }
 
+        public double anPackQty { get; set; }
+
     }
 }

@@ -14,6 +14,7 @@ namespace WMS.App
         public string? Client  { get; set; }
         public DateTime? Date { get; set; }
         public double? Quantity { get; set; }
+        public double? Packaging { get; set; }
 
     }
 }

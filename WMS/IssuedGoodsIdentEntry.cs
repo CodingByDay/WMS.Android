@@ -147,7 +147,8 @@ namespace WMS
                                         Position = (int?)row.IntValue("anNo"),
                                         Quantity = row.DoubleValue("anQty"),
                                         Date = row.DateTimeValue("DeliveryDeadline"),
-                                        Ident = row.StringValue("acIdent")
+                                        Ident = row.StringValue("acIdent"),
+                                        Packaging = row.DoubleValue("anPackQty")
                                     });
                                     
                                 }

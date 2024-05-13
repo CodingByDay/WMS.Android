@@ -295,8 +295,10 @@ namespace WMS
 
             FillDisplayedOrderInfo();
 
-            UniversalAdapterHelper.SelectPositionProgramaticaly(listData, displayedOrder);
-
+            if (settings.tablet)
+            {
+                UniversalAdapterHelper.SelectPositionProgramaticaly(listData, displayedOrder);
+            }
 
         }
 
@@ -477,10 +479,11 @@ namespace WMS
                                     {
                                         Client = row.StringValue("acSubject"),
                                         Order = row.StringValue("acKey"),
-                                        Position = (int?)row.IntValue("anNo"),
+                                        Position = (int?) row.IntValue("anNo"),
                                         Quantity = row.DoubleValue("anQty"),
                                         Date = row.DateTimeValue("adDeliveryDeadline"),
-                                        Ident = row.StringValue("acIdent")
+                                        Ident = row.StringValue("acIdent"),
+                                        Packaging = row.DoubleValue("anPackQty")
                                     });
 
                                 }

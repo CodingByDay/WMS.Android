@@ -295,6 +295,7 @@ namespace WMS
                     List<Trail> unfiltered = new List<Trail>();
                     var filterLoc = tbLocationFilter.Text;
                     var filterIdent = tbIdentFilter.Text;
+
                     try
                     {
                         if (openOrder != null)
@@ -316,12 +317,17 @@ namespace WMS
                             });
                             password = moveHead.GetString("LinkKey");
                         }
+
                         string error;
+
                         var warehouse = moveHead.GetString("Wharehouse");
                         // qtyByLoc = Services.GetObjectList("ook", out error, password);
                         var parameters = new List<Services.Parameter>();
                         parameters.Add(new Services.Parameter { Name = "acKey", Type = "String", Value = password });
-                        string sql = $"SELECT * FROM uWMSOrderItemByKeyOut WHERE acKey = @acKey;";
+
+                        // This change is made because serial number and sscc are not shown and can result in many duplicate entries. 13.05.2024 Janko Jovičić
+                        string sql = $"SELECT DISTINCT acIdent, acName, anQty, anNo, acKey, acSubject, aclocation, anPackQty FROM uWMSOrderItemByKeyOut WHERE acKey = @acKey;";
+
                         result = await AsyncServices.AsyncServices.GetObjectListBySqlAsync(sql, parameters);                                                                                         
                         NameValueObjectVariableList = result.ConvertToNameValueObjectList("OpenOrder");
                         if (result.Success && result.Rows.Count > 0)
@@ -344,8 +350,9 @@ namespace WMS
                                     lvi.Location = location;
                                     lvi.Qty = string.Format("{0:###,##0.00}", row.DoubleValue("anQty"));
                                     lvi.originalIndex = counter;
-                                    lvi.No = (int)row.IntValue("anNo");
+                                    lvi.No = (int) row.IntValue("anNo");
                                     lvi.Name = name;
+                                    lvi.Packaging = row.DoubleValue("anPackQty") ?? -1;
                                     counter ++;
                                     unfiltered.Add(lvi);
        
@@ -362,19 +369,20 @@ namespace WMS
                             adapterObj.Filter(trails, true, string.Empty, false);
                             listener = new MyOnItemLongClickListener(this, adapterObj.returnData(), adapterObj);
                             ivTrail.OnItemLongClickListener = listener;
-
-                          
-
+                        
                             // Bluetooth
                            
                             /* try
+                             * 
                             {
                                 sendDataToDevice();
                             } catch (Exception ex)
                             {
                                 Crashes.TrackError(ex);
                             }
+
                             // Bluetooth
+
                            */
 
                         });

@@ -157,6 +157,7 @@ namespace WMS
             {
                 if (i < positions.Items.Count && positions.Items.Count > 0)
                 {
+
                     var item = positions.Items.ElementAt(i);
                     var created = item.GetDateTime("DateInserted");
                     var numbering = i + 1;
@@ -179,6 +180,7 @@ namespace WMS
                     {
                         tempUnit = item.GetDouble("Factor").ToString();
                     }
+
                     string error;
                     var ident = item.GetString("Ident").Trim();
                     var openIdent = Services.GetObject("id", ident, out error);
@@ -290,10 +292,20 @@ namespace WMS
                 var code2d = Base.Store.code2D;
                 if (order != null)
                 {
-                    qtyCheck = order.Quantity ?? 0;
-                    lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + qtyCheck.ToString(CommonData.GetQtyPicture()) + " )";
-                    tbPacking.Text = qtyCheck.ToString();
-                    stock = qtyCheck;
+                    if(order.Packaging!=-1)
+                    {
+                        qtyCheck = order.Packaging ?? 0;
+                        lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + qtyCheck.ToString(CommonData.GetQtyPicture()) + " )";
+                        tbPacking.Text = qtyCheck.ToString();
+                        stock = qtyCheck;
+                    } else
+                    {
+                        qtyCheck = order.Quantity ?? 0;
+                        lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + qtyCheck.ToString(CommonData.GetQtyPicture()) + " )";
+                        tbPacking.Text = qtyCheck.ToString();
+                        stock = qtyCheck;
+                    }
+             
                     GetConnectedPositions(order.Order, order.Position ?? -1, order.Ident);
                     tbLocation.Text = CommonData.GetSetting("DefaultPaletteLocation");
                     
