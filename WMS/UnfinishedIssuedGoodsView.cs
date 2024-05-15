@@ -268,7 +268,11 @@ namespace WMS
 
         private void SetUpClientPicking(string flow)
         {
-            if(flow == "0")
+            if (flow == string.Empty)
+            {
+                Base.Store.modeIssuing = 1;
+            }
+            else if (flow == "0")
             {
                 Base.Store.modeIssuing = 1;
             }
@@ -341,8 +345,8 @@ namespace WMS
             moveHead.SetBool("Saved", false);
             InUseObjects.Set("MoveHead", moveHead);
 
-            // Client picking 1.9.2023 Janko Jovičić
-            string pickingChoice = CommonData.GetSetting("UseSingleOrderIssueing");
+            // Changing the parameter name because of the old code which is still in use. 15.5.2024 Janko Jovičić 
+            string pickingChoice = CommonData.GetSetting("IssueProcessSelect");
             SetUpClientPicking(pickingChoice);
 
             switch (pickingChoice)

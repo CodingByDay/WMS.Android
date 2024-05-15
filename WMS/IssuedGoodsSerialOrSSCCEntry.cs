@@ -115,6 +115,8 @@ namespace WMS
         private ZoomageView? imagePNG;
         private List<LocationClass> items = new List<LocationClass>();
         private ZoomageView? image;
+        private double packaging;
+        private double quantity;
 
         public static List<IssuedGoods> FilterIssuedGoods(List<IssuedGoods> issuedGoodsList, string acSSCC = null, string acSerialNo = null, string acLocation = null)
         {
@@ -851,10 +853,14 @@ namespace WMS
                 if (element.anPackQty != -1)
                 {
                     tbPacking.Text = element.anPackQty.ToString();
+                    lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + quantity.ToString(CommonData.GetQtyPicture()) + " )";
+
                 }
                 else
                 {
                     tbPacking.Text = element.anQty.ToString();
+                    lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + quantity.ToString(CommonData.GetQtyPicture())  + " )";
+
                 }
                 if (serialRow.Visibility == ViewStates.Visible)
                 {
@@ -1109,16 +1115,18 @@ namespace WMS
 
                         if(receivedTrail.Packaging!=-1)
                         {
-                            qtyCheck = receivedTrail.Packaging;
-                            lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + qtyCheck.ToString(CommonData.GetQtyPicture()) + " )";
-                            stock = qtyCheck;
-                            tbPacking.Text = qtyCheck.ToString();
+                            packaging = receivedTrail.Packaging;
+                            quantity = Double.Parse(receivedTrail.Qty);                   
+                            lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + quantity.ToString(CommonData.GetQtyPicture()) + " )";
+                            stock = quantity;
+                            tbPacking.Text = packaging.ToString();
                         } else
                         {
-                            qtyCheck = Double.Parse(receivedTrail.Qty);
-                            lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + qtyCheck.ToString(CommonData.GetQtyPicture()) + " )";
-                            stock = qtyCheck;
-                            tbPacking.Text = qtyCheck.ToString();
+                            packaging = receivedTrail.Packaging;
+                            quantity = Double.Parse(receivedTrail.Qty);
+                            lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + quantity.ToString(CommonData.GetQtyPicture()) + " )";
+                            stock = quantity;
+                            tbPacking.Text = quantity.ToString();
                         }
                     
 
@@ -1157,20 +1165,20 @@ namespace WMS
                         // This flow is for idents.
 
                         var order = Base.Store.OpenOrder;
-
+                        
                         if (order != null)
                         {
                             if (order.Packaging != -1)
                             {
-                                qtyCheck = order.Packaging ?? 0;
-                                lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + qtyCheck.ToString(CommonData.GetQtyPicture()) + " )";
-                                stock = qtyCheck;
+                                quantity = order.Quantity ?? 0;
+                                lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + quantity.ToString(CommonData.GetQtyPicture()) + " )";
+                                stock = quantity;
                             }
                             else
                             {
-                                qtyCheck = order.Quantity ?? 0;
-                                lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + qtyCheck.ToString(CommonData.GetQtyPicture()) + " )";
-                                stock = qtyCheck;
+                                quantity = order.Quantity ?? 0;
+                                lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + quantity.ToString(CommonData.GetQtyPicture()) + " )";
+                                stock = quantity;
                             }
 
                             GetConnectedPositions(order.Order, order.Position ?? -1, order.Ident);

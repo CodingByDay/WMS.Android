@@ -533,7 +533,6 @@ namespace WMS
                             });
 
 
-
                             Dialog dialog = alert.Create();
                             dialog.Show();
                         });

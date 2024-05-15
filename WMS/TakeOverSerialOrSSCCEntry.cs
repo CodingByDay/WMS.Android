@@ -75,7 +75,8 @@ namespace WMS
         private NameValueObjectList positions;
         private string tempUnit;
         private List<TakeoverDocument> data = new List<TakeoverDocument>();
-
+        private double packaging;
+        private double quantity;
         protected async override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -294,16 +295,17 @@ namespace WMS
                 {
                     if(order.Packaging!=-1)
                     {
-                        qtyCheck = order.Packaging ?? 0;
-                        lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + qtyCheck.ToString(CommonData.GetQtyPicture()) + " )";
-                        tbPacking.Text = qtyCheck.ToString();
-                        stock = qtyCheck;
+                        packaging = order.Packaging ?? 0;
+                        quantity = order.Quantity ?? 0;
+                        lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + quantity.ToString(CommonData.GetQtyPicture()) + " )";
+                        tbPacking.Text = packaging.ToString();
+                        stock = quantity;
                     } else
                     {
-                        qtyCheck = order.Quantity ?? 0;
-                        lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + qtyCheck.ToString(CommonData.GetQtyPicture()) + " )";
-                        tbPacking.Text = qtyCheck.ToString();
-                        stock = qtyCheck;
+                        quantity = order.Quantity ?? 0;
+                        lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + quantity.ToString(CommonData.GetQtyPicture()) + " )";
+                        tbPacking.Text = quantity.ToString();
+                        stock = quantity;
                     }
              
                     GetConnectedPositions(order.Order, order.Position ?? -1, order.Ident);
@@ -931,7 +933,7 @@ namespace WMS
                                     tbSerialNum.RequestFocus();
                                 }
                             }
-                            tbPacking.Text = string.Empty;
+                            // tbPacking.Text = string.Empty; This seems to be more logical if commented out. User wants to just scan serial codes. 5.15.2024 Janko Jovičić
                         });
                     }
                 }
