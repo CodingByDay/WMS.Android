@@ -109,6 +109,7 @@ namespace WMS
         private double stock;
         private ListView listData;
         private UniversalAdapter<LocationClass> dataAdapter;
+        private double serialOverflowQuantity = 0;
 
         protected override async void OnCreate(Bundle savedInstanceState)
         {
@@ -332,7 +333,7 @@ namespace WMS
 
         private async Task CreateMethodFromStart()
         {
-            await Task.Run(() =>
+            await Task.Run(async () =>
             {
                 if (dist.Count == 1)
                 {
@@ -372,7 +373,7 @@ namespace WMS
 
                         dist = new List<IssuedGoods>();
                         createPositionAllowed = false;
-                        GetConnectedPositions(receivedTrail.Order, receivedTrail.No, receivedTrail.Ident, receivedTrail.Location);
+                        await GetConnectedPositions(receivedTrail.Order, receivedTrail.No, receivedTrail.Ident, receivedTrail.Location);
                     }
 
                 }
@@ -391,7 +392,7 @@ namespace WMS
 
         private async Task CreateMethodSame()
         {
-            await Task.Run(() =>
+            await Task.Run(async () =>
             {
                 if (dist.Count == 1)
                 {
@@ -419,6 +420,21 @@ namespace WMS
 
                     if (moveItem != null && error == string.Empty)
                     {
+
+                        serialOverflowQuantity += Convert.ToDouble(tbPacking.Text.Trim());
+                        stock -= serialOverflowQuantity;
+
+                        RunOnUiThread(() =>
+                        {
+                            lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + stock.ToString(CommonData.GetQtyPicture()) + " )";
+                        });
+
+                        // Check to see if the maximum is already reached.
+                        if (stock <= 0)
+                        {
+                            StartActivity(typeof(ClientPicking));
+                        }
+
                         RunOnUiThread(() =>
                         {
                             // Succesfull position creation
@@ -436,12 +452,11 @@ namespace WMS
                                     tbSerialNum.RequestFocus();
                                 }
                             }
-                            Toast.MakeText(this, "Pozicija kreirana", ToastLength.Long);
-                        });
 
-                        dist = new List<IssuedGoods>();
-                        createPositionAllowed = false;
-                        GetConnectedPositions(receivedTrail.Order, receivedTrail.No, receivedTrail.Ident, receivedTrail.Location);
+                            tbLocation.Text = string.Empty;
+                            tbPacking.Text = string.Empty;
+
+                        });
                     }
 
                 }
@@ -560,7 +575,7 @@ namespace WMS
 
 
 
-        private void SetUpForm()
+        private async void SetUpForm()
         {
 
 
@@ -603,7 +618,7 @@ namespace WMS
                     lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + qtyCheck.ToString(CommonData.GetQtyPicture()) + " )";
                     stock = qtyCheck;
                     tbPacking.Text = qtyCheck.ToString();
-                    GetConnectedPositions(receivedTrail.Order, receivedTrail.No, receivedTrail.Ident, receivedTrail.Location);
+                    await GetConnectedPositions(receivedTrail.Order, receivedTrail.No, receivedTrail.Ident, receivedTrail.Location);
                 }
             }
 
@@ -615,8 +630,10 @@ namespace WMS
                 serialRow.Visibility = ViewStates.Gone;
             }
 
-   
-
+            if(ssccRow.Visibility != ViewStates.Visible && serialRow.Visibility!=ViewStates.Visible)
+            {
+                FilterData();
+            }
 
         }
 
@@ -635,7 +652,7 @@ namespace WMS
         /// <param name="acKey">Številka naročila</param>
         /// <param name="anNo">Pozicija znotraj naročila</param>
         /// <param name="acIdent">Ident</param>
-        private async void GetConnectedPositions(string acKey, int anNo, string acIdent, string acLocation)
+        private async Task GetConnectedPositions(string acKey, int anNo, string acIdent, string acLocation)
         {
             var parameters = new List<Services.Parameter>();
 
