@@ -183,6 +183,8 @@ namespace WMS
             // Main logic for the entry
             SetUpForm();
 
+            SetUpProcessDependentButtons();
+
             // Stop the loader
             LoaderManifest.LoaderManifestLoopStop(this);
 
@@ -237,9 +239,93 @@ namespace WMS
         {
             double parsed;
 
+            if (!Base.Store.isUpdate)
+            {
+                if (createPositionAllowed && double.TryParse(tbPacking.Text, out parsed) && stock >= parsed)
+                {
+                    var isCorrectLocation = IsLocationCorrect();
+
+                    if (!isCorrectLocation)
+                    {
+                        // Nepravilna lokacija za izbrano skladišče
+                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s333)}", ToastLength.Long).Show();
+                        return;
+                    }
+                    else
+                    {
+                        await CreateMethodFromStart();
+
+                    }
+                }
+                else
+                {
+                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
+                }
+            } else
+            {
+
+                // Update flow.
+                double newQty;
+                if (Double.TryParse(tbPacking.Text, out newQty))
+                {
+                    if (newQty > moveItem.GetDouble("Qty"))
+                    {
+                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s291)}", ToastLength.Long).Show();
+                    }
+                    else
+                    {
+                        var parameters = new List<Services.Parameter>();
+                        var tt = moveItem.GetInt("ItemID");
+                        parameters.Add(new Services.Parameter { Name = "anQty", Type = "Decimal", Value = newQty });
+                        parameters.Add(new Services.Parameter { Name = "anItemID", Type = "Int32", Value = moveItem.GetInt("ItemID") });
+                        string debugString = $"UPDATE uWMSMoveItem SET anQty = {newQty} WHERE anIDItem = {moveItem.GetInt("ItemID")}";
+                        var subjects = Services.Update($"UPDATE uWMSMoveItem SET anQty = @anQty WHERE anIDItem = @anItemID;", parameters);
+                        if (!subjects.Success)
+                        {
+                            RunOnUiThread(() =>
+                            {
+                                Analytics.TrackEvent(subjects.Error);
+                                return;
+                            });
+                        }
+                        else
+                        {
+                            StartActivity(typeof(IssuedGoodsEnteredPositionsView));
+                            Finish();
+                        }
+                    }
+                }
+                else
+                {
+                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
+                }
+            
+           }
+        }
+
+        private async void BtCreateSame_Click(object? sender, EventArgs e)
+        {
+
+            if (tbSSCC.HasFocus || tbSerialNum.HasFocus)
+            {
+                FilterData();
+            }
+
+            double parsed;
             if (createPositionAllowed && double.TryParse(tbPacking.Text, out parsed) && stock >= parsed)
             {
-                await CreateMethodFromStart();
+                var isCorrectLocation = IsLocationCorrect();
+
+                if (!isCorrectLocation)
+                {
+                    // Nepravilna lokacija za izbrano skladišče
+                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s333)}", ToastLength.Long).Show();
+                    return;
+                }
+                else
+                {
+                    await CreateMethodSame();
+                }
             }
             else
             {
@@ -247,18 +333,22 @@ namespace WMS
             }
         }
 
-        private async void BtCreateSame_Click(object? sender, EventArgs e)
+
+        private bool IsLocationCorrect()
         {
-            double parsed;
-            if (createPositionAllowed && double.TryParse(tbPacking.Text, out parsed) && stock >= parsed)
+            string location = tbLocation.Text;
+
+            if (!CommonData.IsValidLocation(moveHead.GetString("Wharehouse"), location))
             {
-                await CreateMethodSame();
+                return false;
             }
             else
             {
-                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
+                return true;
             }
+
         }
+
 
         private void TbSerialNum_KeyPress(object? sender, View.KeyEventArgs e)
         {
@@ -326,7 +416,20 @@ namespace WMS
             }
         }
 
-
+        private void SetUpProcessDependentButtons()
+        {
+            // This method changes the UI so it shows in a visible way that it is the update screen. - 18.03.2024
+            if (Base.Store.isUpdate)
+            {
+                btCreateSame.Visibility = ViewStates.Gone;
+                btCreate.Text = $"{Resources.GetString(Resource.String.s290)}";
+            }
+            else if (Base.Store.code2D != null)
+            {
+                btCreateSame.Visibility = ViewStates.Gone;
+                // 2d code reading process.
+            }
+        }
 
 
 
@@ -338,14 +441,21 @@ namespace WMS
             {
                 if (dist.Count == 1)
                 {
+                    var element = dist.ElementAt(0);
+                    moveItem = new NameValueObject("MoveItem");
 
-                    if (moveItem == null)
+                    if (!Base.Store.isUpdate)
                     {
-                        moveItem = new NameValueObject("MoveItem");
+                        moveItem.SetString("LinkKey", string.Empty);
+                        moveItem.SetInt("LinkNo", 0);
+                    }
+                    else
+                    {
+                        // todo: update proccess
+                        moveItem.SetString("LinkKey", element.acKey);
+                        moveItem.SetInt("LinkNo", element.anNo);
                     }
 
-                    moveItem.SetInt("HeadID", moveHead.GetInt("HeadID"));
-                    moveItem.SetString("LinkKey", receivedTrail.Order);
                     moveItem.SetInt("LinkNo", receivedTrail.No);
                     moveItem.SetString("Ident", openIdent.GetString("Code"));
                     moveItem.SetString("SSCC", tbSSCC.Text.Trim());
@@ -397,16 +507,23 @@ namespace WMS
             {
                 if (dist.Count == 1)
                 {
-                    var element = dist.ElementAt(0);
 
-                    if (moveItem == null)
+                    var element = dist.ElementAt(0);
+                    moveItem = new NameValueObject("MoveItem");
+                    moveItem.SetInt("HeadID", moveHead.GetInt("HeadID"));
+
+                    if (!Base.Store.isUpdate)
                     {
-                        moveItem = new NameValueObject("MoveItem");
+                        moveItem.SetString("LinkKey", string.Empty);
+                        moveItem.SetInt("LinkNo", 0);
+                    }
+                    else
+                    {
+                        // todo: update proccess
+                        moveItem.SetString("LinkKey", element.acKey);
+                        moveItem.SetInt("LinkNo", element.anNo);
                     }
 
-                    moveItem.SetInt("HeadID", moveHead.GetInt("HeadID"));
-                    moveItem.SetString("LinkKey", receivedTrail.Order);
-                    moveItem.SetInt("LinkNo", receivedTrail.No);
                     moveItem.SetString("Ident", openIdent.GetString("Code"));
                     moveItem.SetString("SSCC", tbSSCC.Text.Trim());
                     moveItem.SetString("SerialNo", tbSerialNum.Text.Trim());
@@ -458,7 +575,7 @@ namespace WMS
                         });
 
 
-                        createPositionAllowed = false;
+                        createPositionAllowed = true;
                         await GetConnectedPositions(element.acKey, element.anNo, element.acIdent, element.aclocation);
 
                     }
@@ -659,6 +776,9 @@ namespace WMS
         /// <param name="acIdent">Ident</param>
         private async Task GetConnectedPositions(string acKey, int anNo, string acIdent, string acLocation)
         {
+
+            connectedPositions.Clear();
+
             var parameters = new List<Services.Parameter>();
 
             parameters.Add(new Services.Parameter { Name = "acKey", Type = "String", Value = acKey });
@@ -690,7 +810,12 @@ namespace WMS
                             acSerialNo = row.StringValue("acSerialNo"),
                             acSSCC = row.StringValue("acSSCC"),
                             anQty = row.DoubleValue("anQty"),
-                            aclocation = row.StringValue("aclocation")
+                            aclocation = row.StringValue("aclocation"),
+                            acKey = row.StringValue("acKey"),
+                            acIdent = row.StringValue("acIdent"),
+                            anNo = (int)(row.IntValue("anNo") ?? -1),
+                            anPackQty = row.DoubleValue("anPackQty") ?? 0
+
                         });
                     }
                 }

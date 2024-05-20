@@ -96,7 +96,7 @@ namespace BarCode2D_Receiver
             }
         }
 
-        //
+        
         public void close(Context context)
         {
             if (barcodeUtility != null)

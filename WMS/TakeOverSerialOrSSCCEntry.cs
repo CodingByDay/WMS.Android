@@ -735,9 +735,10 @@ namespace WMS
                         RunOnUiThread(() =>
                         {
 
-                            StartActivity(typeof(TakeOverIdentEntry));
-                            Finish();
-                          
+                            var intent = new Intent(this, typeof(TakeOverIdentEntry));
+                            intent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.NewTask);
+                            StartActivity(intent);
+
                         });
 
                     }
@@ -877,6 +878,7 @@ namespace WMS
                         moveItem.SetInt("LinkNo", element.anNo);
                     } else
                     {
+                        // update proccess
                         moveItem.SetString("LinkKey", string.Empty);
                         moveItem.SetInt("LinkNo", 0);
                     }
@@ -911,9 +913,10 @@ namespace WMS
 
                         // Check to see if the maximum is already reached.
                         if (stock <= 0)
-                        {                         
-                            StartActivity(typeof(TakeOverIdentEntry));
-                            Finish();                           
+                        {
+                            var intent = new Intent(this, typeof(TakeOverIdentEntry));
+                            intent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.NewTask);
+                            StartActivity(intent);
                         }
 
                         RunOnUiThread(() =>

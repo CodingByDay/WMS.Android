@@ -53,6 +53,7 @@ namespace WMS
         private Button button5;
         SoundPool soundPool;
         int soundPoolId;
+        private Barcode2D barcode2D;
         private List<string> returnList = new List<string>();
         private List<string> identData = new List<string>();
         private Intent intentClass;
@@ -101,7 +102,7 @@ namespace WMS
             color();
             soundPool = new SoundPool(10, Stream.Music, 0);
             soundPoolId = soundPool.Load(this, Resource.Raw.beep, 1);
-            Barcode2D barcode2D = new Barcode2D();
+            barcode2D = new Barcode2D();
             barcode2D.open(this, this);
             if (moveHead == null) { throw new ApplicationException("moveHead not known at this point!?"); }
             displayedOrder = 0;
@@ -278,8 +279,9 @@ namespace WMS
         {
             if (SaveMoveHead())
             {
-                StartActivity(typeof(TakeOverSerialOrSSCCEntry));
-                HelpfulMethods.clearTheStack(this);
+                var intent = new Intent(this, typeof(TakeOverSerialOrSSCCEntry));
+                intent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.NewTask | ActivityFlags.ClearTask);
+                StartActivity(intent);
                 Finish();
             }
         }
@@ -443,8 +445,11 @@ namespace WMS
                     {
                         if (SaveMoveHead())
                         {
-                            StartActivity(typeof(TakeOverSerialOrSSCCEntry));
+                            var intent = new Intent(this, typeof(TakeOverSerialOrSSCCEntry));
+                            intent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.NewTask);
+                            StartActivity(intent);
                             Finish();
+                            this.FinishAndRemoveTask();
                         }
                         return;
                     }
@@ -542,8 +547,14 @@ namespace WMS
 
             }
         }
+        protected override void OnDestroy()
+        {
+            // Test this // 
+            barcode2D.close(this);
+            base.OnDestroy();
 
- 
+        }
+
 
 
         private bool preventDuplicate = false;
@@ -651,7 +662,9 @@ namespace WMS
 
                     if (SaveMoveHead2D(row))
                     {
-                        StartActivity(typeof(TakeOverSerialOrSSCCEntry));
+                        var intent = new Intent(this, typeof(TakeOverSerialOrSSCCEntry));
+                        intent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.NewTask);
+                        StartActivity(intent);
                         Finish();
                     }
 
