@@ -230,7 +230,12 @@ namespace WMS
 
         private void BtnOrderMode_Click(object sender, EventArgs e)
         {
-     
+            if (byOrder && (CommonData.GetSetting("UseDirectTakeOver") == "1"))
+            {
+                // Special edge process for SkiSea, direct takeover. 20.05.2024 Janko Jovičić
+                StartActivity(typeof(TakeOver2Main));
+                HelpfulMethods.clearTheStack(this);
+            }
             byOrder = !byOrder;
             Base.Store.byOrder = byOrder;
             UpdateForm();

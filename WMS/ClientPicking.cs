@@ -1,4 +1,5 @@
-﻿using Android.Content;
+﻿
+using Android.Content;
 using Android.Content.PM;
 using Android.Media;
 using Android.Text;
