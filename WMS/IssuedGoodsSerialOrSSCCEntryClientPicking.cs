@@ -165,6 +165,7 @@ namespace WMS
             btFinish.Click += BtFinish_Click;
             btExit.Click += BtExit_Click;
             btOverview.Click += BtOverview_Click;
+
             var _broadcastReceiver = new NetworkStatusBroadcastReceiver();
             _broadcastReceiver.ConnectionStatusChanged += OnNetworkStatusChanged;
             Application.Context.RegisterReceiver(_broadcastReceiver,
@@ -396,6 +397,7 @@ namespace WMS
             {
                 if (dist.Count == 1)
                 {
+                    var element = dist.ElementAt(0);
 
                     if (moveItem == null)
                     {
@@ -421,7 +423,7 @@ namespace WMS
                     if (moveItem != null && error == string.Empty)
                     {
 
-                        serialOverflowQuantity += Convert.ToDouble(tbPacking.Text.Trim());
+                        serialOverflowQuantity = Convert.ToDouble(tbPacking.Text.Trim());
                         stock -= serialOverflowQuantity;
 
                         RunOnUiThread(() =>
@@ -453,12 +455,13 @@ namespace WMS
                                 }
                             }
 
-                            tbLocation.Text = string.Empty;
-                            tbPacking.Text = string.Empty;
-
                         });
-                    }
 
+
+                        createPositionAllowed = false;
+                        await GetConnectedPositions(element.acKey, element.anNo, element.acIdent, element.aclocation);
+
+                    }
                 }
                 else
                 {
@@ -632,9 +635,11 @@ namespace WMS
 
             if(ssccRow.Visibility != ViewStates.Visible && serialRow.Visibility!=ViewStates.Visible)
             {
+                tbPacking.RequestFocus();
+                tbPacking.SelectAll();
                 FilterData();
             }
-
+            
         }
 
 

@@ -329,17 +329,13 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 moveItemDivision = Services.GetObjectList("mid", out error, moveItem.GetInt("ItemID").ToString());
                 if (moveItemDivision == null)
                 {
-                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s247)}" + error, ToastLength.Long).Show();
- 
-                
+                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s247)}" + error, ToastLength.Long).Show();                
                 }
             }
             catch (Exception err)
             {
-
                 Crashes.TrackError(err);
                 return;
-
             }
         }
 
@@ -381,7 +377,6 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 tbKolicinaPrevzetaDoSedaj.Text = "";
                 tbKolicinaPrevzetaNova.Text = "";
                 tbKolicinaPrevzetaNova.Enabled = false;
-
                 button1.Enabled = false;
                 button2.Enabled = false;
                 button3.Enabled = false;

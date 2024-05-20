@@ -96,6 +96,8 @@ namespace WMS
             btDisplayPositions.Click += BtDisplayPositions_Click;
             btBack.Click += BtBack_Click;
             btLogout.Click += BtLogout_Click;
+
+
             await initializeView();
         }
 
@@ -146,34 +148,7 @@ namespace WMS
             }
         }
 
-        private ClientPickingPosition GetAllStockLocations(ClientPickingPosition obj)
-        {
-            ClientPickingPosition pickingPosition = new ClientPickingPosition();
-
-            // Filter items with the same Ident as obj.Ident
-            var itemsWithSameIdent = positions.Where(x => x.Ident == obj.Ident);
-
-            foreach (var item in itemsWithSameIdent)
-            {
-                // Check if the Location is already in the locationQty dictionary
-                if (!pickingPosition.locationQty.ContainsKey(item.Location))
-                {
-                    try
-                    {
-                        // Add Location and Quantity to the locationQty dictionary
-                        pickingPosition.locationQty.Add(item.Location, Double.Parse(item.Quantity));
-                        adapter.NotifyDataSetChanged();
-                    }
-                    catch (Exception ex)
-                    {
-                        Crashes.TrackError(ex);
-                    }
-                }
-            }
-
-            // Return the ClientPickingPosition object containing aggregated locationQty
-            return pickingPosition;
-        }
+   
 
         private bool SaveMoveHead()
         {
@@ -310,6 +285,7 @@ namespace WMS
                         ivTrail.OnItemLongClickListener = listener;
                         if(settings.tablet)
                         {
+
                         }
                     });
                 }
@@ -354,6 +330,7 @@ namespace WMS
                 if (tbIdentFilter.HasFocus)
                 {
                     Sound();
+
                     tbIdentFilter.Text = barcode;
                     adapter.Filter(positions, true, tbIdentFilter.Text, true);
                     if (adapter.returnNumberOfItems() == 0)
@@ -364,6 +341,7 @@ namespace WMS
                 else if (tbLocationFilter.HasFocus)
                 {
                     Sound();
+
                     tbLocationFilter.Text = barcode;
                     adapter.Filter(positions, false, tbLocationFilter.Text, false);
                     if (adapter.returnNumberOfItems() == 0)

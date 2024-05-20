@@ -776,7 +776,7 @@ namespace WMS
                     if (moveItem != null && error == string.Empty)
                     {
 
-                        serialOverflowQuantity += Convert.ToDouble(tbPacking.Text.Trim());
+                        serialOverflowQuantity = Convert.ToDouble(tbPacking.Text.Trim());
                         stock -= serialOverflowQuantity;
 
                         RunOnUiThread(() =>
