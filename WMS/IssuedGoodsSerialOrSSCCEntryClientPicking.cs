@@ -453,19 +453,8 @@ namespace WMS
                 {
                     var element = dist.ElementAt(0);
                     moveItem = new NameValueObject("MoveItem");
-
-                    if (!Base.Store.isUpdate)
-                    {
-                        moveItem.SetString("LinkKey", string.Empty);
-                        moveItem.SetInt("LinkNo", 0);
-                    }
-                    else
-                    {
-                        // todo: update proccess
-                        moveItem.SetString("LinkKey", element.acKey);
-                        moveItem.SetInt("LinkNo", element.anNo);
-                    }
-
+                    moveItem.SetString("LinkKey", element.acKey);
+                    moveItem.SetInt("LinkNo", element.anNo);                  
                     moveItem.SetInt("LinkNo", receivedTrail.No);
                     moveItem.SetString("Ident", openIdent.GetString("Code"));
                     moveItem.SetString("SSCC", tbSSCC.Text.Trim());
@@ -517,23 +506,11 @@ namespace WMS
             {
                 if (dist.Count == 1)
                 {
-
                     var element = dist.ElementAt(0);
                     moveItem = new NameValueObject("MoveItem");
                     moveItem.SetInt("HeadID", moveHead.GetInt("HeadID"));
-
-                    if (!Base.Store.isUpdate)
-                    {
-                        moveItem.SetString("LinkKey", string.Empty);
-                        moveItem.SetInt("LinkNo", 0);
-                    }
-                    else
-                    {
-                        // todo: update proccess
-                        moveItem.SetString("LinkKey", element.acKey);
-                        moveItem.SetInt("LinkNo", element.anNo);
-                    }
-
+                    moveItem.SetString("LinkKey", element.acKey);
+                    moveItem.SetInt("LinkNo", element.anNo);                 
                     moveItem.SetString("Ident", openIdent.GetString("Code"));
                     moveItem.SetString("SSCC", tbSSCC.Text.Trim());
                     moveItem.SetString("SerialNo", tbSerialNum.Text.Trim());

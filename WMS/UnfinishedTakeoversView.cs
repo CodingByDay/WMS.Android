@@ -230,8 +230,7 @@ namespace WMS
 
             }
 
-            string errorWebApp = string.Format($"{Resources.GetString(Resource.String.s214)}");
-            Toast.MakeText(this, errorWebApp, ToastLength.Long).Show();
+
         }
 
    
@@ -321,7 +320,7 @@ namespace WMS
                     }
                     break;
 
-                //return true;
+                // return true;
 
 
                 case Keycode.F2:

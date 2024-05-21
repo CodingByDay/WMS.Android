@@ -877,7 +877,6 @@ namespace WMS
 
                 tbLocation.Text = element.aclocation;
                 tbLocation.Enabled = false;
-
                 // Do stuff and allow creating the position
                 createPositionAllowed = true;
                 tbPacking.RequestFocus();
@@ -928,7 +927,6 @@ namespace WMS
                                 alert.SetPositiveButton("Ok", (senderAlert, args) =>
                                 {
                                     alert.Dispose();
-                                    Thread.Sleep(500);
                                     StartActivity(typeof(IssuedGoodsBusinessEventSetup));
                                 });
 
@@ -948,7 +946,6 @@ namespace WMS
                                 alert.SetPositiveButton("Ok", (senderAlert, args) =>
                                 {
                                     alert.Dispose();
-                                    Thread.Sleep(500);
                                     StartActivity(typeof(MainMenu));
                                 });
 
@@ -1054,7 +1051,6 @@ namespace WMS
 
         private void SetUpForm()
         {
-
             if(settings.tablet)
             {
                 showPictureIdent(openIdent.GetString("Code"));
@@ -1076,7 +1072,6 @@ namespace WMS
 
             if (Base.Store.isUpdate)
             {
-
                 // Update logic ?? it seems to be true.
                 tbIdent.Text = moveItem.GetString("IdentName");
                 tbSerialNum.Text = moveItem.GetString("SerialNo");
@@ -1090,7 +1085,6 @@ namespace WMS
                 tbSerialNum.Enabled = false;
                 tbSSCC.Enabled = false;
                 tbLocation.Enabled = false;
-
             }
             else
             {
@@ -1099,10 +1093,8 @@ namespace WMS
                  (Base.Store.OpenOrder == null && Intent.Extras == null) &&
                  (Intent.Extras == null || String.IsNullOrEmpty(Intent.Extras.GetString("selected")));
 
-
                 if (isProccessOrderless)
                 {
-
                     tbIdent.Text = openIdent.GetString("Code") + " " + openIdent.GetString("Name");
                     qtyCheck = 10000000;
                     lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + Resources.GetString(Resource.String.s336) + " )";
@@ -1134,11 +1126,8 @@ namespace WMS
                             lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + quantity.ToString(CommonData.GetQtyPicture()) + " )";
                             stock = quantity;
                             tbPacking.Text = quantity.ToString();
-                        }
-                    
-
+                        }                   
                         GetConnectedPositions(receivedTrail.Key, receivedTrail.No, receivedTrail.Ident, receivedTrail.Location);
-
                     }
                     else if (Base.Store.modeIssuing == 2 && Base.Store.code2D != null)
                     {
@@ -1146,7 +1135,6 @@ namespace WMS
                         tbSerialNum.Text = code2d.charge;
                         qtyCheck = 0;
                         double result;
-
                         // Try to parse the string to a double
                         if (Double.TryParse(code2d.netoWeight, out result))
                         {
@@ -1190,21 +1178,15 @@ namespace WMS
 
                             GetConnectedPositions(order.Order, order.Position ?? -1, order.Ident);
                         }
-
-
                     }
                 }
             }
-
             isPackaging = openIdent.GetBool("IsPackaging");
-
             if (isPackaging)
             {
                 ssccRow.Visibility = ViewStates.Gone;
                 serialRow.Visibility = ViewStates.Gone;
             }
-
-
         }
 
         private void Sound()

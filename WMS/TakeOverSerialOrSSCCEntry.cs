@@ -462,13 +462,14 @@ namespace WMS
 
         private async Task FinishMethod()
         {
-            await Task.Run(async () =>
+            await Task.Run( async () =>
             {
                     RunOnUiThread(() =>
                     {
                         progress = new ProgressDialogClass();
                         progress.ShowDialogSync(this, $"{Resources.GetString(Resource.String.s262)}");
                     });
+
                     try
                     {
                         var headID = moveHead.GetInt("HeadID");
@@ -674,7 +675,7 @@ namespace WMS
 
             if(duplicates.Success)
             {
-                int numberRows = (int)(duplicates.Rows[0].IntValue("anResult") ?? 0);
+                int numberRows = (int) (duplicates.Rows[0].IntValue("anResult") ?? 0);
                 if(numberRows>0)
                 {
                     result = true;
