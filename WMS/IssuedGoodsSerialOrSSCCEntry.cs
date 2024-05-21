@@ -118,6 +118,9 @@ namespace WMS
         private ZoomageView? image;
         private double packaging;
         private double quantity;
+        private Spinner cbMultipleLocations;
+        private List<MultipleStock> adapterLocations = new List<MultipleStock>();
+        private ArrayAdapter<MultipleStock> adapterLocation;
 
         public static List<IssuedGoods> FilterIssuedGoods(List<IssuedGoods> issuedGoodsList, string acSSCC = null, string acSerialNo = null, string acLocation = null)
         {
@@ -286,7 +289,6 @@ namespace WMS
                 listData.Adapter = dataAdapter;
                 imagePNG = FindViewById<ZoomageView>(Resource.Id.imagePNG);
                 imagePNG.Visibility = ViewStates.Invisible;
-
             }
             else
             {
@@ -306,6 +308,7 @@ namespace WMS
             tbSerialNum = FindViewById<EditText>(Resource.Id.tbSerialNum);
             tbLocation = FindViewById<EditText>(Resource.Id.tbLocation);
             tbPacking = FindViewById<EditText>(Resource.Id.tbPacking);
+            cbMultipleLocations = FindViewById<Spinner>(Resource.Id.cbMultipleLocations);
             tbIdent.InputType = Android.Text.InputTypes.ClassNumber;
             tbSSCC.InputType = Android.Text.InputTypes.ClassNumber;
             tbLocation.InputType = Android.Text.InputTypes.ClassText;
@@ -321,7 +324,7 @@ namespace WMS
             btExit = FindViewById<Button>(Resource.Id.btExit);
 
             // Events
-
+            cbMultipleLocations.ItemSelected += CbMultipleLocations_ItemSelected;
             tbLocation.KeyPress += TbLocation_KeyPress;
             tbSSCC.KeyPress += TbSSCC_KeyPress;
             tbSerialNum.KeyPress += TbSerialNum_KeyPress;
@@ -356,6 +359,22 @@ namespace WMS
             if (settings.tablet)
             {
                 fillItems();
+            }
+        }
+
+        private void CbMultipleLocations_ItemSelected(object? sender, AdapterView.ItemSelectedEventArgs e)
+        {
+            var selected = adapterLocation.GetItem(e.Position);
+            if (selected != null)
+            {
+                tbLocation.Text = selected.Location;
+                if(selected.Quantity > stock)
+                {
+                    tbPacking.Text = stock.ToString();
+                } else
+                {
+                    tbPacking.Text = selected.Quantity.ToString();
+                }
             }
         }
 
@@ -1110,6 +1129,21 @@ namespace WMS
                         // This flow is for orders.
                         string trailBytes = Intent.Extras.GetString("selected");
                         receivedTrail = JsonConvert.DeserializeObject<Trail>(trailBytes);
+
+                        // Add the new logic here // 
+
+                        if(CommonData.GetSetting("IssueSummaryView") == "1")
+                        {
+                            cbMultipleLocations.Visibility = ViewStates.Visible;
+                            adapterLocations.Add(new MultipleStock { Location = "01", Quantity = 5 });
+                            adapterLocations.Add(new MultipleStock { Location = "03", Quantity = 533 });
+                            adapterLocation = new ArrayAdapter<MultipleStock>(this,
+                            Android.Resource.Layout.SimpleSpinnerItem, adapterLocations);
+                            adapterLocation.SetDropDownViewResource(Android.Resource.Layout.SimpleSpinnerDropDownItem);
+                            cbMultipleLocations.Adapter = adapterLocation;
+                        }
+
+
                         tbLocation.Text = receivedTrail.Location;
 
                         if(receivedTrail.Packaging!=-1)

@@ -112,6 +112,12 @@ namespace WMS
             }
         }
 
+
+
+
+
+
+
         private void ProcessStock()
         {
             var wh = spinnerAdapterList.ElementAt(temporaryPositionWarehouse);
