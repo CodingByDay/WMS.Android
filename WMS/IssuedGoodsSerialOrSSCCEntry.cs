@@ -375,6 +375,8 @@ namespace WMS
                 {
                     tbPacking.Text = selected.Quantity.ToString();
                 }
+
+                tbPacking.SelectAll();
             }
         }
 
