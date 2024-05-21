@@ -477,24 +477,14 @@ namespace WMS
             try
             {
               
+                positions = await AsyncServices.AsyncServices.GetObjectListAsync("mh",  "W");
+             
                 if (positions == null)
                 {
-                    var error = "";
-                    if (positions == null)
-                    {
-                        positions = await AsyncServices.AsyncServices.GetObjectListAsync("mh",  "W");
-                        InUseObjects.Set("ProductionHeads", positions);
-                    }
-
-
-
-                    if (positions == null)
-                    {
-                        string errorWebApp = string.Format($"{Resources.GetString(Resource.String.s216)}" + error);
-                        DialogHelper.ShowDialogError(this, this, errorWebApp);
-                        return;
-                    }
+                    return;
                 }
+
+                InUseObjects.Set("ProductionHeads", positions);
 
                 displayedPosition = 0;
                 FillDisplayedItem();

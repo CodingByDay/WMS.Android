@@ -76,7 +76,8 @@ namespace WMS
             Application.Context.RegisterReceiver(_broadcastReceiver,
             new IntentFilter(ConnectivityManager.ConnectivityAction));
 
-            /*  try
+            /*                 
+             try
               {
                   if (CommonData.GetSetting("Bluetooth") != "1")
                   {
@@ -166,8 +167,7 @@ namespace WMS
             } else
             {
                 App.settings.tablet = false;
-            }
-         
+            }        
         }
 
         private void Ok_Click(object sender, EventArgs e)
@@ -176,9 +176,8 @@ namespace WMS
             App.settings.RootURL = rootURL.Text;
             App.settings.ID = ID.Text;
             ID.Text = App.settings.ID;
-            Toast.MakeText(this, $"{Resources.GetString(Resource.String.settings_saved)}", ToastLength.Long).Show();
-            // deviceURL.Text = App.settings.RootURL
             StartActivity(typeof(MainActivity));
+            Finish();
         }
 
         internal void OnServiceBindingComplete(BluetoothService bluetoothService)

@@ -300,13 +300,7 @@ namespace WMS
         }
 
 
-        public override void OnBackPressed()
-        {
 
-            HelpfulMethods.releaseLock();
-
-            base.OnBackPressed();
-        }
         public override bool OnKeyDown(Keycode keyCode, KeyEvent e)
         {
             switch (keyCode)
@@ -351,13 +345,11 @@ namespace WMS
                     {
                         BtLogout_Click(this, null);
                     }
-                    break;
-
-
-        
+                    break;        
             }
             return base.OnKeyDown(keyCode, e);
         }
+
         private void BtLogout_Click(object sender, EventArgs e)
         {
             StartActivity(typeof(MainMenu));
@@ -368,9 +360,8 @@ namespace WMS
             NameValueObject moveHead = new NameValueObject("MoveHead");
             moveHead.SetBool("Saved", false);
             InUseObjects.Set("MoveHead", moveHead);
-
             StartActivity(typeof(TakeOverBusinessEventSetup));
-            HelpfulMethods.clearTheStack(this);
+            Finish();
         }
 
         private void BtDelete_Click(object sender, EventArgs e)
@@ -379,10 +370,8 @@ namespace WMS
             popupDialog.SetContentView(Resource.Layout.YesNoPopUp);
             popupDialog.Window.SetSoftInputMode(SoftInput.AdjustResize);
             popupDialog.Show();
-
             popupDialog.Window.SetLayout(LayoutParams.MatchParent, LayoutParams.WrapContent);
             popupDialog.Window.SetBackgroundDrawable(new ColorDrawable(Color.ParseColor("#081a45")));
-
             // Access Popup layout fields like below
             btnYes = popupDialog.FindViewById<Button>(Resource.Id.btnYes);
             btnNo = popupDialog.FindViewById<Button>(Resource.Id.btnNo);
@@ -456,9 +445,8 @@ namespace WMS
             var moveHead = positions.Items[displayedPosition];
             moveHead.SetBool("Saved", true);
             InUseObjects.Set("MoveHead", moveHead);
-
             StartActivity(typeof(TakeOverEnteredPositionsView));
-            HelpfulMethods.clearTheStack(this);
+            Finish();
         }
 
         private void BtNext_Click(object sender, EventArgs e)
@@ -492,38 +480,32 @@ namespace WMS
             if (displayedPosition >= positions.Items.Count) { displayedPosition = 0; }
             FillDisplayedItem();
         }
-
+        protected override void OnResume()
+        {
+            base.OnResume();
+            // Activity has become visible (it is now "resumed")
+        }
 
         private async Task LoadPositions()
         {
-
             try
             {
-
+                positions = await AsyncServices.AsyncServices.GetObjectListAsync("mh", "I");
+                    
                 if (positions == null)
                 {
-                    var error = "";
-
-                    if (positions == null)
-                    {
-                        positions = await AsyncServices.AsyncServices.GetObjectListAsync("mh", "I");
-                        InUseObjects.Set("TakeOverHeads", positions);
-                    }
-                    if (positions == null)
-                    {
-                        return;
-                    }
+                    return;
                 }
+
+                InUseObjects.Set("TakeOverHeads", positions);
 
                 displayedPosition = 0;
                 FillDisplayedItem();
             }
             catch (Exception err)
             {
-
                 Crashes.TrackError(err);
                 return;
-
             }
         }
 

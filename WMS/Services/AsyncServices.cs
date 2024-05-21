@@ -37,7 +37,7 @@ namespace WMS.AsyncServices
             public string Result { get; set; }
         }
 
-        public static async Task<NameValueObjectList> GetObjectListAsync(string table, string pars)
+        public static async Task<NameValueObjectList?> GetObjectListAsync(string table, string pars)
         {
             try
             {
@@ -52,7 +52,7 @@ namespace WMS.AsyncServices
                     return null;
                 }
             }
-            catch (Exception ex)
+            catch 
             {
                 return null;
             }

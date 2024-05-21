@@ -194,6 +194,14 @@ namespace WMS
             {
                 fillItems();
             }
+
+
+
+            if (ssccRow.Visibility != ViewStates.Visible && serialRow.Visibility != ViewStates.Visible)
+            {
+                tbPacking.RequestFocus();
+                tbPacking.SelectAll();
+            }
         }
 
         protected override void OnDestroy()
@@ -739,8 +747,6 @@ namespace WMS
 
             if(ssccRow.Visibility != ViewStates.Visible && serialRow.Visibility!=ViewStates.Visible)
             {
-                tbPacking.RequestFocus();
-                tbPacking.SelectAll();
                 FilterData();
             }
             

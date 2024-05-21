@@ -77,16 +77,12 @@ namespace WMS
                         NumberOfPositions = item.GetInt("ItemCount").ToString(),
                         // tbItemCount.Text = item.GetInt("ItemCount").ToString();
                     });
-
-             
-
                 }
                 else
                 {
                     string errorWebApp = string.Format($"{Resources.GetString(Resource.String.s247)}");
                     Toast.MakeText(this, errorWebApp, ToastLength.Long).Show();
                 }
-
 
             }
 
@@ -168,7 +164,6 @@ namespace WMS
                 listData.ItemClick += ListData_ItemClick;
                 listData.ItemLongClick += ListData_ItemLongClick;
                 listData.Adapter = dataAdapter;
-
             }
             else
             {
@@ -497,21 +492,16 @@ namespace WMS
           
             try
             {
+
+
+                positions = await AsyncServices.AsyncServices.GetObjectListAsync("mh", "P");
+                    
                 if (positions == null)
                 {
-                    var error = "";
-                    if (positions == null)
-                    {
-                        positions = await AsyncServices.AsyncServices.GetObjectListAsync("mh", "P");
-                        InUseObjects.Set("IssuedGoodHeads", positions);
-                    }
-                    if (positions == null)
-                    {
-                        string errorWebApp = string.Format($"{Resources.GetString(Resource.String.s216)}" + error);
-                        Toast.MakeText(this, errorWebApp, ToastLength.Long).Show();
-                        return;
-                    }
+                    return;
                 }
+
+                InUseObjects.Set("IssuedGoodHeads", positions);
 
                 displayedPosition = 0;
                 FillDisplayedItem();

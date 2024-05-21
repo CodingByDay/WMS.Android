@@ -483,17 +483,19 @@ namespace WMS
                 if (positions == null)
                 {
                     var error = "";
-                    if (positions == null)
+
+                    try
                     {
-                        try
-                        {
-                            positions = await AsyncServices.AsyncServices.GetObjectListAsync("mh", "E");
-                        }
-                         catch (Exception) {
-                        
-                        }
-                        InUseObjects.Set("InterWarehouseHeads", positions);
+                        positions = await AsyncServices.AsyncServices.GetObjectListAsync("mh", "E");
                     }
+                    catch (Exception) {
+
+                        return;
+
+                    }
+
+                    InUseObjects.Set("InterWarehouseHeads", positions);
+                    
                     if (positions == null)
                     {
                         string toast = string.Format($"{Resources.GetString(Resource.String.s213)}" + error);
