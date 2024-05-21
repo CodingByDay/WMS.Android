@@ -16,8 +16,11 @@ using WMS.Printing;
 using TrendNET.WMS.Core.Data;
 using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
+using AndroidX.AppCompat.App;
+using AlertDialog = Android.App.AlertDialog;
 
-using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS
+
+namespace WMS
 {
     [Activity(Label = "TakeOver2Orders", ScreenOrientation = ScreenOrientation.Portrait)]
     public class TakeOver2Orders : CustomBaseActivity

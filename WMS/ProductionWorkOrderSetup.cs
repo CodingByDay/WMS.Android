@@ -39,6 +39,8 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
         private Button button2;
         SoundPool soundPool;
         int soundPoolId;
+        private Barcode2D barcode2D;
+
         public void GetBarcode(string barcode)
         {
             if (tbWorkOrder.HasFocus)
@@ -107,7 +109,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             btConfirm.Visibility = ViewStates.Gone;
             btCard.Visibility = ViewStates.Gone;
             btPalette.Visibility = ViewStates.Gone;
-            Barcode2D barcode2D = new Barcode2D();
+            barcode2D = new Barcode2D();
             barcode2D.open(this, this);
             tbOpenQty.Enabled = false;
             tbClient.Enabled = false;
@@ -137,6 +139,15 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
 
 
         }
+
+        protected override void OnDestroy()
+        {
+            // The problem seems to have been a memory leak. Unregister broadcast receiver on activities where the scanning occurs. 21.05.2024 Janko Jovičić // 
+            barcode2D.close(this);
+            base.OnDestroy();
+        }
+
+
         public bool IsOnline()
         {
             var cm = (ConnectivityManager)GetSystemService(ConnectivityService);

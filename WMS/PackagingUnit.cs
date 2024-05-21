@@ -46,7 +46,7 @@ namespace WMS
         private Button check;
         SoundPool soundPool;
         int soundPoolId;
-      
+        private Barcode2D barcode2D;
         private TextView label;
         private ProgressDialogClass progress;
 
@@ -352,7 +352,7 @@ namespace WMS
           
             soundPool = new SoundPool(10, Stream.Music, 0);
             soundPoolId = soundPool.Load(this, Resource.Raw.beep, 1);
-            Barcode2D barcode2D = new Barcode2D();
+            barcode2D = new Barcode2D();
             barcode2D.open(this, this);
             tbIdentName.FocusChange += TbIdentName_FocusChange;
             if (item != null)
@@ -377,6 +377,17 @@ namespace WMS
             Application.Context.RegisterReceiver(_broadcastReceiver,
             new IntentFilter(ConnectivityManager.ConnectivityAction));
         }
+
+
+
+        protected override void OnDestroy()
+        {
+            // The problem seems to have been a memory leak. Unregister broadcast receiver on activities where the scanning occurs. 21.05.2024 Janko Jovičić // 
+            barcode2D.close(this);
+            base.OnDestroy();
+
+        }
+
         public bool IsOnline()
         {
             var cm = (ConnectivityManager)GetSystemService(ConnectivityService);

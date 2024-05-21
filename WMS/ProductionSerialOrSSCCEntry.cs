@@ -163,6 +163,7 @@ namespace WMS
         private string identCode;
         private Dialog popupDialog;
         private ZoomageView? image;
+        private Barcode2D barcode2D;
 
         private void GetWorkOrderDefaultQty()
         {
@@ -521,7 +522,7 @@ namespace WMS
             button4.Click += Button4_Click;
             button5.Click += Button5_Click;
             tbSSCC.FocusChange += TbSSCC_FocusChange;
-            Barcode2D barcode2D = new Barcode2D();
+            barcode2D = new Barcode2D();
             barcode2D.open(this, this);
             try
             {
@@ -614,7 +615,13 @@ namespace WMS
             return cm.ActiveNetworkInfo == null ? false : cm.ActiveNetworkInfo.IsConnected;
 
         }
+        protected override void OnDestroy()
+        {
+            // The problem seems to have been a memory leak. Unregister broadcast receiver on activities where the scanning occurs. 21.05.2024 Janko Jovičić // 
+            barcode2D.close(this);
+            base.OnDestroy();
 
+        }
         private void showPictureIdent(string ident)
         {
             try

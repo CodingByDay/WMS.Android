@@ -58,6 +58,7 @@ namespace WMS
         private List<string> locations = new List<string>();
         SoundPool soundPool;
         int soundPoolId;
+        private BarCode2D_Receiver.Barcode2D barcode2D;
         private LinearLayout? ssccRow;
         private LinearLayout? serialRow;
         private Trail? receivedTrail;
@@ -119,7 +120,7 @@ namespace WMS
             Window.SetSoftInputMode(Android.Views.SoftInput.AdjustResize);
             soundPool = new SoundPool(10, Stream.Music, 0);
             soundPoolId = soundPool.Load(this, Resource.Raw.beep, 1);
-            Barcode2D barcode2D = new Barcode2D();
+            barcode2D = new Barcode2D();
             barcode2D.open(this, this);
             ssccRow = FindViewById<LinearLayout>(Resource.Id.sscc_row);
             serialRow = FindViewById<LinearLayout>(Resource.Id.serial_row);
@@ -410,7 +411,14 @@ namespace WMS
             }
         }
 
-    
+        protected override void OnDestroy()
+        {
+            // The problem seems to have been a memory leak. Unregister broadcast receiver on activities where the scanning occurs. 21.05.2024 Janko Jovičić // 
+            barcode2D.close(this);
+            base.OnDestroy();
+
+        }
+
 
         private void CheckIfApplicationStopingException()
         {

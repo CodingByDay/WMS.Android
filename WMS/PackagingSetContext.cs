@@ -33,6 +33,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
         List<ComboBoxItem> objectsPackaging = new List<ComboBoxItem>();
         SoundPool soundPool;
         int soundPoolId;
+        private Barcode2D barcode2D;
         private string temporaryString;
         private string toast;
 
@@ -87,7 +88,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             cbWarehouse.ItemSelected += CbWarehouse_ItemSelected;
             soundPool = new SoundPool(10, Stream.Music, 0);
             soundPoolId = soundPool.Load(this, Resource.Raw.beep, 1);
-            Barcode2D barcode2D = new Barcode2D();
+            barcode2D = new Barcode2D();
             barcode2D.open(this, this);
 
             Color();
@@ -112,6 +113,15 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             Application.Context.RegisterReceiver(_broadcastReceiver,
             new IntentFilter(ConnectivityManager.ConnectivityAction));
         }
+        protected override void OnDestroy()
+        {
+            // The problem seems to have been a memory leak. Unregister broadcast receiver on activities where the scanning occurs. 21.05.2024 Janko Jovičić // 
+            barcode2D.close(this);
+            base.OnDestroy();
+
+        }
+
+
         public bool IsOnline()
         {
             var cm = (ConnectivityManager)GetSystemService(ConnectivityService);

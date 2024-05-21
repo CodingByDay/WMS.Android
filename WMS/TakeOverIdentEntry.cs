@@ -271,7 +271,6 @@ namespace WMS
         private void Button4_Click(object sender, EventArgs e)
         {
             StartActivity(typeof(TakeOverEnteredPositionsView));
-            HelpfulMethods.clearTheStack(this);
             Finish();
         }
 
@@ -280,7 +279,6 @@ namespace WMS
             if (SaveMoveHead())
             {
                 var intent = new Intent(this, typeof(TakeOverSerialOrSSCCEntry));
-                intent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.NewTask | ActivityFlags.ClearTask);
                 StartActivity(intent);
                 Finish();
             }
@@ -446,10 +444,8 @@ namespace WMS
                         if (SaveMoveHead())
                         {
                             var intent = new Intent(this, typeof(TakeOverSerialOrSSCCEntry));
-                            intent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.NewTask);
                             StartActivity(intent);
                             Finish();
-                            this.FinishAndRemoveTask();
                         }
                         return;
                     }
@@ -549,10 +545,9 @@ namespace WMS
         }
         protected override void OnDestroy()
         {
-            // Test this // 
+            // The problem seems to have been a memory leak. Unregister broadcast receiver on activities where the scanning occurs. 21.05.2024 Janko Jovičić // 
             barcode2D.close(this);
             base.OnDestroy();
-
         }
 
 
@@ -663,7 +658,6 @@ namespace WMS
                     if (SaveMoveHead2D(row))
                     {
                         var intent = new Intent(this, typeof(TakeOverSerialOrSSCCEntry));
-                        intent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.NewTask);
                         StartActivity(intent);
                         Finish();
                     }

@@ -73,6 +73,8 @@ namespace WMS
         private List<string> savedIdents;
         private Row dataObject;
         private TextView warehouseLabel;
+        private Barcode2D barcode2D;
+
         public CustomAutoCompleteAdapter<string> DataAdapterLocation { get; private set; }
 
         protected async override void OnCreate(Bundle savedInstanceState)
@@ -122,7 +124,7 @@ namespace WMS
             tbIdent.FocusChange += TbIdent_FocusChange;
             tbSSCC.KeyPress += TbSSCC_KeyPress;
             tbIdent.KeyPress += TbIdent_KeyPress;
-            Barcode2D barcode2D = new Barcode2D();
+            barcode2D = new Barcode2D();
             barcode2D.open(this, this);
             await FillWarehouses();
             warehouseLabel = FindViewById<TextView>(Resource.Id.warehouseLabel);
@@ -154,7 +156,13 @@ namespace WMS
             }
         }
 
+        protected override void OnDestroy()
+        {
+            // The problem seems to have been a memory leak. Unregister broadcast receiver on activities where the scanning occurs. 21.05.2024 Janko Jovičić // 
+            barcode2D.close(this);
+            base.OnDestroy();
 
+        }
 
         private void TbSSCC_KeyPress(object sender, View.KeyEventArgs e)
         {

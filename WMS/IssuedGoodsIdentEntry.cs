@@ -20,12 +20,12 @@ using WMS.App;
 using TrendNET.WMS.Core.Data;
 using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
-
 using AndroidX.AppCompat.App;
 using AlertDialog = Android.App.AlertDialog;
 using Microsoft.AppCenter.Analytics;
 using AndroidX.Lifecycle;
 using System.Data.Common;
+
 namespace WMS
 {
     [Activity(Label = "IssuedGoodsIdentEntry", ScreenOrientation = ScreenOrientation.Portrait)]
@@ -43,6 +43,7 @@ namespace WMS
         private Button button5;
         SoundPool soundPool;
         int soundPoolId;
+        private BarCode2D_Receiver.Barcode2D barcode2D;
         private NameValueObject moveHead = (NameValueObject)InUseObjects.Get("MoveHead");
         private NameValueObject openIdent = null;
         private int displayedOrder = -1;
@@ -307,7 +308,7 @@ namespace WMS
             btConfirm.Enabled = false;
             soundPool = new SoundPool(10, Stream.Music, 0);
             soundPoolId = soundPool.Load(this, Resource.Raw.beep, 1);
-            Barcode2D barcode2D = new Barcode2D();
+            barcode2D = new Barcode2D();
             barcode2D.open(this, this);
             btNext.Click += BtNext_Click;
             tbIdent.KeyPress += TbIdent_KeyPress; 
@@ -334,6 +335,17 @@ namespace WMS
             Application.Context.RegisterReceiver(_broadcastReceiver,
             new IntentFilter(ConnectivityManager.ConnectivityAction));
         }
+
+
+
+        protected override void OnDestroy()
+        {
+            // The problem seems to have been a memory leak. Unregister broadcast receiver on activities where the scanning occurs. 21.05.2024 Janko Jovičić // 
+            barcode2D.close(this);
+            base.OnDestroy();
+
+        }
+
 
         private void ListData_ItemLongClick(object? sender, AdapterView.ItemLongClickEventArgs e)
         {

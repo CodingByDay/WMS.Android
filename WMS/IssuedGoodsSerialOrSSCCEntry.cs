@@ -96,6 +96,7 @@ namespace WMS
         private LinearLayout serialRow;
         private SoundPool soundPool;
         private int soundPoolId;
+        private Barcode2D barcode2D;
         private string sscc;
         private LinearLayout ssccRow;
         private double stock;
@@ -311,7 +312,7 @@ namespace WMS
             lbQty = FindViewById<TextView>(Resource.Id.lbQty);
             soundPool = new SoundPool(10, Stream.Music, 0);
             soundPoolId = soundPool.Load(this, Resource.Raw.beep, 1);
-            Barcode2D barcode2D = new Barcode2D();
+            barcode2D = new Barcode2D();
             barcode2D.open(this, this);
             btCreateSame = FindViewById<Button>(Resource.Id.btCreateSame);
             btCreate = FindViewById<Button>(Resource.Id.btCreate);
@@ -358,7 +359,13 @@ namespace WMS
             }
         }
 
+        protected override void OnDestroy()
+        {
+            // The problem seems to have been a memory leak. Unregister broadcast receiver on activities where the scanning occurs. 21.05.2024 Janko Jovičić // 
+            barcode2D.close(this);
+            base.OnDestroy();
 
+        }
 
         private void showPictureIdent(string ident)
         {
