@@ -33,11 +33,11 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
         private EditText tbNaziv;
         private EditText tbKolicinaDoSedaj; 
         private EditText tbKolicinaNova;
-        private Button button1;
-        private Button button2;
-        private Button button3;
-        private Button button4;
-        private Button button5;
+        private Button btnOrder;
+        private Button btConfirm;
+        private Button btSSCC;
+        private Button btOverview;
+        private Button btExit;
         private EditText tbLocation;
         private NameValueObject moveHead = (NameValueObject)InUseObjects.Get("MoveHead");
         private NameValueObject moveItem = (NameValueObject)InUseObjects.Get("MoveItem");
@@ -99,7 +99,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 tbNaziv.Text = ident.GetString("Name");
                 tbKolicinaDoSedaj.Text = moveItem == null ? "" : moveItem.GetDouble("Qty").ToString("###,###,##0.00");
                 tbKolicinaNova.Text = "";
-                tbKolicinaNova.RequestFocus();
+       
             } catch (Exception ex)
             {
                 Crashes.TrackError(ex);
@@ -183,7 +183,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                         return null;
                     }
                 }
-                catch (Exception ex)
+                catch 
                 {
                     
                     tbKolicinaNova.RequestFocus();
@@ -194,18 +194,18 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                     if (moveItem == null) { moveItem = new NameValueObject("MoveItem"); }
                     moveItem.SetInt("HeadID", moveHead.GetInt("HeadID"));
                     moveItem.SetString("LinkKey", ""); // TODO
-                    //moveItem.SetInt("LinkNo", openOrder.GetInt("No"));
+                    // moveItem.SetInt("LinkNo", openOrder.GetInt("No"));
                     moveItem.SetString("Ident", ident.GetString("Code"));
-                    //moveItem.SetString("SSCC", tbSSCC.Text.Trim());
-                    //moveItem.SetString("SerialNo", tbSerialNum.Text.Trim());
+                    // moveItem.SetString("SSCC", tbSSCC.Text.Trim());
+                    // moveItem.SetString("SerialNo", tbSerialNum.Text.Trim());
                     moveItem.SetDouble("Packing", 0.0);
                     moveItem.SetDouble("Factor", 1.0);
                     moveItem.SetDouble("Qty", kol);
                     moveItem.SetInt("MorePrints", 0);
                     moveItem.SetInt("Clerk", Services.UserID());
                     moveItem.SetString("Location", tbLocation.Text.Trim()); // Added 4.2.2021
-                    //moveItem.SetString("Location", tbLocation.Text.Trim());
-                    //moveItem.SetBool("PrintNow", CommonData.GetSetting("ImmediatePrintOnReceive") == "1");
+                    // moveItem.SetString("Location", tbLocation.Text.Trim());
+                    // moveItem.SetBool("PrintNow", CommonData.GetSetting("ImmediatePrintOnReceive") == "1");
                     moveItem.SetInt("UserID", Services.UserID());
                     moveItem.SetString("DeviceID", WMSDeviceConfig.GetString("ID", ""));
 
@@ -259,23 +259,24 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             SupportActionBar.SetDisplayShowTitleEnabled(false);
             tbIdent = FindViewById<EditText>(Resource.Id.tbIdent);
             tbNaziv = FindViewById<EditText>(Resource.Id.tbNaziv);
+            tbNaziv.Enabled = false;
             tbKolicinaDoSedaj = FindViewById<EditText>(Resource.Id.tbKolicinaDoSedaj);
             tbKolicinaNova = FindViewById<EditText>(Resource.Id.tbKolicinaNova);
-            button1 = FindViewById<Button>(Resource.Id.button1);
-            button2 = FindViewById<Button>(Resource.Id.button2);
-            button3 = FindViewById<Button>(Resource.Id.button3);
-            button4 = FindViewById<Button>(Resource.Id.button4);
-            button5 = FindViewById<Button>(Resource.Id.button5);
+            btnOrder = FindViewById<Button>(Resource.Id.btnOrder);
+            btConfirm = FindViewById<Button>(Resource.Id.btConfirm);
+            btSSCC = FindViewById<Button>(Resource.Id.btSSCC);
+            btOverview = FindViewById<Button>(Resource.Id.btOverview);
+            btExit = FindViewById<Button>(Resource.Id.btExit);
             tbLocation = FindViewById<EditText>(Resource.Id.tbLocation);
             soundPool = new SoundPool(10, Stream.Music, 0);
             soundPoolId = soundPool.Load(this, Resource.Raw.beep, 1);
             barcode2D = new Barcode2D();
             barcode2D.open(this, this);
-            button1.Click += Button1_Click;
-            button2.Click += Button2_Click;
-            button3.Click += Button3_Click;
-            button4.Click += Button4_Click;
-            button5.Click += Button5_Click;
+            btnOrder.Click += BtnOrder_Click;
+            btConfirm.Click += BtConfirm_Click;
+            btSSCC.Click += BtSSCC_Click;
+            btOverview.Click += BtOverview_Click;
+            btExit.Click += BtExit_Click;
             tbIdent.KeyPress += TbIdent_KeyPress;
             tbLocation.Text = CommonData.GetSetting("DefaultPaletteLocation");
             color();
@@ -294,13 +295,75 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 tbNaziv.Text = ident.GetString("Name");
                 tbKolicinaDoSedaj.Text = moveItem == null ? "" : moveItem.GetDouble("Qty").ToString("###,###,##0.00");
                 tbKolicinaNova.Text = "";
-                tbKolicinaNova.RequestFocus();
             }
             var _broadcastReceiver = new NetworkStatusBroadcastReceiver();
             _broadcastReceiver.ConnectionStatusChanged += OnNetworkStatusChanged;
             Application.Context.RegisterReceiver(_broadcastReceiver,
             new IntentFilter(ConnectivityManager.ConnectivityAction));
+
+
+            tbIdent.RequestFocus();
         }
+
+        private void BtExit_Click(object? sender, EventArgs e)
+        {
+            StartActivity(typeof(MainMenu));
+            Finish();
+        }
+
+        private void BtOverview_Click(object? sender, EventArgs e)
+        {
+            SaveItem(true);
+            StartActivity(typeof(TakeOverEnteredPositionsView));
+            Finish();
+        }
+
+        private void BtSSCC_Click(object? sender, EventArgs e)
+        {
+            if (SaveItem(false) != null)
+            {
+                var progress = new ProgressDialogClass();
+
+                progress.ShowDialogSync(this, $"{Resources.GetString(Resource.String.s262)}");
+                try
+                {
+
+                    var nvo = new NameValueObject("InternalSticker");
+                    PrintingCommon.SetNVOCommonData(ref nvo);
+                    nvo.SetString("Ident", tbIdent.Text);
+                    PrintingCommon.SendToServer(nvo);
+                    Toast.MakeText(this, "Uspešno. ", ToastLength.Long).Show();
+
+                }
+                finally
+                {
+                    progress.StopDialogSync();
+                }
+            }
+        }
+
+        private void BtConfirm_Click(object? sender, EventArgs e)
+        {
+            if (SaveItem(false) != null)
+            {
+                InUseObjects.Set("MoveItem", null);
+                StartActivity(typeof(TakeOver2Main));
+                HelpfulMethods.clearTheStack(this);
+
+            }
+        }
+
+        private void BtnOrder_Click(object? sender, EventArgs e)
+        {
+            if (SaveItem(false) != null)
+            {
+                InUseObjects.Set("MoveItem", moveItem);
+                StartActivity(typeof(TakeOver2Orders));
+                HelpfulMethods.clearTheStack(this);
+
+            }
+        }
+
         public bool IsOnline()
         {
             var cm = (ConnectivityManager)GetSystemService(ConnectivityService);
@@ -344,40 +407,39 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             {
                 // in smartphone        
                 case Keycode.F1:
-                    if (button1.Enabled == true)
+                    if (btnOrder.Enabled == true)
                     {
-                        Button1_Click(this, null);
+                        BtnOrder_Click(this, null);
                     }
                     break;
-                //return true;
+
 
                 case Keycode.F2:
-                    if (button2.Enabled == true)
+                    if (btConfirm.Enabled == true)
                     {
-                        Button2_Click(this, null);
+                        BtConfirm_Click(this, null);
                     }
                     break;
 
-
                 case Keycode.F3:
-                    if (button3.Enabled == true)
+                    if (btSSCC.Enabled == true)
                     {
-                        Button3_Click(this, null);
+                        BtSSCC_Click(this, null);
                     }
                     break;
 
                 case Keycode.F4:
-                    if (button4.Enabled == true)
+                    if (btOverview.Enabled == true)
                     {
-                        Button4_Click(this, null);
+                        BtOverview_Click(this, null);
                     }
                     break;
 
 
                 case Keycode.F8:
-                    if (button5.Enabled == true)
+                    if (btExit.Enabled == true)
                     {
-                        Button5_Click(this, null);
+                        BtExit_Click(this, null);
                     }
                     break;
 
@@ -393,65 +455,16 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 // Add your logic here. 
                 ProcessIdent();
                 e.Handled = true;
-            }
-        }
-
-        private void Button5_Click(object sender, EventArgs e)
-        {
-            StartActivity(typeof(MainMenu));
-            HelpfulMethods.clearTheStack(this);
-        }
-
-        private void Button4_Click(object sender, EventArgs e)
-        {
-            SaveItem(true);
-            StartActivity(typeof(TakeOverEnteredPositionsView));
-            HelpfulMethods.clearTheStack(this);
-        }
-
-        private void Button3_Click(object sender, EventArgs e)
-        {
-            if (SaveItem(false) != null)
-            {
-                var progress = new ProgressDialogClass();
-
-                progress.ShowDialogSync(this, $"{Resources.GetString(Resource.String.s262)}");
-                try
-                {
-                 
-                    var nvo = new NameValueObject("InternalSticker");
-                    PrintingCommon.SetNVOCommonData(ref nvo);
-                    nvo.SetString("Ident", tbIdent.Text);
-                    PrintingCommon.SendToServer(nvo);
-                    Toast.MakeText(this, "Uspešno. ", ToastLength.Long).Show();
-
-                }
-                finally
-                {
-                    progress.StopDialogSync();
-                }
-            }
-        }
-        private void Button2_Click(object sender, EventArgs e)
-        {
-            if (SaveItem(false) != null)
-            {
-                InUseObjects.Set("MoveItem", null);
-                StartActivity(typeof(TakeOver2Main));
-                HelpfulMethods.clearTheStack(this);
-
-            }
-        }
         
-        private void Button1_Click(object sender, EventArgs e)
-        {
-            if (SaveItem(false) != null)
-            {
-                InUseObjects.Set("MoveItem", moveItem);
-                StartActivity(typeof(TakeOver2Orders));
-                HelpfulMethods.clearTheStack(this);
-
             }
         }
+
+   
+
+
+  
+      
+        
+
     }
 }
