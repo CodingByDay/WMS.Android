@@ -453,10 +453,10 @@ namespace WMS
                             foreach (var row in result.Rows)
                             {
                                 var ident = row.StringValue("acIdent");
-                                var location = row.StringValue("aclocation");
+                                var location = row.IntValue("anlocation");
                                 var name = row.StringValue("acName");
 
-                                if ((string.IsNullOrEmpty(filterLoc) || (location == filterLoc)) &&
+                                if ((string.IsNullOrEmpty(filterLoc) || (location.ToString() == filterLoc)) &&
                                    (string.IsNullOrEmpty(filterIdent) || (ident == filterIdent)))
                                 {
 
@@ -466,26 +466,20 @@ namespace WMS
                                     lvi.Ident = ident;
 
 
-                                    long numberOfLocations = -1;
-                                    var isSuccess = Int64.TryParse(location, out numberOfLocations);
-                                    if(!isSuccess)
+              
+                                    if(location > 1)
+                                    {
+                                        lvi.Location = Resources.GetString(Resource.String.s346);
+                                    }
+                                    else if (location == 1)
+                                    {
+                                        lvi.Location = Resources.GetString(Resource.String.s347);
+                                    }
+                                    else if (location <= 0)
                                     {
                                         lvi.Location = Resources.GetString(Resource.String.s345);
-                                    } else
-                                    {
-                                        if(numberOfLocations > 1)
-                                        {
-                                            lvi.Location = Resources.GetString(Resource.String.s346);
-                                        }
-                                        else if (numberOfLocations == 1)
-                                        {
-                                            lvi.Location = Resources.GetString(Resource.String.s347);
-                                        }
-                                        else if (numberOfLocations <= 0)
-                                        {
-                                            lvi.Location = Resources.GetString(Resource.String.s345);
-                                        }
                                     }
+                                    
                                     lvi.Qty = string.Format("{0:###,##0.00}", row.DoubleValue("anQty"));
                                     lvi.originalIndex = counter;
                                     lvi.No = (int) row.IntValue("anNo");
