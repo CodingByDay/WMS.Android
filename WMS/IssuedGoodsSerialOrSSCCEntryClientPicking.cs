@@ -152,6 +152,7 @@ namespace WMS
             soundPoolId = soundPool.Load(this, Resource.Raw.beep, 1);
             barcode2D = new Barcode2D();
             barcode2D.open(this, this);
+
             btCreateSame = FindViewById<Button>(Resource.Id.btCreateSame);
             btCreate = FindViewById<Button>(Resource.Id.btCreate);
             btFinish = FindViewById<Button>(Resource.Id.btFinish);
@@ -182,7 +183,7 @@ namespace WMS
             ColorFields();
 
             // Main logic for the entry
-            SetUpForm();
+            await SetUpForm();
 
             SetUpProcessDependentButtons();
 
@@ -461,6 +462,7 @@ namespace WMS
                 {
                     var element = dist.ElementAt(0);
                     moveItem = new NameValueObject("MoveItem");
+                    moveItem.SetInt("HeadID", moveHead.GetInt("HeadID"));
                     moveItem.SetString("LinkKey", element.acKey);
                     moveItem.SetInt("LinkNo", element.anNo);                  
                     moveItem.SetInt("LinkNo", receivedTrail.No);
@@ -481,19 +483,18 @@ namespace WMS
                     {
                         RunOnUiThread(() =>
                         {
-                            if (Base.Store.modeIssuing == 2)
+                            if (Base.Store.modeIssuing == 3)
                             {
                                 StartActivity(typeof(IssuedGoodsIdentEntryWithTrail));
                                 Finish();
                             }
                         });
-
-
-                        dist = new List<IssuedGoods>();
-                        createPositionAllowed = false;
-                        await GetConnectedPositions(receivedTrail.Order, receivedTrail.No, receivedTrail.Ident, receivedTrail.Location);
+ 
+                    } else
+                    {
+                        StartActivity(typeof(MainActivity));
+                        Finish();
                     }
-
                 }
                 else
                 {
@@ -690,7 +691,7 @@ namespace WMS
 
 
 
-        private async void SetUpForm()
+        private async Task SetUpForm()
         {
 
 
@@ -762,7 +763,6 @@ namespace WMS
         /// če je zapisov več si jih shraniš in z dodatnimi vpisi/skeniranji(SSCC ali serijska) "filtriraš" podatke, ko prideš na enega izpolniš vse podatke, uporabnik lahko spremeni količino - v oklepaju je že od vsega začetka vpisan anQty.
         /// če uporabnik klikne na gumb serijska, se iz seznama pobriše ta vrsitca in maska ostane kot je bila po koncu koraka 4.
         /// lahko pa enostavno ponoviš klic view-a ki bi že moral imeti zapisane podatke in osvežene, če ne bo kaj težav z asinhronimi klici...
-        ///
         /// </summary>
         /// <param name="acKey">Številka naročila</param>
         /// <param name="anNo">Pozicija znotraj naročila</param>
@@ -779,7 +779,7 @@ namespace WMS
             parameters.Add(new Services.Parameter { Name = "acIdent", Type = "String", Value = acIdent });
             parameters.Add(new Services.Parameter { Name = "acLocation", Type = "String", Value = acLocation });
 
-            var subjects = await AsyncServices.AsyncServices.GetObjectListBySqlAsync($"SELECT * from uWMSOrderItemByKeyOut WHERE acKey = @acKey AND anNo = @anNo AND acIdent = @acIdent and acLocation=@acLocation;", parameters);
+            var subjects = await AsyncServices.AsyncServices.GetObjectListBySqlAsync($"SELECT * FROM uWMSOrderItemByKeyOut WHERE acKey = @acKey AND anNo = @anNo AND acIdent = @acIdent and acLocation=@acLocation;", parameters);
 
             if (!subjects.Success)
             {
