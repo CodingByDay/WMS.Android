@@ -323,8 +323,11 @@ namespace WMS
             btOverview = FindViewById<Button>(Resource.Id.btOverview);
             btExit = FindViewById<Button>(Resource.Id.btExit);
 
-            // Events
-            cbMultipleLocations.ItemSelected += CbMultipleLocations_ItemSelected;
+            if (CommonData.GetSetting("IssueSummaryView") == "1")
+            {
+                cbMultipleLocations.ItemSelected += CbMultipleLocations_ItemSelected;
+            }
+
             tbLocation.KeyPress += TbLocation_KeyPress;
             tbSSCC.KeyPress += TbSSCC_KeyPress;
             tbSerialNum.KeyPress += TbSerialNum_KeyPress;
@@ -365,6 +368,7 @@ namespace WMS
         private void CbMultipleLocations_ItemSelected(object? sender, AdapterView.ItemSelectedEventArgs e)
         {
             var selected = adapterLocation.GetItem(e.Position);
+
             if (selected != null)
             {
                 tbLocation.Text = selected.Location;
@@ -1070,7 +1074,7 @@ namespace WMS
             }
         }
 
-        private void SetUpForm()
+        private async void SetUpForm()
         {
             if(settings.tablet)
             {
@@ -1137,8 +1141,11 @@ namespace WMS
                         if(CommonData.GetSetting("IssueSummaryView") == "1")
                         {
                             cbMultipleLocations.Visibility = ViewStates.Visible;
+                            /*
                             adapterLocations.Add(new MultipleStock { Location = "01", Quantity = 5 });
-                            adapterLocations.Add(new MultipleStock { Location = "03", Quantity = 533 });
+                            adapterLocations.Add(new MultipleStock { Location = "03", Quantity = 533 }); 
+                            */
+                            adapterLocations = await GetStockState(receivedTrail);
                             adapterLocation = new ArrayAdapter<MultipleStock>(this,
                             Android.Resource.Layout.SimpleSpinnerItem, adapterLocations);
                             adapterLocation.SetDropDownViewResource(Android.Resource.Layout.SimpleSpinnerDropDownItem);
@@ -1225,13 +1232,34 @@ namespace WMS
             }
         }
 
+        private async Task<List<MultipleStock>> GetStockState(Trail? obj)
+        {
+            List<MultipleStock> data = new List<MultipleStock>();
+
+            var sql = "SELECT * FROM uWMSStockByWarehouse WHERE acIdent = @acIdent AND acWarehouse = @acWarehouse;";
+            var parameters = new List<Services.Parameter>();
+
+            parameters.Add(new Services.Parameter { Name = "acWarehouse", Type = "String", Value = moveHead.GetString("Wharehouse") });
+            parameters.Add(new Services.Parameter { Name = "acIdent", Type = "String", Value = obj.Ident });
+            
+            var stocks = await AsyncServices.AsyncServices.GetObjectListBySqlAsync(sql, parameters);
+
+            if (stocks.Success && stocks.Rows.Count > 0)
+            {
+                foreach (var stockRow in stocks.Rows)
+                {
+                    data.Add(new MultipleStock { Location = stockRow.StringValue("aclocation"), Quantity = stockRow.DoubleValue("anQty") ?? 0 });
+                }
+
+            }
+
+            return data;
+        }
+
         private void Sound()
         {
             soundPool.Play(soundPoolId, 1, 1, 0, 0, 1);
         }
-
-  
-        
 
         private void TbSerialNum_KeyPress(object? sender, View.KeyEventArgs e)
         {
