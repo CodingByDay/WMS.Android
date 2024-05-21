@@ -400,7 +400,145 @@ namespace WMS
             });
         }
 
-       
+
+        private async Task FillDisplayedOrderInfoMultipleLocations()
+        {
+            await Task.Run(async () =>
+            {
+                try
+                {
+                    List<Trail> unfiltered = new List<Trail>();
+                    var filterLoc = tbLocationFilter.Text;
+                    var filterIdent = tbIdentFilter.Text;
+
+                    try
+                    {
+                        if (openOrder != null)
+                        {
+                            RunOnUiThread(() =>
+                            {
+                                tbOrder.Text = openOrder.GetString("Key");
+                                tbReceiver.Text = openOrder.GetString("Receiver");
+                            });
+
+                            password = openOrder.GetString("Key");
+
+                        }
+                        else if (moveHead != null)
+                        {
+                            RunOnUiThread(() =>
+                            {
+                                tbOrder.Text = moveHead.GetString("LinkKey");
+                                tbReceiver.Text = moveHead.GetString("Receiver");
+                            });
+                            password = moveHead.GetString("LinkKey");
+                        }
+
+                        string error;
+
+                        var warehouse = moveHead.GetString("Wharehouse");
+                        // qtyByLoc = Services.GetObjectList("ook", out error, password);
+                        var parameters = new List<Services.Parameter>();
+                        parameters.Add(new Services.Parameter { Name = "acKey", Type = "String", Value = password });
+
+                        // New extra way of showing the data. 21.05.2024 Janko Jovičić
+                        string sql = $"SELECT * FROM uWMSOrderItemByKeyOutSUM WHERE acKey = @acKey;";
+
+                        result = await AsyncServices.AsyncServices.GetObjectListBySqlAsync(sql, parameters);
+                        NameValueObjectVariableList = result.ConvertToNameValueObjectList("OpenOrder");
+                        if (result.Success && result.Rows.Count > 0)
+                        {
+                            trails.Clear();
+                            int counter = 0;
+                            foreach (var row in result.Rows)
+                            {
+                                var ident = row.StringValue("acIdent");
+                                var location = row.StringValue("aclocation");
+                                var name = row.StringValue("acName");
+
+                                if ((string.IsNullOrEmpty(filterLoc) || (location == filterLoc)) &&
+                                   (string.IsNullOrEmpty(filterIdent) || (ident == filterIdent)))
+                                {
+
+                                    var key = row.StringValue("acKey");
+                                    var lvi = new Trail();
+                                    lvi.Key = key;
+                                    lvi.Ident = ident;
+
+
+                                    long numberOfLocations = -1;
+                                    var isSuccess = Int64.TryParse(location, out numberOfLocations);
+                                    if(!isSuccess)
+                                    {
+                                        lvi.Location = Resources.GetString(Resource.String.s345);
+                                    } else
+                                    {
+                                        if(numberOfLocations > 1)
+                                        {
+                                            lvi.Location = Resources.GetString(Resource.String.s346);
+                                        }
+                                        else if (numberOfLocations == 1)
+                                        {
+                                            lvi.Location = Resources.GetString(Resource.String.s347);
+                                        }
+                                        else if (numberOfLocations <= 0)
+                                        {
+                                            lvi.Location = Resources.GetString(Resource.String.s345);
+                                        }
+                                    }
+                                    lvi.Qty = string.Format("{0:###,##0.00}", row.DoubleValue("anQty"));
+                                    lvi.originalIndex = counter;
+                                    lvi.No = (int) row.IntValue("anNo");
+                                    lvi.Name = name;
+                                    lvi.Packaging = row.DoubleValue("anPackQty") ?? -1;
+                                    counter++;
+                                    unfiltered.Add(lvi);
+
+                                }
+                            }
+                        }
+
+
+                        RunOnUiThread(() =>
+                        {
+                            trails = unfiltered;
+                            adapterObj.NotifyDataSetChanged();
+                            LoaderManifest.LoaderManifestLoopStop(this);
+                            adapterObj.Filter(trails, true, string.Empty, false);
+                            listener = new MyOnItemLongClickListener(this, adapterObj.returnData(), adapterObj);
+                            ivTrail.OnItemLongClickListener = listener;
+
+                            // Bluetooth
+
+                            /* try
+                             * 
+                            {
+                                sendDataToDevice();
+                            } catch (Exception ex)
+                            {
+                                Crashes.TrackError(ex);
+                            }
+
+                            // Bluetooth
+
+                           */
+
+                        });
+                    }
+                    catch (Exception error)
+                    {
+                        var e = error;
+                        Crashes.TrackError(e);
+                    }
+                }
+                catch (Exception error)
+                {
+                    Crashes.TrackError(error);
+                }
+            });
+        }
+
+
         protected async override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -452,13 +590,8 @@ namespace WMS
 
             if (openOrder == null && moveHead == null)
             {
-
-                System.Threading.Thread.Sleep(500);
                 throw new ApplicationException("Error, openIdent");
-
             }
-
-
 
             if (trailFilters != null)
             {
@@ -466,13 +599,22 @@ namespace WMS
                 tbLocationFilter.Text = trailFilters.GetString("Location");
             }
 
-            await FillDisplayedOrderInfo();
+            // New proccess for more locations for SkiSea 21.05.2024 Janko Jovičić
+
+            if (CommonData.GetSetting("IssueSummaryView") == "1")
+            {
+                await FillDisplayedOrderInfoMultipleLocations();
+            }
+            else
+            {
+                await FillDisplayedOrderInfo();
+            }
+
 
             var _broadcastReceiver = new NetworkStatusBroadcastReceiver();
             _broadcastReceiver.ConnectionStatusChanged += OnNetworkStatusChanged;
             Application.Context.RegisterReceiver(_broadcastReceiver,
             new IntentFilter(ConnectivityManager.ConnectivityAction));
-
 
 
             tbIdentFilter.AfterTextChanged += TbIdentFilter_AfterTextChanged;
@@ -486,11 +628,7 @@ namespace WMS
                 Intent serviceIntent = new Intent(this, typeof(BluetoothService));
                 BindService(serviceIntent, serviceConnection, Bind.AutoCreate);
             }
-
-
-            tbIdentFilter.RequestFocus();
-
-       
+            tbIdentFilter.RequestFocus();      
         }
 
 
@@ -573,7 +711,7 @@ namespace WMS
             }
         }
 
-     
+        /*
 
         private void sendDataToDevice()
         {
@@ -597,6 +735,8 @@ namespace WMS
             }
         }
        
+        */
+
         private void BtBack_Click(object sender, EventArgs e)
         {
             OnBackPressed();
@@ -651,9 +791,6 @@ namespace WMS
         }
 
    
-
-
-
         private async void BtConfirm_Click(object sender, EventArgs e)
         {
             try
@@ -709,7 +846,7 @@ namespace WMS
 
                         i.PutExtra("selected", jsonString);
                         StartActivity(i);
-                        this.Finish();
+                        Finish();
 
                     }
                     else
@@ -724,7 +861,7 @@ namespace WMS
 
                         i.PutExtra("selected", jsonString);
                         StartActivity(i);
-                        this.Finish();
+                        Finish();
                     }
                 }
             } catch(Exception err)
@@ -804,10 +941,8 @@ namespace WMS
                 }
                 catch (Exception err)
                 {
-
                     Crashes.TrackError(err);
                     return false;
-
                 }
             }
             else

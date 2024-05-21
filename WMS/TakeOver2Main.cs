@@ -142,8 +142,6 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
         {
             if (allowEmpty && string.IsNullOrEmpty(tbIdent.Text.Trim())) { return null; }
 
-
-
             if (!CommonData.IsValidLocation(CommonData.GetSetting("DefaultWarehouse"), tbLocation.Text.Trim()))
             {
                 Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();

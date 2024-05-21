@@ -112,14 +112,11 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             _broadcastReceiver.ConnectionStatusChanged += OnNetworkStatusChanged;
             Application.Context.RegisterReceiver(_broadcastReceiver,
             new IntentFilter(ConnectivityManager.ConnectivityAction));
-            // cbExtra.ViewAttachedToWindow += CbExtra_ViewAttachedToWindow;        
             SelectState();
-            // Events //
             cbDocType.ItemClick += CbDocType_ItemClick;
             cbExtra.ItemClick += CbExtra_ItemClick;
             cbWarehouse.ItemClick += CbWarehouse_ItemClick;
             InitializeAutocompleteControls();
-
         }
 
         private async void InitializeAutocompleteControls()
