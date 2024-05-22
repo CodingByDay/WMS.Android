@@ -106,7 +106,6 @@ namespace WMS
         private EditText tbSerialNum;
         private EditText tbSSCC;
         private EditText tbSSCCpopup;
-
         private string warehouse;
         private List<IssuedGoods> data = new List<IssuedGoods>();
         private double serialOverflowQuantity = 0;
@@ -325,6 +324,7 @@ namespace WMS
 
             if (CommonData.GetSetting("IssueSummaryView") == "1")
             {
+                // If the company opted for this.
                 cbMultipleLocations.ItemSelected += CbMultipleLocations_ItemSelected;
             }
 
@@ -352,10 +352,8 @@ namespace WMS
 
             // Stop the loader
             LoaderManifest.LoaderManifestLoopStop(this);
-
-            
+           
             SetUpProcessDependentButtons();
-
             // Main logic for the entry
             SetUpForm();
 
@@ -364,24 +362,39 @@ namespace WMS
                 fillItems();
             }
         }
+        private bool initialDropdownEvent = true;
 
         private void CbMultipleLocations_ItemSelected(object? sender, AdapterView.ItemSelectedEventArgs e)
         {
+           
+
             var selected = adapterLocation.GetItem(e.Position);
 
             if (selected != null)
             {
+
                 tbLocation.Text = selected.Location;
-                if(selected.Quantity > stock)
+
+                if (selected.Quantity > stock)
                 {
                     tbPacking.Text = stock.ToString();
-                } else
+                }
+                else
                 {
                     tbPacking.Text = selected.Quantity.ToString();
                 }
+                
+                /* This is maybe a good idea.
+                if(!selected.excludeSSCCSerial)
+                {
+                    tbSerialNum.Text = selected.Serial;
+                    tbSSCC.Text = selected.SSCC;
+                }
+                */
 
                 tbPacking.SelectAll();
             }
+            initialDropdownEvent = false;
         }
 
         protected override void OnDestroy()
@@ -389,7 +402,6 @@ namespace WMS
             // The problem seems to have been a memory leak. Unregister broadcast receiver on activities where the scanning occurs. 21.05.2024 Janko Jovičić // 
             barcode2D.close(this);
             base.OnDestroy();
-
         }
 
         private void showPictureIdent(string ident)
@@ -886,13 +898,11 @@ namespace WMS
                 {
                     tbPacking.Text = element.anPackQty.ToString();
                     lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + quantity.ToString(CommonData.GetQtyPicture()) + " )";
-
                 }
                 else
                 {
                     tbPacking.Text = element.anQty.ToString();
                     lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + quantity.ToString(CommonData.GetQtyPicture())  + " )";
-
                 }
                 if (serialRow.Visibility == ViewStates.Visible)
                 {
@@ -1248,7 +1258,19 @@ namespace WMS
             {
                 foreach (var stockRow in stocks.Rows)
                 {
-                    data.Add(new MultipleStock { Location = stockRow.StringValue("aclocation"), Quantity = stockRow.DoubleValue("anQty") ?? 0 });
+                    var item = new MultipleStock
+                    {
+                        Location = stockRow.StringValue("aclocation"),
+                        Quantity = stockRow.DoubleValue("anQty") ?? 0,
+                        Serial = stockRow.StringValue("acSerialNo"),
+                        SSCC = stockRow.StringValue("acSSCC"),                                  
+                    };
+
+                    bool exclude = serialRow.Visibility == ViewStates.Gone && ssccRow.Visibility == ViewStates.Gone;
+                    item.ConfigurationMethod(exclude, this);
+                    data.Add(item);
+
+                  
                 }
 
             }
