@@ -99,7 +99,18 @@ namespace WMS
             btLogout.Click += BtLogout_Click;
 
 
-            await initializeView();
+            LoaderManifest.LoaderManifestLoopResources(this);
+
+            if (CommonData.GetSetting("IssueSummaryView") == "1")
+            {
+                await initializeViewMultipleLocations();
+            }
+            else
+            {
+                await initializeView();
+            }
+            LoaderManifest.LoaderManifestLoopStop(this);
+
         }
         protected override void OnDestroy()
         {
@@ -298,6 +309,79 @@ namespace WMS
                 }
             });
         }
+
+
+        private async Task initializeViewMultipleLocations()
+        {
+            await Task.Run(async () =>
+            {
+                NameValueObjectList oodtw = new NameValueObjectList();
+                if (moveHead != null)
+                {
+                    adapter = new ClientPickingAdapter(this, positions);
+                    ivTrail.Adapter = adapter;
+                    var parameters = new List<Services.Parameter>();
+
+                    parameters.Add(new Services.Parameter { Name = "acDocType", Type = "String", Value = moveHead.GetString("DocumentType") });
+                    parameters.Add(new Services.Parameter { Name = "acSubject", Type = "String", Value = moveHead.GetString("Receiver") });
+                    parameters.Add(new Services.Parameter { Name = "acWarehouse", Type = "String", Value = moveHead.GetString("Wharehouse") });
+
+                    string sql = $"SELECT * FROM uWMSOrderItemBySubjectTypeWarehouseOutSUM WHERE acDocType = @acDocType AND acSubject = @acSubject AND acWarehouse = @acWarehouse;";
+                    result = await AsyncServices.AsyncServices.GetObjectListBySqlAsync(sql, parameters);
+                }
+                if (moveHead != null && result.Success && result.Rows.Count > 0)
+                {
+                    int counter = 0;
+
+                    foreach (var row in result.Rows)
+                    {
+                        var ident = row.StringValue("acIdent");
+                        var location = row.IntValue("aclocation");
+                        var name = row.StringValue("acName");
+                        var key = row.StringValue("acKey");
+                        var lvi = new ClientPickingPosition();
+                        var no = row.IntValue("anNo");
+
+                        if (no != null)
+                        {
+                            lvi.No = (int)no;
+                            lvi.Order = key;
+                            lvi.Ident = ident;
+                            if (location > 1)
+                            {
+                                lvi.Location = Resources.GetString(Resource.String.s346);
+                            }
+                            else if (location == 1)
+                            {
+                                lvi.Location = Resources.GetString(Resource.String.s347);
+                            }
+                            else if (location <= 0)
+                            {
+                                lvi.Location = Resources.GetString(Resource.String.s345);
+                            }
+                            lvi.Quantity = string.Format("{0:###,##0.00}", row.DoubleValue("anQty"));
+                            lvi.originalIndex = counter;
+                            counter += 1;
+                            positions.Add(lvi);
+                        }
+                    }
+                    RunOnUiThread(() =>
+                    {
+                        adapter.NotifyDataSetChanged();
+                        adapter.Filter(positions, true, string.Empty, false);
+                        listener = new MyOnItemLongClickListener(this, adapter.returnData(), adapter);
+                        ivTrail.OnItemLongClickListener = listener;
+                        if (settings.tablet)
+                        {
+
+                        }
+                    });
+                }
+            });
+        }
+
+
+
 
         private void Sound()
         {

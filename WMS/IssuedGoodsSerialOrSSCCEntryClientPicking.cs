@@ -34,6 +34,7 @@ using AndroidX.AppCompat.App;
 using AlertDialog = Android.App.AlertDialog;
 using Android.Graphics.Drawables;
 using System.Data.Common;
+using static WMS.App.MultipleStock;
 namespace WMS
 {
     [Activity(Label = "IssuedGoodsSerialOrSSCCEntryClientPicking", ScreenOrientation = ScreenOrientation.Portrait)]
@@ -91,6 +92,7 @@ namespace WMS
         private string sscc;
         private string warehouse;
         private Dialog popupDialogMainIssueing;
+        private List<IssuedGoods> data = new List<IssuedGoods>();
         private List<IssuedGoods> dist;
         private List<LocationClass> items = new List<LocationClass>();
         private TextView lbQty;
@@ -111,6 +113,9 @@ namespace WMS
         private ListView listData;
         private UniversalAdapter<LocationClass> dataAdapter;
         private double serialOverflowQuantity = 0;
+        private Spinner cbMultipleLocations;
+        private List<MultipleStock> adapterLocations;
+        private ArrayAdapter<MultipleStock> adapterLocation;
 
         protected override async void OnCreate(Bundle savedInstanceState)
         {
@@ -144,6 +149,14 @@ namespace WMS
             tbSerialNum = FindViewById<EditText>(Resource.Id.tbSerialNum);
             tbLocation = FindViewById<EditText>(Resource.Id.tbLocation);
             tbPacking = FindViewById<EditText>(Resource.Id.tbPacking);
+            cbMultipleLocations = FindViewById<Spinner>(Resource.Id.cbMultipleLocations);
+
+            if (CommonData.GetSetting("IssueSummaryView") == "1")
+            {
+                // If the company opted for this.
+                cbMultipleLocations.ItemSelected += CbMultipleLocations_ItemSelected;
+            }
+
             tbIdent.InputType = Android.Text.InputTypes.ClassNumber;
             tbSSCC.InputType = Android.Text.InputTypes.ClassNumber;
             tbLocation.InputType = Android.Text.InputTypes.ClassText;
@@ -158,7 +171,7 @@ namespace WMS
             btFinish = FindViewById<Button>(Resource.Id.btFinish);
             btOverview = FindViewById<Button>(Resource.Id.btOverview);
             btExit = FindViewById<Button>(Resource.Id.btExit);
-            // Events
+
             tbPacking.KeyPress += TbPacking_KeyPress;
             tbSSCC.KeyPress += TbSSCC_KeyPress;
             tbSerialNum.KeyPress += TbSerialNum_KeyPress;
@@ -204,6 +217,40 @@ namespace WMS
                 tbPacking.SelectAll();
             }
         }
+
+
+        private void CbMultipleLocations_ItemSelected(object? sender, AdapterView.ItemSelectedEventArgs e)
+        {
+
+
+            var selected = adapterLocation.GetItem(e.Position);
+
+            if (selected != null)
+            {
+
+                tbLocation.Text = selected.Location;
+
+                if (selected.Quantity > stock)
+                {
+                    tbPacking.Text = stock.ToString();
+                }
+                else
+                {
+                    tbPacking.Text = selected.Quantity.ToString();
+                }
+
+                /* This is maybe a good idea.
+                if(!selected.excludeSSCCSerial)
+                {
+                    tbSerialNum.Text = selected.Serial;
+                    tbSSCC.Text = selected.SSCC;
+                }
+                */
+
+                tbPacking.SelectAll();
+            }
+        }
+
 
         protected override void OnDestroy()
         {
@@ -257,6 +304,8 @@ namespace WMS
         private async void BtCreate_Click(object? sender, EventArgs e)
         {
             double parsed;
+
+            CheckData();
 
             if (!Base.Store.isUpdate)
             {
@@ -321,14 +370,18 @@ namespace WMS
             
            }
         }
-
+        private void CheckData()
+        {
+            data = FilterIssuedGoods(connectedPositions, tbSSCC.Text, tbSerialNum.Text, tbLocation.Text);
+            if (data.Count == 1)
+            {
+                createPositionAllowed = true;
+            }
+        }
         private async void BtCreateSame_Click(object? sender, EventArgs e)
         {
 
-            if (tbSSCC.HasFocus || tbSerialNum.HasFocus)
-            {
-                FilterData();
-            }
+            CheckData();
 
             double parsed;
             if (createPositionAllowed && double.TryParse(tbPacking.Text, out parsed) && stock >= parsed)
@@ -729,8 +782,20 @@ namespace WMS
                 {
                     byte[] trailBytes = Intent.GetByteArrayExtra("selected");
                     receivedTrail = ClientPickingPosition.Deserialize<ClientPickingPosition>(trailBytes);
-                    qtyCheck = Double.Parse(receivedTrail.Quantity);
+
+                    if (CommonData.GetSetting("IssueSummaryView") == "1")
+                    {
+                        cbMultipleLocations.Visibility = ViewStates.Visible;
+                        adapterLocations = await GetStockState(receivedTrail);
+                        adapterLocation = new ArrayAdapter<MultipleStock>(this,
+                        Android.Resource.Layout.SimpleSpinnerItem, adapterLocations);
+                        adapterLocation.SetDropDownViewResource(Android.Resource.Layout.SimpleSpinnerDropDownItem);
+                        cbMultipleLocations.Adapter = adapterLocation;
+                    }
+
                     tbLocation.Text = receivedTrail.Location;
+
+                    qtyCheck = Double.Parse(receivedTrail.Quantity);
                     lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + qtyCheck.ToString(CommonData.GetQtyPicture()) + " )";
                     stock = qtyCheck;
                     tbPacking.Text = qtyCheck.ToString();
@@ -751,6 +816,60 @@ namespace WMS
                 FilterData();
             }
             
+        }
+
+        private async Task<List<MultipleStock>> GetStockState(ClientPickingPosition? obj)
+        {
+            List<MultipleStock> data = new List<MultipleStock>();
+
+            var sql = "SELECT * FROM uWMSStockByWarehouse WHERE acIdent = @acIdent AND acWarehouse = @acWarehouse;";
+            var parameters = new List<Services.Parameter>();
+
+            parameters.Add(new Services.Parameter { Name = "acWarehouse", Type = "String", Value = moveHead.GetString("Wharehouse") });
+            parameters.Add(new Services.Parameter { Name = "acIdent", Type = "String", Value = obj.Ident });
+
+            var stocks = await AsyncServices.AsyncServices.GetObjectListBySqlAsync(sql, parameters);
+
+            if (stocks.Success && stocks.Rows.Count > 0)
+            {
+                foreach (var stockRow in stocks.Rows)
+                {
+                    if (stockRow.DoubleValue("anQty") !=null && stockRow.DoubleValue("anQty") > 0)
+                    {
+                        var item = new MultipleStock
+                        {
+                            Location = stockRow.StringValue("aclocation"),
+                            Quantity = stockRow.DoubleValue("anQty") ?? 0,
+                            Serial = stockRow.StringValue("acSerialNo"),
+                            SSCC = stockRow.StringValue("acSSCC"),
+                        };
+
+                        Showing type = Showing.Ordinary;
+
+                        if (ssccRow.Visibility == ViewStates.Visible)
+                        {
+                            type = Showing.SSCC;
+
+                        }
+                        else if (ssccRow.Visibility == ViewStates.Gone && serialRow.Visibility == ViewStates.Visible)
+                        {
+                            type = Showing.Serial;
+                        }
+                        else
+                        {
+                            type = Showing.Ordinary;
+                        }
+
+                        item.ConfigurationMethod(type, this);
+                        data.Add(item);
+
+                    }
+
+                }
+
+            }
+
+            return data;
         }
 
 
@@ -777,9 +896,9 @@ namespace WMS
             parameters.Add(new Services.Parameter { Name = "acKey", Type = "String", Value = acKey });
             parameters.Add(new Services.Parameter { Name = "anNo", Type = "Int32", Value = anNo });
             parameters.Add(new Services.Parameter { Name = "acIdent", Type = "String", Value = acIdent });
-            parameters.Add(new Services.Parameter { Name = "acLocation", Type = "String", Value = acLocation });
 
-            var subjects = await AsyncServices.AsyncServices.GetObjectListBySqlAsync($"SELECT * FROM uWMSOrderItemByKeyOut WHERE acKey = @acKey AND anNo = @anNo AND acIdent = @acIdent and acLocation=@acLocation;", parameters);
+
+            var subjects = await AsyncServices.AsyncServices.GetObjectListBySqlAsync($"SELECT * FROM uWMSOrderItemByKeyOut WHERE acKey = @acKey AND anNo = @anNo AND acIdent = @acIdent;", parameters);
 
             if (!subjects.Success)
             {
@@ -910,7 +1029,7 @@ namespace WMS
 
         private void FilterData()
         {
-            var data = FilterIssuedGoods(connectedPositions, tbSSCC.Text, tbSerialNum.Text, tbLocation.Text);
+            data = FilterIssuedGoods(connectedPositions, tbSSCC.Text, tbSerialNum.Text, tbLocation.Text);
 
             // Temporary solution because of the SQL error.
             dist = data

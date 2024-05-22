@@ -11,12 +11,18 @@ namespace WMS.App
 {
     public class MultipleStock
     {
-        public void ConfigurationMethod(bool excludeSSCCSerial, Context context)
+        public enum Showing {
+            SSCC,
+            Serial,
+            Ordinary
+        }
+        public void ConfigurationMethod(Showing showing, Context context)
         {
-            this.excludeSSCCSerial = excludeSSCCSerial;
+            this.showing = showing;
             this.context = context;
         }
-        public bool excludeSSCCSerial = true;
+
+        public Showing showing = Showing.Ordinary;
         private Context context { get; set; }
         public string SSCC { get; set; }
         public string Serial { get; set; }
@@ -35,21 +41,22 @@ namespace WMS.App
 
         public override string ToString()
         {
-            if(this.excludeSSCCSerial)
+            if(this.showing == Showing.Ordinary)
             {
                 return Location + " ( " + Quantity + " ) ";
             }
-            else
+            else if (this.showing == Showing.SSCC)
             {
-                string quantity = context.GetString(GetResourceIdString("s348"));
-                string serial = context.GetString(GetResourceIdString("s349"));
-                string sscc = context.GetString(GetResourceIdString("s350"));
+                return Location + " ( " + Quantity + " | " + SSCC  + " ) ";
 
-                return Location + " ( " +
-                    quantity + Quantity + " " +
-                    serial + (Serial.Length >= 4 ? Serial.Substring(Serial.Length - 4) : Serial) + " " +
-                    sscc + (SSCC.Length >= 4 ? SSCC.Substring(SSCC.Length - 4) : SSCC) +
-                " ) ";
+            }
+            else if (this.showing == Showing.Serial)
+            {
+                return Location + " ( " + Quantity + " | " + Serial + " ) ";
+
+            } else
+            {
+                return Location + " ( " + Quantity + " ) ";
             }
         }
     }

@@ -11,13 +11,13 @@ namespace WMS.App
         public static void LoaderManifestLoop(Context context)
         {
             progress = new ProgressDialogClass();
-            progress.ShowDialogSync(context, "Ni internetne povezave... Povezovanje...");
+            progress.ShowDialogSync(context, "Connecting...");
         }
 
         public static void LoaderManifestLoopResources(Context context)
         {
             progress = new ProgressDialogClass();
-            progress.ShowDialogSync(context, "Pridobivamo resurse, počakajte.");
+            progress.ShowDialogSync(context, "Waiting...");
         }
 
         public static void destroy()

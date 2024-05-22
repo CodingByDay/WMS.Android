@@ -38,6 +38,7 @@ using Android.Renderscripts;
 using Com.Jsibbold.Zoomage;
 using AndroidX.Lifecycle;
 using System.Data.Common;
+using static WMS.App.MultipleStock;
 
 namespace WMS
 {
@@ -393,13 +394,14 @@ namespace WMS
                 */
 
                 tbPacking.SelectAll();
+                CheckData();
             }
             initialDropdownEvent = false;
         }
 
         protected override void OnDestroy()
         {
-            // The problem seems to have been a memory leak. Unregister broadcast receiver on activities where the scanning occurs. 21.05.2024 Janko Jovičić // 
+            // The problem seems to have been a memory leak. Unregister broadcast rgeceiver on activities where the scanning occurs. 21.05.2024 Janko Jovičić // 
             barcode2D.close(this);
             base.OnDestroy();
         }
@@ -470,16 +472,29 @@ namespace WMS
 
         private async void BtCreate_Click(object? sender, EventArgs e)
         {
-            if (tbSSCC.HasFocus || tbSerialNum.HasFocus)
+            if (!isProccessOrderless)
             {
-                FilterData();
+                CheckData();
             }
 
             if (!Base.Store.isUpdate)
             {
                 double parsed;
 
-                if (createPositionAllowed && double.TryParse(tbPacking.Text, out parsed) && stock == 0)
+                if (isProccessOrderless && double.TryParse(tbPacking.Text, out parsed) && stock >= parsed)
+                {
+                    var isCorrectLocation = IsLocationCorrect();
+
+                    if (!isCorrectLocation)
+                    {
+                        // Nepravilna lokacija za izbrano skladišče
+                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s333)}", ToastLength.Long).Show();
+                        return;
+                    }
+
+                    await CreateMethodFromStart();
+                }
+                else if (createPositionAllowed && double.TryParse(tbPacking.Text, out parsed) && stock == 0)
                 {
 
                     if (Base.Store.modeIssuing == 2)
@@ -498,19 +513,7 @@ namespace WMS
                 {
                     await CreateMethodFromStart();
                 }
-                else if (isProccessOrderless && double.TryParse(tbPacking.Text, out parsed) && stock >= parsed)
-                {
-                    var isCorrectLocation = IsLocationCorrect();
-
-                    if (!isCorrectLocation)
-                    {
-                        // Nepravilna lokacija za izbrano skladišče
-                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s333)}", ToastLength.Long).Show();
-                        return;
-                    }
-
-                    await CreateMethodFromStart();
-                }
+             
                 else
                 {
                     Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
@@ -519,6 +522,7 @@ namespace WMS
             else
             {
                 // Update flow.
+
                 double newQty;
                 if (Double.TryParse(tbPacking.Text, out newQty))
                 {
@@ -555,15 +559,36 @@ namespace WMS
                 }
             }
         }
-
-        private async void BtCreateSame_Click(object? sender, EventArgs e)
+        private void CheckData()
         {          
-            if (tbSSCC.HasFocus || tbSerialNum.HasFocus)
+            data = FilterIssuedGoods(connectedPositions, tbSSCC.Text, tbSerialNum.Text, tbLocation.Text);
+            if(data.Count == 1)
             {
-                FilterData();
+                createPositionAllowed = true;
             }
+        }
+        private async void BtCreateSame_Click(object? sender, EventArgs e)
+        {
+            if (!isProccessOrderless)
+            {
+                CheckData();
+            }
+            
             double parsed;
-            if (createPositionAllowed && double.TryParse(tbPacking.Text, out parsed) && stock == 0)
+            if (isProccessOrderless && double.TryParse(tbPacking.Text, out parsed) && stock >= parsed)
+            {
+                var isCorrectLocation = IsLocationCorrect();
+
+                if (!isCorrectLocation)
+                {
+                    // Nepravilna lokacija za izbrano skladišče
+                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s333)}", ToastLength.Long).Show();
+                    return;
+                }
+
+                await CreateMethodSame();
+            }
+            else if (createPositionAllowed && double.TryParse(tbPacking.Text, out parsed) && stock == 0)
             {
                 if (Base.Store.modeIssuing == 2)
                 {
@@ -589,19 +614,7 @@ namespace WMS
 
                 await CreateMethodSame();
             } 
-            else if (isProccessOrderless && double.TryParse(tbPacking.Text, out parsed) && stock >= parsed)
-            {
-                var isCorrectLocation = IsLocationCorrect();
-
-                if (!isCorrectLocation)
-                {
-                    // Nepravilna lokacija za izbrano skladišče
-                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s333)}", ToastLength.Long).Show();
-                    return;
-                }
-
-                await CreateMethodSame();
-            } else
+             else
             {
                 Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
             }
@@ -781,8 +794,7 @@ namespace WMS
 
         private async Task CreateMethodSame()
         {
-            await Task.Run(() =>
-            {
+  
                 if (data.Count == 1 || isProccessOrderless)
                 {
                     var element = new IssuedGoods();
@@ -823,10 +835,9 @@ namespace WMS
                         serialOverflowQuantity = Convert.ToDouble(tbPacking.Text.Trim());
                         stock -= serialOverflowQuantity;
 
-                        RunOnUiThread(() =>
-                        {
-                            lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + stock.ToString(CommonData.GetQtyPicture()) + " )";
-                        });
+               
+                        lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + stock.ToString(CommonData.GetQtyPicture()) + " )";
+                   
 
                         // Check to see if the maximum is already reached.
                         if(stock <= 0)
@@ -850,40 +861,37 @@ namespace WMS
                             }
                         }
                         
-                        RunOnUiThread(() =>
+                   
+                        // Succesfull position creation
+                        if (ssccRow.Visibility == ViewStates.Visible)
                         {
-                            // Succesfull position creation
-                            if (ssccRow.Visibility == ViewStates.Visible)
+                            tbSSCC.Text = string.Empty;
+                            tbSSCC.RequestFocus();
+                        }
+
+                        if (serialRow.Visibility == ViewStates.Visible)
+                        {
+                            tbSerialNum.Text = string.Empty;
+
+                            if (ssccRow.Visibility == ViewStates.Gone)
                             {
-                                tbSSCC.Text = string.Empty;
-                                tbSSCC.RequestFocus();
+                                tbSerialNum.RequestFocus();
                             }
-                            if (serialRow.Visibility == ViewStates.Visible)
-                            {
-                                tbSerialNum.Text = string.Empty;
+                        }
 
-                                if (ssccRow.Visibility == ViewStates.Gone)
-                                {
-                                    tbSerialNum.RequestFocus();
-                                }
-                            }
+                        tbPacking.Text = string.Empty;
 
-                            tbLocation.Text = string.Empty;
-                            tbPacking.Text = string.Empty;
-
-                        });
                         if (!isProccessOrderless)
                         {
                             createPositionAllowed = false;
-                            GetConnectedPositions(element.acKey, element.anNo, element.acIdent, element.aclocation);
+                            await GetConnectedPositions(element.acKey, element.anNo, element.acIdent);
                         }
                     }
                 }
                 else
                 {
                     return;
-                }
-            });
+                }      
         }
 
         private void FilterData()
@@ -908,10 +916,7 @@ namespace WMS
                 {
                     tbSerialNum.Text = element.acSerialNo ?? string.Empty;
                 }
-
-
                 tbLocation.Text = element.aclocation;
-                tbLocation.Enabled = false;
                 // Do stuff and allow creating the position
                 createPositionAllowed = true;
                 tbPacking.RequestFocus();
@@ -1018,7 +1023,7 @@ namespace WMS
         /// <param name="acKey">Številka naročila</param>
         /// <param name="anNo">Pozicija znotraj naročila</param>
         /// <param name="acIdent">Ident</param>
-        private async void GetConnectedPositions(string acKey, int anNo, string acIdent, string acLocation = null)
+        private async Task GetConnectedPositions(string acKey, int anNo, string acIdent)
         {
             connectedPositions.Clear();
             var sql = "SELECT * from uWMSOrderItemByKeyOut WHERE acKey = @acKey AND anNo = @anNo AND acIdent = @acIdent";
@@ -1026,11 +1031,7 @@ namespace WMS
             parameters.Add(new Services.Parameter { Name = "acKey", Type = "String", Value = acKey });
             parameters.Add(new Services.Parameter { Name = "anNo", Type = "Int32", Value = anNo });
             parameters.Add(new Services.Parameter { Name = "acIdent", Type = "String", Value = acIdent });
-            if (acLocation != null)
-            {
-                parameters.Add(new Services.Parameter { Name = "acLocation", Type = "String", Value = acLocation });
-                sql += " AND acLocation = @acLocation;";
-            }
+
             var subjects = await AsyncServices.AsyncServices.GetObjectListBySqlAsync(sql, parameters);
             if (!subjects.Success)
             {
@@ -1147,15 +1148,13 @@ namespace WMS
                         receivedTrail = JsonConvert.DeserializeObject<Trail>(trailBytes);
 
                         // Add the new logic here // 
+                        await GetConnectedPositions(receivedTrail.Key, receivedTrail.No, receivedTrail.Ident);
 
-                        if(CommonData.GetSetting("IssueSummaryView") == "1")
+
+                        if (CommonData.GetSetting("IssueSummaryView") == "1")
                         {
                             cbMultipleLocations.Visibility = ViewStates.Visible;
-                            /*
-                            adapterLocations.Add(new MultipleStock { Location = "01", Quantity = 5 });
-                            adapterLocations.Add(new MultipleStock { Location = "03", Quantity = 533 }); 
-                            */
-                            adapterLocations = await GetStockState(receivedTrail);
+                            adapterLocations = await GetStockState(receivedTrail.Ident);
                             adapterLocation = new ArrayAdapter<MultipleStock>(this,
                             Android.Resource.Layout.SimpleSpinnerItem, adapterLocations);
                             adapterLocation.SetDropDownViewResource(Android.Resource.Layout.SimpleSpinnerDropDownItem);
@@ -1180,7 +1179,7 @@ namespace WMS
                             stock = quantity;
                             tbPacking.Text = quantity.ToString();
                         }                   
-                        GetConnectedPositions(receivedTrail.Key, receivedTrail.No, receivedTrail.Ident, receivedTrail.Location);
+                        
                     }
                     else if (Base.Store.modeIssuing == 2 && Base.Store.code2D != null)
                     {
@@ -1198,7 +1197,7 @@ namespace WMS
 
                         }
 
-                        GetConnectedPositions(code2d.__helper__convertedOrder, code2d.__helper__position, code2d.ident);
+                        await GetConnectedPositions(code2d.__helper__convertedOrder, code2d.__helper__position, code2d.ident);
 
                         // Reset the 2d code to nothing
                         Base.Store.code2D = null;
@@ -1229,7 +1228,18 @@ namespace WMS
                                 stock = quantity;
                             }
 
-                            GetConnectedPositions(order.Order, order.Position ?? -1, order.Ident);
+                            await GetConnectedPositions(order.Order, order.Position ?? -1, order.Ident);
+
+
+                            if (CommonData.GetSetting("IssueSummaryView") == "1")
+                            {
+                                cbMultipleLocations.Visibility = ViewStates.Visible;
+                                adapterLocations = await GetStockState(order.Ident);
+                                adapterLocation = new ArrayAdapter<MultipleStock>(this,
+                                Android.Resource.Layout.SimpleSpinnerItem, adapterLocations);
+                                adapterLocation.SetDropDownViewResource(Android.Resource.Layout.SimpleSpinnerDropDownItem);
+                                cbMultipleLocations.Adapter = adapterLocation;
+                            }
                         }
                     }
                 }
@@ -1242,7 +1252,7 @@ namespace WMS
             }
         }
 
-        private async Task<List<MultipleStock>> GetStockState(Trail? obj)
+        private async Task<List<MultipleStock>> GetStockState(String ident)
         {
             List<MultipleStock> data = new List<MultipleStock>();
 
@@ -1250,7 +1260,7 @@ namespace WMS
             var parameters = new List<Services.Parameter>();
 
             parameters.Add(new Services.Parameter { Name = "acWarehouse", Type = "String", Value = moveHead.GetString("Wharehouse") });
-            parameters.Add(new Services.Parameter { Name = "acIdent", Type = "String", Value = obj.Ident });
+            parameters.Add(new Services.Parameter { Name = "acIdent", Type = "String", Value = ident });
             
             var stocks = await AsyncServices.AsyncServices.GetObjectListBySqlAsync(sql, parameters);
 
@@ -1258,18 +1268,33 @@ namespace WMS
             {
                 foreach (var stockRow in stocks.Rows)
                 {
-                    var item = new MultipleStock
+                    if (stockRow.DoubleValue("anQty") != null && stockRow.DoubleValue("anQty") > 0)
                     {
-                        Location = stockRow.StringValue("aclocation"),
-                        Quantity = stockRow.DoubleValue("anQty") ?? 0,
-                        Serial = stockRow.StringValue("acSerialNo"),
-                        SSCC = stockRow.StringValue("acSSCC"),                                  
-                    };
+                        var item = new MultipleStock
+                        {
+                            Location = stockRow.StringValue("aclocation"),
+                            Quantity = stockRow.DoubleValue("anQty") ?? 0,
+                            Serial = stockRow.StringValue("acSerialNo"),
+                            SSCC = stockRow.StringValue("acSSCC"),
+                        };
 
-                    bool exclude = serialRow.Visibility == ViewStates.Gone && ssccRow.Visibility == ViewStates.Gone;
-                    item.ConfigurationMethod(exclude, this);
-                    data.Add(item);
+                        Showing type = Showing.Ordinary;
 
+                        if (ssccRow.Visibility == ViewStates.Visible)
+                        {
+                            type = Showing.SSCC;
+
+                        } else if (ssccRow.Visibility == ViewStates.Gone && serialRow.Visibility == ViewStates.Visible)
+                        {
+                            type = Showing.Serial;
+                        } else
+                        {
+                            type = Showing.Ordinary;
+                        }
+
+                        item.ConfigurationMethod(type, this);
+                        data.Add(item);
+                    }
                   
                 }
 
@@ -1325,6 +1350,8 @@ namespace WMS
                 }
             }
             e.Handled = false;
+
+            FilterData();
         }
 
     }

@@ -594,6 +594,7 @@ namespace WMS
             }
 
             // New proccess for more locations for SkiSea 21.05.2024 Janko Jovičić
+            LoaderManifest.LoaderManifestLoopResources(this);
 
             if (CommonData.GetSetting("IssueSummaryView") == "1")
             {
@@ -603,6 +604,8 @@ namespace WMS
             {
                 await FillDisplayedOrderInfo();
             }
+
+            LoaderManifest.LoaderManifestLoopStop(this);
 
 
             var _broadcastReceiver = new NetworkStatusBroadcastReceiver();
