@@ -834,7 +834,7 @@ namespace WMS
             {
                 foreach (var stockRow in stocks.Rows)
                 {
-                    if (stockRow.DoubleValue("anQty") !=null && stockRow.DoubleValue("anQty") > 0)
+                    if (stockRow.DoubleValue("anQty") != null && stockRow.DoubleValue("anQty") > 0)
                     {
                         var item = new MultipleStock
                         {

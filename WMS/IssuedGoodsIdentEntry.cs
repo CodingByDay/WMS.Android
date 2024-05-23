@@ -25,6 +25,7 @@ using AlertDialog = Android.App.AlertDialog;
 using Microsoft.AppCenter.Analytics;
 using AndroidX.Lifecycle;
 using System.Data.Common;
+using System.Collections.Concurrent;
 
 namespace WMS
 {
@@ -408,9 +409,20 @@ namespace WMS
 
         private List<string> GetCustomSuggestions(string userInput)
         {
-            return savedIdents
-                .Where(suggestion => suggestion.ToLower().Contains(userInput.ToLower())).Take(1000)
-                .ToList();
+            // In order to improve performance try to implement paralel processing.
+
+            var lowerUserInput = userInput.ToLower();
+            var result = new ConcurrentBag<string>();
+
+            Parallel.ForEach(savedIdents, suggestion =>
+            {
+                if (suggestion.ToLower().Contains(lowerUserInput))
+                {
+                    result.Add(suggestion);
+                }
+            });
+
+            return result.Take(100).ToList();
         }
 
 
