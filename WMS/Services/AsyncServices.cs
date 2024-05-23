@@ -99,7 +99,7 @@ namespace WMS.AsyncServices
             }
             catch (Exception ex)
             {
-                Crashes.TrackError(ex);
+                SentrySdk.CaptureException(ex);
                 string result = ex.Message;
                 return new GetResult { Success = false, Result = result };
             }
@@ -135,7 +135,7 @@ namespace WMS.AsyncServices
             }
             catch (Exception ex)
             {
-                Crashes.TrackError(ex);
+                SentrySdk.CaptureException(ex);
                 string result = ex.Message;
                 return new PostResult { Success = false, Result = result };
             }

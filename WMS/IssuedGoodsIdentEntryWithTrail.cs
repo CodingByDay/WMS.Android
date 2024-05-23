@@ -153,7 +153,7 @@ namespace WMS
                 listener.updateData(adapterObj.returnData());
             } catch (Exception err)
             {
-                Crashes.TrackError(err);
+                SentrySdk.CaptureException(err);
                 return;
             }
         }
@@ -379,7 +379,7 @@ namespace WMS
                                 sendDataToDevice();
                             } catch (Exception ex)
                             {
-                                Crashes.TrackError(ex);
+                                SentrySdk.CaptureException(ex);
                             }
 
                             // Bluetooth
@@ -390,12 +390,12 @@ namespace WMS
                     }
                     catch(Exception error) {
                         var e = error;
-                        Crashes.TrackError(e);
+                        SentrySdk.CaptureException(e);
                     }               
                 }
                 catch (Exception error)
                 {
-                    Crashes.TrackError(error);
+                    SentrySdk.CaptureException(error);
                 }
             });
         }
@@ -510,7 +510,7 @@ namespace WMS
                                 sendDataToDevice();
                             } catch (Exception ex)
                             {
-                                Crashes.TrackError(ex);
+                                SentrySdk.CaptureException(ex);
                             }
 
                             // Bluetooth
@@ -522,12 +522,12 @@ namespace WMS
                     catch (Exception error)
                     {
                         var e = error;
-                        Crashes.TrackError(e);
+                        SentrySdk.CaptureException(e);
                     }
                 }
                 catch (Exception error)
                 {
-                    Crashes.TrackError(error);
+                    SentrySdk.CaptureException(error);
                 }
             });
         }
@@ -755,7 +755,7 @@ namespace WMS
                 }
                 catch (Exception err)
                 {
-                    Crashes.TrackError(err);
+                    SentrySdk.CaptureException(err);
                 }
             }
             else
@@ -863,7 +863,7 @@ namespace WMS
                 }
             } catch(Exception err)
             {
-                Crashes.TrackError(err);
+                SentrySdk.CaptureException(err);
                 StartActivity(typeof(MainMenu));
             }
         }
@@ -902,7 +902,7 @@ namespace WMS
                 InUseObjects.Set("OpenIdent", openIdent);
             } catch (Exception err)
             {
-                Crashes.TrackError(err);
+                SentrySdk.CaptureException(err);
             }
             if (!moveHead.GetBool("Saved"))
             {
@@ -938,7 +938,7 @@ namespace WMS
                 }
                 catch (Exception err)
                 {
-                    Crashes.TrackError(err);
+                    SentrySdk.CaptureException(err);
                     return false;
                 }
             }
@@ -996,7 +996,7 @@ namespace WMS
                 }
                 catch (Exception err)
                 {
-                    Crashes.TrackError(err);
+                    SentrySdk.CaptureException(err);
                     return false;
                 }
             }

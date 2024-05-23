@@ -244,7 +244,7 @@ namespace WMS
                         });
                     }
                 } catch (Exception ex) {
-                    Crashes.TrackError(ex);
+                    SentrySdk.CaptureException(ex);
                 } 
             });      
         }
@@ -315,7 +315,7 @@ namespace WMS
                 }
                 catch (Exception err)
                 {
-                    Crashes.TrackError(err);
+                    SentrySdk.CaptureException(err);
                 }
             }
             else
@@ -408,7 +408,7 @@ namespace WMS
             }
             catch(Exception ex) 
             {
-                Crashes.TrackError(ex);
+                SentrySdk.CaptureException(ex);
             }
         }
 
@@ -558,7 +558,7 @@ namespace WMS
             }
             catch(Exception error)
             {
-                Crashes.TrackError(error);
+                SentrySdk.CaptureException(error);
                 return;
             }
         }
@@ -589,7 +589,7 @@ namespace WMS
             }
             catch(Exception error)
             {
-                Crashes.TrackError(error);
+                SentrySdk.CaptureException(error);
                 return;
             }
 
@@ -743,7 +743,7 @@ namespace WMS
             }
             catch(Exception err)
             {
-                Crashes.TrackError(err);
+                SentrySdk.CaptureException(err);
             }
         }
         public void GetBarcode(string barcode)

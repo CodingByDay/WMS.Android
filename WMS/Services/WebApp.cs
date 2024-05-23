@@ -141,7 +141,7 @@ namespace TrendNET.WMS.Device.Services
             catch (Exception ex)
             {
                 result = ex.Message;
-                Crashes.TrackError(ex);
+                SentrySdk.CaptureException(ex);
                 return false;
             }
         }
@@ -270,7 +270,7 @@ namespace TrendNET.WMS.Device.Services
                 Analytics.TrackEvent("Interent went down.");
 
                 result = ex.Message;
-                Crashes.TrackError(ex);
+                SentrySdk.CaptureException(ex);
                 return false;
             }
         }
@@ -316,7 +316,7 @@ namespace TrendNET.WMS.Device.Services
             catch (Exception ex)
             {
                 result = ex.Message;
-                Crashes.TrackError(ex);
+                SentrySdk.CaptureException(ex);
                 return false;
             }
         }
@@ -376,7 +376,7 @@ namespace TrendNET.WMS.Device.Services
             catch (Exception ex)
             {
                 result = ex.Message;
-                Crashes.TrackError(ex);
+                SentrySdk.CaptureException(ex);
                 return false;
             }
         }

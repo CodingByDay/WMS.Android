@@ -107,7 +107,7 @@ namespace WMS
             }
             catch (Exception err)
             {
-                Crashes.TrackError(err);
+                SentrySdk.CaptureException(err);
                 return "";
             }
         }
@@ -367,7 +367,7 @@ namespace WMS
                 }
                 catch (Exception err)
                 {
-                    Crashes.TrackError(err);
+                    SentrySdk.CaptureException(err);
                 }
             }
             else

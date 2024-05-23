@@ -479,7 +479,7 @@ namespace WMS
                 }
                 catch (Exception err)
                 {
-                    Crashes.TrackError(err);
+                    SentrySdk.CaptureException(err);
                 }
             }
             else
@@ -1027,7 +1027,7 @@ namespace WMS
             }
             catch (Exception ex)
             {
-                Crashes.TrackError(ex);
+                SentrySdk.CaptureException(ex);
                 Toast.MakeText(this, $"{Resources.GetString(Resource.String.s225)}", ToastLength.Long).Show();
             }
         }

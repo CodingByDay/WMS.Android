@@ -41,7 +41,7 @@ namespace TrendNET.WMS.Device.App
             catch (Exception ex)
             {
                 result = ex.Message;
-                Crashes.TrackError(ex);
+                SentrySdk.CaptureException(ex);
                 return false;
             }
         }

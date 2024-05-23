@@ -147,7 +147,7 @@ namespace TrendNET.WMS.Device.Services
                 }
                 catch (Exception err)
                 {
-                    Crashes.TrackError(err);
+                    SentrySdk.CaptureException(err);
                     return;
                 }
             }

@@ -103,7 +103,7 @@ public class CustomAutoCompleteTextView : AutoCompleteTextView
         }
         catch (System.Exception e)
         {
-            Crashes.TrackError(e);
+            SentrySdk.CaptureException(e);
         }
     }
 

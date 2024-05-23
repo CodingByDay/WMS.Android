@@ -118,7 +118,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 }
                 catch (Exception err)
                 {
-                    Crashes.TrackError(err);
+                    SentrySdk.CaptureException(err);
                 }
             }
             else
@@ -177,7 +177,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 }
                 catch(Exception ex) 
                 {
-                   Crashes.TrackError(ex);
+                   SentrySdk.CaptureException(ex);
                 }
             }
         }
@@ -277,7 +277,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             }
             catch(Exception ex)
             {
-                Crashes.TrackError(ex);
+                SentrySdk.CaptureException(ex);
                 return;
             }
         }

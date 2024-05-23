@@ -179,7 +179,7 @@ namespace WMS
                 catch (Exception err)
                 {
 
-                    Crashes.TrackError(err);
+                    SentrySdk.CaptureException(err);
                     return;
 
                 }
@@ -208,7 +208,7 @@ namespace WMS
                 catch (Exception err)
                 {
 
-                    Crashes.TrackError(err);
+                    SentrySdk.CaptureException(err);
                     return;
 
                 }
@@ -390,7 +390,7 @@ namespace WMS
             catch (Exception err)
             {
 
-                Crashes.TrackError(err);
+                SentrySdk.CaptureException(err);
                 return false;
 
             }
@@ -431,7 +431,7 @@ namespace WMS
                 catch (Exception err)
                 {
 
-                    Crashes.TrackError(err);
+                    SentrySdk.CaptureException(err);
                     return false;
 
                 }
@@ -462,7 +462,7 @@ namespace WMS
             catch (Exception err)
             {
 
-                Crashes.TrackError(err);
+                SentrySdk.CaptureException(err);
                 return "";
 
             }
@@ -537,7 +537,7 @@ namespace WMS
             }
             catch (Exception err)
             {
-                Crashes.TrackError(err);             
+                SentrySdk.CaptureException(err);             
             }
 
             var ident = CommonData.LoadIdent(openWorkOrder.GetString("Ident"));
@@ -671,7 +671,7 @@ namespace WMS
                 }
                 catch (Exception err)
                 {
-                    Crashes.TrackError(err);
+                    SentrySdk.CaptureException(err);
                 }
             }
             else

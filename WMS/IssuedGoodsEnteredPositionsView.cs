@@ -262,7 +262,7 @@ namespace WMS
                 }
                 catch (Exception err)
                 {
-                    Crashes.TrackError(err);
+                    SentrySdk.CaptureException(err);
                 }
             }
             else
@@ -383,7 +383,7 @@ namespace WMS
                 catch (Exception err)
                 {
 
-                    Crashes.TrackError(err);
+                    SentrySdk.CaptureException(err);
                     return;
 
                 }
@@ -522,7 +522,7 @@ namespace WMS
                     {
                         RunOnUiThread(() =>
                         {
-                            Crashes.TrackError(err);
+                            SentrySdk.CaptureException(err);
                             Toast.MakeText(this, err.Message, ToastLength.Short).Show();
                             StartActivity(typeof(MainMenu));
                         });
@@ -598,7 +598,7 @@ namespace WMS
             }
             catch(Exception error)
             {
-                Crashes.TrackError(error);
+                SentrySdk.CaptureException(error);
             }
         }
 
@@ -652,7 +652,7 @@ namespace WMS
             catch (Exception err)
             {
 
-                Crashes.TrackError(err);
+                SentrySdk.CaptureException(err);
                 return;
 
             }

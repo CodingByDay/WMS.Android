@@ -32,7 +32,7 @@ public static class DialogHelper
         }
         catch (Exception e)
         {
-            Crashes.TrackError(e);
+            SentrySdk.CaptureException(e);
         }
     }
 
@@ -57,7 +57,7 @@ public static class DialogHelper
         }
         catch (Exception e)
         {
-            Crashes.TrackError(e);
+            SentrySdk.CaptureException(e);
         }
     }
 }

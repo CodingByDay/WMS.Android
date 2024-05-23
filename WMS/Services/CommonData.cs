@@ -115,7 +115,7 @@ namespace TrendNET.WMS.Device.Services
             }
             catch (Exception err)
             {
-                Crashes.TrackError(err);
+                SentrySdk.CaptureException(err);
                 return null;
             }
         }
@@ -133,7 +133,7 @@ namespace TrendNET.WMS.Device.Services
             }
             catch (Exception e)
             {
-                Crashes.TrackError(e);
+                SentrySdk.CaptureException(e);
             }
             return subjects;
         }
@@ -151,7 +151,7 @@ namespace TrendNET.WMS.Device.Services
             }
             catch (Exception ex)
             {
-                Crashes.TrackError(ex);
+                SentrySdk.CaptureException(ex);
             }
             return subjects;
         }
@@ -175,7 +175,7 @@ namespace TrendNET.WMS.Device.Services
             }
             catch (Exception e)
             {
-                Crashes.TrackError(e);
+                SentrySdk.CaptureException(e);
                 return false;
             }
         }
@@ -199,7 +199,7 @@ namespace TrendNET.WMS.Device.Services
             }
             catch (Exception err)
             {
-                Crashes.TrackError(err);
+                SentrySdk.CaptureException(err);
                 return null;
             }
         }

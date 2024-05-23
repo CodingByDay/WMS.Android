@@ -192,7 +192,7 @@ namespace WMS
             }
             catch (Exception ex)
             {
-                Crashes.TrackError(ex);
+                SentrySdk.CaptureException(ex);
                 return false;
             }
             if (!moveHead.GetBool("Saved"))
@@ -222,7 +222,7 @@ namespace WMS
                 }
                 catch (Exception ex)
                 {
-                    Crashes.TrackError(ex);
+                    SentrySdk.CaptureException(ex);
                     return false;
                 }
             }
@@ -397,7 +397,7 @@ namespace WMS
             }
             catch (Exception ex)
             {
-                Crashes.TrackError(ex);
+                SentrySdk.CaptureException(ex);
             }
         }
 
@@ -410,7 +410,7 @@ namespace WMS
             }
             catch (Exception ex)
             {
-                Crashes.TrackError(ex);
+                SentrySdk.CaptureException(ex);
             }
         }
 
