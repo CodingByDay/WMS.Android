@@ -388,6 +388,9 @@ namespace WMS
 
         private async void BtnYes_Click(object sender, EventArgs e)
         {
+            LoaderManifest.LoaderManifestLoopResources(this);
+
+
             var item = positions.Items[displayedPosition];
             var id = item.GetInt("HeadID");
 
@@ -431,11 +434,13 @@ namespace WMS
                     popupDialog.Hide();
                     return;
                 }
-            }
+            } catch { }
             finally
             {
                 popupDialog.Dismiss();
                 popupDialog.Hide();
+                LoaderManifest.LoaderManifestLoopStop(this);
+
             }
 
         }

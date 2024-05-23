@@ -902,7 +902,7 @@ namespace WMS
                 var element = data.ElementAt(0);
 
                 // This is perhaps not needed due to the quantity checking requirments. lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + element.anQty.ToString() + " )";
-                if (element.anPackQty != -1)
+                if (element.anPackQty != -1 && element.anPackQty <= element.anQty)
                 {
                     tbPacking.Text = element.anPackQty.ToString();
                     lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + quantity.ToString(CommonData.GetQtyPicture()) + " )";
@@ -919,8 +919,13 @@ namespace WMS
                 tbLocation.Text = element.aclocation;
                 // Do stuff and allow creating the position
                 createPositionAllowed = true;
-                tbPacking.RequestFocus();
-                tbPacking.SetSelection(0, tbPacking.Text.Length);
+
+
+
+                tbPacking.PostDelayed(() => {
+                    tbPacking.RequestFocus();
+                    tbPacking.SetSelection(0, tbPacking.Text.Length);
+                }, 100); // Delay in milliseconds
 
                 // This flow should end up with correct data in the fields and the select focus on the qty field. 
             }
@@ -1164,7 +1169,7 @@ namespace WMS
 
                         tbLocation.Text = receivedTrail.Location;
 
-                        if(receivedTrail.Packaging!=-1)
+                        if (receivedTrail.Packaging != -1 && Double.TryParse(receivedTrail.Qty, out double qty) && receivedTrail.Packaging <= qty)
                         {
                             packaging = receivedTrail.Packaging;
                             quantity = Double.Parse(receivedTrail.Qty);                   
@@ -1314,7 +1319,10 @@ namespace WMS
             {
                 FilterData();
             }
-            e.Handled = false;
+            else
+            {
+                e.Handled = false;
+            }
         }
 
         private void TbSSCC_KeyPress(object? sender, View.KeyEventArgs e)
@@ -1323,8 +1331,10 @@ namespace WMS
             {
                 FilterData();
             }
-
-            e.Handled = false;
+            else
+            {
+                e.Handled = false;
+            }
         }
 
 
@@ -1348,8 +1358,10 @@ namespace WMS
                     }
 
                 }
+            } else
+            {
+                e.Handled = false;
             }
-            e.Handled = false;
 
             FilterData();
         }

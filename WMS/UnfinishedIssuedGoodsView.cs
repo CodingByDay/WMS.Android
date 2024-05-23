@@ -391,16 +391,15 @@ namespace WMS
 
         private async void BtnYes_Click(object sender, EventArgs e)
         {
-            if(positions.Items.Count == 0)
+            LoaderManifest.LoaderManifestLoopResources(this);
+
+            if (positions.Items.Count == 0)
             {
                 return;
             }
             var item = positions.Items[displayedPosition];
             var id = item.GetInt("HeadID");
-
-            var progress = new ProgressDialogClass();
-
-            progress.ShowDialogSync(this, $"{Resources.GetString(Resource.String.s262)}");
+           
 
             try
             {
@@ -443,9 +442,10 @@ namespace WMS
                     return;
                 }
             }
+            catch { }
             finally
             {
-                progress.StopDialogSync();
+                LoaderManifest.LoaderManifestLoopStop(this);
             }
 
         }

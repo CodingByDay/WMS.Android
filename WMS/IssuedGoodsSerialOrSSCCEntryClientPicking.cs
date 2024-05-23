@@ -772,6 +772,14 @@ namespace WMS
                 tbLocation.Text = moveItem.GetString("Location");
                 tbPacking.Text = moveItem.GetDouble("Packing").ToString();
                 btCreateSame.Text = $"{Resources.GetString(Resource.String.s293)}";
+
+                lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + moveItem.GetDouble("Qty").ToString() + " )";
+
+                // Lock down all other fields
+                tbIdent.Enabled = false;
+                tbSerialNum.Enabled = false;
+                tbSSCC.Enabled = false;
+                tbLocation.Enabled = false;
             }
             else
             {
