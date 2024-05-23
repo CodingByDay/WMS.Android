@@ -34,7 +34,6 @@ using Android.Preferences;
 using Newtonsoft.Json;
 using Xamarin.Essentials;
 using AndroidX.Core.Content;
-
 namespace WMS
 {
 
@@ -170,6 +169,20 @@ namespace WMS
             Crashes.NotifyUserConfirmation(UserConfirmation.AlwaysSend);
             ChangeTheOrientation();
             base.OnCreate(savedInstanceState);
+
+            /* Alternative for the App center analytics and crash reports.
+            using (SentrySdk.Init(o => {
+                // Tells which project in Sentry to send events to:
+                o.Dsn = "https://c6abb28d5f1a4b66f3fa1db5a9dca822@o4507304617836544.ingest.de.sentry.io/4507304623538256";
+                // When configuring for the first time, to see what the SDK is doing:
+                o.Debug = true;
+                // Set TracesSampleRate to 1.0 to capture 100% of transactions for performance monitoring.
+                // We recommend adjusting this value in production.
+                o.TracesSampleRate = 0.3;
+            }))
+            */
+           
+
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             SetContentView(Resource.Layout.activity_main);
             Distribute.ReleaseAvailable = OnReleaseAvailable;

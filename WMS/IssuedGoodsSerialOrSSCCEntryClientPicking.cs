@@ -538,7 +538,7 @@ namespace WMS
                         {
                             if (Base.Store.modeIssuing == 3)
                             {
-                                StartActivity(typeof(IssuedGoodsIdentEntryWithTrail));
+                                StartActivity(typeof(ClientPicking));
                                 Finish();
                             }
                         });
@@ -625,7 +625,7 @@ namespace WMS
 
 
                         createPositionAllowed = true;
-                        await GetConnectedPositions(element.acKey, element.anNo, element.acIdent, element.aclocation);
+                        await GetConnectedPositions(element.acKey, element.anNo, element.acIdent);
 
                     }
                 }
@@ -772,9 +772,7 @@ namespace WMS
                 tbLocation.Text = moveItem.GetString("Location");
                 tbPacking.Text = moveItem.GetDouble("Packing").ToString();
                 btCreateSame.Text = $"{Resources.GetString(Resource.String.s293)}";
-
                 lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + moveItem.GetDouble("Qty").ToString() + " )";
-
                 // Lock down all other fields
                 tbIdent.Enabled = false;
                 tbSerialNum.Enabled = false;
@@ -807,7 +805,7 @@ namespace WMS
                     lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + qtyCheck.ToString(CommonData.GetQtyPicture()) + " )";
                     stock = qtyCheck;
                     tbPacking.Text = qtyCheck.ToString();
-                    await GetConnectedPositions(receivedTrail.Order, receivedTrail.No, receivedTrail.Ident, receivedTrail.Location);
+                    await GetConnectedPositions(receivedTrail.Order, receivedTrail.No, receivedTrail.Ident);
                 }
             }
 
@@ -894,7 +892,7 @@ namespace WMS
         /// <param name="acKey">Številka naročila</param>
         /// <param name="anNo">Pozicija znotraj naročila</param>
         /// <param name="acIdent">Ident</param>
-        private async Task GetConnectedPositions(string acKey, int anNo, string acIdent, string acLocation)
+        private async Task GetConnectedPositions(string acKey, int anNo, string acIdent)
         {
 
             connectedPositions.Clear();
