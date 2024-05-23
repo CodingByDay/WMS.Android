@@ -407,7 +407,8 @@ namespace WMS
                         {
                             RunOnUiThread(() =>
                             {
-                                Analytics.TrackEvent(subjects.Error);
+                                SentrySdk.CaptureMessage(subjects.Error);
+
                                 return;
                             });
                         }

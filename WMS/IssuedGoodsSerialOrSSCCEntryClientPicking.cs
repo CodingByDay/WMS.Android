@@ -352,7 +352,7 @@ namespace WMS
                         {
                             RunOnUiThread(() =>
                             {
-                                Analytics.TrackEvent(subjects.Error);
+                                SentrySdk.CaptureMessage(subjects.Error);
                                 return;
                             });
                         }
@@ -910,7 +910,7 @@ namespace WMS
             {
                 RunOnUiThread(() =>
                 {
-                    Analytics.TrackEvent(subjects.Error);
+                    SentrySdk.CaptureMessage(subjects.Error);
                     return;
                 });
             }

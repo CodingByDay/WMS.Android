@@ -257,17 +257,12 @@ namespace TrendNET.WMS.Device.Services
                 }
                 catch
                 {
-                    Analytics.TrackEvent("END REQUEST: [Device/Get] '" + url + "';" + (DateTime.Now - startedAt).TotalMilliseconds.ToString());
                     return false;
                 }
-                finally
-                {
-                    Analytics.TrackEvent("END REQUEST: [Device/Get] '" + url + "';" + (DateTime.Now - startedAt).TotalMilliseconds.ToString());
-                }
+              
             }
             catch (Exception ex)
             {
-                Analytics.TrackEvent("Interent went down.");
 
                 result = ex.Message;
                 SentrySdk.CaptureException(ex);

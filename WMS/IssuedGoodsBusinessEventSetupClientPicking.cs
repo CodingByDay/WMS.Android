@@ -162,7 +162,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                                 {
                                     RunOnUiThread(() =>
                                     {
-                                        Analytics.TrackEvent(subjects.Error);
+                                        SentrySdk.CaptureMessage(subjects.Error);
                                         return;
                                     });
                                 }

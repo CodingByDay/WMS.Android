@@ -27,6 +27,7 @@ using Android.Graphics.Drawables;
 using Android.Graphics;
 using AndroidX.Lifecycle;
 using System.Data.Common;
+using Javax.Security.Auth;
 namespace WMS
 {
     [Activity(Label = "MainMenu", ScreenOrientation = ScreenOrientation.Portrait)]
@@ -69,7 +70,6 @@ namespace WMS
 
                 buttonRapidTakeover = FindViewById<Button>(Resource.Id.rapidTakeover);
                 buttonRapidTakeover.Click += ButtonRapidTakeover_Click;
-
                 rapidListview = FindViewById<ListView>(Resource.Id.rapidListview);
                 dataCleanup = await FillTheCleanupList();
                 dataAdapter = UniversalAdapterHelper.GetMainMenu(this, dataCleanup);
@@ -138,15 +138,12 @@ namespace WMS
             new IntentFilter(ConnectivityManager.ConnectivityAction));
             Caching.Caching.SavedList = new List<string>();
             DownloadResources();
-
-            Analytics.TrackEvent($"Login from the id-{settings.ID}, url-{settings.RootURL}, version-0.{GetAppVersion()}");
-
+            SentrySdk.CaptureMessage($"Login from the id-{settings.ID}, url-{settings.RootURL}, version-0.{GetAppVersion()}");
             // Reseting the global update variable.
             Base.Store.isUpdate = false;
             Base.Store.OpenOrder = null;
             Base.Store.byOrder = true;
             Base.Store.code2D = null;
-
 
         }
 

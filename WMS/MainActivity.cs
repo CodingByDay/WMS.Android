@@ -109,7 +109,6 @@ namespace WMS
                     }
                     if (valid)
                     {
-                        Analytics.TrackEvent("Valid login");
                         if (Services.HasPermission("TNET_WMS", "R"))
                         {
 
@@ -122,7 +121,6 @@ namespace WMS
                         }
                         else
                         {
-                            Analytics.TrackEvent("Invalid permissions");
                             Password.Text = "";
                             isValid = false;
                             string toast = new string($"{Resources.GetString(Resource.String.s295)}");
@@ -158,31 +156,18 @@ namespace WMS
             base.OnPause();
         }
 
-        protected override void OnCreate(Bundle savedInstanceState)
+        protected async override void OnCreate(Bundle savedInstanceState)
         {
-
             settings.restart = false;
             Distribute.SetEnabledAsync(true);
             AppCenter.Start("ec2ca4ce-9e86-4620-9e90-6ecc5cda0e0e",
-            typeof(Analytics), typeof(Crashes), typeof(Distribute));
-            AppCenter.SetUserId(settings.RootURL);
-            Crashes.NotifyUserConfirmation(UserConfirmation.AlwaysSend);
+            typeof(Distribute));
+    
             ChangeTheOrientation();
             base.OnCreate(savedInstanceState);
-            SentryXamarin.Init(o =>
-            {
-                // Tells which project in Sentry to send events to:
-                o.Dsn = "https://4da007db4594a10f53ab292097e612f8@o4507304617836544.ingest.de.sentry.io/4507304993751120";
-                // When configuring for the first time, to see what the SDK is doing:
-                o.Debug = true;
-                // Set TracesSampleRate to 1.0 to capture 100%
-                // of transactions for performance monitoring.
-                // We recommend adjusting this value in production
-                o.TracesSampleRate = 1.0;
-            });
-
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             SetContentView(Resource.Layout.activity_main);
+
             Distribute.ReleaseAvailable = OnReleaseAvailable;
             Password = FindViewById<EditText>(Resource.Id.tbPassword);
             Password.InputType = Android.Text.InputTypes.NumberVariationPassword |
@@ -205,8 +190,28 @@ namespace WMS
             btnRegistrationEvent.Enabled = true;
             btnRegistrationEvent.Click += BtnRegistrationEvent_Click;
             settings.login = false;
+
+
+            await InitializeSentryAsync();
         }
 
+
+
+        public async Task InitializeSentryAsync()
+        {
+            await Task.Run(() =>
+            {
+                SentryXamarin.Init(o =>
+                {
+                    // Tells which project in Sentry to send events to:
+                    o.Dsn = "https://4da007db4594a10f53ab292097e612f8@o4507304617836544.ingest.de.sentry.io/4507304993751120";
+                    // Set TracesSampleRate to 1.0 to capture 100%
+                    // of transactions for performance monitoring.
+                    // I recommend adjusting this value in production 23.05.2024 Janko Jovièiæ
+                    o.TracesSampleRate = 1.0;
+                });
+            });
+        }
         public string GetAppVersion()
         {
             return AppInfo.VersionString;

@@ -85,7 +85,6 @@ public class Row
                         RetValRow.SetDateTime(prop.Key, dt);
                         break;
                     default:
-                        Analytics.TrackEvent("New data type" + prop.Value.GetType().Name);
                         break;
                 }
             }

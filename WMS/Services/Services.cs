@@ -102,14 +102,12 @@ namespace TrendNET.WMS.Device.Services
                 var item = UserInfo.FirstOrDefault(x => x.Name == "Perm" + perm);
                 if (item == null)
                 {
-                    Analytics.TrackEvent("Permissions are empty");
                     return false;
                 }
                 else
                 {
                     if (string.IsNullOrEmpty(item.StringValue) || (item.StringValue == "0"))
                     {
-                        Analytics.TrackEvent("Permissions are 0");
                         return false;
                     }
                     if ((minLevel == "R") && (item.StringValue == "R" || item.StringValue == "W" || item.StringValue == "D")) { return true; }
