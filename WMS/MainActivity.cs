@@ -169,19 +169,17 @@ namespace WMS
             Crashes.NotifyUserConfirmation(UserConfirmation.AlwaysSend);
             ChangeTheOrientation();
             base.OnCreate(savedInstanceState);
-
-            /* Alternative for the App center analytics and crash reports.
-            using (SentrySdk.Init(o => {
+            SentryXamarin.Init(o =>
+            {
                 // Tells which project in Sentry to send events to:
-                o.Dsn = "https://c6abb28d5f1a4b66f3fa1db5a9dca822@o4507304617836544.ingest.de.sentry.io/4507304623538256";
+                o.Dsn = "https://4da007db4594a10f53ab292097e612f8@o4507304617836544.ingest.de.sentry.io/4507304993751120";
                 // When configuring for the first time, to see what the SDK is doing:
                 o.Debug = true;
-                // Set TracesSampleRate to 1.0 to capture 100% of transactions for performance monitoring.
-                // We recommend adjusting this value in production.
-                o.TracesSampleRate = 0.3;
-            }))
-            */
-           
+                // Set TracesSampleRate to 1.0 to capture 100%
+                // of transactions for performance monitoring.
+                // We recommend adjusting this value in production
+                o.TracesSampleRate = 1.0;
+            });
 
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             SetContentView(Resource.Layout.activity_main);
@@ -271,6 +269,7 @@ namespace WMS
                 }
                 catch (Exception err)
                 {
+                    SentrySdk.CaptureException(err);
                     Crashes.TrackError(err);
                 }
             }
