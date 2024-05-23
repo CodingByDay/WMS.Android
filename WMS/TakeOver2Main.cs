@@ -114,7 +114,8 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
 
                 if (string.IsNullOrEmpty(moveHead.GetString("DocumentType")))
                 {
-                    throw new ApplicationException("Missing setting: DirectTakeOverDocType");
+                    StartActivity(typeof(MainMenu));
+                    Finish();
                 }
                 moveHead.SetString("Wharehouse", CommonData.GetSetting("DefaultWarehouse"));
                 moveHead.SetBool("ByOrder", false);
@@ -138,9 +139,11 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
 
             return true;
         }
-        private NameValueObject SaveItem(bool allowEmpty)
+        private NameValueObject? SaveItem(bool allowEmpty)
         {
-            if (allowEmpty && string.IsNullOrEmpty(tbIdent.Text.Trim())) { return null; }
+            if (allowEmpty && string.IsNullOrEmpty(tbIdent.Text.Trim())) { 
+                return null;
+            }
 
             if (!CommonData.IsValidLocation(CommonData.GetSetting("DefaultWarehouse"), tbLocation.Text.Trim()))
             {
@@ -191,21 +194,16 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 {
                     if (moveItem == null) { moveItem = new NameValueObject("MoveItem"); }
                     moveItem.SetInt("HeadID", moveHead.GetInt("HeadID"));
-                    moveItem.SetString("LinkKey", ""); // TODO
-                    // moveItem.SetInt("LinkNo", openOrder.GetInt("No"));
+                    moveItem.SetString("LinkKey", ""); 
                     moveItem.SetString("Ident", ident.GetString("Code"));
-                    // moveItem.SetString("SSCC", tbSSCC.Text.Trim());
-                    // moveItem.SetString("SerialNo", tbSerialNum.Text.Trim());
                     moveItem.SetDouble("Packing", 0.0);
                     moveItem.SetDouble("Factor", 1.0);
                     moveItem.SetDouble("Qty", kol);
                     moveItem.SetInt("MorePrints", 0);
                     moveItem.SetInt("Clerk", Services.UserID());
-                    moveItem.SetString("Location", tbLocation.Text.Trim()); // Added 4.2.2021
-                    // moveItem.SetString("Location", tbLocation.Text.Trim());
-                    // moveItem.SetBool("PrintNow", CommonData.GetSetting("ImmediatePrintOnReceive") == "1");
+                    moveItem.SetString("Location", tbLocation.Text.Trim()); 
                     moveItem.SetInt("UserID", Services.UserID());
-                    moveItem.SetString("DeviceID", WMSDeviceConfig.GetString("ID", ""));
+                    moveItem.SetString("DeviceID", settings.ID);
 
                     InUseObjects.Set("MoveItem", moveItem);
 
@@ -222,15 +220,16 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 }
                 catch (Exception err)
                 {
-
                     Crashes.TrackError(err);
                     return null;
-
                 }
             }
 
             return null;
         }
+
+
+
         private void color()
         {
             tbIdent.SetBackgroundColor(Android.Graphics.Color.Aqua);

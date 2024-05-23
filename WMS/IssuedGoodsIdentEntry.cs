@@ -409,7 +409,7 @@ namespace WMS
 
         private List<string> GetCustomSuggestions(string userInput)
         {
-            // In order to improve performance try to implement paralel processing.
+            // In order to improve performance try to implement paralel processing. 23.05.2024 Janko Jovičić
 
             var lowerUserInput = userInput.ToLower();
             var result = new ConcurrentBag<string>();
