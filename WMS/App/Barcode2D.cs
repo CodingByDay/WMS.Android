@@ -60,31 +60,30 @@ namespace BarCode2D_Receiver
             }
         }
 
-        //
+        
         public void stopScan(Context context)
         {
             if (barcodeUtility != null)
             {
-                // Log.i(TAG, "stopScan");
                 barcodeUtility.StopScan(context, BarcodeUtility.ModuleType.Barcode2d);
             }
         }
 
-        //
+        
         public void open(Context context, IBarcodeResult iBarcodeResult)
         {
             if (barcodeUtility != null)
             {
                 this.iBarcodeResult = iBarcodeResult;
-                barcodeUtility.SetOutputMode(context, 2);//
+                barcodeUtility.SetOutputMode(context, 2);
                 barcodeUtility.SetScanResultBroadcast(context, "com.scanner.broadcast", "data");
-                barcodeUtility.Open(context, BarcodeUtility.ModuleType.Barcode2d);//
-                barcodeUtility.SetReleaseScan(context, true);//
-                barcodeUtility.SetScanFailureBroadcast(context, true);//
-                barcodeUtility.EnableContinuousScan(context, false);//
-                barcodeUtility.EnablePlayFailureSound(context, false);//
-                barcodeUtility.EnablePlaySuccessSound(context, false);//
-                barcodeUtility.EnableEnter(context, false);//
+                barcodeUtility.Open(context, BarcodeUtility.ModuleType.Barcode2d);
+                barcodeUtility.SetReleaseScan(context, true);
+                barcodeUtility.SetScanFailureBroadcast(context, true);
+                barcodeUtility.EnableContinuousScan(context, false);
+                barcodeUtility.EnablePlayFailureSound(context, false);
+                barcodeUtility.EnablePlaySuccessSound(context, false);
+                barcodeUtility.EnableEnter(context, false);
 
                 if (barcodeDataReceiver == null)
                 {
@@ -101,7 +100,7 @@ namespace BarCode2D_Receiver
         {
             if (barcodeUtility != null)
             {
-                barcodeUtility.Close(context, BarcodeUtility.ModuleType.Barcode2d);//¹Ø±Õ2D
+                barcodeUtility.Close(context, BarcodeUtility.ModuleType.Barcode2d);
                 if (barcodeDataReceiver != null)
                 {
                     context.UnregisterReceiver(barcodeDataReceiver);
@@ -132,6 +131,7 @@ namespace BarCode2D_Receiver
             {
                 if (barCode != null && !barCode.Equals(""))
                 {
+
                 }
                 else
                 {

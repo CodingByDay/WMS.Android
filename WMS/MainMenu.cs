@@ -67,7 +67,6 @@ namespace WMS
             {
                 RequestedOrientation = ScreenOrientation.Landscape;
                 SetContentView(Resource.Layout.MainMenuTablet);
-
                 buttonRapidTakeover = FindViewById<Button>(Resource.Id.rapidTakeover);
                 buttonRapidTakeover.Click += ButtonRapidTakeover_Click;
                 rapidListview = FindViewById<ListView>(Resource.Id.rapidListview);
@@ -75,7 +74,6 @@ namespace WMS
                 dataAdapter = UniversalAdapterHelper.GetMainMenu(this, dataCleanup);
                 rapidListview.Adapter = dataAdapter;
                 UniversalAdapterHelper.SelectPositionProgramaticaly(rapidListview, 0);
-
             }
             else
             {

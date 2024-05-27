@@ -112,12 +112,10 @@ namespace WMS
                         if (Services.HasPermission("TNET_WMS", "R"))
                         {
 
-                            StartActivity(typeof(MainMenu));
-                            HelpfulMethods.clearTheStack(this);
-                            
+                            StartActivity(typeof(MainMenu));                            
                             Password.Text = "";
                             isValid = true;
-                            this.Finish();
+                            Finish();
                         }
                         else
                         {
@@ -150,11 +148,6 @@ namespace WMS
 
 
 
-
-        protected override void OnPause()
-        {
-            base.OnPause();
-        }
 
         protected async override void OnCreate(Bundle savedInstanceState)
         {
@@ -192,7 +185,7 @@ namespace WMS
             settings.login = false;
 
 
-            await InitializeSentryAsync();
+           // await InitializeSentryAsync();
         }
 
 
