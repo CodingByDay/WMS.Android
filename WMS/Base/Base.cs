@@ -17,6 +17,7 @@ using Android.Views;
 using System.Globalization;
 using WMS.App;
 using Java.Lang;
+using BarCode2D_Receiver;
 namespace WMS
 {
     /// <summary>
@@ -43,6 +44,9 @@ namespace WMS
 
         public bool byOrder { get; set; } = true;
 
+        public Context? lastScanningContext { get; set; } = null;
+        public BarcodeDataReceiver? lastBarcodeDataReceiver { get; set; } = null;
+
         // Reset method using reflection
         public void ResetValues()
         {
@@ -58,7 +62,10 @@ namespace WMS
         }
 
 
-
+        public void ChangeActivity(Context context, IBarcodeResult iBarcodeResult)
+        {
+            
+        }
 
         public Base(IntPtr javaReference, Android.Runtime.JniHandleOwnership transfer) : base(javaReference, transfer)
         {
@@ -73,7 +80,9 @@ namespace WMS
 
         }
 
-    
+
+
+      
 
 
 

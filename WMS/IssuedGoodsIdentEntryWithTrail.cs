@@ -570,8 +570,7 @@ namespace WMS
             btLogout = FindViewById<Button>(Resource.Id.btLogout);
             soundPool = new SoundPool(10, Stream.Music, 0);
             soundPoolId = soundPool.Load(this, Resource.Raw.beep, 1);
-            barcode2D = new Barcode2D();
-            barcode2D.open(this, this);
+            barcode2D = new Barcode2D(this, this);
             color();
             tbLocationFilter.FocusChange += TbLocationFilter_FocusChange;
             trails = new List<Trail>();
@@ -628,14 +627,6 @@ namespace WMS
             tbIdentFilter.RequestFocus();      
         }
 
-
-        protected override void OnDestroy()
-        {
-            // The problem seems to have been a memory leak. Unregister broadcast receiver on activities where the scanning occurs. 21.05.2024 Janko Jovičić // 
-            barcode2D.close(this);
-            base.OnDestroy();
-
-        }
 
         public class MyOnItemLongClickListener : Java.Lang.Object, AdapterView.IOnItemLongClickListener
         {

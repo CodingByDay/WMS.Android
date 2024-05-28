@@ -140,9 +140,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             tbNumberOfCopies = FindViewById<EditText>(Resource.Id.tbNumberOfCopies);
             soundPool = new SoundPool(10, Stream.Music, 0);
             soundPoolId = soundPool.Load(this, Resource.Raw.beep, 1);
-            color();
-            barcode2D = new Barcode2D();
-            barcode2D.open(this, this);
+            color();           
             tbTitle.FocusChange += TbTitle_FocusChange;
             btPrint.Click += BtPrint_Click;
             button2.Click += Button2_Click;
@@ -192,13 +190,6 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
 
         }
 
-        protected override void OnDestroy()
-        {
-            // The problem seems to have been a memory leak. Unregister broadcast receiver on activities where the scanning occurs. 21.05.2024 Janko Jovičić // 
-            barcode2D.close(this);
-            base.OnDestroy();
-
-        }
         private void OnNetworkStatusChanged(object sender, EventArgs e)
         {
             if (IsOnline())

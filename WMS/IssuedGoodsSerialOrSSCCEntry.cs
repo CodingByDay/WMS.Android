@@ -315,8 +315,7 @@ namespace WMS
             lbQty = FindViewById<TextView>(Resource.Id.lbQty);
             soundPool = new SoundPool(10, Stream.Music, 0);
             soundPoolId = soundPool.Load(this, Resource.Raw.beep, 1);
-            barcode2D = new Barcode2D();
-            barcode2D.open(this, this);
+            barcode2D = new Barcode2D(this, this);
             btCreateSame = FindViewById<Button>(Resource.Id.btCreateSame);
             btCreate = FindViewById<Button>(Resource.Id.btCreate);
             btFinish = FindViewById<Button>(Resource.Id.btFinish);
@@ -399,12 +398,6 @@ namespace WMS
             initialDropdownEvent = false;
         }
 
-        protected override void OnDestroy()
-        {
-            // The problem seems to have been a memory leak. Unregister broadcast rgeceiver on activities where the scanning occurs. 21.05.2024 Janko Jovičić // 
-            barcode2D.close(this);
-            base.OnDestroy();
-        }
 
         private void showPictureIdent(string ident)
         {

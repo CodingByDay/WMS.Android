@@ -89,9 +89,7 @@ namespace WMS
 
             soundPoolId = soundPool.Load(this, Resource.Raw.beep, 1);
 
-            barcode2D = new Barcode2D();
-
-            barcode2D.open(this, this);
+            barcode2D = new Barcode2D(this, this);
 
             color();
 
@@ -127,13 +125,6 @@ namespace WMS
             new IntentFilter(ConnectivityManager.ConnectivityAction));
         }
 
-        protected override void OnDestroy()
-        {
-            // The problem seems to have been a memory leak. Unregister broadcast receiver on activities where the scanning occurs. 21.05.2024 Janko Jovičić // 
-            barcode2D.close(this);
-            base.OnDestroy();
-
-        }
         private void UpdateSuggestions(string userInput)
         {
             List<string> suggestions = GetCustomSuggestions(userInput);

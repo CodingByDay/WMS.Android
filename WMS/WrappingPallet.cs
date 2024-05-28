@@ -19,6 +19,7 @@ using TrendNET.WMS.Device.Services;
 using AndroidX.AppCompat.App;
 using AlertDialog = Android.App.AlertDialog;
 using Android.Content.PM;
+using Com.Rscja.Deviceapi;
 namespace WMS
 {
     [Activity(Label = "WrappingPallet")]
@@ -29,6 +30,8 @@ namespace WMS
         SoundPool soundPool;
         int soundPoolId;
         private ProgressDialogClass progress;
+        private BarCode2D_Receiver.Barcode2D barcode2D;
+
 
         public void GetBarcode(string barcode)
         {
@@ -77,8 +80,7 @@ namespace WMS
 
             soundPool = new SoundPool(10, Stream.Music, 0);
             soundPoolId = soundPool.Load(this, Resource.Raw.beep, 1);
-            Barcode2D barcode2D = new Barcode2D();
-            barcode2D.open(this, this);
+            barcode2D = new BarCode2D_Receiver.Barcode2D(this, this);
             pallet.RequestFocus();
             var _broadcastReceiver = new NetworkStatusBroadcastReceiver();
             _broadcastReceiver.ConnectionStatusChanged += OnNetworkStatusChanged;

@@ -124,8 +124,7 @@ namespace WMS
             tbIdent.FocusChange += TbIdent_FocusChange;
             tbSSCC.KeyPress += TbSSCC_KeyPress;
             tbIdent.KeyPress += TbIdent_KeyPress;
-            barcode2D = new Barcode2D();
-            barcode2D.open(this, this);
+            barcode2D = new Barcode2D(this, this);
             await FillWarehouses();
             warehouseLabel = FindViewById<TextView>(Resource.Id.warehouseLabel);
             if (string.IsNullOrEmpty(tbUnits.Text.Trim())) { tbUnits.Text = "1"; }
@@ -156,13 +155,7 @@ namespace WMS
             }
         }
 
-        protected override void OnDestroy()
-        {
-            // The problem seems to have been a memory leak. Unregister broadcast receiver on activities where the scanning occurs. 21.05.2024 Janko Jovičić // 
-            barcode2D.close(this);
-            base.OnDestroy();
-
-        }
+     
 
         private void TbSSCC_KeyPress(object sender, View.KeyEventArgs e)
         {

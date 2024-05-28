@@ -19,6 +19,7 @@ using TrendNET.WMS.Device.Services;
 using AndroidX.AppCompat.App;
 using AlertDialog = Android.App.AlertDialog;
 using Android.Content.PM;
+using Com.Rscja.Deviceapi;
 namespace WMS
 {
     [Activity(Label = "ShippingPallet", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
@@ -29,7 +30,7 @@ namespace WMS
         private Button btConfirm;
         SoundPool soundPool;
         int soundPoolId;
-
+        private BarCode2D_Receiver.Barcode2D barcode2D;
         public string ETpallet;
         public string ETmachine;
 
@@ -98,8 +99,7 @@ namespace WMS
 
             soundPool = new SoundPool(10, Stream.Music, 0);
             soundPoolId = soundPool.Load(this, Resource.Raw.beep, 1);
-            Barcode2D barcode2D = new Barcode2D();
-            barcode2D.open(this, this);
+            barcode2D = new BarCode2D_Receiver.Barcode2D(this, this);
 
             machine.RequestFocus();
             machine.FocusChange += Machine_FocusChange;

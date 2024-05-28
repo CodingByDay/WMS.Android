@@ -352,8 +352,7 @@ namespace WMS
             tbSSCC.Text = CommonData.GetNextSSCC();
             soundPool = new SoundPool(10, Stream.Music, 0);
             soundPoolId = soundPool.Load(this, Resource.Raw.beep, 1);
-            barcode2D = new Barcode2D();
-            barcode2D.open(this, this);
+            barcode2D = new Barcode2D(this, this);
             btConfirm.Click += BtConfirm_Click;
             button2.Click += Button2_Click;
             adapterListViewItem adapter = new adapterListViewItem(this, listItems);
@@ -383,13 +382,7 @@ namespace WMS
             return cm.ActiveNetworkInfo == null ? false : cm.ActiveNetworkInfo.IsConnected;
 
         }
-        protected override void OnDestroy()
-        {
-            // The problem seems to have been a memory leak. Unregister broadcast receiver on activities where the scanning occurs. 21.05.2024 Janko Jovičić // 
-            barcode2D.close(this);
-            base.OnDestroy();
-
-        }
+    
         private void OnNetworkStatusChanged(object sender, EventArgs e)
         {
             if (IsOnline())
