@@ -42,7 +42,7 @@ namespace WMS
             {
                 if (barcode != "Scan fail")
                 {
-                    Sound();
+                    
                     pallet.Text = barcode;
                 } else
                 {
@@ -53,7 +53,7 @@ namespace WMS
             {
                 if (barcode != "Scan fail")
                 {
-                    Sound();
+                    
                     machine.Text = barcode;
                 }
                 else
@@ -63,11 +63,7 @@ namespace WMS
             }
 
         }
-        private void Sound()
-        {
 
-            soundPool.Play(soundPoolId, 1, 1, 0, 0, 1);
-        }
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -97,8 +93,6 @@ namespace WMS
 
             color();
 
-            soundPool = new SoundPool(10, Stream.Music, 0);
-            soundPoolId = soundPool.Load(this, Resource.Raw.beep, 1);
             barcode2D = new BarCode2D_Receiver.Barcode2D(this, this);
 
             machine.RequestFocus();

@@ -83,8 +83,7 @@ namespace WMS
             btDisplayPositions = FindViewById<Button>(Resource.Id.btDisplayPositions);
             btBack = FindViewById<Button>(Resource.Id.btBack);
             btLogout = FindViewById<Button>(Resource.Id.btLogout);
-            soundPool = new SoundPool(10, Stream.Music, 0);
-            soundPoolId = soundPool.Load(this, Resource.Raw.beep, 1);
+
             barcode2D = new Barcode2D(this, this);
             // Flow methods
             SetUpScanningFields();
@@ -375,12 +374,6 @@ namespace WMS
 
 
 
-
-        private void Sound()
-        {
-            soundPool.Play(soundPoolId, 1, 1, 0, 0, 1);
-        }
-
         private void TbLocationFilter_AfterTextChanged(object sender, AfterTextChangedEventArgs e)
         {
             try
@@ -413,7 +406,7 @@ namespace WMS
             {
                 if (tbIdentFilter.HasFocus)
                 {
-                    Sound();
+                    
 
                     tbIdentFilter.Text = barcode;
                     adapter.Filter(positions, true, tbIdentFilter.Text, true);
@@ -424,7 +417,7 @@ namespace WMS
                 }
                 else if (tbLocationFilter.HasFocus)
                 {
-                    Sound();
+                    
 
                     tbLocationFilter.Text = barcode;
                     adapter.Filter(positions, false, tbLocationFilter.Text, false);

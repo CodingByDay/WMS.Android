@@ -54,14 +54,14 @@ namespace WMS
         {
             if (tbIdent.HasFocus)
             {
-                Sound();
+                
                 tbIdent.Text = barcode;
                 ProcessStock();
                 showPictureIdent(tbIdent.Text);
             }
             else if (tbLocation.HasFocus)
             {
-                Sound();
+                
                 tbLocation.Text = barcode;
             }
         }
@@ -167,10 +167,7 @@ namespace WMS
             tbLocation.SetBackgroundColor(Android.Graphics.Color.Aqua);
         }
 
-        private void Sound()
-        {
-            soundPool.Play(soundPoolId, 1, 1, 0, 0, 1);
-        }
+   
 
         public override bool OnKeyDown(Keycode keyCode, KeyEvent e)
         {
@@ -228,8 +225,7 @@ namespace WMS
 
             color();
 
-            soundPool = new SoundPool(10, Stream.Music, 0);
-            soundPoolId = soundPool.Load(this, Resource.Raw.beep, 1);
+
             barcode2D = new Barcode2D(this, this);
             // First load the warehouses.
             var whs = CommonData.ListWarehouses();

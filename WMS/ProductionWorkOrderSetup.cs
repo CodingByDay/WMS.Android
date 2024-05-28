@@ -52,7 +52,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                     tbOpenQty.Text = "";
                     tbIdent.Text = "";
                     tbName.Text = "";
-                    Sound();
+                    
                     tbWorkOrder.Text = barcode;
                     ProcessWorkOrder();
                 } else
@@ -82,9 +82,6 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             _customToolbar.SetNavigationIcon(settings.RootURL + "/Services/Logo");
             SetSupportActionBar(_customToolbar._toolbar);
             SupportActionBar.SetDisplayShowTitleEnabled(false);
-            // sound library
-            soundPool = new SoundPool(10, Stream.Music, 0);
-            soundPoolId = soundPool.Load(this, Resource.Raw.beep, 1);
             // button next
             tbWorkOrder = FindViewById<EditText>(Resource.Id.tbWorkOrder);
             tbOpenQty = FindViewById<EditText>(Resource.Id.tbOpenQty);
@@ -402,10 +399,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             }
 
         }
-        private void Sound()
-        {
-            soundPool.Play(soundPoolId, 1, 1, 0, 0, 1);
-        }
+ 
 
 
     }

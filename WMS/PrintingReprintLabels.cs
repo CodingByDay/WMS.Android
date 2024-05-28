@@ -61,22 +61,22 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             if(tbSSCC.HasFocus)
             {
 
-                Sound();
+                
                 tbSSCC.Text = barcode;
                 tbSerialNum.RequestFocus();
             } else if(tbIdent.HasFocus && barcode!="Scan fail")
             {
-                Sound();
+                
                 tbIdent.Text = barcode;
                 ProcessIdent();
               
             } else if(tbSerialNum.HasFocus && barcode != "Scan fail")
             {
-                Sound();
+                
                 tbSerialNum.Text = barcode;
             } else if (tbLocation.HasFocus && barcode != "Scan fail")
             {
-                Sound();
+                
                 tbLocation.Text = barcode;
                 ProcessQty();
                 tbQty.RequestFocus();
@@ -104,10 +104,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
         }
     
 
-        private void Sound()
-        {
-            soundPool.Play(soundPoolId, 1, 1, 0, 0, 1);
-        }
+  
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -138,8 +135,6 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             btPrint = FindViewById<Button>(Resource.Id.btPrint);
             button2 = FindViewById<Button>(Resource.Id.button2);
             tbNumberOfCopies = FindViewById<EditText>(Resource.Id.tbNumberOfCopies);
-            soundPool = new SoundPool(10, Stream.Music, 0);
-            soundPoolId = soundPool.Load(this, Resource.Raw.beep, 1);
             color();           
             tbTitle.FocusChange += TbTitle_FocusChange;
             btPrint.Click += BtPrint_Click;

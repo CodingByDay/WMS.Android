@@ -42,20 +42,15 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             // implements the interface.
             if(tbSSCC.HasFocus)
             {
-                Sound();
+                
                 tbSSCC.Text = barcode;
             } else if (tbLocation.HasFocus)
             {
-                Sound();
+                
                 tbLocation.Text = barcode;
             }
         }
 
-        private void Sound()
-        {
-            soundPool.Play(soundPoolId, 1, 1, 0, 0, 1);
-
-        }
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -86,8 +81,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             btConfirm.Click += BtConfirm_Click;
             btExit.Click += BtExit_Click;
             cbWarehouse.ItemSelected += CbWarehouse_ItemSelected;
-            soundPool = new SoundPool(10, Stream.Music, 0);
-            soundPoolId = soundPool.Load(this, Resource.Raw.beep, 1);
+
             barcode2D = new Barcode2D(this, this);
 
             Color();

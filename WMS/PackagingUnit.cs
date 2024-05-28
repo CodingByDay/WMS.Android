@@ -50,10 +50,6 @@ namespace WMS
         private TextView label;
         private ProgressDialogClass progress;
 
-        private void Sound()
-        {
-            soundPool.Play(soundPoolId, 1, 1, 0, 0, 1);
-        }
 
         
         public void GetBarcode(string barcode)
@@ -64,14 +60,14 @@ namespace WMS
 
                 if (tbSSCC.HasFocus)
                 {
-                    Sound();
+                    
                     tbSSCC.Text = barcode;
                     tbSerialNo.RequestFocus();
                 }
 
                 else if (tbLocation.HasFocus)
                 {
-                    Sound();
+                    
                     tbLocation.Text = barcode;
                     if (tbLocation.Text != "Scan fail")
                     {
@@ -87,7 +83,7 @@ namespace WMS
                 }
                 else if (tbIdent.HasFocus)
                 {
-                    Sound();
+                    
                     tbIdent.Text = barcode;
                     if (tbIdent.Text != "Scan fail")
                     {
@@ -104,7 +100,7 @@ namespace WMS
                 else if (tbSerialNo.HasFocus)
                 {
 
-                    Sound();
+                    
                     tbSerialNo.Text = barcode;
                     ProcessQty();
                 }
@@ -349,9 +345,7 @@ namespace WMS
             btFinish.Click += BtFinish_Click;
             btExit.Click += BtExit_Click;
             btNegate.Click += BtNegate_Click;
-          
-            soundPool = new SoundPool(10, Stream.Music, 0);
-            soundPoolId = soundPool.Load(this, Resource.Raw.beep, 1);
+
             barcode2D = new Barcode2D(this, this);
             tbIdentName.FocusChange += TbIdentName_FocusChange;
             if (item != null)

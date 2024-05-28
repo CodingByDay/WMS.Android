@@ -20,7 +20,6 @@ namespace BarCode2D_Receiver
 
         public void ChangeActivity(Context context, IBarcodeResult iBarcodeResult)
         {
-            LoaderManifest.LoaderManifestLoopResources(context);
             try
             {
                 // Closing the last open scanner connection so to avoid memory issues.
@@ -41,8 +40,8 @@ namespace BarCode2D_Receiver
                 barcodeUtility.SetReleaseScan(context, true);
                 barcodeUtility.SetScanFailureBroadcast(context, true);
                 barcodeUtility.EnableContinuousScan(context, false);
-                barcodeUtility.EnablePlayFailureSound(context, false);
-                barcodeUtility.EnablePlaySuccessSound(context, false);
+                barcodeUtility.EnablePlayFailureSound(context, true);
+                barcodeUtility.EnablePlaySuccessSound(context, true);
                 barcodeUtility.EnableEnter(context, false);
 
                 // Add the broadcast receiver
@@ -57,11 +56,7 @@ namespace BarCode2D_Receiver
 
             } catch(Exception error) {
                 SentrySdk.CaptureException(error);
-            }
-            finally
-            {
-                LoaderManifest.LoaderManifestLoopStop(context);
-            }
+            }          
 
         }
 

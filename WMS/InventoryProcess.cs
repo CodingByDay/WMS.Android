@@ -113,8 +113,6 @@ namespace WMS
             lbUnits = FindViewById<TextView>(Resource.Id.lbUnits);
             lbPacking = FindViewById<TextView>(Resource.Id.lbPacking);
             tbTitle.Focusable= false;
-            soundPool = new SoundPool(10, Stream.Music, 0);
-            soundPoolId = soundPool.Load(this, Resource.Raw.beep, 1);
             cbWarehouse.ItemSelected += CbWarehouse_ItemSelected;
             btPrint.Click += BtPrint_Click;
             button1.Click += Button1_Click;
@@ -743,7 +741,7 @@ namespace WMS
         {
             if (tbSSCC.HasFocus)
             {
-                    Sound();
+                    
                     tbSSCC.Text = barcode;
                     string error;
                     dataObject = GetSSCCData(tbSSCC.Text);
@@ -784,20 +782,20 @@ namespace WMS
             }
             else if (tbLocation.HasFocus)
             {
-                Sound();
+                
                 tbLocation.Text = barcode;
                 ProcessLocation();
 
             }
             else if (tbSerialNum.HasFocus)
             {
-                Sound();
+                
                 tbSerialNum.Text = barcode;
                 ProcessStock();
             }
             else if (tbIdent.HasFocus)
             {
-                Sound();
+                
                 tbIdent.Text = barcode;
                 ProcessIdent();
             }
@@ -947,11 +945,6 @@ namespace WMS
                 return;
             }
 
-        }
-
-        private void Sound() 
-        {
-            soundPool.Play(soundPoolId, 1, 1, 0, 0, 1);
         }
 
 

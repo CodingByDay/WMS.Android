@@ -63,7 +63,7 @@ namespace WMS
             if (tbSerialNum.HasFocus) {
                 if (barcode != "Scan fail")
                 {
-                    Sound();
+                    
                     tbSerialNum.Text = barcode;
                     ProcessSerialNum();
                     tbCard.RequestFocus();
@@ -79,13 +79,13 @@ namespace WMS
                 {
                     if (barcode != "Scan fail")
                     {
-                        Sound();
+                        
                         ProcessCard(barcode);
                     } 
                 } 
             } else if (tbLegCode.HasFocus)
             {
-                Sound();
+                
                 tbLegCode.Text = barcode;
             }
         }
@@ -184,10 +184,6 @@ namespace WMS
         }
 
 
-        private void Sound()
-        {
-            soundPool.Play(soundPoolId, 1, 1, 0, 0, 1);
-        }
 
         private void ProcessCard(string data)
         {
@@ -350,8 +346,7 @@ namespace WMS
             tbWorkOrder.Text = cardInfo.GetString("WorkOrder").Trim();
             tbIdent.Text = cardInfo.GetString("Ident").Trim();
             tbSSCC.Text = CommonData.GetNextSSCC();
-            soundPool = new SoundPool(10, Stream.Music, 0);
-            soundPoolId = soundPool.Load(this, Resource.Raw.beep, 1);
+
             barcode2D = new Barcode2D(this, this);
             btConfirm.Click += BtConfirm_Click;
             button2.Click += Button2_Click;

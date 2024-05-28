@@ -42,8 +42,6 @@ namespace WMS
         private Button btConfirm;
         private Button button4;
         private Button button5;
-        SoundPool soundPool;
-        int soundPoolId;
         private BarCode2D_Receiver.Barcode2D barcode2D;
         private NameValueObject moveHead = (NameValueObject)InUseObjects.Get("MoveHead");
         private NameValueObject openIdent = null;
@@ -60,17 +58,14 @@ namespace WMS
         private int selected;
         private int selectedItem;
 
-        private void Sound()
-        {
-            soundPool.Play(soundPoolId, 1, 1, 0, 0, 1);
-        }
+     
 
         public void GetBarcode(string barcode)
         {
             // pass
            if(tbIdent.HasFocus)
             {
-                Sound();
+                
                 tbIdent.Text = barcode;
                 ProcessIdent();
 
@@ -307,8 +302,6 @@ namespace WMS
             color();
             btNext.Enabled = false;
             btConfirm.Enabled = false;
-            soundPool = new SoundPool(10, Stream.Music, 0);
-            soundPoolId = soundPool.Load(this, Resource.Raw.beep, 1);
             barcode2D = new Barcode2D(this, this);
             btNext.Click += BtNext_Click;
             tbIdent.KeyPress += TbIdent_KeyPress; 

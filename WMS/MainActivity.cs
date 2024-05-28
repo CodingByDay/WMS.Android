@@ -34,6 +34,7 @@ using Android.Preferences;
 using Newtonsoft.Json;
 using Xamarin.Essentials;
 using AndroidX.Core.Content;
+using System.Net.Http;
 namespace WMS
 {
 
@@ -60,6 +61,7 @@ namespace WMS
         private List<LanguageItem> mLanguageItems;
         private LanguageAdapter mAdapter;
         private ColorMatrixColorFilter highlightFilter;
+        private static readonly HttpClient httpClient = new HttpClient();
 
         public object MenuInflaterFinal { get; private set; }
 
@@ -184,27 +186,22 @@ namespace WMS
             btnRegistrationEvent.Click += BtnRegistrationEvent_Click;
             settings.login = false;
 
-
-           // await InitializeSentryAsync();
+            InitializeSentryAsync();
         }
 
 
 
-        public async Task InitializeSentryAsync()
-        {
-            await Task.Run(() =>
-            {
-                SentryXamarin.Init(o =>
-                {
-                    // Tells which project in Sentry to send events to:
-                    o.Dsn = "https://4da007db4594a10f53ab292097e612f8@o4507304617836544.ingest.de.sentry.io/4507304993751120";
-                    // Set TracesSampleRate to 1.0 to capture 100%
-                    // of transactions for performance monitoring.
-                    // I recommend adjusting this value in production 23.05.2024 Janko Jovièiæ
-                    o.TracesSampleRate = 1.0;
-                });
-            });
+        public void InitializeSentryAsync()
+        {     
+            SentrySdk.Init(o =>
+            {    
+                // Tells which project in Sentry to send events to:
+                o.Dsn = "https://4da007db4594a10f53ab292097e612f8@o4507304617836544.ingest.de.sentry.io/4507304993751120";               
+            });      
         }
+
+   
+
         public string GetAppVersion()
         {
             return AppInfo.VersionString;

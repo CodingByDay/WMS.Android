@@ -49,7 +49,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
         {
             if(tbSSCC.HasFocus)
             {
-                Sound();
+                
                 tbSSCC.Text = barcode;
                 ProcessSSCC();
             } else if (tbLocation.HasFocus)
@@ -57,7 +57,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 tbLocation.Text = barcode;
             } else if(tbIdent.HasFocus)
             {             
-                Sound();
+                
                 tbIdent.Text = barcode;
             }
         }
@@ -83,11 +83,6 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
         }
 
 
-
-        private void Sound()
-        {
-            soundPool.Play(soundPoolId, 1, 1, 0, 0, 1);
-        }
         private void ListData_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
         {
             selected = e.Position;
@@ -141,8 +136,6 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             _customToolbar.SetNavigationIcon(settings.RootURL + "/Services/Logo");
             SetSupportActionBar(_customToolbar._toolbar);
             SupportActionBar.SetDisplayShowTitleEnabled(false);
-            soundPool = new SoundPool(10, Stream.Music, 0);
-            soundPoolId = soundPool.Load(this, Resource.Raw.beep, 1);
             barcode2D = new Barcode2D(this, this);
             tbIdent = FindViewById<EditText>(Resource.Id.tbIdent);
             // Create your application here

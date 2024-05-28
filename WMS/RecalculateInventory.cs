@@ -44,7 +44,7 @@ namespace WMS
         {
             if (ident.HasFocus)
             {
-                Sound();
+                
                 ident.Text = barcode;
               
             }
@@ -56,10 +56,7 @@ namespace WMS
 
             base.OnBackPressed();
         }
-        private void Sound()
-        {
-            soundPool.Play(soundPoolId, 1, 1, 0, 0, 1);
-        }
+  
 
         protected async override void OnCreate(Bundle savedInstanceState)
         {
@@ -84,10 +81,6 @@ namespace WMS
             ident = FindViewById<EditText>(Resource.Id.ident);
 
             btCalculate = FindViewById<Button>(Resource.Id.btCalculate);
-
-            soundPool = new SoundPool(10, Stream.Music, 0);
-
-            soundPoolId = soundPool.Load(this, Resource.Raw.beep, 1);
 
             barcode2D = new Barcode2D(this, this);
 

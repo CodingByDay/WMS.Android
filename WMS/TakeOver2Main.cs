@@ -46,12 +46,12 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
         {
            if(tbIdent.HasFocus)
             {
-                Sound();
+                
                 tbIdent.Text = barcode;
                 ProcessIdent();
             } else if(tbLocation.HasFocus)
             {
-                Sound();
+                
                 tbLocation.Text = barcode;
             }
         }
@@ -265,8 +265,6 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             btOverview = FindViewById<Button>(Resource.Id.btOverview);
             btExit = FindViewById<Button>(Resource.Id.btExit);
             tbLocation = FindViewById<EditText>(Resource.Id.tbLocation);
-            soundPool = new SoundPool(10, Stream.Music, 0);
-            soundPoolId = soundPool.Load(this, Resource.Raw.beep, 1);
             barcode2D = new Barcode2D(this, this);
             btnOrder.Click += BtnOrder_Click;
             btConfirm.Click += BtConfirm_Click;
@@ -385,12 +383,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             {
                 LoaderManifest.LoaderManifestLoop(this);
             }
-        }
-        private void Sound()
-        {
-            soundPool.Play(soundPoolId, 1, 1, 0, 0, 1);
-
-        }      
+        }   
          public override bool OnKeyDown(Keycode keyCode, KeyEvent e)
         {
             switch (keyCode)

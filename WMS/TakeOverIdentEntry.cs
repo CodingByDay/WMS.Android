@@ -100,8 +100,6 @@ namespace WMS
             button4 = FindViewById<Button>(Resource.Id.button4);
             button5 = FindViewById<Button>(Resource.Id.button5);
             color();
-            soundPool = new SoundPool(10, Stream.Music, 0);
-            soundPoolId = soundPool.Load(this, Resource.Raw.beep, 1);
             barcode2D = new Barcode2D(this, this);
             if (moveHead == null) { throw new ApplicationException("moveHead not known at this point!?"); }
             displayedOrder = 0;
@@ -565,7 +563,7 @@ namespace WMS
                 else if (!CheckIdent(barcode) && barcode.Length > 17 && barcode.Contains("400") && tbIdent.HasFocus)
                 {
                     var ident = barcode.Substring(0, barcode.Length - 16);
-                    Sound();
+                    // 
                     tbIdent.Text = ident;
                     ProcessIdent();
                 }
@@ -573,7 +571,7 @@ namespace WMS
                 {
                     if (tbIdent.HasFocus)
                     {
-                        Sound();
+                        // 
                         tbIdent.Text = barcode;
                         ProcessIdent();
                     }
@@ -658,10 +656,6 @@ namespace WMS
             }
         }
 
-        private void Sound()
-        {
-            soundPool.Play(soundPoolId, 1, 1, 0, 0, 1);
-        }
         private void color()
         {
             tbIdent.SetBackgroundColor(Android.Graphics.Color.Aqua);

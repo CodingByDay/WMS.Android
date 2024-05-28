@@ -133,8 +133,6 @@ namespace WMS
             lbIdentName = FindViewById<EditText>(Resource.Id.lbIdentName);
             ssccRow = FindViewById<LinearLayout>(Resource.Id.sscc_row);
             serialRow = FindViewById<LinearLayout>(Resource.Id.serial_row);
-            soundPool = new SoundPool(10, Android.Media.Stream.Music, 0);
-            soundPoolId = soundPool.Load(this, Resource.Raw.beep, 1);
             barcode2D = new Barcode2D(this, this);
             var _broadcastReceiver = new NetworkStatusBroadcastReceiver();
             _broadcastReceiver.ConnectionStatusChanged += OnNetworkStatusChanged;
@@ -577,10 +575,6 @@ namespace WMS
 
         }
 
-        private void Sound()
-        {
-            soundPool.Play(soundPoolId, 1, 1, 0, 0, 1);
-        }
 
 
         public async void GetBarcode(string barcode)
@@ -589,33 +583,33 @@ namespace WMS
             {
                 if (tbIdent.HasFocus)
                 {
-                    Sound();
+                    
                     tbIdent.Text = barcode;
                     ProcessIdent(false);
                     tbSSCC.RequestFocus();
                 }
                 else if (tbSSCC.HasFocus)
                 {
-                    Sound();
+                    
                     await FillDataBySSCC(barcode);         
                     tbSSCC.Text = barcode;
                 }
                 else if (tbSerialNum.HasFocus)
                 {
-                    Sound();
+                    
                     tbSerialNum.Text = barcode;
                     tbIssueLocation.RequestFocus();
                 }
                 else if (tbIssueLocation.HasFocus)
                 {
-                    Sound();
+                    
                     tbIssueLocation.Text = barcode;
                     LoadStock(tbIssueLocation.Text, tbIdent.Text, moveHead.GetString("Issuer"), tbSSCC.Text, tbSerialNum.Text);
                     tbLocation.RequestFocus();
                 }
                 else if (tbLocation.HasFocus)
                 {
-                    Sound();
+                    
                     tbLocation.Text = barcode;
                     tbPacking.RequestFocus();
                 }

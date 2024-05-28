@@ -161,8 +161,7 @@ namespace WMS
             tbSSCC.InputType = Android.Text.InputTypes.ClassNumber;
             tbLocation.InputType = Android.Text.InputTypes.ClassText;
             lbQty = FindViewById<TextView>(Resource.Id.lbQty);
-            soundPool = new SoundPool(10, Stream.Music, 0);
-            soundPoolId = soundPool.Load(this, Resource.Raw.beep, 1);
+
             barcode2D = new Barcode2D(this, this);
 
             btCreateSame = FindViewById<Button>(Resource.Id.btCreateSame);
@@ -969,7 +968,7 @@ namespace WMS
                 {
                     if (barcode != "Scan fail")
                     {
-                        Sound();
+                        
 
                         tbSSCC.Text = barcode;
 
@@ -990,7 +989,7 @@ namespace WMS
                 {
                     if (barcode != "Scan fail")
                     {
-                        Sound();
+                        
 
                         tbSerialNum.Text = barcode;
 
@@ -1005,7 +1004,7 @@ namespace WMS
                 {
                     if (barcode != "Scan fail")
                     {
-                        Sound();
+                        
 
                         tbLocation.Text = barcode;
 
@@ -1040,12 +1039,6 @@ namespace WMS
                 tbPacking.Text = dist.ElementAt(0).anQty.ToString();
             }
 
-        }
-
-
-        private void Sound()
-        {
-            soundPool.Play(soundPoolId, 1, 1, 0, 0, 1);
         }
     }
 }

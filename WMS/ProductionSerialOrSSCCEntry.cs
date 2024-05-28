@@ -100,7 +100,7 @@ namespace WMS
                     tbPacking.Text = "";
                     tbLocation.Text = "";
                     tbIdent.Text = "";
-                    Sound();
+                    
                     tbSSCC.Text = barcode;
                     tbSerialNum.RequestFocus();
                     
@@ -108,23 +108,20 @@ namespace WMS
             } else if (tbSerialNum.HasFocus)
             {if (barcode != "Scan fail")
                 {
-                    Sound();
+                    
                     tbSerialNum.Text = barcode;
                     ProcessSerialNum();
                     tbLocation.RequestFocus();
                 }
             } else if (tbLocation.HasFocus)
             {      
-                Sound();
+                
                 tbLocation.Text = barcode;
             }
         }
         private static bool? checkWorkOrderOpenQty = null;
 
-        private void Sound()
-        {
-            soundPool.Play(soundPoolId, 1, 1, 0, 0, 1);
-        }
+
 
         private void fillItems()
         {
@@ -513,8 +510,6 @@ namespace WMS
             tbSSCC.InputType = Android.Text.InputTypes.ClassNumber;
             tbSerialNum.InputType = Android.Text.InputTypes.ClassNumber;
             tbLocation.InputType = Android.Text.InputTypes.ClassNumber;
-            soundPool = new SoundPool(10, Stream.Music, 0);
-            soundPoolId = soundPool.Load(this, Resource.Raw.beep, 1);
             color();
             tbSSCC.RequestFocus();
             btSaveOrUpdate.Click += BtSaveOrUpdate_Click;

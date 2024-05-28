@@ -110,7 +110,7 @@ namespace WMS
                 {
                     if (tbIdentFilter.HasFocus)
                     {
-                        Sound();
+                        
                         if (HelperMethods.is2D(barcode))
                         {
                             Parser2DCode parser2DCode = new Parser2DCode(barcode.Trim());
@@ -141,7 +141,7 @@ namespace WMS
                     }
                     else if (tbLocationFilter.HasFocus)
                     {
-                        Sound();
+                        
                         tbLocationFilter.Text = barcode;
                         adapterObj.Filter(trails, false, tbLocationFilter.Text, false);
                         if (adapterObj.returnNumberOfItems() == 0)
@@ -568,8 +568,6 @@ namespace WMS
             btBack = FindViewById<Button>(Resource.Id.btBack);
             btBack.Click += BtBack_Click;
             btLogout = FindViewById<Button>(Resource.Id.btLogout);
-            soundPool = new SoundPool(10, Stream.Music, 0);
-            soundPoolId = soundPool.Load(this, Resource.Raw.beep, 1);
             barcode2D = new Barcode2D(this, this);
             color();
             tbLocationFilter.FocusChange += TbLocationFilter_FocusChange;
@@ -997,12 +995,6 @@ namespace WMS
             }
         }
     
-
-        private void Sound()
-        {
-            soundPool.Play(soundPoolId, 1, 1, 0, 0, 1);
-        }
-
       
 
     }

@@ -118,8 +118,6 @@ namespace WMS
             lbQty = FindViewById<TextView>(Resource.Id.lbQty);
             lbUnits = FindViewById<TextView>(Resource.Id.lbUnits);
             Window.SetSoftInputMode(Android.Views.SoftInput.AdjustResize);
-            soundPool = new SoundPool(10, Stream.Music, 0);
-            soundPoolId = soundPool.Load(this, Resource.Raw.beep, 1);
             barcode2D = new Barcode2D(this, this);
             ssccRow = FindViewById<LinearLayout>(Resource.Id.sscc_row);
             serialRow = FindViewById<LinearLayout>(Resource.Id.serial_row);
@@ -974,11 +972,6 @@ namespace WMS
             }
         }
 
-        private void Sound()
-        {
-            soundPool.Play(soundPoolId, 1, 1, 0, 0, 1);
-        }
-
         public override bool OnKeyDown(Keycode keyCode, KeyEvent e)
         {
             switch (keyCode)
@@ -1010,7 +1003,7 @@ namespace WMS
                 {
                     if (barcode != "Scan fail")
                     {
-                        Sound();
+                        // 
 
                         tbSSCC.Text = barcode;
 
@@ -1029,7 +1022,7 @@ namespace WMS
                 {
                     if (barcode != "Scan fail")
                     {
-                        Sound();
+                        // 
 
                         tbSerialNum.Text = barcode;
 
@@ -1041,7 +1034,7 @@ namespace WMS
                 {
                     if (barcode != "Scan fail")
                     {
-                        Sound();
+                        // 
 
                         tbLocation.Text = barcode;
 
