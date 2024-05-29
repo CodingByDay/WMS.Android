@@ -35,6 +35,9 @@ using Newtonsoft.Json;
 using Xamarin.Essentials;
 using AndroidX.Core.Content;
 using System.Net.Http;
+using AndroidX.Core.App;
+using Google.Android.Material.Snackbar;
+using Android.Content.PM;
 namespace WMS
 {
 
@@ -62,6 +65,8 @@ namespace WMS
         private LanguageAdapter mAdapter;
         private ColorMatrixColorFilter highlightFilter;
         private static readonly HttpClient httpClient = new HttpClient();
+        const int RequestPermissionsId = 0;
+        bool permissionsGranted = false;
 
         public object MenuInflaterFinal { get; private set; }
 
@@ -187,9 +192,87 @@ namespace WMS
             settings.login = false;
 
             InitializeSentryAsync();
+
+            // Check and request necessary permissions at startup because of Google Play policies. 29.05.2024 Janko Jovièiæ
+            RequestNecessaryPermissions();
         }
 
+        void RequestNecessaryPermissions()
+        {
+            string[] requiredPermissions = new string[]
+            {
+                Manifest.Permission.AccessCoarseLocation,
+                Manifest.Permission.WriteExternalStorage,
+                Manifest.Permission.ReadExternalStorage
+            };
 
+            CheckAndRequestPermissions(requiredPermissions);
+        }
+
+        void CheckAndRequestPermissions(string[] permissions)
+        {
+            var permissionsToRequest = new List<string>();
+
+            foreach (var permission in permissions)
+            {
+                if (ContextCompat.CheckSelfPermission(this, permission) != (int)Permission.Granted)
+                {
+                    permissionsToRequest.Add(permission);
+                }
+            }
+
+            if (permissionsToRequest.Count > 0)
+            {
+                ActivityCompat.RequestPermissions(this, permissionsToRequest.ToArray(), RequestPermissionsId);
+            }
+
+            else
+            {
+                // All permissions are already granted
+                OnAllPermissionsGranted();
+            }
+        }
+
+        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Permission[] grantResults)
+        {
+            if (requestCode == RequestPermissionsId)
+            {
+                bool allGranted = grantResults.All(result => result == Permission.Granted);
+
+                if (allGranted)
+                {
+                    OnAllPermissionsGranted();
+                }
+                else
+                {
+                    // Handle the case where permissions are not granted
+                    OnPermissionsDenied();
+                }
+            }
+
+            base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+
+        void OnAllPermissionsGranted()
+        {
+            // All necessary permissions are granted, proceed with the app's functionality
+            permissionsGranted = true;
+        }
+
+        void OnPermissionsDenied()
+        {
+            // Inform the user that not all permissions were granted and the app might not work properly
+            Snackbar.Make(FindViewById(Android.Resource.Id.Content), "Permissions denied. The app may not function correctly.", Snackbar.LengthIndefinite)
+                .SetAction("Settings", v =>
+                {
+                    // Open app settings
+                    var intent = new Android.Content.Intent(Android.Provider.Settings.ActionApplicationDetailsSettings);
+                    var uri = Android.Net.Uri.FromParts("package", PackageName, null);
+                    intent.SetData(uri);
+                    StartActivity(intent);
+                })
+                .Show();
+        }
 
         public void InitializeSentryAsync()
         {     
@@ -351,8 +434,11 @@ namespace WMS
 
         private void BtnRegistrationEvent_Click(object sender, System.EventArgs e)
         {
-            progressBar1.Visibility = ViewStates.Visible;
-            ProcessRegistration();
+            if (permissionsGranted)
+            {
+                progressBar1.Visibility = ViewStates.Visible;
+                ProcessRegistration();
+            }
         }
 
         public override bool OnKeyDown(Keycode keyCode, KeyEvent e)
@@ -369,10 +455,5 @@ namespace WMS
         }
 
 
-        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
-        {
-            Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
-            base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
-        }
     }
 }
