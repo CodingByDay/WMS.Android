@@ -1,5 +1,5 @@
 <resources>
-	<string name="app_name">Scanner</string>
+	<string name="app_name">WMS</string>
 	<string name="action_settings">Settings</string>
 	<string name="enter_password">Enter the password</string>
 	<string name="log_in">LOG IN</string>
