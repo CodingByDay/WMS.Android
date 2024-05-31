@@ -65,7 +65,7 @@ namespace WMS
         private LanguageAdapter mAdapter;
         private ColorMatrixColorFilter highlightFilter;
         private static readonly HttpClient httpClient = new HttpClient();
-        const int RequestPermissionsId = 123;
+        const int RequestPermissionsId = 0;
         bool permissionsGranted = false;
         private int counterPermission = 0;
 
@@ -206,9 +206,10 @@ namespace WMS
         {
             string[] requiredPermissions = new string[]
             {
-                Manifest.Permission.AccessCoarseLocation,
-                Manifest.Permission.WriteExternalStorage,
-                Manifest.Permission.ReadExternalStorage
+                Manifest.Permission.BluetoothConnect,
+                Manifest.Permission.BluetoothScan,
+                Manifest.Permission.BluetoothAdvertise,
+                Manifest.Permission.Bluetooth
             };
 
             CheckAndRequestPermissions(requiredPermissions);
