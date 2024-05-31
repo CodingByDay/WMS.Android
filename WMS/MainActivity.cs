@@ -65,8 +65,9 @@ namespace WMS
         private LanguageAdapter mAdapter;
         private ColorMatrixColorFilter highlightFilter;
         private static readonly HttpClient httpClient = new HttpClient();
-        const int RequestPermissionsId = 0;
+        const int RequestPermissionsId = 123;
         bool permissionsGranted = false;
+        private int counterPermission = 0;
 
         public object MenuInflaterFinal { get; private set; }
 
@@ -162,13 +163,17 @@ namespace WMS
             Distribute.SetEnabledAsync(true);
             AppCenter.Start("ec2ca4ce-9e86-4620-9e90-6ecc5cda0e0e",
             typeof(Distribute));
-    
+
             ChangeTheOrientation();
             base.OnCreate(savedInstanceState);
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             SetContentView(Resource.Layout.activity_main);
 
             Distribute.ReleaseAvailable = OnReleaseAvailable;
+
+   
+
+
             Password = FindViewById<EditText>(Resource.Id.tbPassword);
             Password.InputType = Android.Text.InputTypes.NumberVariationPassword |
             Android.Text.InputTypes.ClassNumber;
@@ -211,6 +216,7 @@ namespace WMS
 
         void CheckAndRequestPermissions(string[] permissions)
         {
+
             var permissionsToRequest = new List<string>();
 
             foreach (var permission in permissions)
@@ -235,7 +241,7 @@ namespace WMS
 
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Permission[] grantResults)
         {
-            if (requestCode == RequestPermissionsId)
+            if (counterPermission == permissions.Length)
             {
                 bool allGranted = grantResults.All(result => result == Permission.Granted);
 
@@ -249,7 +255,8 @@ namespace WMS
                     OnPermissionsDenied();
                 }
             }
-
+            
+            counterPermission += 1;
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }
 
