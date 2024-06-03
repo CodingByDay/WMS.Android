@@ -9,8 +9,8 @@ using Android.Text.Method;
 using Android.Views;
 using Android.Widget;
 using Java.Lang.Reflect;
-using Microsoft.AppCenter.Analytics;
-using Microsoft.AppCenter.Crashes;
+
+
 using WMS.App;
 using Stream = Android.Media.Stream;
 using System.Collections.Generic;

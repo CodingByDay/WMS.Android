@@ -8,7 +8,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using BarCode2D_Receiver;
-using Microsoft.AppCenter.Crashes;
+
 using Newtonsoft.Json;
 using WMS.App;
 using Stream = Android.Media.Stream;

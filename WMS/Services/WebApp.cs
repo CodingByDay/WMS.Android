@@ -1,5 +1,5 @@
-﻿using Microsoft.AppCenter.Analytics;
-using Microsoft.AppCenter.Crashes;
+﻿
+
 using System.Net;
 using System.Text;
 using TrendNET.WMS.Device.App;

@@ -11,7 +11,6 @@
         android:layout_height="167.5dp"
         android:id="@+id/system_update"
         android:src="@drawable/system_update"
-
         android:contentDescription=""
         android:layout_marginRight="0.0dp"
         android:layout_marginLeft="22.0dp" />
@@ -28,7 +27,7 @@
         android:layout_height="65.0dp"
         android:layout_gravity="center"
         android:paddingLeft="10dp"
-        android:textColor="@android:color/darker_gray"
+        android:textColor="@android:color/white"
 
         android:paddingTop="5dp"
         android:text="@string/s207"

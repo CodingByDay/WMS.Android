@@ -1,4 +1,4 @@
-﻿using Microsoft.AppCenter.Crashes;
+﻿
 using TrendNET.WMS.Core.Data;
 
 namespace TrendNET.WMS.Device.Services

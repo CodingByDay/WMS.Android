@@ -5,8 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using TrendNET.WMS.Core.Data;
 using API;
-using Microsoft.AppCenter.Analytics;
-using Microsoft.AppCenter.Crashes;
+
+
 using Newtonsoft.Json;
 using System.Net;
 using TrendNET.WMS.Device.App;

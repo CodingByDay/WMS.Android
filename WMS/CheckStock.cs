@@ -8,7 +8,7 @@ using Android.Views;
 using AndroidX.AppCompat.App;
 using BarCode2D_Receiver;
 using Com.Jsibbold.Zoomage;
-using Microsoft.AppCenter.Crashes;
+
 using Newtonsoft.Json;
 using System.Data.Common;
 using TrendNET.WMS.Device.App;

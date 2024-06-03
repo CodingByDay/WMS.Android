@@ -5,7 +5,7 @@ using Android.Runtime;
 using Android.Util;
 using Android.Views;
 using Android.Views.InputMethods;
-using Microsoft.AppCenter.Crashes;
+
 using System.ComponentModel.DataAnnotations;
 using TrendNET.WMS.Device.App;
 using Keycode = Android.Views.Keycode;

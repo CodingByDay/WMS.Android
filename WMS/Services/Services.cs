@@ -1,6 +1,6 @@
 ﻿using API;
-using Microsoft.AppCenter.Analytics;
-using Microsoft.AppCenter.Crashes;
+
+
 using Newtonsoft.Json;
 using System.Net;
 using System.Text;

@@ -5,7 +5,7 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-using Microsoft.AppCenter.Crashes;
+
 using WMS.App;
 using Stream = Android.Media.Stream;
 using System.Collections.Generic;

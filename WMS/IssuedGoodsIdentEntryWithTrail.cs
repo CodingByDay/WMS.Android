@@ -16,8 +16,8 @@ using Android.Views;
 using Android.Widget;
 using BarCode2D_Receiver;
 using Java.Lang;
-using Microsoft.AppCenter.Analytics;
-using Microsoft.AppCenter.Crashes;
+
+
 using Microsoft.SqlServer.Server;
 using Newtonsoft.Json;
 using WMS.App;

@@ -15,7 +15,7 @@ using Android.Views;
 using Android.Widget;
 using BarCode2D_Receiver;
 using Com.Barcode;
-using Microsoft.AppCenter.Crashes;
+
 using Newtonsoft.Json;
 using WMS.App;
 using TrendNET.WMS.Core.Data;
@@ -29,7 +29,7 @@ using AlertDialog = Android.App.AlertDialog;
 using Android.Graphics;
 using static AndroidX.ConstraintLayout.Widget.ConstraintSet;
 using Org.Xml.Sax;
-using Microsoft.AppCenter.Analytics;
+
 using System;
 using Com.Jsibbold.Zoomage;
 using System.Data.Common;

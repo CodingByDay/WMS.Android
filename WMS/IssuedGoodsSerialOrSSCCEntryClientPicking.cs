@@ -17,8 +17,8 @@ using Android.Text.Util;
 using Android.Views;
 using Android.Widget;
 using BarCode2D_Receiver;
-using Microsoft.AppCenter.Analytics;
-using Microsoft.AppCenter.Crashes;
+
+
 using Newtonsoft.Json;
 using WMS.App;
 using TrendNET.WMS.Core.Data;

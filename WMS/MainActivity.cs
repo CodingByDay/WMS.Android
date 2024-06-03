@@ -10,11 +10,9 @@ using Android.Util;
 using Android.Content;
 using Plugin.Settings.Abstractions;
 using System.Linq;
-using Microsoft.AppCenter;
-using Microsoft.AppCenter.Analytics;
-using Microsoft.AppCenter.Crashes;
+
 using static Android.App.ActionBar;
-using Microsoft.AppCenter.Distribute;
+
 using Uri = System.Uri;
 using System.Threading.Tasks;
 using AlertDialog = Android.App.AlertDialog;
@@ -67,7 +65,6 @@ namespace WMS
         private static readonly HttpClient httpClient = new HttpClient();
         const int RequestPermissionsId = 0;
         bool permissionsGranted = false;
-        private int counterPermission = 0;
 
         public object MenuInflaterFinal { get; private set; }
 
@@ -160,19 +157,11 @@ namespace WMS
         protected async override void OnCreate(Bundle savedInstanceState)
         {
             settings.restart = false;
-            Distribute.SetEnabledAsync(true);
-            AppCenter.Start("ec2ca4ce-9e86-4620-9e90-6ecc5cda0e0e",
-            typeof(Distribute));
-
+      
             ChangeTheOrientation();
             base.OnCreate(savedInstanceState);
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             SetContentView(Resource.Layout.activity_main);
-
-            Distribute.ReleaseAvailable = OnReleaseAvailable;
-
-   
-
 
             Password = FindViewById<EditText>(Resource.Id.tbPassword);
             Password.InputType = Android.Text.InputTypes.NumberVariationPassword |
@@ -199,16 +188,13 @@ namespace WMS
             InitializeSentryAsync();
 
             // Check and request necessary permissions at startup because of Google Play policies. 29.05.2024 Janko Jovièiæ
-            RequestNecessaryPermissions();
+            // RequestNecessaryPermissions(); // For now not needed. 31.05.2024 Janko Jovièiæ
         }
 
         void RequestNecessaryPermissions()
         {
             string[] requiredPermissions = new string[]
             {
-                Manifest.Permission.BluetoothConnect,
-                Manifest.Permission.BluetoothScan,
-                Manifest.Permission.BluetoothAdvertise,
                 Manifest.Permission.Bluetooth
             };
 
@@ -233,6 +219,7 @@ namespace WMS
                 ActivityCompat.RequestPermissions(this, permissionsToRequest.ToArray(), RequestPermissionsId);
             }
 
+
             else
             {
                 // All permissions are already granted
@@ -242,9 +229,9 @@ namespace WMS
 
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Permission[] grantResults)
         {
-            if (counterPermission == permissions.Length)
+            if (requestCode == RequestPermissionsId)
             {
-                bool allGranted = grantResults.All(result => result == Permission.Granted);
+                bool allGranted = grantResults.Any(x => x == Permission.Granted);
 
                 if (allGranted)
                 {
@@ -257,7 +244,7 @@ namespace WMS
                 }
             }
             
-            counterPermission += 1;
+
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }
 
@@ -363,11 +350,14 @@ namespace WMS
                 LoaderManifest.LoaderManifestLoop(this);
             }
         }
+
         public override bool DispatchKeyEvent(Android.Views.KeyEvent e)
         {
             if (e.KeyCode == Keycode.Enter) { BtnRegistrationEvent_Click(this, null); }
             return base.DispatchKeyEvent(e);
         }
+
+
         private void ChangeTheOrientation()
         {
             if (settings.tablet == true)
@@ -380,37 +370,9 @@ namespace WMS
             }
         }
 
-        private bool OnReleaseAvailable(ReleaseDetails releaseDetails)
-        {
-            try
-            {
-                string versionName = releaseDetails.ShortVersion;
-                string versionCodeOrBuildNumber = releaseDetails.Version;
-                string releaseNotes = releaseDetails.ReleaseNotes;
-                Uri releaseNotesUrl = releaseDetails.ReleaseNotesUrl;
-                var title = "Version " + versionName + " available!";
-                popupDialog = new Dialog(this);
-                popupDialog.SetContentView(Resource.Layout.update);
-                popupDialog.Window.SetSoftInputMode(SoftInput.AdjustResize);
-                popupDialog.Show();
-                popupDialog.Window.SetLayout(LayoutParams.MatchParent, LayoutParams.WrapContent);
-                popupDialog.Window.SetBackgroundDrawable(new ColorDrawable(Color.ParseColor("#081a45")));
+        
 
-                // Access Pop-up layout fields like below
-                btnOkRestart = popupDialog.FindViewById<Button>(Resource.Id.btnOk);
-                btnOkRestart.Click += BtnOk_Click;
-                return true;
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-        }
-
-        private void BtnOk_Click(object sender, EventArgs e)
-        {
-            Distribute.NotifyUpdateAction(UpdateAction.Update);
-        }
+    
 
         public override bool OnOptionsItemSelected(IMenuItem item)
         {

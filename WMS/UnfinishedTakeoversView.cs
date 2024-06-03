@@ -20,7 +20,7 @@ using Android.Content.PM;
 using Android.Graphics;
 using WMS.App;
 using Android.Net;
-using Microsoft.AppCenter.Crashes;
+
 
 using AndroidX.AppCompat.App;
 using AlertDialog = Android.App.AlertDialog;

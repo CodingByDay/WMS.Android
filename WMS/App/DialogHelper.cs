@@ -1,5 +1,5 @@
 ﻿using Android.Content;
-using Microsoft.AppCenter.Crashes;
+
 
 public static class DialogHelper
 {

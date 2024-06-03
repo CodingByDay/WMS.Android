@@ -12,8 +12,8 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Java.Util;
-using Microsoft.AppCenter.Analytics;
-using Microsoft.AppCenter.Crashes;
+
+
 
 using WMS.App;
 using TrendNET.WMS.Device.Services;

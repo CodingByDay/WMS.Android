@@ -1,4 +1,4 @@
-﻿using Microsoft.AppCenter.Analytics;
+﻿
 using TrendNET.WMS.Core.Data;
 
 public class ApiResultSet

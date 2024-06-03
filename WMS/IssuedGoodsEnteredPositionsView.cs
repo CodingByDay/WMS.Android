@@ -11,7 +11,7 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-using Microsoft.AppCenter.Crashes;
+
 using Org.Apache.Http;
 using WMS.App;
 using TrendNET.WMS.Core.Data;

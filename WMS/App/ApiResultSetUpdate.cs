@@ -1,5 +1,5 @@
 ﻿using Android.App.AppSearch;
-using Microsoft.AppCenter.Analytics;
+
 using TrendNET.WMS.Core.Data;
 
 

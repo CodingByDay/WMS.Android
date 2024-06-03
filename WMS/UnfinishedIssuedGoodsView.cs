@@ -13,7 +13,7 @@ using Android.Speech.Tts;
 using Android.Views;
 using Android.Widget;
 using Java.Util.Concurrent;
-using Microsoft.AppCenter.Crashes;
+
 using WMS.App;
 using TrendNET.WMS.Core.Data;
 using TrendNET.WMS.Device.App;

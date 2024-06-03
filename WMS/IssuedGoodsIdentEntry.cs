@@ -14,7 +14,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using BarCode2D_Receiver;
-using Microsoft.AppCenter.Crashes;
+
 using Newtonsoft.Json;
 using WMS.App;
 using TrendNET.WMS.Core.Data;
@@ -22,7 +22,7 @@ using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
 using AndroidX.AppCompat.App;
 using AlertDialog = Android.App.AlertDialog;
-using Microsoft.AppCenter.Analytics;
+
 using AndroidX.Lifecycle;
 using System.Data.Common;
 using System.Collections.Concurrent;
