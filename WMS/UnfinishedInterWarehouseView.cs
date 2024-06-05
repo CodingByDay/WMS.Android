@@ -76,6 +76,8 @@ namespace WMS
                 SetContentView(Resource.Layout.UnfinishedInterWarehouseView);
             }
 
+            LoaderManifest.LoaderManifestLoopResources(this);
+
             AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
             var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
             _customToolbar.SetNavigationIcon(settings.RootURL + "/Services/Logo");
@@ -118,6 +120,8 @@ namespace WMS
             LinearLayout yourLinearLayout = FindViewById<LinearLayout>(Resource.Id.fling);
             // Initialize the GestureDetector
             yourLinearLayout.SetOnTouchListener(gestureListener);
+
+            LoaderManifest.LoaderManifestLoopStop(this);
         }
 
         private void DataList_ItemLongClick(object sender, AdapterView.ItemLongClickEventArgs e)
@@ -491,7 +495,7 @@ namespace WMS
 
                     try
                     {
-                        positions = await AsyncServices.AsyncServices.GetObjectListAsync("mh", "E");
+                        positions = await AsyncServices.AsyncServices.GetObjectListAsync("mhp", "E");
                     }
                     catch (Exception) {
 

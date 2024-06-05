@@ -64,7 +64,7 @@ namespace WMS
         private ColorMatrixColorFilter highlightFilter;
         private static readonly HttpClient httpClient = new HttpClient();
         const int RequestPermissionsId = 0;
-        bool permissionsGranted = false;
+        bool permissionsGranted = true;
 
         public object MenuInflaterFinal { get; private set; }
 
@@ -92,7 +92,9 @@ namespace WMS
                 }
 
                 var inactivity = new Intent(this, typeof(Inactivity));
+
                 StartService(inactivity);
+
                 if (IsOnline())
                 {
                     if (string.IsNullOrEmpty(Password.Text.Trim())) { return; }

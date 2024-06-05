@@ -31,6 +31,7 @@ using Exception = System.Exception;
 using AndroidX.AppCompat.App;
 using Android.Content.PM;
 using System.Data.Common;
+using WMS.External;
 
 namespace WMS
 {
@@ -776,8 +777,7 @@ namespace WMS
             HelpfulMethods.clearTheStack(this);
         }
 
-   
-        private async void BtConfirm_Click(object sender, EventArgs e)
+        private void BtConfirm_Click(object sender, EventArgs e)
         {
             try
             {
@@ -815,6 +815,7 @@ namespace WMS
 
                 if (SaveMoveHead())
                 {
+                    Base.Store.isUpdate = false;
                     if (trails.Count() - 1 == 0)
                     {
                         var lastItem = new NameValueObject("LastItem");
@@ -826,14 +827,10 @@ namespace WMS
                         Intent i = new Intent(Application.Context, typeof(IssuedGoodsSerialOrSSCCEntry));
                         i.PutExtra("ident", ident);
                         i.PutExtra("qty", qty);
-
-
                         string jsonString = JsonConvert.SerializeObject(obj);
-
                         i.PutExtra("selected", jsonString);
                         StartActivity(i);
                         Finish();
-
                     }
                     else
                     {
@@ -844,7 +841,6 @@ namespace WMS
                         i.PutExtra("ident", ident);
                         i.PutExtra("qty", qty);
                         string jsonString = JsonConvert.SerializeObject(obj);
-
                         i.PutExtra("selected", jsonString);
                         StartActivity(i);
                         Finish();

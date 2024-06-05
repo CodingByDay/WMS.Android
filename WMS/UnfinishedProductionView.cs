@@ -72,7 +72,7 @@ namespace WMS
                 RequestedOrientation = ScreenOrientation.Portrait;
                 SetContentView(Resource.Layout.UnfinishedProductionView);
             }
-
+            LoaderManifest.LoaderManifestLoopResources(this);
             AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
             var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
             _customToolbar.SetNavigationIcon(settings.RootURL + "/Services/Logo");
@@ -117,8 +117,13 @@ namespace WMS
             LinearLayout yourLinearLayout = FindViewById<LinearLayout>(Resource.Id.fling);
             // Initialize the GestureDetector
             yourLinearLayout.SetOnTouchListener(gestureListener);
-            }
-            public void OnSwipeLeft()
+
+
+            LoaderManifest.LoaderManifestLoopStop(this);
+
+
+        }
+        public void OnSwipeLeft()
             {
                 displayedPosition--;
                 if (displayedPosition < 0) { displayedPosition = positions.Items.Count - 1; }
@@ -483,7 +488,7 @@ namespace WMS
             try
             {
               
-                positions = await AsyncServices.AsyncServices.GetObjectListAsync("mh",  "W");
+                positions = await AsyncServices.AsyncServices.GetObjectListAsync("mhp",  "W");
              
                 if (positions == null)
                 {

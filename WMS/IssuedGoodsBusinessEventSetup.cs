@@ -416,6 +416,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             else
             {
                 lbExtra.Visibility = ViewStates.Visible;
+
                 if (settings.tablet)
                 {
                     rlExtra.Visibility = ViewStates.Visible;

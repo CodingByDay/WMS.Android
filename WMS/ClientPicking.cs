@@ -125,7 +125,7 @@ namespace WMS
         private void BtDisplayPositions_Click(object sender, EventArgs e)
         {
             StartActivity(typeof(IssuedGoodsEnteredPositionsView));
-            HelpfulMethods.clearTheStack(this);
+            Finish();
         }
 
      
@@ -162,65 +162,74 @@ namespace WMS
 
         private bool SaveMoveHead()
         {
-            var obj = adapter.returnSelected();
-            var ident = obj.Ident;
-            var location = obj.Location;
-            var qty = Convert.ToDouble(obj.Quantity);
-            var extraData = new NameValueObject("ExtraData");
-            extraData.SetString("Location", location);
-            extraData.SetDouble("Qty", qty);
-            InUseObjects.Set("ExtraData", extraData);
-            string error;
             try
             {
-                var openIdent = Services.GetObject("id", ident, out error);
-                if (openIdent == null)
-                {
-                    string WebError = string.Format($"{Resources.GetString(Resource.String.s229)}" + error);
-                    Toast.MakeText(this, WebError, ToastLength.Long).Show();
-                    return false;
-                }
-                InUseObjects.Set("OpenIdent", openIdent);
-            }
-            catch (Exception ex)
-            {
-                SentrySdk.CaptureException(ex);
-                return false;
-            }
-            if (!moveHead.GetBool("Saved"))
-            {
+                var obj = adapter.returnSelected();
+                var ident = obj.Ident;
+                var location = obj.Location;
+                var qty = Convert.ToDouble(obj.Quantity);
+                var extraData = new NameValueObject("ExtraData");
+                extraData.SetString("Location", location);
+                extraData.SetDouble("Qty", qty);
+                InUseObjects.Set("ExtraData", extraData);
+                string error;
                 try
                 {
-                    // warehouse
-                    moveHead.SetInt("Clerk", Services.UserID());
-                    moveHead.SetString("CurrentFlow", Base.Store.modeIssuing.ToString());
-                    moveHead.SetString("Type", "P");
-                    moveHead.SetString("Receiver", moveHead.GetString("Receiver"));
-                    moveHead.SetString("LinkKey", orderCurrent.Order);
+                    var openIdent = Services.GetObject("id", ident, out error);
 
-                    var savedMoveHead = Services.SetObject("mh", moveHead, out error);
-                    if (savedMoveHead == null)
+                    if (openIdent == null)
                     {
-                        string WebError = string.Format($"{Resources.GetString(Resource.String.s213)}" + error);
+                        string WebError = string.Format($"{Resources.GetString(Resource.String.s229)}" + error);
                         Toast.MakeText(this, WebError, ToastLength.Long).Show();
                         return false;
                     }
-                    else
-                    {
-                        moveHead.SetInt("HeadID", savedMoveHead.GetInt("HeadID"));
-                        moveHead.SetBool("Saved", true);
-                        return true;
-                    }
+
+                    InUseObjects.Set("OpenIdent", openIdent);
                 }
                 catch (Exception ex)
                 {
-                    SentrySdk.CaptureException(ex);
+                    SentrySdk.CaptureMessage("Error" + ex.Message);
                     return false;
                 }
-            }
-            else
+                if (!moveHead.GetBool("Saved"))
+                {
+                    try
+                    {
+                        // warehouse
+                        moveHead.SetInt("Clerk", Services.UserID());
+                        moveHead.SetString("CurrentFlow", Base.Store.modeIssuing.ToString());
+                        moveHead.SetString("Type", "P");
+                        moveHead.SetString("Receiver", moveHead.GetString("Receiver"));
+                        moveHead.SetString("LinkKey", orderCurrent.Order);
+
+                        var savedMoveHead = Services.SetObject("mh", moveHead, out error);
+                        if (savedMoveHead == null)
+                        {
+                            string WebError = string.Format($"{Resources.GetString(Resource.String.s213)}" + error);
+                            Toast.MakeText(this, WebError, ToastLength.Long).Show();
+                            return false;
+                        }
+                        else
+                        {
+                            moveHead.SetInt("HeadID", savedMoveHead.GetInt("HeadID"));
+                            moveHead.SetBool("Saved", true);
+                            return true;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        SentrySdk.CaptureMessage("Error" + ex.Message);
+                        return false;
+                    }
+                }
+                else
+                {
+                    return true;
+                }
+            } catch (Exception ex)
             {
-                return true;
+                SentrySdk.CaptureMessage("Error" + ex.Message);
+                return false;
             }
         }
 
@@ -402,32 +411,37 @@ namespace WMS
 
         public void GetBarcode(string barcode)
         {
-            if (barcode != "Scan fail" && barcode != "")
+            try
             {
-                if (tbIdentFilter.HasFocus)
+                if (barcode != "Scan fail" && barcode != "")
                 {
-                    
-
-                    tbIdentFilter.Text = barcode;
-                    adapter.Filter(positions, true, tbIdentFilter.Text, true);
-                    if (adapter.returnNumberOfItems() == 0)
+                    if (tbIdentFilter.HasFocus)
                     {
-                        tbIdentFilter.Text = string.Empty;
+
+
+                        tbIdentFilter.Text = barcode;
+                        adapter.Filter(positions, true, tbIdentFilter.Text, true);
+                        if (adapter.returnNumberOfItems() == 0)
+                        {
+                            tbIdentFilter.Text = string.Empty;
+                        }
+                    }
+                    else if (tbLocationFilter.HasFocus)
+                    {
+                        tbLocationFilter.Text = barcode;
+                        adapter.Filter(positions, false, tbLocationFilter.Text, false);
+                        if (adapter.returnNumberOfItems() == 0)
+                        {
+                            tbIdentFilter.Text = string.Empty;
+                        }
                     }
                 }
-                else if (tbLocationFilter.HasFocus)
-                {
-                    
-
-                    tbLocationFilter.Text = barcode;
-                    adapter.Filter(positions, false, tbLocationFilter.Text, false);
-                    if (adapter.returnNumberOfItems() == 0)
-                    {
-                        tbIdentFilter.Text = string.Empty;
-                    }
-                }
+                listener.updateData(adapter.returnData());
             }
-            listener.updateData(adapter.returnData());
+            catch(Exception error)
+            {
+                SentrySdk.CaptureMessage("Error" + error.Message);
+            }
         }
 
         // Class for handling long click

@@ -462,6 +462,7 @@ namespace WMS
         {
             if (SaveMoveHead())
             {
+               Base.Store.isUpdate = false;
                StartActivity(typeof(IssuedGoodsSerialOrSSCCEntry));
                this.Finish();
             }

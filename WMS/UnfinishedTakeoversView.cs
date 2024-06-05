@@ -76,6 +76,7 @@ namespace WMS
                 RequestedOrientation = ScreenOrientation.Portrait;
                 SetContentView(Resource.Layout.UnfinishedTakeoversView);
             }
+            LoaderManifest.LoaderManifestLoopResources(this);
             AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
             var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
             _customToolbar.SetNavigationIcon(settings.RootURL + "/Services/Logo");
@@ -124,6 +125,7 @@ namespace WMS
             _broadcastReceiver.ConnectionStatusChanged += OnNetworkStatusChanged;
             Application.Context.RegisterReceiver(_broadcastReceiver,
             new IntentFilter(ConnectivityManager.ConnectivityAction));
+            LoaderManifest.LoaderManifestLoopStop(this);
         }
 
         private void DataList_ItemClick(object? sender, AdapterView.ItemClickEventArgs e)
@@ -495,7 +497,7 @@ namespace WMS
         {
             try
             {
-                positions = await AsyncServices.AsyncServices.GetObjectListAsync("mh", "I");
+                positions = await AsyncServices.AsyncServices.GetObjectListAsync("mhp", "I");
                     
                 if (positions == null)
                 {
