@@ -388,7 +388,7 @@ namespace WMS
                 */
 
                 tbPacking.SelectAll();
-                CheckData();
+                FilterData();
             }
             initialDropdownEvent = false;
         }
@@ -907,7 +907,6 @@ namespace WMS
                 tbLocation.Text = element.aclocation;
                 // Do stuff and allow creating the position
                 createPositionAllowed = true;
-
 
 
                 tbPacking.PostDelayed(() => {

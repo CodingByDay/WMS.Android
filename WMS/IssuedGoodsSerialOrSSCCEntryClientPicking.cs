@@ -795,6 +795,8 @@ namespace WMS
                     stock = qtyCheck;
                     tbPacking.Text = qtyCheck.ToString();
                     await GetConnectedPositions(receivedTrail.Order, receivedTrail.No, receivedTrail.Ident);
+
+                    FilterData();
                 }
             }
 
