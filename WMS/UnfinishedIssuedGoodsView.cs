@@ -362,7 +362,6 @@ namespace WMS
                     break;
             }
 
-            HelpfulMethods.clearTheStack(this);
             Finish();
         }
 

@@ -129,7 +129,6 @@ namespace WMS
                 listData = FindViewById<ListView>(Resource.Id.listData);
                 dataAdapter = UniversalAdapterHelper.GetIssuedGoodsSerialOrSSCCEntryClientPicking(this, items);
                 listData.Adapter = dataAdapter;
-
             }
             else
             {
