@@ -96,7 +96,7 @@ namespace WMS
                 RequestedOrientation = ScreenOrientation.Portrait;
                 SetContentView(Resource.Layout.TakeOverSerialOrSSCCEntry);
             }
-
+            LoaderManifest.LoaderManifestLoopResources(this);
             AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
             var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
             _customToolbar.SetNavigationIcon(settings.RootURL + "/Services/Logo");
@@ -147,6 +147,8 @@ namespace WMS
             {
                 FillTheList();
             }
+
+            LoaderManifest.LoaderManifestLoopStop(this);
         }
 
         private void fillListAdapter()
@@ -289,12 +291,13 @@ namespace WMS
                 // This flow is for idents.
                 var order = Base.Store.OpenOrder;
                 var code2d = Base.Store.code2D;
+                packaging = order.Packaging ?? 0;
+                quantity = order.Quantity ?? 0;
                 if (order != null)
                 {
                     if(order.Packaging!=-1)
                     {
-                        packaging = order.Packaging ?? 0;
-                        quantity = order.Quantity ?? 0;
+   
                         lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + quantity.ToString(CommonData.GetQtyPicture()) + " )";
                         tbPacking.Text = packaging.ToString();
                         stock = quantity;
@@ -308,7 +311,10 @@ namespace WMS
              
                     GetConnectedPositions(order.Order, order.Position ?? -1, order.Ident);
                     tbLocation.Text = CommonData.GetSetting("DefaultPaletteLocation");
-                    
+
+                    tbPacking.RequestFocus();
+                    tbPacking.SelectAll();
+
                 } else if (code2d != null)
                 {
                    

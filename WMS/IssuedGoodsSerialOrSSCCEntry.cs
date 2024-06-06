@@ -276,7 +276,6 @@ namespace WMS
             base.OnCreate(savedInstanceState);
             SetTheme(Resource.Style.AppTheme_NoActionBar);
             // Start the loader
-            LoaderManifest.LoaderManifestLoopResources(this);
             if (settings.tablet)
             {
                 RequestedOrientation = ScreenOrientation.Landscape;
@@ -292,6 +291,8 @@ namespace WMS
                 RequestedOrientation = ScreenOrientation.Portrait;
                 SetContentView(Resource.Layout.IssuedGoodsSerialOrSSCCEntry);
             }
+            LoaderManifest.LoaderManifestLoopResources(this);
+
             // Definitions
             AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
             var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
@@ -345,8 +346,7 @@ namespace WMS
             // Color the fields that can be scanned
             ColorFields();
 
-            // Stop the loader
-            LoaderManifest.LoaderManifestLoopStop(this);
+        
            
             SetUpProcessDependentButtons();
             // Main logic for the entry
@@ -356,6 +356,9 @@ namespace WMS
             {
                 fillItems();
             }
+
+            // Stop the loader
+            LoaderManifest.LoaderManifestLoopStop(this);
         }
         private bool initialDropdownEvent = true;
 
@@ -1159,8 +1162,8 @@ namespace WMS
                         if (receivedTrail.Packaging != -1 && Double.TryParse(receivedTrail.Qty, out double qty) && receivedTrail.Packaging <= qty)
                         {
                             packaging = receivedTrail.Packaging;
-                            lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + packaging.ToString(CommonData.GetQtyPicture()) + " )";
-                            stock = packaging;
+                            lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + quantity.ToString(CommonData.GetQtyPicture()) + " )";
+                            stock = quantity;
                             tbPacking.Text = packaging.ToString();
                         } else
                         {
@@ -1211,7 +1214,7 @@ namespace WMS
 
                             if (order.Packaging != -1 && packaging <= quantity)
                             {                         
-                                lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + packaging.ToString(CommonData.GetQtyPicture()) + " )";
+                                lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + quantity.ToString(CommonData.GetQtyPicture()) + " )";
                                 stock = quantity;
                             }
                             else

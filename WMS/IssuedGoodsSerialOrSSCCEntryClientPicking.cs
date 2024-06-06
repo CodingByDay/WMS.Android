@@ -137,6 +137,7 @@ namespace WMS
                 RequestedOrientation = ScreenOrientation.Portrait;
                 SetContentView(Resource.Layout.IssuedGoodsSerialOrSSCCEntryClientPicking);
             }
+            LoaderManifest.LoaderManifestLoopResources(this);
             // Definitions
             AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
             var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
@@ -207,13 +208,13 @@ namespace WMS
                 fillItems();
             }
 
-
-
             if (ssccRow.Visibility != ViewStates.Visible && serialRow.Visibility != ViewStates.Visible)
             {
                 tbPacking.RequestFocus();
                 tbPacking.SelectAll();
             }
+
+            LoaderManifest.LoaderManifestLoopStop(this);
         }
 
 

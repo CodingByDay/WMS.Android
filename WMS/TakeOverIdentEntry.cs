@@ -29,6 +29,7 @@ using AndroidX.AppCompat.App;
 using AlertDialog = Android.App.AlertDialog;
 
 using System.Data.Common;
+using System.Collections.Concurrent;
 namespace WMS
 {
     [Activity(Label = "TakeOverIdentEntry", ScreenOrientation = ScreenOrientation.Portrait)]
@@ -129,6 +130,12 @@ namespace WMS
             tbIdent.KeyPress += TbIdent_KeyPress;
             tbIdent.AfterTextChanged += TbIdent_AfterTextChanged;
             tbIdent.RequestFocus();
+
+            // These are read only. 6.6.2024 JJ
+            tbOrder.Enabled = false;
+            tbConsignee.Enabled = false;
+            tbDeliveryDeadline.Enabled = false;
+            tbQty.Enabled = false;
         }
 
         private void ListData_ItemLongClick(object? sender, AdapterView.ItemLongClickEventArgs e)
@@ -211,11 +218,26 @@ namespace WMS
 
         private List<string> GetCustomSuggestions(string userInput)
         {
-            // Provide custom suggestions based on userInput
-            // Example: Suggest fruits based on user input
-            return savedIdents
-                .Where(suggestion => suggestion.ToLower().Contains(userInput.ToLower())).Take(10000)
-                .ToList();
+            if (savedIdents != null)
+            {
+                // In order to improve performance try to implement paralel processing. 23.05.2024 Janko Jovičić
+
+                var lowerUserInput = userInput.ToLower();
+                var result = new ConcurrentBag<string>();
+
+                Parallel.ForEach(savedIdents, suggestion =>
+                {
+                    if (suggestion.ToLower().Contains(lowerUserInput))
+                    {
+                        result.Add(suggestion);
+                    }
+                });
+
+                return result.Take(100).ToList();
+            }
+
+            // Service not yet loaded. 6.6.2024 J.J
+            return new List<string>();
         }
         private void OnNetworkStatusChanged(object sender, EventArgs e)
         {
