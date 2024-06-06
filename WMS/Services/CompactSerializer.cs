@@ -55,6 +55,7 @@ namespace TrendNET.WMS.Core.Data
             }
 
             XmlSerializer serializer;
+
             if (serializers.ContainsKey(typeof(T)))
             {
                 serializer = serializers[typeof(T)];

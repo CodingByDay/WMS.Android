@@ -17,8 +17,6 @@ using Android.Text.Util;
 using Android.Views;
 using Android.Widget;
 using BarCode2D_Receiver;
-
-
 using Newtonsoft.Json;
 using WMS.App;
 using TrendNET.WMS.Core.Data;
@@ -29,7 +27,6 @@ using static Android.Graphics.Paint;
 using static Android.Icu.Text.Transliterator;
 using WebApp = TrendNET.WMS.Device.Services.WebApp;
 using System.Text.Json;
-
 using AndroidX.AppCompat.App;
 using AlertDialog = Android.App.AlertDialog;
 using Aspose.Words.Drawing;
@@ -1163,19 +1160,18 @@ namespace WMS
                         if (receivedTrail.Packaging != -1 && Double.TryParse(receivedTrail.Qty, out double qty) && receivedTrail.Packaging <= qty)
                         {
                             packaging = receivedTrail.Packaging;
-                            quantity = Double.Parse(receivedTrail.Qty);                   
-                            lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + quantity.ToString(CommonData.GetQtyPicture()) + " )";
-                            stock = quantity;
+                            lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + packaging.ToString(CommonData.GetQtyPicture()) + " )";
+                            stock = packaging;
                             tbPacking.Text = packaging.ToString();
                         } else
                         {
-                            packaging = receivedTrail.Packaging;
                             quantity = Double.Parse(receivedTrail.Qty);
                             lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + quantity.ToString(CommonData.GetQtyPicture()) + " )";
                             stock = quantity;
                             tbPacking.Text = quantity.ToString();
-                        }                   
-                        
+                        }
+
+                        FilterData();
                     }
                     else if (Base.Store.modeIssuing == 2 && Base.Store.code2D != null)
                     {
@@ -1211,15 +1207,16 @@ namespace WMS
                         
                         if (order != null)
                         {
-                            if (order.Packaging != -1)
-                            {
-                                quantity = order.Quantity ?? 0;
-                                lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + quantity.ToString(CommonData.GetQtyPicture()) + " )";
+                            packaging = order.Packaging ?? 0;
+                            quantity = order.Quantity ?? 0;
+
+                            if (order.Packaging != -1 && packaging <= quantity)
+                            {                         
+                                lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + packaging.ToString(CommonData.GetQtyPicture()) + " )";
                                 stock = quantity;
                             }
                             else
                             {
-                                quantity = order.Quantity ?? 0;
                                 lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + quantity.ToString(CommonData.GetQtyPicture()) + " )";
                                 stock = quantity;
                             }
@@ -1235,7 +1232,11 @@ namespace WMS
                                 Android.Resource.Layout.SimpleSpinnerItem, adapterLocations);
                                 adapterLocation.SetDropDownViewResource(Android.Resource.Layout.SimpleSpinnerDropDownItem);
                                 cbMultipleLocations.Adapter = adapterLocation;
+
                             }
+
+                            FilterData();
+
                         }
                     }
                 }

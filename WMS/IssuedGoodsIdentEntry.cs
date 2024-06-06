@@ -182,6 +182,7 @@ namespace WMS
 
         private void FillDisplayedOrderInfo()
         {
+           
             if ((openIdent != null) && (orders != null) && (orders.Count > 0))
             {
                 lbOrderInfo.Text = $"{Resources.GetString(Resource.String.s14)} (" + (displayedOrder + 1).ToString() + "/" + orders.Count.ToString() + ")";
@@ -331,6 +332,13 @@ namespace WMS
             _broadcastReceiver.ConnectionStatusChanged += OnNetworkStatusChanged;
             Application.Context.RegisterReceiver(_broadcastReceiver,
             new IntentFilter(ConnectivityManager.ConnectivityAction));
+
+
+            // These are read only. 6.6.2024 JJ
+            tbOrder.Enabled = false;
+            tbConsignee.Enabled = false;
+            tbDeliveryDeadline.Enabled = false;
+            tbQty.Enabled = false;
         }
 
 
@@ -393,20 +401,26 @@ namespace WMS
 
         private List<string> GetCustomSuggestions(string userInput)
         {
-            // In order to improve performance try to implement paralel processing. 23.05.2024 Janko Jovičić
-
-            var lowerUserInput = userInput.ToLower();
-            var result = new ConcurrentBag<string>();
-
-            Parallel.ForEach(savedIdents, suggestion =>
+            if (savedIdents != null)
             {
-                if (suggestion.ToLower().Contains(lowerUserInput))
-                {
-                    result.Add(suggestion);
-                }
-            });
+                // In order to improve performance try to implement paralel processing. 23.05.2024 Janko Jovičić
 
-            return result.Take(100).ToList();
+                var lowerUserInput = userInput.ToLower();
+                var result = new ConcurrentBag<string>();
+
+                Parallel.ForEach(savedIdents, suggestion =>
+                {
+                    if (suggestion.ToLower().Contains(lowerUserInput))
+                    {
+                        result.Add(suggestion);
+                    }
+                });
+
+                return result.Take(100).ToList();
+            }
+
+            // Service not yet loaded. 6.6.2024 J.J
+            return new List<string>();
         }
 
 
