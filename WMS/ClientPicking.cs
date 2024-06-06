@@ -70,6 +70,7 @@ namespace WMS
                 RequestedOrientation = ScreenOrientation.Portrait;
                 SetContentView(Resource.Layout.ClientPicking);
             }
+
             AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
             var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
             _customToolbar.SetNavigationIcon(settings.RootURL + "/Services/Logo");
@@ -345,6 +346,7 @@ namespace WMS
 
                         if (no != null)
                         {
+                            lvi.Name = name;
                             lvi.No = (int)no;
                             lvi.Order = key;
                             lvi.Ident = ident;

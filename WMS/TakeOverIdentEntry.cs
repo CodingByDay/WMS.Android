@@ -416,6 +416,9 @@ namespace WMS
 
         private async void ProcessIdent()
         {
+            // Disable unwanted crashes because of not waiting for the result. 6.6.2024 Janko Jovičić
+            LoaderManifest.LoaderManifestLoopResources(this);
+
             var ident = tbIdent.Text.Trim();
             if (string.IsNullOrEmpty(ident)) { return; }
             try
@@ -504,6 +507,9 @@ namespace WMS
             {
                 SentrySdk.CaptureException(err);
                 return;
+            } finally
+            {
+                LoaderManifest.LoaderManifestLoopStop(this);
             }
         }
         private void FillDisplayedOrderInfo()

@@ -651,7 +651,7 @@ namespace WMS
                 Trail selected = data_.ElementAt(position);
                 AlertDialog.Builder builder = new AlertDialog.Builder(context_);
                 builder.SetTitle($"{context_.Resources.GetString(Resource.String.s256)}");
-                builder.SetMessage($"{context_.Resources.GetString(Resource.String.s257)}: {selected.Ident}\n{context_.Resources.GetString(Resource.String.s260)}: {selected.Name}\n{context_.Resources.GetString(Resource.String.s14)}: {selected.Key}");
+                builder.SetMessage($"{context_.Resources.GetString(Resource.String.s257)}: {selected.Ident}\n{context_.Resources.GetString(Resource.String.s258)}: {selected.Location}\n{context_.Resources.GetString(Resource.String.s259)}: {selected.Key}\n{context_.Resources.GetString(Resource.String.s260)}: {selected.Name}");
                 builder.SetPositiveButton("OK", (s, args) =>
                 {
                 });
