@@ -354,21 +354,19 @@ namespace WMS
 
         private void BtDelete_Click(object sender, EventArgs e)
         {
-            popupDialog = new Dialog(this);
-            popupDialog.SetContentView(Resource.Layout.YesNoPopUp);
-            popupDialog.Window.SetSoftInputMode(SoftInput.AdjustResize);
-            popupDialog.Show();
-
-            popupDialog.Window.SetLayout(LayoutParams.MatchParent, LayoutParams.WrapContent);
-            popupDialog.Window.SetBackgroundDrawable(new ColorDrawable(Color.ParseColor("#081a45")));
-
-
-            btnYes = popupDialog.FindViewById<Button>(Resource.Id.btnYes);
-            btnNo = popupDialog.FindViewById<Button>(Resource.Id.btnNo);
-
-            btnYes.Click += BtnYes_Click;
-            btnNo.Click += BtnNo_Click;
-          
+            if (positions.Items.Count > 0)
+            {
+                popupDialog = new Dialog(this);
+                popupDialog.SetContentView(Resource.Layout.YesNoPopUp);
+                popupDialog.Window.SetSoftInputMode(SoftInput.AdjustResize);
+                popupDialog.Show();
+                popupDialog.Window.SetLayout(LayoutParams.MatchParent, LayoutParams.WrapContent);
+                popupDialog.Window.SetBackgroundDrawable(new ColorDrawable(Color.ParseColor("#081a45")));
+                btnYes = popupDialog.FindViewById<Button>(Resource.Id.btnYes);
+                btnNo = popupDialog.FindViewById<Button>(Resource.Id.btnNo);
+                btnYes.Click += BtnYes_Click;
+                btnNo.Click += BtnNo_Click;
+            }
         }
 
         private void BtnNo_Click(object sender, EventArgs e)

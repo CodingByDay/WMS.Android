@@ -122,7 +122,6 @@ namespace WMS
             base.OnCreate(savedInstanceState);
             SetTheme(Resource.Style.AppTheme_NoActionBar);
             // Start the loader
-            LoaderManifest.LoaderManifestLoopResources(this);
             if (settings.tablet)
             {
                 RequestedOrientation = ScreenOrientation.Landscape;

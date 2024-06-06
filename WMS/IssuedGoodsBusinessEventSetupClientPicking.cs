@@ -76,7 +76,6 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             _customToolbar.SetNavigationIcon(settings.RootURL + "/Services/Logo");
             SetSupportActionBar(_customToolbar._toolbar);
             SupportActionBar.SetDisplayShowTitleEnabled(false);
-            LoaderManifest.LoaderManifestLoopResources(this);
             cbDocType = FindViewById<CustomAutoCompleteTextView>(Resource.Id.cbDocType);
             cbWarehouse = FindViewById<CustomAutoCompleteTextView>(Resource.Id.cbWarehouse);
             cbExtra = FindViewById<CustomAutoCompleteTextView>(Resource.Id.cbExtra);

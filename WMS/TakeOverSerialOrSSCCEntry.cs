@@ -297,7 +297,6 @@ namespace WMS
                 {
                     if(order.Packaging!=-1)
                     {
-   
                         lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + quantity.ToString(CommonData.GetQtyPicture()) + " )";
                         tbPacking.Text = packaging.ToString();
                         stock = quantity;

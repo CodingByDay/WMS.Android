@@ -368,18 +368,22 @@ namespace WMS
 
         private void BtDelete_Click(object sender, EventArgs e)
         {
-            popupDialog = new Dialog(this);
-            popupDialog.SetContentView(Resource.Layout.YesNoPopUp);
-            popupDialog.Window.SetSoftInputMode(SoftInput.AdjustResize);
-            popupDialog.Show();
-            popupDialog.Window.SetLayout(LayoutParams.MatchParent, LayoutParams.WrapContent);
-            popupDialog.Window.SetBackgroundDrawable(new ColorDrawable(Color.ParseColor("#081a45")));
+            if (positions.Items.Count > 0)
+            {
 
-            // Access Popup layout fields like below
-            btnYes = popupDialog.FindViewById<Button>(Resource.Id.btnYes);
-            btnNo = popupDialog.FindViewById<Button>(Resource.Id.btnNo);
-            btnYes.Click += BtnYes_Click;
-            btnNo.Click += BtnNo_Click; 
+                popupDialog = new Dialog(this);
+                popupDialog.SetContentView(Resource.Layout.YesNoPopUp);
+                popupDialog.Window.SetSoftInputMode(SoftInput.AdjustResize);
+                popupDialog.Show();
+                popupDialog.Window.SetLayout(LayoutParams.MatchParent, LayoutParams.WrapContent);
+                popupDialog.Window.SetBackgroundDrawable(new ColorDrawable(Color.ParseColor("#081a45")));
+
+                // Access Popup layout fields like below
+                btnYes = popupDialog.FindViewById<Button>(Resource.Id.btnYes);
+                btnNo = popupDialog.FindViewById<Button>(Resource.Id.btnNo);
+                btnYes.Click += BtnYes_Click;
+                btnNo.Click += BtnNo_Click;
+            }
         }
 
 
@@ -395,10 +399,7 @@ namespace WMS
         {
             LoaderManifest.LoaderManifestLoopResources(this);
 
-            if (positions.Items.Count == 0)
-            {
-                return;
-            }
+           
             var item = positions.Items[displayedPosition];
             var id = item.GetInt("HeadID");
            
