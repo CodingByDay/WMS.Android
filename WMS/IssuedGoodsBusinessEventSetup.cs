@@ -71,6 +71,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 RequestedOrientation = ScreenOrientation.Portrait;
                 SetContentView(Resource.Layout.IssuedGoodsBusinessEventSetup);
             }
+            LoaderManifest.LoaderManifestLoopResources(this);
             AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
             var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
             _customToolbar.SetNavigationIcon(settings.RootURL + "/Services/Logo");
@@ -117,6 +118,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             cbExtra.ItemClick += CbExtra_ItemClick;
             cbWarehouse.ItemClick += CbWarehouse_ItemClick;
             InitializeAutocompleteControls();
+            LoaderManifest.LoaderManifestLoopStop(this);
         }
 
         private async void InitializeAutocompleteControls()
@@ -272,6 +274,10 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             {
                 try
                 {
+                    RunOnUiThread(() =>
+                    {
+                        LoaderManifest.LoaderManifestLoopResources(this);
+                    });
                     int selectedFlow = Base.Store.modeIssuing;
                     if (selectedFlow == 2)
                     {
@@ -332,6 +338,12 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 catch (Exception ex)
                 {
                     SentrySdk.CaptureException(ex);
+                } finally
+                {
+                    RunOnUiThread(() =>
+                    {
+                        LoaderManifest.LoaderManifestLoopStop(this);
+                    });
                 }
             });
         }
@@ -531,13 +543,11 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
 
                         if (selectedFlow == "2" && byOrder)
                         {
-                            StartActivity(typeof(IssuedGoodsIdentEntryWithTrail));
-                        
+                            StartActivity(typeof(IssuedGoodsIdentEntryWithTrail));                       
                         }
                         else
                         {
-                            StartActivity(typeof(IssuedGoodsIdentEntry));
-                   
+                            StartActivity(typeof(IssuedGoodsIdentEntry));                  
                         }
                     }
                 }

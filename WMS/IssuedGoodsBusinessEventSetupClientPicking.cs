@@ -69,6 +69,8 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 RequestedOrientation = ScreenOrientation.Portrait;
                 SetContentView(Resource.Layout.IssuedGoodsBusinessEventSetupClientPicking);
             }
+            LoaderManifest.LoaderManifestLoopResources(this);
+
             AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
             var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
             _customToolbar.SetNavigationIcon(settings.RootURL + "/Services/Logo");
@@ -115,7 +117,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             cbExtra.ItemClick += CbExtra_ItemClick;
             cbWarehouse.ItemClick += CbWarehouse_ItemClick;
             InitializeAutocompleteControls();
-
+            LoaderManifest.LoaderManifestLoopStop(this);
         }
 
         private async void InitializeAutocompleteControls()
@@ -142,6 +144,10 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             {
                 try
                 {
+                    RunOnUiThread(() =>
+                    {
+                        LoaderManifest.LoaderManifestLoopResources(this);
+                    });
                     try
                     {
                         objectExtra.Clear();
@@ -193,6 +199,9 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 catch (Exception err)
                 {
                     SentrySdk.CaptureException(err);
+                } finally
+                {
+                    LoaderManifest.LoaderManifestLoopStop(this);
                 }
             });
         }

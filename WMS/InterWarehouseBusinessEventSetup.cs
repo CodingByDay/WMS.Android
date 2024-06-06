@@ -55,6 +55,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 RequestedOrientation = ScreenOrientation.Portrait;
                 SetContentView(Resource.Layout.InterWarehouseBusinessEventSetup);
             }
+            LoaderManifest.LoaderManifestLoopResources(this);
             AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
             var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
             _customToolbar.SetNavigationIcon(settings.RootURL + "/Services/Logo");
@@ -127,6 +128,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             cbIssueWH.ItemClick += CbIssueWH_ItemClick;
             cbReceiveWH.ItemClick += CbReceiveWH_ItemClick;
             InitializeAutocompleteControls();
+            LoaderManifest.LoaderManifestLoopStop(this);
         }
 
 
