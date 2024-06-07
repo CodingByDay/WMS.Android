@@ -125,6 +125,17 @@ namespace WMS
                         {
                             RunOnUiThread(() =>
                             {
+
+                                AlertDialog.Builder alert = new AlertDialog.Builder(this);
+                                alert.SetTitle($"{Resources.GetString(Resource.String.s265)}");
+                                alert.SetMessage($"{subjects.Error}");
+                                alert.SetPositiveButton("Ok", (senderAlert, args) =>
+                                {
+                                    alert.Dispose();
+                                });
+                                Dialog dialog = alert.Create();
+                                dialog.Show();
+
                                 SentrySdk.CaptureMessage(subjects.Error);
                                 return;
                             });

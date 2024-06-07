@@ -330,9 +330,31 @@ namespace WMS
                         // This change is made because serial number and sscc are not shown and can result in many duplicate entries. 13.05.2024 Janko Jovičić
                         string sql = $"SELECT DISTINCT acIdent, acName, anQty, anNo, acKey, acSubject, aclocation, anPackQty FROM uWMSOrderItemByKeyOut WHERE acKey = @acKey;";
 
-                        result = await AsyncServices.AsyncServices.GetObjectListBySqlAsync(sql, parameters);                                                                                         
+                        result = await AsyncServices.AsyncServices.GetObjectListBySqlAsync(sql, parameters); 
+                        
+                        if(!result.Success)
+                        {
+                            RunOnUiThread(() =>
+                            {
+                                AlertDialog.Builder alert = new AlertDialog.Builder(this);
+                                alert.SetTitle($"{Resources.GetString(Resource.String.s265)}");
+                                alert.SetMessage($"{result.Error}");
+                                alert.SetPositiveButton("Ok", (senderAlert, args) =>
+                                {
+                                    alert.Dispose();
+                                });
+                                Dialog dialog = alert.Create();
+                                dialog.Show();
+                            });
+
+
+                            return;
+                        }
+
+
+
                         NameValueObjectVariableList = result.ConvertToNameValueObjectList("OpenOrder");
-                        if (result.Success && result.Rows.Count > 0)
+                        if (result != null && result.Success && result.Rows.Count > 0)
                         {
                             trails.Clear();
                             int counter = 0;
@@ -360,7 +382,7 @@ namespace WMS
        
                                 }                                                            
                             }
-                        }
+                        } 
 
 
                         RunOnUiThread(() =>
@@ -446,6 +468,26 @@ namespace WMS
                         string sql = $"SELECT * FROM uWMSOrderItemByKeyOutSUM WHERE acKey = @acKey;";
 
                         result = await AsyncServices.AsyncServices.GetObjectListBySqlAsync(sql, parameters);
+
+                        if(!result.Success)
+                        {
+                            RunOnUiThread(() =>
+                            {
+                                AlertDialog.Builder alert = new AlertDialog.Builder(this);
+                                alert.SetTitle($"{Resources.GetString(Resource.String.s265)}");
+                                alert.SetMessage($"{result.Error}");
+                                alert.SetPositiveButton("Ok", (senderAlert, args) =>
+                                {
+                                    alert.Dispose();
+                                });
+                                Dialog dialog = alert.Create();
+                                dialog.Show();
+                            });
+
+                            return;
+                        }
+
+
                         NameValueObjectVariableList = result.ConvertToNameValueObjectList("OpenOrder");
                         if (result.Success && result.Rows.Count > 0)
                         {

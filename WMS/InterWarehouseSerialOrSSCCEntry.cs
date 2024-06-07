@@ -442,7 +442,7 @@ namespace WMS
 
             var qty = await AsyncServices.AsyncServices.GetObjectListBySqlAsync(sql, parameters);
 
-            if (qty.Success)
+            if (qty != null && qty.Success)
             {
 
                 if (qty.Rows.Count > 0)

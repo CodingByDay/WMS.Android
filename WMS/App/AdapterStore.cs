@@ -35,7 +35,7 @@ namespace WMS.App
             parameters.Add(new Services.Parameter { Name = "acWarehouse", Type = "String", Value = warehouse });
             string sql = "SELECT * FROM uWMSStockByWarehouse WHERE acIdent = @acIdent AND acWarehouse = @acWarehouse;";
             var sqlResult = await AsyncServices.AsyncServices.GetObjectListBySqlAsync(sql, parameters);
-            if(sqlResult.Success)
+            if(sqlResult!=null && sqlResult.Success)
             {
                 if(sqlResult.Rows.Count > 0)
                 {
@@ -55,9 +55,7 @@ namespace WMS.App
                     });
 
                 }
-            }
-
-
+            } 
 
 
             return result;

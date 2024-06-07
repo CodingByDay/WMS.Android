@@ -487,6 +487,16 @@ namespace WMS
                         {
                             RunOnUiThread(() =>
                             {
+                                AlertDialog.Builder alert = new AlertDialog.Builder(this);
+                                alert.SetTitle($"{Resources.GetString(Resource.String.s265)}");
+                                alert.SetMessage($"{subjects.Error}");
+                                alert.SetPositiveButton("Ok", (senderAlert, args) =>
+                                {
+                                    alert.Dispose();
+                                });
+                                Dialog dialog = alert.Create();
+                                dialog.Show();
+
                                 SentrySdk.CaptureMessage(subjects.Error);
                                 return;
                             });
@@ -657,6 +667,20 @@ namespace WMS
                 parameters.Add(new Services.Parameter { Name = "acIdent", Type = "String", Value = ident });
                 string query = $"SELECT * FROM uWMSOrderItemByWarehouseTypeIn WHERE acKey = @acKey AND acIdent = @acIdent";
                 var resultQuery = await AsyncServices.AsyncServices.GetObjectListBySqlAsync(query, parameters);
+
+                if(!resultQuery.Success)
+                {
+                    AlertDialog.Builder alert = new AlertDialog.Builder(this);
+                    alert.SetTitle($"{Resources.GetString(Resource.String.s265)}");
+                    alert.SetMessage($"{resultQuery.Error}");
+                    alert.SetPositiveButton("Ok", (senderAlert, args) =>
+                    {
+                        alert.Dispose();
+                    });
+                    Dialog dialog = alert.Create();
+                    dialog.Show();
+                }
+
                 if (resultQuery.Success && resultQuery.Rows.Count > 0)
                 {
                     var row = resultQuery.Rows[0];

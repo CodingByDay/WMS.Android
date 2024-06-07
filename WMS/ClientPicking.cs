@@ -272,7 +272,7 @@ namespace WMS
                     string sql = $"SELECT * FROM uWMSOrderItemBySubjectTypeWarehouseOut WHERE acDocType = @acDocType AND acSubject = @acSubject AND acWarehouse = @acWarehouse;";
                     result = await AsyncServices.AsyncServices.GetObjectListBySqlAsync(sql, parameters);
                 }
-                if (moveHead != null && result.Success && result.Rows.Count > 0)
+                if (moveHead != null && result != null && result.Success && result.Rows.Count > 0)
                 {
                     int counter = 0;
 
@@ -307,6 +307,20 @@ namespace WMS
                         {
 
                         }
+                    });
+                } else if (!result.Success)
+                {
+                    RunOnUiThread(() =>
+                    {
+                        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+                        alert.SetTitle($"{Resources.GetString(Resource.String.s265)}");
+                        alert.SetMessage($"{result.Error}");
+                        alert.SetPositiveButton("Ok", (senderAlert, args) =>
+                        {
+                            alert.Dispose();
+                        });
+                        Dialog dialog = alert.Create();
+                        dialog.Show();
                     });
                 }
             });
@@ -378,6 +392,20 @@ namespace WMS
                         {
 
                         }
+                    });
+                } else if (!result.Success)
+                {
+                    RunOnUiThread(() =>
+                    {
+                        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+                        alert.SetTitle($"{Resources.GetString(Resource.String.s265)}");
+                        alert.SetMessage($"{result.Error}");
+                        alert.SetPositiveButton("Ok", (senderAlert, args) =>
+                        {
+                            alert.Dispose();
+                        });
+                        Dialog dialog = alert.Create();
+                        dialog.Show();
                     });
                 }
             });

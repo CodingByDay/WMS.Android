@@ -364,14 +364,12 @@ namespace TrendNET.WMS.Device.Services
                 {
                     var startedAt = DateTime.Now;
                     var nvol = CompactSerializer.Deserialize<List<string>>(result);
-                    Log.Write(new LogEntry("END REQUEST: [Device/DeserializeList];" + (DateTime.Now - startedAt).TotalMilliseconds.ToString()));
                     error = "";
                     return nvol;
                 }
                 catch (Exception ex)
                 {
                     error = "Napaka pri tolmačenju odziva web strežnika: " + ex.Message;
-
                     return null;
                 }
             }

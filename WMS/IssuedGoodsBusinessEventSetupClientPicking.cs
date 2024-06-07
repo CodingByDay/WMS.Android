@@ -95,6 +95,17 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 {
                     objectWarehouse.Add(new ComboBoxItem { ID = war.StringValue("acWarehouse"), Text = war.StringValue("acWarehouse") });
                 }
+            } else if(!warehouses.Success)
+            {
+                AlertDialog.Builder alert = new AlertDialog.Builder(this);
+                alert.SetTitle($"{Resources.GetString(Resource.String.s265)}");
+                alert.SetMessage($"{warehouses.Error}");
+                alert.SetPositiveButton("Ok", (senderAlert, args) =>
+                {
+                    alert.Dispose();
+                });
+                Dialog dialog = alert.Create();
+                dialog.Show();
             }
            
             adapterWarehouse = new CustomAutoCompleteAdapter<ComboBoxItem>(this,
@@ -163,10 +174,21 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                                 parameters.Add(new Services.Parameter { Name = "acWarehouse", Type = "String", Value = wh.ID });
 
                                 var subjects = await AsyncServices.AsyncServices.GetObjectListBySqlAsync($"SELECT * FROM uWMSOrderSubjectByTypeWarehouseOut WHERE acDocType = @acDocType AND acWarehouse = @acWarehouse", parameters);
+
+
                                 if (!subjects.Success)
                                 {
                                     RunOnUiThread(() =>
                                     {
+                                        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+                                        alert.SetTitle($"{Resources.GetString(Resource.String.s265)}");
+                                        alert.SetMessage($"{subjects.Error}");
+                                        alert.SetPositiveButton("Ok", (senderAlert, args) =>
+                                        {
+                                            alert.Dispose();
+                                        });
+                                        Dialog dialog = alert.Create();
+                                        dialog.Show();
                                         SentrySdk.CaptureMessage(subjects.Error);
                                         return;
                                     });
@@ -344,9 +366,27 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             docTypes = CommonData.ListDocTypes("P|N");
             initial += 1;
             var result = await AsyncServices.AsyncServices.GetObjectListBySqlAsync("SELECT * FROM uWMSOrderDocTypeOut;");
-            foreach (Row row in result.Rows)
+            if (!result.Success)
             {
-                objectDocType.Add(new ComboBoxItem { ID = row.StringValue("acDocType"), Text = row.StringValue("acDocType") + " - " + row.StringValue("acName") });
+                RunOnUiThread(() =>
+                {
+                    AlertDialog.Builder alert = new AlertDialog.Builder(this);
+                    alert.SetTitle($"{Resources.GetString(Resource.String.s265)}");
+                    alert.SetMessage($"{result.Error}");
+                    alert.SetPositiveButton("Ok", (senderAlert, args) =>
+                    {
+                        alert.Dispose();
+                    });
+                    Dialog dialog = alert.Create();
+                    dialog.Show();
+                });
+            }
+            else
+            {
+                foreach (Row row in result.Rows)
+                {
+                    objectDocType.Add(new ComboBoxItem { ID = row.StringValue("acDocType"), Text = row.StringValue("acDocType") + " - " + row.StringValue("acName") });
+                }
             }
         }
 

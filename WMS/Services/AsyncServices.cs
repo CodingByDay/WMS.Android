@@ -145,7 +145,6 @@ namespace WMS.AsyncServices
         {
             string result;
             SqlQueryRequest requestObject;
-
             if (sqlParameters != null)
             {
                 // Create a JSON object containing the SQL query
@@ -159,24 +158,13 @@ namespace WMS.AsyncServices
             try
             {
                 PostResult getResult = await PostAsync("mode=sql&type=sel", requestBody);
-
-                // Start here error // 
-
-
-                if (getResult.Success)
-                {
-                    return JsonConvert.DeserializeObject<ApiResultSet>(getResult.Result); 
-                }
-                else
-                {
-                    return null;
-                }
+                return JsonConvert.DeserializeObject<ApiResultSet>(getResult.Result); 
             }
-            catch (Exception)
+            catch (Exception err)
             {
-                return null;
+                SentrySdk.CaptureMessage(err.Message);
+                return new ApiResultSet { Error = err.Message, Success = false, Results = 0, Rows = new List<Row>()};
             }
-
         }
 
     }
