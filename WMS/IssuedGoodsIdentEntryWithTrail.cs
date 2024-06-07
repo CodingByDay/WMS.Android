@@ -508,14 +508,15 @@ namespace WMS
                                     lvi.Key = key;
                                     lvi.Ident = ident;
 
-
-              
+            
                                     if(location > 1)
                                     {
                                         lvi.Location = Resources.GetString(Resource.String.s346);
                                     }
                                     else if (location == 1)
                                     {
+                                        /* Extra field for the use case where users want to see instantly on which location
+                                         is the item present in the case of only one. 6.7.2024 JJ */
                                         lvi.Location = Resources.GetString(Resource.String.s347);
                                     }
                                     else if (location <= 0)

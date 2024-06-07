@@ -766,6 +766,9 @@ namespace WMS
                 tbSerialNum.Enabled = false;
                 tbSSCC.Enabled = false;
                 tbLocation.Enabled = false;
+
+                tbPacking.RequestFocus();
+                tbPacking.SelectAll();
             }
             else
             {
