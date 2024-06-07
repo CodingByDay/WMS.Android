@@ -1,14 +1,8 @@
 ﻿<div align="center">
-  <img height="150" src="https://raw.githubusercontent.com/CodingByDay/WMS/master/WMS/Resources/drawable/barcode.png"  />
+  <img height="60" width="60" src="https://raw.githubusercontent.com/CodingByDay/WMS/master/WMS/Resources/drawable/barcode.png"  />
 </div>
 
 
-
-<div align="center">
-  <a href="https://www.linkedin.com/in/janko-jovi%C4%8Di%C4%87-7952341a9/" target="_blank">
-    <img src="https://img.shields.io/static/v1?message=LinkedIn&logo=linkedin&label=&color=0077B5&logoColor=white&labelColor=&style=for-the-badge" width="25" height="25" alt="linkedin logo"  />
-  </a>
-</div>
 
 
 
