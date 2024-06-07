@@ -29,7 +29,7 @@ namespace WMS.Background
 
         private void Timer1_Elapsed(object sender, ElapsedEventArgs e)
         {
-            settings.restart = true;
+            App.Settings.restart = true;
         }
     }
 }

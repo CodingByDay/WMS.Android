@@ -192,10 +192,10 @@ namespace WMS
             SetTheme(Resource.Style.AppTheme_NoActionBar);
 
             // Create your application here.
-            if (settings.tablet)
+            if (App.Settings.tablet)
             {
-                RequestedOrientation = ScreenOrientation.Landscape;
-                SetContentView(Resource.Layout.CheckStockTablet);
+                base.RequestedOrientation = ScreenOrientation.Landscape;
+                base.SetContentView(Resource.Layout.CheckStockTablet);
                 imagePNG = FindViewById<ImageView>(Resource.Id.imagePNG);
                 listData = FindViewById<ListView>(Resource.Id.listData);
                 dataAdapter = UniversalAdapterHelper.GetCheckStock(this, data);
@@ -203,13 +203,13 @@ namespace WMS
             }
             else
             {
-                RequestedOrientation = ScreenOrientation.Portrait;
-                SetContentView(Resource.Layout.CheckStock);
+                base.RequestedOrientation = ScreenOrientation.Portrait;
+                base.SetContentView(Resource.Layout.CheckStock);
             }
 
             AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
             var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
-            _customToolbar.SetNavigationIcon(settings.RootURL + "/Services/Logo");
+            _customToolbar.SetNavigationIcon(App.Settings.RootURL + "/Services/Logo");
             SetSupportActionBar(_customToolbar._toolbar);
             SupportActionBar.SetDisplayShowTitleEnabled(false);
 
@@ -396,7 +396,7 @@ namespace WMS
         {
             data.Clear();
             ProcessStock();
-            if (settings.tablet)
+            if (App.Settings.tablet)
             {
                 fillItemsOfList();
                 showPictureIdent(tbIdent.Text);

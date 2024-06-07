@@ -17,7 +17,7 @@ namespace WMS
             SetContentView(Resource.Layout.Choice);
             AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
             var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
-            _customToolbar.SetNavigationIcon(settings.RootURL + "/Services/Logo");
+            _customToolbar.SetNavigationIcon(App.Settings.RootURL + "/Services/Logo");
             SetSupportActionBar(_customToolbar._toolbar);
             SupportActionBar.SetDisplayShowTitleEnabled(false);
             // Create your application here

@@ -122,24 +122,24 @@ namespace WMS
             base.OnCreate(savedInstanceState);
             SetTheme(Resource.Style.AppTheme_NoActionBar);
             // Start the loader
-            if (settings.tablet)
+            if (App.Settings.tablet)
             {
-                RequestedOrientation = ScreenOrientation.Landscape;
-                SetContentView(Resource.Layout.IssuedGoodsSerialOrSSCCEntryClientPickingTablet);
+                base.RequestedOrientation = ScreenOrientation.Landscape;
+                base.SetContentView(Resource.Layout.IssuedGoodsSerialOrSSCCEntryClientPickingTablet);
                 listData = FindViewById<ListView>(Resource.Id.listData);
                 dataAdapter = UniversalAdapterHelper.GetIssuedGoodsSerialOrSSCCEntryClientPicking(this, items);
                 listData.Adapter = dataAdapter;
             }
             else
             {
-                RequestedOrientation = ScreenOrientation.Portrait;
-                SetContentView(Resource.Layout.IssuedGoodsSerialOrSSCCEntryClientPicking);
+                base.RequestedOrientation = ScreenOrientation.Portrait;
+                base.SetContentView(Resource.Layout.IssuedGoodsSerialOrSSCCEntryClientPicking);
             }
             LoaderManifest.LoaderManifestLoopResources(this);
             // Definitions
             AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
             var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
-            _customToolbar.SetNavigationIcon(settings.RootURL + "/Services/Logo");
+            _customToolbar.SetNavigationIcon(App.Settings.RootURL + "/Services/Logo");
             SetSupportActionBar(_customToolbar._toolbar);
             SupportActionBar.SetDisplayShowTitleEnabled(false);
             Window.SetSoftInputMode(Android.Views.SoftInput.AdjustResize);
@@ -201,7 +201,7 @@ namespace WMS
             LoaderManifest.LoaderManifestLoopStop(this);
 
 
-            if (settings.tablet)
+            if (App.Settings.tablet)
             {
                 fillItems();
             }

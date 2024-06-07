@@ -63,10 +63,10 @@ namespace WMS
             SetTheme(Resource.Style.AppTheme_NoActionBar);
             HelpfulMethods.releaseLock();
 
-            if (settings.tablet)
+            if (App.Settings.tablet)
             {
-                RequestedOrientation = ScreenOrientation.Landscape;
-                SetContentView(Resource.Layout.MainMenuTablet);
+                base.RequestedOrientation = ScreenOrientation.Landscape;
+                base.SetContentView(Resource.Layout.MainMenuTablet);
                 buttonRapidTakeover = FindViewById<Button>(Resource.Id.rapidTakeover);
                 buttonRapidTakeover.Click += ButtonRapidTakeover_Click;
                 rapidListview = FindViewById<ListView>(Resource.Id.rapidListview);
@@ -77,19 +77,19 @@ namespace WMS
             }
             else
             {
-                RequestedOrientation = ScreenOrientation.Portrait;
-                SetContentView(Resource.Layout.MainMenu);
+                base.RequestedOrientation = ScreenOrientation.Portrait;
+                base.SetContentView(Resource.Layout.MainMenu);
             }
 
             AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
             var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
-            _customToolbar.SetNavigationIcon(settings.RootURL + "/Services/Logo");
+            _customToolbar.SetNavigationIcon(App.Settings.RootURL + "/Services/Logo");
             SetSupportActionBar(_customToolbar._toolbar);
             SupportActionBar.SetDisplayShowTitleEnabled(false);
-            var flag = Services.isTablet(App.settings.device);
-            IDdevice = settings.ID;
-            target = settings.device;
-            result = settings.tablet;
+            var flag = Services.isTablet(App.Settings.device);
+            IDdevice = App.Settings.ID;
+            target = App.Settings.device;
+            result = App.Settings.tablet;
             button = FindViewById<Button>(Resource.Id.goodsTakeOver);
             button.Click += Button_Click;
             buttons.Add(button);
@@ -136,7 +136,7 @@ namespace WMS
             new IntentFilter(ConnectivityManager.ConnectivityAction));
             Caching.Caching.SavedList = new List<string>();
             DownloadResources();
-            SentrySdk.CaptureMessage($"Login from the id-{settings.ID}, url-{settings.RootURL}, version-0.{GetAppVersion()}");
+            SentrySdk.CaptureMessage($"Login from the id-{App.Settings.ID}, url-{App.Settings.RootURL}, version-0.{GetAppVersion()}");
             // Reseting the global update variable.
             Base.Store.isUpdate = false;
             Base.Store.OpenOrder = null;
@@ -197,11 +197,11 @@ namespace WMS
         private void DownloadResources()
         {
           
-            if (!settings.login)
+            if (!App.Settings.login)
             {
                 var intent = new Intent(this, typeof(CachingService));
-                StartService(intent);
-                settings.login = true;
+                base.StartService(intent);
+                App.Settings.login = true;
             }                           
         }
 
@@ -235,7 +235,7 @@ namespace WMS
     
         protected override void OnResume()
         {     
-            var restartNeeded = settings.restart;
+            var restartNeeded = App.Settings.restart;
 
             if (restartNeeded)
             {

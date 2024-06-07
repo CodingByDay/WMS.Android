@@ -56,7 +56,7 @@ namespace WMS
         private ImageView? imgSlovenian;
         private ImageView? imgEnglish;
         private TextView deviceURL;
-        private bool tablet = settings.tablet;
+        private bool tablet = App.Settings.tablet;
         private Button btnOkRestart;
         private ListView? cbLanguage;
         private List<LanguageItem> mLanguageItems;
@@ -79,7 +79,7 @@ namespace WMS
         {
      
 
-            var id = settings.ID.ToString();
+            var id = App.Settings.ID.ToString();
             string result;
 
 
@@ -158,7 +158,7 @@ namespace WMS
 
         protected async override void OnCreate(Bundle savedInstanceState)
         {
-            settings.restart = false;
+            App.Settings.restart = false;
       
             ChangeTheOrientation();
             base.OnCreate(savedInstanceState);
@@ -185,7 +185,7 @@ namespace WMS
             btnRegistrationEvent.Clickable = true;
             btnRegistrationEvent.Enabled = true;
             btnRegistrationEvent.Click += BtnRegistrationEvent_Click;
-            settings.login = false;
+            App.Settings.login = false;
 
             InitializeSentryAsync();
 
@@ -321,7 +321,7 @@ namespace WMS
         {
             try
             {
-                var url = settings.RootURL + "/Services/Logo";
+                var url = App.Settings.RootURL + "/Services/Logo";
                 // Load and set the image with Picasso
                 Picasso.Get()
                     .Load(url)
@@ -362,13 +362,13 @@ namespace WMS
 
         private void ChangeTheOrientation()
         {
-            if (settings.tablet == true)
+            if (App.Settings.tablet == true)
             {
-                RequestedOrientation = Android.Content.PM.ScreenOrientation.Landscape;
+                base.RequestedOrientation = Android.Content.PM.ScreenOrientation.Landscape;
             }
             else
             {
-                RequestedOrientation = Android.Content.PM.ScreenOrientation.Portrait;
+                base.RequestedOrientation = Android.Content.PM.ScreenOrientation.Portrait;
             }
         }
 

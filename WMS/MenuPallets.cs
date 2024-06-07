@@ -26,19 +26,19 @@ namespace WMS
         {
             base.OnCreate(savedInstanceState);
             SetTheme(Resource.Style.AppTheme_NoActionBar);
-            if (settings.tablet)
+            if (App.Settings.tablet)
             {
-                RequestedOrientation = ScreenOrientation.Landscape;
-                SetContentView(Resource.Layout.MenuPalletsTablet);
+                base.RequestedOrientation = ScreenOrientation.Landscape;
+                base.SetContentView(Resource.Layout.MenuPalletsTablet);
             }
             else
             {
-                RequestedOrientation = ScreenOrientation.Portrait;
-                SetContentView(Resource.Layout.MenuPallets);
+                base.RequestedOrientation = ScreenOrientation.Portrait;
+                base.SetContentView(Resource.Layout.MenuPallets);
             }
             AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
             var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
-            _customToolbar.SetNavigationIcon(settings.RootURL + "/Services/Logo");
+            _customToolbar.SetNavigationIcon(App.Settings.RootURL + "/Services/Logo");
             SetSupportActionBar(_customToolbar._toolbar);
             SupportActionBar.SetDisplayShowTitleEnabled(false);
             shipped = FindViewById<Button>(Resource.Id.shipped);

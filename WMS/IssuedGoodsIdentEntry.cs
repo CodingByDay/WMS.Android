@@ -164,7 +164,7 @@ namespace WMS
 
                                 displayedOrder = 0;
 
-                                if(settings.tablet)
+                                if(App.Settings.tablet)
                                 {
                                     dataAdapter.NotifyDataSetChanged();
                                     UniversalAdapterHelper.SelectPositionProgramaticaly(listData, 0);
@@ -283,10 +283,10 @@ namespace WMS
         {
             base.OnCreate(savedInstanceState);
             SetTheme(Resource.Style.AppTheme_NoActionBar);
-            if (settings.tablet)
+            if (App.Settings.tablet)
             {
-                RequestedOrientation = ScreenOrientation.Landscape;
-                SetContentView(Resource.Layout.IssuedGoodsIdentEntryTablet);
+                base.RequestedOrientation = ScreenOrientation.Landscape;
+                base.SetContentView(Resource.Layout.IssuedGoodsIdentEntryTablet);
                 listData = FindViewById<ListView>(Resource.Id.listData);
                 dataAdapter = UniversalAdapterHelper.GetIssuedGoodsIdentEntry(this, orders);
                 listData.ItemClick += ListData_ItemClick;
@@ -295,12 +295,12 @@ namespace WMS
             }
             else
             {
-                RequestedOrientation = ScreenOrientation.Portrait;
-                SetContentView(Resource.Layout.IssuedGoodsIdentEntry);
+                base.RequestedOrientation = ScreenOrientation.Portrait;
+                base.SetContentView(Resource.Layout.IssuedGoodsIdentEntry);
             }
             AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
             var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
-            _customToolbar.SetNavigationIcon(settings.RootURL + "/Services/Logo");
+            _customToolbar.SetNavigationIcon(App.Settings.RootURL + "/Services/Logo");
             SetSupportActionBar(_customToolbar._toolbar);
             SupportActionBar.SetDisplayShowTitleEnabled(false);
             tbOrder = FindViewById<EditText>(Resource.Id.tbOrder);

@@ -49,21 +49,21 @@ namespace WMS
             base.OnCreate(savedInstanceState);
             SetTheme(Resource.Style.AppTheme_NoActionBar);
             // Create your application here
-            if (settings.tablet)
+            if (App.Settings.tablet)
             {
-                RequestedOrientation = ScreenOrientation.Landscape;
-                SetContentView(Resource.Layout.TakeOverBusinessEventSetupTablet);
+                base.RequestedOrientation = ScreenOrientation.Landscape;
+                base.SetContentView(Resource.Layout.TakeOverBusinessEventSetupTablet);
                 rlExtra = FindViewById<RelativeLayout>(Resource.Id.rlExtra);
             }
             else
             {
-                RequestedOrientation = ScreenOrientation.Portrait;
-                SetContentView(Resource.Layout.TakeOverBusinessEventSetup);
+                base.RequestedOrientation = ScreenOrientation.Portrait;
+                base.SetContentView(Resource.Layout.TakeOverBusinessEventSetup);
             }
             LoaderManifest.LoaderManifestLoopResources(this);
             AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
             var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
-            _customToolbar.SetNavigationIcon(settings.RootURL + "/Services/Logo");
+            _customToolbar.SetNavigationIcon(App.Settings.RootURL + "/Services/Logo");
             SetSupportActionBar(_customToolbar._toolbar);
             SupportActionBar.SetDisplayShowTitleEnabled(false);
             // Declarations
@@ -260,7 +260,7 @@ namespace WMS
                 if (byOrder)
                 {
                     lbSubject.Visibility = ViewStates.Invisible;
-                    if (settings.tablet)
+                    if (App.Settings.tablet)
                     {
                         rlExtra.Visibility = ViewStates.Invisible;
                     }
@@ -269,21 +269,21 @@ namespace WMS
                         cbSubject.Visibility = ViewStates.Invisible;
                     }
                     docTypes = CommonData.ListDocTypes("I|N");
-                    if(settings.tablet)
+                    if(App.Settings.tablet)
                     {
-                        btnOrderMode.Text = Resources.GetString(Resource.String.s138);
+                        btnOrderMode.Text = base.Resources.GetString(Resource.String.s138);
 
                     }
                     else
                     {
-                        btnOrderMode.Text = Resources.GetString(Resource.String.s30);
+                        btnOrderMode.Text = base.Resources.GetString(Resource.String.s30);
                     }
                 }
                 else
                 {
                     lbSubject.Visibility = ViewStates.Visible;
 
-                    if (settings.tablet)
+                    if (App.Settings.tablet)
                     {
                         rlExtra.Visibility = ViewStates.Visible;
                     } else
@@ -307,14 +307,14 @@ namespace WMS
 
                     docTypes = CommonData.ListDocTypes("P|F");
 
-                    if(settings.tablet)
+                    if(App.Settings.tablet)
                     {
-                        btnOrderMode.Text = Resources.GetString(Resource.String.s338);
+                        btnOrderMode.Text = base.Resources.GetString(Resource.String.s338);
 
                     }
                     else
                     {
-                        btnOrderMode.Text = Resources.GetString(Resource.String.s32);
+                        btnOrderMode.Text = base.Resources.GetString(Resource.String.s32);
                     }
                 }
 

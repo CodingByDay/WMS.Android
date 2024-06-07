@@ -42,7 +42,7 @@ namespace TrendNET.WMS.Device.Services
         {
             using (WebClient wc = new WebClient())
             {
-                var webApp = settings.RootURL;
+                var webApp = Settings.RootURL;
                 try
                 {
                     using (WebClient webClient = new WebClient())
@@ -64,7 +64,7 @@ namespace TrendNET.WMS.Device.Services
         {
             using (WebClient wc = new WebClient())
             {
-                var webApp = settings.RootURL;
+                var webApp = Settings.RootURL;
                 try
                 {
                     using (WebClient webClient = new WebClient())
@@ -129,7 +129,7 @@ namespace TrendNET.WMS.Device.Services
         { return (string)UserInfo.First(x => x.Name == "FullName").StringValue; }
 
         public static string DeviceUser()
-        { return settings.ID + "|" + UserID().ToString(); }
+        { return Settings.ID + "|" + UserID().ToString(); }
 
         private static List<string> obtainedLocks = new List<string>();
 

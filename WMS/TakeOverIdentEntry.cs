@@ -69,10 +69,10 @@ namespace WMS
         {
             base.OnCreate(savedInstanceState);
             SetTheme(Resource.Style.AppTheme_NoActionBar);
-            if (settings.tablet)
+            if (App.Settings.tablet)
             {
-                RequestedOrientation = ScreenOrientation.Landscape;
-                SetContentView(Resource.Layout.TakeOverIdentEntryTablet);
+                base.RequestedOrientation = ScreenOrientation.Landscape;
+                base.SetContentView(Resource.Layout.TakeOverIdentEntryTablet);
                 listData = FindViewById<ListView>(Resource.Id.listData);
                 dataAdapter = UniversalAdapterHelper.GetTakeoverIdentEntry(this, data);
                 listData.ItemClick += ListData_ItemClick;
@@ -81,12 +81,12 @@ namespace WMS
             }
             else
             {
-                RequestedOrientation = ScreenOrientation.Portrait;
-                SetContentView(Resource.Layout.TakeOverIdentEntry);
+                base.RequestedOrientation = ScreenOrientation.Portrait;
+                base.SetContentView(Resource.Layout.TakeOverIdentEntry);
             }
             AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
             var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
-            _customToolbar.SetNavigationIcon(settings.RootURL + "/Services/Logo");
+            _customToolbar.SetNavigationIcon(App.Settings.RootURL + "/Services/Logo");
             SetSupportActionBar(_customToolbar._toolbar);
             SupportActionBar.SetDisplayShowTitleEnabled(false);
             tbIdent = FindViewById<CustomAutoCompleteTextView>(Resource.Id.tbIdent);
@@ -314,7 +314,7 @@ namespace WMS
 
             FillDisplayedOrderInfo();
 
-            if (settings.tablet)
+            if (App.Settings.tablet)
             {
                 UniversalAdapterHelper.SelectPositionProgramaticaly(listData, displayedOrder);
             }
@@ -528,7 +528,7 @@ namespace WMS
 
                 FillDisplayedOrderInfo();
 
-                if (settings.tablet)
+                if (App.Settings.tablet)
                 {
                     fillList(ident);
                 }

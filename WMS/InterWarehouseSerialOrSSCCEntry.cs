@@ -85,10 +85,10 @@ namespace WMS
             SetContentView(Resource.Layout.InterWarehouseSerialOrSSCCEntry);
 
             
-            if (settings.tablet)
+            if (App.Settings.tablet)
             {
-                RequestedOrientation = ScreenOrientation.Landscape;
-                SetContentView(Resource.Layout.InterWarehouseSerialOrSSCCEntryTablet);
+                base.RequestedOrientation = ScreenOrientation.Landscape;
+                base.SetContentView(Resource.Layout.InterWarehouseSerialOrSSCCEntryTablet);
                 listData = FindViewById<ListView>(Resource.Id.listData);
                 dataAdapter = UniversalAdapterHelper.GetInterWarehouseSerialOrSSCCEntry(this, items);
                 listData.Adapter = dataAdapter;
@@ -97,13 +97,13 @@ namespace WMS
             }
             else
             {
-                RequestedOrientation = ScreenOrientation.Portrait;
-                SetContentView(Resource.Layout.InterWarehouseSerialOrSSCCEntry);
+                base.RequestedOrientation = ScreenOrientation.Portrait;
+                base.SetContentView(Resource.Layout.InterWarehouseSerialOrSSCCEntry);
             }
             
             AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
             var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
-            _customToolbar.SetNavigationIcon(settings.RootURL + "/Services/Logo");
+            _customToolbar.SetNavigationIcon(App.Settings.RootURL + "/Services/Logo");
             SetSupportActionBar(_customToolbar._toolbar);
             SupportActionBar.SetDisplayShowTitleEnabled(false);
             Window.SetSoftInputMode(Android.Views.SoftInput.AdjustResize);

@@ -11,8 +11,8 @@ namespace TrendNET.WMS.Device.Services
     public class WebApp
     {
         private const int x16kb = 16 * 1024;
-        public static string rootURL = settings.RootURL;
-        public static string device = settings.ID;
+        public static string rootURL = global::WMS.App.Settings.RootURL;
+        public static string device = global::WMS.App.Settings.ID;
         private static DateTime skipPingsUntil = DateTime.MinValue;
         private static object pingLock = new object();
 
@@ -54,11 +54,11 @@ namespace TrendNET.WMS.Device.Services
                             }
                         }
                     }
-                    throw new ApplicationException("Dlančnik ima težave z vzpostavitvijo povezave do strežnika (" + settings.RootURL + ")! Napaka: " + result);
+                    throw new ApplicationException("Dlančnik ima težave z vzpostavitvijo povezave do strežnika (" + global::WMS.App.Settings.RootURL + ")! Napaka: " + result);
                 }
                 catch (Exception err)
                 {
-                    throw new ApplicationException("Dlančnik ima težave z vzpostavitvijo povezave do strežnika (" + settings.RootURL + ")! Napaka: " + err.Message);
+                    throw new ApplicationException("Dlančnik ima težave z vzpostavitvijo povezave do strežnika (" + global::WMS.App.Settings.RootURL + ")! Napaka: " + err.Message);
                 }
             }
         }
@@ -152,7 +152,7 @@ namespace TrendNET.WMS.Device.Services
             {
                 result = "";
 
-                var url = RandomizeURL(settings.RootURL + "/Services/Device/?" + rqURL + "&device=" + device + "&lang=" + Base.Store.language);
+                var url = RandomizeURL(global::WMS.App.Settings.RootURL + "/Services/Device/?" + rqURL + "&device=" + device + "&lang=" + Base.Store.language);
                 var startedAt = DateTime.Now;
                 try
                 {
@@ -226,8 +226,8 @@ namespace TrendNET.WMS.Device.Services
             try
             {
                 result = "";
-                string device_updated = settings.ID;
-                var url = RandomizeURL(settings.RootURL + "/Services/Device/?" + rqURL + "&device=" + device_updated + "&lang=" + Base.Store.language);
+                string device_updated = global::WMS.App.Settings.ID;
+                var url = RandomizeURL(global::WMS.App.Settings.RootURL + "/Services/Device/?" + rqURL + "&device=" + device_updated + "&lang=" + Base.Store.language);
                 var startedAt = DateTime.Now;
                 try
                 {
@@ -275,7 +275,7 @@ namespace TrendNET.WMS.Device.Services
             try
             {
                 result = "";
-                var url = RandomizeURL(settings.RootURL + "/Services/Device/?mode=ping&device=" + device);
+                var url = RandomizeURL(global::WMS.App.Settings.RootURL + "/Services/Device/?mode=ping&device=" + device);
                 var startedAt = DateTime.Now;
                 try
                 {

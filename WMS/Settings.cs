@@ -59,9 +59,9 @@ namespace WMS
             cbDevice = FindViewById<Spinner>(Resource.Id.cbDevice);
             ok = FindViewById<Button>(Resource.Id.ok);
             ok.Click += Ok_Click;
-            ID.Text = App.settings.ID;
+            ID.Text = App.Settings.ID;
             version = FindViewById<TextView>(Resource.Id.version);
-            rootURL.Text = App.settings.RootURL;
+            rootURL.Text = App.Settings.RootURL;
             var adapter = new ArrayAdapter<String>(this,
             Android.Resource.Layout.SimpleSpinnerItem, arrayData);
             bin = FindViewById<ImageView>(Resource.Id.bin);
@@ -148,7 +148,7 @@ namespace WMS
 
         public void maintainSelection()
         {
-            if(App.settings.tablet ==true)
+            if(App.Settings.tablet ==true)
             {
                 cbDevice.SetSelection(1);
             } else
@@ -163,19 +163,19 @@ namespace WMS
 
             if (position == 1)
             {
-                App.settings.tablet = true; 
+                App.Settings.tablet = true; 
             } else
             {
-                App.settings.tablet = false;
+                App.Settings.tablet = false;
             }        
         }
 
         private void Ok_Click(object sender, EventArgs e)
         {
-            App.settings.device = dev;
-            App.settings.RootURL = rootURL.Text;
-            App.settings.ID = ID.Text;
-            ID.Text = App.settings.ID;
+            App.Settings.device = dev;
+            App.Settings.RootURL = rootURL.Text;
+            App.Settings.ID = ID.Text;
+            ID.Text = App.Settings.ID;
             StartActivity(typeof(MainActivity));
             Finish();
         }

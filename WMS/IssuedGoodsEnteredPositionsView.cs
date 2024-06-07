@@ -70,10 +70,10 @@ namespace WMS
             // Create your application here
 
 
-            if (settings.tablet)
+            if (App.Settings.tablet)
             {
-                RequestedOrientation = ScreenOrientation.Landscape;
-                SetContentView(Resource.Layout.IssuedGoodsEnteredPositionsViewTablet);
+                base.RequestedOrientation = ScreenOrientation.Landscape;
+                base.SetContentView(Resource.Layout.IssuedGoodsEnteredPositionsViewTablet);
 
                 listData = FindViewById<ListView>(Resource.Id.listData);
                 dataAdapter = UniversalAdapterHelper.GetIssuedGoodsEnteredPositionsView(this, data);
@@ -84,14 +84,14 @@ namespace WMS
             }
             else
             {
-                RequestedOrientation = ScreenOrientation.Portrait;
-                SetContentView(Resource.Layout.IssuedGoodsEnteredPositionsView);
+                base.RequestedOrientation = ScreenOrientation.Portrait;
+                base.SetContentView(Resource.Layout.IssuedGoodsEnteredPositionsView);
             }
 
 
             AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
             var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
-            _customToolbar.SetNavigationIcon(settings.RootURL + "/Services/Logo");
+            _customToolbar.SetNavigationIcon(App.Settings.RootURL + "/Services/Logo");
             SetSupportActionBar(_customToolbar._toolbar);
             SupportActionBar.SetDisplayShowTitleEnabled(false);
             lbInfo = FindViewById<TextView>(Resource.Id.lbInfo);
@@ -121,7 +121,7 @@ namespace WMS
             }
             LoadPositions();
 
-            if(settings.tablet)
+            if(App.Settings.tablet)
             {
                 await fillList();
                 listData.PerformItemClick(listData, 0, 0);
@@ -604,7 +604,7 @@ namespace WMS
 
         private void BtNext_Click(object sender, EventArgs e)
         {
-            if (settings.tablet)
+            if (App.Settings.tablet)
             {
                 selectedItem++;
 

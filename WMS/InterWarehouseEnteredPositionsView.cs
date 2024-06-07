@@ -63,10 +63,10 @@ namespace WMS
         {
             base.OnCreate(savedInstanceState);
             SetTheme(Resource.Style.AppTheme_NoActionBar);
-            if (settings.tablet)
+            if (App.Settings.tablet)
             {
-                RequestedOrientation = ScreenOrientation.Landscape;
-                SetContentView(Resource.Layout.InterWarehouseEnteredPositionsViewTablet);
+                base.RequestedOrientation = ScreenOrientation.Landscape;
+                base.SetContentView(Resource.Layout.InterWarehouseEnteredPositionsViewTablet);
                 listData = FindViewById<ListView>(Resource.Id.listData);
                 dataAdapter = UniversalAdapterHelper.GetInterWarehouseEnteredPositionsView(this, data);
                 listData.ItemClick += ListData_ItemClick;
@@ -75,13 +75,13 @@ namespace WMS
             }
             else
             {
-                RequestedOrientation = ScreenOrientation.Portrait;
-                SetContentView(Resource.Layout.InterWarehouseEnteredPositionsView);
+                base.RequestedOrientation = ScreenOrientation.Portrait;
+                base.SetContentView(Resource.Layout.InterWarehouseEnteredPositionsView);
             }
 
             AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
             var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
-            _customToolbar.SetNavigationIcon(settings.RootURL + "/Services/Logo");
+            _customToolbar.SetNavigationIcon(App.Settings.RootURL + "/Services/Logo");
             SetSupportActionBar(_customToolbar._toolbar);
             SupportActionBar.SetDisplayShowTitleEnabled(false);
             tbIdent = FindViewById<EditText>(Resource.Id.tbIdent);
@@ -110,7 +110,7 @@ namespace WMS
 
             LoadPositions();
 
-            if(settings.tablet)
+            if(App.Settings.tablet)
             {
                 fillItems();
                 UniversalAdapterHelper.SelectPositionProgramaticaly(listData, 0);
@@ -331,7 +331,7 @@ namespace WMS
 
                         LoadPositions();
 
-                        if (settings.tablet)
+                        if (App.Settings.tablet)
                         {
                             data.Clear();
                             fillItems();
@@ -525,7 +525,7 @@ namespace WMS
 
         private void BtNext_Click(object sender, EventArgs e)
         {
-            if (settings.tablet)
+            if (App.Settings.tablet)
             {
 
                 selectedItem++;

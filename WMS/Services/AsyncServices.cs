@@ -77,8 +77,8 @@ namespace WMS.AsyncServices
             try
             {
                 int timeout = 120000;
-                string device_updated = settings.ID;
-                var url = RandomizeURL(settings.RootURL + "/Services/Device/?" + rqURL + "&device=" + device_updated + "&lang=" + Base.Store.language);
+                string device_updated = App.Settings.ID;
+                var url = RandomizeURL(App.Settings.RootURL + "/Services/Device/?" + rqURL + "&device=" + device_updated + "&lang=" + Base.Store.language);
                 using (HttpClient client = new HttpClient())
                 {
                     client.Timeout = TimeSpan.FromMilliseconds(timeout);
@@ -110,8 +110,8 @@ namespace WMS.AsyncServices
             try
             {
                 int timeout = 120000;
-                string device_updated = settings.ID;
-                var url = RandomizeURL(settings.RootURL + "/Services/Device/?" + rqURL + "&device=" + device_updated + "&lang=" + Base.Store.language);
+                string device_updated = App.Settings.ID;
+                var url = RandomizeURL(App.Settings.RootURL + "/Services/Device/?" + rqURL + "&device=" + device_updated + "&lang=" + Base.Store.language);
 
                 using (HttpClient client = new HttpClient())
                 {

@@ -20,7 +20,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
     [Activity(Label = "PrintingMenu")]
     public class PrintingMenu : CustomBaseActivity
     {
-        public static string target = App.settings.device;
+        public static string target = App.Settings.device;
         public bool result = Services.isTablet(target); /* Is the device tablet. */
         private Button button1;
         private Button button2;
@@ -32,20 +32,20 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             base.OnCreate(savedInstanceState);
             SetTheme(Resource.Style.AppTheme_NoActionBar);
 
-            if (settings.tablet)
+            if (App.Settings.tablet)
             {
-                RequestedOrientation = ScreenOrientation.Landscape;
-                SetContentView(Resource.Layout.PrintingMenuTablet);
+                base.RequestedOrientation = ScreenOrientation.Landscape;
+                base.SetContentView(Resource.Layout.PrintingMenuTablet);
 
             }
             else
             {
-                RequestedOrientation = ScreenOrientation.Portrait;
-                SetContentView(Resource.Layout.PrintingMenu);
+                base.RequestedOrientation = ScreenOrientation.Portrait;
+                base.SetContentView(Resource.Layout.PrintingMenu);
             }
             AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
             var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
-            _customToolbar.SetNavigationIcon(settings.RootURL + "/Services/Logo");
+            _customToolbar.SetNavigationIcon(App.Settings.RootURL + "/Services/Logo");
             SetSupportActionBar(_customToolbar._toolbar);
             SupportActionBar.SetDisplayShowTitleEnabled(false);
             button1 = FindViewById<Button>(Resource.Id.button1);
@@ -91,13 +91,13 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
        
         private void ChangeTheOrientation()
         {
-            if (settings.tablet == true)
+            if (App.Settings.tablet == true)
             {
-                RequestedOrientation = Android.Content.PM.ScreenOrientation.Landscape;
+                base.RequestedOrientation = Android.Content.PM.ScreenOrientation.Landscape;
             }
             else
             {
-                RequestedOrientation = Android.Content.PM.ScreenOrientation.Portrait;
+                base.RequestedOrientation = Android.Content.PM.ScreenOrientation.Portrait;
 
             }
         }

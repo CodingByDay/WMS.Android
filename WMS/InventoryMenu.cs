@@ -22,7 +22,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
     {
 
 
-        public static string target = App.settings.device;
+        public static string target = App.Settings.device;
      
         public bool result = Services.isTablet(target); /* Is the device tablet. */
         private Button button1;
@@ -93,13 +93,13 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
 
         private void ChangeTheOrientation()
         {
-            if (settings.tablet == true)
+            if (App.Settings.tablet == true)
             {
-                RequestedOrientation = Android.Content.PM.ScreenOrientation.Landscape;
+                base.RequestedOrientation = Android.Content.PM.ScreenOrientation.Landscape;
             }
             else
             {
-                RequestedOrientation = Android.Content.PM.ScreenOrientation.Portrait;
+                base.RequestedOrientation = Android.Content.PM.ScreenOrientation.Portrait;
 
             }
         }

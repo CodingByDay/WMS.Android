@@ -57,23 +57,23 @@ namespace WMS
         {
             base.OnCreate(savedInstanceState);
             SetTheme(Resource.Style.AppTheme_NoActionBar);
-            if (settings.tablet)
+            if (App.Settings.tablet)
             {
-                RequestedOrientation = ScreenOrientation.Landscape;
-                SetContentView(Resource.Layout.ClientPickingTablet);
+                base.RequestedOrientation = ScreenOrientation.Landscape;
+                base.SetContentView(Resource.Layout.ClientPickingTablet);
                 listData = FindViewById<ListView>(Resource.Id.listData);
                 dataAdapter = UniversalAdapterHelper.GetClientPicking(this, positions);
                 listData.Adapter = dataAdapter;
             }
             else
             {
-                RequestedOrientation = ScreenOrientation.Portrait;
-                SetContentView(Resource.Layout.ClientPicking);
+                base.RequestedOrientation = ScreenOrientation.Portrait;
+                base.SetContentView(Resource.Layout.ClientPicking);
             }
 
             AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
             var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
-            _customToolbar.SetNavigationIcon(settings.RootURL + "/Services/Logo");
+            _customToolbar.SetNavigationIcon(App.Settings.RootURL + "/Services/Logo");
             SetSupportActionBar(_customToolbar._toolbar);
             SupportActionBar.SetDisplayShowTitleEnabled(false);
             ivTrail = FindViewById<ListView>(Resource.Id.ivTrail);
@@ -303,7 +303,7 @@ namespace WMS
                         adapter.Filter(positions, true, string.Empty, false);
                         listener = new MyOnItemLongClickListener(this, adapter.returnData(), adapter);
                         ivTrail.OnItemLongClickListener = listener;
-                        if(settings.tablet)
+                        if(App.Settings.tablet)
                         {
 
                         }
@@ -388,7 +388,7 @@ namespace WMS
                         adapter.Filter(positions, true, string.Empty, false);
                         listener = new MyOnItemLongClickListener(this, adapter.returnData(), adapter);
                         ivTrail.OnItemLongClickListener = listener;
-                        if (settings.tablet)
+                        if (App.Settings.tablet)
                         {
 
                         }

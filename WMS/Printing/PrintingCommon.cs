@@ -8,7 +8,7 @@ namespace WMS.Printing
         public static void SetNVOCommonData(ref NameValueObject nvo)
         {
             nvo.SetInt("UserID", Services.UserID());
-            nvo.SetString("DeviceID", App.settings.ID);
+            nvo.SetString("DeviceID", App.Settings.ID);
         }
 
         public static void SendToServer(NameValueObject nvo)

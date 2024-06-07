@@ -60,21 +60,21 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             base.OnCreate(savedInstanceState);
             SetTheme(Resource.Style.AppTheme_NoActionBar);
             // Create your application here
-            if (settings.tablet)
+            if (App.Settings.tablet)
             {
-                RequestedOrientation = ScreenOrientation.Landscape;
-                SetContentView(Resource.Layout.IssuedGoodsBusinessEventSetupTablet);
+                base.RequestedOrientation = ScreenOrientation.Landscape;
+                base.SetContentView(Resource.Layout.IssuedGoodsBusinessEventSetupTablet);
                 rlExtra = FindViewById<RelativeLayout>(Resource.Id.rlExtra);
             }
             else
             {
-                RequestedOrientation = ScreenOrientation.Portrait;
-                SetContentView(Resource.Layout.IssuedGoodsBusinessEventSetup);
+                base.RequestedOrientation = ScreenOrientation.Portrait;
+                base.SetContentView(Resource.Layout.IssuedGoodsBusinessEventSetup);
             }
             LoaderManifest.LoaderManifestLoopResources(this);
             AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
             var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
-            _customToolbar.SetNavigationIcon(settings.RootURL + "/Services/Logo");
+            _customToolbar.SetNavigationIcon(App.Settings.RootURL + "/Services/Logo");
             SetSupportActionBar(_customToolbar._toolbar);
             SupportActionBar.SetDisplayShowTitleEnabled(false);
             cbDocType = FindViewById<CustomAutoCompleteTextView>(Resource.Id.cbDocType);
@@ -387,7 +387,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 if (selectedFlow == 2)
                 {
                     lbExtra.Visibility = ViewStates.Visible;
-                    if (settings.tablet)
+                    if (App.Settings.tablet)
                     {
                         rlExtra.Visibility = ViewStates.Visible;
                     } else
@@ -399,7 +399,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 else
                 {
                     lbExtra.Visibility = ViewStates.Invisible;
-                    if (settings.tablet)
+                    if (App.Settings.tablet)
                     {
                         rlExtra.Visibility = ViewStates.Invisible;
                     } else
@@ -413,14 +413,14 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 }
                 docTypes = CommonData.ListDocTypes("P|N");
 
-                if (settings.tablet)
+                if (App.Settings.tablet)
                 {
-                    btnOrderMode.Text = Resources.GetString(Resource.String.s342);
+                    btnOrderMode.Text = base.Resources.GetString(Resource.String.s342);
 
                 }
                 else
                 {
-                    btnOrderMode.Text = Resources.GetString(Resource.String.s30);
+                    btnOrderMode.Text = base.Resources.GetString(Resource.String.s30);
                 }
 
                 initial += 1;
@@ -429,7 +429,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             {
                 lbExtra.Visibility = ViewStates.Visible;
 
-                if (settings.tablet)
+                if (App.Settings.tablet)
                 {
                     rlExtra.Visibility = ViewStates.Visible;
                 }
@@ -452,14 +452,14 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 adapterExtra.NotifyDataSetChanged();
                 docTypes = CommonData.ListDocTypes("I;M|F");
 
-                if(settings.tablet)
+                if(App.Settings.tablet)
                 {
-                    btnOrderMode.Text = Resources.GetString(Resource.String.s340);
+                    btnOrderMode.Text = base.Resources.GetString(Resource.String.s340);
 
                 }
                 else
                 {
-                    btnOrderMode.Text = Resources.GetString(Resource.String.s32);
+                    btnOrderMode.Text = base.Resources.GetString(Resource.String.s32);
                 }
             }
             docTypes.Items.ForEach(dt =>

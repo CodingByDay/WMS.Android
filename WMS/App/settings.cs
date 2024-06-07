@@ -4,7 +4,7 @@ using TrendNET.WMS.Core.Data;
 
 namespace WMS.App
 {
-    internal class settings
+    public class Settings
     {
         public static int linkNo;
         public static string linkKey;
@@ -12,9 +12,9 @@ namespace WMS.App
         private static ISettings AppSettings =>
             CrossSettings.Current;
 
-# nullable enable
+
         public static NameValueObject? openOrderSerial = null;
-# nullable disable
+
 
         public static bool login
         {

@@ -82,19 +82,19 @@ namespace WMS
             base.OnCreate(savedInstanceState);
             SetTheme(Resource.Style.AppTheme_NoActionBar);
             // Create your application here
-            if (settings.tablet)
+            if (App.Settings.tablet)
             {
-                RequestedOrientation = ScreenOrientation.Landscape;
-                SetContentView(Resource.Layout.InventoryProcessTablet);
+                base.RequestedOrientation = ScreenOrientation.Landscape;
+                base.SetContentView(Resource.Layout.InventoryProcessTablet);
             }
             else
             {
-                RequestedOrientation = ScreenOrientation.Portrait;
-                SetContentView(Resource.Layout.InventoryProcess);
+                base.RequestedOrientation = ScreenOrientation.Portrait;
+                base.SetContentView(Resource.Layout.InventoryProcess);
             }
             AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
             var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
-            _customToolbar.SetNavigationIcon(settings.RootURL + "/Services/Logo");
+            _customToolbar.SetNavigationIcon(App.Settings.RootURL + "/Services/Logo");
             SetSupportActionBar(_customToolbar._toolbar);
             SupportActionBar.SetDisplayShowTitleEnabled(false);
             cbWarehouse = FindViewById<Spinner>(Resource.Id.cbWarehouse);
@@ -222,16 +222,16 @@ namespace WMS
             {
                 try
                 {
-                    if (settings.lastLocation != string.Empty && settings.lastWarehouse != string.Empty)
+                    if (App.Settings.lastLocation != string.Empty && App.Settings.lastWarehouse != string.Empty)
                     {
                         RunOnUiThread(() =>
                         {
-                            var element = warehouseAdapter.Where(x => x.ID == settings.lastWarehouse).FirstOrDefault();
+                            var element = warehouseAdapter.Where(x => x.ID == App.Settings.lastWarehouse).FirstOrDefault();
                             if (element != null)
                             {
                                 cbWarehouse.SetSelection(warehouseAdapter.IndexOf(element), true);
                             }
-                            tbLocation.Text = settings.lastLocation;
+                            tbLocation.Text = App.Settings.lastLocation;
                         });
                     }
                 } catch (Exception ex) {
@@ -537,8 +537,8 @@ namespace WMS
                         selectedWarehouse = warehouse.ID;
                         StartActivity(typeof(InventoryProcess));
                         HelpfulMethods.clearTheStack(this);
-                        settings.lastWarehouse = warehouse.ID;
-                        settings.lastLocation= location;            
+                        App.Settings.lastWarehouse = warehouse.ID;
+                        App.Settings.lastLocation= location;            
                     }
                 }
                 else
