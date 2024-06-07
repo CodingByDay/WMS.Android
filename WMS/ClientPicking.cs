@@ -4,17 +4,12 @@ using Android.Content.PM;
 using Android.Media;
 using Android.Text;
 using Android.Views;
-using AndroidX.AppCompat.App;
-using AndroidX.Lifecycle;
 using BarCode2D_Receiver;
-
-using System.Data.Common;
 using TrendNET.WMS.Core.Data;
 using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
 using WMS.App;
 using AlertDialog = Android.App.AlertDialog;
-using Stream = Android.Media.Stream;
 
 namespace WMS
 {
@@ -111,7 +106,7 @@ namespace WMS
             LoaderManifest.LoaderManifestLoopStop(this);
 
         }
-     
+
         private void BtLogout_Click(object sender, EventArgs e)
         {
             StartActivity(typeof(MainMenu));
@@ -129,7 +124,7 @@ namespace WMS
             Finish();
         }
 
-     
+
 
         private void BtConfirm_Click(object sender, EventArgs e)
         {
@@ -159,7 +154,7 @@ namespace WMS
             }
         }
 
-   
+
 
         private bool SaveMoveHead()
         {
@@ -227,7 +222,8 @@ namespace WMS
                 {
                     return true;
                 }
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 SentrySdk.CaptureMessage("Error" + ex.Message);
                 return false;
@@ -303,12 +299,13 @@ namespace WMS
                         adapter.Filter(positions, true, string.Empty, false);
                         listener = new MyOnItemLongClickListener(this, adapter.returnData(), adapter);
                         ivTrail.OnItemLongClickListener = listener;
-                        if(App.Settings.tablet)
+                        if (App.Settings.tablet)
                         {
 
                         }
                     });
-                } else if (!result.Success)
+                }
+                else if (!result.Success)
                 {
                     RunOnUiThread(() =>
                     {
@@ -393,7 +390,8 @@ namespace WMS
 
                         }
                     });
-                } else if (!result.Success)
+                }
+                else if (!result.Success)
                 {
                     RunOnUiThread(() =>
                     {
@@ -468,7 +466,7 @@ namespace WMS
                 }
                 listener.updateData(adapter.returnData());
             }
-            catch(Exception error)
+            catch (Exception error)
             {
                 SentrySdk.CaptureMessage("Error" + error.Message);
             }

@@ -1,35 +1,18 @@
-﻿using Stream = Android.Media.Stream;
-using System.Collections.Generic;
-using System.ComponentModel.Design;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
-using Android.App;
-using Android.Content;
+﻿using Android.Content;
 using Android.Content.PM;
 using Android.Media;
 using Android.Net;
-using Android.OS;
 using Android.Preferences;
-using Android.Runtime;
 using Android.Views;
 using Android.Views.InputMethods;
-using Android.Widget;
 using BarCode2D_Receiver;
-using Java.Util.Functions;
-
 using Newtonsoft.Json;
-using WMS.App;
+using System.Collections.Concurrent;
 using TrendNET.WMS.Core.Data;
 using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
-
-using AndroidX.AppCompat.App;
+using WMS.App;
 using AlertDialog = Android.App.AlertDialog;
-
-using System.Data.Common;
-using System.Collections.Concurrent;
 namespace WMS
 {
     [Activity(Label = "TakeOverIdentEntry", ScreenOrientation = ScreenOrientation.Portrait)]
@@ -157,7 +140,7 @@ namespace WMS
 
         private void fillList(string ident)
         {
-            if(orders!=null)
+            if (orders != null)
             {
                 orders.ForEach(x =>
                 {
@@ -173,7 +156,7 @@ namespace WMS
                 });
                 dataAdapter.NotifyDataSetChanged();
                 UniversalAdapterHelper.SelectPositionProgramaticaly(listData, 0);
-            }                
+            }
         }
         private void Select(int postionOfTheItemInTheList)
         {
@@ -184,7 +167,7 @@ namespace WMS
         }
         private void TbIdent_KeyPress(object? sender, View.KeyEventArgs e)
         {
-            if(e.KeyCode == Keycode.Enter && e.Event.Action == KeyEventActions.Down)
+            if (e.KeyCode == Keycode.Enter && e.Event.Action == KeyEventActions.Down)
             {
                 e.Handled = true;
                 ProcessIdent();
@@ -242,7 +225,7 @@ namespace WMS
         private void OnNetworkStatusChanged(object sender, EventArgs e)
         {
             if (IsOnline())
-            {               
+            {
                 try
                 {
                     LoaderManifest.LoaderManifestLoopStop(this);
@@ -278,7 +261,7 @@ namespace WMS
 
         private void TbIdent_FocusChange(object sender, View.FocusChangeEventArgs e)
         {
-            ProcessIdent();            
+            ProcessIdent();
         }
 
         private void Button5_Click(object sender, EventArgs e)
@@ -321,7 +304,7 @@ namespace WMS
 
         }
 
-    
+
         private bool SaveMoveHead()
         {
             var order = Base.Store.OpenOrder;
@@ -332,7 +315,7 @@ namespace WMS
 
 
             if (!moveHead.GetBool("Saved"))
-            {     
+            {
                 try
                 {
 
@@ -368,7 +351,7 @@ namespace WMS
                         return true;
                     }
                 }
-                catch(Exception error)
+                catch (Exception error)
                 {
                     SentrySdk.CaptureException(error);
                     return false;
@@ -512,7 +495,7 @@ namespace WMS
                                     {
                                         Client = row.StringValue("acSubject"),
                                         Order = row.StringValue("acKey"),
-                                        Position = (int?) row.IntValue("anNo"),
+                                        Position = (int?)row.IntValue("anNo"),
                                         Quantity = row.DoubleValue("anQty"),
                                         Date = row.DateTimeValue("adDeliveryDeadline"),
                                         Ident = row.StringValue("acIdent"),
@@ -539,7 +522,8 @@ namespace WMS
             {
                 SentrySdk.CaptureException(err);
                 return;
-            } finally
+            }
+            finally
             {
                 LoaderManifest.LoaderManifestLoopStop(this);
             }
@@ -578,7 +562,7 @@ namespace WMS
 
             }
         }
- 
+
 
         private bool preventDuplicate = false;
         private int selected;
@@ -613,16 +597,16 @@ namespace WMS
                         tbIdent.Text = barcode;
                         ProcessIdent();
                     }
-                }        
+                }
             }
             else
             {
                 tbIdent.Text = string.Empty;
-            }         
+            }
         }
         private bool CheckIdent(string barcode)
         {
-            if (string.IsNullOrEmpty(barcode)) { return false ; }
+            if (string.IsNullOrEmpty(barcode)) { return false; }
             try
             {
                 string error;
@@ -661,14 +645,15 @@ namespace WMS
                 return;
             }
             // Get all the order that are from that ident and have the right order number
-            if (!String.IsNullOrEmpty(ident)) {
+            if (!String.IsNullOrEmpty(ident))
+            {
                 var parameters = new List<Services.Parameter>();
                 parameters.Add(new Services.Parameter { Name = "acKey", Type = "String", Value = newKey });
                 parameters.Add(new Services.Parameter { Name = "acIdent", Type = "String", Value = ident });
                 string query = $"SELECT * FROM uWMSOrderItemByWarehouseTypeIn WHERE acKey = @acKey AND acIdent = @acIdent";
                 var resultQuery = await AsyncServices.AsyncServices.GetObjectListBySqlAsync(query, parameters);
 
-                if(!resultQuery.Success)
+                if (!resultQuery.Success)
                 {
                     AlertDialog.Builder alert = new AlertDialog.Builder(this);
                     alert.SetTitle($"{Resources.GetString(Resource.String.s265)}");
@@ -693,7 +678,7 @@ namespace WMS
                     tbDeliveryDeadline.Text = deadLine == null ? "" : ((DateTime)deadLine).ToString("dd.MM.yyyy");
 
                     parser2DCode.__helper__convertedOrder = newKey;
-                    parser2DCode.__helper__position = (int) (row.IntValue("anNo") ?? 0);
+                    parser2DCode.__helper__position = (int)(row.IntValue("anNo") ?? 0);
                     parser2DCode.ident = ident;
                     Base.Store.code2D = parser2DCode;
 
@@ -704,7 +689,7 @@ namespace WMS
                         Finish();
                     }
 
-                }            
+                }
             }
         }
 

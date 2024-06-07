@@ -17,7 +17,7 @@ namespace WMS.App
 
         public void recalculatePickingPositions()
         {
-    
+
         }
 
 

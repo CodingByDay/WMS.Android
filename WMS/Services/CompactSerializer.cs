@@ -2,8 +2,6 @@
 using System.Xml;
 using System.Xml.Serialization;
 
-using TrendNET.WMS.Device.App;
-
 namespace TrendNET.WMS.Core.Data
 {
     public class CompactSerializer

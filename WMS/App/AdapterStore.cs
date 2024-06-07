@@ -6,27 +6,27 @@ namespace WMS.App
     {
 
 
-       /* public static List<TakeoverDocument> fillItemsOfList(string warehouse, string ident)
-        {
-            List<TakeoverDocument> result = new List<TakeoverDocument>();
-            string error;
-            var stock = Services.GetObjectList("str", out error, warehouse + "||" + ident);
-            //return string.Join("\r\n", stock.Items.Select(x => "L:" + x.GetString("Location") + " = " + x.GetDouble("RealStock").ToString(CommonData.GetQtyPicture())).ToArray());
-            stock.Items.ForEach(x =>
-            {
-                result.Add(new TakeoverDocument
-                {
-                    ident = x.GetString("Ident"),
-                    sscc = x.GetString("SSCC"),
-                    serial = x.GetString("Serial"),
-                    location = x.GetString("Location"),
-                    quantity = x.GetDouble("RealStock").ToString(CommonData.GetQtyPicture())
-                });
-            });
+        /* public static List<TakeoverDocument> fillItemsOfList(string warehouse, string ident)
+         {
+             List<TakeoverDocument> result = new List<TakeoverDocument>();
+             string error;
+             var stock = Services.GetObjectList("str", out error, warehouse + "||" + ident);
+             //return string.Join("\r\n", stock.Items.Select(x => "L:" + x.GetString("Location") + " = " + x.GetDouble("RealStock").ToString(CommonData.GetQtyPicture())).ToArray());
+             stock.Items.ForEach(x =>
+             {
+                 result.Add(new TakeoverDocument
+                 {
+                     ident = x.GetString("Ident"),
+                     sscc = x.GetString("SSCC"),
+                     serial = x.GetString("Serial"),
+                     location = x.GetString("Location"),
+                     quantity = x.GetDouble("RealStock").ToString(CommonData.GetQtyPicture())
+                 });
+             });
 
-            return result;
-        }
-       */
+             return result;
+         }
+        */
         public static async Task<List<LocationClass>> getStockForWarehouseAndIdent(string ident, string warehouse)
         {
             List<LocationClass> result = new List<LocationClass>();
@@ -35,9 +35,9 @@ namespace WMS.App
             parameters.Add(new Services.Parameter { Name = "acWarehouse", Type = "String", Value = warehouse });
             string sql = "SELECT * FROM uWMSStockByWarehouse WHERE acIdent = @acIdent AND acWarehouse = @acWarehouse;";
             var sqlResult = await AsyncServices.AsyncServices.GetObjectListBySqlAsync(sql, parameters);
-            if(sqlResult!=null && sqlResult.Success)
+            if (sqlResult != null && sqlResult.Success)
             {
-                if(sqlResult.Rows.Count > 0)
+                if (sqlResult.Rows.Count > 0)
                 {
                     sqlResult.Rows.ForEach(x =>
                     {
@@ -55,7 +55,7 @@ namespace WMS.App
                     });
 
                 }
-            } 
+            }
 
 
             return result;

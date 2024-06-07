@@ -1,17 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Newtonsoft.Json;
 using System.Text;
-using System.Threading.Tasks;
 using TrendNET.WMS.Core.Data;
-using API;
-
-
-using Newtonsoft.Json;
-using System.Net;
-using TrendNET.WMS.Device.App;
-using WMS.App;
-using Android.Test;
 using static TrendNET.WMS.Device.Services.Services;
 
 
@@ -52,7 +41,7 @@ namespace WMS.AsyncServices
                     return null;
                 }
             }
-            catch 
+            catch
             {
                 return null;
             }
@@ -158,12 +147,12 @@ namespace WMS.AsyncServices
             try
             {
                 PostResult getResult = await PostAsync("mode=sql&type=sel", requestBody);
-                return JsonConvert.DeserializeObject<ApiResultSet>(getResult.Result); 
+                return JsonConvert.DeserializeObject<ApiResultSet>(getResult.Result);
             }
             catch (Exception err)
             {
                 SentrySdk.CaptureMessage(err.Message);
-                return new ApiResultSet { Error = err.Message, Success = false, Results = 0, Rows = new List<Row>()};
+                return new ApiResultSet { Error = err.Message, Success = false, Results = 0, Rows = new List<Row>() };
             }
         }
 

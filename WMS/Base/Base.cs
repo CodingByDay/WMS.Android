@@ -1,23 +1,7 @@
 ﻿using Android.Content;
-using Android.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using TrendNET.WMS.Core.Data;
-using Android.Content;
-using Android.Content.Res;
-using Java.Util;
-using Android.OS;
-using Android.Util;
-using Android.Views;
-using System.Globalization;
-using WMS.App;
-using Java.Lang;
 using BarCode2D_Receiver;
+using System.Reflection;
+using WMS.App;
 namespace WMS
 {
     /// <summary>
@@ -40,7 +24,7 @@ namespace WMS
 
         public string language = string.Empty;
 
-        public Parser2DCode? code2D {get; set;}
+        public Parser2DCode? code2D { get; set; }
 
         public bool byOrder { get; set; } = true;
 
@@ -64,7 +48,7 @@ namespace WMS
 
         public void ChangeActivity(Context context, IBarcodeResult iBarcodeResult)
         {
-            
+
         }
 
         public Base(IntPtr javaReference, Android.Runtime.JniHandleOwnership transfer) : base(javaReference, transfer)
@@ -82,7 +66,7 @@ namespace WMS
 
 
 
-      
+
 
 
 

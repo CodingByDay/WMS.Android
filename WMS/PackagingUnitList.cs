@@ -1,30 +1,15 @@
-﻿using Stream = Android.Media.Stream;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.Media;
+﻿using Android.Content;
+using Android.Content.PM;
+using Android.Graphics;
+using Android.Graphics.Drawables;
 using Android.Net;
-using Android.OS;
-using Android.Runtime;
 using Android.Views;
-using Android.Widget;
-using BarCode2D_Receiver;
-
-using WMS.App;
 using TrendNET.WMS.Core.Data;
 using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
+using WMS.App;
 using static Android.App.ActionBar;
 using WebApp = TrendNET.WMS.Device.Services.WebApp;
-
-using AndroidX.AppCompat.App;
-using AlertDialog = Android.App.AlertDialog;
-using Android.Graphics.Drawables;
-using Android.Graphics;
-using Android.Content.PM;
 namespace WMS
 {
     [Activity(Label = "PackagingUnitList")]
@@ -106,7 +91,7 @@ namespace WMS
         {
             if (IsOnline())
             {
-                
+
                 try
                 {
                     LoaderManifest.LoaderManifestLoopStop(this);

@@ -1,27 +1,15 @@
-﻿using Stream = Android.Media.Stream;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
+﻿using Android.Content;
 using Android.Content.PM;
 using Android.Media;
 using Android.Net;
-using Android.OS;
-using Android.Runtime;
 using Android.Views;
-using Android.Widget;
 using BarCode2D_Receiver;
-
-using WMS.App;
-using WMS.Printing;
-
 using TrendNET.WMS.Core.Data;
 using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
-
-using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS
+using WMS.App;
+using WMS.Printing;
+namespace WMS
 {
     [Activity(Label = "PrintingReprintLabels", ScreenOrientation = ScreenOrientation.Portrait)]
     public class PrintingReprintLabels : CustomBaseActivity, IBarcodeResult
@@ -58,25 +46,28 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
 
         public void GetBarcode(string barcode)
         {
-            if(tbSSCC.HasFocus)
+            if (tbSSCC.HasFocus)
             {
 
-                
+
                 tbSSCC.Text = barcode;
                 tbSerialNum.RequestFocus();
-            } else if(tbIdent.HasFocus && barcode!="Scan fail")
+            }
+            else if (tbIdent.HasFocus && barcode != "Scan fail")
             {
-                
+
                 tbIdent.Text = barcode;
                 ProcessIdent();
-              
-            } else if(tbSerialNum.HasFocus && barcode != "Scan fail")
+
+            }
+            else if (tbSerialNum.HasFocus && barcode != "Scan fail")
             {
-                
+
                 tbSerialNum.Text = barcode;
-            } else if (tbLocation.HasFocus && barcode != "Scan fail")
+            }
+            else if (tbLocation.HasFocus && barcode != "Scan fail")
             {
-                
+
                 tbLocation.Text = barcode;
                 ProcessQty();
                 tbQty.RequestFocus();
@@ -92,7 +83,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 tbTitle.Text = identObj.GetString("Name");
                 tbSSCC.Enabled = identObj.GetBool("isSSCC");
                 tbSerialNum.Enabled = identObj.GetBool("HasSerialNumber");
-              
+
             }
             else
             {
@@ -102,9 +93,9 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 tbIdent.RequestFocus();
             }
         }
-    
 
-  
+
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -135,7 +126,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             btPrint = FindViewById<Button>(Resource.Id.btPrint);
             button2 = FindViewById<Button>(Resource.Id.button2);
             tbNumberOfCopies = FindViewById<EditText>(Resource.Id.tbNumberOfCopies);
-            color();           
+            color();
             tbTitle.FocusChange += TbTitle_FocusChange;
             btPrint.Click += BtPrint_Click;
             button2.Click += Button2_Click;
@@ -146,14 +137,14 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
 
             warehouses.Items.ForEach(w =>
             {
-            warehouseAdapter.Add(new ComboBoxItem { ID = w.GetString("Subject"), Text = w.GetString("Name") });
+                warehouseAdapter.Add(new ComboBoxItem { ID = w.GetString("Subject"), Text = w.GetString("Name") });
             });
 
             var subjects = CommonData.ListReprintSubjects();
 
             subjects.Items.ForEach(s =>
             {
-              subjectsAdapter.Add(new ComboBoxItem { ID = s.GetString("ID"), Text = s.GetString("ID") });
+                subjectsAdapter.Add(new ComboBoxItem { ID = s.GetString("ID"), Text = s.GetString("ID") });
             });
 
 
@@ -189,7 +180,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
         {
             if (IsOnline())
             {
-                
+
                 try
                 {
                     LoaderManifest.LoaderManifestLoopStop(this);
@@ -228,10 +219,10 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
 
         private bool LoadStock(string warehouse, string location, string sscc, string serialNum, string ident)
         {
-           
+
             try
             {
-   
+
 
                 string error;
                 stock = Services.GetObject("str", warehouse + "|" + location + "|" + sscc + "|" + serialNum + "|" + ident, out error);
@@ -239,7 +230,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 {
                     string toast = string.Format($"{Resources.GetString(Resource.String.s216)}" + error);
                     Toast.MakeText(this, toast, ToastLength.Long).Show();
-  
+
                     return false;
                 }
 
@@ -259,7 +250,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
         {
             btPrint.Enabled = false;
 
-           var warehouse = warehouseAdapter.ElementAt(tempPositionWarehouse);
+            var warehouse = warehouseAdapter.ElementAt(tempPositionWarehouse);
             if (warehouse == null) { return; }
 
             var sscc = tbSSCC.Text.Trim();
@@ -332,34 +323,36 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             if (String.IsNullOrEmpty(tbIdent.Text) | String.IsNullOrEmpty(tbTitle.Text))
             { return; }
 
-                var qty = 0.0;
+            var qty = 0.0;
 
-                if(!String.IsNullOrEmpty(tbQty.Text)) { 
+            if (!String.IsNullOrEmpty(tbQty.Text))
+            {
 
                 qty = Convert.ToDouble(tbQty.Text);
 
-                } 
-          
-            
-              
-            
+            }
+
+
+
+
 
             if (qty <= 0.0)
             {
                 string toast = string.Format($"{Resources.GetString(Resource.String.s298)}");
                 Toast.MakeText(this, toast, ToastLength.Long).Show();
-      
+
                 return;
-            }   
+            }
             try
             {
 
                 try
                 {
                     numberOfCopies = Convert.ToInt32(tbNumberOfCopies.Text);
-                    if(numberOfCopies <= 0) { numberOfCopies = 1; }
+                    if (numberOfCopies <= 0) { numberOfCopies = 1; }
 
-                } catch(Exception)
+                }
+                catch (Exception)
                 {
                     numberOfCopies = 1;
                 }
@@ -378,7 +371,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 {
 
                     nvo.SetString("Subject", cbSubject.SelectedItem == null ? "" : subjectsAdapter.ElementAt(tempPositionSubject).ID);
-                } 
+                }
                 else
                 {
                     nvo.SetString("Subject", String.Empty);
@@ -388,12 +381,12 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             }
             finally
             {
-                
+
                 string toast = string.Format($"{Resources.GetString(Resource.String.s299)}");
                 Toast.MakeText(this, toast, ToastLength.Long).Show();
                 ClearTheScreen();
             }
-  
+
         }
 
         private void ClearTheScreen()

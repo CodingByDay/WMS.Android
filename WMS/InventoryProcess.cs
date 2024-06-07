@@ -1,37 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Timers;
-using Android.App;
-using Android.Content;
+﻿using Android.Content;
 using Android.Content.PM;
 using Android.Media;
 using Android.Net;
-using Android.OS;
-using Android.Preferences;
-using Android.Runtime;
 using Android.Views;
-using Android.Widget;
 using BarCode2D_Receiver;
-
-
-using Newtonsoft.Json;
-using WMS.App;
-
 using TrendNET.WMS.Core.Data;
 using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
-using Xamarin.Essentials;
-using static Android.App.DownloadManager;
-using WebApp = TrendNET.WMS.Device.Services.WebApp;
+using WMS.App;
 using WMS.Printing;
 using Timer = System.Timers.Timer;
-using Stream = Android.Media.Stream;
-
-using AndroidX.AppCompat.App;
-using AlertDialog = Android.App.AlertDialog;
+using WebApp = TrendNET.WMS.Device.Services.WebApp;
 namespace WMS
 {
     [Activity(Label = "InventoryProcess", ScreenOrientation = ScreenOrientation.Portrait)]
@@ -112,7 +91,7 @@ namespace WMS
             button2 = FindViewById<Button>(Resource.Id.button2);
             lbUnits = FindViewById<TextView>(Resource.Id.lbUnits);
             lbPacking = FindViewById<TextView>(Resource.Id.lbPacking);
-            tbTitle.Focusable= false;
+            tbTitle.Focusable = false;
             cbWarehouse.ItemSelected += CbWarehouse_ItemSelected;
             btPrint.Click += BtPrint_Click;
             button1.Click += Button1_Click;
@@ -136,12 +115,12 @@ namespace WMS
             adapterIssue.SetDropDownViewResource(Android.Resource.Layout.SimpleSpinnerDropDownItem);
             cbWarehouse.Adapter = adapterIssue;
             color();
-          
+
             var _broadcastReceiver = new NetworkStatusBroadcastReceiver();
             _broadcastReceiver.ConnectionStatusChanged += OnNetworkStatusChanged;
             Application.Context.RegisterReceiver(_broadcastReceiver,
             new IntentFilter(ConnectivityManager.ConnectivityAction));
-           
+
             if (CommonData.GetSetting("AutoCreateSSCC") == "1")
             {
                 tbSSCC.RequestFocus();
@@ -153,14 +132,15 @@ namespace WMS
             }
         }
 
-     
+
 
         private void TbSSCC_KeyPress(object sender, View.KeyEventArgs e)
         {
-           if(e.KeyCode == Keycode.Enter && e.Event.Action == 0) {
-                
+            if (e.KeyCode == Keycode.Enter && e.Event.Action == 0)
+            {
+
                 if (CommonData.GetSetting("AutoCreateSSCC") == "1" && tbSSCC.Text != string.Empty)
-                {      
+                {
                     string error;
                     dataObject = GetSSCCData(tbSSCC.Text);
                     if (dataObject.Items != null)
@@ -193,21 +173,23 @@ namespace WMS
                         tbLocation.Text = location;
                         tbTitle.Text = idname;
 
-                        
-                        e.Handled = true;                      
+
+                        e.Handled = true;
                     }
                     else
                     {
                         tbSSCC.Text = string.Empty;
                     }
 
-                }       
-            } else
+                }
+            }
+            else
             {
                 if (e.KeyCode != Keycode.Enter)
                 {
                     e.Handled = false;
-                } else
+                }
+                else
                 {
                     e.Handled = true;
                     ProcessStock();
@@ -234,38 +216,40 @@ namespace WMS
                             tbLocation.Text = App.Settings.lastLocation;
                         });
                     }
-                } catch (Exception ex) {
+                }
+                catch (Exception ex)
+                {
                     SentrySdk.CaptureException(ex);
-                } 
-            });      
+                }
+            });
         }
 
         private async Task FillWarehouses()
         {
-           await Task.Run(() =>
-           {
-               var warehouses = CommonData.ListWarehouses();
+            await Task.Run(() =>
+            {
+                var warehouses = CommonData.ListWarehouses();
 
-               if (warehouses != null)
-               {
-                   warehouses.Items.ForEach(wh =>
-                   {
-                       if (checkDocument(wh.GetString("Subject")))
-                       {
-                           warehouseAdapter.Add(new ComboBoxItem { ID = wh.GetString("Subject"), Text = wh.GetString("Name") });
-                       }
-                   });
-                   if (!string.IsNullOrEmpty(selectedWarehouse))
-                   {
-                       RunOnUiThread(() =>
-                       {
-                           ComboBoxItem.Select(cbWarehouse, warehouseAdapter, selectedWarehouse);
-                           tbLocation.RequestFocus();
-                       });
-                     
-                   }
-               }
-           });
+                if (warehouses != null)
+                {
+                    warehouses.Items.ForEach(wh =>
+                    {
+                        if (checkDocument(wh.GetString("Subject")))
+                        {
+                            warehouseAdapter.Add(new ComboBoxItem { ID = wh.GetString("Subject"), Text = wh.GetString("Name") });
+                        }
+                    });
+                    if (!string.IsNullOrEmpty(selectedWarehouse))
+                    {
+                        RunOnUiThread(() =>
+                        {
+                            ComboBoxItem.Select(cbWarehouse, warehouseAdapter, selectedWarehouse);
+                            tbLocation.RequestFocus();
+                        });
+
+                    }
+                }
+            });
         }
 
 
@@ -282,7 +266,7 @@ namespace WMS
             if (result.Success && result.Rows.Count > 0)
             {
                 MorePallets instance = new MorePallets();
-                row = result.Rows[0];                             
+                row = result.Rows[0];
             }
 
             return row;
@@ -315,7 +299,7 @@ namespace WMS
             }
         }
 
-     
+
 
         private void TbIdent_KeyPress(object sender, View.KeyEventArgs e)
         {
@@ -330,7 +314,7 @@ namespace WMS
 
         private void TbIdent_FocusChange(object sender, View.FocusChangeEventArgs e)
         {
-        
+
             ProcessLocation();
 
             if (CommonData.GetSetting("AutoCreateSSCC") != "1")
@@ -350,7 +334,7 @@ namespace WMS
                     {
                         if (tbIdent.Text != string.Empty)
                         {
-                            ProcessStock();       
+                            ProcessStock();
                         }
 
                     }
@@ -397,7 +381,7 @@ namespace WMS
                 }
 
             }
-            catch(Exception ex) 
+            catch (Exception ex)
             {
                 SentrySdk.CaptureException(ex);
             }
@@ -405,30 +389,30 @@ namespace WMS
 
         private string LoadStock(string warehouse, string location, string sscc, string serialNum, string ident)
         {
-        
-                string error;
-                NameValueObject stock = new NameValueObject();
-                if (!String.IsNullOrEmpty(serialNum) && !String.IsNullOrEmpty(sscc))
-                {
-                    stock = Services.GetObject("str", warehouse + "|" + location + "|" + sscc + "|" + serialNum + "|" + ident, out error);
-                }
-                else if (!String.IsNullOrEmpty(sscc) && String.IsNullOrEmpty(serialNum))
-                {
-                    stock = Services.GetObject("str", warehouse + "|" + location + "|" + sscc + "||" + ident, out error);
 
-                }
-                else if (String.IsNullOrEmpty(sscc) && !String.IsNullOrEmpty(serialNum))
-                {
-                    stock = Services.GetObject("str", warehouse + "|" + location + "||" + serialNum + "|" + ident, out error);
+            string error;
+            NameValueObject stock = new NameValueObject();
+            if (!String.IsNullOrEmpty(serialNum) && !String.IsNullOrEmpty(sscc))
+            {
+                stock = Services.GetObject("str", warehouse + "|" + location + "|" + sscc + "|" + serialNum + "|" + ident, out error);
+            }
+            else if (!String.IsNullOrEmpty(sscc) && String.IsNullOrEmpty(serialNum))
+            {
+                stock = Services.GetObject("str", warehouse + "|" + location + "|" + sscc + "||" + ident, out error);
 
-                }
-                else
-                {
-                    stock = Services.GetObject("str", warehouse + "|" + location + "|||" + ident, out error);
+            }
+            else if (String.IsNullOrEmpty(sscc) && !String.IsNullOrEmpty(serialNum))
+            {
+                stock = Services.GetObject("str", warehouse + "|" + location + "||" + serialNum + "|" + ident, out error);
 
-                }
+            }
+            else
+            {
+                stock = Services.GetObject("str", warehouse + "|" + location + "|||" + ident, out error);
 
-                return stock.GetDouble("RealStock").ToString(CommonData.GetQtyPicture());
+            }
+
+            return stock.GetDouble("RealStock").ToString(CommonData.GetQtyPicture());
 
         }
 
@@ -538,7 +522,7 @@ namespace WMS
                         StartActivity(typeof(InventoryProcess));
                         HelpfulMethods.clearTheStack(this);
                         App.Settings.lastWarehouse = warehouse.ID;
-                        App.Settings.lastLocation= location;            
+                        App.Settings.lastLocation = location;
                     }
                 }
                 else
@@ -547,7 +531,7 @@ namespace WMS
                     return;
                 }
             }
-            catch(Exception error)
+            catch (Exception error)
             {
                 SentrySdk.CaptureException(error);
                 return;
@@ -578,14 +562,14 @@ namespace WMS
                 nvo.SetString("SSCC", sscc);
                 PrintingCommon.SendToServer(nvo);
             }
-            catch(Exception error)
+            catch (Exception error)
             {
                 SentrySdk.CaptureException(error);
                 return;
             }
 
         }
-       
+
 
         private async void CbWarehouse_ItemSelected(object sender, AdapterView.ItemSelectedEventArgs e)
         {
@@ -607,12 +591,13 @@ namespace WMS
                 if (tbSSCC.Enabled || tbSerialNum.Enabled)
                 {
                     tbSSCC.RequestFocus();
-                } else
+                }
+                else
                 {
                     tbSSCC.Visibility = ViewStates.Invisible;
                     tbSerialNum.Visibility = ViewStates.Invisible;
                 }
-               
+
             }
             else
             {
@@ -711,28 +696,29 @@ namespace WMS
                     result = LoadStock(warehouse.ID, location, string.Empty, string.Empty, ident);
                     moveItemInner = Services.GetObject("miissl", headID.ToString() + "|" + ident + "|||" + location, out result);
                 }
-                if (moveItemInner!=null)
+                if (moveItemInner != null)
                 {
                     qtyItem = moveItemInner.GetDouble("Qty");
                 }
-            
+
                 double q = dataObject.DoubleValue("anQty") ?? 0;
-                if (dataObject!=null)
+                if (dataObject != null)
                 {
                     lbPacking.Text = $"{Resources.GetString(Resource.String.s83)} ({q.ToString(CommonData.GetQtyPicture())})";
-                    tbPacking.Text =  q.ToString(CommonData.GetQtyPicture());
+                    tbPacking.Text = q.ToString(CommonData.GetQtyPicture());
 
-                } else if(result!=null)
+                }
+                else if (result != null)
                 {
                     lbPacking.Text = $"{Resources.GetString(Resource.String.s83)} ({result})";
                     tbPacking.Text = result;
                 }
 
 
-               
-            
+
+
             }
-            catch(Exception err)
+            catch (Exception err)
             {
                 SentrySdk.CaptureException(err);
             }
@@ -741,61 +727,61 @@ namespace WMS
         {
             if (tbSSCC.HasFocus)
             {
-                    
-                    tbSSCC.Text = barcode;
-                    string error;
-                    dataObject = GetSSCCData(tbSSCC.Text);
-                    if (dataObject != null)
+
+                tbSSCC.Text = barcode;
+                string error;
+                dataObject = GetSSCCData(tbSSCC.Text);
+                if (dataObject != null)
+                {
+                    var ident = dataObject.StringValue("acIdent");
+                    var loadIdent = CommonData.LoadIdent(ident);
+                    string idname = loadIdent.GetString("Name");
+                    if (string.IsNullOrEmpty(ident)) { return; }
+                    if (loadIdent != null)
                     {
-                        var ident = dataObject.StringValue("acIdent");
-                        var loadIdent = CommonData.LoadIdent(ident);
-                        string idname = loadIdent.GetString("Name");
-                        if (string.IsNullOrEmpty(ident)) { return; }
-                        if (loadIdent != null)
-                        {
-                            tbSerialNum.Enabled = loadIdent.GetBool("HasSerialNumber");
-                        }
-                        var serial = dataObject.StringValue("acSerialNo");
-                        var location = dataObject.StringValue("aclocation");
-                        var warehouse = dataObject.StringValue("acWarehouse");
-                        tbIdent.Text = ident;
-                        tbLocation.Text = location;
+                        tbSerialNum.Enabled = loadIdent.GetBool("HasSerialNumber");
+                    }
+                    var serial = dataObject.StringValue("acSerialNo");
+                    var location = dataObject.StringValue("aclocation");
+                    var warehouse = dataObject.StringValue("acWarehouse");
+                    tbIdent.Text = ident;
+                    tbLocation.Text = location;
+                    tbSerialNum.Text = serial;
+                    if (loadIdent.GetBool("HasSerialNumber"))
+                    {
                         tbSerialNum.Text = serial;
-                        if (loadIdent.GetBool("HasSerialNumber"))
-                        {
-                            tbSerialNum.Text = serial;
-                            tbSerialNum.SetBackgroundColor(Android.Graphics.Color.Aqua);
-                        }
-                        else
-                        {
-                            tbSerialNum.SetBackgroundColor(Android.Graphics.Color.Red);
-                        }
-                        tbLocation.Text = location;
-                        tbTitle.Text = idname;
-                        ProcessStock();
-                        tbPacking.RequestFocus();                    
+                        tbSerialNum.SetBackgroundColor(Android.Graphics.Color.Aqua);
+                    }
+                    else
+                    {
+                        tbSerialNum.SetBackgroundColor(Android.Graphics.Color.Red);
+                    }
+                    tbLocation.Text = location;
+                    tbTitle.Text = idname;
+                    ProcessStock();
+                    tbPacking.RequestFocus();
                 }
                 else
                 {
                     tbSSCC.Text = string.Empty;
-                }                        
+                }
             }
             else if (tbLocation.HasFocus)
             {
-                
+
                 tbLocation.Text = barcode;
                 ProcessLocation();
 
             }
             else if (tbSerialNum.HasFocus)
             {
-                
+
                 tbSerialNum.Text = barcode;
                 ProcessStock();
             }
             else if (tbIdent.HasFocus)
             {
-                
+
                 tbIdent.Text = barcode;
                 ProcessIdent();
             }

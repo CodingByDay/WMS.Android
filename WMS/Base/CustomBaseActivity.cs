@@ -1,10 +1,5 @@
-﻿using Android;
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
+﻿using Android.Content;
 using AndroidX.AppCompat.App;
-using Sentry;
 
 namespace WMS
 {
@@ -14,7 +9,7 @@ namespace WMS
         {
 
             base.OnCreate(savedInstanceState);
-          
+
 
         }
 

@@ -1,27 +1,15 @@
-﻿using Stream = Android.Media.Stream;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Android.App;
-using Android.Content;
+﻿using Android.Content;
 using Android.Content.PM;
 using Android.Media;
 using Android.Net;
-using Android.OS;
-using Android.Runtime;
 using Android.Views;
-using Android.Widget;
 using BarCode2D_Receiver;
-
-using WMS.App;
 using TrendNET.WMS.Core.Data;
 using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
-using WebApp = TrendNET.WMS.Device.Services.WebApp;
+using WMS.App;
 using AlertDialog = Android.App.AlertDialog;
-
-using AndroidX.AppCompat.App;
+using WebApp = TrendNET.WMS.Device.Services.WebApp;
 
 namespace WMS
 {
@@ -51,39 +39,40 @@ namespace WMS
         private ProgressDialogClass progress;
 
 
-        
+
         public void GetBarcode(string barcode)
         {
-      
+
             if (!string.IsNullOrEmpty(barcode))
             {
 
                 if (tbSSCC.HasFocus)
                 {
-                    
+
                     tbSSCC.Text = barcode;
                     tbSerialNo.RequestFocus();
                 }
 
                 else if (tbLocation.HasFocus)
                 {
-                    
+
                     tbLocation.Text = barcode;
                     if (tbLocation.Text != "Scan fail")
                     {
                         tbSSCC.RequestFocus();
                         if (!tbSSCC.Enabled && !tbSerialNo.Enabled) { ProcessQty(); }
-                    } else
+                    }
+                    else
                     {
                         tbLocation.Text = "";
                         tbLocation.RequestFocus();
                     }
-                   
+
 
                 }
                 else if (tbIdent.HasFocus)
                 {
-                    
+
                     tbIdent.Text = barcode;
                     if (tbIdent.Text != "Scan fail")
                     {
@@ -95,12 +84,12 @@ namespace WMS
                         tbIdent.Text = "";
                         tbIdent.RequestFocus();
                     }
-                   
+
                 }
                 else if (tbSerialNo.HasFocus)
                 {
 
-                    
+
                     tbSerialNo.Text = barcode;
                     ProcessQty();
                 }
@@ -112,7 +101,7 @@ namespace WMS
         }
         private void ProcessIdent()
         {
-            if (!string.IsNullOrEmpty(tbIdent.Text) )
+            if (!string.IsNullOrEmpty(tbIdent.Text))
             {
                 var ident = CommonData.LoadIdent(tbIdent.Text.Trim());
                 tbIdentName.Text = ident == null ? "" : ident.GetString("Name");
@@ -120,7 +109,8 @@ namespace WMS
                 tbSerialNo.Enabled = ident == null ? false : ident.GetBool("HasSerialNumber");
                 color();
                 tbLocation.RequestFocus();
-            } else
+            }
+            else
             {
                 tbIdent.Text = "";
             }
@@ -140,18 +130,20 @@ namespace WMS
 
 
         private void color()
-        {    if(tbSSCC.Enabled == true || tbSerialNo.Enabled == true)
+        {
+            if (tbSSCC.Enabled == true || tbSerialNo.Enabled == true)
             {
                 tbSSCC.SetBackgroundColor(Android.Graphics.Color.Aqua);
                 tbSerialNo.SetBackgroundColor(Android.Graphics.Color.Aqua);
                 tbLocation.SetBackgroundColor(Android.Graphics.Color.Aqua);
             }
-            else if(tbSSCC.Enabled == true)
+            else if (tbSSCC.Enabled == true)
             {
                 tbSSCC.SetBackgroundColor(Android.Graphics.Color.Aqua);
                 tbLocation.SetBackgroundColor(Android.Graphics.Color.Aqua);
-              
-            } else if (tbSerialNo.Enabled == true)
+
+            }
+            else if (tbSerialNo.Enabled == true)
             {
                 tbSerialNo.SetBackgroundColor(Android.Graphics.Color.Aqua);
                 tbLocation.SetBackgroundColor(Android.Graphics.Color.Aqua);
@@ -173,7 +165,7 @@ namespace WMS
             if (string.IsNullOrEmpty(ident))
             {
                 Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
-             
+
                 return false;
             }
 
@@ -285,7 +277,7 @@ namespace WMS
         {
             try
             {
-         
+
 
                 string error;
                 stock = Services.GetObject("str", warehouse + "|" + location + "|" + sscc + "|" + serialNum + "|" + ident, out error);
@@ -337,7 +329,7 @@ namespace WMS
             btList = FindViewById<Button>(Resource.Id.btList);
             btFinish = FindViewById<Button>(Resource.Id.btFinish);
             btExit = FindViewById<Button>(Resource.Id.btExit);
-          
+
             tbQty.FocusChange += TbQty_FocusChange;
 
             btNew.Click += BtNew_Click;
@@ -383,7 +375,7 @@ namespace WMS
         {
             if (IsOnline())
             {
-                
+
                 try
                 {
                     LoaderManifest.LoaderManifestLoopStop(this);
@@ -517,13 +509,13 @@ namespace WMS
                     }
                 }
             });
-           
+
         }
         private async void BtFinish_Click(object sender, EventArgs e)
         {
             await FinishMethod();
-           
-  
+
+
         }
         public override bool OnKeyDown(Keycode keyCode, KeyEvent e)
         {
@@ -536,7 +528,7 @@ namespace WMS
                         BtNew_Click(this, null);
                     }
                     break;
-            
+
                 case Keycode.F3:
                     if (btList.Enabled == true)
                     {
@@ -571,11 +563,11 @@ namespace WMS
             if (SavePackagingItem())
             {
                 InUseObjects.Set("PackagingItem", null);
-                 StartActivity(typeof(PackagingUnitList));
+                StartActivity(typeof(PackagingUnitList));
                 HelpfulMethods.clearTheStack(this);
 
             }
-        
+
         }
 
         private void BtNew_Click(object sender, EventArgs e)
@@ -583,7 +575,7 @@ namespace WMS
             if (SavePackagingItem())
             {
                 InUseObjects.Set("PackagingItem", null);
-               StartActivity(typeof(PackagingUnit));
+                StartActivity(typeof(PackagingUnit));
                 HelpfulMethods.clearTheStack(this);
 
             }

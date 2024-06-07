@@ -1,30 +1,15 @@
-﻿using Stream = Android.Media.Stream;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
+﻿using Android.Content;
 using Android.Content.PM;
+using Android.Graphics;
+using Android.Graphics.Drawables;
 using Android.Net;
-using Android.OS;
-using Android.Runtime;
 using Android.Views;
-using Android.Widget;
-
-using WMS.App;
 using TrendNET.WMS.Core.Data;
 using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
+using WMS.App;
 using static Android.App.ActionBar;
 using WebApp = TrendNET.WMS.Device.Services.WebApp;
-
-using AndroidX.AppCompat.App;
-using AlertDialog = Android.App.AlertDialog;
-using Android.Graphics.Drawables;
-using Android.Graphics;
-using AndroidX.Lifecycle;
-using System.Data.Common;
 namespace WMS
 {
     [Activity(Label = "UnfinishedInterWarehouseView", ScreenOrientation = ScreenOrientation.Portrait)]
@@ -94,7 +79,7 @@ namespace WMS
             btFinish = FindViewById<Button>(Resource.Id.btFinish);
             btnNew = FindViewById<Button>(Resource.Id.btnNew);
             btnLogout = FindViewById<Button>(Resource.Id.btnLogout);
-            btDelete = FindViewById<Button>(Resource.Id.btDelete);      
+            btDelete = FindViewById<Button>(Resource.Id.btDelete);
             btNext.Click += BtNext_Click;
             btFinish.Click += BtFinish_Click;
             btDelete.Click += BtDelete_Click;
@@ -273,7 +258,7 @@ namespace WMS
         {
             if (IsOnline())
             {
-                
+
                 try
                 {
                     LoaderManifest.LoaderManifestLoopStop(this);
@@ -341,14 +326,14 @@ namespace WMS
             StartActivity(typeof(MainMenu));
             HelpfulMethods.clearTheStack(this);
         }
-        
+
         private void BtnNew_Click(object sender, EventArgs e)
         {
             NameValueObject moveHead = new NameValueObject("MoveHead");
             moveHead.SetBool("Saved", false);
             InUseObjects.Set("MoveHead", moveHead);
 
-           StartActivity(typeof(InterWarehouseBusinessEventSetup));
+            StartActivity(typeof(InterWarehouseBusinessEventSetup));
             HelpfulMethods.clearTheStack(this);
         }
 
@@ -383,10 +368,10 @@ namespace WMS
             var item = positions.Items[displayedPosition];
             var id = item.GetInt("HeadID");
 
-         
+
             try
             {
-          
+
                 string result;
                 if (WebApp.Get("mode=delMoveHead&head=" + id.ToString() + "&deleter=" + Services.UserID().ToString(), out result))
                 {
@@ -459,7 +444,7 @@ namespace WMS
 
         private void BtNext_Click(object sender, EventArgs e)
         {
-            if(App.Settings.tablet)
+            if (App.Settings.tablet)
             {
                 selectedItem++;
 
@@ -483,10 +468,10 @@ namespace WMS
         }
 
         private async Task LoadPositions()
-        {       
+        {
             try
             {
-               
+
                 if (positions == null)
                 {
                     var error = "";
@@ -495,14 +480,15 @@ namespace WMS
                     {
                         positions = await AsyncServices.AsyncServices.GetObjectListAsync("mhp", "E");
                     }
-                    catch (Exception) {
+                    catch (Exception)
+                    {
 
                         return;
 
                     }
 
                     InUseObjects.Set("InterWarehouseHeads", positions);
-                    
+
                     if (positions == null)
                     {
                         string toast = string.Format($"{Resources.GetString(Resource.String.s213)}" + error);
@@ -587,9 +573,9 @@ namespace WMS
                 tbCreatedAt.SetTextColor(Android.Graphics.Color.Black);
 
 
-                btNext.Enabled = false; 
+                btNext.Enabled = false;
                 btFinish.Enabled = false;
-        
+
                 btDelete.Enabled = false;
 
             }

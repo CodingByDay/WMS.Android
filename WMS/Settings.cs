@@ -1,21 +1,10 @@
-﻿using Android.App;
-using Android.Content;
+﻿using Android.Content;
 using Android.Net;
-using Android.OS;
-using Android.Runtime;
 using Android.Views;
-using Android.Widget;
-using Aspose.Words.Tables;
-
-using WMS.App;
-using Stream = Android.Media.Stream;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using TrendNET.WMS.Device.Services;
+using WMS.App;
 using Xamarin.Essentials;
 using static BluetoothService;
-using AndroidX.AppCompat.App;
 using AlertDialog = Android.App.AlertDialog;
 
 
@@ -32,7 +21,7 @@ namespace WMS
         public static string deviceInfo;
         private Spinner cbDevice;
         public static string IDinfo;
-        private List<string> arrayData = new List<string>(); 
+        private List<string> arrayData = new List<string>();
         private string item;
         private int position;
         private string dev;
@@ -47,11 +36,11 @@ namespace WMS
         {
 
             base.OnCreate(savedInstanceState);
-            SetTheme(Resource.Style.AppTheme_NoActionBar);           
+            SetTheme(Resource.Style.AppTheme_NoActionBar);
             SetContentView(Resource.Layout.Settings);
             arrayData.Add($"{Resources.GetString(Resource.String.s319)}");
             arrayData.Add($"{Resources.GetString(Resource.String.s320)}");
-            arrayData.Add($"{Resources.GetString(Resource.String.s321)}");  
+            arrayData.Add($"{Resources.GetString(Resource.String.s321)}");
             bluetooth = FindViewById<Button>(Resource.Id.bluetooth);
             bluetooth.Click += Bluetooth_Click;
             ID = FindViewById<EditText>(Resource.Id.IDdevice);
@@ -117,7 +106,7 @@ namespace WMS
 
         public bool IsOnline()
         {
-            var cm = (ConnectivityManager) GetSystemService(ConnectivityService);
+            var cm = (ConnectivityManager)GetSystemService(ConnectivityService);
             return cm.ActiveNetworkInfo == null ? false : cm.ActiveNetworkInfo.IsConnected;
 
         }
@@ -125,7 +114,7 @@ namespace WMS
         private void OnNetworkStatusChanged(object sender, EventArgs e)
         {
             if (IsOnline())
-            {               
+            {
                 try
                 {
                     LoaderManifest.LoaderManifestLoopStop(this);
@@ -148,10 +137,11 @@ namespace WMS
 
         public void maintainSelection()
         {
-            if(App.Settings.tablet ==true)
+            if (App.Settings.tablet == true)
             {
                 cbDevice.SetSelection(1);
-            } else
+            }
+            else
             {
                 cbDevice.SetSelection(2);
             }
@@ -163,11 +153,12 @@ namespace WMS
 
             if (position == 1)
             {
-                App.Settings.tablet = true; 
-            } else
+                App.Settings.tablet = true;
+            }
+            else
             {
                 App.Settings.tablet = false;
-            }        
+            }
         }
 
         private void Ok_Click(object sender, EventArgs e)
@@ -182,7 +173,7 @@ namespace WMS
 
         internal void OnServiceBindingComplete(BluetoothService bluetoothService)
         {
-           // Toast.MakeText(this, "Povezava z napravo je bila uspešna", ToastLength.Long);
+            // Toast.MakeText(this, "Povezava z napravo je bila uspešna", ToastLength.Long);
         }
     }
 }

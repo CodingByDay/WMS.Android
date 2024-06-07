@@ -1,23 +1,11 @@
-﻿using Stream = Android.Media.Stream;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
+﻿using Android.Content;
 using Android.Content.PM;
 using Android.Net;
-using Android.OS;
-using Android.Runtime;
 using Android.Views;
-using Android.Widget;
-
+using TrendNET.WMS.Core.Data;
 using WMS.App;
 using WMS.Printing;
-
-using TrendNET.WMS.Core.Data;
-
-using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS
+namespace WMS
 {
     [Activity(Label = "PrintingSSCCCodes", ScreenOrientation = ScreenOrientation.Portrait)]
     public class PrintingSSCCCodes : CustomBaseActivity
@@ -25,7 +13,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
         private EditText tbNum;
         private Button button1;
         private Button button2;
-         
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -66,7 +54,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
         {
             if (IsOnline())
             {
-                
+
                 try
                 {
                     LoaderManifest.LoaderManifestLoopStop(this);
@@ -130,10 +118,10 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 Toast.MakeText(this, $"{Resources.GetString(Resource.String.s302)}", ToastLength.Long).Show();
 
                 return;
-            }   
+            }
             try
             {
-    
+
                 var nvo = new NameValueObject("PrintSSCC");
                 PrintingCommon.SetNVOCommonData(ref nvo);
                 nvo.SetInt("Copies", num);

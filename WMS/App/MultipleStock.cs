@@ -1,17 +1,11 @@
 ﻿using Android.Content;
-using Android.Content.Res;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace WMS.App
 {
     public class MultipleStock
     {
-        public enum Showing {
+        public enum Showing
+        {
             SSCC,
             Serial,
             Ordinary
@@ -41,20 +35,21 @@ namespace WMS.App
 
         public override string ToString()
         {
-            if(this.showing == Showing.Ordinary)
+            if (this.showing == Showing.Ordinary)
             {
                 return Location + " ( " + Quantity + " ) ";
             }
             else if (this.showing == Showing.SSCC)
             {
-                return Location + " ( " + Quantity + " | " + SSCC  + " ) ";
+                return Location + " ( " + Quantity + " | " + SSCC + " ) ";
 
             }
             else if (this.showing == Showing.Serial)
             {
                 return Location + " ( " + Quantity + " | " + Serial + " ) ";
 
-            } else
+            }
+            else
             {
                 return Location + " ( " + Quantity + " ) ";
             }

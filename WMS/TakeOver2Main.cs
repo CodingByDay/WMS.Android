@@ -1,27 +1,16 @@
-﻿using Stream = Android.Media.Stream;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
+﻿using Android.Content;
 using Android.Content.PM;
 using Android.Media;
 using Android.Net;
-using Android.OS;
-using Android.Runtime;
 using Android.Views;
-using Android.Widget;
 using BarCode2D_Receiver;
-
-using WMS.App;
-using WMS.Printing;
-
 using TrendNET.WMS.Core.Data;
 using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
+using WMS.App;
+using WMS.Printing;
 
-using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS
+namespace WMS
 {
     [Activity(Label = "TakeOver2Main", ScreenOrientation = ScreenOrientation.Portrait)]
     public class TakeOver2Main : CustomBaseActivity, IBarcodeResult
@@ -31,7 +20,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
         private Barcode2D barcode2D;
         private EditText tbIdent;
         private EditText tbNaziv;
-        private EditText tbKolicinaDoSedaj; 
+        private EditText tbKolicinaDoSedaj;
         private EditText tbKolicinaNova;
         private Button btnOrder;
         private Button btConfirm;
@@ -41,17 +30,18 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
         private EditText tbLocation;
         private NameValueObject moveHead = (NameValueObject)InUseObjects.Get("MoveHead");
         private NameValueObject moveItem = (NameValueObject)InUseObjects.Get("MoveItem");
-        
+
         public void GetBarcode(string barcode)
         {
-           if(tbIdent.HasFocus)
+            if (tbIdent.HasFocus)
             {
-                
+
                 tbIdent.Text = barcode;
                 ProcessIdent();
-            } else if(tbLocation.HasFocus)
+            }
+            else if (tbLocation.HasFocus)
             {
-                
+
                 tbLocation.Text = barcode;
             }
         }
@@ -99,8 +89,9 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 tbNaziv.Text = ident.GetString("Name");
                 tbKolicinaDoSedaj.Text = moveItem == null ? "" : moveItem.GetDouble("Qty").ToString("###,###,##0.00");
                 tbKolicinaNova.Text = "";
-       
-            } catch (Exception ex)
+
+            }
+            catch (Exception ex)
             {
                 SentrySdk.CaptureException(ex);
                 return;
@@ -121,7 +112,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 moveHead.SetBool("ByOrder", false);
                 moveHead.SetInt("Clerk", Services.UserID());
                 moveHead.SetString("Type", "I");
-                moveHead.SetString("LinkKey", ""); 
+                moveHead.SetString("LinkKey", "");
                 string error;
                 var savedMoveHead = Services.SetObject("mh", moveHead, out error);
                 if (savedMoveHead == null)
@@ -141,7 +132,8 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
         }
         private NameValueObject? SaveItem(bool allowEmpty)
         {
-            if (allowEmpty && string.IsNullOrEmpty(tbIdent.Text.Trim())) { 
+            if (allowEmpty && string.IsNullOrEmpty(tbIdent.Text.Trim()))
+            {
                 return null;
             }
 
@@ -156,7 +148,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 if (string.IsNullOrEmpty(tbIdent.Text.Trim()))
                 {
                     Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
- 
+
                     return null;
                 }
 
@@ -184,9 +176,9 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                         return null;
                     }
                 }
-                catch 
+                catch
                 {
-                    
+
                     tbKolicinaNova.RequestFocus();
                     return null;
                 }
@@ -194,14 +186,14 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 {
                     if (moveItem == null) { moveItem = new NameValueObject("MoveItem"); }
                     moveItem.SetInt("HeadID", moveHead.GetInt("HeadID"));
-                    moveItem.SetString("LinkKey", ""); 
+                    moveItem.SetString("LinkKey", "");
                     moveItem.SetString("Ident", ident.GetString("Code"));
                     moveItem.SetDouble("Packing", 0.0);
                     moveItem.SetDouble("Factor", 1.0);
                     moveItem.SetDouble("Qty", kol);
                     moveItem.SetInt("MorePrints", 0);
                     moveItem.SetInt("Clerk", Services.UserID());
-                    moveItem.SetString("Location", tbLocation.Text.Trim()); 
+                    moveItem.SetString("Location", tbLocation.Text.Trim());
                     moveItem.SetInt("UserID", Services.UserID());
                     moveItem.SetString("DeviceID", App.Settings.ID);
 
@@ -212,7 +204,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                     if (moveItem == null)
                     {
                         Toast.MakeText(this, $"{Resources.GetString(Resource.String.s213)}" + error, ToastLength.Long).Show();
-        
+
                         return null;
                     }
 
@@ -369,7 +361,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
         {
             if (IsOnline())
             {
-                
+
                 try
                 {
                     LoaderManifest.LoaderManifestLoopStop(this);
@@ -383,8 +375,8 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             {
                 LoaderManifest.LoaderManifestLoop(this);
             }
-        }   
-         public override bool OnKeyDown(Keycode keyCode, KeyEvent e)
+        }
+        public override bool OnKeyDown(Keycode keyCode, KeyEvent e)
         {
             switch (keyCode)
             {
@@ -438,16 +430,16 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 // Add your logic here. 
                 ProcessIdent();
                 e.Handled = true;
-        
+
             }
         }
 
-   
 
 
-  
-      
-        
+
+
+
+
 
     }
 }

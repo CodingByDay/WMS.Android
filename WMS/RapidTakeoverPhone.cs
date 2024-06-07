@@ -1,25 +1,16 @@
-﻿using Android.App;
-using Android.Content;
+﻿using Android.Content;
 using Android.Content.PM;
 using Android.Media;
 using Android.Net;
-using Android.OS;
-using Android.Runtime;
 using Android.Views;
-using Android.Widget;
 using BarCode2D_Receiver;
-
-using WMS.App;
-using Stream = Android.Media.Stream;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using TrendNET.WMS.Core.Data;
 using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
+using WMS.App;
+using AlertDialog = Android.App.AlertDialog;
 using WebApp = TrendNET.WMS.Device.Services.WebApp;
-
-using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS
+namespace WMS
 {
     [Activity(Label = "RapidTakeoverPhone", ScreenOrientation = ScreenOrientation.Portrait)]
     public class RapidTakeoverPhone : CustomBaseActivity, IBarcodeResult
@@ -47,17 +38,19 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
 
         public void GetBarcode(string barcode)
         {
-            if(tbSSCC.HasFocus)
+            if (tbSSCC.HasFocus)
             {
-                
+
                 tbSSCC.Text = barcode;
                 ProcessSSCC();
-            } else if (tbLocation.HasFocus)
+            }
+            else if (tbLocation.HasFocus)
             {
                 tbLocation.Text = barcode;
-            } else if(tbIdent.HasFocus)
-            {             
-                
+            }
+            else if (tbIdent.HasFocus)
+            {
+
                 tbIdent.Text = barcode;
             }
         }
@@ -164,7 +157,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             Android.Resource.Layout.SimpleSpinnerItem, data);
             adapterWarehouse.SetDropDownViewResource(Android.Resource.Layout.SimpleSpinnerDropDownItem);
             cbWarehouses.Adapter = adapterWarehouse;
-            cbWarehouses.ItemSelected += CbWarehouses_ItemSelected;  
+            cbWarehouses.ItemSelected += CbWarehouses_ItemSelected;
             tbIdent.RequestFocus();
             var _broadcastReceiver = new NetworkStatusBroadcastReceiver();
             _broadcastReceiver.ConnectionStatusChanged += OnNetworkStatusChanged;
@@ -183,7 +176,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
         {
             if (IsOnline())
             {
-                
+
                 try
                 {
                     LoaderManifest.LoaderManifestLoopStop(this);
@@ -280,7 +273,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
 
                     if (moveItem == null) { moveItem = new NameValueObject("MoveItem"); }
 
-                
+
                     moveItem.SetInt("HeadID", data.GetInt("HeadID"));
                     moveItem.SetString("LinkKey", data.GetString("LinkKey"));
                     moveItem.SetInt("LinkNo", data.GetInt("LinkNo"));
@@ -355,7 +348,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
 
         }
 
- 
+
         private void colorLocation()
         {
             tbLocation.SetBackgroundColor(Android.Graphics.Color.Aqua);

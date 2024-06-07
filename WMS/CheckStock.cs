@@ -5,17 +5,14 @@ using Android.Media;
 using Android.Net;
 using Android.Preferences;
 using Android.Views;
-using AndroidX.AppCompat.App;
 using BarCode2D_Receiver;
 using Com.Jsibbold.Zoomage;
 
 using Newtonsoft.Json;
-using System.Data.Common;
 using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
 using WMS.App;
 using static Android.App.ActionBar;
-using Stream = Android.Media.Stream;
 
 namespace WMS
 {
@@ -54,14 +51,14 @@ namespace WMS
         {
             if (tbIdent.HasFocus)
             {
-                
+
                 tbIdent.Text = barcode;
                 ProcessStock();
                 showPictureIdent(tbIdent.Text);
             }
             else if (tbLocation.HasFocus)
             {
-                
+
                 tbLocation.Text = barcode;
             }
         }
@@ -167,7 +164,7 @@ namespace WMS
             tbLocation.SetBackgroundColor(Android.Graphics.Color.Aqua);
         }
 
-   
+
 
         public override bool OnKeyDown(Keycode keyCode, KeyEvent e)
         {

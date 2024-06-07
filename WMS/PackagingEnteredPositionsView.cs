@@ -1,35 +1,23 @@
-﻿using Stream = Android.Media.Stream;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
+﻿using Android.Content;
 using Android.Content.PM;
+using Android.Graphics;
+using Android.Graphics.Drawables;
 using Android.Net;
-using Android.OS;
-using Android.Runtime;
 using Android.Views;
-using Android.Widget;
-
-using WMS.App;
 using TrendNET.WMS.Core.Data;
 using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
+using WMS.App;
 using static Android.App.ActionBar;
-using WebApp = TrendNET.WMS.Device.Services.WebApp;
 using AlertDialog = Android.App.AlertDialog;
-
-using AndroidX.AppCompat.App;
-using Android.Graphics.Drawables;
-using Android.Graphics;
+using WebApp = TrendNET.WMS.Device.Services.WebApp;
 
 namespace WMS
 {
     [Activity(Label = "PackagingEnteredPositionsView", ScreenOrientation = ScreenOrientation.Portrait)]
     public class PackagingEnteredPositionsView : CustomBaseActivity
 
-    {    
+    {
         private Dialog popupDialog;
         private TextView lbInfo;
         private EditText tbPackNum;
@@ -99,7 +87,7 @@ namespace WMS
         {
             if (IsOnline())
             {
-                
+
                 try
                 {
                     LoaderManifest.LoaderManifestLoopStop(this);
@@ -181,8 +169,8 @@ namespace WMS
                     else
                     {
 
-                   
-                       
+
+
                         AlertDialog.Builder alert = new AlertDialog.Builder(this);
                         alert.SetTitle($"{Resources.GetString(Resource.String.s265)}");
                         alert.SetMessage($"{Resources.GetString(Resource.String.s212)}" + result);
@@ -265,7 +253,7 @@ namespace WMS
                     break;
 
 
-           
+
             }
             return base.OnKeyDown(keyCode, e);
         }
@@ -282,13 +270,13 @@ namespace WMS
             FillDisplayedItem();
         }
 
-        
+
         private void LoadPositions()
         {
-         
+
             try
             {
-         
+
                 if (positions == null)
                 {
                     var error = "";
@@ -300,8 +288,8 @@ namespace WMS
                     }
                     if (positions == null)
                     {
-                       string toast = string.Format($"{Resources.GetString(Resource.String.s213)}" + error);
-                       Toast.MakeText(this, toast, ToastLength.Long).Show();
+                        string toast = string.Format($"{Resources.GetString(Resource.String.s213)}" + error);
+                        Toast.MakeText(this, toast, ToastLength.Long).Show();
                         return;
                     }
                 }
@@ -318,7 +306,7 @@ namespace WMS
             }
 
         }
-        
+
         private void FillDisplayedItem()
         {
             if ((positions != null) && (displayedPosition < positions.Items.Count))

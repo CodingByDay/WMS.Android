@@ -1,25 +1,13 @@
-﻿using Stream = Android.Media.Stream;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
+﻿using Android.Content;
 using Android.Content.PM;
 using Android.Net;
-using Android.OS;
-using Android.Runtime;
-using Android.Text;
 using Android.Views;
-using Android.Widget;
-
-using WMS.App;
 using TrendNET.WMS.Core.Data;
 using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
+using WMS.App;
 using WebApp = TrendNET.WMS.Device.Services.WebApp;
-
-using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS
+namespace WMS
 {
     [Activity(Label = "InventoryOpen", ScreenOrientation = ScreenOrientation.Portrait)]
     public class InventoryOpen : CustomBaseActivity
@@ -111,7 +99,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
         {
             if (IsOnline())
             {
-                
+
                 try
                 {
                     LoaderManifest.LoaderManifestLoopStop(this);
@@ -138,7 +126,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             {
                 var date = dateX;
 
-       
+
                 try
                 {
 
@@ -175,9 +163,9 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                         return;
                     }
                 }
-                catch(Exception ex) 
+                catch (Exception ex)
                 {
-                   SentrySdk.CaptureException(ex);
+                    SentrySdk.CaptureException(ex);
                 }
             }
         }
@@ -199,7 +187,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
         {
             switch (keyCode)
             {
-                
+
                 case Keycode.F3:
                     if (btOpen.Enabled == true)
                     {
@@ -228,7 +216,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             if (!string.IsNullOrEmpty(lastError))
             {
                 Toast.MakeText(this, lastError, ToastLength.Long).Show();
-         
+
                 return;
             }
 
@@ -240,17 +228,17 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 return;
             }
 
-  
+
             try
             {
-            
+
 
                 var date = dateX;
                 string error;
                 if (!WebApp.Get("mode=canInsertInventory&wh=" + warehouse.ID.ToString(), out error))
                 {
                     DialogHelper.ShowDialogError(this, this, $"{Resources.GetString(Resource.String.s247)}" + error);
-         
+
                     return;
                 }
                 if (error == "OK!")
@@ -258,13 +246,13 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                     if (!WebApp.Get("mode=reopenInventory&id=" + moveHead.GetInt("HeadID").ToString(), out error))
                     {
                         DialogHelper.ShowDialogError(this, this, $"{Resources.GetString(Resource.String.s247)}" + error);
-                     
+
                         return;
                     }
                     else
                     {
                         Toast.MakeText(this, $"{Resources.GetString(Resource.String.s283)}", ToastLength.Long).Show();
-              
+
                         StartActivity(typeof(InventoryConfirm));
                         HelpfulMethods.clearTheStack(this);
                     }
@@ -275,7 +263,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                     return;
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 SentrySdk.CaptureException(ex);
                 return;

@@ -1,38 +1,19 @@
-﻿using Stream = Android.Media.Stream;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Android.App;
-using Android.Content;
+﻿using Android.Content;
 using Android.Content.PM;
+using Android.Graphics;
 using Android.Graphics.Drawables;
 using Android.Media;
 using Android.Net;
-using Android.OS;
-using Android.Runtime;
 using Android.Views;
-using Android.Widget;
 using BarCode2D_Receiver;
-using Com.Barcode;
-
-using Newtonsoft.Json;
-using WMS.App;
+using Com.Jsibbold.Zoomage;
 using TrendNET.WMS.Core.Data;
 using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
+using WMS.App;
 using static Android.App.ActionBar;
-using static Android.App.DownloadManager;
-using WebApp = TrendNET.WMS.Device.Services.WebApp;
-using AndroidX.AppCompat.App;
 using AlertDialog = Android.App.AlertDialog;
-using Android.Graphics;
-using static AndroidX.ConstraintLayout.Widget.ConstraintSet;
-using Org.Xml.Sax;
-
-using System;
-using Com.Jsibbold.Zoomage;
-using System.Data.Common;
+using WebApp = TrendNET.WMS.Device.Services.WebApp;
 
 namespace WMS
 {
@@ -84,7 +65,7 @@ namespace WMS
 
             SetContentView(Resource.Layout.InterWarehouseSerialOrSSCCEntry);
 
-            
+
             if (App.Settings.tablet)
             {
                 base.RequestedOrientation = ScreenOrientation.Landscape;
@@ -100,7 +81,7 @@ namespace WMS
                 base.RequestedOrientation = ScreenOrientation.Portrait;
                 base.SetContentView(Resource.Layout.InterWarehouseSerialOrSSCCEntry);
             }
-            
+
             AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
             var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
             _customToolbar.SetNavigationIcon(App.Settings.RootURL + "/Services/Logo");
@@ -119,7 +100,7 @@ namespace WMS
             btFinish.Click += BtFinish_Click;
             btOverview.Click += BtOverview_Click;
             btExit.Click += BtExit_Click;
-        
+
             tbIdent = FindViewById<EditText>(Resource.Id.tbIdent);
             tbSSCC = FindViewById<EditText>(Resource.Id.tbSSCC);
             tbSerialNum = FindViewById<EditText>(Resource.Id.tbSerialNum);
@@ -159,12 +140,12 @@ namespace WMS
 
         private void TbPacking_FocusChange(object? sender, View.FocusChangeEventArgs e)
         {
-            if(e.HasFocus)
+            if (e.HasFocus)
             {
                 LoadStock(tbIssueLocation.Text, tbIdent.Text, moveHead.GetString("Issuer"), tbSSCC.Text, tbSerialNum.Text);
             }
         }
-    
+
         private void ImageClick(Drawable d)
         {
             popupDialog = new Dialog(this);
@@ -189,14 +170,14 @@ namespace WMS
                 popupDialog.Window.Dispose();
             }
         }
-   
+
         private void Fill(List<LocationClass> list)
         {
             foreach (var obj in list)
             {
                 items.Add(new LocationClass { ident = obj.ident, location = obj.location, quantity = obj.quantity });
 
-            }    
+            }
         }
 
         private void ListData_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
@@ -212,7 +193,7 @@ namespace WMS
         }
 
         private async void TbLocation_KeyPress(object? sender, View.KeyEventArgs e)
-        {          
+        {
             e.Handled = false;
         }
 
@@ -485,9 +466,9 @@ namespace WMS
 
         private async void BtSaveOrUpdate_Click(object? sender, EventArgs e)
         {
-            if(activityIdent!=null)
+            if (activityIdent != null)
             {
-                if(activityIdent.GetBool("isSSCC") && tbSSCC.Text!=string.Empty)
+                if (activityIdent.GetBool("isSSCC") && tbSSCC.Text != string.Empty)
                 {
                     await CreateMethodFromStart();
                 }
@@ -501,7 +482,7 @@ namespace WMS
 
         private void CheckIfApplicationStopingException()
         {
-            if(moveItem == null && moveHead == null)
+            if (moveItem == null && moveHead == null)
             {
                 // Destroy the activity
                 Finish();
@@ -540,8 +521,8 @@ namespace WMS
                     {
                         StartActivity(typeof(InterWarehouseSerialOrSSCCEntry));
                     });
-                        
-                }                     
+
+                }
             });
         }
 
@@ -556,7 +537,7 @@ namespace WMS
             if (Base.Store.isUpdate && moveItem != null)
             {
                 tbIdent.Text = moveItem.GetString("Ident");
-                ProcessIdent(true); 
+                ProcessIdent(true);
                 tbSerialNum.Text = moveItem.GetString("SerialNo");
                 tbPacking.Text = moveItem.GetDouble("Qty").ToString();
                 tbSSCC.Text = moveItem.GetString("SSCC");
@@ -583,38 +564,38 @@ namespace WMS
             {
                 if (tbIdent.HasFocus)
                 {
-                    
+
                     tbIdent.Text = barcode;
                     ProcessIdent(false);
                     tbSSCC.RequestFocus();
                 }
                 else if (tbSSCC.HasFocus)
                 {
-                    
-                    await FillDataBySSCC(barcode);         
+
+                    await FillDataBySSCC(barcode);
                     tbSSCC.Text = barcode;
                 }
                 else if (tbSerialNum.HasFocus)
                 {
-                    
+
                     tbSerialNum.Text = barcode;
                     tbIssueLocation.RequestFocus();
                 }
                 else if (tbIssueLocation.HasFocus)
                 {
-                    
+
                     tbIssueLocation.Text = barcode;
                     LoadStock(tbIssueLocation.Text, tbIdent.Text, moveHead.GetString("Issuer"), tbSSCC.Text, tbSerialNum.Text);
                     tbLocation.RequestFocus();
                 }
                 else if (tbLocation.HasFocus)
                 {
-                    
+
                     tbLocation.Text = barcode;
                     tbPacking.RequestFocus();
                 }
             }
-     
+
         }
 
         private async Task FillDataBySSCC(string sscc)
@@ -634,7 +615,7 @@ namespace WMS
                     ProcessIdent(false);
                     tbIssueLocation.Text = ssccResult.Rows[0].StringValue("aclocation");
                     tbSerialNum.Text = ssccResult.Rows[0].StringValue("acSerialNo");
-                    tbSSCC.Text = ssccResult.Rows[0].StringValue("acSSCC").ToString();                
+                    tbSSCC.Text = ssccResult.Rows[0].StringValue("acSSCC").ToString();
                     lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + ssccResult.Rows[0].DoubleValue("anQty").ToString() + " )";
                     tbPacking.Text = ssccResult.Rows[0].DoubleValue("anQty").ToString();
                     stock = ssccResult.Rows[0].DoubleValue("anQty");

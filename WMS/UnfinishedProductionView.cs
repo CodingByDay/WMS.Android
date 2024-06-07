@@ -1,27 +1,16 @@
-﻿using Stream = Android.Media.Stream;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Android.App;
-using Android.Content;
+﻿using Android.Content;
 using Android.Content.PM;
+using Android.Graphics;
+using Android.Graphics.Drawables;
 using Android.Net;
-using Android.OS;
-using Android.Runtime;
 using Android.Views;
-using Android.Widget;
-
-using WMS.App;
 using TrendNET.WMS.Core.Data;
 using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
+using WMS.App;
 using static Android.App.ActionBar;
 using WebApp = TrendNET.WMS.Device.Services.WebApp;
-using AndroidX.AppCompat.App;
-using AlertDialog = Android.App.AlertDialog;
-using Android.Graphics.Drawables;
-using Android.Graphics;
-using System.Data.Common;
+
 namespace WMS
 {
     [Activity(Label = "UnfinishedProductionView", ScreenOrientation = ScreenOrientation.Portrait)]
@@ -41,7 +30,6 @@ namespace WMS
         private Button btDelete;
         private Button btNew;
         private Button btLogout;
-
         private int displayedPosition = 0;
         private NameValueObjectList positions = (NameValueObjectList)InUseObjects.Get("TakeOverHeads");
         private Dialog popupDialog;
@@ -124,18 +112,18 @@ namespace WMS
 
         }
         public void OnSwipeLeft()
-            {
-                displayedPosition--;
-                if (displayedPosition < 0) { displayedPosition = positions.Items.Count - 1; }
-                FillDisplayedItem();
-            }
+        {
+            displayedPosition--;
+            if (displayedPosition < 0) { displayedPosition = positions.Items.Count - 1; }
+            FillDisplayedItem();
+        }
 
-            public void OnSwipeRight()
-            {
-                displayedPosition++;
-                if (displayedPosition >= positions.Items.Count) { displayedPosition = 0; }
-                FillDisplayedItem();
-            }
+        public void OnSwipeRight()
+        {
+            displayedPosition++;
+            if (displayedPosition >= positions.Items.Count) { displayedPosition = 0; }
+            FillDisplayedItem();
+        }
 
 
         private void DataList_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
@@ -169,7 +157,7 @@ namespace WMS
                         Ident = item.GetString("FirstIdent"),
                         NumberOfPositions = item.GetInt("ItemCount").ToString(),
                         // tbItemCount.Text = item.GetInt("ItemCount").ToString();
-                    }); 
+                    });
                 }
                 else
                 {
@@ -276,7 +264,7 @@ namespace WMS
         {
             if (IsOnline())
             {
-                
+
                 try
                 {
                     LoaderManifest.LoaderManifestLoopStop(this);
@@ -395,10 +383,10 @@ namespace WMS
             var id = item.GetInt("HeadID");
 
 
-            
+
             try
             {
-               
+
                 string result;
                 if (WebApp.Get("mode=delMoveHead&head=" + id.ToString() + "&deleter=" + Services.UserID().ToString(), out result))
                 {
@@ -440,13 +428,12 @@ namespace WMS
                 SentrySdk.CaptureException(err);
                 return;
 
-            } finally
+            }
+            finally
             {
                 LoaderManifest.LoaderManifestLoopStop(this);
 
             }
-
-
         }
 
         private void BtFinish_Click(object sender, EventArgs e)
@@ -485,12 +472,12 @@ namespace WMS
 
         private async Task LoadPositions()
         {
-            
+
             try
             {
-              
-                positions = await AsyncServices.AsyncServices.GetObjectListAsync("mhp",  "W");
-             
+
+                positions = await AsyncServices.AsyncServices.GetObjectListAsync("mhp", "W");
+
                 if (positions == null)
                 {
                     return;

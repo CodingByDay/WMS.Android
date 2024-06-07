@@ -1,31 +1,16 @@
-﻿using Stream = Android.Media.Stream;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
+﻿using Android.Content;
+using Android.Content.PM;
+using Android.Graphics;
+using Android.Graphics.Drawables;
+using Android.Net;
 using Android.Views;
-using Android.Widget;
 using TrendNET.WMS.Core.Data;
 using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
+using WMS.App;
+using static Android.App.ActionBar;
 using WebApp = TrendNET.WMS.Device.Services.WebApp;
 
-using static Android.App.ActionBar;
-
-using Android.Content.PM;
-using Android.Graphics;
-using WMS.App;
-using Android.Net;
-
-
-using AndroidX.AppCompat.App;
-using AlertDialog = Android.App.AlertDialog;
-using Android.Graphics.Drawables;
-using AndroidX.Lifecycle;
 namespace WMS
 {
     [Activity(Label = "UnfinishedTakeoversView", ScreenOrientation = ScreenOrientation.Portrait)]
@@ -88,7 +73,6 @@ namespace WMS
             tbItemCount = FindViewById<EditText>(Resource.Id.tbItemCount);
             tbCreatedBy = FindViewById<EditText>(Resource.Id.tbCreatedBy);
             tbCreatedAt = FindViewById<EditText>(Resource.Id.tbCreatedAt);
-
             btNext = FindViewById<Button>(Resource.Id.btNext);
             btFinish = FindViewById<Button>(Resource.Id.btFinish);
             btDelete = FindViewById<Button>(Resource.Id.btDelete);
@@ -157,7 +141,7 @@ namespace WMS
             return cm.ActiveNetworkInfo == null ? false : cm.ActiveNetworkInfo.IsConnected;
 
         }
-      
+
 
 
         private void DeleteFromTouch(int index)
@@ -226,16 +210,12 @@ namespace WMS
             }
             catch (Exception err)
             {
-
                 SentrySdk.CaptureException(err);
                 return;
-
             }
-
-
         }
 
-   
+
         private void FillItemsList()
         {
 
@@ -254,7 +234,7 @@ namespace WMS
                         finalString = $"Brez-št. {headID} ";
                     }
                     else
-                    finalString = item.GetString("LinkKey");
+                        finalString = item.GetString("LinkKey");
                     dataSource.Add(new UnfinishedTakeoverList
                     {
                         Document = finalString,
@@ -263,21 +243,15 @@ namespace WMS
                         NumberOfPositions = item.GetInt("ItemCount").ToString(),
                         // tbItemCount.Text = item.GetInt("ItemCount").ToString();
                     });
-
-
-
                 }
                 else
                 {
                     string errorWebApp = string.Format($"{Resources.GetString(Resource.String.s247)}");
                     Toast.MakeText(this, errorWebApp, ToastLength.Long).Show();
                 }
-
             }
             dataAdapter.NotifyDataSetChanged();
             UniversalAdapterHelper.SelectPositionProgramaticaly(listData, 0);
-
-
         }
 
 
@@ -285,7 +259,7 @@ namespace WMS
         {
             if (IsOnline())
             {
-                
+
                 try
                 {
                     LoaderManifest.LoaderManifestLoopStop(this);
@@ -347,7 +321,7 @@ namespace WMS
                     {
                         BtLogout_Click(this, null);
                     }
-                    break;        
+                    break;
             }
             return base.OnKeyDown(keyCode, e);
         }
@@ -410,7 +384,7 @@ namespace WMS
                         positions = null;
                         await LoadPositions();
 
-                        if(App.Settings.tablet)
+                        if (App.Settings.tablet)
                         {
                             dataSource.Clear();
                             FillItemsList();
@@ -438,7 +412,8 @@ namespace WMS
                     popupDialog.Hide();
                     return;
                 }
-            } catch { }
+            }
+            catch { }
             finally
             {
                 popupDialog.Dismiss();
@@ -460,14 +435,13 @@ namespace WMS
 
         private void BtNext_Click(object sender, EventArgs e)
         {
-            if(App.Settings.tablet)
+            if (App.Settings.tablet)
             {
                 listData.RequestFocusFromTouch();
                 selected++;
                 listData.Clickable = false;
                 if (selected <= (positions.Items.Count - 1))
                 {
-
                     listData.CheckedItemPositions.Clear();
                     listData.ClearChoices();
                     UniversalAdapterHelper.SelectPositionProgramaticaly(listData, selected);
@@ -479,8 +453,6 @@ namespace WMS
                     listData.ClearChoices();
                     selected = 0;
                     UniversalAdapterHelper.SelectPositionProgramaticaly(listData, selected);
-
-
                 }
 
                 listData.Clickable = true;
@@ -500,7 +472,7 @@ namespace WMS
             try
             {
                 positions = await AsyncServices.AsyncServices.GetObjectListAsync("mhp", "I");
-                    
+
                 if (positions == null)
                 {
                     return;
@@ -526,32 +498,25 @@ namespace WMS
                 {
                     lbInfo.Text = $"{Resources.GetString(Resource.String.s12)} (" + (displayedPosition + 1).ToString() + "/" + positions.Items.Count + ")";
                     var item = positions.Items[displayedPosition];
-
                     tbBusEvent.Text = item.GetString("DocumentTypeName");
                     tbOrder.Text = item.GetString("LinkKey");
                     tbSupplier.Text = item.GetString("Issuer");
                     tbItemCount.Text = item.GetInt("ItemCount").ToString();
                     tbCreatedBy.Text = item.GetString("ClerkName");
-
                     var created = item.GetDateTime("DateInserted");
                     tbCreatedAt.Text = created == null ? "" : ((DateTime)created).ToString("dd.MM.yyyy");
-
                     tbBusEvent.Enabled = false;
                     tbOrder.Enabled = false;
                     tbSupplier.Enabled = false;
                     tbItemCount.Enabled = false;
                     tbCreatedBy.Enabled = false;
                     tbCreatedAt.Enabled = false;
-
-
                     tbBusEvent.SetTextColor(Android.Graphics.Color.Black);
                     tbOrder.SetTextColor(Android.Graphics.Color.Black);
                     tbSupplier.SetTextColor(Android.Graphics.Color.Black);
                     tbItemCount.SetTextColor(Android.Graphics.Color.Black);
                     tbCreatedBy.SetTextColor(Android.Graphics.Color.Black);
                     tbCreatedAt.SetTextColor(Android.Graphics.Color.Black);
-
-
                     btNext.Enabled = true;
                     btDelete.Enabled = true;
                     btFinish.Enabled = true;
@@ -559,39 +524,33 @@ namespace WMS
                 else
                 {
                     lbInfo.Text = $"{Resources.GetString(Resource.String.s331)}";
-
                     tbBusEvent.Text = "";
                     tbOrder.Text = "";
                     tbSupplier.Text = "";
                     tbItemCount.Text = "";
                     tbCreatedBy.Text = "";
                     tbCreatedAt.Text = "";
-
                     tbBusEvent.Enabled = false;
                     tbOrder.Enabled = false;
                     tbSupplier.Enabled = false;
                     tbItemCount.Enabled = false;
                     tbCreatedBy.Enabled = false;
                     tbCreatedAt.Enabled = false;
-
-
-
-
                     tbBusEvent.SetTextColor(Android.Graphics.Color.Black);
                     tbOrder.SetTextColor(Android.Graphics.Color.Black);
                     tbSupplier.SetTextColor(Android.Graphics.Color.Black);
                     tbItemCount.SetTextColor(Android.Graphics.Color.Black);
                     tbCreatedBy.SetTextColor(Android.Graphics.Color.Black);
                     tbCreatedAt.SetTextColor(Android.Graphics.Color.Black);
-
                     btNext.Enabled = false;
                     btDelete.Enabled = false;
                     btFinish.Enabled = false;
                 }
             }
-            catch { 
+            catch
+            {
                 // Not loaded yet.
-                return; 
+                return;
             }
         }
 

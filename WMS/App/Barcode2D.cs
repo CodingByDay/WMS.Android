@@ -2,7 +2,6 @@ using Android.Content;
 
 using Com.Barcode;
 using WMS;
-using WMS.App;
 
 namespace BarCode2D_Receiver
 {
@@ -50,13 +49,15 @@ namespace BarCode2D_Receiver
                 IntentFilter intentFilter = new IntentFilter();
                 intentFilter.AddAction("com.scanner.broadcast");
                 context.RegisterReceiver(barcodeDataReceiver, intentFilter);
-                
+
                 Base.Store.lastBarcodeDataReceiver = barcodeDataReceiver;
                 Base.Store.lastScanningContext = context;
 
-            } catch(Exception error) {
+            }
+            catch (Exception error)
+            {
                 SentrySdk.CaptureException(error);
-            }          
+            }
 
         }
 

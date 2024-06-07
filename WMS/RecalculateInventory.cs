@@ -1,26 +1,14 @@
-﻿using Android.App;
-using Android.Content;
+﻿using Android.Content;
+using Android.Content.PM;
 using Android.Media;
 using Android.Net;
-using Android.OS;
 using Android.Preferences;
-using Android.Runtime;
 using Android.Views;
-using Android.Widget;
 using BarCode2D_Receiver;
-
 using Newtonsoft.Json;
-using WMS.App;
-using Stream = Android.Media.Stream;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TrendNET.WMS.Device.Services;
-
-using AndroidX.AppCompat.App;
+using WMS.App;
 using AlertDialog = Android.App.AlertDialog;
-using Android.Content.PM;
 namespace WMS
 {
     [Activity(Label = "RecalculateInventory")]
@@ -44,9 +32,9 @@ namespace WMS
         {
             if (ident.HasFocus)
             {
-                
+
                 ident.Text = barcode;
-              
+
             }
         }
         public override void OnBackPressed()
@@ -56,7 +44,7 @@ namespace WMS
 
             base.OnBackPressed();
         }
-  
+
 
         protected async override void OnCreate(Bundle savedInstanceState)
         {
@@ -134,7 +122,7 @@ namespace WMS
                 .ToList();
         }
 
-     
+
 
         public bool IsOnline()
         {
@@ -147,7 +135,7 @@ namespace WMS
         {
             if (IsOnline())
             {
-                
+
                 try
                 {
                     LoaderManifest.LoaderManifestLoopStop(this);
@@ -163,13 +151,13 @@ namespace WMS
             }
         }
 
-     
+
 
         private void ClearTheFields(object sender, View.LongClickEventArgs e)
         {
             ident.Text = "";
         }
-       
+
 
         private async void BtCalculate_Click(object sender, EventArgs e)
         {
@@ -194,7 +182,7 @@ namespace WMS
                         BtCalculate_Click(this, null);
                     }
                     break;
-             
+
 
 
             }
@@ -206,7 +194,7 @@ namespace WMS
         private async Task FinishMethod(string ident)
         {
 
-    
+
 
             await Task.Run(() =>
             {
@@ -325,7 +313,7 @@ namespace WMS
                         progress.StopDialogSync();
                         AlertDialog.Builder alert = new AlertDialog.Builder(this);
                         alert.SetTitle($"{Resources.GetString(Resource.String.s265)}");
-                        alert.SetMessage($"{Resources.GetString(Resource.String.s247)}" +  ex.Message);
+                        alert.SetMessage($"{Resources.GetString(Resource.String.s247)}" + ex.Message);
                         alert.SetPositiveButton("Ok", (senderAlert, args) =>
                         {
                             alert.Dispose();

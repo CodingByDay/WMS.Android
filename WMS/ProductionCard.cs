@@ -1,29 +1,16 @@
-﻿using Stream = Android.Media.Stream;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Android.App;
-using Android.Content;
+﻿using Android.Content;
 using Android.Content.PM;
+using Android.Graphics;
+using Android.Graphics.Drawables;
 using Android.Net;
-using Android.OS;
-using Android.Runtime;
 using Android.Views;
-using Android.Widget;
-
-using WMS.App;
-using WMS.Printing;
-
 using TrendNET.WMS.Core.Data;
 using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
+using WMS.App;
+using WMS.Printing;
 using static Android.App.ActionBar;
-
-using AndroidX.AppCompat.App;
 using AlertDialog = Android.App.AlertDialog;
-using Android.Graphics.Drawables;
-using Android.Graphics;
 namespace WMS
 {
     [Activity(Label = "ProductionCard", ScreenOrientation = ScreenOrientation.Portrait)]
@@ -77,7 +64,7 @@ namespace WMS
         {
             switch (keyCode)
             {
-                
+
                 case Keycode.F4:
                     if (btConfirm.Enabled == true)
                     {
@@ -91,7 +78,7 @@ namespace WMS
 
                         BtExit_Click(this, null);
                     }
- 
+
                     break;
 
 
@@ -157,8 +144,8 @@ namespace WMS
 
 
                         if ((bool)warning)
-                            
-                         {
+
+                        {
                             data = Services.GetObject("cwns", tbWorkOrder.Text + "|" + tbIdent.Text + "|1", out error);
                             if (data == null)
                             {
@@ -166,7 +153,8 @@ namespace WMS
                                 Toast.MakeText(this, SuccessMessage, ToastLength.Long).Show();
 
                             }
-                        } else
+                        }
+                        else
                         {
                         }
                     }
@@ -199,7 +187,7 @@ namespace WMS
         {
             if (IsOnline())
             {
-                
+
                 try
                 {
                     LoaderManifest.LoaderManifestLoopStop(this);
@@ -233,12 +221,12 @@ namespace WMS
             nvo.SetInt("ClerkIns", Services.UserID());
             var progress = new ProgressDialogClass();
 
-           try
+            try
             {
                 string error;
                 nvo = Services.SetObject("cwns", nvo, out error);
                 if (nvo == null)
-                {             
+                {
                     AlertDialog.Builder alert = new AlertDialog.Builder(this);
                     alert.SetTitle($"{Resources.GetString(Resource.String.s265)}");
                     alert.SetMessage($"{Resources.GetString(Resource.String.s247)}" + error);

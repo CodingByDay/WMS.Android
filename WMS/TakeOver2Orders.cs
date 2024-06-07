@@ -1,23 +1,11 @@
-﻿using Stream = Android.Media.Stream;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Android.App;
-using Android.Content;
+﻿using Android.Content;
 using Android.Content.PM;
 using Android.Net;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-
-using WMS.App;
-using WMS.Printing;
 using TrendNET.WMS.Core.Data;
 using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
-using AndroidX.AppCompat.App;
-using AlertDialog = Android.App.AlertDialog;
+using WMS.App;
+using WMS.Printing;
 
 
 namespace WMS
@@ -32,7 +20,7 @@ namespace WMS
         private EditText tbKupec;
         private EditText tbDatumDostave;
         private EditText tbKolicinaOdprta;
-        private EditText tbKolicinaPrevzetaDoSedaj; 
+        private EditText tbKolicinaPrevzetaDoSedaj;
         private EditText tbKolicinaPrevzetaNova;
         private Button button1;
         private Button button2;
@@ -69,7 +57,7 @@ namespace WMS
             tbKolicinaPrevzema = FindViewById<EditText>(Resource.Id.tbKolicinaPrevzema);
             tbNarocilo = FindViewById<EditText>(Resource.Id.tbNarocilo);
             tbKupec = FindViewById<EditText>(Resource.Id.tbKupec);
-            lblOrder = FindViewById<TextView> (Resource.Id.lblOrder);
+            lblOrder = FindViewById<TextView>(Resource.Id.lblOrder);
             tbDatumDostave = FindViewById<EditText>(Resource.Id.tbDatumDostave);
             tbKolicinaOdprta = FindViewById<EditText>(Resource.Id.tbKolicinaOdprta);
             tbKolicinaPrevzetaDoSedaj = FindViewById<EditText>(Resource.Id.tbKolicinaPrevzetaDoSedaj);
@@ -98,7 +86,7 @@ namespace WMS
             {
                 Toast.MakeText(this, "Invalid ident at this point: " + moveItem.GetString("Ident"), ToastLength.Long).Show();
 
-                throw new ApplicationException("Invalid ident at this point: " );
+                throw new ApplicationException("Invalid ident at this point: ");
             }
             tbIdent.Text = ident.GetString("Code");
             tbNaziv.Text = ident.GetString("Name");
@@ -127,7 +115,7 @@ namespace WMS
         {
             if (IsOnline())
             {
-                
+
                 try
                 {
                     LoaderManifest.LoaderManifestLoopStop(this);
@@ -172,13 +160,13 @@ namespace WMS
             if (kolPrev <= 0.0)
             {
                 Toast.MakeText(this, $"{Resources.GetString(Resource.String.s220)}", ToastLength.Long).Show();
-   
+
                 return;
             }
 
             if (SaveState())
             {
-               // wf
+                // wf
                 try
                 {
                     Toast.MakeText(this, $"{Resources.GetString(Resource.String.s326)}", ToastLength.Long).Show();
@@ -197,7 +185,7 @@ namespace WMS
 
                 }
             }
- 
+
         }
 
         private void Button3_Click(object sender, EventArgs e)
@@ -236,7 +224,7 @@ namespace WMS
             if (kolPrev == 0.0)
             {
                 Toast.MakeText(this, $"{Resources.GetString(Resource.String.s327)}", ToastLength.Long).Show();
- 
+
                 return false;
             }
 
@@ -251,10 +239,10 @@ namespace WMS
                 return false;
             }
 
-       
+
             try
             {
-            
+
 
                 var nvo = new NameValueObject();
                 nvo.SetInt("MoveItemID", moveItem.GetInt("ItemID"));
@@ -265,7 +253,7 @@ namespace WMS
                 if (Services.SetObject("mid", nvo, out error) == null)
                 {
                     Toast.MakeText(this, $"{Resources.GetString(Resource.String.s247)}" + error, ToastLength.Long).Show();
- 
+
                     return false;
                 }
 
@@ -324,15 +312,15 @@ namespace WMS
 
         private void LoadState()
         {
-           
+
             try
             {
-               
+
                 string error = "";
                 moveItemDivision = Services.GetObjectList("mid", out error, moveItem.GetInt("ItemID").ToString());
                 if (moveItemDivision == null)
                 {
-                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s247)}" + error, ToastLength.Long).Show();                
+                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s247)}" + error, ToastLength.Long).Show();
                 }
             }
             catch (Exception err)

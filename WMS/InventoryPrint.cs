@@ -1,23 +1,13 @@
-﻿using Stream = Android.Media.Stream;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Android.App;
-using Android.Content;
+﻿using Android.Content;
 using Android.Content.PM;
 using Android.Net;
-using Android.OS;
-using Android.Runtime;
 using Android.Views;
-using Android.Widget;
-
-using WMS.App;
-using WMS.Printing;
 using TrendNET.WMS.Core.Data;
 using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
-
-using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS
+using WMS.App;
+using WMS.Printing;
+namespace WMS
 {
     [Activity(Label = "InventoryPrint", ScreenOrientation = ScreenOrientation.Portrait)]
     public class InventoryPrint : CustomBaseActivity
@@ -31,7 +21,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
 
         public void GetBarcode(string barcode)
         {
-            if(tbLocation.HasFocus)
+            if (tbLocation.HasFocus)
             {
                 tbLocation.Text = barcode;
             }
@@ -95,7 +85,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
         {
             if (IsOnline())
             {
-                
+
                 try
                 {
                     LoaderManifest.LoaderManifestLoopStop(this);
@@ -149,22 +139,22 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             }
             if (!CommonData.IsValidLocation(wh.ID, tbLocation.Text.Trim()))
             {
-                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s258)} '" + tbLocation.Text.Trim() + $"' {Resources.GetString(Resource.String.s272)} '" + wh.ID + "'!", ToastLength.Long).Show(); 
+                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s258)} '" + tbLocation.Text.Trim() + $"' {Resources.GetString(Resource.String.s272)} '" + wh.ID + "'!", ToastLength.Long).Show();
                 return;
             }
             try
-            {            
+            {
                 var nvo = new NameValueObject("PrintInventory");
                 PrintingCommon.SetNVOCommonData(ref nvo);
                 nvo.SetString("Warehouse", wh.ID);
                 nvo.SetString("Location", tbLocation.Text.Trim());
-                PrintingCommon.SendToServer(nvo);      
+                PrintingCommon.SendToServer(nvo);
             }
             finally
             {
                 Toast.MakeText(this, $"{Resources.GetString(Resource.String.s250)}", ToastLength.Long).Show();
             }
-    
+
         }
 
         private void CbWarehouse_ItemSelected(object sender, AdapterView.ItemSelectedEventArgs e)

@@ -1,38 +1,21 @@
-﻿using Stream = Android.Media.Stream;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
+﻿using Android.Content;
 using Android.Content.PM;
+using Android.Graphics;
+using Android.Graphics.Drawables;
 using Android.Net;
-using Android.OS;
-using Android.Runtime;
-using Android.Speech.Tts;
 using Android.Views;
-using Android.Widget;
-using Java.Util.Concurrent;
-
-using WMS.App;
 using TrendNET.WMS.Core.Data;
 using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
+using WMS.App;
 using static Android.App.ActionBar;
 using WebApp = TrendNET.WMS.Device.Services.WebApp;
-
-using AndroidX.AppCompat.App;
-using AlertDialog = Android.App.AlertDialog;
-using Android.Graphics.Drawables;
-using Android.Graphics;
-using AndroidX.Lifecycle;
-using System.Data.Common;
 namespace WMS
 {
     [Activity(Label = "UnfinishedIssuedGoodsView", ScreenOrientation = ScreenOrientation.Portrait)]
     public class UnfinishedIssuedGoodsView : CustomBaseActivity, ISwipeListener
     {
-    
+
         private TextView lbInfo;
         private EditText tbBusEvent;
         private EditText tbOrder;
@@ -195,7 +178,7 @@ namespace WMS
             btLogout.Click += BtLogout_Click;
             InUseObjects.Clear();
             await LoadPositions();
-            if(App.Settings.tablet)
+            if (App.Settings.tablet)
             {
                 FillItemsList();
             }
@@ -309,7 +292,7 @@ namespace WMS
         private void OnNetworkStatusChanged(object sender, EventArgs e)
         {
             if (IsOnline())
-            {           
+            {
                 try
                 {
                     LoaderManifest.LoaderManifestLoopStop(this);
@@ -398,14 +381,14 @@ namespace WMS
         {
             LoaderManifest.LoaderManifestLoopResources(this);
 
-           
+
             var item = positions.Items[displayedPosition];
             var id = item.GetInt("HeadID");
-           
+
 
             try
             {
-           
+
                 string result;
                 if (WebApp.Get("mode=delMoveHead&head=" + id.ToString() + "&deleter=" + Services.UserID().ToString(), out result))
                 {
@@ -461,12 +444,12 @@ namespace WMS
                 InUseObjects.Set("MoveHead", moveHead);
                 StartActivity(typeof(IssuedGoodsEnteredPositionsView));
                 HelpfulMethods.clearTheStack(this);
-            } 
+            }
         }
 
         private void BtNext_Click(object sender, EventArgs e)
         {
-            if(App.Settings.tablet)
+            if (App.Settings.tablet)
             {
                 selectedItem++;
 
@@ -491,13 +474,13 @@ namespace WMS
 
         private async Task LoadPositions()
         {
-          
+
             try
             {
 
 
                 positions = await AsyncServices.AsyncServices.GetObjectListAsync("mhp", "P");
-                    
+
                 if (positions == null)
                 {
                     return;
@@ -508,7 +491,7 @@ namespace WMS
                 displayedPosition = 0;
                 FillDisplayedItem();
             }
-            catch(Exception err)
+            catch (Exception err)
             {
                 SentrySdk.CaptureException(err);
             }
@@ -520,7 +503,7 @@ namespace WMS
             {
                 lbInfo.Text = $"{Resources.GetString(Resource.String.s205)} (" + (displayedPosition + 1).ToString() + "/" + positions.Items.Count + ")";
                 var item = positions.Items[displayedPosition];
-                
+
                 tbBusEvent.Text = item.GetString("DocumentTypeName");
                 tbOrder.Text = item.GetString("LinkKey");
                 tbClient.Text = item.GetString("Receiver");
@@ -546,7 +529,7 @@ namespace WMS
 
                 btNext.Enabled = true;
                 btDelete.Enabled = true;
-                btFinish.Enabled = true;           
+                btFinish.Enabled = true;
 
             }
             else
@@ -576,7 +559,7 @@ namespace WMS
 
 
                 btNext.Enabled = false;
-              //  btDelete.Enabled = false;
+                //  btDelete.Enabled = false;
                 btFinish.Enabled = false;
             }
         }

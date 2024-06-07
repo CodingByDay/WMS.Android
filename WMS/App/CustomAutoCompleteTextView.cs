@@ -5,8 +5,6 @@ using Android.Runtime;
 using Android.Util;
 using Android.Views;
 using Android.Views.InputMethods;
-
-using System.ComponentModel.DataAnnotations;
 using TrendNET.WMS.Device.App;
 using Keycode = Android.Views.Keycode;
 
@@ -58,7 +56,7 @@ public class CustomAutoCompleteTextView : AutoCompleteTextView
         };
     }
 
-   
+
 
     public void ShowKeyboard()
     {

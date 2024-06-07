@@ -1,7 +1,6 @@
 ﻿using Android.Content;
 using Android.OS;
 using System.Timers;
-using WMS.App;
 using Timer = System.Timers.Timer;
 
 namespace WMS.Background

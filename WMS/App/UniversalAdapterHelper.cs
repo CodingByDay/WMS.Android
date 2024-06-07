@@ -1,10 +1,4 @@
 ﻿using Android.Content;
-using Android.Views;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace WMS.App
 {
@@ -34,7 +28,7 @@ namespace WMS.App
                 NumberOfPositions.Text = item.NumberOfPositions;
                 NumberOfPositions.SetTextColor(Android.Graphics.Color.Black);
             });
-   
+
 
 
             return adapter;

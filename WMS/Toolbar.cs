@@ -1,7 +1,4 @@
-﻿using Android.App;
-using Android.Graphics;
-using Android.Widget;
-using Square.Picasso;
+﻿using Square.Picasso;
 
 public class CustomToolbar
 {

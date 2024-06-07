@@ -1,6 +1,4 @@
-﻿using Android.App.AppSearch;
-
-using TrendNET.WMS.Core.Data;
+﻿using TrendNET.WMS.Core.Data;
 
 
 

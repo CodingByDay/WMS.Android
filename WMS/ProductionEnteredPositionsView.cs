@@ -1,29 +1,16 @@
-﻿using Stream = Android.Media.Stream;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Android.App;
-using Android.Content;
+﻿using Android.Content;
 using Android.Content.PM;
+using Android.Graphics;
+using Android.Graphics.Drawables;
 using Android.Net;
-using Android.OS;
-using Android.Runtime;
 using Android.Views;
-using Android.Widget;
-
-using WMS.App;
 using TrendNET.WMS.Core.Data;
 using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
+using WMS.App;
 using static Android.App.ActionBar;
-using WebApp = TrendNET.WMS.Device.Services.WebApp;
 using AlertDialog = Android.App.AlertDialog;
-
-using AndroidX.AppCompat.App;
-using Android.Graphics.Drawables;
-using Android.Graphics;
-using System.Data.Common;
+using WebApp = TrendNET.WMS.Device.Services.WebApp;
 
 namespace WMS
 {
@@ -77,7 +64,7 @@ namespace WMS
                 listData.ItemClick += ListData_ItemClick;
                 listData.ItemLongClick += ListData_ItemLongClick;
                 listData.Adapter = dataAdapter;
-              
+
             }
             else
             {
@@ -114,7 +101,7 @@ namespace WMS
             InUseObjects.ClearExcept(new string[] { "MoveHead" });
             if (moveHead == null)
             {
-                StartActivity(typeof(MainMenu));       
+                StartActivity(typeof(MainMenu));
             }
             LoadPositions();
             var _broadcastReceiver = new NetworkStatusBroadcastReceiver();
@@ -198,7 +185,7 @@ namespace WMS
 
 
 
-   
+
 
         private void ListData_ItemLongClick(object sender, AdapterView.ItemLongClickEventArgs e)
         {
@@ -291,7 +278,7 @@ namespace WMS
         {
             if (IsOnline())
             {
-                
+
                 try
                 {
                     LoaderManifest.LoaderManifestLoopStop(this);
@@ -398,27 +385,27 @@ namespace WMS
         private void BtnYes_Click(object sender, EventArgs e)
         {
 
-            
+
             var item = positions.Items[displayedPosition];
             var id = item.GetInt("ItemID");
 
-       
-            try
-                {
 
-                    string result;
-                    if (WebApp.Get("mode=delMoveItem&item=" + id.ToString() + "&deleter=" + Services.UserID().ToString(), out result))
+            try
+            {
+
+                string result;
+                if (WebApp.Get("mode=delMoveItem&item=" + id.ToString() + "&deleter=" + Services.UserID().ToString(), out result))
+                {
+                    if (result == "OK!")
                     {
-                        if (result == "OK!")
-                        {
-                            positions = null;
-                            LoadPositions();
+                        positions = null;
+                        LoadPositions();
                         popupDialog.Dismiss();
                         popupDialog.Hide();
                     }
-                        else
-                        {
-  
+                    else
+                    {
+
                         AlertDialog.Builder alert = new AlertDialog.Builder(this);
                         alert.SetTitle($"{Resources.GetString(Resource.String.s265)}");
                         alert.SetMessage($"{Resources.GetString(Resource.String.s212)}" + result);
@@ -426,7 +413,7 @@ namespace WMS
                         alert.SetPositiveButton("Ok", (senderAlert, args) =>
                         {
                             alert.Dispose();
-                     
+
                         });
 
 
@@ -438,17 +425,17 @@ namespace WMS
                         popupDialog.Dismiss();
                         popupDialog.Hide();
                         return;
-                        }
                     }
-                    else
-                    {
+                }
+                else
+                {
                     string errorWebApp = string.Format($"{Resources.GetString(Resource.String.s213)}" + result);
                     Toast.MakeText(this, errorWebApp, ToastLength.Long).Show();
                     popupDialog.Dismiss();
                     popupDialog.Hide();
                     return;
-                    }
                 }
+            }
             catch (Exception err)
             {
 
@@ -472,7 +459,7 @@ namespace WMS
 
                     progress.ShowDialogSync(this, $"{Resources.GetString(Resource.String.s262)}");
                 });
-                
+
 
                 try
                 {
@@ -487,7 +474,7 @@ namespace WMS
                             {
                                 progress.StopDialogSync();
                                 var id = result.Split('+')[1];
-                                
+
 
                                 AlertDialog.Builder alert = new AlertDialog.Builder(this);
                                 alert.SetTitle($"{Resources.GetString(Resource.String.s263)}");
@@ -506,7 +493,7 @@ namespace WMS
                                 Dialog dialog = alert.Create();
                                 dialog.Show();
                             });
-                      
+
 
                         }
                         else
@@ -546,7 +533,7 @@ namespace WMS
                             string errorWebApp = string.Format($"{Resources.GetString(Resource.String.s218)}" + result);
                             Toast.MakeText(this, errorWebApp, ToastLength.Long).Show();
                         });
-                      
+
 
                     }
                 }
@@ -593,7 +580,7 @@ namespace WMS
 
         private void Button4_Click(object sender, EventArgs e)
         {
-           StartActivity(typeof(ProductionSerialOrSSCCEntry));
+            StartActivity(typeof(ProductionSerialOrSSCCEntry));
             HelpfulMethods.clearTheStack(this);
         }
 
@@ -608,7 +595,7 @@ namespace WMS
 
         private void BtNext_Click(object sender, EventArgs e)
         {
-            if(App.Settings.tablet)
+            if (App.Settings.tablet)
             {
                 selectedItem++;
 
@@ -634,7 +621,7 @@ namespace WMS
 
         private void LoadPositions()
         {
-        
+
             try
             {
 
@@ -651,7 +638,7 @@ namespace WMS
                     {
                         string errorWebApp = string.Format($"{Resources.GetString(Resource.String.s213)}" + error);
                         Toast.MakeText(this, errorWebApp, ToastLength.Long).Show();
-                      
+
                         return;
                     }
                 }

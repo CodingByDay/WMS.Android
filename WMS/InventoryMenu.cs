@@ -1,21 +1,9 @@
-﻿using Stream = Android.Media.Stream;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.Content.PM;
+﻿using Android.Content;
 using Android.Net;
-using Android.OS;
-using Android.Runtime;
 using Android.Views;
-using Android.Widget;
-
-using WMS.App;
 using TrendNET.WMS.Device.Services;
-
-using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS
+using WMS.App;
+namespace WMS
 {
     [Activity(Label = "InventoryMenu")]
     public class InventoryMenu : CustomBaseActivity
@@ -23,7 +11,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
 
 
         public static string target = App.Settings.device;
-     
+
         public bool result = Services.isTablet(target); /* Is the device tablet. */
         private Button button1;
         private Button button2;
@@ -66,7 +54,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
         {
             if (IsOnline())
             {
-                
+
                 try
                 {
                     LoaderManifest.LoaderManifestLoopStop(this);
@@ -88,7 +76,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
 
             base.OnBackPressed();
         }
-     
+
 
 
         private void ChangeTheOrientation()
@@ -130,8 +118,8 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                     {
                         Button3_Click(this, null);
                     }
-                        break;
-                    
+                    break;
+
 
                 case Keycode.F5:
                     if (button4.Enabled == true)
@@ -148,7 +136,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                     break;
 
                 case Keycode.F8:
-                    
+
                     Logout_Click(this, null);
                     break;
 
@@ -158,49 +146,49 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
         private void Logout_Click(object sender, EventArgs e)
         {
 
-                StartActivity(typeof(MainMenu));
-                HelpfulMethods.clearTheStack(this);
-            
+            StartActivity(typeof(MainMenu));
+            HelpfulMethods.clearTheStack(this);
+
         }
 
         private void Button7_Click(object sender, EventArgs e)
         {
 
-                StartActivity(typeof(InventoryPrint));
-                HelpfulMethods.clearTheStack(this);
-            
+            StartActivity(typeof(InventoryPrint));
+            HelpfulMethods.clearTheStack(this);
+
         }
 
         private void Button4_Click(object sender, EventArgs e)
         {
- 
-                StartActivity(typeof(InventoryOpen));
-                HelpfulMethods.clearTheStack(this);
-            
+
+            StartActivity(typeof(InventoryOpen));
+            HelpfulMethods.clearTheStack(this);
+
         }
 
         private void Button3_Click(object sender, EventArgs e)
         {
-   
-                StartActivity(typeof(InventoryConfirm));
-                HelpfulMethods.clearTheStack(this);
-            
+
+            StartActivity(typeof(InventoryConfirm));
+            HelpfulMethods.clearTheStack(this);
+
         }
 
         private void Button2_Click(object sender, EventArgs e)
         {
 
-                StartActivity(typeof(InventoryProcess));
-                HelpfulMethods.clearTheStack(this);
-            
+            StartActivity(typeof(InventoryProcess));
+            HelpfulMethods.clearTheStack(this);
+
         }
 
         private void Button1_Click(object sender, EventArgs e)
         {
-      
-                StartActivity(typeof(InventoryOpenDocument));
-                HelpfulMethods.clearTheStack(this);
-            
+
+            StartActivity(typeof(InventoryOpenDocument));
+            HelpfulMethods.clearTheStack(this);
+
         }
     }
 }

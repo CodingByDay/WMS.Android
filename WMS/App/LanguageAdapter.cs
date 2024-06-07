@@ -1,8 +1,6 @@
-﻿using System.Collections.Generic;
-using Android.Content;
-using Android.Views;
-using Android.Widget;
+﻿using Android.Content;
 using Android.Graphics;
+using Android.Views;
 
 namespace WMS.App
 {

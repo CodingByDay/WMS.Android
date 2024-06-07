@@ -1,23 +1,11 @@
-﻿using Stream = Android.Media.Stream;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
+﻿using Android.Content;
 using Android.Content.PM;
 using Android.Net;
-using Android.OS;
-using Android.Runtime;
 using Android.Views;
-using Android.Widget;
-
-using WMS.App;
 using TrendNET.WMS.Core.Data;
 using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
-using AndroidX.AppCompat.App;
-using AlertDialog = Android.App.AlertDialog;
+using WMS.App;
 namespace WMS
 {
     [Activity(Label = "TakeOverBusinessEventSetup", ScreenOrientation = ScreenOrientation.Portrait)]
@@ -68,7 +56,7 @@ namespace WMS
             SupportActionBar.SetDisplayShowTitleEnabled(false);
             // Declarations
             cbDocType = FindViewById<CustomAutoCompleteTextView>(Resource.Id.cbDocType);
-           
+
 
             cbWarehouse = FindViewById<CustomAutoCompleteTextView>(Resource.Id.cbWarehouse);
             cbSubject = FindViewById<CustomAutoCompleteTextView>(Resource.Id.cbSubject);
@@ -94,7 +82,7 @@ namespace WMS
             Android.Resource.Layout.SimpleSpinnerItem, objectcbWarehouse);
             adapter.SetDropDownViewResource(Android.Resource.Layout.SimpleSpinnerItem);
             cbWarehouse.Adapter = adapter;
-             
+
             adapterDoc = new CustomAutoCompleteAdapter<ComboBoxItem>(this,
             Android.Resource.Layout.SimpleSpinnerItem, objectcbDocType);
 
@@ -136,7 +124,8 @@ namespace WMS
                 {
                     cbWarehouse.Enabled = false;
                 }
-            } catch 
+            }
+            catch
             {
                 return;
             }
@@ -182,7 +171,7 @@ namespace WMS
         {
             if (IsOnline())
             {
-                
+
                 try
                 {
                     LoaderManifest.LoaderManifestLoopStop(this);
@@ -241,9 +230,9 @@ namespace WMS
             byOrder = !byOrder;
             Base.Store.byOrder = byOrder;
             UpdateForm();
-            
+
         }
-    
+
 
         private void BtnOrder_Click(object sender, EventArgs e)
         {
@@ -251,10 +240,10 @@ namespace WMS
         }
 
         private void UpdateForm()
-        {         
+        {
             try
             {
-                  
+
                 objectcbDocType.Clear();
 
                 if (byOrder)
@@ -269,7 +258,7 @@ namespace WMS
                         cbSubject.Visibility = ViewStates.Invisible;
                     }
                     docTypes = CommonData.ListDocTypes("I|N");
-                    if(App.Settings.tablet)
+                    if (App.Settings.tablet)
                     {
                         btnOrderMode.Text = base.Resources.GetString(Resource.String.s138);
 
@@ -286,17 +275,18 @@ namespace WMS
                     if (App.Settings.tablet)
                     {
                         rlExtra.Visibility = ViewStates.Visible;
-                    } else
+                    }
+                    else
                     {
                         cbSubject.Visibility = ViewStates.Visible;
                     }
-                    if ( cbSubject.Adapter == null || cbSubject.Count() == 0 )
+                    if (cbSubject.Adapter == null || cbSubject.Count() == 0)
                     {
                         var subjects = CommonData.ListSubjects();
                         subjects.Items.ForEach(s =>
                         {
                             objectcbSubject.Add(new ComboBoxItem { ID = s.GetString("ID"), Text = s.GetString("ID") });
-                    
+
                         });
 
                         adapterSubject = new CustomAutoCompleteAdapter<ComboBoxItem>(this,
@@ -307,7 +297,7 @@ namespace WMS
 
                     docTypes = CommonData.ListDocTypes("P|F");
 
-                    if(App.Settings.tablet)
+                    if (App.Settings.tablet)
                     {
                         btnOrderMode.Text = base.Resources.GetString(Resource.String.s338);
 
@@ -329,10 +319,10 @@ namespace WMS
                 adapterDoc.AddAll(objectcbDocType);
                 adapterDoc.NotifyDataSetChanged();
 
-                if(objectcbDocType.Count == 0)
+                if (objectcbDocType.Count == 0)
                 {
                     cbDocType.Text = string.Empty;
-                } 
+                }
 
             }
             catch (Exception err)
@@ -347,8 +337,8 @@ namespace WMS
 
         private void NextStep()
         {
-     
-            var itemDT = adapterDoc.GetItem(temporaryPositioncbDoc); 
+
+            var itemDT = adapterDoc.GetItem(temporaryPositioncbDoc);
             if (itemDT == null)
             {
                 string toast = string.Format($"{Resources.GetString(Resource.String.s237)}");
@@ -404,14 +394,14 @@ namespace WMS
                         moveHead.SetString("Receiver", itemSubj.ID);
                     }
 
-                   StartActivity(typeof(TakeOverIdentEntry));
-                   HelpfulMethods.clearTheStack(this);
+                    StartActivity(typeof(TakeOverIdentEntry));
+                    HelpfulMethods.clearTheStack(this);
 
                 }
             }
-         
+
         }
 
-      
+
     }
 }

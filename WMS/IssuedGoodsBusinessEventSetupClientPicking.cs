@@ -1,30 +1,13 @@
-﻿using Android.App;
-using Android.Content;
+﻿using Android.Content;
 using Android.Content.PM;
-using Android.Graphics;
 using Android.Net;
-using Android.OS;
-using Android.Service.Autofill;
-using Android.Text.Method;
 using Android.Views;
-using Android.Widget;
-using Java.Lang.Reflect;
-
-
-using WMS.App;
-using Stream = Android.Media.Stream;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Timers;
 using TrendNET.WMS.Core.Data;
 using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
-using static Android.Content.ClipData;
-using Android.Speech.Tts;
-
-using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS
+using WMS.App;
+using AlertDialog = Android.App.AlertDialog;
+namespace WMS
 {
     [Activity(Label = "IssuedGoodsBusinessEventSetupClientPicking", ScreenOrientation = ScreenOrientation.Portrait)]
     public class IssuedGoodsBusinessEventSetupClientPicking : CustomBaseActivity
@@ -82,7 +65,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             btnOrder = FindViewById<Button>(Resource.Id.btnOrder);
             btnLogout = FindViewById<Button>(Resource.Id.btnLogout);
             btnHidden = FindViewById<Button>(Resource.Id.btnHidden);
-       
+
             btnLogout.Click += BtnLogout_Click;
             btnOrder.Click += BtnOrder_Click;
 
@@ -95,7 +78,8 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 {
                     objectWarehouse.Add(new ComboBoxItem { ID = war.StringValue("acWarehouse"), Text = war.StringValue("acWarehouse") });
                 }
-            } else if(!warehouses.Success)
+            }
+            else if (!warehouses.Success)
             {
                 AlertDialog.Builder alert = new AlertDialog.Builder(this);
                 alert.SetTitle($"{Resources.GetString(Resource.String.s265)}");
@@ -107,12 +91,12 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 Dialog dialog = alert.Create();
                 dialog.Show();
             }
-           
+
             adapterWarehouse = new CustomAutoCompleteAdapter<ComboBoxItem>(this,
             Android.Resource.Layout.SimpleSpinnerItem, objectWarehouse);
             adapterWarehouse.SetDropDownViewResource(Android.Resource.Layout.SimpleSpinnerItem);
             cbWarehouse.Adapter = adapterWarehouse;
-            await UpdateForm();       
+            await UpdateForm();
             adapterDocType = new CustomAutoCompleteAdapter<ComboBoxItem>(this,
             Android.Resource.Layout.SimpleSpinnerItem, objectDocType);
             adapterDocType.SetDropDownViewResource(Android.Resource.Layout.SimpleSpinnerItem);
@@ -144,8 +128,8 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             }
             await FillOpenOrdersAsync();
             currentWarehouse = cbWarehouse.Text;
-            currentClient = cbExtra.Text;             
-         }
+            currentClient = cbExtra.Text;
+        }
 
 
         private async Task FillOpenOrdersAsync()
@@ -220,7 +204,8 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 catch (Exception err)
                 {
                     SentrySdk.CaptureException(err);
-                } finally
+                }
+                finally
                 {
                     LoaderManifest.LoaderManifestLoopStop(this);
                 }
@@ -294,9 +279,9 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 LoaderManifest.LoaderManifestLoop(this);
             }
         }
-     
 
- 
+
+
 
 
         public override bool OnKeyDown(Keycode keyCode, KeyEvent e)
@@ -319,12 +304,12 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                     break;
             }
             return base.OnKeyDown(keyCode, e);
-           
+
         }
 
-      
 
-     
+
+
         private void BtnLogout_Click(object sender, EventArgs e)
         {
             StartActivity(typeof(MainMenu));
@@ -337,12 +322,12 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
         {
 
             NextStep();
-            
+
         }
 
         private void NextStep()
         {
-            if(String.IsNullOrEmpty(currentClient))
+            if (String.IsNullOrEmpty(currentClient))
             {
                 Toast.MakeText(this, $"{Resources.GetString(Resource.String.s288)}", ToastLength.Long).Show();
                 return;
@@ -356,9 +341,9 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             StartActivity(typeof(ClientPicking));
         }
 
-    
 
-    
+
+
 
         private async Task UpdateForm()
         {

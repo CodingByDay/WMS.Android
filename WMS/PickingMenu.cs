@@ -1,27 +1,7 @@
-﻿using Stream = Android.Media.Stream;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.Media;
-using Android.Net;
-using Android.OS;
-using Android.Runtime;
+﻿using Android.Content.PM;
 using Android.Views;
-using Android.Widget;
-using BarCode2D_Receiver;
-
-using WMS.App;
 using TrendNET.WMS.Core.Data;
 using TrendNET.WMS.Device.App;
-using TrendNET.WMS.Device.Services;
-using WebApp = TrendNET.WMS.Device.Services.WebApp;
-
-using AndroidX.AppCompat.App;
-using AlertDialog = Android.App.AlertDialog;
-using Android.Content.PM;
 namespace WMS
 {
     [Activity(Label = "PickingMenu", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
@@ -97,7 +77,7 @@ namespace WMS
                     break;
                 case Keycode.F3:
                     Client_Click(this, null);
-                    break;      
+                    break;
             }
             return base.OnKeyDown(keyCode, e);
         }

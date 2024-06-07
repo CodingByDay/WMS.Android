@@ -1,23 +1,12 @@
-﻿using Stream = Android.Media.Stream;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
+﻿using Android.Content;
 using Android.Content.PM;
 using Android.Net;
-using Android.OS;
-using Android.Runtime;
 using Android.Views;
-using Android.Widget;
-
-using WMS.App;
 using TrendNET.WMS.Core.Data;
 using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
-
-using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS
+using WMS.App;
+namespace WMS
 {
     [Activity(Label = "SelectSubjectBeforeFinish", ScreenOrientation = ScreenOrientation.Portrait)]
     public class SelectSubjectBeforeFinish : CustomBaseActivity
@@ -33,16 +22,16 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             {
                 NameValueObjectList data;
 
-          
-              
+
+
                 try
                 {
                     string error;
                     data = Services.GetObjectList("hs", out error, headID.ToString());
                     if (data == null)
                     {
-                      
-                        
+
+
 
                         return;
                     }
@@ -60,8 +49,8 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 var form = new SelectSubjectBeforeFinish();
                 form.SetHeadID(headID);
                 form.objectSubjects.Clear();
-                form.objectSubjects.Add(new ComboBoxItem { Text = ""});
-                data.Items.ForEach(i => form.objectSubjects.Add(new ComboBoxItem {Text = i.GetString("Subject") }));
+                form.objectSubjects.Add(new ComboBoxItem { Text = "" });
+                data.Items.ForEach(i => form.objectSubjects.Add(new ComboBoxItem { Text = i.GetString("Subject") }));
                 form.cbSubject.SetSelection(1);
                 form.ShowDialog(1, null);
 
@@ -93,10 +82,10 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             btConfirm.Click += BtConfirm_Click;
 
 
- 
+
             var adapterWarehouse = new CustomAutoCompleteAdapter<ComboBoxItem>(this,
                   Android.Resource.Layout.SimpleSpinnerItem, objectSubjects);
-       
+
             adapterWarehouse.SetDropDownViewResource(Android.Resource.Layout.SimpleSpinnerDropDownItem);
             cbSubject.Adapter = adapterWarehouse;
 
@@ -116,7 +105,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
         {
             if (IsOnline())
             {
-                
+
                 try
                 {
                     LoaderManifest.LoaderManifestLoopStop(this);
@@ -137,8 +126,8 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             var subject = objectSubjects.ElementAt(temporaryPositionReceive).ToString();
             if (!string.IsNullOrEmpty(subject))
             {
-       
-         
+
+
                 try
                 {
                     NameValueObject data = new NameValueObject("SetHeadSubject");
@@ -151,11 +140,11 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                     {
                         string errorWebApp = string.Format($"{Resources.GetString(Resource.String.s247)}" + error);
                         Toast.MakeText(this, errorWebApp, ToastLength.Long).Show();
-                     
+
                     }
                     else
                     {
-               
+
                     }
                 }
                 catch (Exception err)
@@ -166,7 +155,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
 
                 }
             }
-            
+
 
         }
 
@@ -190,13 +179,13 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
         }
 
         private void CbSubject_ItemSelected(object sender, AdapterView.ItemSelectedEventArgs e)
-            {
-                Spinner spinner = (Spinner)sender;
+        {
+            Spinner spinner = (Spinner)sender;
 
 
 
-                temporaryPositionReceive = e.Position;
-            }
+            temporaryPositionReceive = e.Position;
+        }
 
 
         public void SetHeadID(int headID)
@@ -206,4 +195,4 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
     }
 
 
-    }
+}

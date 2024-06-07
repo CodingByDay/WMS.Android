@@ -1,23 +1,13 @@
-﻿using Stream = Android.Media.Stream;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using TrendNET.WMS.Device.App;
-using TrendNET.WMS.Core.Data;
-using TrendNET.WMS.Device.Services;
-using static Android.Widget.AdapterView;
+﻿using Android.Content;
 using Android.Content.PM;
-using WMS.App;
 using Android.Net;
-
-
-using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS
+using Android.Views;
+using TrendNET.WMS.Core.Data;
+using TrendNET.WMS.Device.App;
+using TrendNET.WMS.Device.Services;
+using WMS.App;
+using static Android.Widget.AdapterView;
+namespace WMS
 {
     [Activity(Label = "InterWarehouseBusinessEventSetup", ScreenOrientation = ScreenOrientation.Portrait)]
     public class InterWarehouseBusinessEventSetup : CustomBaseActivity
@@ -73,7 +63,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             objectDocType.Add(new ComboBoxItem { ID = "Default", Text = Resources.GetString(Resource.String.s261) });
             docTypes = CommonData.ListDocTypes("E|");
             docTypes.Items.ForEach(dt =>
-            {        
+            {
                 objectDocType.Add(new ComboBoxItem { ID = dt.GetString("Code"), Text = dt.GetString("Code") + " " + dt.GetString("Name") });
             });
 
@@ -260,7 +250,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             var rwh = adapterReceive.GetItem(temporaryPositionReceive);
             var doc = dt.ID;
             var issue = iwh.ID;
-            var receive = rwh.ID;        
+            var receive = rwh.ID;
             NameValueObject moveHead = (NameValueObject)InUseObjects.Get("MoveHead");
             moveHead.SetString("DocumentType", doc);
             moveHead.SetString("Type", "E");
@@ -268,16 +258,16 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             moveHead.SetString("Receiver", receive);
             moveHead.SetString("LinkKey", "");
             moveHead.SetInt("LinkNo", 0);
-            moveHead.SetInt("Clerk", Services.UserID());             
+            moveHead.SetInt("Clerk", Services.UserID());
             string error;
-     
+
             try
             {
-                
+
                 var savedMoveHead = Services.SetObject("mh", moveHead, out error);
                 if (savedMoveHead == null)
                 {
-                    string errorWebApp = string.Format($"{Resources.GetString(Resource.String.s213)}" + error );
+                    string errorWebApp = string.Format($"{Resources.GetString(Resource.String.s213)}" + error);
                     DialogHelper.ShowDialogError(this, this, errorWebApp);
 
 
@@ -299,7 +289,8 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 StartActivity(typeof(InterWarehouseSerialOrSSCCEntry));
                 HelpfulMethods.clearTheStack(this);
 
-            } catch(Exception errorL)
+            }
+            catch (Exception errorL)
             {
                 string errorWebApp = string.Format($"{Resources.GetString(Resource.String.s213)}" + errorL.Message);
                 DialogHelper.ShowDialogError(this, this, errorWebApp);
@@ -308,25 +299,25 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             finally
             {
                 success = true;
-            }   
+            }
         }
-        
+
         private void CbReceiveWH_ItemSelected(object sender, AdapterView.ItemSelectedEventArgs e)
         {
             Spinner spinner = (Spinner)sender;
-                temporaryPositionReceive = e.Position;           
+            temporaryPositionReceive = e.Position;
         }
 
         private void CbIssueWH_ItemSelected(object sender, AdapterView.ItemSelectedEventArgs e)
         {
-            Spinner spinner = (Spinner)sender;            
-                temporaryPositionIssue = e.Position;       
+            Spinner spinner = (Spinner)sender;
+            temporaryPositionIssue = e.Position;
         }
 
         private void CbDocType_ItemSelected(object sender, AdapterView.ItemSelectedEventArgs e)
         {
             // avoids Default value selection.
-            if(e.Position == 0)
+            if (e.Position == 0)
             {
 
                 cbIssueWH.Visibility = ViewStates.Invisible;
@@ -335,13 +326,15 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 string errorWebApp = string.Format($"{Resources.GetString(Resource.String.s237)}");
                 Toast.MakeText(this, errorWebApp, ToastLength.Long).Show();
 
-            } else {
-            cbIssueWH.Visibility = ViewStates.Visible;
-            cbReceiveWH.Visibility = ViewStates.Visible;
-            confirm.Enabled = true;
-            cbIssueWH.Enabled = true;
-            cbReceiveWH.Enabled = true;
-            Spinner spinner = (Spinner)sender;
+            }
+            else
+            {
+                cbIssueWH.Visibility = ViewStates.Visible;
+                cbReceiveWH.Visibility = ViewStates.Visible;
+                confirm.Enabled = true;
+                cbIssueWH.Enabled = true;
+                cbReceiveWH.Enabled = true;
+                Spinner spinner = (Spinner)sender;
                 if (e.Position != 0)
                 {
                     string toast = string.Format($"{Resources.GetString(Resource.String.s236)}: {0}", spinner.GetItemAtPosition(e.Position));
@@ -359,5 +352,5 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             HelpfulMethods.clearTheStack(this);
         }
     }
-    
+
 }

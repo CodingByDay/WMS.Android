@@ -214,8 +214,8 @@ namespace TrendNET.WMS.Device.Services
         public class SqlQueryRequest
         {
             public string SQL { get; set; }
-            public List<Parameter> Parameters { get;set; }
-           
+            public List<Parameter> Parameters { get; set; }
+
         }
         /// <summary>
         /// Type pri parametrih je lahko: 'String', 'Int16', 'Int32', 'Int64', 'DateTime', 'Decimal', 'Float'
@@ -234,21 +234,21 @@ namespace TrendNET.WMS.Device.Services
           Type: idType,
           Value: props.id, 
         */
-        public static ApiResultSet GetObjectListBySql(string sql, List<Parameter> sqlParameters = null )
+        public static ApiResultSet GetObjectListBySql(string sql, List<Parameter> sqlParameters = null)
         {
-                string result;
-                SqlQueryRequest requestObject;
+            string result;
+            SqlQueryRequest requestObject;
 
-                if (sqlParameters != null)
-                {
-                    // Create a JSON object containing the SQL query
-                    requestObject = new SqlQueryRequest { SQL = sql, Parameters = sqlParameters };
-                }
-                else
-                {
-                    requestObject = new SqlQueryRequest { SQL = sql };
-                }
-                string requestBody = JsonConvert.SerializeObject(requestObject);
+            if (sqlParameters != null)
+            {
+                // Create a JSON object containing the SQL query
+                requestObject = new SqlQueryRequest { SQL = sql, Parameters = sqlParameters };
+            }
+            else
+            {
+                requestObject = new SqlQueryRequest { SQL = sql };
+            }
+            string requestBody = JsonConvert.SerializeObject(requestObject);
 
             if (WebApp.Post("mode=sql&type=sel", requestBody, out result))
             {

@@ -1,41 +1,19 @@
-using Android.App;
-using Android.OS;
-using Android.Runtime;
-using Android.Widget;
-using Android.Views;
-using Android.Net;
-using System.Net;
-using Stream = Android.Media.Stream;
-using Android.Util;
-using Android.Content;
-using Plugin.Settings.Abstractions;
-using System.Linq;
-
-using static Android.App.ActionBar;
-
-using Uri = System.Uri;
-using System.Threading.Tasks;
-using AlertDialog = Android.App.AlertDialog;
-using Square.Picasso;
-using Aspose.Words.Tables;
-using System.Diagnostics;
-using AndroidX.AppCompat.App;
 using Android;
+using Android.Content;
+using Android.Content.PM;
+using Android.Graphics;
+using Android.Net;
+using Android.Preferences;
+using Android.Views;
+using AndroidX.Core.App;
+using AndroidX.Core.Content;
+using Google.Android.Material.Snackbar;
+using Square.Picasso;
+using System.Diagnostics;
 using TrendNET.WMS.Device.Services;
 using WMS.App;
 using WMS.Background;
-using AndroidX.AppCompat.App;
-using FFImageLoading;
-using Android.Graphics.Drawables;
-using Android.Graphics;
-using Android.Preferences;
-using Newtonsoft.Json;
 using Xamarin.Essentials;
-using AndroidX.Core.Content;
-using System.Net.Http;
-using AndroidX.Core.App;
-using Google.Android.Material.Snackbar;
-using Android.Content.PM;
 namespace WMS
 {
 
@@ -77,7 +55,7 @@ namespace WMS
 
         private void ProcessRegistration()
         {
-     
+
 
             var id = App.Settings.ID.ToString();
             string result;
@@ -119,7 +97,7 @@ namespace WMS
                         if (Services.HasPermission("TNET_WMS", "R"))
                         {
 
-                            StartActivity(typeof(MainMenu));                            
+                            StartActivity(typeof(MainMenu));
                             Password.Text = "";
                             isValid = true;
                             Finish();
@@ -159,7 +137,7 @@ namespace WMS
         protected async override void OnCreate(Bundle savedInstanceState)
         {
             App.Settings.restart = false;
-      
+
             ChangeTheOrientation();
             base.OnCreate(savedInstanceState);
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
@@ -245,7 +223,7 @@ namespace WMS
                     OnPermissionsDenied();
                 }
             }
-            
+
 
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }
@@ -272,15 +250,15 @@ namespace WMS
         }
 
         public void InitializeSentryAsync()
-        {     
+        {
             SentrySdk.Init(o =>
-            {    
+            {
                 // Tells which project in Sentry to send events to:
-                o.Dsn = "https://4da007db4594a10f53ab292097e612f8@o4507304617836544.ingest.de.sentry.io/4507304993751120";               
-            });      
+                o.Dsn = "https://4da007db4594a10f53ab292097e612f8@o4507304617836544.ingest.de.sentry.io/4507304993751120";
+            });
         }
 
-   
+
 
         public string GetAppVersion()
         {
@@ -303,14 +281,14 @@ namespace WMS
             ColorMatrix colorMatrix = new ColorMatrix(colorMatrixValues);
             highlightFilter = new ColorMatrixColorFilter(colorMatrix);
             txtVersion.Text = "v." + GetAppVersion();
-            var language = Resources.Configuration.Locale.Country;      
-            
-            if(language == "SI")
+            var language = Resources.Configuration.Locale.Country;
+
+            if (language == "SI")
             {
                 imgSlovenian.SetColorFilter(highlightFilter);
                 Base.Store.language = "sl";
             }
-            else if(language == "US")
+            else if (language == "US")
             {
                 imgEnglish.SetColorFilter(highlightFilter);
                 Base.Store.language = "en";
@@ -327,9 +305,9 @@ namespace WMS
                     .Load(url)
                     .Into(img);
             }
-            catch 
+            catch
             {
-              return;
+                return;
             }
         }
 
@@ -372,9 +350,9 @@ namespace WMS
             }
         }
 
-        
 
-    
+
+
 
         public override bool OnOptionsItemSelected(IMenuItem item)
         {

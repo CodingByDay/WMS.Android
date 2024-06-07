@@ -1,29 +1,12 @@
-﻿using Android.App;
-using Android.Content;
+﻿using Android.Content;
 using Android.Content.PM;
-using Android.Graphics;
 using Android.Net;
-using Android.OS;
-using Android.Service.Autofill;
-using Android.Text.Method;
 using Android.Views;
-using Android.Widget;
-using Java.Lang.Reflect;
-
-
-using WMS.App;
-using Stream = Android.Media.Stream;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Timers;
 using TrendNET.WMS.Core.Data;
 using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
-
-
-using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS
+using WMS.App;
+namespace WMS
 {
     [Activity(Label = "IssuedGoodsBusinessEventSetup", ScreenOrientation = ScreenOrientation.Portrait)]
     public class IssuedGoodsBusinessEventSetup : CustomBaseActivity, IDialogInterfaceOnClickListener
@@ -127,7 +110,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             cbExtra.SelectAtPosition(0);
             var dws = await Queries.DefaultIssueWarehouse(objectDocType.ElementAt(0).ID);
             temporaryPositionWarehouse = cbWarehouse.SetItemByString(dws.warehouse);
-            if(dws.main)
+            if (dws.main)
             {
                 cbWarehouse.Enabled = false;
             }
@@ -168,12 +151,12 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 temporaryPositionDoc = e.Position;
                 var dws = await Queries.DefaultIssueWarehouse(adapterDocType.GetItem(temporaryPositionDoc).ID);
                 temporaryPositionWarehouse = cbWarehouse.SetItemByString(dws.warehouse);
-                if(dws.main)
+                if (dws.main)
                 {
                     cbWarehouse.Enabled = false;
                 }
                 cbExtra.Text = string.Empty;
-                await FillOpenOrdersAsync();               
+                await FillOpenOrdersAsync();
             }
             catch (Exception ex)
             {
@@ -186,8 +169,9 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
         {
             var index_doc = Intent.GetIntExtra("index_doc", 0);
             var index_war = Intent.GetIntExtra("index_war", 0);
-            if(index_doc!=0||index_war!=0) {
-               cbDocType.SelectAtPosition(index_doc); 
+            if (index_doc != 0 || index_war != 0)
+            {
+                cbDocType.SelectAtPosition(index_doc);
             }
         }
 
@@ -263,7 +247,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                     break;
             }
             return base.OnKeyDown(keyCode, e);
-           
+
         }
 
 
@@ -292,12 +276,12 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
 
                                 var whAdapter = cbWarehouse.Adapter as CustomAutoCompleteAdapter<ComboBoxItem>;
                                 string wh = whAdapter.GetComboBoxItem(temporaryPositionWarehouse).ID ?? cbWarehouse.Text;
-                                
+
                                 if (wh != null && !string.IsNullOrEmpty(wh))
                                 {
                                     string error;
                                     positions = Services.GetObjectList("oodtw", out error, dt + "|" + wh + "|" + byClient);
-                              
+
                                     if (positions == null)
                                     {
                                         RunOnUiThread(() =>
@@ -329,7 +313,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                                 }
                             }
                         }
-                        catch(Exception ex) 
+                        catch (Exception ex)
                         {
                             SentrySdk.CaptureException(ex);
                         }
@@ -338,7 +322,8 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 catch (Exception ex)
                 {
                     SentrySdk.CaptureException(ex);
-                } finally
+                }
+                finally
                 {
                     RunOnUiThread(() =>
                     {
@@ -365,7 +350,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
         private void BtnOrder_Click(object sender, EventArgs e)
         {
             // Fixing clicking the order without choosing an order...
-            if (cbExtra.Visibility == ViewStates.Visible&&cbExtra.Text==string.Empty) 
+            if (cbExtra.Visibility == ViewStates.Visible && cbExtra.Text == string.Empty)
             {
                 Toast.MakeText(this, $"{Resources.GetString(Resource.String.s286)}", ToastLength.Long).Show();
             }
@@ -375,7 +360,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             }
         }
 
-     
+
 
         private async void UpdateForm()
         {
@@ -390,7 +375,8 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                     if (App.Settings.tablet)
                     {
                         rlExtra.Visibility = ViewStates.Visible;
-                    } else
+                    }
+                    else
                     {
                         cbExtra.Visibility = ViewStates.Visible;
                     }
@@ -402,7 +388,8 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                     if (App.Settings.tablet)
                     {
                         rlExtra.Visibility = ViewStates.Invisible;
-                    } else
+                    }
+                    else
                     {
                         cbExtra.Visibility = ViewStates.Invisible;
                     }
@@ -452,7 +439,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 adapterExtra.NotifyDataSetChanged();
                 docTypes = CommonData.ListDocTypes("I;M|F");
 
-                if(App.Settings.tablet)
+                if (App.Settings.tablet)
                 {
                     btnOrderMode.Text = base.Resources.GetString(Resource.String.s340);
 
@@ -483,7 +470,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
 
         private void NextStep()
         {
-            if(temporaryPositionDoc == -1|| temporaryPositionWarehouse == -1)
+            if (temporaryPositionDoc == -1 || temporaryPositionWarehouse == -1)
             {
                 return;
             }
@@ -528,7 +515,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
 
                     {
                         string selectedFlow = Base.Store.modeIssuing.ToString();
-                        if (byOrder && selectedFlow == "2" )
+                        if (byOrder && selectedFlow == "2")
                         {
                             itemSubj = adapterExtra.GetItem(temporaryPositionExtra);
                             if (itemSubj == null)
@@ -543,23 +530,23 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
 
                         if (selectedFlow == "2" && byOrder)
                         {
-                            StartActivity(typeof(IssuedGoodsIdentEntryWithTrail));                       
+                            StartActivity(typeof(IssuedGoodsIdentEntryWithTrail));
                         }
                         else
                         {
-                            StartActivity(typeof(IssuedGoodsIdentEntry));                  
+                            StartActivity(typeof(IssuedGoodsIdentEntry));
                         }
                     }
                 }
             }
         }
 
- 
 
-      
- 
-      
-     
+
+
+
+
+
 
         private string targetWord = string.Empty;
         private string currentWord = string.Empty;

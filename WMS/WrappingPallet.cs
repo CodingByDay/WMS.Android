@@ -1,25 +1,10 @@
-﻿using Android.App;
-using Android.Content;
+﻿using Android.Content;
+using Android.Content.PM;
 using Android.Media;
 using Android.Net;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using BarCode2D_Receiver;
-
-using WMS.App;
-using Stream = Android.Media.Stream;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TrendNET.WMS.Device.Services;
-
-using AndroidX.AppCompat.App;
+using WMS.App;
 using AlertDialog = Android.App.AlertDialog;
-using Android.Content.PM;
-using Com.Rscja.Deviceapi;
 namespace WMS
 {
     [Activity(Label = "WrappingPallet")]
@@ -39,15 +24,16 @@ namespace WMS
             {
                 if (barcode != "Scan fail")
                 {
-                    
+
                     pallet.Text = barcode;
-                } else
+                }
+                else
                 {
                     pallet.Text = "";
                 }
-            } 
+            }
         }
- 
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -91,7 +77,7 @@ namespace WMS
         {
             if (IsOnline())
             {
-                
+
                 try
                 {
                     LoaderManifest.LoaderManifestLoopStop(this);

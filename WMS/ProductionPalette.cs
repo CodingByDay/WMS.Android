@@ -1,27 +1,17 @@
-﻿using Android.App;
-using Android.Content;
+﻿using Android.Content;
 using Android.Content.PM;
+using Android.Graphics;
+using Android.Graphics.Drawables;
 using Android.Media;
 using Android.Net;
-using Android.OS;
 using Android.Views;
-using Android.Widget;
 using BarCode2D_Receiver;
-
-using WMS.App;
-using Stream = Android.Media.Stream;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using TrendNET.WMS.Core.Data;
 using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
+using WMS.App;
 using static Android.App.ActionBar;
 using AlertDialog = Android.App.AlertDialog;
-
-using AndroidX.AppCompat.App;
-using Android.Graphics.Drawables;
-using Android.Graphics;
 
 
 
@@ -60,32 +50,36 @@ namespace WMS
 
         public void GetBarcode(string barcode)
         {
-            if (tbSerialNum.HasFocus) {
+            if (tbSerialNum.HasFocus)
+            {
                 if (barcode != "Scan fail")
                 {
-                    
+
                     tbSerialNum.Text = barcode;
                     ProcessSerialNum();
                     tbCard.RequestFocus();
 
-                } else
+                }
+                else
                 {
                     tbSerialNum.Text = "";
                 }
 
-            } else if (tbCard.HasFocus)
+            }
+            else if (tbCard.HasFocus)
             {
                 if (barcode != "")
                 {
                     if (barcode != "Scan fail")
                     {
-                        
+
                         ProcessCard(barcode);
-                    } 
-                } 
-            } else if (tbLegCode.HasFocus)
+                    }
+                }
+            }
+            else if (tbLegCode.HasFocus)
             {
-                
+
                 tbLegCode.Text = barcode;
             }
         }
@@ -117,10 +111,10 @@ namespace WMS
             btConfirm.Enabled = true;
             lbTotalQty.Text = $"{Resources.GetString(Resource.String.s304)}: {totalQty.ToString("###,###,##0.00")} / {collectiveAmount.ToString("###,###,##0.00")}";
             popupDialog.Dismiss();
-            popupDialog.Cancel();          
+            popupDialog.Cancel();
         }
 
-      
+
 
         private void BtnNo_Click1(object sender, EventArgs e)
         {
@@ -286,7 +280,8 @@ namespace WMS
                 {
                     Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
                 }
-            } catch { return; }
+            }
+            catch { return; }
         }
 
         protected override void OnCreate(Bundle savedInstanceState)
@@ -329,13 +324,15 @@ namespace WMS
             {
                 if (isPalletCode != "1")
                 {
-                   
-                } else
+
+                }
+                else
                 {
                     legLayout.Visibility = ViewStates.Invisible;
 
                 }
-            } else
+            }
+            else
             {
                 legLayout.Visibility = ViewStates.Invisible;
             }
@@ -377,12 +374,12 @@ namespace WMS
             return cm.ActiveNetworkInfo == null ? false : cm.ActiveNetworkInfo.IsConnected;
 
         }
-    
+
         private void OnNetworkStatusChanged(object sender, EventArgs e)
         {
             if (IsOnline())
             {
-                
+
                 try
                 {
                     LoaderManifest.LoaderManifestLoopStop(this);
@@ -402,8 +399,8 @@ namespace WMS
         {
             string error;
             var identObject = Services.GetObject("id", ident, out error);
-            
-             collectiveAmount = identObject.GetDouble("UM1toUM2") * identObject.GetDouble("UM1toUM3");
+
+            collectiveAmount = identObject.GetDouble("UM1toUM2") * identObject.GetDouble("UM1toUM3");
         }
 
         private void TbCard_KeyPress(object sender, View.KeyEventArgs e)
@@ -414,7 +411,7 @@ namespace WMS
                 {
                     ProcessCard(tbCard.Text);
                     tbCard.RequestFocus();
-                } 
+                }
             }
             else
             {
@@ -435,7 +432,7 @@ namespace WMS
             }
         }
 
-   
+
 
         private void LvCardList_ItemLongClick(object sender, AdapterView.ItemLongClickEventArgs e)
         {
@@ -451,7 +448,7 @@ namespace WMS
             btnNo = popupDialog.FindViewById<Button>(Resource.Id.btnNo);
             btnNo.Click += BtnNo_Click;
             btnYes.Click += (e, ev) => { ButtonYes(lvCardList.SelectedItemId); };
-          
+
         }
 
         private void ButtonYes(long selectedItemId)
@@ -489,8 +486,8 @@ namespace WMS
             await Task.Run(() =>
             {
 
-            try
-            {
+                try
+                {
                     RunOnUiThread(() =>
                     {
                         progress = new ProgressDialogClass();
@@ -511,9 +508,9 @@ namespace WMS
                     palInfo = Services.SetObject($"cf&&legCode={tbLegCode.Text}", palInfo, out error);
                     if (palInfo == null)
                     {
-                      
+
                         RunOnUiThread(() =>
-                        {                        
+                        {
                             progress.StopDialogSync();
                             AlertDialog.Builder alert = new AlertDialog.Builder(this);
                             alert.SetTitle($"{Resources.GetString(Resource.String.s265)}");
@@ -531,7 +528,7 @@ namespace WMS
                             Dialog dialog = alert.Create();
                             dialog.Show();
                         });
-                       
+
 
                     }
                     else
@@ -558,7 +555,7 @@ namespace WMS
                                 dialog.Show();
                             });
 
-                            
+
                         }
                         else
                         {
@@ -603,23 +600,23 @@ namespace WMS
         {
             RunOnUiThread(() =>
             {
-                    AlertDialog.Builder alert = new AlertDialog.Builder(this);
+                AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
-                    alert.SetTitle($"{Resources.GetString(Resource.String.s309)}");
-                    alert.SetMessage($"{Resources.GetString(Resource.String.s313)}"); 
-                    alert.SetPositiveButton("Ok", async (senderAlert, args) =>
-                    {
-                        alert.Dispose();
-                        await runOnBothThreads();
-                    });
+                alert.SetTitle($"{Resources.GetString(Resource.String.s309)}");
+                alert.SetMessage($"{Resources.GetString(Resource.String.s313)}");
+                alert.SetPositiveButton("Ok", async (senderAlert, args) =>
+                {
+                    alert.Dispose();
+                    await runOnBothThreads();
+                });
 
-                    alert.SetNegativeButton($"{Resources.GetString(Resource.String.s311)}", (senderAlert, args) =>
-                    {
-                        alert.Dispose();
-                    });
+                alert.SetNegativeButton($"{Resources.GetString(Resource.String.s311)}", (senderAlert, args) =>
+                {
+                    alert.Dispose();
+                });
 
-                    Dialog dialog = alert.Create();
-                    dialog.Show();
+                Dialog dialog = alert.Create();
+                dialog.Show();
             });
         }
     }

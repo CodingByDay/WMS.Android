@@ -1,31 +1,16 @@
-﻿using Stream = Android.Media.Stream;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Android.App;
-using Android.Content;
+﻿using Android.Content;
 using Android.Content.PM;
-using Android.Media;
 using Android.Net;
-using Android.OS;
 using Android.Preferences;
-using Android.Runtime;
 using Android.Views;
-using Android.Widget;
 using BarCode2D_Receiver;
-
 using Newtonsoft.Json;
-using WMS.App;
+using System.Collections.Concurrent;
 using TrendNET.WMS.Core.Data;
 using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
-using AndroidX.AppCompat.App;
+using WMS.App;
 using AlertDialog = Android.App.AlertDialog;
-
-using AndroidX.Lifecycle;
-using System.Data.Common;
-using System.Collections.Concurrent;
 
 namespace WMS
 {
@@ -58,13 +43,13 @@ namespace WMS
         private int selected;
         private int selectedItem;
 
-     
+
 
         public void GetBarcode(string barcode)
         {
             // pass
-            if(tbIdent.HasFocus)
-            {          
+            if (tbIdent.HasFocus)
+            {
                 tbIdent.Text = barcode;
                 ProcessIdent();
             }
@@ -86,7 +71,7 @@ namespace WMS
                 string error;
                 openIdent = Services.GetObject("id", ident, out error);
                 if (openIdent == null)
-                {        
+                {
                     string SuccessMessage = string.Format($"{Resources.GetString(Resource.String.s229)}" + error);
                     Toast.MakeText(this, SuccessMessage, ToastLength.Long).Show();
                     tbIdent.Text = "";
@@ -102,9 +87,9 @@ namespace WMS
                     if (!moveHead.GetBool("ByOrder") || isPackaging)
                     {
                         if (SaveMoveHead())
-                        {                
+                        {
                             StartActivity(typeof(IssuedGoodsSerialOrSSCCEntry));
-                            Finish();                                              
+                            Finish();
                         }
                         return;
                     }
@@ -146,7 +131,7 @@ namespace WMS
                             {
                                 for (int i = 0; i < subjects.Rows.Count; i++)
                                 {
-                                    
+
                                     var row = subjects.Rows[i];
 
                                     orders.Add(new OpenOrder
@@ -159,12 +144,12 @@ namespace WMS
                                         Ident = row.StringValue("acIdent"),
                                         Packaging = row.DoubleValue("anPackQty")
                                     });
-                                    
+
                                 }
 
                                 displayedOrder = 0;
 
-                                if(App.Settings.tablet)
+                                if (App.Settings.tablet)
                                 {
                                     dataAdapter.NotifyDataSetChanged();
                                     UniversalAdapterHelper.SelectPositionProgramaticaly(listData, 0);
@@ -185,7 +170,8 @@ namespace WMS
                 SentrySdk.CaptureException(err);
                 return;
 
-            } finally
+            }
+            finally
             {
                 LoaderManifest.LoaderManifestLoopStop(this);
             }
@@ -193,7 +179,7 @@ namespace WMS
 
         private void FillDisplayedOrderInfo()
         {
-           
+
             if ((openIdent != null) && (orders != null) && (orders.Count > 0))
             {
                 lbOrderInfo.Text = $"{Resources.GetString(Resource.String.s14)} (" + (displayedOrder + 1).ToString() + "/" + orders.Count.ToString() + ")";
@@ -228,7 +214,7 @@ namespace WMS
 
             if (!moveHead.GetBool("Saved"))
             {
-               
+
                 try
                 {
 
@@ -320,7 +306,7 @@ namespace WMS
             btConfirm.Enabled = false;
             barcode2D = new Barcode2D(this, this);
             btNext.Click += BtNext_Click;
-            tbIdent.KeyPress += TbIdent_KeyPress; 
+            tbIdent.KeyPress += TbIdent_KeyPress;
             btConfirm.Click += BtConfirm_Click;
             button4.Click += Button4_Click;
             button5.Click += Button5_Click;
@@ -331,7 +317,7 @@ namespace WMS
             if (!string.IsNullOrEmpty(savedIdentsJson))
             {
                 savedIdents = JsonConvert.DeserializeObject<List<string>>(savedIdentsJson);
-            }       
+            }
             tbIdentAdapter = new CustomAutoCompleteAdapter<string>(this, Android.Resource.Layout.SimpleDropDownItem1Line, new List<string>());
             tbIdent.Adapter = tbIdentAdapter;
             tbIdent.TextChanged += (sender, e) =>
@@ -439,7 +425,7 @@ namespace WMS
         {
             if (IsOnline())
             {
-                
+
                 try
                 {
                     LoaderManifest.LoaderManifestLoopStop(this);
@@ -455,9 +441,9 @@ namespace WMS
             }
         }
 
-  
 
-      
+
+
         private void SpinnerIdent_ItemSelected(object sender, AdapterView.ItemSelectedEventArgs e)
         {
             var item = e.Position;
@@ -468,14 +454,14 @@ namespace WMS
             }
             ProcessIdent();
         }
- 
 
-       
+
+
 
         private void Button5_Click(object sender, EventArgs e)
         {
             StartActivity(typeof(MainMenu));
-             
+
         }
 
         private void Button4_Click(object sender, EventArgs e)
@@ -488,9 +474,9 @@ namespace WMS
         {
             if (SaveMoveHead())
             {
-               Base.Store.isUpdate = false;
-               StartActivity(typeof(IssuedGoodsSerialOrSSCCEntry));
-               this.Finish();
+                Base.Store.isUpdate = false;
+                StartActivity(typeof(IssuedGoodsSerialOrSSCCEntry));
+                this.Finish();
             }
         }
 
@@ -501,8 +487,9 @@ namespace WMS
                 // F2
                 displayedOrder++;
 
-                if (displayedOrder >= orders.Count) { 
-                    displayedOrder = 0; 
+                if (displayedOrder >= orders.Count)
+                {
+                    displayedOrder = 0;
                 }
 
                 FillDisplayedOrderInfo();

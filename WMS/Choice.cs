@@ -1,5 +1,4 @@
 ﻿using Android.Views;
-using AndroidX.AppCompat.App;
 using WMS.App;
 
 namespace WMS

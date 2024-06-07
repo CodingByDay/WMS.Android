@@ -1,29 +1,16 @@
-﻿using Stream = Android.Media.Stream;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Android.App;
-using Android.Content;
+﻿using Android.Content;
 using Android.Content.PM;
+using Android.Graphics;
+using Android.Graphics.Drawables;
 using Android.Net;
-using Android.OS;
-using Android.Runtime;
 using Android.Views;
-using Android.Widget;
-
-using WMS.App;
 using TrendNET.WMS.Core.Data;
 using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
+using WMS.App;
 using static Android.App.ActionBar;
-using WebApp = TrendNET.WMS.Device.Services.WebApp;
-
-using AndroidX.AppCompat.App;
 using AlertDialog = Android.App.AlertDialog;
-using Android.Graphics.Drawables;
-using Android.Graphics;
-using System.Data.Common;
+using WebApp = TrendNET.WMS.Device.Services.WebApp;
 namespace WMS
 {
     [Activity(Label = "InterWarehouseEnteredPositionsView", ScreenOrientation = ScreenOrientation.Portrait)]
@@ -110,7 +97,7 @@ namespace WMS
 
             LoadPositions();
 
-            if(App.Settings.tablet)
+            if (App.Settings.tablet)
             {
                 fillItems();
                 UniversalAdapterHelper.SelectPositionProgramaticaly(listData, 0);
@@ -118,7 +105,7 @@ namespace WMS
 
         }
 
-   
+
         private void ListData_ItemLongClick(object sender, AdapterView.ItemLongClickEventArgs e)
         {
             selected = e.Position;
@@ -127,7 +114,7 @@ namespace WMS
             btUpdate.PerformClick();
         }
 
-  
+
 
         private void ListData_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
         {
@@ -215,7 +202,7 @@ namespace WMS
         {
             switch (keyCode)
             {
-                
+
                 case Keycode.F1:
                     if (btNext.Enabled == true)
                     {
@@ -262,7 +249,7 @@ namespace WMS
             }
             return base.OnKeyDown(keyCode, e);
         }
-  
+
         private void BtDelete_Click(object sender, EventArgs e)
         {
             popupDialog = new Dialog(this);
@@ -292,7 +279,7 @@ namespace WMS
         {
             if (IsOnline())
             {
-                
+
                 try
                 {
                     LoaderManifest.LoaderManifestLoopStop(this);
@@ -423,7 +410,7 @@ namespace WMS
                             RunOnUiThread(() =>
                             {
                                 progress.StopDialogSync();
-                             
+
                                 AlertDialog.Builder alert = new AlertDialog.Builder(this);
                                 alert.SetTitle($"{Resources.GetString(Resource.String.s265)}");
                                 alert.SetMessage($"{Resources.GetString(Resource.String.s266)}" + result);
@@ -465,13 +452,13 @@ namespace WMS
                     RunOnUiThread(() =>
                     {
                         progress.StopDialogSync();
-                    
+
                     });
                 }
 
 
             });
-            
+
 
 
         }
@@ -532,7 +519,7 @@ namespace WMS
 
                 if (selectedItem <= (positions.Items.Count - 1))
                 {
-                    UniversalAdapterHelper.SelectPositionProgramaticaly(listData, selectedItem); 
+                    UniversalAdapterHelper.SelectPositionProgramaticaly(listData, selectedItem);
                 }
                 else
                 {

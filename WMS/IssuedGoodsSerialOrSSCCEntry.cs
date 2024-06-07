@@ -1,41 +1,21 @@
-﻿using Stream = Android.Media.Stream;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web;
-using Android.App;
-using Android.Content;
+﻿using Android.Content;
 using Android.Content.PM;
 using Android.Graphics;
+using Android.Graphics.Drawables;
 using Android.Media;
 using Android.Net;
-using Android.Nfc;
-using Android.OS;
-using Android.Runtime;
-using Android.Text.Util;
 using Android.Views;
-using Android.Widget;
 using BarCode2D_Receiver;
+using Com.Jsibbold.Zoomage;
 using Newtonsoft.Json;
-using WMS.App;
 using TrendNET.WMS.Core.Data;
 using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
+using WMS.App;
 using static Android.App.ActionBar;
-using static Android.Graphics.Paint;
-using static Android.Icu.Text.Transliterator;
-using WebApp = TrendNET.WMS.Device.Services.WebApp;
-using System.Text.Json;
-using AndroidX.AppCompat.App;
-using AlertDialog = Android.App.AlertDialog;
-using Aspose.Words.Drawing;
-using Android.Graphics.Drawables;
-using Android.Renderscripts;
-using Com.Jsibbold.Zoomage;
-using AndroidX.Lifecycle;
-using System.Data.Common;
 using static WMS.App.MultipleStock;
+using AlertDialog = Android.App.AlertDialog;
+using WebApp = TrendNET.WMS.Device.Services.WebApp;
 
 namespace WMS
 {
@@ -149,7 +129,7 @@ namespace WMS
                 {
                     if (barcode != "Scan fail")
                     {
-                        
+
 
                         tbSSCC.Text = barcode;
 
@@ -169,7 +149,7 @@ namespace WMS
                 {
                     if (barcode != "Scan fail")
                     {
-                        
+
 
                         tbSerialNum.Text = barcode;
 
@@ -182,13 +162,13 @@ namespace WMS
                 {
                     if (barcode != "Scan fail")
                     {
-                        
+
 
                         tbLocation.Text = barcode;
 
                         FilterData();
 
-                        if(isProccessOrderless)
+                        if (isProccessOrderless)
                         {
                             GetQuantityOrderLess();
                         }
@@ -227,7 +207,7 @@ namespace WMS
 
             string sql = "SELECT TOP 1 anQty FROM uWMSStockByWarehouse WHERE acIdent = @acIdent AND aclocation = @aclocation AND acWarehouse = @acWarehouse";
 
-            if(sscc!=null)
+            if (sscc != null)
             {
                 sql += " AND acSSCC = @acSSCC";
                 parameters.Add(new Services.Parameter { Name = "acSSCC", Type = "String", Value = sscc });
@@ -241,7 +221,7 @@ namespace WMS
 
             var qty = await AsyncServices.AsyncServices.GetObjectListBySqlAsync(sql, parameters);
 
-            if(qty.Success)
+            if (qty.Success)
             {
 
                 if (qty.Rows.Count > 0)
@@ -251,9 +231,10 @@ namespace WMS
                     lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + qtyCheck.ToString(CommonData.GetQtyPicture()) + " )";
                     tbPacking.Text = qtyCheck.ToString();
                     stock = qtyCheck;
-                } else
+                }
+                else
                 {
-                    double result =  0;
+                    double result = 0;
                     qtyCheck = result;
                     lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + qtyCheck.ToString(CommonData.GetQtyPicture()) + " )";
                     tbPacking.Text = qtyCheck.ToString();
@@ -262,7 +243,7 @@ namespace WMS
 
                 tbPacking.RequestFocus();
                 tbPacking.SelectAll();
-            } 
+            }
         }
 
         public bool IsOnline()
@@ -346,8 +327,8 @@ namespace WMS
             // Color the fields that can be scanned
             ColorFields();
 
-        
-           
+
+
             SetUpProcessDependentButtons();
             // Main logic for the entry
             SetUpForm();
@@ -364,7 +345,7 @@ namespace WMS
 
         private void CbMultipleLocations_ItemSelected(object? sender, AdapterView.ItemSelectedEventArgs e)
         {
-           
+
 
             var selected = adapterLocation.GetItem(e.Position);
 
@@ -381,7 +362,7 @@ namespace WMS
                 {
                     tbPacking.Text = selected.Quantity.ToString();
                 }
-                
+
                 /* This is maybe a good idea.
                 if(!selected.excludeSSCCSerial)
                 {
@@ -416,7 +397,7 @@ namespace WMS
 
         }
 
-   
+
 
 
         private void ImageClick(Drawable d)
@@ -504,7 +485,7 @@ namespace WMS
                 {
                     await CreateMethodFromStart();
                 }
-             
+
                 else
                 {
                     Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
@@ -551,9 +532,9 @@ namespace WMS
             }
         }
         private void CheckData()
-        {          
+        {
             data = FilterIssuedGoods(connectedPositions, tbSSCC.Text, tbSerialNum.Text, tbLocation.Text);
-            if(data.Count == 1)
+            if (data.Count == 1)
             {
                 createPositionAllowed = true;
             }
@@ -564,7 +545,7 @@ namespace WMS
             {
                 CheckData();
             }
-            
+
             double parsed;
             if (isProccessOrderless && double.TryParse(tbPacking.Text, out parsed) && stock >= parsed)
             {
@@ -604,8 +585,8 @@ namespace WMS
                 }
 
                 await CreateMethodSame();
-            } 
-             else
+            }
+            else
             {
                 Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
             }
@@ -721,7 +702,7 @@ namespace WMS
                         element = data.ElementAt(0);
                     }
 
-                    moveItem = new NameValueObject("MoveItem");                   
+                    moveItem = new NameValueObject("MoveItem");
                     moveItem.SetInt("HeadID", moveHead.GetInt("HeadID"));
 
                     if (!isProccessOrderless)
@@ -785,104 +766,105 @@ namespace WMS
 
         private async Task CreateMethodSame()
         {
-  
-                if (data.Count == 1 || isProccessOrderless)
+
+            if (data.Count == 1 || isProccessOrderless)
+            {
+                var element = new IssuedGoods();
+
+                if (!isProccessOrderless)
                 {
-                    var element = new IssuedGoods();
+                    element = data.ElementAt(0);
+                }
+                // This solves the problem of updating the item. The problem occurs because of the old way of passing data.
+                moveItem = new NameValueObject("MoveItem");
+                moveItem.SetInt("HeadID", moveHead.GetInt("HeadID"));
+                if (!isProccessOrderless)
+                {
+                    moveItem.SetString("LinkKey", element.acKey);
+                    moveItem.SetInt("LinkNo", element.anNo);
+                }
+                else
+                {
+                    moveItem.SetString("LinkKey", string.Empty);
+                    moveItem.SetInt("LinkNo", 0);
+                }
 
-                    if(!isProccessOrderless)
+                moveItem.SetString("Ident", openIdent.GetString("Code"));
+                moveItem.SetString("SSCC", tbSSCC.Text.Trim());
+                moveItem.SetString("SerialNo", tbSerialNum.Text.Trim());
+                moveItem.SetDouble("Packing", Convert.ToDouble(tbPacking.Text.Trim()));
+                moveItem.SetDouble("Factor", 1);
+                moveItem.SetDouble("Qty", Convert.ToDouble(tbPacking.Text.Trim()));
+                moveItem.SetInt("Clerk", Services.UserID());
+                moveItem.SetString("Location", tbLocation.Text.Trim());
+                moveItem.SetString("Palette", "1");
+                string error;
+                moveItem = Services.SetObject("mi", moveItem, out error);
+
+                if (moveItem != null && error == string.Empty)
+                {
+
+                    serialOverflowQuantity = Convert.ToDouble(tbPacking.Text.Trim());
+                    stock -= serialOverflowQuantity;
+
+
+                    lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + stock.ToString(CommonData.GetQtyPicture()) + " )";
+
+
+                    // Check to see if the maximum is already reached.
+                    if (stock <= 0)
                     {
-                        element = data.ElementAt(0);
-                    }
-                    // This solves the problem of updating the item. The problem occurs because of the old way of passing data.
-                    moveItem = new NameValueObject("MoveItem");                   
-                    moveItem.SetInt("HeadID", moveHead.GetInt("HeadID"));
-                    if (!isProccessOrderless)
-                    {
-                        moveItem.SetString("LinkKey", element.acKey);
-                        moveItem.SetInt("LinkNo", element.anNo);
-                    }
-                    else
-                    {
-                        moveItem.SetString("LinkKey", string.Empty);
-                        moveItem.SetInt("LinkNo", 0);
-                    }
-
-                    moveItem.SetString("Ident", openIdent.GetString("Code"));
-                    moveItem.SetString("SSCC", tbSSCC.Text.Trim());
-                    moveItem.SetString("SerialNo", tbSerialNum.Text.Trim());
-                    moveItem.SetDouble("Packing", Convert.ToDouble(tbPacking.Text.Trim()));
-                    moveItem.SetDouble("Factor", 1);
-                    moveItem.SetDouble("Qty", Convert.ToDouble(tbPacking.Text.Trim()));
-                    moveItem.SetInt("Clerk", Services.UserID());
-                    moveItem.SetString("Location", tbLocation.Text.Trim());
-                    moveItem.SetString("Palette", "1");
-                    string error;
-                    moveItem = Services.SetObject("mi", moveItem, out error);
-
-                    if (moveItem != null && error == string.Empty)
-                    {
-
-                        serialOverflowQuantity = Convert.ToDouble(tbPacking.Text.Trim());
-                        stock -= serialOverflowQuantity;
-
-               
-                        lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + stock.ToString(CommonData.GetQtyPicture()) + " )";
-                   
-
-                        // Check to see if the maximum is already reached.
-                        if(stock <= 0)
+                        if (!isProccessOrderless)
                         {
-                            if (!isProccessOrderless)
+                            if (Base.Store.modeIssuing == 2)
                             {
-                                if (Base.Store.modeIssuing == 2)
-                                {
-                                    StartActivity(typeof(IssuedGoodsIdentEntryWithTrail));
-                                    Finish();
-                                }
-                                else if (Base.Store.modeIssuing == 1)
-                                {
-                                    StartActivity(typeof(IssuedGoodsIdentEntry));
-                                    Finish();
-                                }
-                            } else
+                                StartActivity(typeof(IssuedGoodsIdentEntryWithTrail));
+                                Finish();
+                            }
+                            else if (Base.Store.modeIssuing == 1)
                             {
                                 StartActivity(typeof(IssuedGoodsIdentEntry));
                                 Finish();
                             }
                         }
-                        
-                   
-                        // Succesfull position creation
-                        if (ssccRow.Visibility == ViewStates.Visible)
+                        else
                         {
-                            tbSSCC.Text = string.Empty;
-                            tbSSCC.RequestFocus();
-                        }
-
-                        if (serialRow.Visibility == ViewStates.Visible)
-                        {
-                            tbSerialNum.Text = string.Empty;
-
-                            if (ssccRow.Visibility == ViewStates.Gone)
-                            {
-                                tbSerialNum.RequestFocus();
-                            }
-                        }
-
-                        tbPacking.Text = string.Empty;
-
-                        if (!isProccessOrderless)
-                        {
-                            createPositionAllowed = false;
-                            await GetConnectedPositions(element.acKey, element.anNo, element.acIdent);
+                            StartActivity(typeof(IssuedGoodsIdentEntry));
+                            Finish();
                         }
                     }
+
+
+                    // Succesfull position creation
+                    if (ssccRow.Visibility == ViewStates.Visible)
+                    {
+                        tbSSCC.Text = string.Empty;
+                        tbSSCC.RequestFocus();
+                    }
+
+                    if (serialRow.Visibility == ViewStates.Visible)
+                    {
+                        tbSerialNum.Text = string.Empty;
+
+                        if (ssccRow.Visibility == ViewStates.Gone)
+                        {
+                            tbSerialNum.RequestFocus();
+                        }
+                    }
+
+                    tbPacking.Text = string.Empty;
+
+                    if (!isProccessOrderless)
+                    {
+                        createPositionAllowed = false;
+                        await GetConnectedPositions(element.acKey, element.anNo, element.acIdent);
+                    }
                 }
-                else
-                {
-                    return;
-                }      
+            }
+            else
+            {
+                return;
+            }
         }
 
         private void FilterData()
@@ -901,7 +883,7 @@ namespace WMS
                 else
                 {
                     tbPacking.Text = element.anQty.ToString();
-                    lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + quantity.ToString(CommonData.GetQtyPicture())  + " )";
+                    lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + quantity.ToString(CommonData.GetQtyPicture()) + " )";
                 }
                 if (serialRow.Visibility == ViewStates.Visible)
                 {
@@ -912,7 +894,8 @@ namespace WMS
                 createPositionAllowed = true;
 
 
-                tbPacking.PostDelayed(() => {
+                tbPacking.PostDelayed(() =>
+                {
                     tbPacking.RequestFocus();
                     tbPacking.SetSelection(0, tbPacking.Text.Length);
                 }, 100); // Delay in milliseconds
@@ -1061,8 +1044,8 @@ namespace WMS
                             acSSCC = row.StringValue("acSSCC"),
                             anQty = row.DoubleValue("anQty"),
                             aclocation = row.StringValue("aclocation"),
-                            anNo = (int) (row.IntValue("anNo") ?? -1),
-                            acKey = row.StringValue("acKey"),    
+                            anNo = (int)(row.IntValue("anNo") ?? -1),
+                            acKey = row.StringValue("acKey"),
                             acIdent = row.StringValue("acIdent"),
                             anPackQty = row.DoubleValue("anPackQty") ?? -1
                         });
@@ -1092,7 +1075,7 @@ namespace WMS
 
         private async void SetUpForm()
         {
-            if(App.Settings.tablet)
+            if (App.Settings.tablet)
             {
                 showPictureIdent(openIdent.GetString("Code"));
             }
@@ -1178,7 +1161,8 @@ namespace WMS
                             lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + quantity.ToString(CommonData.GetQtyPicture()) + " )";
                             stock = quantity;
                             tbPacking.Text = packaging.ToString();
-                        } else
+                        }
+                        else
                         {
                             quantity = Double.Parse(receivedTrail.Qty);
                             lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + quantity.ToString(CommonData.GetQtyPicture()) + " )";
@@ -1219,14 +1203,14 @@ namespace WMS
                         // This flow is for idents.
 
                         var order = Base.Store.OpenOrder;
-                        
+
                         if (order != null)
                         {
                             packaging = order.Packaging ?? 0;
                             quantity = order.Quantity ?? 0;
 
                             if (order.Packaging != -1 && packaging <= quantity)
-                            {                         
+                            {
                                 lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + quantity.ToString(CommonData.GetQtyPicture()) + " )";
                                 stock = quantity;
                             }
@@ -1273,7 +1257,7 @@ namespace WMS
 
             parameters.Add(new Services.Parameter { Name = "acWarehouse", Type = "String", Value = moveHead.GetString("Wharehouse") });
             parameters.Add(new Services.Parameter { Name = "acIdent", Type = "String", Value = ident });
-            
+
             var stocks = await AsyncServices.AsyncServices.GetObjectListBySqlAsync(sql, parameters);
 
             if (stocks.Success && stocks.Rows.Count > 0)
@@ -1296,10 +1280,12 @@ namespace WMS
                         {
                             type = Showing.SSCC;
 
-                        } else if (ssccRow.Visibility == ViewStates.Gone && serialRow.Visibility == ViewStates.Visible)
+                        }
+                        else if (ssccRow.Visibility == ViewStates.Gone && serialRow.Visibility == ViewStates.Visible)
                         {
                             type = Showing.Serial;
-                        } else
+                        }
+                        else
                         {
                             type = Showing.Ordinary;
                         }
@@ -1307,7 +1293,7 @@ namespace WMS
                         item.ConfigurationMethod(type, this);
                         data.Add(item);
                     }
-                  
+
                 }
 
             }
@@ -1361,7 +1347,8 @@ namespace WMS
                     }
 
                 }
-            } else
+            }
+            else
             {
                 e.Handled = false;
             }

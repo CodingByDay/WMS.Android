@@ -1,21 +1,10 @@
-﻿using Stream = Android.Media.Stream;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
+﻿using Android.Content;
 using Android.Content.PM;
 using Android.Net;
-using Android.OS;
-using Android.Runtime;
 using Android.Views;
-using Android.Widget;
-
-using WMS.App;
 using TrendNET.WMS.Device.Services;
-
-using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS
+using WMS.App;
+namespace WMS
 {
     [Activity(Label = "PrintingMenu")]
     public class PrintingMenu : CustomBaseActivity
@@ -28,7 +17,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
-            ChangeTheOrientation(); 
+            ChangeTheOrientation();
             base.OnCreate(savedInstanceState);
             SetTheme(Resource.Style.AppTheme_NoActionBar);
 
@@ -72,7 +61,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
         {
             if (IsOnline())
             {
-                
+
                 try
                 {
                     LoaderManifest.LoaderManifestLoopStop(this);
@@ -87,8 +76,8 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 LoaderManifest.LoaderManifestLoop(this);
             }
         }
-      
-       
+
+
         private void ChangeTheOrientation()
         {
             if (App.Settings.tablet == true)
@@ -108,21 +97,21 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             switch (keyCode)
             {
                 // In smartphone
-                case Keycode.F2:              
-                        Button1_Click(this, null);                    
+                case Keycode.F2:
+                    Button1_Click(this, null);
                     break;
                 // Return true;
 
                 case Keycode.F3:
-                    Button_Click(this, null);          
+                    Button_Click(this, null);
                     break;
 
 
                 case Keycode.F4:
-                    Button1_Click(this, null);              
+                    Button1_Click(this, null);
                     break;
 
-            
+
                 case Keycode.F8:
                     Button6_Click(this, null);
                     break;
@@ -134,16 +123,16 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
         private void Button6_Click(object sender, EventArgs e)
         {
             StartActivity(typeof(MainMenu));
-            HelpfulMethods.clearTheStack(this);      
+            HelpfulMethods.clearTheStack(this);
         }
 
 
-   
+
 
         private void Button_Click(object sender, EventArgs e)
         {
             StartActivity(typeof(PrintingSSCCCodes));
-            HelpfulMethods.clearTheStack(this);       
+            HelpfulMethods.clearTheStack(this);
         }
 
         private void Button1_Click(object sender, EventArgs e)

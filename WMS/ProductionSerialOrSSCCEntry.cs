@@ -1,33 +1,19 @@
-﻿using Stream = Android.Media.Stream;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Android.App;
-using Android.Content;
+﻿using Android.Content;
 using Android.Content.PM;
+using Android.Graphics;
+using Android.Graphics.Drawables;
 using Android.Media;
 using Android.Net;
-using Android.OS;
-using Android.Runtime;
 using Android.Views;
-using Android.Widget;
 using BarCode2D_Receiver;
-
-using WMS.App;
+using Com.Jsibbold.Zoomage;
 using TrendNET.WMS.Core.Data;
 using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
+using WMS.App;
 using static Android.App.ActionBar;
-using WebApp = TrendNET.WMS.Device.Services.WebApp;
-
-using AndroidX.AppCompat.App;
 using AlertDialog = Android.App.AlertDialog;
-using Android.Graphics.Drawables;
-using Android.Graphics;
-using Android.Mtp;
-using Com.Jsibbold.Zoomage;
-using System.Data.Common;
+using WebApp = TrendNET.WMS.Device.Services.WebApp;
 namespace WMS
 {
     [Activity(Label = "ProductionSerialOrSSCCEntry", ScreenOrientation = ScreenOrientation.Portrait)]
@@ -57,7 +43,7 @@ namespace WMS
         {
             switch (keyCode)
             {
-                
+
                 case Keycode.F2:
                     if (btSaveOrUpdate.Enabled == true)
                     {
@@ -93,29 +79,33 @@ namespace WMS
         {
 
             if (tbSSCC.HasFocus)
-            {if (barcode != "Scan fail")
+            {
+                if (barcode != "Scan fail")
                 {
                     tbSSCC.Text = "";
                     tbSerialNum.Text = "";
                     tbPacking.Text = "";
                     tbLocation.Text = "";
                     tbIdent.Text = "";
-                    
+
                     tbSSCC.Text = barcode;
                     tbSerialNum.RequestFocus();
-                    
+
                 }
-            } else if (tbSerialNum.HasFocus)
-            {if (barcode != "Scan fail")
+            }
+            else if (tbSerialNum.HasFocus)
+            {
+                if (barcode != "Scan fail")
                 {
-                    
+
                     tbSerialNum.Text = barcode;
                     ProcessSerialNum();
                     tbLocation.RequestFocus();
                 }
-            } else if (tbLocation.HasFocus)
-            {      
-                
+            }
+            else if (tbLocation.HasFocus)
+            {
+
                 tbLocation.Text = barcode;
             }
         }
@@ -229,7 +219,7 @@ namespace WMS
 
                     tbSSCC.RequestFocus();
                 });
-               
+
                 return false;
             }
 
@@ -244,7 +234,7 @@ namespace WMS
                         DialogHelper.ShowDialogError(this, this, SuccessMessage);
                         tbSerialNum.RequestFocus();
                     });
-                   
+
                     return false;
                 }
             }
@@ -257,14 +247,14 @@ namespace WMS
                     DialogHelper.ShowDialogError(this, this, SuccessMessage);
                     tbLocation.RequestFocus();
                 });
-             
+
                 return false;
             }
 
-            string error;       
+            string error;
             try
             {
-             
+
 
                 if (tbSSCC.Enabled)
                 {
@@ -276,8 +266,8 @@ namespace WMS
                             string SuccessMessage = string.Format($"{Resources.GetString(Resource.String.s213)}" + error);
                             DialogHelper.ShowDialogError(this, this, SuccessMessage);
                         });
-                     
-                        
+
+
                         return false;
                     }
 
@@ -288,8 +278,8 @@ namespace WMS
                             string SuccessMessage = string.Format($"{Resources.GetString(Resource.String.s315)}");
                             DialogHelper.ShowDialogError(this, this, SuccessMessage);
                         });
-         
-                      
+
+
                         return false;
                     }
                 }
@@ -300,7 +290,7 @@ namespace WMS
                         string SuccessMessage = string.Format($"{Resources.GetString(Resource.String.s270)}");
                         DialogHelper.ShowDialogError(this, this, SuccessMessage);
                     });
-         
+
                     return false;
                 }
                 else
@@ -316,8 +306,8 @@ namespace WMS
                                 string SuccessMessage = string.Format($"{Resources.GetString(Resource.String.s298)}");
                                 DialogHelper.ShowDialogError(this, this, SuccessMessage);
                             });
-                         
-                     
+
+
                             return false;
                         }
 
@@ -332,7 +322,7 @@ namespace WMS
                                     DialogHelper.ShowDialogError(this, this, SuccessMessage);
                                     tbPacking.RequestFocus();
                                 });
-                          
+
                                 return false;
                             }
                         }
@@ -346,12 +336,12 @@ namespace WMS
 
                             tbPacking.RequestFocus();
                         });
-                        
+
                         return false;
                     }
                 }
 
-          
+
 
                 if (moveItem == null) { moveItem = new NameValueObject("MoveItem"); }
                 moveItem.SetInt("HeadID", moveHead.GetInt("HeadID"));
@@ -374,8 +364,8 @@ namespace WMS
                         string SuccessMessage = string.Format($"{Resources.GetString(Resource.String.s213)}" + error);
                         DialogHelper.ShowDialogError(this, this, SuccessMessage);
                     });
-               
-                   
+
+
                     return false;
                 }
                 else
@@ -392,7 +382,7 @@ namespace WMS
 
             }
         }
-      
+
         private void fillSugestedLocation(string warehouse)
         {
             var location = CommonData.GetSetting("DefaultProductionLocation");
@@ -414,11 +404,11 @@ namespace WMS
                 }
             }
             GetWorkOrderDefaultQty();
-        } 
+        }
         private bool CheckWorkOrderOpenQty()
         {
             if (checkWorkOrderOpenQty == null)
-            {       
+            {
                 try
                 {
                     string error;
@@ -437,10 +427,10 @@ namespace WMS
         }
         private string GetNextSerialNum()
         {
-            
+
             try
             {
-            
+
                 string error;
                 var ident = openWorkOrder.GetString("Ident");
                 var workOrder = openWorkOrder.GetString("Key");
@@ -524,14 +514,15 @@ namespace WMS
                 var key = moveHead.GetString("LinkKey");
                 string error;
                 openWorkOrder = Services.GetObject("wo", key, out error);
-                if (openWorkOrder == null) {
+                if (openWorkOrder == null)
+                {
                     StartActivity(typeof(MainMenu));
                 }
                 lbQty.Text = $"{Resources.GetString(Resource.String.s40)} (" + openWorkOrder.GetDouble("OpenQty").ToString(CommonData.GetQtyPicture()) + ")";
             }
             catch (Exception err)
             {
-                SentrySdk.CaptureException(err);             
+                SentrySdk.CaptureException(err);
             }
 
             var ident = CommonData.LoadIdent(openWorkOrder.GetString("Ident"));
@@ -585,7 +576,7 @@ namespace WMS
 
             }
 
-     
+
             if (tbSSCC.Enabled && (CommonData.GetSetting("AutoCreateSSCCProduction") == "1"))
             {
 
@@ -609,7 +600,7 @@ namespace WMS
             return cm.ActiveNetworkInfo == null ? false : cm.ActiveNetworkInfo.IsConnected;
 
         }
-     
+
         private void showPictureIdent(string ident)
         {
             try
@@ -645,14 +636,14 @@ namespace WMS
             image.SetMinimumHeight(500);
             image.SetMinimumWidth(800);
             image.SetImageDrawable(d);
-            
+
         }
 
         private void OnNetworkStatusChanged(object sender, EventArgs e)
         {
             if (IsOnline())
             {
-                
+
                 try
                 {
                     LoaderManifest.LoaderManifestLoopStop(this);
@@ -674,7 +665,7 @@ namespace WMS
         {
             var warehouse = moveHead.GetString("Wharehouse");
 
-            fillSugestedLocation(warehouse); 
+            fillSugestedLocation(warehouse);
         }
 
         private void color()
@@ -686,7 +677,7 @@ namespace WMS
         }
 
 
-            private void Button5_Click(object sender, EventArgs e)
+        private void Button5_Click(object sender, EventArgs e)
         {
             StartActivity(typeof(MainMenu));
             HelpfulMethods.clearTheStack(this);
@@ -805,7 +796,7 @@ namespace WMS
                     }
                 }
             });
-           
+
         }
         private async void Button4_Click(object sender, EventArgs e)
         {
@@ -823,7 +814,7 @@ namespace WMS
             btnNoConfirm = popupDialogConfirm.FindViewById<Button>(Resource.Id.btnNo);
             btnYesConfirm.Click += BtnYesConfirm_Click;
             btnNoConfirm.Click += BtnNoConfirm_Click;
-         
+
         }
 
         private void BtnNoConfirm_Click(object sender, EventArgs e)

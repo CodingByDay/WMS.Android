@@ -1,25 +1,11 @@
-﻿using Android.App;
-using Android.Content;
+﻿using Android.Content;
+using Android.Content.PM;
 using Android.Media;
 using Android.Net;
-using Android.OS;
-using Android.Runtime;
 using Android.Views;
-using Android.Widget;
-using BarCode2D_Receiver;
-
-using WMS.App;
-using Stream = Android.Media.Stream;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TrendNET.WMS.Device.Services;
-
-using AndroidX.AppCompat.App;
+using WMS.App;
 using AlertDialog = Android.App.AlertDialog;
-using Android.Content.PM;
-using Com.Rscja.Deviceapi;
 namespace WMS
 {
     [Activity(Label = "ShippingPallet", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
@@ -42,18 +28,20 @@ namespace WMS
             {
                 if (barcode != "Scan fail")
                 {
-                    
+
                     pallet.Text = barcode;
-                } else
+                }
+                else
                 {
                     pallet.Text = "";
                 }
 
-            } else if (machine.HasFocus)
+            }
+            else if (machine.HasFocus)
             {
                 if (barcode != "Scan fail")
                 {
-                    
+
                     machine.Text = barcode;
                 }
                 else
@@ -114,7 +102,7 @@ namespace WMS
         {
             if (IsOnline())
             {
-                
+
                 try
                 {
                     LoaderManifest.LoaderManifestLoopStop(this);
@@ -159,7 +147,7 @@ namespace WMS
 
                     RunOnUiThread(() =>
                     {
-                     
+
 
                         progress = new ProgressDialogClass();
 
@@ -295,4 +283,3 @@ namespace WMS
         }
     }
 }
-    

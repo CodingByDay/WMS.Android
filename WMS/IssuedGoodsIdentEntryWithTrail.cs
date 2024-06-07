@@ -1,37 +1,18 @@
-﻿using Stream = Android.Media.Stream;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using Android.App;
-using Android.Content;
+﻿using Android.Content;
+using Android.Content.PM;
 using Android.Media;
 using Android.Net;
-using Android.OS;
-using Android.Runtime;
 using Android.Text;
-using Android.Text.Util;
 using Android.Views;
-using Android.Widget;
 using BarCode2D_Receiver;
-using Java.Lang;
-
-
-using Microsoft.SqlServer.Server;
 using Newtonsoft.Json;
-using WMS.App;
-using AlertDialog = Android.App.AlertDialog;
 using TrendNET.WMS.Core.Data;
 using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
+using WMS.App;
 using static BluetoothService;
-using static EventBluetooth;
+using AlertDialog = Android.App.AlertDialog;
 using Exception = System.Exception;
-using AndroidX.AppCompat.App;
-using Android.Content.PM;
-using System.Data.Common;
-using WMS.External;
 
 namespace WMS
 {
@@ -111,11 +92,11 @@ namespace WMS
                 {
                     if (tbIdentFilter.HasFocus)
                     {
-                        
+
                         if (HelperMethods.is2D(barcode))
                         {
                             Parser2DCode parser2DCode = new Parser2DCode(barcode.Trim());
-                            
+
                             chooseIdent(parser2DCode);
                         }
                         else if (!CheckIdent(barcode) && barcode.Length > 17 && barcode.Contains("400"))
@@ -142,7 +123,7 @@ namespace WMS
                     }
                     else if (tbLocationFilter.HasFocus)
                     {
-                        
+
                         tbLocationFilter.Text = barcode;
                         adapterObj.Filter(trails, false, tbLocationFilter.Text, false);
                         if (adapterObj.returnNumberOfItems() == 0)
@@ -152,7 +133,8 @@ namespace WMS
                     }
                 }
                 listener.updateData(adapterObj.returnData());
-            } catch (Exception err)
+            }
+            catch (Exception err)
             {
                 SentrySdk.CaptureException(err);
                 return;
@@ -197,7 +179,8 @@ namespace WMS
                 convertedIdent = openIdent.GetString("Code");
                 ident = convertedIdent;
 
-            } else
+            }
+            else
             {
                 return;
             }
@@ -210,7 +193,8 @@ namespace WMS
                 adapterObj.Filter(trails, true, string.Empty, false);
                 return;
 
-            } else if (numberOfHits == 1)
+            }
+            else if (numberOfHits == 1)
             {
                 Trail trail = adapterObj.returnData().ElementAt(0);
 
@@ -231,7 +215,8 @@ namespace WMS
                     this.Finish();
                 }
 
-            } else if (numberOfHits > 1)
+            }
+            else if (numberOfHits > 1)
             {
                 return;
             }
@@ -285,7 +270,7 @@ namespace WMS
 
 
 
-      
+
 
         private async Task FillDisplayedOrderInfo()
         {
@@ -310,7 +295,8 @@ namespace WMS
 
                             password = openOrder.GetString("Key");
 
-                        } else if (moveHead != null)
+                        }
+                        else if (moveHead != null)
                         {
                             RunOnUiThread(() =>
                             {
@@ -330,9 +316,9 @@ namespace WMS
                         // This change is made because serial number and sscc are not shown and can result in many duplicate entries. 13.05.2024 Janko Jovičić
                         string sql = $"SELECT DISTINCT acIdent, acName, anQty, anNo, acKey, acSubject, aclocation, anPackQty FROM uWMSOrderItemByKeyOut WHERE acKey = @acKey;";
 
-                        result = await AsyncServices.AsyncServices.GetObjectListBySqlAsync(sql, parameters); 
-                        
-                        if(!result.Success)
+                        result = await AsyncServices.AsyncServices.GetObjectListBySqlAsync(sql, parameters);
+
+                        if (!result.Success)
                         {
                             RunOnUiThread(() =>
                             {
@@ -358,7 +344,8 @@ namespace WMS
                         {
                             trails.Clear();
                             int counter = 0;
-                            foreach(var row in result.Rows) {
+                            foreach (var row in result.Rows)
+                            {
                                 var ident = row.StringValue("acIdent");
                                 var location = row.StringValue("aclocation");
                                 var name = row.StringValue("acName");
@@ -374,15 +361,15 @@ namespace WMS
                                     lvi.Location = location;
                                     lvi.Qty = string.Format("{0:###,##0.00}", row.DoubleValue("anQty"));
                                     lvi.originalIndex = counter;
-                                    lvi.No = (int) row.IntValue("anNo");
+                                    lvi.No = (int)row.IntValue("anNo");
                                     lvi.Name = name;
                                     lvi.Packaging = row.DoubleValue("anPackQty") ?? -1;
-                                    counter ++;
+                                    counter++;
                                     unfiltered.Add(lvi);
-       
-                                }                                                            
+
+                                }
                             }
-                        } 
+                        }
 
 
                         RunOnUiThread(() =>
@@ -393,9 +380,9 @@ namespace WMS
                             adapterObj.Filter(trails, true, string.Empty, false);
                             listener = new MyOnItemLongClickListener(this, adapterObj.returnData(), adapterObj);
                             ivTrail.OnItemLongClickListener = listener;
-                        
+
                             // Bluetooth
-                           
+
                             /* try
                              * 
                             {
@@ -411,10 +398,11 @@ namespace WMS
 
                         });
                     }
-                    catch(Exception error) {
+                    catch (Exception error)
+                    {
                         var e = error;
                         SentrySdk.CaptureException(e);
-                    }               
+                    }
                 }
                 catch (Exception error)
                 {
@@ -469,7 +457,7 @@ namespace WMS
 
                         result = await AsyncServices.AsyncServices.GetObjectListBySqlAsync(sql, parameters);
 
-                        if(!result.Success)
+                        if (!result.Success)
                         {
                             RunOnUiThread(() =>
                             {
@@ -508,8 +496,8 @@ namespace WMS
                                     lvi.Key = key;
                                     lvi.Ident = ident;
 
-            
-                                    if(location > 1)
+
+                                    if (location > 1)
                                     {
                                         lvi.Location = Resources.GetString(Resource.String.s346);
                                     }
@@ -523,10 +511,10 @@ namespace WMS
                                     {
                                         lvi.Location = Resources.GetString(Resource.String.s345);
                                     }
-                                    
+
                                     lvi.Qty = string.Format("{0:###,##0.00}", row.DoubleValue("anQty"));
                                     lvi.originalIndex = counter;
-                                    lvi.No = (int) row.IntValue("anNo");
+                                    lvi.No = (int)row.IntValue("anNo");
                                     lvi.Name = name;
                                     lvi.Packaging = row.DoubleValue("anPackQty") ?? -1;
                                     counter++;
@@ -596,7 +584,7 @@ namespace WMS
                 base.RequestedOrientation = ScreenOrientation.Portrait;
                 base.SetContentView(Resource.Layout.IssuedGoodsIdentEntryWithTrail);
             }
-            
+
             AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
             var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
             _customToolbar.SetNavigationIcon(App.Settings.RootURL + "/Services/Logo");
@@ -666,7 +654,7 @@ namespace WMS
                 Intent serviceIntent = new Intent(this, typeof(BluetoothService));
                 BindService(serviceIntent, serviceConnection, Bind.AutoCreate);
             }
-            tbIdentFilter.RequestFocus();      
+            tbIdentFilter.RequestFocus();
         }
 
 
@@ -682,7 +670,8 @@ namespace WMS
                 data_ = data;
             }
 
-            public MyOnItemLongClickListener(Context context, List<Trail> data, TrailAdapter adapter) {
+            public MyOnItemLongClickListener(Context context, List<Trail> data, TrailAdapter adapter)
+            {
                 context_ = context;
                 data_ = data;
                 adapter_ = adapter;
@@ -713,7 +702,8 @@ namespace WMS
             {
                 adapterObj.Filter(trails, false, tbLocationFilter.Text, false);
                 listener.updateData(adapterObj.returnData());
-            } catch
+            }
+            catch
             {
                 return;
             }
@@ -725,7 +715,8 @@ namespace WMS
             {
                 adapterObj.Filter(trails, true, tbIdentFilter.Text, false);
                 listener.updateData(adapterObj.returnData());
-            } catch
+            }
+            catch
             {
                 return;
             }
@@ -735,7 +726,8 @@ namespace WMS
             try
             {
                 activityBluetoothService = service;
-            } catch
+            }
+            catch
             {
                 return;
             }
@@ -781,7 +773,7 @@ namespace WMS
         private void OnNetworkStatusChanged(object sender, EventArgs e)
         {
             if (IsOnline())
-            {               
+            {
                 try
                 {
                     LoaderManifest.LoaderManifestLoopStop(this);
@@ -799,7 +791,7 @@ namespace WMS
 
         private void TbLocationFilter_FocusChange(object sender, View.FocusChangeEventArgs e)
         {
-           
+
         }
 
         private void color()
@@ -889,14 +881,15 @@ namespace WMS
                         Finish();
                     }
                 }
-            } catch(Exception err)
+            }
+            catch (Exception err)
             {
                 SentrySdk.CaptureException(err);
                 StartActivity(typeof(MainMenu));
             }
         }
 
-  
+
 
         private void IvTrail_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
         {
@@ -908,7 +901,8 @@ namespace WMS
         }
 
         private bool SaveMoveHeadObjectMode(Trail trail)
-        {   if(trail == null) { return false; }
+        {
+            if (trail == null) { return false; }
             var obj = trail;
             var ident = obj.Ident;
             var location = obj.Location;
@@ -928,7 +922,8 @@ namespace WMS
                     return false;
                 }
                 InUseObjects.Set("OpenIdent", openIdent);
-            } catch (Exception err)
+            }
+            catch (Exception err)
             {
                 SentrySdk.CaptureException(err);
             }
@@ -989,10 +984,10 @@ namespace WMS
             extraData.SetDouble("Qty", qty);
             InUseObjects.Set("ExtraData", extraData);
             string error;
-      
+
             if (!moveHead.GetBool("Saved"))
             {
-                
+
                 try
                 {
                     var test = openOrder.GetString("No");
@@ -1033,8 +1028,8 @@ namespace WMS
                 return true;
             }
         }
-    
-      
+
+
 
     }
 }

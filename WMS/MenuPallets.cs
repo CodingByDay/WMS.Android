@@ -1,20 +1,7 @@
-﻿using Android.App;
-using Android.Content;
-using Android.Net;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-
-using WMS.App;
-using Stream = Android.Media.Stream;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using AndroidX.AppCompat.App;
-using AlertDialog = Android.App.AlertDialog;
+﻿using Android.Content;
 using Android.Content.PM;
+using Android.Net;
+using WMS.App;
 namespace WMS
 {
     [Activity(Label = "MenuPallets")]
@@ -61,7 +48,7 @@ namespace WMS
         {
             if (IsOnline())
             {
-                
+
                 try
                 {
                     LoaderManifest.LoaderManifestLoopStop(this);

@@ -1,36 +1,18 @@
-﻿using Stream = Android.Media.Stream;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Android.App;
-using Android.Content;
+﻿using Android.Content;
 using Android.Content.PM;
+using Android.Graphics;
+using Android.Graphics.Drawables;
 using Android.Media;
 using Android.Net;
-using Android.OS;
-using Android.Runtime;
 using Android.Views;
-using Android.Widget;
 using BarCode2D_Receiver;
-
-
-using WMS.App;
 using TrendNET.WMS.Core.Data;
 using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
+using WMS.App;
 using static Android.App.ActionBar;
-using WebApp = TrendNET.WMS.Device.Services.WebApp;
-
-using AndroidX.AppCompat.App;
 using AlertDialog = Android.App.AlertDialog;
-using Android.Graphics.Drawables;
-using Android.Graphics;
-using Newtonsoft.Json;
-using System;
-using Java.IO;
-using WMS.External;
-using System.Data.Common;
+using WebApp = TrendNET.WMS.Device.Services.WebApp;
 namespace WMS
 {
     [Activity(Label = "TakeOverSerialOrSSCCEntry", ScreenOrientation = ScreenOrientation.Portrait)]
@@ -132,7 +114,7 @@ namespace WMS
             CheckIfApplicationStopingException();
 
             // Color the fields that can be scanned
-            ColorFields();            
+            ColorFields();
 
             // Stop the loader
             LoaderManifest.LoaderManifestLoopStop(this);
@@ -143,7 +125,7 @@ namespace WMS
             SetUpForm();
 
 
-            if(App.Settings.tablet)
+            if (App.Settings.tablet)
             {
                 FillTheList();
             }
@@ -212,16 +194,16 @@ namespace WMS
             try
             {
 
-                positions = await AsyncServices.AsyncServices.GetObjectListAsync("mi",  moveHead.GetInt("HeadID").ToString());
+                positions = await AsyncServices.AsyncServices.GetObjectListAsync("mi", moveHead.GetInt("HeadID").ToString());
                 InUseObjects.Set("TakeOverEnteredPositions", positions);
-                    
+
                 if (positions == null)
                 {
-                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s213)}" , ToastLength.Long).Show();
+                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s213)}", ToastLength.Long).Show();
 
                     return;
                 }
-                
+
             }
             finally
             {
@@ -237,7 +219,8 @@ namespace WMS
             {
                 btSaveOrUpdate.Visibility = ViewStates.Gone;
                 btCreate.Text = $"{Resources.GetString(Resource.String.s290)}";
-            } else if(Base.Store.code2D!=null)
+            }
+            else if (Base.Store.code2D != null)
             {
                 btSaveOrUpdate.Visibility = ViewStates.Gone;
                 // 2d code reading process.
@@ -295,28 +278,30 @@ namespace WMS
                 quantity = order.Quantity ?? 0;
                 if (order != null)
                 {
-                    if(order.Packaging!=-1)
+                    if (order.Packaging != -1)
                     {
                         lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + quantity.ToString(CommonData.GetQtyPicture()) + " )";
                         tbPacking.Text = packaging.ToString();
                         stock = quantity;
-                    } else
+                    }
+                    else
                     {
                         quantity = order.Quantity ?? 0;
                         lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + quantity.ToString(CommonData.GetQtyPicture()) + " )";
                         tbPacking.Text = quantity.ToString();
                         stock = quantity;
                     }
-             
+
                     GetConnectedPositions(order.Order, order.Position ?? -1, order.Ident);
                     tbLocation.Text = CommonData.GetSetting("DefaultPaletteLocation");
 
                     tbPacking.RequestFocus();
                     tbPacking.SelectAll();
 
-                } else if (code2d != null)
+                }
+                else if (code2d != null)
                 {
-                   
+
                     tbSerialNum.Text = code2d.charge;
                     qtyCheck = 0;
                     double result;
@@ -339,13 +324,13 @@ namespace WMS
 
                     tbPacking.RequestFocus();
                     tbPacking.SelectAll();
-                }                 
+                }
                 else
                 {
                     // This is the orderless process.
                     qtyCheck = 10000000;
                     tbLocation.Text = CommonData.GetSetting("DefaultPaletteLocation");
-                    lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + Resources.GetString(Resource.String.s335) + " )";                   
+                    lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + Resources.GetString(Resource.String.s335) + " )";
                     stock = qtyCheck;
                     tbPacking.RequestFocus();
                     tbPacking.SelectAll();
@@ -360,7 +345,7 @@ namespace WMS
                 ssccRow.Visibility = ViewStates.Gone;
                 serialRow.Visibility = ViewStates.Gone;
             }
-   
+
         }
 
         /// </summary>
@@ -434,7 +419,7 @@ namespace WMS
             else
             {
                 // Destroy the activity
-               
+
                 StartActivity(typeof(MainMenu));
                 Finish();
             }
@@ -467,72 +452,72 @@ namespace WMS
 
         private async Task FinishMethod()
         {
-            await Task.Run( async () =>
+            await Task.Run(async () =>
             {
-                    RunOnUiThread(() =>
-                    {
-                        progress = new ProgressDialogClass();
-                        progress.ShowDialogSync(this, $"{Resources.GetString(Resource.String.s262)}");
-                    });
+                RunOnUiThread(() =>
+                {
+                    progress = new ProgressDialogClass();
+                    progress.ShowDialogSync(this, $"{Resources.GetString(Resource.String.s262)}");
+                });
 
-                    try
+                try
+                {
+                    var headID = moveHead.GetInt("HeadID");
+                    string result;
+                    if (WebApp.Get("mode=finish&stock=add&print=" + Services.DeviceUser() + "&id=" + headID.ToString(), out result))
                     {
-                        var headID = moveHead.GetInt("HeadID");
-                        string result;
-                        if (WebApp.Get("mode=finish&stock=add&print=" + Services.DeviceUser() + "&id=" + headID.ToString(), out result))
+                        if (result.StartsWith("OK!"))
                         {
-                            if (result.StartsWith("OK!"))
+                            RunOnUiThread(() =>
                             {
-                                RunOnUiThread(() =>
+                                progress.StopDialogSync();
+                                var id = result.Split('+')[1];
+                                AlertDialog.Builder alert = new AlertDialog.Builder(this);
+                                alert.SetTitle($"{Resources.GetString(Resource.String.s263)}");
+                                alert.SetMessage($"{Resources.GetString(Resource.String.s264)}" + id);
+                                alert.SetPositiveButton("Ok", (senderAlert, args) =>
                                 {
-                                    progress.StopDialogSync();
-                                    var id = result.Split('+')[1];
-                                    AlertDialog.Builder alert = new AlertDialog.Builder(this);
-                                    alert.SetTitle($"{Resources.GetString(Resource.String.s263)}");
-                                    alert.SetMessage($"{Resources.GetString(Resource.String.s264)}" + id);
-                                    alert.SetPositiveButton("Ok", (senderAlert, args) =>
-                                    {
-                                        alert.Dispose();
-                                        System.Threading.Thread.Sleep(500);
-                                        StartActivity(typeof(MainMenu));
-                                        HelpfulMethods.clearTheStack(this);
-                                    });
-                                    Dialog dialog = alert.Create();
-                                    dialog.Show();
+                                    alert.Dispose();
+                                    System.Threading.Thread.Sleep(500);
+                                    StartActivity(typeof(MainMenu));
+                                    HelpfulMethods.clearTheStack(this);
                                 });
-                            }
-                            else
-                            {
-                                RunOnUiThread(() =>
-                                {
-                                    progress.StopDialogSync();
-                                    AlertDialog.Builder alert = new AlertDialog.Builder(this);
-                                    alert.SetTitle($"{Resources.GetString(Resource.String.s265)}");
-                                    alert.SetMessage($"{Resources.GetString(Resource.String.s266)}" + result);
-                                    alert.SetPositiveButton("Ok", (senderAlert, args) =>
-                                    {
-                                        alert.Dispose();
-                                        System.Threading.Thread.Sleep(500);
-                                        StartActivity(typeof(MainMenu));
-                                        HelpfulMethods.clearTheStack(this);
-                                    });
-                                    Dialog dialog = alert.Create();
-                                    dialog.Show();
-                                });
-                            }
+                                Dialog dialog = alert.Create();
+                                dialog.Show();
+                            });
                         }
                         else
                         {
-                            DialogHelper.ShowDialogError(this, this, $"{Resources.GetString(Resource.String.s218)}" + result);
+                            RunOnUiThread(() =>
+                            {
+                                progress.StopDialogSync();
+                                AlertDialog.Builder alert = new AlertDialog.Builder(this);
+                                alert.SetTitle($"{Resources.GetString(Resource.String.s265)}");
+                                alert.SetMessage($"{Resources.GetString(Resource.String.s266)}" + result);
+                                alert.SetPositiveButton("Ok", (senderAlert, args) =>
+                                {
+                                    alert.Dispose();
+                                    System.Threading.Thread.Sleep(500);
+                                    StartActivity(typeof(MainMenu));
+                                    HelpfulMethods.clearTheStack(this);
+                                });
+                                Dialog dialog = alert.Create();
+                                dialog.Show();
+                            });
                         }
                     }
-                    finally
+                    else
                     {
-                        RunOnUiThread(() =>
-                        {
-                            progress.StopDialogSync();
-                        });
-                    }               
+                        DialogHelper.ShowDialogError(this, this, $"{Resources.GetString(Resource.String.s218)}" + result);
+                    }
+                }
+                finally
+                {
+                    RunOnUiThread(() =>
+                    {
+                        progress.StopDialogSync();
+                    });
+                }
             });
         }
 
@@ -605,14 +590,15 @@ namespace WMS
                     }
 
 
-                    await CreateMethodFromStart();                                     
+                    await CreateMethodFromStart();
                 }
                 else
                 {
                     Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
                 }
 
-            } else
+            }
+            else
             {
                 // Update flow.
                 double newQty;
@@ -658,9 +644,9 @@ namespace WMS
             bool result = false;
 
             string ident = string.Empty;
-    
+
             ident = openIdent.GetString("Code");
-            
+
             var parameters = new List<Services.Parameter>();
             parameters.Add(new Services.Parameter { Name = "acIdent", Type = "String", Value = ident });
 
@@ -678,10 +664,10 @@ namespace WMS
 
             var duplicates = Services.GetObjectListBySql(sql, parameters);
 
-            if(duplicates.Success)
+            if (duplicates.Success)
             {
-                int numberRows = (int) (duplicates.Rows[0].IntValue("anResult") ?? 0);
-                if(numberRows>0)
+                int numberRows = (int)(duplicates.Rows[0].IntValue("anResult") ?? 0);
+                if (numberRows > 0)
                 {
                     result = true;
                 }
@@ -699,7 +685,8 @@ namespace WMS
             if (!CommonData.IsValidLocation(moveHead.GetString("Wharehouse"), location))
             {
                 return false;
-            } else
+            }
+            else
             {
                 return true;
             }
@@ -767,7 +754,7 @@ namespace WMS
         private async void BtSaveOrUpdate_Click(object sender, EventArgs e)
         {
             double parsed;
-            if(double.TryParse(tbPacking.Text, out parsed) && stock>=parsed)
+            if (double.TryParse(tbPacking.Text, out parsed) && stock >= parsed)
             {
                 var isCorrectLocation = IsLocationCorrect();
                 if (!isCorrectLocation)
@@ -786,16 +773,18 @@ namespace WMS
                         Toast.MakeText(this, $"{Resources.GetString(Resource.String.s334)}", ToastLength.Long).Show();
                         return;
                     }
-                } else
+                }
+                else
                 {
                     string ident = openIdent.GetString("Code");
-                    string warehouse = string.Empty;     
-                    
-                    if(Base.Store.isUpdate)
+                    string warehouse = string.Empty;
+
+                    if (Base.Store.isUpdate)
                     {
                         warehouse = moveItem.GetString("Wharehouse");
 
-                    } else
+                    }
+                    else
                     {
                         warehouse = moveHead.GetString("Wharehouse");
                     }
@@ -808,7 +797,8 @@ namespace WMS
                     }
                 }
                 await CreateMethodSame();
-            } else
+            }
+            else
             {
                 Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
                 return;
@@ -819,7 +809,7 @@ namespace WMS
         {
             string serialDuplication = CommonData.GetSetting("NoSerialnoDupOut");
             string identType = openIdent.GetString("SerialNo");
-         
+
             if (serialDuplication == "1")
             {
                 if (identType == "O")
@@ -827,17 +817,17 @@ namespace WMS
 
                     string sql = "SELECT COUNT(*) as anResult FROM uWMSMoveItemInClickNoOrder WHERE acIdent = @acIdent and acWharehouse = @acWharehouse";
 
-                    if(serial!=null)
+                    if (serial != null)
                     {
                         sql += " AND acSerialno = @acSerialno";
                     }
 
-                    if(sscc!=null)
+                    if (sscc != null)
                     {
                         sql += " AND acSSCC = @acSSCC";
                     }
 
-                    if (warehouse!=null)
+                    if (warehouse != null)
                     {
                         sql += " AND acWharehouse = @acWharehouse";
                     }
@@ -851,20 +841,21 @@ namespace WMS
 
                     var duplicates = Services.GetObjectListBySql(sql, parameters);
 
-                    if(duplicates.Success)
+                    if (duplicates.Success)
                     {
-                        int numberOfDuplicates = (int?) duplicates.Rows[0].IntValue("anResult") ?? 0;
-                        if(numberOfDuplicates > 0)
+                        int numberOfDuplicates = (int?)duplicates.Rows[0].IntValue("anResult") ?? 0;
+                        if (numberOfDuplicates > 0)
                         {
                             return true;
-                        } else
+                        }
+                        else
                         {
                             return false;
                         }
                     }
 
                     return false;
-                } 
+                }
             }
             return false;
         }
@@ -877,7 +868,7 @@ namespace WMS
                 {
                     var element = new Takeover { };
 
-                    if(Base.Store.byOrder)
+                    if (Base.Store.byOrder)
                     {
                         element = connectedPositions.ElementAt(0);
                     }
@@ -890,7 +881,8 @@ namespace WMS
                     {
                         moveItem.SetString("LinkKey", element.acKey);
                         moveItem.SetInt("LinkNo", element.anNo);
-                    } else
+                    }
+                    else
                     {
                         // update proccess
                         moveItem.SetString("LinkKey", string.Empty);
@@ -912,12 +904,12 @@ namespace WMS
                     if (moveItem != null && error == string.Empty)
                     {
 
-                        if(Base.Store.byOrder)
+                        if (Base.Store.byOrder)
                         {
 
                             var currentQty = Convert.ToDouble(tbPacking.Text.Trim());
                             stock -= currentQty;
-                                        
+
                             RunOnUiThread(() =>
                             {
                                 lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + stock.ToString(CommonData.GetQtyPicture()) + " )";
@@ -1062,9 +1054,9 @@ namespace WMS
             }
         }
     }
-        
-    
 
 
-    }
+
+
+}
 

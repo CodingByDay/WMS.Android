@@ -1,24 +1,13 @@
-﻿using Stream = Android.Media.Stream;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Android.App;
-using Android.Content;
+﻿using Android.Content;
 using Android.Content.PM;
 using Android.Net;
-using Android.OS;
-using Android.Runtime;
 using Android.Views;
-using Android.Widget;
-
-using WMS.App;
 using TrendNET.WMS.Core.Data;
 using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
+using WMS.App;
 using WebApp = TrendNET.WMS.Device.Services.WebApp;
-
-using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS
+namespace WMS
 {
     [Activity(Label = "InventoryConfirm", ScreenOrientation = ScreenOrientation.Portrait)]
     public class InventoryConfirm : CustomBaseActivity
@@ -68,11 +57,11 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             target = FindViewById<Button>(Resource.Id.target);
             target.Click += Target_Click;
             btNext = FindViewById<Button>(Resource.Id.btNext);
-        
+
             button3 = FindViewById<Button>(Resource.Id.button3);
 
             btNext.Click += BtNext_Click;
-          
+
             button3.Click += Button3_Click;
 
             InUseObjects.Clear();
@@ -94,7 +83,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
         {
             if (IsOnline())
             {
-                
+
                 try
                 {
                     LoaderManifest.LoaderManifestLoopStop(this);
@@ -114,7 +103,8 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
 
         public async Task DoWorkAsync()
         {
-            await Task.Run(() => {
+            await Task.Run(() =>
+            {
 
                 var moveHead = positions.Items[displayedPosition];
 
@@ -122,7 +112,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 {
                     var headID = moveHead.GetInt("HeadID");
                     string result;
-                    if (WebApp.Get("mode=finish&id=" + headID.ToString(), out result))                   
+                    if (WebApp.Get("mode=finish&id=" + headID.ToString(), out result))
                     {
                         if (result.StartsWith("OK!"))
                         {
@@ -139,7 +129,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                     }
                     else
                     {
-                       DialogHelper.ShowDialogError(this, this, $"{Resources.GetString(Resource.String.s218)}" + result);
+                        DialogHelper.ShowDialogError(this, this, $"{Resources.GetString(Resource.String.s218)}" + result);
                     }
                 }
                 catch (Exception err)
@@ -158,11 +148,12 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
         {
 
             await DoWorkAsync();
-           
-            if(output == 1)
+
+            if (output == 1)
             {
                 Toast.MakeText(this, $"{Resources.GetString(Resource.String.s243)}", ToastLength.Long).Show();
-            } else
+            }
+            else
             {
                 Toast.MakeText(this, $"{Resources.GetString(Resource.String.s244)}", ToastLength.Long).Show();
             }
@@ -206,8 +197,8 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             }
             return base.OnKeyDown(keyCode, e);
         }
-      
-    
+
+
 
         private void BtNext_Click(object sender, EventArgs e)
         {
@@ -218,7 +209,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
 
         private void LoadPositions()
         {
-       
+
             try
             {
                 if (positions == null)

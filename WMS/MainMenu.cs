@@ -1,33 +1,14 @@
-﻿using Stream = Android.Media.Stream;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Android.App;
-using Android.Content;
+﻿using Android.Content;
 using Android.Content.PM;
+using Android.Graphics;
+using Android.Graphics.Drawables;
 using Android.Net;
-using Android.OS;
-using Android.Runtime;
 using Android.Views;
-using Android.Widget;
-using Java.Util;
-
-
-
-using WMS.App;
 using TrendNET.WMS.Device.Services;
+using WMS.App;
+using WMS.Caching;
 using Xamarin.Essentials;
 using static Android.App.ActionBar;
-using WMS.Caching;
-
-using AndroidX.AppCompat.App;
-using AlertDialog = Android.App.AlertDialog;
-using Android.Graphics.Drawables;
-using Android.Graphics;
-using AndroidX.Lifecycle;
-using System.Data.Common;
-using Javax.Security.Auth;
 namespace WMS
 {
     [Activity(Label = "MainMenu", ScreenOrientation = ScreenOrientation.Portrait)]
@@ -58,7 +39,7 @@ namespace WMS
         private UniversalAdapter<CleanupLocation> dataAdapter;
 
         protected override async void OnCreate(Bundle savedInstanceState)
-        {     
+        {
             base.OnCreate(savedInstanceState);
             SetTheme(Resource.Style.AppTheme_NoActionBar);
             HelpfulMethods.releaseLock();
@@ -174,7 +155,7 @@ namespace WMS
                         var SSCC = x.GetString("SSCC");
                         var Name = x.GetString("Name");
                         var Serial = x.GetString("SerialNo");
-                        data.Add(new CleanupLocation { Name = Name, Ident = ident, Location = location, Serial = Serial, SSCC = SSCC  });
+                        data.Add(new CleanupLocation { Name = Name, Ident = ident, Location = location, Serial = Serial, SSCC = SSCC });
                     });
                 }
 
@@ -196,13 +177,13 @@ namespace WMS
         }
         private void DownloadResources()
         {
-          
+
             if (!App.Settings.login)
             {
                 var intent = new Intent(this, typeof(CachingService));
                 base.StartService(intent);
                 App.Settings.login = true;
-            }                           
+            }
         }
 
         public bool IsOnline()
@@ -216,7 +197,7 @@ namespace WMS
         {
             if (IsOnline())
             {
-                
+
                 try
                 {
                     LoaderManifest.LoaderManifestLoopStop(this);
@@ -228,13 +209,13 @@ namespace WMS
             }
             else
             {
-      
+
                 LoaderManifest.LoaderManifestLoop(this);
             }
         }
-    
+
         protected override void OnResume()
-        {     
+        {
             var restartNeeded = App.Settings.restart;
 
             if (restartNeeded)
@@ -258,24 +239,25 @@ namespace WMS
 
         private void BtnOkRestart_Click(object sender, EventArgs e)
         {
-            System.Diagnostics.Process.GetCurrentProcess().Kill();      
+            System.Diagnostics.Process.GetCurrentProcess().Kill();
         }
-    
+
         private void BtRecalculate_Click(object sender, EventArgs e)
         {
 
-            StartActivity(typeof(RecalculateInventory));                
+            StartActivity(typeof(RecalculateInventory));
         }
 
         private void HideDisabled(List<Button> buttons)
         {
-            foreach(Button btn in buttons)
+            foreach (Button btn in buttons)
             {
-                if(btn.Enabled == false)
+                if (btn.Enabled == false)
                 {
                     btn.SetBackgroundColor(Android.Graphics.Color.DarkGray);
                     btn.SetTextColor(Android.Graphics.Color.White);
-                } else
+                }
+                else
                 {
                     continue;
                 }
@@ -284,10 +266,10 @@ namespace WMS
 
         private void PalletsMenu_Click(object sender, EventArgs e)
         {
-           StartActivity(typeof(MenuPallets));                     
+            StartActivity(typeof(MenuPallets));
         }
 
- 
+
 
         public override bool OnKeyDown(Keycode keyCode, KeyEvent e)
         {
@@ -333,8 +315,8 @@ namespace WMS
                     if (btnPackaging.Enabled == true)
                     {
                         BtnPackaging_Click(this, null);
-                    }              
-                        break;
+                    }
+                    break;
 
 
                 case Keycode.F6:
@@ -375,17 +357,17 @@ namespace WMS
 
         private void BtnPackaging_Click(object sender, EventArgs e)
         {
-            StartActivity(typeof(PackagingEnteredPositionsView));                        
+            StartActivity(typeof(PackagingEnteredPositionsView));
         }
 
         private void BtnCheckStock_Click(object sender, EventArgs e)
         {
-            StartActivity(typeof(CheckStock));                       
+            StartActivity(typeof(CheckStock));
         }
 
         private void BtnInventory_Click(object sender, EventArgs e)
         {
-            StartActivity(typeof(InventoryMenu));                         
+            StartActivity(typeof(InventoryMenu));
         }
 
         private void ButtonPrint_Click(object sender, EventArgs e)
@@ -397,7 +379,7 @@ namespace WMS
         private void ButtonIssued_Click(object sender, EventArgs e)
         {
 
-           StartActivity(typeof(UnfinishedIssuedGoodsView));
+            StartActivity(typeof(UnfinishedIssuedGoodsView));
 
         }
 
@@ -405,7 +387,7 @@ namespace WMS
         private void Button_Click_Without_Inner_Menu(object sender, EventArgs e)
         {
 
-           StartActivity(typeof(UnfinishedTakeoversView));
+            StartActivity(typeof(UnfinishedTakeoversView));
 
         }
 
@@ -416,7 +398,7 @@ namespace WMS
 
             StartActivity(typeof(UnfinishedProductionView));
         }
-      
+
         private void ButtonInterWarehouse_Click(object sender, EventArgs e)
         {
             StartActivity(typeof(UnfinishedInterWarehouseView));
@@ -434,7 +416,7 @@ namespace WMS
             {
                 StartActivity(typeof(UnfinishedTakeoversView));
             }
-            
+
         }
     }
 }

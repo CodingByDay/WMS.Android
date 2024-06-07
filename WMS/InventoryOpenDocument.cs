@@ -1,24 +1,12 @@
-﻿using Stream = Android.Media.Stream;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
+﻿using Android.Content;
 using Android.Content.PM;
 using Android.Net;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-
-using WMS.App;
 using TrendNET.WMS.Core.Data;
 using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
+using WMS.App;
 using WebApp = TrendNET.WMS.Device.Services.WebApp;
-
-using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS
+namespace WMS
 {
     [Activity(Label = "InventoryOpenDocument", ScreenOrientation = ScreenOrientation.Portrait)]
     public class InventoryOpenDocument : CustomBaseActivity
@@ -27,11 +15,11 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
         private EditText dtDate;
         private Button select;
         private Button confirm;
-        private Button logout;   
+        private Button logout;
         private List<ComboBoxItem> warehousesAdapter = new List<ComboBoxItem>();
         private int temporaryPositionWarehouse;
         private DateTime datex;
-      
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -58,8 +46,8 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             logout = FindViewById<Button>(Resource.Id.logout);
             select.Click += Select_Click;
             confirm.Click += Confirm_Click;
-            logout.Click += Logout_Click;                     
-            cbWarehouse.ItemSelected += CbWarehouse_ItemSelected;              
+            logout.Click += Logout_Click;
+            cbWarehouse.ItemSelected += CbWarehouse_ItemSelected;
             dtDate.Text = DateTime.Now.ToShortDateString();
             var warehouses = CommonData.ListWarehouses();
             warehouses.Items.ForEach(wh =>
@@ -86,7 +74,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
         {
             if (IsOnline())
             {
-                
+
                 try
                 {
                     LoaderManifest.LoaderManifestLoopStop(this);
@@ -149,7 +137,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                     return;
                 }
             }
-            catch(Exception error)
+            catch (Exception error)
             {
                 SentrySdk.CaptureException(error);
                 return;

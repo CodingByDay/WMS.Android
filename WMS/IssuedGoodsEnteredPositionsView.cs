@@ -1,30 +1,16 @@
-﻿using Stream = Android.Media.Stream;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Android.App;
-using Android.Content;
+﻿using Android.Content;
 using Android.Content.PM;
+using Android.Graphics;
+using Android.Graphics.Drawables;
 using Android.Net;
-using Android.OS;
-using Android.Runtime;
 using Android.Views;
-using Android.Widget;
-
-using Org.Apache.Http;
-using WMS.App;
 using TrendNET.WMS.Core.Data;
 using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
+using WMS.App;
 using static Android.App.ActionBar;
-using WebApp = TrendNET.WMS.Device.Services.WebApp;
-
-using AndroidX.AppCompat.App;
 using AlertDialog = Android.App.AlertDialog;
-using Android.Graphics.Drawables;
-using Android.Graphics;
-using System.Data.Common;
+using WebApp = TrendNET.WMS.Device.Services.WebApp;
 namespace WMS
 {
     [Activity(Label = "IssuedGoodsEnteredPositionsView", ScreenOrientation = ScreenOrientation.Portrait)]
@@ -121,7 +107,7 @@ namespace WMS
             }
             LoadPositions();
 
-            if(App.Settings.tablet)
+            if (App.Settings.tablet)
             {
                 await fillList();
                 listData.PerformItemClick(listData, 0, 0);
@@ -138,7 +124,7 @@ namespace WMS
         }
 
 
-    
+
 
 
 
@@ -243,7 +229,7 @@ namespace WMS
                 {
                     Base.Store.modeIssuing = result;
                 }
-            } 
+            }
         }
 
         public bool IsOnline()
@@ -255,7 +241,7 @@ namespace WMS
         {
             if (IsOnline())
             {
-                
+
                 try
                 {
                     LoaderManifest.LoaderManifestLoopStop(this);
@@ -335,7 +321,7 @@ namespace WMS
             btnYes = popupDialog.FindViewById<Button>(Resource.Id.btnYes);
             btnNo = popupDialog.FindViewById<Button>(Resource.Id.btnNo);
             btnYes.Click += BtnYes_Click;
-            btnNo.Click += BtnNo_Click;        
+            btnNo.Click += BtnNo_Click;
         }
 
         private void BtnNo_Click(object sender, EventArgs e)
@@ -346,50 +332,50 @@ namespace WMS
 
         private void BtnYes_Click(object sender, EventArgs e)
         {
-                var item = positions.Items[displayedPosition];
-                var id = item.GetInt("ItemID");
-                try
+            var item = positions.Items[displayedPosition];
+            var id = item.GetInt("ItemID");
+            try
+            {
+
+                string result;
+                if (WebApp.Get("mode=delMoveItem&item=" + id.ToString() + "&deleter=" + Services.UserID().ToString(), out result))
                 {
-                
-                    string result;
-                    if (WebApp.Get("mode=delMoveItem&item=" + id.ToString() + "&deleter=" + Services.UserID().ToString(), out result))
+                    if (result == "OK!")
                     {
-                        if (result == "OK!")
-                        {
-                            positions = null;
-                            LoadPositions();
-                            popupDialog.Dismiss();
-                             popupDialog.Hide();
-                    }
-                        else
-                        {
-                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s212)}" + result, ToastLength.Long).Show();
-     
-                            positions = null;
-                            LoadPositions();
-                            popupDialog.Dismiss();
-                            popupDialog.Hide();
-                        return;
-                        }
+                        positions = null;
+                        LoadPositions();
+                        popupDialog.Dismiss();
+                        popupDialog.Hide();
                     }
                     else
                     {
-                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s213)}" + result, ToastLength.Long).Show();
+                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s212)}" + result, ToastLength.Long).Show();
+
+                        positions = null;
+                        LoadPositions();
                         popupDialog.Dismiss();
                         popupDialog.Hide();
                         return;
                     }
                 }
-                catch (Exception err)
+                else
                 {
-
-                    SentrySdk.CaptureException(err);
+                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s213)}" + result, ToastLength.Long).Show();
+                    popupDialog.Dismiss();
+                    popupDialog.Hide();
                     return;
-
                 }
+            }
+            catch (Exception err)
+            {
+
+                SentrySdk.CaptureException(err);
+                return;
+
+            }
 
         }
-    
+
         private async void BtFinish_Click(object sender, EventArgs e)
         {
             popupDialogConfirm = new Dialog(this);
@@ -407,7 +393,7 @@ namespace WMS
             btnNoConfirm.Click += BtnNoConfirm_Click;
 
         }
-        
+
         private void BtnNoConfirm_Click(object sender, EventArgs e)
         {
             popupDialogConfirm.Dismiss();
@@ -440,7 +426,7 @@ namespace WMS
 
                         int? headID = moveHead.GetInt("HeadID");
 
-                        if(headID == null)
+                        if (headID == null)
                         {
                             return;
                         }
@@ -526,10 +512,10 @@ namespace WMS
                             Toast.MakeText(this, err.Message, ToastLength.Short).Show();
                             StartActivity(typeof(MainMenu));
                         });
-                      
+
                     }
 
-                } 
+                }
             });
         }
 
@@ -537,16 +523,18 @@ namespace WMS
 
         private void BtNew_Click(object sender, EventArgs e)
         {
-     
+
             if (moveHead.GetBool("ByOrder") && flow == "2")
-            {            
+            {
                 StartActivity(typeof(IssuedGoodsIdentEntryWithTrail));
                 this.Finish();
-            } else if (!moveHead.GetBool("ByOrder") && flow == "2") {
+            }
+            else if (!moveHead.GetBool("ByOrder") && flow == "2")
+            {
                 StartActivity(typeof(IssuedGoodsIdentEntry));
                 this.Finish();
             }
-            else if(flow == "1")
+            else if (flow == "1")
             {
                 StartActivity(typeof(IssuedGoodsIdentEntry));
                 this.Finish();
@@ -563,7 +551,7 @@ namespace WMS
             var item = positions.Items[displayedPosition];
 
             InUseObjects.Set("MoveItem", item);
- 
+
             try
             {
                 string error;
@@ -576,7 +564,7 @@ namespace WMS
                 {
 
                     item.SetString("Ident", openIdent.GetString("Code"));
-                    if(flow == "3")
+                    if (flow == "3")
                     {
                         Intent i = new Intent(Application.Context, typeof(IssuedGoodsSerialOrSSCCEntryClientPicking));
                         Base.Store.isUpdate = true;
@@ -584,7 +572,8 @@ namespace WMS
                         StartActivity(i);
                         HelpfulMethods.clearTheStack(this);
 
-                    } else
+                    }
+                    else
                     {
                         Base.Store.isUpdate = true;
                         Intent i = new Intent(Application.Context, typeof(IssuedGoodsSerialOrSSCCEntry));
@@ -592,11 +581,11 @@ namespace WMS
                         StartActivity(i);
                         HelpfulMethods.clearTheStack(this);
 
-                    } 
-                    
+                    }
+
                 }
             }
-            catch(Exception error)
+            catch (Exception error)
             {
                 SentrySdk.CaptureException(error);
             }
@@ -625,10 +614,10 @@ namespace WMS
 
         private void LoadPositions()
         {
-        
+
             try
             {
-               
+
                 if (positions == null)
                 {
                     var error = "";
@@ -703,7 +692,7 @@ namespace WMS
                 tbQty.Text = "";
                 tbLocation.Text = "";
                 tbCreatedBy.Text = "";
-                tbIdent.Enabled = false; 
+                tbIdent.Enabled = false;
                 tbSSCC.Enabled = false;
                 tbSerialNumber.Enabled = false;
                 tbQty.Enabled = false;

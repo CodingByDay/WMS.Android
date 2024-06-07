@@ -1,41 +1,27 @@
-﻿using Stream = Android.Media.Stream;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Android.App;
-using Android.Content;
+﻿using Android.Content;
 using Android.Content.PM;
+using Android.Graphics;
+using Android.Graphics.Drawables;
 using Android.Net;
-using Android.OS;
-using Android.Runtime;
 using Android.Views;
-using Android.Widget;
-
-using WMS.App;
 using TrendNET.WMS.Core.Data;
 using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
+using WMS.App;
 using static Android.App.ActionBar;
-using WebApp = TrendNET.WMS.Device.Services.WebApp;
-
-using AndroidX.AppCompat.App;
 using AlertDialog = Android.App.AlertDialog;
-using Android.Graphics.Drawables;
-using Android.Graphics;
-using AndroidX.Lifecycle;
-using System.Data.Common;
+using WebApp = TrendNET.WMS.Device.Services.WebApp;
 namespace WMS
 {
     [Activity(Label = "TakeOverEnteredPositionsView", ScreenOrientation = ScreenOrientation.Portrait)]
     public class TakeOverEnteredPositionsView : CustomBaseActivity
     {
         private TextView lbInfo;
-        private EditText tbIdent; 
-        private EditText tbSSCC; 
-        private EditText tbSerialNumber; 
-        private EditText tbQty; 
-        private EditText tbLocation; 
+        private EditText tbIdent;
+        private EditText tbSSCC;
+        private EditText tbSerialNumber;
+        private EditText tbQty;
+        private EditText tbLocation;
         private EditText tbCreatedBy;
         private Button btNext;
         private Button btUpdate;
@@ -127,7 +113,7 @@ namespace WMS
             _broadcastReceiver.ConnectionStatusChanged += OnNetworkStatusChanged;
             Application.Context.RegisterReceiver(_broadcastReceiver,
             new IntentFilter(ConnectivityManager.ConnectivityAction));
-        
+
         }
 
         private void ListData_ItemLongClick(object? sender, AdapterView.ItemLongClickEventArgs e)
@@ -145,7 +131,7 @@ namespace WMS
             selectedItem = selected;
         }
 
-   
+
         private void fillList()
         {
 
@@ -192,7 +178,7 @@ namespace WMS
                         Quantity = tempUnit,
                         Position = numbering.ToString(),
                         Name = identName.Trim(),
-                    });                    
+                    });
                 }
                 else
                 {
@@ -204,7 +190,7 @@ namespace WMS
             dataAdapter.NotifyDataSetChanged();
 
         }
-    
+
         private void Select(int postionOfTheItemInTheList)
         {
             displayedPosition = postionOfTheItemInTheList;
@@ -222,7 +208,7 @@ namespace WMS
         {
             if (IsOnline())
             {
-                
+
                 try
                 {
                     LoaderManifest.LoaderManifestLoopStop(this);
@@ -275,7 +261,7 @@ namespace WMS
 
                 try
                 {
- 
+
                     string result;
                     if (WebApp.Get("mode=delMoveItem&item=" + id.ToString() + "&deleter=" + Services.UserID().ToString(), out result))
                     {
@@ -283,7 +269,7 @@ namespace WMS
                         {
                             positions = null;
                             await LoadPositions();
-                            if(App.Settings.tablet)
+                            if (App.Settings.tablet)
                             {
                                 data.Clear();
                                 fillList();
@@ -314,7 +300,7 @@ namespace WMS
                     popupDialog.Dismiss();
                     popupDialog.Hide();
                 }
-          
+
             }
 
         }
@@ -381,7 +367,7 @@ namespace WMS
                             Toast.MakeText(this, $"{Resources.GetString(Resource.String.s216)}" + result, ToastLength.Long).Show();
                         });
                     }
-                } 
+                }
                 finally
                 {
                     RunOnUiThread(() =>
@@ -390,7 +376,7 @@ namespace WMS
                     });
                 }
             });
-           
+
         }
         private async void BtFinish_Click(object sender, EventArgs e)
         {
@@ -407,8 +393,8 @@ namespace WMS
             btnNoConfirm = popupDialogConfirm.FindViewById<Button>(Resource.Id.btnNo);
             btnYesConfirm.Click += BtnYesConfirm_Click;
             btnNoConfirm.Click += BtnNoConfirm_Click;
-         
-   
+
+
         }
 
         private void BtnNoConfirm_Click(object sender, EventArgs e)
@@ -434,9 +420,10 @@ namespace WMS
 
                 return;
 
-            } else
+            }
+            else
 
-            StartActivity(typeof(TakeOverIdentEntry));
+                StartActivity(typeof(TakeOverIdentEntry));
             HelpfulMethods.clearTheStack(this);
         }
 
@@ -453,7 +440,7 @@ namespace WMS
             }
             try
             {
-           
+
                 string error;
                 var openIdent = Services.GetObject("id", item.GetString("Ident"), out error);
                 if (openIdent == null)
@@ -469,16 +456,16 @@ namespace WMS
                     HelpfulMethods.clearTheStack(this);
                 }
             }
-             catch (Exception ex)
+            catch (Exception ex)
             {
                 SentrySdk.CaptureException(ex);
             }
-                               
+
         }
 
         private void BtNext_Click(object sender, EventArgs e)
         {
-            if(App.Settings.tablet)
+            if (App.Settings.tablet)
             {
                 selectedItem++;
 
@@ -500,10 +487,10 @@ namespace WMS
 
         private async Task LoadPositions()
         {
-           
+
             try
             {
-              
+
                 if (positions == null)
                 {
                     var error = "";
@@ -522,7 +509,7 @@ namespace WMS
                 displayedPosition = 0;
                 FillDisplayedItem();
             }
-            catch(Exception error)
+            catch (Exception error)
             {
                 SentrySdk.CaptureException(error);
             }
@@ -631,7 +618,7 @@ namespace WMS
                 tbSSCC.Text = string.Empty;
                 tbSerialNumber.Text = string.Empty;
                 tbQty.Text = string.Empty;
-          
+
 
 
                 tbIdent.Enabled = false;

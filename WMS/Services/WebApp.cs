@@ -4,7 +4,6 @@ using System.Net;
 using System.Text;
 using TrendNET.WMS.Device.App;
 using WMS;
-using WMS.App;
 
 namespace TrendNET.WMS.Device.Services
 {
@@ -259,7 +258,7 @@ namespace TrendNET.WMS.Device.Services
                 {
                     return false;
                 }
-              
+
             }
             catch (Exception ex)
             {

@@ -1,26 +1,15 @@
-﻿using Stream = Android.Media.Stream;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
+﻿using Android.Content;
 using Android.Content.PM;
 using Android.Media;
 using Android.Net;
-using Android.OS;
-using Android.Runtime;
 using Android.Views;
 using Android.Views.InputMethods;
-using Android.Widget;
 using BarCode2D_Receiver;
-
-using WMS.App;
 using TrendNET.WMS.Core.Data;
 using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
-
-using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS
+using WMS.App;
+namespace WMS
 {
     [Activity(Label = "ProductionWorkOrderSetup", ScreenOrientation = ScreenOrientation.Portrait)]
     public class ProductionWorkOrderSetup : CustomBaseActivity, IBarcodeResult
@@ -52,10 +41,11 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                     tbOpenQty.Text = "";
                     tbIdent.Text = "";
                     tbName.Text = "";
-                    
+
                     tbWorkOrder.Text = barcode;
                     ProcessWorkOrder();
-                } else
+                }
+                else
                 {
                     tbWorkOrder.Text = "";
                     tbWorkOrder.RequestFocus();
@@ -136,7 +126,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
 
         }
 
-  
+
 
         public bool IsOnline()
         {
@@ -149,7 +139,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
         {
             if (IsOnline())
             {
-                
+
                 try
                 {
                     LoaderManifest.LoaderManifestLoopStop(this);
@@ -220,10 +210,10 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
         private bool SaveMoveHead()
         {
             NameValueObject workOrder = null;
-    
+
             try
             {
-              
+
                 string error;
                 workOrder = Services.GetObject("wo", tbWorkOrder.Text.Trim(), out error);
                 if (workOrder == null)
@@ -247,7 +237,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             if (moveHead == null) { moveHead = new NameValueObject("MoveHead"); }
             if (!moveHead.GetBool("Saved"))
             {
-               
+
                 try
                 {
 
@@ -258,7 +248,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                     if ((productionWarehouse == null) || (string.IsNullOrEmpty(productionWarehouse.GetString("ProductionWarehouse"))))
                     {
                         string SuccessMessage = string.Format($"{Resources.GetString(Resource.String.s316)}");
-                        Toast.MakeText(this, SuccessMessage, ToastLength.Long).Show();                
+                        Toast.MakeText(this, SuccessMessage, ToastLength.Long).Show();
                         return false;
                     }
 
@@ -316,7 +306,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                         BtCard_Click(this, null);
                     }
                     break;
-                
+
                 case Keycode.F3:
                     if (btConfirm.Enabled == true)
                     {
@@ -331,7 +321,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                         BtPalette_Click(this, null);
                     }
                     break;
-               
+
             }
             return base.OnKeyDown(keyCode, e);
         }
@@ -344,9 +334,9 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             tbName.Text = "";
 
 
-            btConfirm.Visibility = ViewStates.Gone; 
+            btConfirm.Visibility = ViewStates.Gone;
             btCard.Visibility = ViewStates.Gone;
-            btPalette.Visibility = ViewStates.Gone; 
+            btPalette.Visibility = ViewStates.Gone;
 
             try
             {
@@ -356,7 +346,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                 {
                     string SuccessMessage = string.Format($"{Resources.GetString(Resource.String.s216)}" + error);
                     Toast.MakeText(this, SuccessMessage, ToastLength.Long).Show();
-                 
+
                 }
                 else
                 {
@@ -393,13 +383,14 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                         }
                     }
                 }
-            } catch (Exception err)
+            }
+            catch (Exception err)
             {
                 SentrySdk.CaptureException(err);
             }
 
         }
- 
+
 
 
     }

@@ -4,7 +4,7 @@ using System.Text.Json;
 namespace WMS.App
 {
 
-    public class Trail 
+    public class Trail
     {
         public string Ident { get; set; }
 
@@ -50,7 +50,7 @@ namespace WMS.App
             info.AddValue("Key", Key);
             info.AddValue("No", No);
             info.AddValue("Packaging", Packaging);
-           // info.AddValue("locationQty", locationQty, typeof(Dictionary<string, double>));
+            // info.AddValue("locationQty", locationQty, typeof(Dictionary<string, double>));
         }
 
         public static byte[] Serialize(object obj)

@@ -1,25 +1,14 @@
-﻿using Stream = Android.Media.Stream;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
+﻿using Android.Content;
 using Android.Content.PM;
 using Android.Media;
 using Android.Net;
-using Android.OS;
-using Android.Runtime;
 using Android.Views;
-using Android.Widget;
 using BarCode2D_Receiver;
-
-using WMS.App;
 using TrendNET.WMS.Core.Data;
 using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
-
-using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespace WMS
+using WMS.App;
+namespace WMS
 {
     [Activity(Label = "PackagingSetContext", ScreenOrientation = ScreenOrientation.Portrait)]
     public class PackagingSetContext : CustomBaseActivity, IBarcodeResult
@@ -40,13 +29,14 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
         public void GetBarcode(string barcode)
         {
             // implements the interface.
-            if(tbSSCC.HasFocus)
+            if (tbSSCC.HasFocus)
             {
-                
+
                 tbSSCC.Text = barcode;
-            } else if (tbLocation.HasFocus)
+            }
+            else if (tbLocation.HasFocus)
             {
-                
+
                 tbLocation.Text = barcode;
             }
         }
@@ -119,7 +109,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
         {
             if (IsOnline())
             {
-                
+
                 try
                 {
                     LoaderManifest.LoaderManifestLoopStop(this);
@@ -151,10 +141,10 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
 
         private void BtConfirm_Click(object sender, EventArgs e)
         {
-            
-            
-                ProcessData();
-            
+
+
+            ProcessData();
+
         }
 
         private void ProcessData()
@@ -164,7 +154,7 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
             if (!CommonData.IsValidLocation(temporaryString, tbLocation.Text.Trim()))
             {
                 string toast = string.Format($"{Resources.GetString(Resource.String.s270)}");
-                Toast.MakeText(this, toast, ToastLength.Long).Show(); 
+                Toast.MakeText(this, toast, ToastLength.Long).Show();
                 return;
             }
 
@@ -217,8 +207,8 @@ using AndroidX.AppCompat.App;using AlertDialog = Android.App.AlertDialog;namespa
                     {
                         BtConfirm_Click(this, null);
                     }
-                        break;
-                    
+                    break;
+
                 case Keycode.F8:
                     BtExit_Click(this, null);
                     break;

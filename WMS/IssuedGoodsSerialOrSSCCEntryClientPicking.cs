@@ -1,40 +1,19 @@
-﻿using Stream = Android.Media.Stream;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web;
-using Android.App;
-using Android.Content;
+﻿using Android.Content;
 using Android.Content.PM;
 using Android.Graphics;
+using Android.Graphics.Drawables;
 using Android.Media;
 using Android.Net;
-using Android.Nfc;
-using Android.OS;
-using Android.Runtime;
-using Android.Text.Util;
 using Android.Views;
-using Android.Widget;
 using BarCode2D_Receiver;
-
-
-using Newtonsoft.Json;
-using WMS.App;
 using TrendNET.WMS.Core.Data;
 using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
+using WMS.App;
 using static Android.App.ActionBar;
-using static Android.App.DownloadManager;
-using static Android.Graphics.Paint;
-using static Android.Icu.Text.Transliterator;
-using WebApp = TrendNET.WMS.Device.Services.WebApp;
-
-using AndroidX.AppCompat.App;
-using AlertDialog = Android.App.AlertDialog;
-using Android.Graphics.Drawables;
-using System.Data.Common;
 using static WMS.App.MultipleStock;
+using AlertDialog = Android.App.AlertDialog;
+using WebApp = TrendNET.WMS.Device.Services.WebApp;
 namespace WMS
 {
     [Activity(Label = "IssuedGoodsSerialOrSSCCEntryClientPicking", ScreenOrientation = ScreenOrientation.Portrait)]
@@ -317,7 +296,8 @@ namespace WMS
                 {
                     Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
                 }
-            } else
+            }
+            else
             {
 
                 // Update flow.
@@ -355,8 +335,8 @@ namespace WMS
                 {
                     Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
                 }
-            
-           }
+
+            }
         }
         private void CheckData()
         {
@@ -505,7 +485,7 @@ namespace WMS
                     moveItem = new NameValueObject("MoveItem");
                     moveItem.SetInt("HeadID", moveHead.GetInt("HeadID"));
                     moveItem.SetString("LinkKey", element.acKey);
-                    moveItem.SetInt("LinkNo", element.anNo);                  
+                    moveItem.SetInt("LinkNo", element.anNo);
                     moveItem.SetInt("LinkNo", receivedTrail.No);
                     moveItem.SetString("Ident", openIdent.GetString("Code"));
                     moveItem.SetString("SSCC", tbSSCC.Text.Trim());
@@ -530,8 +510,9 @@ namespace WMS
                                 Finish();
                             }
                         });
- 
-                    } else
+
+                    }
+                    else
                     {
                         StartActivity(typeof(MainActivity));
                         Finish();
@@ -560,7 +541,7 @@ namespace WMS
                     moveItem = new NameValueObject("MoveItem");
                     moveItem.SetInt("HeadID", moveHead.GetInt("HeadID"));
                     moveItem.SetString("LinkKey", element.acKey);
-                    moveItem.SetInt("LinkNo", element.anNo);                 
+                    moveItem.SetInt("LinkNo", element.anNo);
                     moveItem.SetString("Ident", openIdent.GetString("Code"));
                     moveItem.SetString("SSCC", tbSSCC.Text.Trim());
                     moveItem.SetString("SerialNo", tbSerialNum.Text.Trim());
@@ -775,7 +756,7 @@ namespace WMS
                 // Not the update ?? it seems to be true
                 tbIdent.Text = openIdent.GetString("Code") + " " + openIdent.GetString("Name");
 
-                if (Intent.Extras != null && Intent.GetByteArrayExtra("selected")!=null)
+                if (Intent.Extras != null && Intent.GetByteArrayExtra("selected") != null)
                 {
                     byte[] trailBytes = Intent.GetByteArrayExtra("selected");
                     receivedTrail = ClientPickingPosition.Deserialize<ClientPickingPosition>(trailBytes);
@@ -810,11 +791,11 @@ namespace WMS
                 serialRow.Visibility = ViewStates.Gone;
             }
 
-            if(ssccRow.Visibility != ViewStates.Visible && serialRow.Visibility!=ViewStates.Visible)
+            if (ssccRow.Visibility != ViewStates.Visible && serialRow.Visibility != ViewStates.Visible)
             {
                 FilterData();
             }
-            
+
         }
 
         private async Task<List<MultipleStock>> GetStockState(ClientPickingPosition? obj)
@@ -981,7 +962,7 @@ namespace WMS
                 {
                     if (barcode != "Scan fail")
                     {
-                        
+
 
                         tbSSCC.Text = barcode;
 
@@ -1002,7 +983,7 @@ namespace WMS
                 {
                     if (barcode != "Scan fail")
                     {
-                        
+
 
                         tbSerialNum.Text = barcode;
 
@@ -1017,7 +998,7 @@ namespace WMS
                 {
                     if (barcode != "Scan fail")
                     {
-                        
+
 
                         tbLocation.Text = barcode;
 
