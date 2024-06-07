@@ -387,7 +387,7 @@ namespace WMS
                 {
                     AlertDialog.Builder alert = new AlertDialog.Builder(this);
                     alert.SetTitle($"{Resources.GetString(Resource.String.s265)}");
-                    alert.SetMessage($"{result.Error}");
+                    alert.SetMessage($"{subjects.Error}");
                     alert.SetPositiveButton("Ok", (senderAlert, args) =>
                     {
                         alert.Dispose();
