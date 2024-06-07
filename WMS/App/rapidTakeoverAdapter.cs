@@ -3,12 +3,12 @@ using Android.Views;
 
 namespace WMS.App
 {
-    internal class rapidTakeoverAdapter : BaseAdapter
+    public class RapidTakeoverAdapter : BaseAdapter
     {
-        public List<rapidTakeoverList> sList;
+        public List<RapidTakeoverList> sList;
         private Context sContext;
 
-        public rapidTakeoverAdapter(Context context, List<rapidTakeoverList> list)
+        public RapidTakeoverAdapter(Context context, List<RapidTakeoverList> list)
         {
             sList = list;
             sContext = context;

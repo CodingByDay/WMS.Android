@@ -3,12 +3,12 @@ using Android.Views;
 
 namespace WMS.App
 {
-    internal class packagingListAdapter : BaseAdapter
+    internal class PackagingListAdapter : BaseAdapter
     {
         public List<PackagingList> sList;
         private Context sContext;
 
-        public packagingListAdapter(Context context, List<PackagingList> list)
+        public PackagingListAdapter(Context context, List<PackagingList> list)
         {
             sList = list;
             sContext = context;

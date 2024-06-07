@@ -111,7 +111,7 @@ namespace WMS
             var ivi = new ListViewItem { stKartona = stKartona, quantity = qty.ToString("###,###,##0.00") };
             listItems.Add(ivi);
             lvCardList.Adapter = null;
-            adapterListViewItem adapter = new adapterListViewItem(this, listItems);
+            AdapterListViewItem adapter = new AdapterListViewItem(this, listItems);
             lvCardList.Adapter = adapter;
             totalQty += qty;
             btConfirm.Enabled = true;
@@ -258,7 +258,7 @@ namespace WMS
                                     var ivi = new ListViewItem { stKartona = stKartona, quantity = qty.ToString("###,###,##0.00") };
                                     listItems.Add(ivi);
                                     lvCardList.Adapter = null;
-                                    adapterListViewItem adapter = new adapterListViewItem(this, listItems);
+                                    AdapterListViewItem adapter = new AdapterListViewItem(this, listItems);
                                     lvCardList.Adapter = adapter;
                                     totalQty += qty;
 
@@ -350,7 +350,7 @@ namespace WMS
             barcode2D = new Barcode2D(this, this);
             btConfirm.Click += BtConfirm_Click;
             button2.Click += Button2_Click;
-            adapterListViewItem adapter = new adapterListViewItem(this, listItems);
+            AdapterListViewItem adapter = new AdapterListViewItem(this, listItems);
             lvCardList.Adapter = adapter;
             lvCardList.ItemLongClick += LvCardList_ItemLongClick;
             tbSerialNum.RequestFocus();
@@ -462,7 +462,7 @@ namespace WMS
             lbTotalQty.Text = $"{Resources.GetString(Resource.String.s304)}: {totalQty.ToString("###,###,##0.00")} / {collectiveAmount.ToString("###,###,##0.00")}";
 
             lvCardList.Adapter = null;
-            adapterListViewItem adapter = new adapterListViewItem(this, listItems);
+            AdapterListViewItem adapter = new AdapterListViewItem(this, listItems);
             lvCardList.Adapter = adapter;
             popupDialog.Dismiss();
             popupDialog.Cancel();

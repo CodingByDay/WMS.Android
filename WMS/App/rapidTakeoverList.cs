@@ -1,6 +1,6 @@
 ﻿namespace WMS.App
 {
-    internal class rapidTakeoverList
+    public class RapidTakeoverList
     {
         public string Location { get; set; }
         public string SSCC { get; set; }

@@ -4,12 +4,12 @@ using Exception = Java.Lang.Exception;
 
 namespace WMS.App
 {
-    public class adapterListViewItem : BaseAdapter
+    public class AdapterListViewItem : BaseAdapter
     {
         public List<ListViewItem> sList;
         private Context sContext;
 
-        public adapterListViewItem(Context context, List<ListViewItem> list)
+        public AdapterListViewItem(Context context, List<ListViewItem> list)
         {
             sList = list;
             sContext = context;

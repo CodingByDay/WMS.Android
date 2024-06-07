@@ -1,9 +1,7 @@
 ﻿namespace WMS.App
 {
-    /// <summary>
-    ///  Helpful class for serializing the object into a j son string.
-    /// </summary>
-    internal class moveItem
+
+    public class MoveItem
     {
         public int HeadID { get; set; }
 
