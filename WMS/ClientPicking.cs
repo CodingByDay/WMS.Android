@@ -349,11 +349,12 @@ namespace WMS
                     foreach (var row in result.Rows)
                     {
                         var ident = row.StringValue("acIdent");
-                        var location = row.IntValue("aclocation");
+                        var location = row.IntValue("anLocation");
                         var name = row.StringValue("acName");
                         var key = row.StringValue("acKey");
                         var lvi = new ClientPickingPosition();
                         var no = row.IntValue("anNo");
+                        var actualLocation = row.StringValue("acActualLocation");
 
                         if (no != null)
                         {
@@ -367,7 +368,9 @@ namespace WMS
                             }
                             else if (location == 1)
                             {
-                                lvi.Location = Resources.GetString(Resource.String.s347);
+                                /* Extra field for the use case where users want to see instantly on which location
+                                 is the item present in the case of only one. 6.7.2024 JJ */
+                                lvi.Location = actualLocation;
                             }
                             else if (location <= 0)
                             {

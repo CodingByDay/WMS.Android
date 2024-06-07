@@ -484,9 +484,9 @@ namespace WMS
                             foreach (var row in result.Rows)
                             {
                                 var ident = row.StringValue("acIdent");
-                                var location = row.IntValue("anlocation");
+                                var location = row.IntValue("anLocation");
                                 var name = row.StringValue("acName");
-
+                                var actualLocation = row.StringValue("acActualLocation");
                                 if ((string.IsNullOrEmpty(filterLoc) || (location.ToString() == filterLoc)) &&
                                    (string.IsNullOrEmpty(filterIdent) || (ident == filterIdent)))
                                 {
@@ -505,7 +505,7 @@ namespace WMS
                                     {
                                         /* Extra field for the use case where users want to see instantly on which location
                                          is the item present in the case of only one. 6.7.2024 JJ */
-                                        lvi.Location = Resources.GetString(Resource.String.s347);
+                                        lvi.Location = actualLocation;
                                     }
                                     else if (location <= 0)
                                     {
