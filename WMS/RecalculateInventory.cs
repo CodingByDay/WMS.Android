@@ -221,7 +221,6 @@ namespace WMS
                             RunOnUiThread(() =>
                             {
 
-
                                 progress.StopDialogSync();
 
                                 AlertDialog.Builder alert = new AlertDialog.Builder(this);
@@ -234,10 +233,8 @@ namespace WMS
                                 alert.SetPositiveButton("Ok", (senderAlert, args) =>
                                 {
                                     alert.Dispose();
-                                    System.Threading.Thread.Sleep(500);
                                     StartActivity(typeof(MainMenu));
-                                    HelpfulMethods.clearTheStack(this);
-
+                                    Finish();
                                 });
 
 
@@ -261,9 +258,8 @@ namespace WMS
                                 alert.SetPositiveButton("Ok", (senderAlert, args) =>
                                 {
                                     alert.Dispose();
-                                    System.Threading.Thread.Sleep(500);
                                     StartActivity(typeof(MainMenu));
-                                    HelpfulMethods.clearTheStack(this);
+                                    Finish();
 
                                 });
 
@@ -288,9 +284,8 @@ namespace WMS
                             alert.SetPositiveButton("Ok", (senderAlert, args) =>
                             {
                                 alert.Dispose();
-                                System.Threading.Thread.Sleep(500);
                                 StartActivity(typeof(MainMenu));
-                                HelpfulMethods.clearTheStack(this);
+                                Finish();
 
                             });
 

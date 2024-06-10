@@ -1,9 +1,11 @@
 ﻿
 
+using Android.Content;
 using System.Net;
 using System.Text;
 using TrendNET.WMS.Device.App;
 using WMS;
+using WMS.App;
 
 namespace TrendNET.WMS.Device.Services
 {
@@ -184,9 +186,10 @@ namespace TrendNET.WMS.Device.Services
                         }
                     }
                 }
-                finally
+                catch (Exception ex)
                 {
-                    Log.Write(new LogEntry("END REQUEST: [Device/Post] '" + url + "';" + (DateTime.Now - startedAt).TotalMilliseconds.ToString()));
+                    result = ex.Message;
+                    return false;
                 }
             }
             catch (Exception ex)
@@ -198,27 +201,94 @@ namespace TrendNET.WMS.Device.Services
 
         public static bool Get(string rqURL, out string result)
         {
-            return Get(rqURL, out result, 120000);
+            return Get(rqURL, out result, 240000);
         }
+
+
+
+        // Creating an endpoint for long operations
+
+
 
         public static bool Get(string rqURL, out string result, int timeout)
         {
             bool success = false;
             string threadResult = null;
+
             var t = new Thread(new ThreadStart(() =>
             {
                 success = GetX(rqURL, out threadResult, timeout);
             }));
+
             t.IsBackground = true;
             t.Start();
 
             while (!t.Join(1500))
             {
+
             }
 
             result = threadResult;
             return success;
         }
+
+
+
+        /* Adding a trully asyncronous method for application-wide async functioning. 10.06.2024 Janko Jovičić */
+        public static async Task<(bool success, string result)> GetAsync(string rqURL, Context context)
+        {
+            LoaderManifest.LoaderManifestLoopResources(context);
+
+            int timeout = 120000;
+            string result = string.Empty;
+            bool success = false;
+
+            try
+            {
+                string device_updated = global::WMS.App.Settings.ID;
+                var url = RandomizeURL(global::WMS.App.Settings.RootURL + "/Services/Device/?" + rqURL + "&device=" + device_updated + "&lang=" + Base.Store.language);
+
+                using (var httpClient = new HttpClient())
+                {
+                    httpClient.Timeout = TimeSpan.FromMilliseconds(timeout);
+                    var response = await httpClient.GetAsync(url);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        result = await response.Content.ReadAsStringAsync();
+                        success = true;
+                    }
+                    else
+                    {
+                        result = $"Error: {response.StatusCode}";
+                    }
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                result = ex.Message;
+                SentrySdk.CaptureException(ex);
+            }
+
+            catch (TaskCanceledException ex)
+            {
+                result = "Request timed out.";
+                SentrySdk.CaptureException(ex);
+            }
+
+            catch (Exception ex)
+            {
+                result = ex.Message;
+                SentrySdk.CaptureException(ex);
+            }
+
+
+            LoaderManifest.LoaderManifestLoopStop(context);
+
+
+            return (success, result);
+        }
+
 
         private static bool GetX(string rqURL, out string result, int timeout)
         {
@@ -254,8 +324,11 @@ namespace TrendNET.WMS.Device.Services
                         }
                     }
                 }
-                catch
+                catch (Exception ex)
                 {
+
+                    result = ex.Message;
+                    SentrySdk.CaptureException(ex);
                     return false;
                 }
 

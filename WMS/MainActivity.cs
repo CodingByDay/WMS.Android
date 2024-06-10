@@ -23,7 +23,6 @@ namespace WMS
         private Dialog popupDialog;
         public static bool isValid;
         private EditText Password;
-        public static ProgressBar progressBar1;
         private Button ok;
         private EditText rootURL;
         private EditText ID;
@@ -52,16 +51,14 @@ namespace WMS
             return cm.ActiveNetworkInfo == null ? false : cm.ActiveNetworkInfo.IsConnected;
         }
 
-
-        private void ProcessRegistration()
+        private async Task ProcessRegistrationAsync()
         {
-
-
             var id = App.Settings.ID.ToString();
-            string result;
 
+            // Using the asynchronous GetAsync method
+            var (success, result) = await WebApp.GetAsync("mode=deviceActive", this);
 
-            if (WebApp.Get("mode=deviceActive", out result))
+            if (success)
             {
                 if (result != "Active!")
                 {
@@ -70,7 +67,6 @@ namespace WMS
                 }
 
                 var inactivity = new Intent(this, typeof(Inactivity));
-
                 StartService(inactivity);
 
                 if (IsOnline())
@@ -87,16 +83,14 @@ namespace WMS
                     }
                     catch (Exception err)
                     {
-
                         SentrySdk.CaptureException(err);
                         return;
-
                     }
+
                     if (valid)
                     {
                         if (Services.HasPermission("TNET_WMS", "R"))
                         {
-
                             StartActivity(typeof(MainMenu));
                             Password.Text = "";
                             isValid = true;
@@ -106,28 +100,30 @@ namespace WMS
                         {
                             Password.Text = "";
                             isValid = false;
-                            string toast = new string($"{Resources.GetString(Resource.String.s295)}");
+                            string toast = $"{Resources.GetString(Resource.String.s295)}";
                             Toast.MakeText(this, toast, ToastLength.Long).Show();
-                            progressBar1.Visibility = ViewStates.Invisible;
                         }
                     }
                     else
                     {
                         Password.Text = "";
                         isValid = false;
-                        string toast = new string($"{Resources.GetString(Resource.String.s296)}");
+                        string toast = $"{Resources.GetString(Resource.String.s296)}";
                         Toast.MakeText(this, toast, ToastLength.Long).Show();
-                        progressBar1.Visibility = ViewStates.Invisible;
                     }
                 }
                 else
                 {
-                    // Is connected 
-                    string toast = new string($"{Resources.GetString(Resource.String.s297)}");
+                    // Not connected 
+                    string toast = $"{Resources.GetString(Resource.String.s297)}";
                     Toast.MakeText(this, toast, ToastLength.Long).Show();
-                    progressBar1.Visibility = ViewStates.Invisible;
-
                 }
+            }
+            else
+            {
+                // Handle failure case
+                string toast = $"{Resources.GetString(Resource.String.s297)}";
+                Toast.MakeText(this, toast, ToastLength.Long).Show();
             }
         }
 
@@ -141,12 +137,11 @@ namespace WMS
             ChangeTheOrientation();
             base.OnCreate(savedInstanceState);
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
-            SetContentView(Resource.Layout.activity_main);
+            SetContentView(Resource.Layout.LoginActivity);
 
             Password = FindViewById<EditText>(Resource.Id.tbPassword);
             Password.InputType = Android.Text.InputTypes.NumberVariationPassword |
             Android.Text.InputTypes.ClassNumber;
-            progressBar1 = FindViewById<ProgressBar>(Resource.Id.progressBar1);
             img = FindViewById<ImageView>(Resource.Id.imglogo);
             txtVersion = FindViewById<TextView>(Resource.Id.txtVersion);
             chSlovenian = FindViewById<LinearLayout>(Resource.Id.chSlovenian);
@@ -382,12 +377,11 @@ namespace WMS
             return base.OnCreateOptionsMenu(menu);
         }
 
-        private void BtnRegistrationEvent_Click(object sender, System.EventArgs e)
+        private async void BtnRegistrationEvent_Click(object sender, System.EventArgs e)
         {
             if (permissionsGranted)
             {
-                progressBar1.Visibility = ViewStates.Visible;
-                ProcessRegistration();
+                await ProcessRegistrationAsync();
             }
         }
 
