@@ -103,7 +103,7 @@ namespace WMS
 
         public async Task DoWorkAsync()
         {
-            await Task.Run(() =>
+            await Task.Run(async () =>
             {
 
                 var moveHead = positions.Items[displayedPosition];
@@ -111,8 +111,10 @@ namespace WMS
                 try
                 {
                     var headID = moveHead.GetInt("HeadID");
-                    string result;
-                    if (WebApp.Get("mode=finish&id=" + headID.ToString(), out result))
+
+                    var (success, result) = await WebApp.GetAsync("mode=finish&id=" + headID.ToString(), this);
+
+                    if (success)
                     {
                         if (result.StartsWith("OK!"))
                         {

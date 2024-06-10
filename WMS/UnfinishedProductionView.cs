@@ -187,8 +187,10 @@ namespace WMS
             try
             {
 
-                string result;
-                if (WebApp.Get("mode=delMoveHead&head=" + id.ToString() + "&deleter=" + Services.UserID().ToString(), out result))
+
+                var (success, result) = await WebApp.GetAsync("mode=delMoveHead&head=" + id.ToString() + "&deleter=" + Services.UserID().ToString(), this);
+
+                if (success)
                 {
                     if (result == "OK!")
                     {
@@ -377,7 +379,6 @@ namespace WMS
 
         private async void BtnYes_Click(object sender, EventArgs e)
         {
-            LoaderManifest.LoaderManifestLoopResources(this);
 
             var item = positions.Items[displayedPosition];
             var id = item.GetInt("HeadID");
@@ -387,8 +388,9 @@ namespace WMS
             try
             {
 
-                string result;
-                if (WebApp.Get("mode=delMoveHead&head=" + id.ToString() + "&deleter=" + Services.UserID().ToString(), out result))
+                var (success, result) = await WebApp.GetAsync("mode=delMoveHead&head=" + id.ToString() + "&deleter=" + Services.UserID().ToString() + Services.UserID().ToString(), this);
+
+                if (success)
                 {
                     if (result == "OK!")
                     {
@@ -429,11 +431,7 @@ namespace WMS
                 return;
 
             }
-            finally
-            {
-                LoaderManifest.LoaderManifestLoopStop(this);
-
-            }
+   
         }
 
         private void BtFinish_Click(object sender, EventArgs e)

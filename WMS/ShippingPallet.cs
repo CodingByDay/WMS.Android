@@ -136,7 +136,7 @@ namespace WMS
             ETpallet = pallet.Text;
             ETmachine = machine.Text;
 
-            await Task.Run(() =>
+            await Task.Run(async () =>
             {
 
 
@@ -147,15 +147,13 @@ namespace WMS
 
                     RunOnUiThread(() =>
                     {
-
-
                         progress = new ProgressDialogClass();
 
                         progress.ShowDialogSync(this, $"{Resources.GetString(Resource.String.s308)}");
                     });
 
-                    string result;
-                    if (WebApp.Get("mode=palMac&pal=" + ETpallet + "&mac=" + ETmachine, out result))
+                    var (success, result) = await WebApp.GetAsync("mode=palMac&pal=" + ETpallet + "&mac=" + ETmachine, this);
+                    if (success)
                     {
                         if (result == "OK")
                         {

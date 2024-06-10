@@ -635,9 +635,9 @@ namespace WMS
 
                     var headID = moveHead.GetInt("HeadID");
 
-                    string result;
+                    var (success, result) = await WebApp.GetAsync("mode=finish&stock=remove&print=" + Services.DeviceUser() + "&id=" + headID.ToString(), this);
 
-                    if (WebApp.Get("mode=finish&stock=remove&print=" + Services.DeviceUser() + "&id=" + headID.ToString(), out result))
+                    if (success)
                     {
                         if (result.StartsWith("OK!"))
                         {

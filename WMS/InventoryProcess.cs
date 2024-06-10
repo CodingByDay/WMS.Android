@@ -232,9 +232,9 @@ namespace WMS
 
                 if (warehouses != null)
                 {
-                    warehouses.Items.ForEach(wh =>
+                    warehouses.Items.ForEach(async wh =>
                     {
-                        if (checkDocument(wh.GetString("Subject")))
+                        if (await checkDocument(wh.GetString("Subject")))
                         {
                             warehouseAdapter.Add(new ComboBoxItem { ID = wh.GetString("Subject"), Text = wh.GetString("Name") });
                         }
@@ -348,18 +348,17 @@ namespace WMS
             HelpfulMethods.clearTheStack(this);
         }
 
-        private void BtDelete_Click(object sender, EventArgs e)
+        private async void BtDelete_Click(object sender, EventArgs e)
         {
             try
             {
                 if (moveItem != null)
                 {
-                    string result;
-                    if (WebApp.Get("mode=delMoveItem&item=" + moveItem.GetInt("ItemID").ToString(), out result))
+                    var (success, result) = await WebApp.GetAsync("mode=delMoveItem&item=" + moveItem.GetInt("ItemID").ToString(), this);
+                    if (success)
                     {
                         if (result == "OK!")
                         {
-                            Toast.MakeText(this, "Pozicija pobrisana!", ToastLength.Long).Show();
 
                             StartActivity(typeof(InventoryProcess));
                             HelpfulMethods.clearTheStack(this);
@@ -418,12 +417,12 @@ namespace WMS
 
 
 
-        private bool checkDocument(string id)
+        private async Task<bool> checkDocument(string id)
         {
             try
             {
-                string result;
-                if (WebApp.Get("mode=getInventoryHead&wh=" + id, out result))
+                var (success, result) = await WebApp.GetAsync("mode=getInventoryHead&wh=" + id, this);
+                if (success)
                 {
                     int headID = -1;
                     try
@@ -453,7 +452,7 @@ namespace WMS
         }
 
 
-        private void Button1_Click(object sender, EventArgs e)
+        private async void Button1_Click(object sender, EventArgs e)
         {
             double packing, units, qty;
             ComboBoxItem warehouse;
@@ -464,8 +463,8 @@ namespace WMS
             if (!CheckData(out packing, out units, out qty, out warehouse, out location, out ident, out serNo, out sscc)) { return; }
             try
             {
-                string result;
-                if (WebApp.Get("mode=getInventoryHead&wh=" + warehouse.ID, out result))
+                var (success, result) = await WebApp.GetAsync("mode=getInventoryHead&wh=" + warehouse.ID, this);
+                if (success)
                 {
                     int headID = -1;
 
@@ -616,7 +615,7 @@ namespace WMS
             tbTitle.Text = "";
         }
 
-        private void ProcessStock()
+        private async void ProcessStock()
         {
             var warehouse = warehouseAdapter.ElementAt(temporaryPosWarehouse);
             if (warehouse == null)
@@ -656,10 +655,10 @@ namespace WMS
                     Toast.MakeText(this, $"{Resources.GetString(Resource.String.s258)} '" + location + $"' {Resources.GetString(Resource.String.s272)} '" + warehouse.ID + "'!", ToastLength.Long).Show();
                     return;
                 }
-                string result;
-                int headID = -1;
 
-                if (WebApp.Get("mode=getInventoryHead&wh=" + cbWarehouse.SelectedItem, out result))
+                int headID = -1;
+                var (success, result) = await WebApp.GetAsync("mode=getInventoryHead&wh=" + cbWarehouse.SelectedItem, this);
+                if (success)
                 {
                     try
                     {

@@ -102,17 +102,15 @@ namespace WMS
 
         private async Task FinishMethod()
         {
-            await Task.Run(() =>
+            await Task.Run(async () =>
             {
-                RunOnUiThread(() =>
-                {
-                    progress = new ProgressDialogClass();
-
-                    progress.ShowDialogSync(this, $"{Resources.GetString(Resource.String.s308)}");
-                });
+   
                 string TextPallet = pallet.Text;
-                string result;
-                if (WebApp.Get("mode=palPck&pal=" + TextPallet, out result))
+                
+
+                var (success, result) = await WebApp.GetAsync("mode=palPck&pal=" + TextPallet, this);
+
+                if (success)
                 {
                     if (result == "OK")
                     {
@@ -120,7 +118,6 @@ namespace WMS
                         {
 
 
-                            progress.StopDialogSync();
                             AlertDialog.Builder alert = new AlertDialog.Builder(this);
                             alert.SetTitle($"{Resources.GetString(Resource.String.s323)}");
                             alert.SetMessage($"{Resources.GetString(Resource.String.s332)}");
@@ -146,7 +143,6 @@ namespace WMS
                         {
 
 
-                            progress.StopDialogSync();
                             AlertDialog.Builder alert = new AlertDialog.Builder(this);
                             alert.SetTitle($"{Resources.GetString(Resource.String.s265)}");
                             alert.SetMessage($"{Resources.GetString(Resource.String.s216)}" + result);
@@ -173,7 +169,6 @@ namespace WMS
                     {
 
 
-                        progress.StopDialogSync();
                         AlertDialog.Builder alert = new AlertDialog.Builder(this);
                         alert.SetTitle($"{Resources.GetString(Resource.String.s265)}");
                         alert.SetMessage($"{Resources.GetString(Resource.String.s216)}" + result);

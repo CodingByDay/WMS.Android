@@ -300,7 +300,7 @@ namespace WMS
             popupDialog.Hide();
         }
 
-        private void BtnYes_Click(object sender, EventArgs e)
+        private async void BtnYes_Click(object sender, EventArgs e)
         {
             var item = positions.Items[displayedPosition];
             var id = item.GetInt("ItemID");
@@ -309,8 +309,8 @@ namespace WMS
             try
             {
 
-                string result;
-                if (WebApp.Get("mode=delMoveItem&item=" + id.ToString() + "&deleter=" + Services.UserID().ToString(), out result))
+                var (success, result) = await WebApp.GetAsync("mode=delMoveItem&item=" + id.ToString() + "&deleter=" + Services.UserID().ToString(), this);
+                if (success)
                 {
                     if (result == "OK!")
                     {
@@ -364,7 +364,7 @@ namespace WMS
 
         private async Task FinishMethod()
         {
-            await Task.Run(() =>
+            await Task.Run(async () =>
             {
 
                 RunOnUiThread(() =>
@@ -378,8 +378,8 @@ namespace WMS
                 {
                     var headID = moveHead.GetInt("HeadID");
 
-                    string result;
-                    if (WebApp.Get("mode=finish&print=" + Services.DeviceUser() + "&id=" + headID.ToString(), out result))
+                    var (success, result) = await WebApp.GetAsync("mode=finish&print=" + Services.DeviceUser() + "&id=" + headID.ToString(), this);
+                    if (success)
                     {
                         if (result.StartsWith("OK!"))
                         {

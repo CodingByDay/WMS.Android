@@ -430,7 +430,7 @@ namespace WMS
         private async Task FinishMethod()
         {
 
-            await Task.Run(() =>
+            await Task.Run(async () =>
             {
                 if (SavePackagingItem())
                 {
@@ -446,8 +446,8 @@ namespace WMS
 
                         var headID = head.GetInt("HeadID");
 
-                        string result;
-                        if (WebApp.Get("mode=finishPack&print=" + Services.DeviceUser() + "&id=" + headID.ToString(), out result))
+                        var (success, result) = await WebApp.GetAsync("mode=finishPack&print=" + Services.DeviceUser() + "&id=" + headID.ToString(), this);
+                        if (success)
                         {
                             if (result.StartsWith("OK!"))
                             {
@@ -462,9 +462,8 @@ namespace WMS
                                 alert.SetPositiveButton("Ok", (senderAlert, args) =>
                                 {
                                     alert.Dispose();
-                                    System.Threading.Thread.Sleep(500);
                                     StartActivity(typeof(MainMenu));
-                                    HelpfulMethods.clearTheStack(this);
+                                    Finish();
                                 });
 
 

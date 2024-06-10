@@ -196,7 +196,7 @@ namespace WMS
 
 
 
-            await Task.Run(() =>
+            await Task.Run(async () =>
             {
 
 
@@ -211,8 +211,9 @@ namespace WMS
                         progress.ShowDialogSync(this, $"{Resources.GetString(Resource.String.s317)}");
                     });
 
-                    string result;
-                    if (WebApp.Get("mode=recalc&id=" + ident, out result))
+
+                    var (success, result) = await WebApp.GetAsync("mode=recalc&id=" + ident, this);
+                    if (success)
                     {
 
 

@@ -148,7 +148,7 @@ namespace WMS
             popupDialog.Hide();
         }
 
-        private void BtnYes_Click(object sender, EventArgs e)
+        private async void BtnYes_Click(object sender, EventArgs e)
         {
             var item = positions.Items[displayedPosition];
             var id = item.GetInt("HeadID");
@@ -156,8 +156,8 @@ namespace WMS
             try
             {
 
-                string result;
-                if (WebApp.Get("mode=delPackHead&head=" + id.ToString(), out result))
+                var (success, result) = await WebApp.GetAsync("mode=delPackHead&head=" + id.ToString(), this);
+                if (success)
                 {
                     if (result == "OK!")
                     {

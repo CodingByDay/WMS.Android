@@ -114,7 +114,7 @@ namespace WMS
                 LoaderManifest.LoaderManifestLoop(this);
             }
         }
-        private void UpdateFields()
+        private async void UpdateFields()
         {
             var warehouse = warehousesObjectsAdapter.ElementAt(temporaryPositionWarehouse);
             if (warehouse == null)
@@ -130,8 +130,8 @@ namespace WMS
                 try
                 {
 
-                    string result;
-                    if (WebApp.Get("mode=getConfirmedInventoryHead&wh=" + warehouse + "&date=" + date.ToString("s"), out result))
+                    var (success, result) = await WebApp.GetAsync("mode=getConfirmedInventoryHead&wh=" + warehouse + "&date=" + date.ToString("s"), this);
+                    if (success)
                     {
                         var moveHeadID = Convert.ToInt32(result);
                         if (moveHeadID < 0)
@@ -211,7 +211,7 @@ namespace WMS
             HelpfulMethods.clearTheStack(this);
         }
 
-        private void BtOpen_Click(object sender, EventArgs e)
+        private async void BtOpen_Click(object sender, EventArgs e)
         {
             if (!string.IsNullOrEmpty(lastError))
             {
@@ -234,18 +234,19 @@ namespace WMS
 
 
                 var date = dateX;
-                string error;
-                if (!WebApp.Get("mode=canInsertInventory&wh=" + warehouse.ID.ToString(), out error))
+                var (success, result) = await WebApp.GetAsync("mode=canInsertInventory&wh=" + warehouse.ID.ToString(), this);
+                if (!success)
                 {
-                    DialogHelper.ShowDialogError(this, this, $"{Resources.GetString(Resource.String.s247)}" + error);
+                    DialogHelper.ShowDialogError(this, this, $"{Resources.GetString(Resource.String.s247)}" + result);
 
                     return;
                 }
-                if (error == "OK!")
+                if (result == "OK!")
                 {
-                    if (!WebApp.Get("mode=reopenInventory&id=" + moveHead.GetInt("HeadID").ToString(), out error))
+                    (success, result) = await WebApp.GetAsync("mode=reopenInventory&id=" + moveHead.GetInt("HeadID").ToString(), this);
+                    if (!success)
                     {
-                        DialogHelper.ShowDialogError(this, this, $"{Resources.GetString(Resource.String.s247)}" + error);
+                        DialogHelper.ShowDialogError(this, this, $"{Resources.GetString(Resource.String.s247)}" + result);
 
                         return;
                     }
@@ -254,12 +255,12 @@ namespace WMS
                         Toast.MakeText(this, $"{Resources.GetString(Resource.String.s283)}", ToastLength.Long).Show();
 
                         StartActivity(typeof(InventoryConfirm));
-                        HelpfulMethods.clearTheStack(this);
+                        Finish();
                     }
                 }
                 else
                 {
-                    DialogHelper.ShowDialogError(this, this, $"{Resources.GetString(Resource.String.s247)}" + error);
+                    DialogHelper.ShowDialogError(this, this, $"{Resources.GetString(Resource.String.s247)}" + result);
                     return;
                 }
             }

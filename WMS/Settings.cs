@@ -91,14 +91,13 @@ namespace WMS
             StartService(serviceIntent);
         }
 
-        private void Bin_Click(object sender, EventArgs e)
+        private async void Bin_Click(object sender, EventArgs e)
         {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.SetMessage($"{Resources.GetString(Resource.String.s322)}");
-            builder.SetPositiveButton($"{Resources.GetString(Resource.String.s201)}", (senderDialog, args) =>
+            builder.SetPositiveButton($"{Resources.GetString(Resource.String.s201)}", async (senderDialog, args) =>
             {
-                string result;
-                WebApp.Get("mode=clearCache", out result);
+                var (success, result) = await WebApp.GetAsync("mode=clearCache", this);
             });
             AlertDialog alertDialog = builder.Create();
             alertDialog.Show();

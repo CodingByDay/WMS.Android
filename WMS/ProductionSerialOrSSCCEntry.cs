@@ -705,8 +705,8 @@ namespace WMS
                     try
                     {
 
-                        string result;
-                        if (WebApp.Get("mode=finish&stock=add&print=" + Services.DeviceUser() + "&id=" + headID.ToString(), out result))
+                        var (success, result) = await WebApp.GetAsync("mode=finish&stock=add&print=" + Services.DeviceUser() + "&id=" + headID.ToString(), this);
+                        if (success)
                         {
                             if (result.StartsWith("OK!"))
                             {

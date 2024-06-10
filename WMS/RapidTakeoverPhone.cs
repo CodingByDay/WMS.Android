@@ -198,7 +198,7 @@ namespace WMS
             HelpfulMethods.clearTheStack(this);
         }
 
-        private void BtConfirm_Click(object sender, EventArgs e)
+        private async void BtConfirm_Click(object sender, EventArgs e)
         {
 
             if (saveHead())
@@ -206,8 +206,10 @@ namespace WMS
                 try
                 {
                     var headID = moveItem.GetInt("HeadID");
-                    string result;
-                    if (WebApp.Get("mode=finish&stock=add&print=" + Services.DeviceUser() + "&id=" + headID.ToString(), out result))
+
+                    var (success, result) = await WebApp.GetAsync("mode=finish&stock=add&print=" + Services.DeviceUser() + "&id=" + headID.ToString(), this);
+
+                    if (success)
                     {
                         if (result.StartsWith("OK!"))
                         {

@@ -158,8 +158,9 @@ namespace WMS
             try
             {
 
-                string result;
-                if (WebApp.Get("mode=delMoveHead&head=" + id.ToString() + "&deleter=" + Services.UserID().ToString(), out result))
+                var (success, result) = await WebApp.GetAsync("mode=delMoveHead&head=" + id.ToString() + "&deleter=" + Services.UserID().ToString(), this);
+
+                if (success)
                 {
                     if (result == "OK!")
                     {
@@ -372,8 +373,8 @@ namespace WMS
             try
             {
 
-                string result;
-                if (WebApp.Get("mode=delMoveHead&head=" + id.ToString() + "&deleter=" + Services.UserID().ToString(), out result))
+                var (success, result) = await WebApp.GetAsync("mode=delMoveHead&head=" + id.ToString() + "&deleter=" + Services.UserID().ToString(), this);
+                if (success)
                 {
                     if (result == "OK!")
                     {

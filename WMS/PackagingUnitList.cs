@@ -186,7 +186,7 @@ namespace WMS
             popupDialog.Hide();
         }
 
-        private void BtnYes_Click(object sender, EventArgs e)
+        private async void BtnYes_Click(object sender, EventArgs e)
         {
 
             {
@@ -197,8 +197,8 @@ namespace WMS
                 try
                 {
 
-                    string result;
-                    if (WebApp.Get("mode=delPackItem&item=" + id.ToString(), out result))
+                    var (success, result) = await WebApp.GetAsync("mode=delPackItem&item=" + id.ToString(), this);
+                    if (success)
                     {
                         if (result == "OK!")
                         {

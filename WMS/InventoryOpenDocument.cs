@@ -95,7 +95,7 @@ namespace WMS
             StartActivity(typeof(MainMenu));
             HelpfulMethods.clearTheStack(this);
         }
-        private void Confirm_Click(object sender, EventArgs e)
+        private async void Confirm_Click(object sender, EventArgs e)
         {
             var warehouse = warehousesAdapter.ElementAt(temporaryPositionWarehouse);
             if (warehouse == null)
@@ -114,18 +114,18 @@ namespace WMS
                 moveHead.SetInt("LinkNo", 0);
                 moveHead.SetInt("Clerk", Services.UserID());
 
-                string error;
-                if (!WebApp.Get("mode=canInsertInventory&wh=" + warehouse.ID.ToString(), out error))
+                var (success, result) = await WebApp.GetAsync("mode=canInsertInventory&wh=" + warehouse.ID.ToString(), this);
+                if (!success)
                 {
-                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s216)}" + error, ToastLength.Long).Show();
+                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s216)}" + result, ToastLength.Long).Show();
                     return;
                 }
-                if (error == "OK!")
+                if (result == "OK!")
                 {
-                    var savedMoveHead = Services.SetObject("mh", moveHead, out error);
+                    var savedMoveHead = Services.SetObject("mh", moveHead, out result);
                     if (savedMoveHead == null)
                     {
-                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s216)}" + error, ToastLength.Long).Show();
+                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s216)}" + result, ToastLength.Long).Show();
                         return;
                     }
                     Toast.MakeText(this, $"{Resources.GetString(Resource.String.s284)}", ToastLength.Long).Show();
@@ -133,7 +133,7 @@ namespace WMS
                 }
                 else
                 {
-                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s247)}" + error, ToastLength.Long).Show();
+                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s247)}" + result, ToastLength.Long).Show();
                     return;
                 }
             }
