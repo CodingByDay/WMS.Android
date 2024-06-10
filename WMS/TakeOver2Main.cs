@@ -97,18 +97,18 @@ namespace WMS
                 return;
             }
         }
-        private bool SaveHead()
+        private async Task<bool> SaveHead()
         {
             if (!moveHead.GetBool("Saved"))
             {
-                moveHead.SetString("DocumentType", CommonData.GetSetting("DirectTakeOverDocType"));
+                moveHead.SetString("DocumentType", await CommonData.GetSettingAsync("DirectTakeOverDocType", this));
 
                 if (string.IsNullOrEmpty(moveHead.GetString("DocumentType")))
                 {
                     StartActivity(typeof(MainMenu));
                     Finish();
                 }
-                moveHead.SetString("Wharehouse", CommonData.GetSetting("DefaultWarehouse"));
+                moveHead.SetString("Wharehouse", await CommonData.GetSettingAsync("DefaultWarehouse", this));
                 moveHead.SetBool("ByOrder", false);
                 moveHead.SetInt("Clerk", Services.UserID());
                 moveHead.SetString("Type", "I");
@@ -130,20 +130,20 @@ namespace WMS
 
             return true;
         }
-        private NameValueObject? SaveItem(bool allowEmpty)
+        private async Task<NameValueObject?> SaveItem(bool allowEmpty)
         {
             if (allowEmpty && string.IsNullOrEmpty(tbIdent.Text.Trim()))
             {
                 return null;
             }
 
-            if (!CommonData.IsValidLocation(CommonData.GetSetting("DefaultWarehouse"), tbLocation.Text.Trim()))
+            if (!CommonData.IsValidLocation(await CommonData.GetSettingAsync("DefaultWarehouse", this), tbLocation.Text.Trim()))
             {
                 Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
                 return null;
             }
 
-            if (SaveHead())
+            if (await SaveHead())
             {
                 if (string.IsNullOrEmpty(tbIdent.Text.Trim()))
                 {
@@ -227,7 +227,7 @@ namespace WMS
             tbIdent.SetBackgroundColor(Android.Graphics.Color.Aqua);
             tbLocation.SetBackgroundColor(Android.Graphics.Color.Aqua);
         }
-        protected override void OnCreate(Bundle savedInstanceState)
+        protected override async void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             SetTheme(Resource.Style.AppTheme_NoActionBar);
@@ -264,7 +264,7 @@ namespace WMS
             btOverview.Click += BtOverview_Click;
             btExit.Click += BtExit_Click;
             tbIdent.KeyPress += TbIdent_KeyPress;
-            tbLocation.Text = CommonData.GetSetting("DefaultPaletteLocation");
+            tbLocation.Text = await CommonData.GetSettingAsync("DefaultPaletteLocation", this);
             color();
             if (moveItem != null)
             {
@@ -297,16 +297,16 @@ namespace WMS
             Finish();
         }
 
-        private void BtOverview_Click(object? sender, EventArgs e)
+        private async void BtOverview_Click(object? sender, EventArgs e)
         {
-            SaveItem(true);
+            await SaveItem(true);
             StartActivity(typeof(TakeOverEnteredPositionsView));
             Finish();
         }
 
-        private void BtSSCC_Click(object? sender, EventArgs e)
+        private async void BtSSCC_Click(object? sender, EventArgs e)
         {
-            if (SaveItem(false) != null)
+            if (await SaveItem(false) != null)
             {
                 var progress = new ProgressDialogClass();
 
@@ -328,9 +328,9 @@ namespace WMS
             }
         }
 
-        private void BtConfirm_Click(object? sender, EventArgs e)
+        private async void BtConfirm_Click(object? sender, EventArgs e)
         {
-            if (SaveItem(false) != null)
+            if (await SaveItem(false) != null)
             {
                 InUseObjects.Set("MoveItem", null);
                 StartActivity(typeof(TakeOver2Main));
@@ -339,9 +339,9 @@ namespace WMS
             }
         }
 
-        private void BtnOrder_Click(object? sender, EventArgs e)
+        private async void BtnOrder_Click(object? sender, EventArgs e)
         {
-            if (SaveItem(false) != null)
+            if (await SaveItem(false) != null)
             {
                 InUseObjects.Set("MoveItem", moveItem);
                 StartActivity(typeof(TakeOver2Orders));

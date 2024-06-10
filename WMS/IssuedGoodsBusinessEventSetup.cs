@@ -38,7 +38,7 @@ namespace WMS
         private RelativeLayout rlExtra;
 
 
-        protected override void OnCreate(Bundle savedInstanceState)
+        protected override async void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             SetTheme(Resource.Style.AppTheme_NoActionBar);
@@ -88,7 +88,7 @@ namespace WMS
             adapterDocType.SetDropDownViewResource(Android.Resource.Layout.SimpleSpinnerItem);
             cbDocType.Adapter = adapterDocType;
             UpdateForm();
-            btnOrderMode.Enabled = Services.HasPermission("TNET_WMS_BLAG_SND_NORDER", "R");
+            btnOrderMode.Enabled = await Services.HasPermission("TNET_WMS_BLAG_SND_NORDER", "R", this);
             cbWarehouse.Enabled = true;
             BottomSheetActions bottomSheetActions = new BottomSheetActions();
             initialLoad = true;

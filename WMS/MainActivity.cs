@@ -89,7 +89,7 @@ namespace WMS
 
                     if (valid)
                     {
-                        if (Services.HasPermission("TNET_WMS", "R"))
+                        if (await Services.HasPermission("TNET_WMS", "R", this))
                         {
                             StartActivity(typeof(MainMenu));
                             Password.Text = "";

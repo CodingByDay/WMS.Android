@@ -192,7 +192,6 @@ namespace WMS
             // Initialize the GestureDetector
             yourLinearLayout.SetOnTouchListener(gestureListener);
             LoaderManifest.LoaderManifestLoopStop(this);
-
         }
 
         private void ListData_ItemLongClick(object? sender, AdapterView.ItemLongClickEventArgs e)
@@ -318,7 +317,7 @@ namespace WMS
             Finish();
         }
 
-        private void BtNew_Click(object sender, EventArgs e)
+        private async void BtNew_Click(object sender, EventArgs e)
         {
 
             NameValueObject moveHead = new NameValueObject("MoveHead");
@@ -326,7 +325,7 @@ namespace WMS
             InUseObjects.Set("MoveHead", moveHead);
 
             // Changing the parameter name because of the old code which is still in use. 15.5.2024 Janko Jovičić 
-            string pickingChoice = CommonData.GetSetting("IssueProcessSelect");
+            string pickingChoice = await CommonData.GetSettingAsync("IssueProcessSelect", this);
             SetUpClientPicking(pickingChoice);
 
             switch (pickingChoice)

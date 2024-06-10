@@ -1,4 +1,5 @@
-﻿using API;
+﻿using Android.Content;
+using API;
 
 
 using Newtonsoft.Json;
@@ -94,9 +95,9 @@ namespace TrendNET.WMS.Device.Services
             }
         }
 
-        public static bool HasPermission(string perm, string minLevel)
+        public static async Task<bool> HasPermission(string perm, string minLevel, Context context)
         {
-            var usePerm = CommonData.GetSetting("UsePermissions");
+            var usePerm = await CommonData.GetSettingAsync("UsePermissions", context);
             if (string.IsNullOrEmpty(usePerm) || usePerm == "1")
             {
                 var item = UserInfo.FirstOrDefault(x => x.Name == "Perm" + perm);

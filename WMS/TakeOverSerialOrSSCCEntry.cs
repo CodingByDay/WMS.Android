@@ -133,7 +133,7 @@ namespace WMS
             LoaderManifest.LoaderManifestLoopStop(this);
         }
 
-        private void fillListAdapter()
+        private async void fillListAdapter()
         {
 
             for (int i = 0; i < positions.Items.Count; i++)
@@ -146,7 +146,7 @@ namespace WMS
                     var numbering = i + 1;
                     bool setting;
 
-                    if (CommonData.GetSetting("ShowNumberOfUnitsField") == "1")
+                    if (await CommonData.GetSettingAsync("ShowNumberOfUnitsField", this) == "1")
                     {
                         setting = false;
                     }
@@ -235,7 +235,7 @@ namespace WMS
             tbLocation.SetBackgroundColor(Android.Graphics.Color.Aqua);
         }
 
-        private void SetUpForm()
+        private async void SetUpForm()
         {
             // This is the default focus of the view.
             tbSSCC.RequestFocus();
@@ -293,7 +293,7 @@ namespace WMS
                     }
 
                     GetConnectedPositions(order.Order, order.Position ?? -1, order.Ident);
-                    tbLocation.Text = CommonData.GetSetting("DefaultPaletteLocation");
+                    tbLocation.Text = await CommonData.GetSettingAsync("DefaultPaletteLocation", this);
 
                     tbPacking.RequestFocus();
                     tbPacking.SelectAll();
@@ -318,7 +318,7 @@ namespace WMS
 
                     GetConnectedPositions(code2d.__helper__convertedOrder, code2d.__helper__position, code2d.ident);
 
-                    tbLocation.Text = CommonData.GetSetting("DefaultPaletteLocation");
+                    tbLocation.Text = await CommonData.GetSettingAsync("DefaultPaletteLocation", this);
                     // Reset the 2d code to nothing
                     Base.Store.code2D = null;
 
@@ -329,7 +329,7 @@ namespace WMS
                 {
                     // This is the orderless process.
                     qtyCheck = 10000000;
-                    tbLocation.Text = CommonData.GetSetting("DefaultPaletteLocation");
+                    tbLocation.Text = await CommonData.GetSettingAsync("DefaultPaletteLocation", this);
                     lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + Resources.GetString(Resource.String.s335) + " )";
                     stock = qtyCheck;
                     tbPacking.RequestFocus();
@@ -568,7 +568,7 @@ namespace WMS
                             warehouse = moveHead.GetString("Wharehouse");
                         }
 
-                        var isDuplicatedSerial = IsDuplicatedSerialOrAndSSCCNotByOrder(ident, warehouse, tbSerialNum.Text, tbSSCC.Text);
+                        var isDuplicatedSerial = await IsDuplicatedSerialOrAndSSCCNotByOrder(ident, warehouse, tbSerialNum.Text, tbSSCC.Text);
 
                         if (isDuplicatedSerial)
                         {
@@ -777,7 +777,7 @@ namespace WMS
                     {
                         warehouse = moveHead.GetString("Wharehouse");
                     }
-                    var isDuplicatedSerial = IsDuplicatedSerialOrAndSSCCNotByOrder(ident, warehouse, tbSerialNum.Text, tbSSCC.Text);
+                    var isDuplicatedSerial = await IsDuplicatedSerialOrAndSSCCNotByOrder(ident, warehouse, tbSerialNum.Text, tbSSCC.Text);
                     if (isDuplicatedSerial)
                     {
                         // Duplicirana serijska in/ali sscc koda.
@@ -794,9 +794,9 @@ namespace WMS
             }
         }
 
-        private bool IsDuplicatedSerialOrAndSSCCNotByOrder(string ident, string warehouse, string serial = null, string sscc = null)
+        private async Task<bool> IsDuplicatedSerialOrAndSSCCNotByOrder(string ident, string warehouse, string serial = null, string sscc = null)
         {
-            string serialDuplication = CommonData.GetSetting("NoSerialnoDupOut");
+            string serialDuplication = await CommonData.GetSettingAsync("NoSerialnoDupOut", this);
             string identType = openIdent.GetString("SerialNo");
 
             if (serialDuplication == "1")

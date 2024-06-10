@@ -32,7 +32,7 @@ namespace WMS
         private CustomAutoCompleteAdapter<ComboBoxItem> adapter;
         private CustomAutoCompleteAdapter<ComboBoxItem> adapterDoc;
         private RelativeLayout rlExtra;
-        protected override void OnCreate(Bundle savedInstanceState)
+        protected override async void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             SetTheme(Resource.Style.AppTheme_NoActionBar);
@@ -69,7 +69,7 @@ namespace WMS
             btnOrder.Click += BtnOrder_Click;
             btnOrderMode.Click += BtnOrderMode_Click;
             logout.Click += Logout_Click;
-            btnOrderMode.Enabled = Services.HasPermission("TNET_WMS_BLAG_ACQ_NORDER", "R");
+            btnOrderMode.Enabled = await Services.HasPermission("TNET_WMS_BLAG_ACQ_NORDER", "R", this);
             var warehouses = CommonData.ListWarehouses();
             if (warehouses != null)
             {
@@ -93,7 +93,7 @@ namespace WMS
             UpdateForm();
 
 
-            var dw = CommonData.GetSetting("DefaultWarehouse");
+            var dw = await CommonData.GetSettingAsync("DefaultWarehouse", this);
             if (!string.IsNullOrEmpty(dw))
             {
                 temporaryPositionWarehouse = cbWarehouse.SetItemByString(dw);
@@ -219,11 +219,11 @@ namespace WMS
             Finish();
         }
 
-        private void BtnOrderMode_Click(object sender, EventArgs e)
+        private async void BtnOrderMode_Click(object sender, EventArgs e)
         {
-            if (byOrder && (CommonData.GetSetting("UseDirectTakeOver") == "1"))
+            if (byOrder && (await CommonData.GetSettingAsync("UseDirectTakeOver", this) == "1"))
             {
-                // Special edge process for SkiSea, direct takeover. 20.05.2024 Janko Jovičić
+                // Special process for SkiSea, direct takeover. 20.05.2024 Janko Jovičić
                 StartActivity(typeof(TakeOver2Main));
                 Finish();
             }
