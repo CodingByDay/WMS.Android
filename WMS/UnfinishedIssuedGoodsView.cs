@@ -379,7 +379,6 @@ namespace WMS
 
         private async void BtnYes_Click(object sender, EventArgs e)
         {
-            LoaderManifest.LoaderManifestLoopResources(this);
 
 
             var item = positions.Items[displayedPosition];
@@ -428,10 +427,6 @@ namespace WMS
                 }
             }
             catch { }
-            finally
-            {
-                LoaderManifest.LoaderManifestLoopStop(this);
-            }
 
         }
 

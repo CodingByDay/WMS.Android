@@ -363,7 +363,6 @@ namespace WMS
 
         private async void BtnYes_Click(object sender, EventArgs e)
         {
-            LoaderManifest.LoaderManifestLoopResources(this);
 
 
             var item = positions.Items[displayedPosition];
@@ -406,7 +405,7 @@ namespace WMS
                 {
                     string errorWebApp = string.Format($"{Resources.GetString(Resource.String.s216)}" + result);
                     Toast.MakeText(this, errorWebApp, ToastLength.Long).Show();
-                    System.Diagnostics.Process.GetCurrentProcess().Kill();
+                    
                     popupDialog.Dismiss();
                     popupDialog.Hide();
                     return;
@@ -416,7 +415,6 @@ namespace WMS
             {
                 popupDialog.Dismiss();
                 popupDialog.Hide();
-                LoaderManifest.LoaderManifestLoopStop(this);
 
             }
 

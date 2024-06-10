@@ -454,14 +454,6 @@ namespace WMS
                 var headID = moveHead.GetInt("HeadID");
                 SelectSubjectBeforeFinish.ShowIfNeeded(headID);
 
-                RunOnUiThread(() =>
-                {
-                    progress = new ProgressDialogClass();
-
-                    progress.ShowDialogSync(this, $"{Resources.GetString(Resource.String.s262)}");
-                });
-
-
                 try
                 {
 
@@ -473,9 +465,7 @@ namespace WMS
 
                             RunOnUiThread(() =>
                             {
-                                progress.StopDialogSync();
                                 var id = result.Split('+')[1];
-
 
                                 AlertDialog.Builder alert = new AlertDialog.Builder(this);
                                 alert.SetTitle($"{Resources.GetString(Resource.String.s263)}");
@@ -484,9 +474,8 @@ namespace WMS
                                 alert.SetPositiveButton("Ok", (senderAlert, args) =>
                                 {
                                     alert.Dispose();
-                                    Thread.Sleep(500);
                                     StartActivity(typeof(MainMenu));
-                                    HelpfulMethods.clearTheStack(this);
+                                    Finish();
                                 });
 
 
@@ -502,7 +491,7 @@ namespace WMS
 
                             RunOnUiThread(() =>
                             {
-                                progress.StopDialogSync();
+
                                 AlertDialog.Builder alert = new AlertDialog.Builder(this);
                                 alert.SetTitle($"{Resources.GetString(Resource.String.s265)}");
                                 alert.SetMessage($"{Resources.GetString(Resource.String.s266)}" + result);
@@ -510,9 +499,8 @@ namespace WMS
                                 alert.SetPositiveButton("Ok", (senderAlert, args) =>
                                 {
                                     alert.Dispose();
-                                    System.Threading.Thread.Sleep(500);
                                     StartActivity(typeof(MainMenu));
-                                    HelpfulMethods.clearTheStack(this);
+                                    Finish();
 
                                 });
 
@@ -538,12 +526,9 @@ namespace WMS
 
                     }
                 }
-                finally
+                catch
                 {
-                    RunOnUiThread(() =>
-                    {
-                        progress.StopDialogSync();
-                    });
+
                 }
 
             });

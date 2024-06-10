@@ -434,12 +434,6 @@ namespace WMS
             {
                 if (SavePackagingItem())
                 {
-                    RunOnUiThread(() =>
-                    {
-                        progress = new ProgressDialogClass();
-
-                        progress.ShowDialogSync(this, $"{Resources.GetString(Resource.String.s262)}");
-                    });
 
                     try
                     {
@@ -467,7 +461,6 @@ namespace WMS
                                 });
 
 
-
                                 Dialog dialog = alert.Create();
                                 dialog.Show();
 
@@ -476,7 +469,6 @@ namespace WMS
                             {
                                 RunOnUiThread(() =>
                                 {
-                                    progress.StopDialogSync();
                                     AlertDialog.Builder alert = new AlertDialog.Builder(this);
                                     alert.SetTitle($"{Resources.GetString(Resource.String.s265)}");
                                     alert.SetMessage($"{Resources.GetString(Resource.String.s266)}" + result);
@@ -484,10 +476,7 @@ namespace WMS
                                     alert.SetPositiveButton("Ok", (senderAlert, args) =>
                                     {
                                         alert.Dispose();
-
                                     });
-
-
 
                                     Dialog dialog = alert.Create();
                                     dialog.Show();
@@ -498,12 +487,10 @@ namespace WMS
                         else
                         {
                             Toast.MakeText(this, $"{Resources.GetString(Resource.String.s216)}" + result, ToastLength.Long).Show();
-
                         }
                     }
-                    finally
+                    catch
                     {
-                        progress.StopDialogSync();
 
                     }
                 }

@@ -308,11 +308,7 @@ namespace WMS
         {
             await Task.Run(async () =>
             {
-                RunOnUiThread(() =>
-                {
-                    progress = new ProgressDialogClass();
-                    progress.ShowDialogSync(this, $"{Resources.GetString(Resource.String.s262)}");
-                });
+        
                 try
                 {
 
@@ -326,7 +322,6 @@ namespace WMS
                         {
                             RunOnUiThread(() =>
                             {
-                                progress.StopDialogSync();
                                 var id = result.Split('+')[1];
                                 AlertDialog.Builder alert = new AlertDialog.Builder(this);
                                 alert.SetTitle($"{Resources.GetString(Resource.String.s263)}");
@@ -334,8 +329,8 @@ namespace WMS
                                 alert.SetPositiveButton("Ok", (senderAlert, args) =>
                                 {
                                     alert.Dispose();
-                                    System.Threading.Thread.Sleep(500);
                                     StartActivity(typeof(MainMenu));
+                                    Finish();
                                 });
                                 Dialog dialog = alert.Create();
                                 dialog.Show();
@@ -345,16 +340,14 @@ namespace WMS
                         {
                             RunOnUiThread(() =>
                             {
-                                progress.StopDialogSync();
                                 AlertDialog.Builder alert = new AlertDialog.Builder(this);
                                 alert.SetTitle($"{Resources.GetString(Resource.String.s265)}");
                                 alert.SetMessage($"{Resources.GetString(Resource.String.s266)}" + result);
                                 alert.SetPositiveButton("Ok", (senderAlert, args) =>
                                 {
                                     alert.Dispose();
-                                    System.Threading.Thread.Sleep(500);
                                     StartActivity(typeof(MainMenu));
-
+                                    Finish();
                                 });
                                 Dialog dialog = alert.Create();
                                 dialog.Show();
@@ -369,12 +362,9 @@ namespace WMS
                         });
                     }
                 }
-                finally
+                catch
                 {
-                    RunOnUiThread(() =>
-                    {
-                        progress.StopDialogSync();
-                    });
+                
                 }
             });
 

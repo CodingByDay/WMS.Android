@@ -125,9 +125,8 @@ namespace WMS
                             alert.SetPositiveButton("Ok", (senderAlert, args) =>
                             {
                                 alert.Dispose();
-                                System.Threading.Thread.Sleep(500);
                                 StartActivity(typeof(MainMenu));
-
+                                Finish();
                             });
 
 
@@ -150,9 +149,8 @@ namespace WMS
                             alert.SetPositiveButton("Ok", (senderAlert, args) =>
                             {
                                 alert.Dispose();
-                                System.Threading.Thread.Sleep(500);
                                 StartActivity(typeof(MainMenu));
-
+                                Finish();
                             });
 
 
@@ -176,9 +174,8 @@ namespace WMS
                         alert.SetPositiveButton("Ok", (senderAlert, args) =>
                         {
                             alert.Dispose();
-                            System.Threading.Thread.Sleep(500);
                             StartActivity(typeof(MainMenu));
-
+                            Finish();
                         });
 
 

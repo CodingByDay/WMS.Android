@@ -239,7 +239,7 @@ namespace WMS
 
         private void BtnOkRestart_Click(object sender, EventArgs e)
         {
-            System.Diagnostics.Process.GetCurrentProcess().Kill();
+            // TODO restart the app
         }
 
         private void BtRecalculate_Click(object sender, EventArgs e)

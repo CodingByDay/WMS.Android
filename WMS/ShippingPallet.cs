@@ -145,12 +145,7 @@ namespace WMS
                 {
 
 
-                    RunOnUiThread(() =>
-                    {
-                        progress = new ProgressDialogClass();
 
-                        progress.ShowDialogSync(this, $"{Resources.GetString(Resource.String.s308)}");
-                    });
 
                     var (success, result) = await WebApp.GetAsync("mode=palMac&pal=" + ETpallet + "&mac=" + ETmachine, this);
                     if (success)
@@ -161,7 +156,6 @@ namespace WMS
                             {
 
 
-                                progress.StopDialogSync();
                                 AlertDialog.Builder alert = new AlertDialog.Builder(this);
                                 alert.SetTitle($"{Resources.GetString(Resource.String.s323)}");
                                 alert.SetMessage($"{Resources.GetString(Resource.String.s324)}");
@@ -169,9 +163,8 @@ namespace WMS
                                 alert.SetPositiveButton("Ok", (senderAlert, args) =>
                                 {
                                     alert.Dispose();
-                                    System.Threading.Thread.Sleep(500);
                                     StartActivity(typeof(MainMenu));
-
+                                    Finish();
                                 });
 
 
@@ -187,7 +180,6 @@ namespace WMS
                             {
 
 
-                                progress.StopDialogSync();
                                 AlertDialog.Builder alert = new AlertDialog.Builder(this);
                                 alert.SetTitle($"{Resources.GetString(Resource.String.s265)}");
                                 alert.SetMessage($"{Resources.GetString(Resource.String.s216)}" + result);
@@ -195,9 +187,8 @@ namespace WMS
                                 alert.SetPositiveButton("Ok", (senderAlert, args) =>
                                 {
                                     alert.Dispose();
-                                    System.Threading.Thread.Sleep(500);
                                     StartActivity(typeof(MainMenu));
-
+                                    Finish();
                                 });
 
 
@@ -213,7 +204,6 @@ namespace WMS
                         {
 
 
-                            progress.StopDialogSync();
                             AlertDialog.Builder alert = new AlertDialog.Builder(this);
                             alert.SetTitle($"{Resources.GetString(Resource.String.s265)}");
                             alert.SetMessage($"{Resources.GetString(Resource.String.s213)}");
@@ -221,9 +211,8 @@ namespace WMS
                             alert.SetPositiveButton("Ok", (senderAlert, args) =>
                             {
                                 alert.Dispose();
-                                System.Threading.Thread.Sleep(500);
                                 StartActivity(typeof(MainMenu));
-
+                                Finish();
                             });
 
 
@@ -244,7 +233,6 @@ namespace WMS
                     {
 
 
-                        progress.StopDialogSync();
                         AlertDialog.Builder alert = new AlertDialog.Builder(this);
                         alert.SetTitle($"{Resources.GetString(Resource.String.s265)}");
                         alert.SetMessage($"{Resources.GetString(Resource.String.s216)}" + ex.Message);
@@ -252,9 +240,8 @@ namespace WMS
                         alert.SetPositiveButton("Ok", (senderAlert, args) =>
                         {
                             alert.Dispose();
-                            System.Threading.Thread.Sleep(500);
                             StartActivity(typeof(MainMenu));
-
+                            Finish();
                         });
 
 
@@ -265,7 +252,6 @@ namespace WMS
                 }
                 finally
                 {
-                    progress.StopDialogSync();
                 }
 
 

@@ -420,7 +420,7 @@ namespace WMS
                 {
                     string errorWebAppProduction = string.Format($"{Resources.GetString(Resource.String.s216)}" + result);
                     DialogHelper.ShowDialogError(this, this, errorWebAppProduction);
-                    System.Diagnostics.Process.GetCurrentProcess().Kill();
+                    
                     return;
                 }
             }

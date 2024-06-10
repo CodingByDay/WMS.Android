@@ -177,9 +177,7 @@ namespace WMS
 
                         alert.SetPositiveButton("Ok", (senderAlert, args) =>
                         {
-                            alert.Dispose();
-                            System.Threading.Thread.Sleep(500);
-                            throw new ApplicationException("Error, openIdent");
+                            alert.Dispose();                            
                         });
 
                         Dialog dialog = alert.Create();
@@ -190,7 +188,7 @@ namespace WMS
                 {
                     string toastError = string.Format($"{Resources.GetString(Resource.String.s213)}" + result);
                     Toast.MakeText(this, toastError, ToastLength.Long).Show();
-                    System.Diagnostics.Process.GetCurrentProcess().Kill();
+                    
                     return;
                 }
             }

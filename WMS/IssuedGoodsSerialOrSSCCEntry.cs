@@ -912,11 +912,7 @@ namespace WMS
         {
             await Task.Run(async () =>
             {
-                RunOnUiThread(() =>
-                {
-                    progress = new ProgressDialogClass();
-                    progress.ShowDialogSync(this, $"{Resources.GetString(Resource.String.s262)}");
-                });
+     
 
                 try
                 {
@@ -930,7 +926,6 @@ namespace WMS
                         {
                             RunOnUiThread(() =>
                             {
-                                progress.StopDialogSync();
 
                                 var id = result.Split('+')[1];
 
@@ -946,6 +941,7 @@ namespace WMS
                                 {
                                     alert.Dispose();
                                     StartActivity(typeof(IssuedGoodsBusinessEventSetup));
+                                    Finish();
                                 });
 
                                 Dialog dialog = alert.Create();
@@ -956,7 +952,7 @@ namespace WMS
                         {
                             RunOnUiThread(() =>
                             {
-                                progress.StopDialogSync();
+
                                 AlertDialog.Builder alert = new AlertDialog.Builder(this);
                                 alert.SetTitle($"{Resources.GetString(Resource.String.s265)}");
                                 alert.SetMessage($"{Resources.GetString(Resource.String.s266)}" + result);
@@ -965,6 +961,7 @@ namespace WMS
                                 {
                                     alert.Dispose();
                                     StartActivity(typeof(MainMenu));
+                                    Finish();
                                 });
 
                                 Dialog dialog = alert.Create();

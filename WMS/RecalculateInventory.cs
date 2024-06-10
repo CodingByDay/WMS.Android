@@ -204,12 +204,7 @@ namespace WMS
                 {
 
 
-                    RunOnUiThread(() =>
-                    {
-                        progress = new ProgressDialogClass();
-
-                        progress.ShowDialogSync(this, $"{Resources.GetString(Resource.String.s317)}");
-                    });
+        
 
 
                     var (success, result) = await WebApp.GetAsync("mode=recalc&id=" + ident, this);
@@ -222,7 +217,6 @@ namespace WMS
                             RunOnUiThread(() =>
                             {
 
-                                progress.StopDialogSync();
 
                                 AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
@@ -251,7 +245,6 @@ namespace WMS
                             {
 
 
-                                progress.StopDialogSync();
                                 AlertDialog.Builder alert = new AlertDialog.Builder(this);
                                 alert.SetTitle($"{Resources.GetString(Resource.String.s265)}");
                                 alert.SetMessage($"Napaka: {result}");
@@ -277,7 +270,6 @@ namespace WMS
                         {
 
 
-                            progress.StopDialogSync();
                             AlertDialog.Builder alert = new AlertDialog.Builder(this);
                             alert.SetTitle($"{Resources.GetString(Resource.String.s265)}");
                             alert.SetMessage($"{Resources.GetString(Resource.String.s213)}");
@@ -306,16 +298,14 @@ namespace WMS
 
                     RunOnUiThread(() =>
                     {
-                        progress.StopDialogSync();
                         AlertDialog.Builder alert = new AlertDialog.Builder(this);
                         alert.SetTitle($"{Resources.GetString(Resource.String.s265)}");
                         alert.SetMessage($"{Resources.GetString(Resource.String.s247)}" + ex.Message);
                         alert.SetPositiveButton("Ok", (senderAlert, args) =>
                         {
                             alert.Dispose();
-                            System.Threading.Thread.Sleep(500);
                             StartActivity(typeof(MainMenu));
-                            HelpfulMethods.clearTheStack(this);
+                            Finish();
                         });
                         Dialog dialog = alert.Create();
                         dialog.Show();
