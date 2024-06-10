@@ -1,5 +1,7 @@
 ﻿
+using Android.Content;
 using TrendNET.WMS.Core.Data;
+using WMS.AsyncServices;
 
 namespace TrendNET.WMS.Device.Services
 {
@@ -41,6 +43,37 @@ namespace TrendNET.WMS.Device.Services
             {
                 string error;
                 var value = Services.GetObject("sg", name, out error);
+                if (value == null)
+                {
+                    return string.Empty;
+                }
+                else
+                {
+                    var val = value.GetString("Value");
+                    settings.Add(name, val);
+                    return val == null ? "" : val;
+                }
+            }
+            catch
+            {
+                return string.Empty;
+            }
+        }
+
+
+
+        public static async Task <string> GetSettingAsync(string name, Context context)
+        {
+            if (settings.ContainsKey(name))
+            {
+                return settings[name];
+            }
+
+            try
+            {
+               
+                var (value, error) = await AsyncServices.GetObjectAsync("sg", name, context);
+
                 if (value == null)
                 {
                     return string.Empty;

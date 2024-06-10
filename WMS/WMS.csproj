@@ -181,7 +181,6 @@
     <None Remove="Resources\layout\UnfinishedProductionViewTablet.xml" />
     <None Remove="Resources\layout\UnfinishedTakeoversView.xml" />
     <None Remove="Resources\layout\UnfinishedTakeoversViewTablet.xml" />
-    <None Remove="Resources\layout\update.xml" />
     <None Remove="Resources\layout\ViewLocation.xml" />
     <None Remove="Resources\layout\WarehousePicture.xml" />
     <None Remove="Resources\layout\WrappingPallet.xml" />
@@ -214,7 +213,7 @@
     <PackageReference Include="Xamarin.AndroidX.Core" Version="1.12.0.3" />
     <PackageReference Include="Xamarin.AndroidX.ExifInterface" Version="1.3.6.6" />
     <PackageReference Include="Xamarin.AndroidX.PercentLayout" Version="1.0.0.23" />
-    <PackageReference Include="Xamarin.ANRWatchDog" Version="1.4.25" />
+    <PackageReference Include="Xamarin.ANRWatchDog.netcore" Version="1.5.1" />
     <PackageReference Include="Xamarin.Essentials" Version="1.8.1" />
     <PackageReference Include="Xamarin.FFImageLoading" Version="2.4.11.982" />
     <PackageReference Include="Xamarin.Google.Android.Material" Version="1.10.0.2" />

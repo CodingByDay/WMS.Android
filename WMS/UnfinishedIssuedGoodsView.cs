@@ -192,6 +192,7 @@ namespace WMS
             // Initialize the GestureDetector
             yourLinearLayout.SetOnTouchListener(gestureListener);
             LoaderManifest.LoaderManifestLoopStop(this);
+
         }
 
         private void ListData_ItemLongClick(object? sender, AdapterView.ItemLongClickEventArgs e)

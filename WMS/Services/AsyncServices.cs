@@ -1,6 +1,9 @@
-﻿using Newtonsoft.Json;
+﻿using Android.Content;
+using Newtonsoft.Json;
 using System.Text;
 using TrendNET.WMS.Core.Data;
+using TrendNET.WMS.Device.App;
+using TrendNET.WMS.Device.Services;
 using static TrendNET.WMS.Device.Services.Services;
 
 
@@ -153,6 +156,35 @@ namespace WMS.AsyncServices
             {
                 SentrySdk.CaptureMessage(err.Message);
                 return new ApiResultSet { Error = err.Message, Success = false, Results = 0, Rows = new List<Row>() };
+            }
+        }
+
+
+
+        public static async Task<(NameValueObject? nvo, string? error)> GetObjectAsync(string? table, string? id, Context context)
+        {
+
+            var (success, result) = await WebApp.GetAsync("mode=getObj&table=" + table + "&id=" + id, context);
+
+            if (success)
+            {
+                try
+                {
+                    var startedAt = DateTime.Now;
+                    var nvo = CompactSerializer.Deserialize<NameValueObject>(result);
+                    string error = nvo == null ? "Does not exist (" + table + "; " + id + ")!" : "";
+                    return (nvo, error);
+                }
+                catch (Exception ex)
+                {
+                    string error = ex.Message;
+                    return (null, error);
+                }
+            }
+            else
+            {
+                string error = result;
+                return (null, error);
             }
         }
 

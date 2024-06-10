@@ -7,8 +7,10 @@ using Android.Views;
 using TrendNET.WMS.Device.Services;
 using WMS.App;
 using WMS.Caching;
+using Xamarin.ANRWatchDog;
 using Xamarin.Essentials;
 using static Android.App.ActionBar;
+using static Xamarin.ANRWatchDog.ANRWatchDog;
 namespace WMS
 {
     [Activity(Label = "MainMenu", ScreenOrientation = ScreenOrientation.Portrait)]
@@ -116,14 +118,29 @@ namespace WMS
             new IntentFilter(ConnectivityManager.ConnectivityAction));
             Caching.Caching.SavedList = new List<string>();
             DownloadResources();
-            SentrySdk.CaptureMessage($"Login from the id-{App.Settings.ID}, url-{App.Settings.RootURL}, version-0.{GetAppVersion()}");
             // Reseting the global update variable.
             Base.Store.isUpdate = false;
             Base.Store.OpenOrder = null;
             Base.Store.byOrder = true;
             Base.Store.code2D = null;
 
+            string pickingChoice = await CommonData.GetSettingAsync("IssueProcessSelectbreaking", this);
+
+
+            // Global scope for sentry 10.06.2024 Janko Jovičić
+            SentrySdk.ConfigureScope(scope =>
+            {           
+                var currentUser = new User
+                {
+                    url = App.Settings.RootURL,
+                    id = App.Settings.ID,
+                    tablet = App.Settings.tablet
+                };
+                scope.SetExtra("WMS User", currentUser);
+            });
+
         }
+
 
 
         private async Task<List<CleanupLocation>> FillTheCleanupList()
@@ -213,37 +230,12 @@ namespace WMS
             }
         }
 
-        protected override void OnResume()
-        {
-            var restartNeeded = App.Settings.restart;
+   
 
-            if (restartNeeded)
-            {
-                popupDialog = new Dialog(this);
-                popupDialog.SetContentView(Resource.Layout.restart);
-                popupDialog.Window.SetSoftInputMode(SoftInput.AdjustResize);
-                popupDialog.Show();
-
-                popupDialog.Window.SetLayout(LayoutParams.MatchParent, LayoutParams.WrapContent);
-                popupDialog.Window.SetBackgroundDrawable(new ColorDrawable(Color.ParseColor("#081a45")));
-
-                // Access Pop-up layout fields like below
-                btnOkRestart = popupDialog.FindViewById<Button>(Resource.Id.btnOk);
-                btnOkRestart.Click += BtnOkRestart_Click;
-
-            }
-
-            base.OnResume();
-        }
-
-        private void BtnOkRestart_Click(object sender, EventArgs e)
-        {
-            // TODO restart the app
-        }
+      
 
         private void BtRecalculate_Click(object sender, EventArgs e)
         {
-
             StartActivity(typeof(RecalculateInventory));
         }
 
@@ -325,8 +317,6 @@ namespace WMS
                     }
                     break;
 
-
-
                 case Keycode.F7:
                     if (btnInventory.Enabled == true)
                     {
@@ -347,13 +337,14 @@ namespace WMS
         private void BtnLogout_Click(object sender, EventArgs e)
         {
 
-
+        
             Intent intent = new Intent(this, typeof(MainActivity));
             intent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
             StartActivity(intent);
             Finish();
         }
 
+ 
         private void BtnPackaging_Click(object sender, EventArgs e)
         {
             StartActivity(typeof(PackagingEnteredPositionsView));
