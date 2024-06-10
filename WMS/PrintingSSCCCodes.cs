@@ -97,7 +97,7 @@ namespace WMS
         private void Button2_Click(object sender, EventArgs e)
         {
             StartActivity(typeof(MainMenu));
-            HelpfulMethods.clearTheStack(this);
+            Finish();
         }
 
         private void Button1_Click(object sender, EventArgs e)

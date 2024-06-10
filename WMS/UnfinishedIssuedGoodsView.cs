@@ -309,13 +309,12 @@ namespace WMS
         }
         public override void OnBackPressed()
         {
-            HelpfulMethods.releaseLock();
             base.OnBackPressed();
         }
         private void BtLogout_Click(object sender, EventArgs e)
         {
             StartActivity(typeof(MainMenu));
-            HelpfulMethods.clearTheStack(this);
+            Finish();
         }
 
         private void BtNew_Click(object sender, EventArgs e)
@@ -438,7 +437,7 @@ namespace WMS
             {
                 InUseObjects.Set("MoveHead", moveHead);
                 StartActivity(typeof(IssuedGoodsEnteredPositionsView));
-                HelpfulMethods.clearTheStack(this);
+                Finish();
             }
         }
 

@@ -228,13 +228,13 @@ namespace WMS
         private void BtExit_Click(object? sender, EventArgs e)
         {
             StartActivity(typeof(MainMenu));
-            HelpfulMethods.clearTheStack(this);
+            Finish();
         }
 
         private void BtOverview_Click(object? sender, EventArgs e)
         {
             StartActivity(typeof(InterWarehouseEnteredPositionsView));
-            HelpfulMethods.clearTheStack(this);
+            Finish();
         }
 
         private void BtFinish_Click(object? sender, EventArgs e)

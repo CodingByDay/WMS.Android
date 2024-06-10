@@ -93,7 +93,7 @@ namespace WMS
         private void Logout_Click(object sender, EventArgs e)
         {
             StartActivity(typeof(MainMenu));
-            HelpfulMethods.clearTheStack(this);
+            Finish();
         }
         private async void Confirm_Click(object sender, EventArgs e)
         {

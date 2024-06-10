@@ -334,7 +334,7 @@ namespace WMS
             {
                 InUseObjects.Set("MoveItem", null);
                 StartActivity(typeof(TakeOver2Main));
-                HelpfulMethods.clearTheStack(this);
+                Finish();
 
             }
         }
@@ -345,7 +345,7 @@ namespace WMS
             {
                 InUseObjects.Set("MoveItem", moveItem);
                 StartActivity(typeof(TakeOver2Orders));
-                HelpfulMethods.clearTheStack(this);
+                Finish();
 
             }
         }

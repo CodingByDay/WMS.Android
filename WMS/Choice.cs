@@ -29,19 +29,17 @@ namespace WMS
         private void Rapid_Click(object sender, EventArgs e)
         {
             StartActivity(typeof(TakeOver2Main));
-            HelpfulMethods.clearTheStack(this);
+            Finish();
         }
 
         private void Production_Click(object sender, EventArgs e)
         {
             StartActivity(typeof(UnfinishedTakeoversView));
-            HelpfulMethods.clearTheStack(this);
+            Finish();
         }
 
         public override void OnBackPressed()
         {
-            HelpfulMethods.releaseLock();
-
             base.OnBackPressed();
         }
 

@@ -39,9 +39,6 @@ namespace WMS
         }
         public override void OnBackPressed()
         {
-
-            HelpfulMethods.releaseLock();
-
             base.OnBackPressed();
         }
 

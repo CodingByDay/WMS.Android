@@ -559,7 +559,7 @@ namespace WMS
                         Base.Store.isUpdate = true;
                         InUseObjects.Set("OpenIdent", openIdent);
                         StartActivity(i);
-                        HelpfulMethods.clearTheStack(this);
+                        Finish();
 
                     }
                     else
@@ -568,7 +568,7 @@ namespace WMS
                         Intent i = new Intent(Application.Context, typeof(IssuedGoodsSerialOrSSCCEntry));
                         InUseObjects.Set("OpenIdent", openIdent);
                         StartActivity(i);
-                        HelpfulMethods.clearTheStack(this);
+                        Finish();
 
                     }
 

@@ -427,14 +427,14 @@ namespace WMS
         private void BtBack_Click(object? sender, EventArgs e)
         {
             StartActivity(typeof(MainMenu));
-            HelpfulMethods.clearTheStack(this);
+            Finish();
             Finish();
         }
 
         private void BtOverview_Click(object? sender, EventArgs e)
         {
             StartActivity(typeof(TakeOverEnteredPositionsView));
-            HelpfulMethods.clearTheStack(this);
+            Finish();
             Finish();
         }
 

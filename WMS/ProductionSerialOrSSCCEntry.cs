@@ -680,7 +680,7 @@ namespace WMS
         private void Button5_Click(object sender, EventArgs e)
         {
             StartActivity(typeof(MainMenu));
-            HelpfulMethods.clearTheStack(this);
+            Finish();
         }
 
 
@@ -812,7 +812,7 @@ namespace WMS
         private void Button3_Click(object sender, EventArgs e)
         {
             StartActivity(typeof(ProductionEnteredPositionsView));
-            HelpfulMethods.clearTheStack(this);
+            Finish();
         }
 
         private void BtSaveOrUpdate_Click(object sender, EventArgs e)
@@ -822,12 +822,12 @@ namespace WMS
                 if (editMode)
                 {
                     StartActivity(typeof(ProductionEnteredPositionsView));
-                    HelpfulMethods.clearTheStack(this);
+                    Finish();
                 }
                 else
                 {
                     StartActivity(typeof(ProductionSerialOrSSCCEntry));
-                    HelpfulMethods.clearTheStack(this);
+                    Finish();
                 }
             }
         }

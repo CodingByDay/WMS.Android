@@ -287,7 +287,7 @@ namespace WMS
                 }
 
                 StartActivity(typeof(InterWarehouseSerialOrSSCCEntry));
-                HelpfulMethods.clearTheStack(this);
+                Finish();
 
             }
             catch (Exception errorL)
@@ -349,7 +349,7 @@ namespace WMS
         private void Logout_Click(object sender, EventArgs e)
         {
             StartActivity(typeof(MainMenu));
-            HelpfulMethods.clearTheStack(this);
+            Finish();
         }
     }
 

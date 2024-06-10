@@ -227,7 +227,7 @@ namespace WMS
         private void Button5_Click(object sender, EventArgs e)
         {
             StartActivity(typeof(MainMenu));
-            HelpfulMethods.clearTheStack(this);
+            Finish();
         }
 
         private void BtDelete_Click(object sender, EventArgs e)
@@ -415,7 +415,7 @@ namespace WMS
             else
 
                 StartActivity(typeof(TakeOverIdentEntry));
-            HelpfulMethods.clearTheStack(this);
+            Finish();
         }
 
         private void BtUpdate_Click(object sender, EventArgs e)
@@ -426,7 +426,7 @@ namespace WMS
             {
                 InUseObjects.Set("MoveHead", moveHead);
                 StartActivity(typeof(TakeOver2Main));
-                HelpfulMethods.clearTheStack(this);
+                Finish();
                 return;
             }
             try
@@ -444,7 +444,7 @@ namespace WMS
                     InUseObjects.Set("OpenIdent", openIdent);
                     Base.Store.isUpdate = true;
                     StartActivity(typeof(TakeOverSerialOrSSCCEntry));
-                    HelpfulMethods.clearTheStack(this);
+                    Finish();
                 }
             }
             catch (Exception ex)

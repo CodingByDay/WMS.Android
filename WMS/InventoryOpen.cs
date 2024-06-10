@@ -86,7 +86,7 @@ namespace WMS
         private void Button2_Click(object sender, EventArgs e)
         {
             StartActivity(typeof(MainMenu));
-            HelpfulMethods.clearTheStack(this);
+            Finish();
         }
 
         public bool IsOnline()
@@ -199,7 +199,7 @@ namespace WMS
                     if (button2.Enabled == true)
                     {
                         StartActivity(typeof(MainMenu));
-                        HelpfulMethods.clearTheStack(this);
+                        Finish();
                     }
                     break;
             }
@@ -208,7 +208,7 @@ namespace WMS
         private void BtLogout_Click(object sender, EventArgs e)
         {
             StartActivity(typeof(MainMenu));
-            HelpfulMethods.clearTheStack(this);
+            Finish();
         }
 
         private async void BtOpen_Click(object sender, EventArgs e)

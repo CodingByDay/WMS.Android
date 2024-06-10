@@ -216,7 +216,7 @@ namespace WMS
         private void Logout_Click(object sender, EventArgs e)
         {
             StartActivity(typeof(MainMenu));
-            HelpfulMethods.clearTheStack(this);
+            Finish();
         }
 
         private void BtnOrderMode_Click(object sender, EventArgs e)
@@ -225,7 +225,7 @@ namespace WMS
             {
                 // Special edge process for SkiSea, direct takeover. 20.05.2024 Janko Jovičić
                 StartActivity(typeof(TakeOver2Main));
-                HelpfulMethods.clearTheStack(this);
+                Finish();
             }
             byOrder = !byOrder;
             Base.Store.byOrder = byOrder;
@@ -395,7 +395,7 @@ namespace WMS
                     }
 
                     StartActivity(typeof(TakeOverIdentEntry));
-                    HelpfulMethods.clearTheStack(this);
+                    Finish();
 
                 }
             }

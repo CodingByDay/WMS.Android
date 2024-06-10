@@ -355,7 +355,7 @@ namespace WMS
         private void Button5_Click(object sender, EventArgs e)
         {
             StartActivity(typeof(MainMenu));
-            HelpfulMethods.clearTheStack(this);
+            Finish();
         }
 
         private void BtDelete_Click(object sender, EventArgs e)
@@ -567,7 +567,7 @@ namespace WMS
         private void Button4_Click(object sender, EventArgs e)
         {
             StartActivity(typeof(ProductionSerialOrSSCCEntry));
-            HelpfulMethods.clearTheStack(this);
+            Finish();
         }
 
         private void BtUpdate_Click(object sender, EventArgs e)
@@ -576,7 +576,7 @@ namespace WMS
             InUseObjects.Set("MoveItem", item);
 
             StartActivity(typeof(ProductionSerialOrSSCCEntry));
-            HelpfulMethods.clearTheStack(this);
+            Finish();
         }
 
         private void BtNext_Click(object sender, EventArgs e)

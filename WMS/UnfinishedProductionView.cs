@@ -335,8 +335,6 @@ namespace WMS
         public override void OnBackPressed()
         {
 
-            HelpfulMethods.releaseLock();
-
             base.OnBackPressed();
         }
 
@@ -345,13 +343,13 @@ namespace WMS
         private void BtNew_Click(object sender, EventArgs e)
         {
             StartActivity(typeof(ProductionWorkOrderSetup));
-            HelpfulMethods.clearTheStack(this);
+            Finish();
         }
 
         private void BtLogout_Click(object sender, EventArgs e)
         {
             StartActivity(typeof(MainMenu));
-            HelpfulMethods.clearTheStack(this);
+            Finish();
         }
 
         private void BtDelete_Click(object sender, EventArgs e)
@@ -440,9 +438,8 @@ namespace WMS
             var moveHead = positions.Items[displayedPosition];
             moveHead.SetBool("Saved", true);
             InUseObjects.Set("MoveHead", moveHead);
-
             StartActivity(typeof(ProductionEnteredPositionsView));
-            HelpfulMethods.clearTheStack(this);
+            Finish();
 
         }
 

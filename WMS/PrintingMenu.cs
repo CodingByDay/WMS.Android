@@ -123,7 +123,7 @@ namespace WMS
         private void Button6_Click(object sender, EventArgs e)
         {
             StartActivity(typeof(MainMenu));
-            HelpfulMethods.clearTheStack(this);
+            Finish();
         }
 
 
@@ -132,13 +132,13 @@ namespace WMS
         private void Button_Click(object sender, EventArgs e)
         {
             StartActivity(typeof(PrintingSSCCCodes));
-            HelpfulMethods.clearTheStack(this);
+            Finish();
         }
 
         private void Button1_Click(object sender, EventArgs e)
         {
             StartActivity(typeof(PrintingReprintLabels));
-            HelpfulMethods.clearTheStack(this);
+            Finish();
         }
     }
 }

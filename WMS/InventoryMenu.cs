@@ -72,8 +72,6 @@ namespace WMS
         public override void OnBackPressed()
         {
 
-            HelpfulMethods.releaseLock();
-
             base.OnBackPressed();
         }
 
@@ -147,7 +145,7 @@ namespace WMS
         {
 
             StartActivity(typeof(MainMenu));
-            HelpfulMethods.clearTheStack(this);
+            Finish();
 
         }
 
@@ -155,7 +153,7 @@ namespace WMS
         {
 
             StartActivity(typeof(InventoryPrint));
-            HelpfulMethods.clearTheStack(this);
+            Finish();
 
         }
 
@@ -163,7 +161,7 @@ namespace WMS
         {
 
             StartActivity(typeof(InventoryOpen));
-            HelpfulMethods.clearTheStack(this);
+            Finish();
 
         }
 
@@ -171,7 +169,7 @@ namespace WMS
         {
 
             StartActivity(typeof(InventoryConfirm));
-            HelpfulMethods.clearTheStack(this);
+            Finish();
 
         }
 
@@ -179,7 +177,7 @@ namespace WMS
         {
 
             StartActivity(typeof(InventoryProcess));
-            HelpfulMethods.clearTheStack(this);
+            Finish();
 
         }
 
@@ -187,7 +185,7 @@ namespace WMS
         {
 
             StartActivity(typeof(InventoryOpenDocument));
-            HelpfulMethods.clearTheStack(this);
+            Finish();
 
         }
     }

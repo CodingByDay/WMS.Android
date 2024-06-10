@@ -126,7 +126,7 @@ namespace WMS
         private void Button2_Click(object sender, EventArgs e)
         {
             StartActivity(typeof(MainActivity));
-            HelpfulMethods.clearTheStack(this);
+            Finish();
         }
 
         private void BtPrint_Click(object sender, EventArgs e)

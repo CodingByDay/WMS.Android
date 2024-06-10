@@ -110,7 +110,7 @@ namespace WMS
         private void BtLogout_Click(object sender, EventArgs e)
         {
             StartActivity(typeof(MainMenu));
-            HelpfulMethods.clearTheStack(this);
+            Finish();
         }
 
         private void BtBack_Click(object sender, EventArgs e)

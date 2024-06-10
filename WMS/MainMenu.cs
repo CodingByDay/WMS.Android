@@ -42,7 +42,6 @@ namespace WMS
         {
             base.OnCreate(savedInstanceState);
             SetTheme(Resource.Style.AppTheme_NoActionBar);
-            HelpfulMethods.releaseLock();
 
             if (App.Settings.tablet)
             {

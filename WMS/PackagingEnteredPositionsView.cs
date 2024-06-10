@@ -104,22 +104,19 @@ namespace WMS
         }
         public override void OnBackPressed()
         {
-
-            HelpfulMethods.releaseLock();
-
             base.OnBackPressed();
         }
         private void BtClose_Click(object sender, EventArgs e)
         {
             StartActivity(typeof(MainMenu));
-            HelpfulMethods.clearTheStack(this);
+            Finish();
         }
 
         private void BtCreate_Click(object sender, EventArgs e)
         {
             InUseObjects.Set("PackagingHead", null);
             StartActivity(typeof(PackagingSetContext));
-            HelpfulMethods.clearTheStack(this);
+            Finish();
         }
 
         private void BtDelete_Click(object sender, EventArgs e)
@@ -206,7 +203,7 @@ namespace WMS
             var item = positions.Items[displayedPosition];
             InUseObjects.Set("PackagingHead", item);
             StartActivity(typeof(PackagingUnitList));
-            HelpfulMethods.clearTheStack(this);
+            Finish();
         }
 
 

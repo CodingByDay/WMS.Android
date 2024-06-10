@@ -134,7 +134,7 @@ namespace WMS
         private void Logout_Click(object sender, EventArgs e)
         {
             StartActivity(typeof(MainMenu));
-            HelpfulMethods.clearTheStack(this);
+            Finish();
         }
 
         private void Button5_Click(object sender, EventArgs e)
@@ -143,7 +143,7 @@ namespace WMS
             {
                 InUseObjects.Set("MoveItem", null);
                 StartActivity(typeof(TakeOver2Main));
-                HelpfulMethods.clearTheStack(this);
+                Finish();
 
             }
         }

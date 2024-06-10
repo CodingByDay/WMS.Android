@@ -136,7 +136,7 @@ namespace WMS
         private void BtExit_Click(object sender, EventArgs e)
         {
             StartActivity(typeof(MainMenu));
-            HelpfulMethods.clearTheStack(this);
+            Finish();
         }
 
         private void BtConfirm_Click(object sender, EventArgs e)
@@ -178,7 +178,7 @@ namespace WMS
             {
                 InUseObjects.Set("PackagingHead", head);
                 StartActivity(typeof(PackagingUnit));
-                HelpfulMethods.clearTheStack(this);
+                Finish();
             }
             else
             {

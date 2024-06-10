@@ -345,7 +345,7 @@ namespace WMS
         private void Button2_Click(object sender, EventArgs e)
         {
             StartActivity(typeof(MainMenu));
-            HelpfulMethods.clearTheStack(this);
+            Finish();
         }
 
         private async void BtDelete_Click(object sender, EventArgs e)
@@ -361,7 +361,7 @@ namespace WMS
                         {
 
                             StartActivity(typeof(InventoryProcess));
-                            HelpfulMethods.clearTheStack(this);
+                            Finish();
 
                         }
                         else
@@ -519,7 +519,7 @@ namespace WMS
                     {
                         selectedWarehouse = warehouse.ID;
                         StartActivity(typeof(InventoryProcess));
-                        HelpfulMethods.clearTheStack(this);
+                        Finish();
                         App.Settings.lastWarehouse = warehouse.ID;
                         App.Settings.lastLocation = location;
                     }

@@ -357,7 +357,7 @@ namespace WMS
                     {
                         Finish();
                         StartActivity(typeof(Settings));
-                        HelpfulMethods.clearTheStack(this);
+                        Finish();
                         return true;
                     }
 
@@ -368,7 +368,7 @@ namespace WMS
         private void Listener_Click(object sender, EventArgs e)
         {
             StartActivity(typeof(Settings));
-            HelpfulMethods.clearTheStack(this);
+            Finish();
         }
 
         public override bool OnCreateOptionsMenu(IMenu menu)

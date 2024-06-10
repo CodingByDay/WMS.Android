@@ -279,8 +279,6 @@ namespace WMS
         public override void OnBackPressed()
         {
 
-            HelpfulMethods.releaseLock();
-
             base.OnBackPressed();
         }
         public override bool OnKeyDown(Keycode keyCode, KeyEvent e)
@@ -325,7 +323,7 @@ namespace WMS
         private void BtnLogout_Click(object sender, EventArgs e)
         {
             StartActivity(typeof(MainMenu));
-            HelpfulMethods.clearTheStack(this);
+            Finish();
         }
 
         private void BtnNew_Click(object sender, EventArgs e)
@@ -335,7 +333,7 @@ namespace WMS
             InUseObjects.Set("MoveHead", moveHead);
 
             StartActivity(typeof(InterWarehouseBusinessEventSetup));
-            HelpfulMethods.clearTheStack(this);
+            Finish();
         }
 
         private void BtDelete_Click(object sender, EventArgs e)
@@ -437,7 +435,7 @@ namespace WMS
             InUseObjects.Set("MoveHead", moveHead);
 
             StartActivity(typeof(InterWarehouseEnteredPositionsView));
-            HelpfulMethods.clearTheStack(this);
+            Finish();
 
         }
 

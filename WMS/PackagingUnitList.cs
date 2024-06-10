@@ -110,7 +110,7 @@ namespace WMS
         private void BtLogout_Click(object sender, EventArgs e)
         {
             StartActivity(typeof(MainMenu));
-            HelpfulMethods.clearTheStack(this);
+            Finish();
         }
 
         private void BtCreate_Click(object sender, EventArgs e)
@@ -118,7 +118,7 @@ namespace WMS
 
             InUseObjects.Set("PackagingItem", null);
             StartActivity(typeof(PackagingUnit));
-            HelpfulMethods.clearTheStack(this);
+            Finish();
         }
         public override bool OnKeyDown(Keycode keyCode, KeyEvent e)
         {
@@ -238,7 +238,7 @@ namespace WMS
             var item = positions.Items[displayedPosition];
             InUseObjects.Set("PackagingItem", item);
             StartActivity(typeof(PackagingUnit));
-            HelpfulMethods.clearTheStack(this);
+            Finish();
         }
 
         private void BtNext_Click(object sender, EventArgs e)

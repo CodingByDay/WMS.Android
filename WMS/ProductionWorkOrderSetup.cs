@@ -162,7 +162,7 @@ namespace WMS
         private void Button2_Click(object sender, EventArgs e)
         {
             StartActivity(typeof(MainMenu));
-            HelpfulMethods.clearTheStack(this);
+            Finish();
         }
 
         private void color()
@@ -181,7 +181,7 @@ namespace WMS
                 cardInfo.SetDouble("UM1toUM3", ident.GetDouble("UM1toUM3"));
                 InUseObjects.Set("CardInfo", cardInfo);
                 StartActivity(typeof(ProductionPalette));
-                HelpfulMethods.clearTheStack(this);
+                Finish();
             }
         }
 
@@ -190,7 +190,7 @@ namespace WMS
             if (SaveMoveHead())
             {
                 StartActivity(typeof(ProductionSerialOrSSCCEntry));
-                HelpfulMethods.clearTheStack(this);
+                Finish();
             }
         }
 
@@ -203,7 +203,7 @@ namespace WMS
             cardInfo.SetDouble("UM1toUM3", ident.GetDouble("UM1toUM3"));
             InUseObjects.Set("CardInfo", cardInfo);
             StartActivity(typeof(ProductionCard));
-            HelpfulMethods.clearTheStack(this);
+            Finish();
         }
 
 

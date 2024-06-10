@@ -425,7 +425,7 @@ namespace WMS
         private void BtExit_Click(object sender, EventArgs e)
         {
             StartActivity(typeof(MainMenu));
-            HelpfulMethods.clearTheStack(this);
+            Finish();
         }
         private async Task FinishMethod()
         {
@@ -550,7 +550,7 @@ namespace WMS
             {
                 InUseObjects.Set("PackagingItem", null);
                 StartActivity(typeof(PackagingUnitList));
-                HelpfulMethods.clearTheStack(this);
+                Finish();
 
             }
 
@@ -562,7 +562,7 @@ namespace WMS
             {
                 InUseObjects.Set("PackagingItem", null);
                 StartActivity(typeof(PackagingUnit));
-                HelpfulMethods.clearTheStack(this);
+                Finish();
 
             }
         }
