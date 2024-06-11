@@ -534,7 +534,7 @@ namespace WMS
                 if (double.TryParse(tbPacking.Text, out parsed) && stock >= parsed)
                 {
 
-                    var isCorrectLocation = IsLocationCorrect();
+                    var isCorrectLocation = await IsLocationCorrect();
                     if (!isCorrectLocation)
                     {
                         // Nepravilna lokacija za izbrano skladišče
@@ -666,12 +666,12 @@ namespace WMS
         }
 
 
-        private bool IsLocationCorrect()
+        private async Task<bool> IsLocationCorrect()
         {
             // TODO: Add a way to check serial numbers
             string location = tbLocation.Text;
 
-            if (!CommonData.IsValidLocation(moveHead.GetString("Wharehouse"), location))
+            if (!await CommonData.IsValidLocationAsync(moveHead.GetString("Wharehouse"), location, this))
             {
                 return false;
             }
@@ -745,7 +745,7 @@ namespace WMS
             double parsed;
             if (double.TryParse(tbPacking.Text, out parsed) && stock >= parsed)
             {
-                var isCorrectLocation = IsLocationCorrect();
+                var isCorrectLocation = await IsLocationCorrect();
                 if (!isCorrectLocation)
                 {
                     // Nepravilna lokacija za izbrano skladišče

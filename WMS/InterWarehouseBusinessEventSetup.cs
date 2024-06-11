@@ -61,7 +61,7 @@ namespace WMS
             cbIssueWH = FindViewById<CustomAutoCompleteTextView>(Resource.Id.cbIssueWH);
             cbReceiveWH = FindViewById<CustomAutoCompleteTextView>(Resource.Id.cbRecceiveWH);
             objectDocType.Add(new ComboBoxItem { ID = "Default", Text = Resources.GetString(Resource.String.s261) });
-            docTypes = CommonData.ListDocTypes("E|");
+            docTypes = await CommonData.ListDocTypesAsync("E|");
             docTypes.Items.ForEach(dt =>
             {
                 objectDocType.Add(new ComboBoxItem { ID = dt.GetString("Code"), Text = dt.GetString("Code") + " " + dt.GetString("Name") });
@@ -73,7 +73,7 @@ namespace WMS
             cbDocType.Adapter = adapter;
 
 
-            var warehouses = CommonData.ListWarehouses();
+            var warehouses = await CommonData.ListWarehousesAsync();
             if (warehouses != null)
             {
                 warehouses.Items.ForEach(dt =>

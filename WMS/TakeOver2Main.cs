@@ -45,11 +45,11 @@ namespace WMS
                 tbLocation.Text = barcode;
             }
         }
-        private void ProcessIdent()
+        private async void ProcessIdent()
         {
             try
             {
-                var ident = CommonData.LoadIdent(tbIdent.Text.Trim());
+                var ident = await CommonData.LoadIdentAsync(tbIdent.Text.Trim(), this);
                 if (ident == null)
                 {
 
@@ -137,7 +137,7 @@ namespace WMS
                 return null;
             }
 
-            if (!CommonData.IsValidLocation(await CommonData.GetSettingAsync("DefaultWarehouse", this), tbLocation.Text.Trim()))
+            if (!await CommonData.IsValidLocationAsync(await CommonData.GetSettingAsync("DefaultWarehouse", this), tbLocation.Text.Trim(), this))
             {
                 Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
                 return null;
@@ -152,7 +152,7 @@ namespace WMS
                     return null;
                 }
 
-                var ident = CommonData.LoadIdent(tbIdent.Text.Trim());
+                var ident = await CommonData.LoadIdentAsync(tbIdent.Text.Trim(), this);
                 if (ident == null) { return null; }
 
                 double kol;
@@ -269,7 +269,7 @@ namespace WMS
             if (moveItem != null)
             {
 
-                var ident = CommonData.LoadIdent(moveItem.GetString("Ident"));
+                var ident = await CommonData.LoadIdentAsync(moveItem.GetString("Ident"), this);
 
                 if (ident == null)
                 {

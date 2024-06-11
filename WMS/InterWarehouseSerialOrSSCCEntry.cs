@@ -337,7 +337,7 @@ namespace WMS
                 if (double.TryParse(tbPacking.Text, out parsed) && stock >= parsed)
                 {
 
-                    var isCorrectLocation = IsLocationCorrect();
+                    var isCorrectLocation = await IsLocationCorrect();
                     if (!isCorrectLocation)
                     {
                         // Nepravilna lokacija za izbrano skladišče
@@ -441,11 +441,11 @@ namespace WMS
         }
 
 
-        private bool IsLocationCorrect()
+        private async Task <bool> IsLocationCorrect()
         {
             string location = tbLocation.Text;
 
-            if (CommonData.IsValidLocation(moveHead.GetString("Issuer"), location) && CommonData.IsValidLocation(moveHead.GetString("Receiver"), location))
+            if (await CommonData.IsValidLocationAsync(moveHead.GetString("Issuer"), location, this) && await CommonData.IsValidLocationAsync(moveHead.GetString("Receiver"), location, this))
             {
                 return true;
             }
@@ -624,7 +624,7 @@ namespace WMS
 
         private async void ProcessIdent(bool update)
         {
-            activityIdent = CommonData.LoadIdent(tbIdent.Text.Trim());
+            activityIdent = await CommonData.LoadIdentAsync(tbIdent.Text.Trim(), this);
 
             if (activityIdent != null)
             {

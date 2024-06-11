@@ -20,7 +20,7 @@ namespace WMS
         private int temporaryPositionWarehouse;
         private DateTime datex;
 
-        protected override void OnCreate(Bundle savedInstanceState)
+        protected override async void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             SetTheme(Resource.Style.AppTheme_NoActionBar);
@@ -49,7 +49,7 @@ namespace WMS
             logout.Click += Logout_Click;
             cbWarehouse.ItemSelected += CbWarehouse_ItemSelected;
             dtDate.Text = DateTime.Now.ToShortDateString();
-            var warehouses = CommonData.ListWarehouses();
+            var warehouses = await CommonData.ListWarehousesAsync();
             warehouses.Items.ForEach(wh =>
             {
                 warehousesAdapter.Add(new ComboBoxItem { ID = wh.GetString("Subject"), Text = wh.GetString("Name") });

@@ -27,7 +27,7 @@ namespace WMS
             }
         }
 
-        protected override void OnCreate(Bundle savedInstanceState)
+        protected override async void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             SetTheme(Resource.Style.AppTheme_NoActionBar);
@@ -54,7 +54,7 @@ namespace WMS
             btPrint.Click += BtPrint_Click;
             button2.Click += Button2_Click;
 
-            var warehouses = CommonData.ListWarehouses();
+            var warehouses = await CommonData.ListWarehousesAsync();
             warehouses.Items.ForEach(wh =>
             {
                 objectsAdapter.Add(new ComboBoxItem { ID = wh.GetString("Subject"), Text = wh.GetString("Name") });
@@ -129,7 +129,7 @@ namespace WMS
             Finish();
         }
 
-        private void BtPrint_Click(object sender, EventArgs e)
+        private async void BtPrint_Click(object sender, EventArgs e)
         {
             var wh = objectsAdapter.ElementAt(temporaryPositionWarehouse);
             if (wh == null)
@@ -137,7 +137,7 @@ namespace WMS
                 Toast.MakeText(this, $"{Resources.GetString(Resource.String.s245)}", ToastLength.Long).Show();
                 return;
             }
-            if (!CommonData.IsValidLocation(wh.ID, tbLocation.Text.Trim()))
+            if (!await CommonData.IsValidLocationAsync(wh.ID, tbLocation.Text.Trim(), this))
             {
                 Toast.MakeText(this, $"{Resources.GetString(Resource.String.s258)} '" + tbLocation.Text.Trim() + $"' {Resources.GetString(Resource.String.s272)} '" + wh.ID + "'!", ToastLength.Long).Show();
                 return;

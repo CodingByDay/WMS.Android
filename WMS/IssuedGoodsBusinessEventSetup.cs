@@ -72,7 +72,7 @@ namespace WMS
             btnLogout.Click += BtnLogout_Click;
             hidden = FindViewById<Button>(Resource.Id.hidden);
             focus = FindViewById<TextView>(Resource.Id.focus);
-            var warehouses = CommonData.ListWarehouses();
+            var warehouses = await CommonData.ListWarehousesAsync();
             warehouses.Items.ForEach(wh =>
             {
                 objectWarehouse.Add(new ComboBoxItem { ID = wh.GetString("Subject"), Text = wh.GetString("Name") });
@@ -398,7 +398,7 @@ namespace WMS
                 {
                     await FillOpenOrdersAsync();
                 }
-                docTypes = CommonData.ListDocTypes("P|N");
+                docTypes = await CommonData.ListDocTypesAsync("P|N");
 
                 if (App.Settings.tablet)
                 {
@@ -426,7 +426,7 @@ namespace WMS
                 }
                 lbExtra.Text = Resources.GetString(Resource.String.s33);
                 objectExtra.Clear();
-                var subjects = CommonData.ListSubjects();
+                var subjects = await CommonData.ListSubjectsAsync();
                 subjects.Items.ForEach(s =>
                 {
                     objectExtra.Add(new ComboBoxItem { ID = s.GetString("ID"), Text = s.GetString("ID") });
@@ -437,7 +437,7 @@ namespace WMS
                 cbExtra.Adapter = adapterExtra;
 
                 adapterExtra.NotifyDataSetChanged();
-                docTypes = CommonData.ListDocTypes("I;M|F");
+                docTypes = await CommonData.ListDocTypesAsync("I;M|F");
 
                 if (App.Settings.tablet)
                 {

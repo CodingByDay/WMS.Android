@@ -74,10 +74,10 @@ namespace WMS
             }
         }
 
-        private void ProcessIdent()
+        private async void ProcessIdent()
         {
             var ident = tbIdent.Text.Trim();
-            var identObj = CommonData.LoadIdent(ident);
+            var identObj = await CommonData.LoadIdentAsync(ident, this);
             if (identObj != null)
             {
                 tbTitle.Text = identObj.GetString("Name");
@@ -96,7 +96,7 @@ namespace WMS
 
 
 
-        protected override void OnCreate(Bundle savedInstanceState)
+        protected override async void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             SetTheme(Resource.Style.AppTheme_NoActionBar);
@@ -133,14 +133,14 @@ namespace WMS
             tbSSCC.FocusChange += TbSSCC_FocusChange;
             cbWarehouse.ItemSelected += CbWarehouse_ItemSelected;
             cbSubject.ItemSelected += CbSubject_ItemSelected;
-            var warehouses = CommonData.ListWarehouses();
+            var warehouses = await CommonData.ListWarehousesAsync();
 
             warehouses.Items.ForEach(w =>
             {
                 warehouseAdapter.Add(new ComboBoxItem { ID = w.GetString("Subject"), Text = w.GetString("Name") });
             });
 
-            var subjects = CommonData.ListReprintSubjects();
+            var subjects = await CommonData.ListReprintSubjectsAsync();
 
             subjects.Items.ForEach(s =>
             {
@@ -262,7 +262,7 @@ namespace WMS
             var ident = tbIdent.Text.Trim();
             if (string.IsNullOrEmpty(ident)) { return; }
 
-            var identObj = CommonData.LoadIdent(ident);
+            var identObj = await CommonData.LoadIdentAsync(ident, this);
             if (identObj != null)
             {
                 ident = identObj.GetString("Code");

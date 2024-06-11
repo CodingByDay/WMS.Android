@@ -116,7 +116,7 @@ namespace WMS
 
 
 
-        private void ProcessStock()
+        private async void ProcessStock()
         {
             var wh = spinnerAdapterList.ElementAt(temporaryPositionWarehouse);
             if (wh == null)
@@ -126,7 +126,7 @@ namespace WMS
 
             if (!string.IsNullOrEmpty(tbLocation.Text.Trim()))
             {
-                if (!CommonData.IsValidLocation(wh.ID, tbLocation.Text.Trim()))
+                if (!await CommonData.IsValidLocationAsync(wh.ID, tbLocation.Text.Trim(), this))
                 {
                     string WebError = string.Format($"{Resources.GetString(Resource.String.s234)}");
                     DialogHelper.ShowDialogError(this, this, WebError);
@@ -142,7 +142,7 @@ namespace WMS
                 return;
             }
 
-            stock = LoadStockFromStockSerialNo(wh.ID, tbLocation.Text.Trim(), tbIdent.Text.Trim());
+            stock = await LoadStockFromStockSerialNo(wh.ID, tbLocation.Text.Trim(), tbIdent.Text.Trim());
             lbStock.Text = $"{Resources.GetString(Resource.String.s155)}:\r\n" + stock;
             isEmptyStock();
         }
@@ -226,7 +226,7 @@ namespace WMS
 
             barcode2D = new Barcode2D(this, this);
             // First load the warehouses.
-            var whs = CommonData.ListWarehouses();
+            var whs = await CommonData.ListWarehousesAsync();
             whs.Items.ForEach(wh =>
             {
                 spinnerAdapterList.Add(new ComboBoxItem { ID = wh.GetString("Subject"), Text = wh.GetString("Name") });

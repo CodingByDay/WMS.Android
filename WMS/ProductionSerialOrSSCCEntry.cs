@@ -241,7 +241,7 @@ namespace WMS
                 }
             }
 
-            if (!CommonData.IsValidLocation(moveHead.GetString("Wharehouse"), tbLocation.Text.Trim()))
+            if (!await CommonData.IsValidLocationAsync(moveHead.GetString("Wharehouse"), tbLocation.Text.Trim(), this))
             {
                 RunOnUiThread(() =>
                 {
@@ -527,7 +527,7 @@ namespace WMS
                 SentrySdk.CaptureException(err);
             }
 
-            var ident = CommonData.LoadIdent(openWorkOrder.GetString("Ident"));
+            var ident = await CommonData.LoadIdentAsync(openWorkOrder.GetString("Ident"), this);
 
             showPictureIdent(ident.GetString("Code"));
             identCode = ident.GetString("Code");
@@ -582,7 +582,7 @@ namespace WMS
             if (tbSSCC.Enabled && (await CommonData.GetSettingAsync("AutoCreateSSCCProduction", this) == "1"))
             {
 
-                tbSSCC.Text = CommonData.GetNextSSCC();
+                tbSSCC.Text = await CommonData.GetNextSSCCAsync(this);
                 tbPacking.RequestFocus();
 
             }

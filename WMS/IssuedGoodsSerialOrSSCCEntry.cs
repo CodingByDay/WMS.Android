@@ -455,7 +455,7 @@ namespace WMS
 
                 if (isProccessOrderless && double.TryParse(tbPacking.Text, out parsed) && stock >= parsed)
                 {
-                    var isCorrectLocation = IsLocationCorrect();
+                    var isCorrectLocation = await IsLocationCorrect();
 
                     if (!isCorrectLocation)
                     {
@@ -549,7 +549,7 @@ namespace WMS
             double parsed;
             if (isProccessOrderless && double.TryParse(tbPacking.Text, out parsed) && stock >= parsed)
             {
-                var isCorrectLocation = IsLocationCorrect();
+                var isCorrectLocation = await IsLocationCorrect();
 
                 if (!isCorrectLocation)
                 {
@@ -575,7 +575,7 @@ namespace WMS
             }
             else if (createPositionAllowed && double.TryParse(tbPacking.Text, out parsed) && stock >= parsed)
             {
-                var isCorrectLocation = IsLocationCorrect();
+                var isCorrectLocation = await IsLocationCorrect();
 
                 if (!isCorrectLocation)
                 {
@@ -591,11 +591,11 @@ namespace WMS
                 Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
             }
         }
-        private bool IsLocationCorrect()
+        private async Task<bool> IsLocationCorrect()
         {
             string location = tbLocation.Text;
 
-            if (!CommonData.IsValidLocation(moveHead.GetString("Wharehouse"), location))
+            if (!await CommonData.IsValidLocationAsync(moveHead.GetString("Wharehouse"), location, this))
             {
                 return false;
             }
@@ -1324,13 +1324,13 @@ namespace WMS
         }
 
 
-        private void TbLocation_KeyPress(object? sender, View.KeyEventArgs e)
+        private async void TbLocation_KeyPress(object? sender, View.KeyEventArgs e)
         {
             if (e.KeyCode == Keycode.Enter && e.Event.Action == KeyEventActions.Down)
             {
                 if (isProccessOrderless)
                 {
-                    var isCorrectLocation = IsLocationCorrect();
+                    var isCorrectLocation = await IsLocationCorrect();
 
                     if (!isCorrectLocation)
                     {

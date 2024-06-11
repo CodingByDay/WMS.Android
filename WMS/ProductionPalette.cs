@@ -342,7 +342,7 @@ namespace WMS
 
             tbWorkOrder.Text = cardInfo.GetString("WorkOrder").Trim();
             tbIdent.Text = cardInfo.GetString("Ident").Trim();
-            tbSSCC.Text = CommonData.GetNextSSCC();
+            tbSSCC.Text = await CommonData.GetNextSSCCAsync(this);
 
             barcode2D = new Barcode2D(this, this);
             btConfirm.Click += BtConfirm_Click;

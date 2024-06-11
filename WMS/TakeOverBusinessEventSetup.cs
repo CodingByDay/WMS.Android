@@ -70,7 +70,7 @@ namespace WMS
             btnOrderMode.Click += BtnOrderMode_Click;
             logout.Click += Logout_Click;
             btnOrderMode.Enabled = await Services.HasPermission("TNET_WMS_BLAG_ACQ_NORDER", "R", this);
-            var warehouses = CommonData.ListWarehouses();
+            var warehouses = await CommonData.ListWarehousesAsync();
             if (warehouses != null)
             {
                 warehouses.Items.ForEach(wh =>
@@ -239,7 +239,7 @@ namespace WMS
             NextStep();
         }
 
-        private void UpdateForm()
+        private async void UpdateForm()
         {
             try
             {
@@ -257,7 +257,7 @@ namespace WMS
                     {
                         cbSubject.Visibility = ViewStates.Invisible;
                     }
-                    docTypes = CommonData.ListDocTypes("I|N");
+                    docTypes = await CommonData.ListDocTypesAsync("I|N");
                     if (App.Settings.tablet)
                     {
                         btnOrderMode.Text = base.Resources.GetString(Resource.String.s138);
@@ -282,7 +282,7 @@ namespace WMS
                     }
                     if (cbSubject.Adapter == null || cbSubject.Count() == 0)
                     {
-                        var subjects = CommonData.ListSubjects();
+                        var subjects = await CommonData.ListSubjectsAsync();
                         subjects.Items.ForEach(s =>
                         {
                             objectcbSubject.Add(new ComboBoxItem { ID = s.GetString("ID"), Text = s.GetString("ID") });
@@ -295,7 +295,7 @@ namespace WMS
                         cbSubject.Adapter = adapterSubject;
                     }
 
-                    docTypes = CommonData.ListDocTypes("P|F");
+                    docTypes = await CommonData.ListDocTypesAsync("P|F");
 
                     if (App.Settings.tablet)
                     {

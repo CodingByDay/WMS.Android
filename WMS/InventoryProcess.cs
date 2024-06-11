@@ -146,7 +146,7 @@ namespace WMS
                     if (dataObject.Items != null)
                     {
                         var ident = dataObject.StringValue("acIdent");
-                        var loadIdent = CommonData.LoadIdent(ident);
+                        var loadIdent = await CommonData.LoadIdentAsync(ident, this);
                         string idname = loadIdent.GetString("Name");
                         if (string.IsNullOrEmpty(ident)) { return; }
                         if (loadIdent != null)
@@ -226,9 +226,9 @@ namespace WMS
 
         private async Task FillWarehouses()
         {
-            await Task.Run(() =>
+            await Task.Run(async() =>
             {
-                var warehouses = CommonData.ListWarehouses();
+                var warehouses = await CommonData.ListWarehousesAsync();
 
                 if (warehouses != null)
                 {
@@ -319,7 +319,7 @@ namespace WMS
 
             if (await CommonData.GetSettingAsync("AutoCreateSSCC", this) != "1")
             {
-                var loadIdent = CommonData.LoadIdent(tbIdent.Text);
+                var loadIdent = await CommonData.LoadIdentAsync(tbIdent.Text, this);
 
                 if (loadIdent != null)
                 {
@@ -576,11 +576,11 @@ namespace WMS
             warehouseLabel.Text = $"{Resources.GetString(Resource.String.s28)}: " + warehouseAdapter.ElementAt(temporaryPosWarehouse);
         }
 
-        private void ProcessIdent()
+        private async void ProcessIdent()
         {
             var ident = tbIdent.Text.Trim();
             if (string.IsNullOrEmpty(ident)) { return; }
-            var identObj = CommonData.LoadIdent(ident);
+            var identObj = await CommonData.LoadIdentAsync(ident, this);
             if (identObj != null)
             {
                 tbIdent.Text = identObj.GetString("Code");
@@ -650,7 +650,7 @@ namespace WMS
             try
             {
                 var location = tbLocation.Text.Trim();
-                if (!CommonData.IsValidLocation(warehouse.ID, location))
+                if (!await CommonData.IsValidLocationAsync(warehouse.ID, location, this))
                 {
                     Toast.MakeText(this, $"{Resources.GetString(Resource.String.s258)} '" + location + $"' {Resources.GetString(Resource.String.s272)} '" + warehouse.ID + "'!", ToastLength.Long).Show();
                     return;
@@ -722,7 +722,7 @@ namespace WMS
                 SentrySdk.CaptureException(err);
             }
         }
-        public void GetBarcode(string barcode)
+        public async void GetBarcode(string barcode)
         {
             if (tbSSCC.HasFocus)
             {
@@ -733,7 +733,7 @@ namespace WMS
                 if (dataObject != null)
                 {
                     var ident = dataObject.StringValue("acIdent");
-                    var loadIdent = CommonData.LoadIdent(ident);
+                    var loadIdent = await CommonData.LoadIdentAsync(ident, this);
                     string idname = loadIdent.GetString("Name");
                     if (string.IsNullOrEmpty(ident)) { return; }
                     if (loadIdent != null)
@@ -910,7 +910,7 @@ namespace WMS
             return true;
         }
 
-        private void ProcessLocation()
+        private async void ProcessLocation()
         {
             var warehouse = warehouseAdapter.ElementAt(temporaryPosWarehouse);
             if (warehouse == null)
@@ -922,7 +922,7 @@ namespace WMS
             }
 
             var location = tbLocation.Text.Trim();
-            if (!CommonData.IsValidLocation(warehouse.ID, location))
+            if (!await CommonData.IsValidLocationAsync(warehouse.ID, location, this))
             {
                 Toast.MakeText(this, $"{Resources.GetString(Resource.String.s258)} '" + location + $"' {Resources.GetString(Resource.String.s272)} '" + warehouse.ID + "'!", ToastLength.Long).Show();
 

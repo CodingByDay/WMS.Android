@@ -185,9 +185,9 @@ namespace WMS
             }
         }
 
-        private void BtConfirm_Click(object sender, EventArgs e)
+        private async void BtConfirm_Click(object sender, EventArgs e)
         {
-            if (SaveMoveHead())
+            if (await SaveMoveHead())
             {
                 StartActivity(typeof(ProductionSerialOrSSCCEntry));
                 Finish();
@@ -207,7 +207,7 @@ namespace WMS
         }
 
 
-        private bool SaveMoveHead()
+        private async Task<bool> SaveMoveHead()
         {
             NameValueObject workOrder = null;
 
@@ -231,7 +231,7 @@ namespace WMS
 
             }
 
-            var ident = CommonData.LoadIdent(tbIdent.Text.Trim());
+            var ident = await CommonData.LoadIdentAsync(tbIdent.Text.Trim(), this);
             if (ident == null) { return false; }
 
             if (moveHead == null) { moveHead = new NameValueObject("MoveHead"); }

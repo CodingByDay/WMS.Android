@@ -99,11 +99,11 @@ namespace WMS
 
 
         }
-        private void ProcessIdent()
+        private async void ProcessIdent()
         {
             if (!string.IsNullOrEmpty(tbIdent.Text))
             {
-                var ident = CommonData.LoadIdent(tbIdent.Text.Trim());
+                var ident = await CommonData.LoadIdentAsync(tbIdent.Text.Trim(), this);
                 tbIdentName.Text = ident == null ? "" : ident.GetString("Name");
                 tbSSCC.Enabled = ident == null ? false : ident.GetBool("isSSCC");
                 tbSerialNo.Enabled = ident == null ? false : ident.GetBool("HasSerialNumber");
@@ -169,7 +169,7 @@ namespace WMS
                 return false;
             }
 
-            if (!CommonData.IsValidLocation(warehouse, location))
+            if (!await CommonData.IsValidLocationAsync(warehouse, location, this))
             {
                 Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
                 return false;
@@ -244,7 +244,7 @@ namespace WMS
                 return;
             }
 
-            if (!CommonData.IsValidLocation(warehouse, location))
+            if (!await CommonData.IsValidLocationAsync(warehouse, location, this))
             {
                 Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
                 return;

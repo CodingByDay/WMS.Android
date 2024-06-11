@@ -42,7 +42,7 @@ namespace WMS
         }
 
 
-        protected override void OnCreate(Bundle savedInstanceState)
+        protected override async void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             SetTheme(Resource.Style.AppTheme_NoActionBar);
@@ -77,7 +77,7 @@ namespace WMS
             Color();
 
 
-            var whs = CommonData.ListWarehouses();
+            var whs = await CommonData.ListWarehousesAsync();
 
 
             whs.Items.ForEach(wh =>
@@ -147,11 +147,11 @@ namespace WMS
 
         }
 
-        private void ProcessData()
+        private async void ProcessData()
         {
             temporaryString = objectsPackaging.ElementAt(temporaryPositionWarehouse).ID;
 
-            if (!CommonData.IsValidLocation(temporaryString, tbLocation.Text.Trim()))
+            if (!await CommonData.IsValidLocationAsync(temporaryString, tbLocation.Text.Trim(), this))
             {
                 string toast = string.Format($"{Resources.GetString(Resource.String.s270)}");
                 Toast.MakeText(this, toast, ToastLength.Long).Show();

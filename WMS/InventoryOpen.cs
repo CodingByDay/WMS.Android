@@ -26,7 +26,7 @@ namespace WMS
         private string lastError = null;
         private DateTime dateX;
         private TextView warehouseLabel;
-        protected override void OnCreate(Bundle savedInstanceState)
+        protected override async void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             SetTheme(Resource.Style.AppTheme_NoActionBar);
@@ -60,7 +60,7 @@ namespace WMS
             dtInventory.Text = DateTime.Today.ToShortDateString();
             warehouseLabel = FindViewById<TextView>(Resource.Id.warehouseLabel);
 
-            var warehouses = CommonData.ListWarehouses();
+            var warehouses = await CommonData.ListWarehousesAsync();
             if (warehouses != null)
             {
                 warehouses.Items.ForEach(wh =>

@@ -348,7 +348,7 @@ namespace WMS
         private async Task UpdateForm()
         {
             objectExtra.Clear();
-            docTypes = CommonData.ListDocTypes("P|N");
+            docTypes = await CommonData.ListDocTypesAsync("P|N");
             initial += 1;
             var result = await AsyncServices.AsyncServices.GetObjectListBySqlAsync("SELECT * FROM uWMSOrderDocTypeOut;");
             if (!result.Success)
