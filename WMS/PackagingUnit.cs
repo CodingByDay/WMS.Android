@@ -40,7 +40,7 @@ namespace WMS
 
 
 
-        public void GetBarcode(string barcode)
+        public async void GetBarcode(string barcode)
         {
 
             if (!string.IsNullOrEmpty(barcode))
@@ -60,7 +60,7 @@ namespace WMS
                     if (tbLocation.Text != "Scan fail")
                     {
                         tbSSCC.RequestFocus();
-                        if (!tbSSCC.Enabled && !tbSerialNo.Enabled) { ProcessQty(); }
+                        if (!tbSSCC.Enabled && !tbSerialNo.Enabled) { await ProcessQty(); }
                     }
                     else
                     {
@@ -76,7 +76,7 @@ namespace WMS
                     tbIdent.Text = barcode;
                     if (tbIdent.Text != "Scan fail")
                     {
-                        ProcessIdent();
+                        await ProcessIdent();
                         tbLocation.RequestFocus();
                     }
                     else
@@ -91,7 +91,7 @@ namespace WMS
 
 
                     tbSerialNo.Text = barcode;
-                    ProcessQty();
+                    await ProcessQty();
                 }
             }
 
@@ -99,7 +99,7 @@ namespace WMS
 
 
         }
-        private async void ProcessIdent()
+        private async Task ProcessIdent()
         {
             if (!string.IsNullOrEmpty(tbIdent.Text))
             {
@@ -230,7 +230,7 @@ namespace WMS
             }
         }
 
-        private async void ProcessQty()
+        private async Task ProcessQty()
         {
             var ident = tbIdent.Text.Trim();
             var warehouse = head.GetString("Warehouse");
@@ -343,11 +343,11 @@ namespace WMS
             if (item != null)
             {
                 tbIdent.Text = item.GetString("Ident");
-                ProcessIdent();
+                await ProcessIdent();
                 tbLocation.Text = item.GetString("Location");
                 tbSSCC.Text = item.GetString("SSCC");
                 tbSerialNo.Text = item.GetString("SerialNo");
-                ProcessQty();
+                await ProcessQty();
                 tbQty.Text = item.GetDouble("Qty").ToString(await CommonData.GetQtyPictureAsync(this));
             }
 
@@ -391,19 +391,19 @@ namespace WMS
             }
         }
 
-        private void TbQty_FocusChange(object sender, View.FocusChangeEventArgs e)
+        private async void TbQty_FocusChange(object sender, View.FocusChangeEventArgs e)
         {
-            ProcessQty();
+            await ProcessQty();
         }
 
-        private void TbIdentName_FocusChange(object sender, View.FocusChangeEventArgs e)
+        private async void TbIdentName_FocusChange(object sender, View.FocusChangeEventArgs e)
         {
-            ProcessIdent();
+            await ProcessIdent();
         }
 
-        private void Check_Click(object sender, EventArgs e)
+        private async void Check_Click(object sender, EventArgs e)
         {
-            ProcessIdent();
+            await ProcessIdent();
             tbLocation.RequestFocus();
 
         }

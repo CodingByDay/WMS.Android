@@ -47,13 +47,13 @@ namespace WMS
         private Dialog popupDialog;
         private ZoomageView? image;
 
-        public void GetBarcode(string barcode)
+        public async void GetBarcode(string barcode)
         {
             if (tbIdent.HasFocus)
             {
 
                 tbIdent.Text = barcode;
-                ProcessStock();
+                await ProcessStock();
                 showPictureIdent(tbIdent.Text);
             }
             else if (tbLocation.HasFocus)
@@ -116,7 +116,7 @@ namespace WMS
 
 
 
-        private async void ProcessStock()
+        private async Task ProcessStock()
         {
             var wh = spinnerAdapterList.ElementAt(temporaryPositionWarehouse);
             if (wh == null)
@@ -217,6 +217,7 @@ namespace WMS
 
             btShowStock = FindViewById<Button>(Resource.Id.btShowStock);
             btShowStock.Click += BtShowStock_Click;
+            
             button1 = FindViewById<Button>(Resource.Id.button1);
             button1.Click += Button1_Click;
             lbStock = FindViewById<TextView>(Resource.Id.lbStock);
@@ -389,19 +390,19 @@ namespace WMS
             this.Finish();
         }
 
-        private void BtShowStock_Click(object sender, System.EventArgs e)
+        private async void BtShowStock_Click(object sender, System.EventArgs e)
         {
             data.Clear();
-            ProcessStock();
+            await ProcessStock();
             if (App.Settings.tablet)
             {
-                fillItemsOfList();
+                await fillItemsOfList();
                 showPictureIdent(tbIdent.Text);
             }
 
         }
 
-        private async void fillItemsOfList()
+        private async Task fillItemsOfList()
         {
             var wh = spinnerAdapterList.ElementAt(temporaryPositionWarehouse);
             string error;

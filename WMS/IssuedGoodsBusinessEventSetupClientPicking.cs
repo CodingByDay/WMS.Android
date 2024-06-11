@@ -109,10 +109,10 @@ namespace WMS
             cbDocType.ItemClick += CbDocType_ItemClick;
             cbExtra.ItemClick += CbExtra_ItemClick;
             cbWarehouse.ItemClick += CbWarehouse_ItemClick;
-            InitializeAutocompleteControls();
+            await InitializeAutocompleteControls();
         }
 
-        private async void InitializeAutocompleteControls()
+        private async Task InitializeAutocompleteControls()
         {
             cbDocType.SelectAtPosition(0);
             cbExtra.SelectAtPosition(0);

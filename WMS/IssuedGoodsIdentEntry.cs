@@ -45,13 +45,13 @@ namespace WMS
 
 
 
-        public void GetBarcode(string barcode)
+        public async void GetBarcode(string barcode)
         {
             // pass
             if (tbIdent.HasFocus)
             {
                 tbIdent.Text = barcode;
-                ProcessIdent();
+                await ProcessIdent();
             }
         }
         public void color()
@@ -59,7 +59,7 @@ namespace WMS
             tbIdent.SetBackgroundColor(Android.Graphics.Color.Aqua);
         }
 
-        private async void ProcessIdent()
+        private async Task ProcessIdent()
         {
 
 
@@ -358,11 +358,11 @@ namespace WMS
             FillDisplayedOrderInfo();
         }
 
-        private void TbIdent_KeyPress(object? sender, View.KeyEventArgs e)
+        private async void TbIdent_KeyPress(object? sender, View.KeyEventArgs e)
         {
             if (e.KeyCode == Keycode.Enter && e.Event.Action == KeyEventActions.Down)
             {
-                ProcessIdent();
+               await ProcessIdent();
             }
 
             e.Handled = false;
@@ -440,7 +440,7 @@ namespace WMS
 
 
 
-        private void SpinnerIdent_ItemSelected(object sender, AdapterView.ItemSelectedEventArgs e)
+        private async void SpinnerIdent_ItemSelected(object sender, AdapterView.ItemSelectedEventArgs e)
         {
             var item = e.Position;
             var chosen = identData.ElementAt(item);
@@ -448,7 +448,7 @@ namespace WMS
             {
                 tbIdent.Text = chosen;
             }
-            ProcessIdent();
+            await ProcessIdent();
         }
 
 

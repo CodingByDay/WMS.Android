@@ -179,7 +179,7 @@ namespace WMS
 
             if (App.Settings.tablet)
             {
-                fillItems();
+                await fillItems();
             }
 
             if (ssccRow.Visibility != ViewStates.Visible && serialRow.Visibility != ViewStates.Visible)
@@ -224,7 +224,7 @@ namespace WMS
         }
 
 
-        private async void fillItems()
+        private async Task fillItems()
         {
             var code = openIdent.GetString("Code");
             var wh = moveHead.GetString("Wharehouse");

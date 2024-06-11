@@ -154,7 +154,7 @@ namespace WMS
         private ZoomageView? image;
         private Barcode2D barcode2D;
 
-        private async void GetWorkOrderDefaultQty()
+        private async Task GetWorkOrderDefaultQty()
         {
             if (getWorkOrderDefaultQty == null)
             {
@@ -387,13 +387,13 @@ namespace WMS
             }
         }
 
-        private async void fillSugestedLocation(string warehouse)
+        private async Task fillSugestedLocation(string warehouse)
         {
             var location = await CommonData.GetSettingAsync("DefaultProductionLocation", this);
             tbLocation.Text = location;
         }
 
-        private void ProcessSerialNum()
+        private async void ProcessSerialNum()
         {
             if (string.IsNullOrEmpty(tbSerialNum.Text.Trim()))
             {
@@ -405,7 +405,7 @@ namespace WMS
                     return;
                 }
             }
-            GetWorkOrderDefaultQty();
+            await GetWorkOrderDefaultQty();
         }
         private bool CheckWorkOrderOpenQty()
         {
@@ -663,11 +663,11 @@ namespace WMS
 
 
 
-        private void TbSSCC_FocusChange(object sender, View.FocusChangeEventArgs e)
+        private async void TbSSCC_FocusChange(object sender, View.FocusChangeEventArgs e)
         {
             var warehouse = moveHead.GetString("Wharehouse");
 
-            fillSugestedLocation(warehouse);
+            await fillSugestedLocation(warehouse);
         }
 
         private void color()
@@ -696,7 +696,7 @@ namespace WMS
                 {
                     var headID = moveHead.GetInt("HeadID");
 
-                    SelectSubjectBeforeFinish.ShowIfNeeded(headID);
+                    await SelectSubjectBeforeFinish.ShowIfNeeded(headID);
 
 
                     try

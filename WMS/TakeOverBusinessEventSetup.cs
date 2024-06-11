@@ -89,7 +89,7 @@ namespace WMS
             cbDocType.Adapter = adapterDoc;
             adapterDoc.SetNotifyOnChange(true);
 
-            UpdateForm();
+            await UpdateForm();
 
 
             var dw = await CommonData.GetSettingAsync("DefaultWarehouse", this);
@@ -108,10 +108,10 @@ namespace WMS
             cbSubject.ItemClick += CbSubject_ItemClick;
             cbWarehouse.ItemClick += CbWarehouse_ItemClick;
 
-            InitializeAutocompleteControls();
+            await InitializeAutocompleteControls();
         }
 
-        private async void InitializeAutocompleteControls()
+        private async Task InitializeAutocompleteControls()
         {
             try
             {
@@ -227,7 +227,7 @@ namespace WMS
             }
             byOrder = !byOrder;
             Base.Store.byOrder = byOrder;
-            UpdateForm();
+            await UpdateForm();
 
         }
 
@@ -237,7 +237,7 @@ namespace WMS
             NextStep();
         }
 
-        private async void UpdateForm()
+        private async Task UpdateForm()
         {
             try
             {

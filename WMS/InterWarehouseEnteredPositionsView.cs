@@ -46,7 +46,7 @@ namespace WMS
         private string tempUnit;
         private List<InterWarehouseEnteredPositionsViewList> data = new List<InterWarehouseEnteredPositionsViewList>();
 
-        protected override void OnCreate(Bundle savedInstanceState)
+        protected override async void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             SetTheme(Resource.Style.AppTheme_NoActionBar);
@@ -99,7 +99,7 @@ namespace WMS
 
             if (App.Settings.tablet)
             {
-                fillItems();
+                await fillItems();
                 UniversalAdapterHelper.SelectPositionProgramaticaly(listData, 0);
             }
 
@@ -123,14 +123,14 @@ namespace WMS
             selectedItem = selected;
         }
 
-        private void Select(int postionOfTheItemInTheList)
+        private async void Select(int postionOfTheItemInTheList)
         {
             displayedPosition = postionOfTheItemInTheList;
             if (displayedPosition >= positions.Items.Count) { displayedPosition = 0; }
-            FillDisplayedItem();
+            await FillDisplayedItem();
         }
 
-        private async void fillItems()
+        private async Task fillItems()
         {
             for (int i = 0; i < positions.Items.Count; i++)
             {
@@ -322,7 +322,7 @@ namespace WMS
                         if (App.Settings.tablet)
                         {
                             data.Clear();
-                            fillItems();
+                            await fillItems();
                         }
                         popupDialog.Dismiss();
                         popupDialog.Hide();
@@ -497,7 +497,7 @@ namespace WMS
             Finish();
         }
 
-        private void BtNext_Click(object sender, EventArgs e)
+        private async void BtNext_Click(object sender, EventArgs e)
         {
             if (App.Settings.tablet)
             {
@@ -517,10 +517,10 @@ namespace WMS
 
             displayedPosition++;
             if (displayedPosition >= positions.Items.Count) { displayedPosition = 0; }
-            FillDisplayedItem();
+            await FillDisplayedItem();
         }
 
-        private void LoadPositions()
+        private async void LoadPositions()
         {
             try
             {
@@ -541,7 +541,7 @@ namespace WMS
                     }
                 }
                 displayedPosition = 0;
-                FillDisplayedItem();
+                await FillDisplayedItem();
             }
             catch (Exception err)
             {
@@ -549,7 +549,7 @@ namespace WMS
                 return;
             }
         }
-        private async void FillDisplayedItem()
+        private async Task FillDisplayedItem()
         {
             if ((positions != null) && (displayedPosition < positions.Items.Count))
             {

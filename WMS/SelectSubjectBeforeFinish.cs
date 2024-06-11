@@ -16,7 +16,7 @@ namespace WMS
         private Button btConfirm;
         List<ComboBoxItem> objectSubjects = new List<ComboBoxItem>();
         private int temporaryPositionReceive;
-        public static async void ShowIfNeeded(int headID)
+        public static async Task ShowIfNeeded(int headID)
         {
             if ((await CommonData.GetSettingAsync("WorkOrderFinishWithSubject") ?? "0") == "1")
             {

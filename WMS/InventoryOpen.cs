@@ -80,7 +80,7 @@ namespace WMS
 
 
             dateX = DateTime.Today;
-            UpdateFields();
+            await UpdateFields();
         }
 
         private void Button2_Click(object sender, EventArgs e)
@@ -114,7 +114,7 @@ namespace WMS
                 LoaderManifest.LoaderManifestLoop(this);
             }
         }
-        private async void UpdateFields()
+        private async Task UpdateFields()
         {
             var warehouse = warehousesObjectsAdapter.ElementAt(temporaryPositionWarehouse);
             if (warehouse == null)
@@ -271,12 +271,12 @@ namespace WMS
             }
         }
 
-        private void CbWarehouse_ItemSelected(object sender, AdapterView.ItemSelectedEventArgs e)
+        private async void CbWarehouse_ItemSelected(object sender, AdapterView.ItemSelectedEventArgs e)
         {
 
             temporaryPositionWarehouse = e.Position;
             warehouseLabel.Text = $"{Resources.GetString(Resource.String.s28)}: " + warehousesObjectsAdapter.ElementAt(temporaryPositionWarehouse);
-            UpdateFields();
+            await UpdateFields();
 
         }
 
@@ -284,11 +284,11 @@ namespace WMS
 
         private void BtChoose_Click(object sender, EventArgs e)
         {
-            DatePickerFragment frag = DatePickerFragment.NewInstance(delegate (DateTime time)
+            DatePickerFragment frag = DatePickerFragment.NewInstance(async delegate (DateTime time)
             {
                 dtInventory.Text = time.ToShortDateString();
                 dateX = time;
-                UpdateFields();
+                await UpdateFields();
             });
             frag.Show(FragmentManager, DatePickerFragment.TAG);
         }

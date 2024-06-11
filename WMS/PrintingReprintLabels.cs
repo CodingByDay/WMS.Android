@@ -44,7 +44,7 @@ namespace WMS
         }
 
 
-        public void GetBarcode(string barcode)
+        public async void GetBarcode(string barcode)
         {
             if (tbSSCC.HasFocus)
             {
@@ -69,12 +69,12 @@ namespace WMS
             {
 
                 tbLocation.Text = barcode;
-                ProcessQty();
+                await ProcessQty();
                 tbQty.RequestFocus();
             }
         }
 
-        private async void ProcessIdent()
+        private async Task ProcessIdent()
         {
             var ident = tbIdent.Text.Trim();
             var identObj = await CommonData.LoadIdentAsync(ident, this);
@@ -162,7 +162,7 @@ namespace WMS
 
             tbIdent.RequestFocus();
 
-            SetDefault();
+            await SetDefault();
 
             var _broadcastReceiver = new NetworkStatusBroadcastReceiver();
             _broadcastReceiver.ConnectionStatusChanged += OnNetworkStatusChanged;
@@ -196,15 +196,15 @@ namespace WMS
             }
         }
 
-        private async void SetDefault()
+        private async Task SetDefault()
         {
             tbQty.Text = "1";
             tbLocation.Text = await CommonData.GetSettingAsync("DefaultPaletteLocation", this);
         }
 
-        private void TbTitle_FocusChange(object sender, View.FocusChangeEventArgs e)
+        private async void TbTitle_FocusChange(object sender, View.FocusChangeEventArgs e)
         {
-            ProcessIdent();
+            await ProcessIdent();
         }
 
         private void CbSubject_ItemSelected(object sender, AdapterView.ItemSelectedEventArgs e)
@@ -246,7 +246,7 @@ namespace WMS
         }
 
 
-        private async void ProcessQty()
+        private async Task ProcessQty()
         {
             btPrint.Enabled = false;
 
@@ -282,9 +282,9 @@ namespace WMS
             tbQty.RequestFocus();
         }
 
-        private void TbSSCC_FocusChange(object sender, View.FocusChangeEventArgs e)
+        private async void TbSSCC_FocusChange(object sender, View.FocusChangeEventArgs e)
         {
-            ProcessIdent();
+            await ProcessIdent();
         }
         public override bool OnKeyDown(Keycode keyCode, KeyEvent e)
         {

@@ -50,7 +50,7 @@ namespace WMS
         private string tempUnit;
         private List<ProductionEnteredPositionList> data = new List<ProductionEnteredPositionList>();
 
-        protected override void OnCreate(Bundle savedInstanceState)
+        protected override async void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             SetTheme(Resource.Style.AppTheme_NoActionBar);
@@ -103,7 +103,7 @@ namespace WMS
             {
                 StartActivity(typeof(MainMenu));
             }
-            LoadPositions();
+            await LoadPositions();
             var _broadcastReceiver = new NetworkStatusBroadcastReceiver();
             _broadcastReceiver.ConnectionStatusChanged += OnNetworkStatusChanged;
             Application.Context.RegisterReceiver(_broadcastReceiver,
@@ -111,7 +111,7 @@ namespace WMS
 
             if (App.Settings.tablet)
             {
-                fillList();
+                await fillList();
             }
 
 
@@ -125,7 +125,7 @@ namespace WMS
         }
 
 
-        private async void Yes(int index)
+        private async Task Yes(int index)
         {
             var item = positions.Items[index];
             var id = item.GetInt("HeadID");
@@ -140,11 +140,11 @@ namespace WMS
                     if (result == "OK!")
                     {
                         positions = null;
-                        LoadPositions();
+                        await LoadPositions();
                         data.Clear();
                         if (App.Settings.tablet)
                         {
-                            fillList();
+                            await fillList();
                         }
                         popupDialog.Dismiss();
                         popupDialog.Hide();
@@ -154,7 +154,7 @@ namespace WMS
                         string errorWebAppIssued = string.Format($"{Resources.GetString(Resource.String.s212)}" + result);
                         Toast.MakeText(this, errorWebAppIssued, ToastLength.Long).Show();
                         positions = null;
-                        LoadPositions();
+                        await LoadPositions();
 
                         popupDialog.Dismiss();
                         popupDialog.Hide();
@@ -204,15 +204,15 @@ namespace WMS
             UniversalAdapterHelper.SelectPositionProgramaticaly(listData, selected);
         }
 
-        private void Select(int selected)
+        private async void Select(int selected)
         {
             displayedPosition = selected;
             if (displayedPosition >= positions.Items.Count) { displayedPosition = 0; }
-            FillDisplayedItem();
+            await FillDisplayedItem();
 
         }
 
-        private async void fillList()
+        private async Task fillList()
         {
             for (int i = 0; i < positions.Items.Count; i++)
             {
@@ -400,7 +400,7 @@ namespace WMS
                     if (result == "OK!")
                     {
                         positions = null;
-                        LoadPositions();
+                        await LoadPositions();
                         popupDialog.Dismiss();
                         popupDialog.Hide();
                     }
@@ -422,7 +422,7 @@ namespace WMS
                         Dialog dialog = alert.Create();
                         dialog.Show();
                         positions = null;
-                        LoadPositions();
+                        await LoadPositions();
                         popupDialog.Dismiss();
                         popupDialog.Hide();
                         return;
@@ -452,7 +452,7 @@ namespace WMS
             await Task.Run(async() =>
             {
                 var headID = moveHead.GetInt("HeadID");
-                SelectSubjectBeforeFinish.ShowIfNeeded(headID);
+                await SelectSubjectBeforeFinish.ShowIfNeeded(headID);
 
                 try
                 {
@@ -579,7 +579,7 @@ namespace WMS
             Finish();
         }
 
-        private void BtNext_Click(object sender, EventArgs e)
+        private async void BtNext_Click(object sender, EventArgs e)
         {
             if (App.Settings.tablet)
             {
@@ -602,10 +602,10 @@ namespace WMS
             }
             displayedPosition++;
             if (displayedPosition >= positions.Items.Count) { displayedPosition = 0; }
-            FillDisplayedItem();
+            await FillDisplayedItem();
         }
 
-        private void LoadPositions()
+        private async Task LoadPositions()
         {
 
             try
@@ -630,7 +630,7 @@ namespace WMS
                 }
 
                 displayedPosition = 0;
-                FillDisplayedItem();
+                await FillDisplayedItem();
             }
             catch (Exception err)
             {
@@ -641,7 +641,7 @@ namespace WMS
             }
         }
 
-        private async void FillDisplayedItem()
+        private async Task FillDisplayedItem()
         {
             if ((positions != null) && (displayedPosition < positions.Items.Count))
             {

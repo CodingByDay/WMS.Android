@@ -139,15 +139,15 @@ namespace WMS
             Finish();
         }
 
-        private void BtConfirm_Click(object sender, EventArgs e)
+        private async void BtConfirm_Click(object sender, EventArgs e)
         {
 
 
-            ProcessData();
+            await ProcessData();
 
         }
 
-        private async void ProcessData()
+        private async Task ProcessData()
         {
             temporaryString = objectsPackaging.ElementAt(temporaryPositionWarehouse).ID;
 

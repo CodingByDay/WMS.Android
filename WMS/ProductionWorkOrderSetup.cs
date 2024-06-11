@@ -30,7 +30,7 @@ namespace WMS
         int soundPoolId;
         private Barcode2D barcode2D;
 
-        public void GetBarcode(string barcode)
+        public async void GetBarcode(string barcode)
         {
             if (tbWorkOrder.HasFocus)
             {
@@ -43,7 +43,7 @@ namespace WMS
                     tbName.Text = "";
 
                     tbWorkOrder.Text = barcode;
-                    ProcessWorkOrder();
+                    await ProcessWorkOrder();
                 }
                 else
                 {
@@ -118,7 +118,7 @@ namespace WMS
             {
                 if (e.ActionId == ImeAction.Done || e.Event.Action == KeyEventActions.Down)
                 {
-                    ProcessWorkOrder();
+                    await ProcessWorkOrder();
                 }
             };
 
@@ -154,9 +154,9 @@ namespace WMS
                 LoaderManifest.LoaderManifestLoop(this);
             }
         }
-        private void TbOpenQty_FocusChange(object sender, View.FocusChangeEventArgs e)
+        private async void TbOpenQty_FocusChange(object sender, View.FocusChangeEventArgs e)
         {
-            ProcessWorkOrder();
+            await ProcessWorkOrder();
         }
 
         private void Button2_Click(object sender, EventArgs e)
@@ -326,7 +326,7 @@ namespace WMS
             return base.OnKeyDown(keyCode, e);
         }
 
-        private async void ProcessWorkOrder()
+        private async Task ProcessWorkOrder()
         {
             tbOpenQty.Text = "";
             tbClient.Text = "";

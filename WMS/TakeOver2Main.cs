@@ -31,13 +31,13 @@ namespace WMS
         private NameValueObject moveHead = (NameValueObject)InUseObjects.Get("MoveHead");
         private NameValueObject moveItem = (NameValueObject)InUseObjects.Get("MoveItem");
 
-        public void GetBarcode(string barcode)
+        public async void GetBarcode(string barcode)
         {
             if (tbIdent.HasFocus)
             {
 
                 tbIdent.Text = barcode;
-                ProcessIdent();
+                await ProcessIdent();
             }
             else if (tbLocation.HasFocus)
             {
@@ -45,7 +45,7 @@ namespace WMS
                 tbLocation.Text = barcode;
             }
         }
-        private async void ProcessIdent()
+        private async Task ProcessIdent()
         {
             try
             {
@@ -422,13 +422,13 @@ namespace WMS
             }
             return base.OnKeyDown(keyCode, e);
         }
-        private void TbIdent_KeyPress(object sender, View.KeyEventArgs e)
+        private async void TbIdent_KeyPress(object sender, View.KeyEventArgs e)
         {
             e.Handled = false;
             if (e.Event.Action == KeyEventActions.Down && e.KeyCode == Keycode.Enter)
             {
                 // Add your logic here. 
-                ProcessIdent();
+                await ProcessIdent();
                 e.Handled = true;
 
             }

@@ -121,17 +121,17 @@ namespace WMS
             SetUpProcessDependentButtons();
 
             // Main logic for the entry
-            SetUpForm();
+            await SetUpForm();
 
 
             if (App.Settings.tablet)
             {
-                FillTheList();
+                await FillTheList();
             }
 
         }
 
-        private async void fillListAdapter()
+        private async Task fillListAdapter()
         {
 
             for (int i = 0; i < positions.Items.Count; i++)
@@ -187,7 +187,7 @@ namespace WMS
             }
 
         }
-        private async void FillTheList()
+        private async Task FillTheList()
         {
             try
             {
@@ -205,7 +205,7 @@ namespace WMS
             }
             finally
             {
-                fillListAdapter();
+                await fillListAdapter();
             }
         }
 
@@ -233,7 +233,7 @@ namespace WMS
             tbLocation.SetBackgroundColor(Android.Graphics.Color.Aqua);
         }
 
-        private async void SetUpForm()
+        private async Task SetUpForm()
         {
             // This is the default focus of the view.
             tbSSCC.RequestFocus();
@@ -290,7 +290,7 @@ namespace WMS
                         stock = quantity;
                     }
 
-                    GetConnectedPositions(order.Order, order.Position ?? -1, order.Ident);
+                    await GetConnectedPositions(order.Order, order.Position ?? -1, order.Ident);
                     tbLocation.Text = await CommonData.GetSettingAsync("DefaultPaletteLocation", this);
 
                     tbPacking.RequestFocus();
@@ -314,7 +314,7 @@ namespace WMS
 
                     }
 
-                    GetConnectedPositions(code2d.__helper__convertedOrder, code2d.__helper__position, code2d.ident);
+                    await GetConnectedPositions(code2d.__helper__convertedOrder, code2d.__helper__position, code2d.ident);
 
                     tbLocation.Text = await CommonData.GetSettingAsync("DefaultPaletteLocation", this);
                     // Reset the 2d code to nothing
@@ -350,7 +350,7 @@ namespace WMS
         /// <param name="acKey">Številka naročila</param>
         /// <param name="anNo">Pozicija znotraj naročila</param>
         /// <param name="acIdent">Ident</param>
-        private async void GetConnectedPositions(string acKey, int anNo, string acIdent, string acLocation = null)
+        private async Task GetConnectedPositions(string acKey, int anNo, string acIdent, string acLocation = null)
         {
             connectedPositions.Clear();
             var sql = "SELECT * from uWMSOrderItemByKeyIn WHERE acKey = @acKey AND anNo = @anNo AND acIdent = @acIdent";

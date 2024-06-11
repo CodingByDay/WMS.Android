@@ -192,7 +192,7 @@ namespace WMS
                 else
                 {
                     e.Handled = true;
-                    ProcessStock();
+                    await ProcessStock();
                     tbPacking.RequestFocus();
                 }
             }
@@ -301,13 +301,13 @@ namespace WMS
 
 
 
-        private void TbIdent_KeyPress(object sender, View.KeyEventArgs e)
+        private async void TbIdent_KeyPress(object sender, View.KeyEventArgs e)
         {
             e.Handled = false;
             if (e.Event.Action == KeyEventActions.Down && e.KeyCode == Keycode.Enter)
             {
                 // add your logic here 
-                ProcessIdent();
+                await ProcessIdent();
                 e.Handled = true;
             }
         }
@@ -315,7 +315,7 @@ namespace WMS
         private async void TbIdent_FocusChange(object sender, View.FocusChangeEventArgs e)
         {
 
-            ProcessLocation();
+            await ProcessLocation();
 
             if (await CommonData.GetSettingAsync("AutoCreateSSCC", this) != "1")
             {
@@ -334,7 +334,7 @@ namespace WMS
                     {
                         if (tbIdent.Text != string.Empty)
                         {
-                            ProcessStock();
+                            await ProcessStock();
                         }
 
                     }
@@ -576,7 +576,7 @@ namespace WMS
             warehouseLabel.Text = $"{Resources.GetString(Resource.String.s28)}: " + warehouseAdapter.ElementAt(temporaryPosWarehouse);
         }
 
-        private async void ProcessIdent()
+        private async Task ProcessIdent()
         {
             var ident = tbIdent.Text.Trim();
             if (string.IsNullOrEmpty(ident)) { return; }
@@ -615,7 +615,7 @@ namespace WMS
             tbTitle.Text = "";
         }
 
-        private async void ProcessStock()
+        private async Task ProcessStock()
         {
             var warehouse = warehouseAdapter.ElementAt(temporaryPosWarehouse);
             if (warehouse == null)
@@ -757,7 +757,7 @@ namespace WMS
                     }
                     tbLocation.Text = location;
                     tbTitle.Text = idname;
-                    ProcessStock();
+                    await ProcessStock();
                     tbPacking.RequestFocus();
                 }
                 else
@@ -769,20 +769,20 @@ namespace WMS
             {
 
                 tbLocation.Text = barcode;
-                ProcessLocation();
+                await ProcessLocation();
 
             }
             else if (tbSerialNum.HasFocus)
             {
 
                 tbSerialNum.Text = barcode;
-                ProcessStock();
+                await ProcessStock();
             }
             else if (tbIdent.HasFocus)
             {
 
                 tbIdent.Text = barcode;
-                ProcessIdent();
+                await ProcessIdent();
             }
         }
 
@@ -910,7 +910,7 @@ namespace WMS
             return true;
         }
 
-        private async void ProcessLocation()
+        private async Task ProcessLocation()
         {
             var warehouse = warehouseAdapter.ElementAt(temporaryPosWarehouse);
             if (warehouse == null)

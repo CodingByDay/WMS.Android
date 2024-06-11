@@ -149,7 +149,7 @@ namespace WMS
             dataAdapter.NotifyDataSetChanged();
             UniversalAdapterHelper.SelectPositionProgramaticaly(listData, 0);
         }
-        private async void Yes(int index)
+        private async Task Yes(int index)
         {
             var item = positions.Items[index];
             var id = item.GetInt("HeadID");
@@ -215,7 +215,7 @@ namespace WMS
             // Access Popup layout fields like below
             btnYes = popupDialog.FindViewById<Button>(Resource.Id.btnYes);
             btnNo = popupDialog.FindViewById<Button>(Resource.Id.btnNo);
-            btnYes.Click += (e, ev) => { Yes(index); };
+            btnYes.Click += async (e, ev) => { await Yes(index); };
             btnNo.Click += (e, ev) => { No(index); };
         }
 
