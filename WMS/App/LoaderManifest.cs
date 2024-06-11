@@ -10,23 +10,43 @@ namespace WMS.App
 
         public static void LoaderManifestLoop(Context context)
         {
-            if (progress != null)
+            try
             {
-                progress.StopDialogSync();
+                Activity activity = context as Activity;
+                activity.RunOnUiThread(() =>
+                {
+                    if (progress != null)
+                    {
+                        progress.StopDialogSync();
+                    }
+                    progress = new ProgressDialogClass();
+                    progress.ShowDialogSync(context, "Waiting for connection...");
+                });
             }
-
-            progress = new ProgressDialogClass();
-            progress.ShowDialogSync(context, "Connecting...");
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+            }
         }
 
         public static void LoaderManifestLoopResources(Context context)
         {
-            if (progress != null)
+            try
             {
-                progress.StopDialogSync();
+                Activity activity = context as Activity;
+                activity.RunOnUiThread(() =>
+                {
+                    if (progress != null)
+                    {
+                        progress.StopDialogSync();
+                    }
+                    progress = new ProgressDialogClass();
+                    progress.ShowDialogSync(context, "Waiting...");
+                });
+            } catch (Exception ex) 
+            {
+                SentrySdk.CaptureException(ex);
             }
-            progress = new ProgressDialogClass();
-            progress.ShowDialogSync(context, "Waiting...");
         }
 
  
@@ -35,14 +55,19 @@ namespace WMS.App
         {
             try
             {
-                if (progress != null)
+                Activity activity = context as Activity;
+                activity.RunOnUiThread(() =>
                 {
-                    progress.StopDialogSync();
-                }
+                    if (progress != null)
+                    {
+                        progress.StopDialogSync();
+                    }
+
+                });
             }
-            catch
+            catch (Exception ex)
             {
-                return;
+                SentrySdk.CaptureException(ex);
             }
         }
 

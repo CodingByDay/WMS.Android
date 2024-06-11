@@ -35,11 +35,11 @@ namespace WMS.AsyncServices
             try
             {
 
-                if (context != null)
+                /*if (context != null)
                 {
                     LoaderManifest.LoaderManifestLoopResources(context);
                 }
-
+                */
                 GetResult getResult = await GetAsync("mode=list&table=" + table + "&pars=" + pars);
 
                 if (getResult.Success)
@@ -54,13 +54,13 @@ namespace WMS.AsyncServices
             catch
             {
                 return null;
-            } finally
+            } /* finally
             {
                 if (context != null)
                 {
                     LoaderManifest.LoaderManifestLoopStop(context);
                 }
-            }
+            }*/
         }
         private static string RandomizeURL(string url)
         {
@@ -149,10 +149,10 @@ namespace WMS.AsyncServices
         public static async Task<ApiResultSet?> GetObjectListBySqlAsync(string sql, List<Parameter>? sqlParameters = null, Context? context = null)
         {
 
-            if (context != null)
+            /*if (context != null)
             {
                 LoaderManifest.LoaderManifestLoopResources(context);
-            }
+            }*/
             string result;
             SqlQueryRequest requestObject;
             if (sqlParameters != null)
@@ -174,13 +174,15 @@ namespace WMS.AsyncServices
             {
                 SentrySdk.CaptureMessage(err.Message);
                 return new ApiResultSet { Error = err.Message, Success = false, Results = 0, Rows = new List<Row>() };
-            } finally
+            }/* finally
             {
                 if (context != null)
                 {
                     LoaderManifest.LoaderManifestLoopStop(context);
                 }
-            }
+            }*/
+
+            // Continue here add manual loaders because its visualy nicer and wrap all UI operations and test
         }
 
 
