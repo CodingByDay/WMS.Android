@@ -54,7 +54,6 @@ namespace WMS
                 base.RequestedOrientation = ScreenOrientation.Portrait;
                 base.SetContentView(Resource.Layout.IssuedGoodsBusinessEventSetup);
             }
-            LoaderManifest.LoaderManifestLoopResources(this);
             AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
             var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
             _customToolbar.SetNavigationIcon(App.Settings.RootURL + "/Services/Logo");
@@ -87,7 +86,7 @@ namespace WMS
             Android.Resource.Layout.SimpleSpinnerItem, objectDocType);
             adapterDocType.SetDropDownViewResource(Android.Resource.Layout.SimpleSpinnerItem);
             cbDocType.Adapter = adapterDocType;
-            UpdateForm();
+            await UpdateForm();
             btnOrderMode.Enabled = await Services.HasPermission("TNET_WMS_BLAG_SND_NORDER", "R", this);
             cbWarehouse.Enabled = true;
             BottomSheetActions bottomSheetActions = new BottomSheetActions();
@@ -100,21 +99,29 @@ namespace WMS
             cbDocType.ItemClick += CbDocType_ItemClick;
             cbExtra.ItemClick += CbExtra_ItemClick;
             cbWarehouse.ItemClick += CbWarehouse_ItemClick;
-            InitializeAutocompleteControls();
-            LoaderManifest.LoaderManifestLoopStop(this);
+            await InitializeAutocompleteControls();
         }
 
-        private async void InitializeAutocompleteControls()
+        private async Task InitializeAutocompleteControls()
         {
-            cbDocType.SelectAtPosition(0);
-            cbExtra.SelectAtPosition(0);
-            var dws = await Queries.DefaultIssueWarehouse(objectDocType.ElementAt(0).ID);
-            temporaryPositionWarehouse = cbWarehouse.SetItemByString(dws.warehouse);
-            if (dws.main)
+            try
             {
-                cbWarehouse.Enabled = false;
+                if (objectDocType.Count > 0)
+                {
+                    cbDocType.SelectAtPosition(0);
+                    cbExtra.SelectAtPosition(0);
+                    var dws = await Queries.DefaultIssueWarehouse(objectDocType.ElementAt(0).ID);
+                    temporaryPositionWarehouse = cbWarehouse.SetItemByString(dws.warehouse);
+                    if (dws.main)
+                    {
+                        cbWarehouse.Enabled = false;
+                    }
+                    await FillOpenOrdersAsync();
+                }
+            } catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
             }
-            await FillOpenOrdersAsync();
         }
 
         private async void CbWarehouse_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
@@ -258,10 +265,7 @@ namespace WMS
             {
                 try
                 {
-                    RunOnUiThread(() =>
-                    {
-                        LoaderManifest.LoaderManifestLoopResources(this);
-                    });
+ 
                     int selectedFlow = Base.Store.modeIssuing;
                     if (selectedFlow == 2)
                     {
@@ -323,13 +327,7 @@ namespace WMS
                 {
                     SentrySdk.CaptureException(ex);
                 }
-                finally
-                {
-                    RunOnUiThread(() =>
-                    {
-                        LoaderManifest.LoaderManifestLoopStop(this);
-                    });
-                }
+
             });
         }
         private void BtnLogout_Click(object sender, EventArgs e)
@@ -344,7 +342,7 @@ namespace WMS
             await FillOpenOrdersAsync();
             Base.Store.byOrder = byOrder;
             byOrder = !byOrder;
-            UpdateForm();
+            await UpdateForm();
         }
 
         private void BtnOrder_Click(object sender, EventArgs e)
@@ -362,7 +360,7 @@ namespace WMS
 
 
 
-        private async void UpdateForm()
+        private async Task UpdateForm()
         {
             objectExtra.Clear();
             adapterDocType.Clear();

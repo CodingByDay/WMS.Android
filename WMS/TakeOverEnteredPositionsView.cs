@@ -488,7 +488,7 @@ namespace WMS
 
                     if (positions == null)
                     {
-                        positions = await AsyncServices.AsyncServices.GetObjectListAsync("mi", moveHead.GetInt("HeadID").ToString());
+                        positions = await AsyncServices.AsyncServices.GetObjectListAsync("mi", moveHead.GetInt("HeadID").ToString(), this);
                         InUseObjects.Set("TakeOverEnteredPositions", positions);
                     }
                     if (positions == null)

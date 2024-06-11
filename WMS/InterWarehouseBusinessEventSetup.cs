@@ -45,7 +45,6 @@ namespace WMS
                 base.RequestedOrientation = ScreenOrientation.Portrait;
                 base.SetContentView(Resource.Layout.InterWarehouseBusinessEventSetup);
             }
-            LoaderManifest.LoaderManifestLoopResources(this);
             AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
             var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
             _customToolbar.SetNavigationIcon(App.Settings.RootURL + "/Services/Logo");
@@ -118,7 +117,6 @@ namespace WMS
             cbIssueWH.ItemClick += CbIssueWH_ItemClick;
             cbReceiveWH.ItemClick += CbReceiveWH_ItemClick;
             InitializeAutocompleteControls();
-            LoaderManifest.LoaderManifestLoopStop(this);
         }
 
 

@@ -60,7 +60,6 @@ namespace WMS
                 base.RequestedOrientation = ScreenOrientation.Portrait;
                 base.SetContentView(Resource.Layout.UnfinishedProductionView);
             }
-            LoaderManifest.LoaderManifestLoopResources(this);
             AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
             var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
             _customToolbar.SetNavigationIcon(App.Settings.RootURL + "/Services/Logo");
@@ -107,7 +106,6 @@ namespace WMS
             yourLinearLayout.SetOnTouchListener(gestureListener);
 
 
-            LoaderManifest.LoaderManifestLoopStop(this);
 
 
         }
@@ -471,7 +469,7 @@ namespace WMS
             try
             {
 
-                positions = await AsyncServices.AsyncServices.GetObjectListAsync("mhp", "W");
+                positions = await AsyncServices.AsyncServices.GetObjectListAsync("mhp", "W", this);
 
                 if (positions == null)
                 {

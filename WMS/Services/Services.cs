@@ -212,6 +212,42 @@ namespace TrendNET.WMS.Device.Services
             }
         }
 
+
+
+        public async static Task<bool> IsValidUserAsync(string password, Context context)
+        {
+            var (success, content) = await WebApp.GetAsync("mode=loginUser&password=" + password, context);
+            string error = string.Empty;
+            if (success)
+            {
+                try
+                {
+                    var nvl = CompactSerializer.Deserialize<NameValueList>(content);
+                    if (nvl.Get("Success").BoolValue == true)
+                    {
+                        nvl.Items.ForEach(nv => UserInfo.Add(nv));
+                        error = "";
+                        return true;
+                    }
+                    else
+                    {
+                        error = nvl.Get("Error").StringValue;
+                        return false;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    error = "Napaka pri tolmačenju odziva web strežnika: " + ex.Message;
+                    return false;
+                }
+            }
+            else
+            {
+                error = "Napaka pri klicu web strežnika: " + content;
+                return false;
+            }
+        }
+
         public class SqlQueryRequest
         {
             public string SQL { get; set; }

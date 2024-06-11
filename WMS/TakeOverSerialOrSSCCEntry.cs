@@ -78,7 +78,7 @@ namespace WMS
                 base.RequestedOrientation = ScreenOrientation.Portrait;
                 base.SetContentView(Resource.Layout.TakeOverSerialOrSSCCEntry);
             }
-            LoaderManifest.LoaderManifestLoopResources(this);
+
             AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
             var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
             _customToolbar.SetNavigationIcon(App.Settings.RootURL + "/Services/Logo");
@@ -117,7 +117,6 @@ namespace WMS
             ColorFields();
 
             // Stop the loader
-            LoaderManifest.LoaderManifestLoopStop(this);
 
             SetUpProcessDependentButtons();
 
@@ -130,7 +129,6 @@ namespace WMS
                 FillTheList();
             }
 
-            LoaderManifest.LoaderManifestLoopStop(this);
         }
 
         private async void fillListAdapter()
@@ -194,7 +192,7 @@ namespace WMS
             try
             {
 
-                positions = await AsyncServices.AsyncServices.GetObjectListAsync("mi", moveHead.GetInt("HeadID").ToString());
+                positions = await AsyncServices.AsyncServices.GetObjectListAsync("mi", moveHead.GetInt("HeadID").ToString(), this);
                 InUseObjects.Set("TakeOverEnteredPositions", positions);
 
                 if (positions == null)
@@ -365,7 +363,7 @@ namespace WMS
                 parameters.Add(new Services.Parameter { Name = "acLocation", Type = "String", Value = acLocation });
                 sql += " AND acLocation = @acLocation;";
             }
-            var subjects = await AsyncServices.AsyncServices.GetObjectListBySqlAsync(sql, parameters);
+            var subjects = await AsyncServices.AsyncServices.GetObjectListBySqlAsync(sql, parameters, this);
             if (!subjects.Success)
             {
                 RunOnUiThread(() =>

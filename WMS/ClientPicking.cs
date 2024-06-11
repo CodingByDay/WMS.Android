@@ -266,7 +266,7 @@ namespace WMS
                     parameters.Add(new Services.Parameter { Name = "acWarehouse", Type = "String", Value = moveHead.GetString("Wharehouse") });
 
                     string sql = $"SELECT * FROM uWMSOrderItemBySubjectTypeWarehouseOut WHERE acDocType = @acDocType AND acSubject = @acSubject AND acWarehouse = @acWarehouse;";
-                    result = await AsyncServices.AsyncServices.GetObjectListBySqlAsync(sql, parameters);
+                    result = await AsyncServices.AsyncServices.GetObjectListBySqlAsync(sql, parameters, this);
                 }
                 if (moveHead != null && result != null && result.Success && result.Rows.Count > 0)
                 {
@@ -340,7 +340,7 @@ namespace WMS
                     parameters.Add(new Services.Parameter { Name = "acWarehouse", Type = "String", Value = moveHead.GetString("Wharehouse") });
 
                     string sql = $"SELECT * FROM uWMSOrderItemBySubjectTypeWarehouseOutSUM WHERE acDocType = @acDocType AND acSubject = @acSubject AND acWarehouse = @acWarehouse;";
-                    result = await AsyncServices.AsyncServices.GetObjectListBySqlAsync(sql, parameters);
+                    result = await AsyncServices.AsyncServices.GetObjectListBySqlAsync(sql, parameters, this);
                 }
                 if (moveHead != null && result.Success && result.Rows.Count > 0)
                 {

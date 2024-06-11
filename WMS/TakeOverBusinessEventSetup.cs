@@ -48,7 +48,6 @@ namespace WMS
                 base.RequestedOrientation = ScreenOrientation.Portrait;
                 base.SetContentView(Resource.Layout.TakeOverBusinessEventSetup);
             }
-            LoaderManifest.LoaderManifestLoopResources(this);
             AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
             var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
             _customToolbar.SetNavigationIcon(App.Settings.RootURL + "/Services/Logo");
@@ -110,7 +109,6 @@ namespace WMS
             cbWarehouse.ItemClick += CbWarehouse_ItemClick;
 
             InitializeAutocompleteControls();
-            LoaderManifest.LoaderManifestLoopStop(this);
         }
 
         private async void InitializeAutocompleteControls()

@@ -413,7 +413,7 @@ namespace WMS
                 parameters.Add(new Services.Parameter { Name = "acSerialNo", Type = "String", Value = serial });
             }
 
-            var qty = await AsyncServices.AsyncServices.GetObjectListBySqlAsync(sql, parameters);
+            var qty = await AsyncServices.AsyncServices.GetObjectListBySqlAsync(sql, parameters, this);
 
             if (qty != null && qty.Success)
             {
@@ -597,7 +597,7 @@ namespace WMS
             parameters.Add(new Services.Parameter { Name = "acSSCC", Type = "String", Value = sscc });
             parameters.Add(new Services.Parameter { Name = "acWarehouse", Type = "String", Value = warehouse });
             string sql = $"SELECT * FROM uWMSItemBySSCCWarehouse WHERE acSSCC = @acSSCC AND acWarehouse = @acWarehouse";
-            var ssccResult = await AsyncServices.AsyncServices.GetObjectListBySqlAsync(sql, parameters);
+            var ssccResult = await AsyncServices.AsyncServices.GetObjectListBySqlAsync(sql, parameters, this);
             RunOnUiThread(() =>
             {
                 if (ssccResult.Success && ssccResult.Rows.Count > 0)

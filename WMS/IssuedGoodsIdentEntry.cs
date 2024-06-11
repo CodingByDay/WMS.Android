@@ -61,8 +61,7 @@ namespace WMS
 
         private async void ProcessIdent()
         {
-            // Disable unwanted crashes because of not waiting for the result. 6.6.2024 Janko Jovičić
-            LoaderManifest.LoaderManifestLoopResources(this);
+
 
             var ident = tbIdent.Text.Trim();
             if (string.IsNullOrEmpty(ident)) { return; }
@@ -104,7 +103,7 @@ namespace WMS
                         parameters.Add(new Services.Parameter { Name = "acDocType", Type = "String", Value = moveHead.GetString("DocumentType") });
                         parameters.Add(new Services.Parameter { Name = "acWarehouse", Type = "String", Value = moveHead.GetString("Wharehouse") });
 
-                        var subjects = await AsyncServices.AsyncServices.GetObjectListBySqlAsync($"SELECT * from uWMSOrderItemByItemTypeWarehouseOut WHERE acIdent = @acIdent AND acDocType = @acDocType AND acWarehouse = @acWarehouse ORDER BY acKey, anNo;", parameters);
+                        var subjects = await AsyncServices.AsyncServices.GetObjectListBySqlAsync($"SELECT * from uWMSOrderItemByItemTypeWarehouseOut WHERE acIdent = @acIdent AND acDocType = @acDocType AND acWarehouse = @acWarehouse ORDER BY acKey, anNo;", parameters, this);
 
                         if (!subjects.Success)
                         {
@@ -171,10 +170,7 @@ namespace WMS
                 return;
 
             }
-            finally
-            {
-                LoaderManifest.LoaderManifestLoopStop(this);
-            }
+
         }
 
         private void FillDisplayedOrderInfo()

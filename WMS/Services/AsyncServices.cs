@@ -4,6 +4,7 @@ using System.Text;
 using TrendNET.WMS.Core.Data;
 using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
+using WMS.App;
 using static TrendNET.WMS.Device.Services.Services;
 
 
@@ -29,10 +30,16 @@ namespace WMS.AsyncServices
             public string Result { get; set; }
         }
 
-        public static async Task<NameValueObjectList?> GetObjectListAsync(string table, string pars)
+        public static async Task<NameValueObjectList?> GetObjectListAsync(string table, string pars, Context context = null)
         {
             try
             {
+
+                if (context != null)
+                {
+                    LoaderManifest.LoaderManifestLoopResources(context);
+                }
+
                 GetResult getResult = await GetAsync("mode=list&table=" + table + "&pars=" + pars);
 
                 if (getResult.Success)
@@ -47,6 +54,12 @@ namespace WMS.AsyncServices
             catch
             {
                 return null;
+            } finally
+            {
+                if (context != null)
+                {
+                    LoaderManifest.LoaderManifestLoopStop(context);
+                }
             }
         }
         private static string RandomizeURL(string url)
@@ -133,8 +146,13 @@ namespace WMS.AsyncServices
             }
         }
 
-        public static async Task<ApiResultSet?> GetObjectListBySqlAsync(string sql, List<Parameter> sqlParameters = null)
+        public static async Task<ApiResultSet?> GetObjectListBySqlAsync(string sql, List<Parameter>? sqlParameters = null, Context? context = null)
         {
+
+            if (context != null)
+            {
+                LoaderManifest.LoaderManifestLoopResources(context);
+            }
             string result;
             SqlQueryRequest requestObject;
             if (sqlParameters != null)
@@ -156,6 +174,12 @@ namespace WMS.AsyncServices
             {
                 SentrySdk.CaptureMessage(err.Message);
                 return new ApiResultSet { Error = err.Message, Success = false, Results = 0, Rows = new List<Row>() };
+            } finally
+            {
+                if (context != null)
+                {
+                    LoaderManifest.LoaderManifestLoopStop(context);
+                }
             }
         }
 

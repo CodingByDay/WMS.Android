@@ -114,7 +114,6 @@ namespace WMS
                 base.RequestedOrientation = ScreenOrientation.Portrait;
                 base.SetContentView(Resource.Layout.IssuedGoodsSerialOrSSCCEntryClientPicking);
             }
-            LoaderManifest.LoaderManifestLoopResources(this);
             // Definitions
             AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
             var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
@@ -176,8 +175,6 @@ namespace WMS
 
             SetUpProcessDependentButtons();
 
-            // Stop the loader
-            LoaderManifest.LoaderManifestLoopStop(this);
 
 
             if (App.Settings.tablet)
@@ -191,7 +188,6 @@ namespace WMS
                 tbPacking.SelectAll();
             }
 
-            LoaderManifest.LoaderManifestLoopStop(this);
         }
 
 
@@ -794,7 +790,7 @@ namespace WMS
             parameters.Add(new Services.Parameter { Name = "acWarehouse", Type = "String", Value = moveHead.GetString("Wharehouse") });
             parameters.Add(new Services.Parameter { Name = "acIdent", Type = "String", Value = obj.Ident });
 
-            var stocks = await AsyncServices.AsyncServices.GetObjectListBySqlAsync(sql, parameters);
+            var stocks = await AsyncServices.AsyncServices.GetObjectListBySqlAsync(sql, parameters, this);
 
             if (stocks.Success && stocks.Rows.Count > 0)
             {
@@ -864,7 +860,7 @@ namespace WMS
             parameters.Add(new Services.Parameter { Name = "acIdent", Type = "String", Value = acIdent });
 
 
-            var subjects = await AsyncServices.AsyncServices.GetObjectListBySqlAsync($"SELECT * FROM uWMSOrderItemByKeyOut WHERE acKey = @acKey AND anNo = @anNo AND acIdent = @acIdent;", parameters);
+            var subjects = await AsyncServices.AsyncServices.GetObjectListBySqlAsync($"SELECT * FROM uWMSOrderItemByKeyOut WHERE acKey = @acKey AND anNo = @anNo AND acIdent = @acIdent;", parameters, this);
 
             if (!subjects.Success)
             {

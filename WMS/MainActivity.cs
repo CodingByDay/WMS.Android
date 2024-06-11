@@ -74,18 +74,13 @@ namespace WMS
                     if (string.IsNullOrEmpty(Password.Text.Trim())) { return; }
 
                     Services.ClearUserInfo();
-                    string error;
-                    bool valid = false;
 
-                    try
-                    {
-                        valid = Services.IsValidUser(Password.Text.Trim(), out error);
-                    }
-                    catch (Exception err)
-                    {
-                        SentrySdk.CaptureException(err);
-                        return;
-                    }
+                    string error;
+
+
+            
+                    var valid = await Services.IsValidUserAsync(Password.Text.Trim(), this);
+                 
 
                     if (valid)
                     {

@@ -52,7 +52,6 @@ namespace WMS
                 base.RequestedOrientation = ScreenOrientation.Portrait;
                 base.SetContentView(Resource.Layout.IssuedGoodsBusinessEventSetupClientPicking);
             }
-            LoaderManifest.LoaderManifestLoopResources(this);
 
             AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
             var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
@@ -70,7 +69,7 @@ namespace WMS
             btnOrder.Click += BtnOrder_Click;
 
 
-            var warehouses = await AsyncServices.AsyncServices.GetObjectListBySqlAsync($"SELECT acWarehouse, acName FROM uWMSWarehouse");
+            var warehouses = await AsyncServices.AsyncServices.GetObjectListBySqlAsync($"SELECT acWarehouse, acName FROM uWMSWarehouse", null, this);
 
             if (warehouses.Success)
             {
@@ -111,7 +110,6 @@ namespace WMS
             cbExtra.ItemClick += CbExtra_ItemClick;
             cbWarehouse.ItemClick += CbWarehouse_ItemClick;
             InitializeAutocompleteControls();
-            LoaderManifest.LoaderManifestLoopStop(this);
         }
 
         private async void InitializeAutocompleteControls()
@@ -138,10 +136,7 @@ namespace WMS
             {
                 try
                 {
-                    RunOnUiThread(() =>
-                    {
-                        LoaderManifest.LoaderManifestLoopResources(this);
-                    });
+        
                     try
                     {
                         objectExtra.Clear();
@@ -157,7 +152,7 @@ namespace WMS
                                 parameters.Add(new Services.Parameter { Name = "acDocType", Type = "String", Value = dt.ID });
                                 parameters.Add(new Services.Parameter { Name = "acWarehouse", Type = "String", Value = wh.ID });
 
-                                var subjects = await AsyncServices.AsyncServices.GetObjectListBySqlAsync($"SELECT * FROM uWMSOrderSubjectByTypeWarehouseOut WHERE acDocType = @acDocType AND acWarehouse = @acWarehouse", parameters);
+                                var subjects = await AsyncServices.AsyncServices.GetObjectListBySqlAsync($"SELECT * FROM uWMSOrderSubjectByTypeWarehouseOut WHERE acDocType = @acDocType AND acWarehouse = @acWarehouse", parameters, this);
 
 
                                 if (!subjects.Success)
@@ -205,10 +200,7 @@ namespace WMS
                 {
                     SentrySdk.CaptureException(err);
                 }
-                finally
-                {
-                    LoaderManifest.LoaderManifestLoopStop(this);
-                }
+      
             });
         }
 

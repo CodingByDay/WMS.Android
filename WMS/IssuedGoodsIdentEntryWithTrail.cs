@@ -316,7 +316,7 @@ namespace WMS
                         // This change is made because serial number and sscc are not shown and can result in many duplicate entries. 13.05.2024 Janko Jovičić
                         string sql = $"SELECT DISTINCT acIdent, acName, anQty, anNo, acKey, acSubject, aclocation, anPackQty FROM uWMSOrderItemByKeyOut WHERE acKey = @acKey;";
 
-                        result = await AsyncServices.AsyncServices.GetObjectListBySqlAsync(sql, parameters);
+                        result = await AsyncServices.AsyncServices.GetObjectListBySqlAsync(sql, parameters, this);
 
                         if (!result.Success)
                         {
@@ -376,7 +376,6 @@ namespace WMS
                         {
                             trails = unfiltered;
                             adapterObj.NotifyDataSetChanged();
-                            LoaderManifest.LoaderManifestLoopStop(this);
                             adapterObj.Filter(trails, true, string.Empty, false);
                             listener = new MyOnItemLongClickListener(this, adapterObj.returnData(), adapterObj);
                             ivTrail.OnItemLongClickListener = listener;
@@ -455,7 +454,7 @@ namespace WMS
                         // New extra way of showing the data. 21.05.2024 Janko Jovičić
                         string sql = $"SELECT * FROM uWMSOrderItemByKeyOutSUM WHERE acKey = @acKey;";
 
-                        result = await AsyncServices.AsyncServices.GetObjectListBySqlAsync(sql, parameters);
+                        result = await AsyncServices.AsyncServices.GetObjectListBySqlAsync(sql, parameters, this);
 
                         if (!result.Success)
                         {
@@ -529,7 +528,6 @@ namespace WMS
                         {
                             trails = unfiltered;
                             adapterObj.NotifyDataSetChanged();
-                            LoaderManifest.LoaderManifestLoopStop(this);
                             adapterObj.Filter(trails, true, string.Empty, false);
                             listener = new MyOnItemLongClickListener(this, adapterObj.returnData(), adapterObj);
                             ivTrail.OnItemLongClickListener = listener;
@@ -623,7 +621,6 @@ namespace WMS
             }
 
             // New proccess for more locations for SkiSea 21.05.2024 Janko Jovičić
-            LoaderManifest.LoaderManifestLoopResources(this);
 
             if (await CommonData.GetSettingAsync("IssueSummaryView", this) == "1")
             {
@@ -634,7 +631,6 @@ namespace WMS
                 await FillDisplayedOrderInfo();
             }
 
-            LoaderManifest.LoaderManifestLoopStop(this);
 
 
             var _broadcastReceiver = new NetworkStatusBroadcastReceiver();

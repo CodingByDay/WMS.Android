@@ -422,7 +422,6 @@ namespace WMS
         private async void ProcessIdent()
         {
             // Disable unwanted crashes because of not waiting for the result. 6.6.2024 Janko Jovičić
-            LoaderManifest.LoaderManifestLoopResources(this);
 
             var ident = tbIdent.Text.Trim();
             if (string.IsNullOrEmpty(ident)) { return; }
@@ -464,7 +463,7 @@ namespace WMS
                         parameters.Add(new Services.Parameter { Name = "acDocType", Type = "String", Value = moveHead.GetString("DocumentType") });
                         parameters.Add(new Services.Parameter { Name = "acWarehouse", Type = "String", Value = moveHead.GetString("Wharehouse") });
 
-                        var subjects = await AsyncServices.AsyncServices.GetObjectListBySqlAsync($"SELECT * FROM uWMSOrderItemByWarehouseTypeIn WHERE acIdent = @acIdent AND acDocType = @acDocType AND acWarehouse = @acWarehouse;", parameters);
+                        var subjects = await AsyncServices.AsyncServices.GetObjectListBySqlAsync($"SELECT * FROM uWMSOrderItemByWarehouseTypeIn WHERE acIdent = @acIdent AND acDocType = @acDocType AND acWarehouse = @acWarehouse;", parameters, this);
 
                         if (!subjects.Success)
                         {
@@ -523,10 +522,7 @@ namespace WMS
                 SentrySdk.CaptureException(err);
                 return;
             }
-            finally
-            {
-                LoaderManifest.LoaderManifestLoopStop(this);
-            }
+ 
         }
         private void FillDisplayedOrderInfo()
         {
@@ -651,7 +647,7 @@ namespace WMS
                 parameters.Add(new Services.Parameter { Name = "acKey", Type = "String", Value = newKey });
                 parameters.Add(new Services.Parameter { Name = "acIdent", Type = "String", Value = ident });
                 string query = $"SELECT * FROM uWMSOrderItemByWarehouseTypeIn WHERE acKey = @acKey AND acIdent = @acIdent";
-                var resultQuery = await AsyncServices.AsyncServices.GetObjectListBySqlAsync(query, parameters);
+                var resultQuery = await AsyncServices.AsyncServices.GetObjectListBySqlAsync(query, parameters, this);
 
                 if (!resultQuery.Success)
                 {

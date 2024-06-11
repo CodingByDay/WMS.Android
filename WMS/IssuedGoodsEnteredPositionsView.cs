@@ -213,10 +213,7 @@ namespace WMS
                     }
                 }
             });
-            RunOnUiThread(() =>
-            {
-                LoaderManifest.LoaderManifestLoopStop(this);
-            });
+   
         }
         private void GetFlowValue()
         {

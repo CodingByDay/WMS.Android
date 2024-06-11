@@ -219,7 +219,7 @@ namespace WMS
                 parameters.Add(new Services.Parameter { Name = "acSerialNo", Type = "String", Value = serial });
             }
 
-            var qty = await AsyncServices.AsyncServices.GetObjectListBySqlAsync(sql, parameters);
+            var qty = await AsyncServices.AsyncServices.GetObjectListBySqlAsync(sql, parameters, this);
 
             if (qty.Success)
             {
@@ -272,7 +272,6 @@ namespace WMS
                 base.RequestedOrientation = ScreenOrientation.Portrait;
                 base.SetContentView(Resource.Layout.IssuedGoodsSerialOrSSCCEntry);
             }
-            LoaderManifest.LoaderManifestLoopResources(this);
 
             // Definitions
             AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
@@ -339,7 +338,6 @@ namespace WMS
             }
 
             // Stop the loader
-            LoaderManifest.LoaderManifestLoopStop(this);
         }
         private bool initialDropdownEvent = true;
 
@@ -1007,7 +1005,7 @@ namespace WMS
             parameters.Add(new Services.Parameter { Name = "anNo", Type = "Int32", Value = anNo });
             parameters.Add(new Services.Parameter { Name = "acIdent", Type = "String", Value = acIdent });
 
-            var subjects = await AsyncServices.AsyncServices.GetObjectListBySqlAsync(sql, parameters);
+            var subjects = await AsyncServices.AsyncServices.GetObjectListBySqlAsync(sql, parameters, this);
             if (!subjects.Success)
             {
                 RunOnUiThread(() =>
@@ -1255,7 +1253,7 @@ namespace WMS
             parameters.Add(new Services.Parameter { Name = "acWarehouse", Type = "String", Value = moveHead.GetString("Wharehouse") });
             parameters.Add(new Services.Parameter { Name = "acIdent", Type = "String", Value = ident });
 
-            var stocks = await AsyncServices.AsyncServices.GetObjectListBySqlAsync(sql, parameters);
+            var stocks = await AsyncServices.AsyncServices.GetObjectListBySqlAsync(sql, parameters, this);
 
             if (stocks.Success && stocks.Rows.Count > 0)
             {
