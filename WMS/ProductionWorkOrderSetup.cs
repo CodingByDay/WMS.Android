@@ -114,7 +114,7 @@ namespace WMS
             new IntentFilter(ConnectivityManager.ConnectivityAction));
 
 
-            tbWorkOrder.EditorAction += (sender, e) =>
+            tbWorkOrder.EditorAction += async (sender, e) =>
             {
                 if (e.ActionId == ImeAction.Done || e.Event.Action == KeyEventActions.Down)
                 {

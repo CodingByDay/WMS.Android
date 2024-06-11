@@ -93,7 +93,6 @@ namespace WMS
             btLogout.Click += BtLogout_Click;
 
 
-            LoaderManifest.LoaderManifestLoopResources(this);
 
             if (await CommonData.GetSettingAsync("IssueSummaryView", this) == "1")
             {
@@ -103,7 +102,6 @@ namespace WMS
             {
                 await initializeView();
             }
-            LoaderManifest.LoaderManifestLoopStop(this);
 
         }
 

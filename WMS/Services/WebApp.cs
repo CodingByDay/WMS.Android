@@ -235,7 +235,7 @@ namespace TrendNET.WMS.Device.Services
 
 
         /* Adding a trully asyncronous method for application-wide async functioning. 10.06.2024 Janko Jovičić */
-        public static async Task<(bool success, string result)> GetAsync(string rqURL, Context? context)
+        public static async Task<(bool success, string result)> GetAsync(string rqURL, Context? context = null)
         {
             if (context != null)
             {
@@ -288,7 +288,7 @@ namespace TrendNET.WMS.Device.Services
             {
                 LoaderManifest.LoaderManifestLoopStop(context);
             }
-
+          
             return (success, result);
         }
 

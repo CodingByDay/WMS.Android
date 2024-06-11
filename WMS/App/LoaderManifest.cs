@@ -10,30 +10,26 @@ namespace WMS.App
 
         public static void LoaderManifestLoop(Context context)
         {
+            if (progress != null)
+            {
+                progress.StopDialogSync();
+            }
+
             progress = new ProgressDialogClass();
             progress.ShowDialogSync(context, "Connecting...");
         }
 
         public static void LoaderManifestLoopResources(Context context)
         {
+            if (progress != null)
+            {
+                progress.StopDialogSync();
+            }
             progress = new ProgressDialogClass();
             progress.ShowDialogSync(context, "Waiting...");
         }
 
-        public static void destroy()
-        {
-            try
-            {
-                if (progress != null)
-                {
-                    progress.StopDialogSync();
-                }
-            }
-            catch
-            {
-                return;
-            }
-        }
+ 
 
         public static void LoaderManifestLoopStop(Context context)
         {

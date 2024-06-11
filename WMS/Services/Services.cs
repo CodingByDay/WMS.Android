@@ -95,9 +95,9 @@ namespace TrendNET.WMS.Device.Services
             }
         }
 
-        public static async Task<bool> HasPermission(string perm, string minLevel, Context context)
+        public static async Task<bool> HasPermission(string perm, string minLevel, Context? context = null)
         {
-            var usePerm = await CommonData.GetSettingAsync("UsePermissions", context);
+            var usePerm = await CommonData.GetSettingAsync("UsePermissions");
             if (string.IsNullOrEmpty(usePerm) || usePerm == "1")
             {
                 var item = UserInfo.FirstOrDefault(x => x.Name == "Perm" + perm);
@@ -214,9 +214,9 @@ namespace TrendNET.WMS.Device.Services
 
 
 
-        public async static Task<bool> IsValidUserAsync(string password, Context context)
+        public async static Task<bool> IsValidUserAsync(string password)
         {
-            var (success, content) = await WebApp.GetAsync("mode=loginUser&password=" + password, context);
+            var (success, content) = await WebApp.GetAsync("mode=loginUser&password=" + password);
             string error = string.Empty;
             if (success)
             {
@@ -235,15 +235,13 @@ namespace TrendNET.WMS.Device.Services
                         return false;
                     }
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
-                    error = "Napaka pri tolmačenju odziva web strežnika: " + ex.Message;
                     return false;
                 }
             }
             else
             {
-                error = "Napaka pri klicu web strežnika: " + content;
                 return false;
             }
         }

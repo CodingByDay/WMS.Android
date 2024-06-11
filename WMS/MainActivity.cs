@@ -56,7 +56,7 @@ namespace WMS
             var id = App.Settings.ID.ToString();
 
             // Using the asynchronous GetAsync method
-            var (success, result) = await WebApp.GetAsync("mode=deviceActive", this);
+            var (success, result) = await WebApp.GetAsync("mode=deviceActive");
 
             if (success)
             {
@@ -79,7 +79,7 @@ namespace WMS
 
 
             
-                    var valid = await Services.IsValidUserAsync(Password.Text.Trim(), this);
+                    var valid = await Services.IsValidUserAsync(Password.Text.Trim());
                  
 
                     if (valid)
