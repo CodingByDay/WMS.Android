@@ -196,10 +196,10 @@ namespace WMS
             }
         }
 
-        private void SetDefault()
+        private async void SetDefault()
         {
             tbQty.Text = "1";
-            tbLocation.Text = CommonData.GetSetting("DefaultPaletteLocation");
+            tbLocation.Text = await CommonData.GetSettingAsync("DefaultPaletteLocation", this);
         }
 
         private void TbTitle_FocusChange(object sender, View.FocusChangeEventArgs e)
@@ -246,7 +246,7 @@ namespace WMS
         }
 
 
-        private void ProcessQty()
+        private async void ProcessQty()
         {
             btPrint.Enabled = false;
 
@@ -271,7 +271,7 @@ namespace WMS
 
             if (LoadStock(warehouse.ID, tbLocation.Text.Trim(), sscc, serialNo, ident))
             {
-                tbQty.Text = stock.GetDouble("RealStock").ToString(CommonData.GetQtyPicture());
+                tbQty.Text = stock.GetDouble("RealStock").ToString(await CommonData.GetQtyPictureAsync(this));
                 btPrint.Enabled = true;
             }
             else

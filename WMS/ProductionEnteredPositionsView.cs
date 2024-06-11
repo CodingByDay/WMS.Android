@@ -212,7 +212,7 @@ namespace WMS
 
         }
 
-        private void fillList()
+        private async void fillList()
         {
             for (int i = 0; i < positions.Items.Count; i++)
             {
@@ -224,7 +224,7 @@ namespace WMS
                     var numbering = i + 1;
                     bool setting;
 
-                    if (CommonData.GetSetting("ShowNumberOfUnitsField") == "1")
+                    if (await CommonData.GetSettingAsync("ShowNumberOfUnitsField", this) == "1")
                     {
                         setting = false;
                     }
@@ -641,7 +641,7 @@ namespace WMS
             }
         }
 
-        private void FillDisplayedItem()
+        private async void FillDisplayedItem()
         {
             if ((positions != null) && (displayedPosition < positions.Items.Count))
             {
@@ -650,7 +650,7 @@ namespace WMS
 
                 tbSSCC.Text = item.GetString("SSCC");
                 tbSerialNumber.Text = item.GetString("SerialNo");
-                if (CommonData.GetSetting("ShowNumberOfUnitsField") == "1")
+                if (await CommonData.GetSettingAsync("ShowNumberOfUnitsField", this) == "1")
                 {
                     tbQty.Text = item.GetDouble("Factor").ToString() + " x " + item.GetDouble("Packing").ToString();
                 }

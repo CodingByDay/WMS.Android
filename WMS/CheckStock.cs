@@ -84,10 +84,11 @@ namespace WMS
             // Access Popup layout fields like below
 
         }
-        private string LoadStockFromStockSerialNo(string warehouse, string location, string ident)
+        private async Task<string> LoadStockFromStockSerialNo(string warehouse, string location, string ident)
         {
             try
             {
+                var picture = await CommonData.GetQtyPictureAsync(this);
                 string error;
                 var stock = Services.GetObjectList("str", out error, warehouse + "|" + location + "|" + ident);
                 if (stock == null)
@@ -99,7 +100,7 @@ namespace WMS
                 }
                 else
                 {
-                    return string.Join("\r\n", stock.Items.Select(x => "L:" + x.GetString("Location") + " = " + x.GetDouble("RealStock").ToString(CommonData.GetQtyPicture())).ToArray());
+                    return string.Join("\r\n", stock.Items.Select(x => "L:" + x.GetString("Location") + " = " + x.GetDouble("RealStock").ToString(picture)).ToArray());
                 }
             }
             catch (Exception err)
@@ -254,7 +255,7 @@ namespace WMS
                 UpdateSuggestions(userInput);
             };
 
-            var dw = CommonData.GetSetting("DefaultWarehouse");
+            var dw = await CommonData.GetSettingAsync("DefaultWarehouse", this);
             if (!string.IsNullOrEmpty(dw))
             {
                 temporaryPositionWarehouse = cbWarehouses.SetItemByString(dw);
@@ -400,11 +401,12 @@ namespace WMS
 
         }
 
-        private void fillItemsOfList()
+        private async void fillItemsOfList()
         {
             var wh = spinnerAdapterList.ElementAt(temporaryPositionWarehouse);
             string error;
             var stock = Services.GetObjectList("str", out error, wh.ID + "||" + tbIdent.Text);
+            var picture = await CommonData.GetQtyPictureAsync(this);
             // return string.Join("\r\n", stock.Items.Select(x => "L:" + x.GetString("Location") + " = " + x.GetDouble("RealStock").ToString(CommonData.GetQtyPicture())).ToArray());
             stock.Items.ForEach(x =>
             {
@@ -412,7 +414,7 @@ namespace WMS
                 {
                     Ident = x.GetString("Ident"),
                     Location = x.GetString("Location"),
-                    Quantity = x.GetDouble("RealStock").ToString(CommonData.GetQtyPicture())
+                    Quantity = x.GetDouble("RealStock").ToString(picture)
                 });
             });
             dataAdapter.NotifyDataSetChanged();

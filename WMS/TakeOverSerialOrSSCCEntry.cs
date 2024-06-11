@@ -280,14 +280,14 @@ namespace WMS
                 {
                     if (order.Packaging != -1)
                     {
-                        lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + quantity.ToString(CommonData.GetQtyPicture()) + " )";
+                        lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + quantity.ToString(await CommonData.GetQtyPictureAsync(this)) + " )";
                         tbPacking.Text = packaging.ToString();
                         stock = quantity;
                     }
                     else
                     {
                         quantity = order.Quantity ?? 0;
-                        lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + quantity.ToString(CommonData.GetQtyPicture()) + " )";
+                        lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + quantity.ToString(await CommonData.GetQtyPictureAsync(this)) + " )";
                         tbPacking.Text = quantity.ToString();
                         stock = quantity;
                     }
@@ -310,7 +310,7 @@ namespace WMS
                     if (Double.TryParse(code2d.netoWeight, out result))
                     {
                         qtyCheck = result;
-                        lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + qtyCheck.ToString(CommonData.GetQtyPicture()) + " )";
+                        lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + qtyCheck.ToString(await CommonData.GetQtyPictureAsync(this)) + " )";
                         tbPacking.Text = qtyCheck.ToString();
                         stock = qtyCheck;
 
@@ -899,9 +899,9 @@ namespace WMS
                             var currentQty = Convert.ToDouble(tbPacking.Text.Trim());
                             stock -= currentQty;
 
-                            RunOnUiThread(() =>
+                            RunOnUiThread(async () =>
                             {
-                                lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + stock.ToString(CommonData.GetQtyPicture()) + " )";
+                                lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + stock.ToString(await CommonData.GetQtyPictureAsync(this)) + " )";
                             });
 
                         }

@@ -284,7 +284,7 @@ namespace WMS
             catch { return; }
         }
 
-        protected override void OnCreate(Bundle savedInstanceState)
+        protected override async void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             SetTheme(Resource.Style.AppTheme_NoActionBar);
@@ -318,7 +318,7 @@ namespace WMS
 
 
 
-            var isPalletCode = CommonData.GetSetting("Pi.HideLegCode");
+            var isPalletCode = await CommonData.GetSettingAsync("Pi.HideLegCode", this);
 
             if (isPalletCode != null)
             {

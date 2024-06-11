@@ -81,7 +81,7 @@ namespace WMS
             Android.Resource.Layout.SimpleSpinnerItem, objectWarehouse);
             adapterWarehouse.SetDropDownViewResource(Android.Resource.Layout.SimpleSpinnerItem);
             cbWarehouse.Adapter = adapterWarehouse;
-            string dw = CommonData.GetSetting("DefaultWarehouse");
+            string dw = await CommonData.GetSettingAsync("DefaultWarehouse", this);
             cbWarehouse.SetText(dw, false);
             adapterDocType = new CustomAutoCompleteAdapter<ComboBoxItem>(this,
             Android.Resource.Layout.SimpleSpinnerItem, objectDocType);

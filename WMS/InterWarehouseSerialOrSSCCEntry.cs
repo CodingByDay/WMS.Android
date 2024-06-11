@@ -422,7 +422,7 @@ namespace WMS
                 {
                     double result = (double?)qty.Rows[0].DoubleValue("anQty") ?? 0;
                     qtyCheck = result;
-                    lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + qtyCheck.ToString(CommonData.GetQtyPicture()) + " )";
+                    lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + qtyCheck.ToString(await CommonData.GetQtyPictureAsync(this)) + " )";
                     tbPacking.Text = qtyCheck.ToString();
                     stock = qtyCheck;
                 }
@@ -430,7 +430,7 @@ namespace WMS
                 {
                     double result = 0;
                     qtyCheck = result;
-                    lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + qtyCheck.ToString(CommonData.GetQtyPicture()) + " )";
+                    lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + qtyCheck.ToString(await CommonData.GetQtyPictureAsync(this)) + " )";
                     tbPacking.Text = qtyCheck.ToString();
                     stock = qtyCheck;
                 }
@@ -622,7 +622,7 @@ namespace WMS
         }
 
 
-        private void ProcessIdent(bool update)
+        private async void ProcessIdent(bool update)
         {
             activityIdent = CommonData.LoadIdent(tbIdent.Text.Trim());
 
@@ -645,7 +645,7 @@ namespace WMS
                     return;
                 }
 
-                if (CommonData.GetSetting("IgnoreStockHistory") != "1" && !update)
+                if (await CommonData.GetSettingAsync("IgnoreStockHistory", this) != "1" && !update)
                 {
                     try
                     {

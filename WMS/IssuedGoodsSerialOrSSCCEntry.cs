@@ -228,7 +228,7 @@ namespace WMS
                 {
                     double result = (double?)qty.Rows[0].DoubleValue("anQty") ?? 0;
                     qtyCheck = result;
-                    lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + qtyCheck.ToString(CommonData.GetQtyPicture()) + " )";
+                    lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + qtyCheck.ToString(await CommonData.GetQtyPictureAsync(this)) + " )";
                     tbPacking.Text = qtyCheck.ToString();
                     stock = qtyCheck;
                 }
@@ -236,7 +236,7 @@ namespace WMS
                 {
                     double result = 0;
                     qtyCheck = result;
-                    lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + qtyCheck.ToString(CommonData.GetQtyPicture()) + " )";
+                    lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + qtyCheck.ToString(await CommonData.GetQtyPictureAsync(this)) + " )";
                     tbPacking.Text = qtyCheck.ToString();
                     stock = qtyCheck;
                 }
@@ -299,7 +299,7 @@ namespace WMS
             btOverview = FindViewById<Button>(Resource.Id.btOverview);
             btExit = FindViewById<Button>(Resource.Id.btExit);
 
-            if (CommonData.GetSetting("IssueSummaryView") == "1")
+            if (await CommonData.GetSettingAsync("IssueSummaryView", this) == "1")
             {
                 // If the company opted for this.
                 cbMultipleLocations.ItemSelected += CbMultipleLocations_ItemSelected;
@@ -808,7 +808,7 @@ namespace WMS
                     stock -= serialOverflowQuantity;
 
 
-                    lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + stock.ToString(CommonData.GetQtyPicture()) + " )";
+                    lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + stock.ToString(await CommonData.GetQtyPictureAsync(this)) + " )";
 
 
                     // Check to see if the maximum is already reached.
@@ -867,7 +867,7 @@ namespace WMS
             }
         }
 
-        private void FilterData()
+        private async void FilterData()
         {
             data = FilterIssuedGoods(connectedPositions, tbSSCC.Text, tbSerialNum.Text, tbLocation.Text);
             if (data.Count == 1)
@@ -878,12 +878,12 @@ namespace WMS
                 if (element.anPackQty != -1 && element.anPackQty <= element.anQty)
                 {
                     tbPacking.Text = element.anPackQty.ToString();
-                    lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + quantity.ToString(CommonData.GetQtyPicture()) + " )";
+                    lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + quantity.ToString(await CommonData.GetQtyPictureAsync(this)) + " )";
                 }
                 else
                 {
                     tbPacking.Text = element.anQty.ToString();
-                    lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + quantity.ToString(CommonData.GetQtyPicture()) + " )";
+                    lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + quantity.ToString(await CommonData.GetQtyPictureAsync(this)) + " )";
                 }
                 if (serialRow.Visibility == ViewStates.Visible)
                 {
@@ -1139,7 +1139,7 @@ namespace WMS
                         await GetConnectedPositions(receivedTrail.Key, receivedTrail.No, receivedTrail.Ident);
 
 
-                        if (CommonData.GetSetting("IssueSummaryView") == "1")
+                        if (await CommonData.GetSettingAsync("IssueSummaryView", this) == "1")
                         {
                             cbMultipleLocations.Visibility = ViewStates.Visible;
                             adapterLocations = await GetStockState(receivedTrail.Ident);
@@ -1155,14 +1155,14 @@ namespace WMS
                         if (receivedTrail.Packaging != -1 && Double.TryParse(receivedTrail.Qty, out double qty) && receivedTrail.Packaging <= qty)
                         {
                             packaging = receivedTrail.Packaging;
-                            lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + quantity.ToString(CommonData.GetQtyPicture()) + " )";
+                            lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + quantity.ToString(await CommonData.GetQtyPictureAsync(this)) + " )";
                             stock = quantity;
                             tbPacking.Text = packaging.ToString();
                         }
                         else
                         {
                             quantity = Double.Parse(receivedTrail.Qty);
-                            lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + quantity.ToString(CommonData.GetQtyPicture()) + " )";
+                            lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + quantity.ToString(await CommonData.GetQtyPictureAsync(this)) + " )";
                             stock = quantity;
                             tbPacking.Text = quantity.ToString();
                         }
@@ -1179,7 +1179,7 @@ namespace WMS
                         if (Double.TryParse(code2d.netoWeight, out result))
                         {
                             qtyCheck = result;
-                            lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + qtyCheck.ToString(CommonData.GetQtyPicture()) + " )";
+                            lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + qtyCheck.ToString(await CommonData.GetQtyPictureAsync(this)) + " )";
                             tbPacking.Text = qtyCheck.ToString();
                             stock = qtyCheck;
 
@@ -1208,19 +1208,19 @@ namespace WMS
 
                             if (order.Packaging != -1 && packaging <= quantity)
                             {
-                                lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + quantity.ToString(CommonData.GetQtyPicture()) + " )";
+                                lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + quantity.ToString(await CommonData.GetQtyPictureAsync(this)) + " )";
                                 stock = quantity;
                             }
                             else
                             {
-                                lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + quantity.ToString(CommonData.GetQtyPicture()) + " )";
+                                lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + quantity.ToString(await CommonData.GetQtyPictureAsync(this)) + " )";
                                 stock = quantity;
                             }
 
                             await GetConnectedPositions(order.Order, order.Position ?? -1, order.Ident);
 
 
-                            if (CommonData.GetSetting("IssueSummaryView") == "1")
+                            if (await CommonData.GetSettingAsync("IssueSummaryView", this) == "1")
                             {
                                 cbMultipleLocations.Visibility = ViewStates.Visible;
                                 adapterLocations = await GetStockState(order.Ident);

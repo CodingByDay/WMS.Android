@@ -95,7 +95,7 @@ namespace WMS
 
             LoaderManifest.LoaderManifestLoopResources(this);
 
-            if (CommonData.GetSetting("IssueSummaryView") == "1")
+            if (await CommonData.GetSettingAsync("IssueSummaryView", this) == "1")
             {
                 await initializeViewMultipleLocations();
             }

@@ -154,7 +154,7 @@ namespace WMS
 
         }
 
-        private bool ProcessData()
+        private async Task<bool> ProcessData()
         {
             var ident = tbIdent.Text.Trim();
             var warehouse = head.GetString("Warehouse");
@@ -190,17 +190,17 @@ namespace WMS
             var qty = Convert.ToDouble(tbQty.Text.Trim());
             if (qty > stock.GetDouble("RealStock"))
             {
-                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s40)} (" + qty.ToString(CommonData.GetQtyPicture()) + ") presega zalogo (" + stock.GetDouble("RealStock").ToString(CommonData.GetQtyPicture()) + ")!", ToastLength.Long).Show();
+                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s40)} (" + qty.ToString(await CommonData.GetQtyPictureAsync(this)) + ") presega zalogo (" + stock.GetDouble("RealStock").ToString(await CommonData.GetQtyPictureAsync(this)) + ")!", ToastLength.Long).Show();
                 return false;
             }
 
             return true;
         }
 
-        private bool SavePackagingItem()
+        private async Task<bool> SavePackagingItem()
         {
             if (!HasData()) { return true; }
-            if (ProcessData())
+            if (await ProcessData())
             {
                 if (item == null) { item = new NameValueObject("PackagingItem"); }
 
@@ -230,7 +230,7 @@ namespace WMS
             }
         }
 
-        private void ProcessQty()
+        private async void ProcessQty()
         {
             var ident = tbIdent.Text.Trim();
             var warehouse = head.GetString("Warehouse");
@@ -264,8 +264,8 @@ namespace WMS
 
             if (LoadStock(warehouse, location, sscc, serialNo, ident))
             {
-                label.Text = $"{Resources.GetString(Resource.String.s40)} (" + stock.GetDouble("RealStock").ToString(CommonData.GetQtyPicture()) + "):";
-                tbQty.Text = stock.GetDouble("RealStock").ToString(CommonData.GetQtyPicture());
+                label.Text = $"{Resources.GetString(Resource.String.s40)} (" + stock.GetDouble("RealStock").ToString(await CommonData.GetQtyPictureAsync(this)) + "):";
+                tbQty.Text = stock.GetDouble("RealStock").ToString(await CommonData.GetQtyPictureAsync(this));
             }
             else
             {
@@ -298,7 +298,7 @@ namespace WMS
             }
         }
 
-        protected override void OnCreate(Bundle savedInstanceState)
+        protected override async void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             SetTheme(Resource.Style.AppTheme_NoActionBar);
@@ -348,7 +348,7 @@ namespace WMS
                 tbSSCC.Text = item.GetString("SSCC");
                 tbSerialNo.Text = item.GetString("SerialNo");
                 ProcessQty();
-                tbQty.Text = item.GetDouble("Qty").ToString(CommonData.GetQtyPicture());
+                tbQty.Text = item.GetDouble("Qty").ToString(await CommonData.GetQtyPictureAsync(this));
             }
 
 
@@ -432,7 +432,7 @@ namespace WMS
 
             await Task.Run(async () =>
             {
-                if (SavePackagingItem())
+                if (await SavePackagingItem())
                 {
 
                     try
@@ -544,9 +544,9 @@ namespace WMS
             return base.OnKeyDown(keyCode, e);
         }
 
-        private void BtList_Click(object sender, EventArgs e)
+        private async void BtList_Click(object sender, EventArgs e)
         {
-            if (SavePackagingItem())
+            if (await SavePackagingItem())
             {
                 InUseObjects.Set("PackagingItem", null);
                 StartActivity(typeof(PackagingUnitList));
@@ -556,9 +556,9 @@ namespace WMS
 
         }
 
-        private void BtNew_Click(object sender, EventArgs e)
+        private async void BtNew_Click(object sender, EventArgs e)
         {
-            if (SavePackagingItem())
+            if (await SavePackagingItem())
             {
                 InUseObjects.Set("PackagingItem", null);
                 StartActivity(typeof(PackagingUnit));

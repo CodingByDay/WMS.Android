@@ -161,7 +161,7 @@ namespace WMS.AsyncServices
 
 
 
-        public static async Task<(NameValueObject? nvo, string? error)> GetObjectAsync(string? table, string? id, Context context)
+        public static async Task<(NameValueObject? nvo, string? error)> GetObjectAsync(string? table, string? id, Context? context)
         {
 
             var (success, result) = await WebApp.GetAsync("mode=getObj&table=" + table + "&id=" + id, context);

@@ -19,6 +19,7 @@ namespace TrendNET.WMS.Device.Services
 
         private static string qtyPicture = null;
 
+       /* 
         public static string GetQtyPicture()
         {
             if (qtyPicture == null)
@@ -31,7 +32,24 @@ namespace TrendNET.WMS.Device.Services
             }
             return qtyPicture;
         }
+       */
 
+
+        public static async Task<string> GetQtyPictureAsync(Context context)
+        {
+            if (qtyPicture == null)
+            {
+                var digStr = await GetSettingAsync("QtyDigits", context);
+                if (string.IsNullOrEmpty(digStr)) { digStr = "2"; }
+                var digits = Convert.ToInt32(digStr);
+                qtyPicture = "###,###,##0.";
+                for (int i = 1; i <= digits; i++) { qtyPicture += "0"; }
+            }
+            return qtyPicture;
+        }
+
+
+        // Continue here --- :)
         public static string GetSetting(string name)
         {
             if (settings.ContainsKey(name))
@@ -62,7 +80,7 @@ namespace TrendNET.WMS.Device.Services
 
 
 
-        public static async Task <string> GetSettingAsync(string name, Context context)
+        public static async Task <string> GetSettingAsync(string name, Context? context = null)
         {
             if (settings.ContainsKey(name))
             {

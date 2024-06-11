@@ -129,7 +129,7 @@ namespace WMS
             tbPacking = FindViewById<EditText>(Resource.Id.tbPacking);
             cbMultipleLocations = FindViewById<Spinner>(Resource.Id.cbMultipleLocations);
 
-            if (CommonData.GetSetting("IssueSummaryView") == "1")
+            if (await CommonData.GetSettingAsync("IssueSummaryView", this) == "1")
             {
                 // If the company opted for this.
                 cbMultipleLocations.ItemSelected += CbMultipleLocations_ItemSelected;
@@ -560,10 +560,10 @@ namespace WMS
 
                         serialOverflowQuantity = Convert.ToDouble(tbPacking.Text.Trim());
                         stock -= serialOverflowQuantity;
-
+                        var picture = await CommonData.GetQtyPictureAsync(this);
                         RunOnUiThread(() =>
                         {
-                            lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + stock.ToString(CommonData.GetQtyPicture()) + " )";
+                            lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + stock.ToString(picture) + " )";
                         });
 
                         // Check to see if the maximum is already reached.
@@ -747,7 +747,7 @@ namespace WMS
                     byte[] trailBytes = Intent.GetByteArrayExtra("selected");
                     receivedTrail = ClientPickingPosition.Deserialize<ClientPickingPosition>(trailBytes);
 
-                    if (CommonData.GetSetting("IssueSummaryView") == "1")
+                    if (await CommonData.GetSettingAsync("IssueSummaryView", this) == "1")
                     {
                         cbMultipleLocations.Visibility = ViewStates.Visible;
                         adapterLocations = await GetStockState(receivedTrail);
@@ -760,7 +760,7 @@ namespace WMS
                     tbLocation.Text = receivedTrail.Location;
 
                     qtyCheck = Double.Parse(receivedTrail.Quantity);
-                    lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + qtyCheck.ToString(CommonData.GetQtyPicture()) + " )";
+                    lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + qtyCheck.ToString(await CommonData.GetQtyPictureAsync(this)) + " )";
                     stock = qtyCheck;
                     tbPacking.Text = qtyCheck.ToString();
                     await GetConnectedPositions(receivedTrail.Order, receivedTrail.No, receivedTrail.Ident);

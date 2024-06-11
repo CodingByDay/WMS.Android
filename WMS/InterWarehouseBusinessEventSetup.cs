@@ -31,7 +31,7 @@ namespace WMS
         private CustomAutoCompleteAdapter<ComboBoxItem> adapterIssue;
         private CustomAutoCompleteAdapter<ComboBoxItem> adapterReceive;
 
-        protected override void OnCreate(Bundle savedInstanceState)
+        protected override async void OnCreate(Bundle savedInstanceState)
         {
             SetTheme(Resource.Style.AppTheme_NoActionBar);
             base.OnCreate(savedInstanceState);
@@ -52,7 +52,7 @@ namespace WMS
             SetSupportActionBar(_customToolbar._toolbar);
             SupportActionBar.SetDisplayShowTitleEnabled(false);
             // Views
-            var defDocument = CommonData.GetSetting("DefaultInterWareHouseDocType");
+            var defDocument = await CommonData.GetSettingAsync("DefaultInterWareHouseDocType", this);
             if (!string.IsNullOrWhiteSpace(defDocument))
             {
                 documentCode = defDocument;

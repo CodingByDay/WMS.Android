@@ -326,7 +326,7 @@ namespace WMS
             return base.OnKeyDown(keyCode, e);
         }
 
-        private void ProcessWorkOrder()
+        private async void ProcessWorkOrder()
         {
             tbOpenQty.Text = "";
             tbClient.Text = "";
@@ -358,12 +358,12 @@ namespace WMS
                     }
                     else
                     {
-                        tbOpenQty.Text = workOrder.GetDouble("OpenQty").ToString(CommonData.GetQtyPicture());
+                        tbOpenQty.Text = workOrder.GetDouble("OpenQty").ToString(await CommonData.GetQtyPictureAsync(this));
                         tbClient.Text = workOrder.GetString("Consignee");
                         tbIdent.Text = workOrder.GetString("Ident");
                         tbName.Text = workOrder.GetString("Name");
 
-                        if (CommonData.GetSetting("ProductionIgnoreIdentCardInfo") == "1")
+                        if (await CommonData.GetSettingAsync("ProductionIgnoreIdentCardInfo", this) == "1")
                         {
                             btCard.Visibility = ViewStates.Visible;
                             btPalette.Visibility = ViewStates.Visible;

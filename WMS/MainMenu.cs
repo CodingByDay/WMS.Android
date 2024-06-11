@@ -145,7 +145,7 @@ namespace WMS
 
         private async Task<List<CleanupLocation>> FillTheCleanupList()
         {
-            var location = CommonData.GetSetting("DefaultProductionLocation");
+            var location = await CommonData.GetSettingAsync("DefaultProductionLocation", this);
             List<CleanupLocation> data = new List<CleanupLocation>();
             await Task.Run(async () =>
             {
@@ -394,10 +394,10 @@ namespace WMS
             StartActivity(typeof(UnfinishedInterWarehouseView));
         }
 
-        private void Button_Click(object sender, EventArgs e)
+        private async void Button_Click(object sender, EventArgs e)
         {
 
-            var isShown = CommonData.GetSetting("UseFastTakeOver");
+            var isShown = await CommonData.GetSettingAsync("UseFastTakeOver", this);
             if (isShown == "1")
             {
                 StartActivity(typeof(Choice));
