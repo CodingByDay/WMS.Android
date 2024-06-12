@@ -1,4 +1,5 @@
 ﻿using Android.Content;
+using Android.Health.Connect.DataTypes;
 using Android.Net;
 
 namespace WMS.App
@@ -10,43 +11,80 @@ namespace WMS.App
 
         public static void LoaderManifestLoop(Context context)
         {
-            progress = new ProgressDialogClass();
-            progress.ShowDialogSync(context, "Connecting...");
+            try
+            {
+                Activity activity = context as Activity;
+
+                activity.RunOnUiThread(() =>
+                {
+                    if (progress != null)
+                    {
+                        progress.StopDialogSync();
+                    }
+
+                    progress = new ProgressDialogClass();
+                    progress.ShowDialogSync(context, "Waiting for connection...");
+
+                });
+
+
+
+            }
+            catch (Exception e)
+            {
+                SentrySdk.CaptureException(e);
+            }
         }
 
         public static void LoaderManifestLoopResources(Context context)
         {
-            progress = new ProgressDialogClass();
-            progress.ShowDialogSync(context, "Waiting...");
-        }
-
-        public static void destroy()
-        {
             try
             {
-                if (progress != null)
+                Activity activity = context as Activity;
+
+                activity.RunOnUiThread(() =>
                 {
-                    progress.StopDialogSync();
-                }
-            }
-            catch
+                    if (progress != null)
+                    {
+                        progress.StopDialogSync();
+                    }
+
+                    progress = new ProgressDialogClass();
+                    progress.ShowDialogSync(context, "Waiting...");
+
+                });
+
+   
+
+            } catch (Exception e)
             {
-                return;
+                SentrySdk.CaptureException(e);
             }
         }
+
+  
 
         public static void LoaderManifestLoopStop(Context context)
         {
             try
             {
-                if (progress != null)
+                Activity activity = context as Activity;
+
+                activity.RunOnUiThread(() =>
                 {
-                    progress.StopDialogSync();
-                }
+                    if (progress != null)
+                    {
+                        progress.StopDialogSync();
+                    }
+
+                });
+
+
+
             }
-            catch
+            catch (Exception e)
             {
-                return;
+                SentrySdk.CaptureException(e);
             }
         }
 

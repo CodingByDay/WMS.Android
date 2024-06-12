@@ -154,8 +154,14 @@ namespace WMS
 
                     });
                 });
-                dataAdapter.NotifyDataSetChanged();
-                UniversalAdapterHelper.SelectPositionProgramaticaly(listData, 0);
+
+                // UI changes.
+                RunOnUiThread(() =>
+                {
+                    dataAdapter.NotifyDataSetChanged();
+                    UniversalAdapterHelper.SelectPositionProgramaticaly(listData, 0);
+                });
+
             }
         }
         private void Select(int postionOfTheItemInTheList)
@@ -251,18 +257,7 @@ namespace WMS
             ProcessIdent();
         }
 
-        private void ClearTheFields(object sender, View.LongClickEventArgs e)
-        {
-            tbIdent.Text = "";
-            tbNaziv.Text = "";
-
-        }
-
-
-        private void TbIdent_FocusChange(object sender, View.FocusChangeEventArgs e)
-        {
-            ProcessIdent();
-        }
+   
 
         private void Button5_Click(object sender, EventArgs e)
         {
@@ -341,7 +336,12 @@ namespace WMS
                     var savedMoveHead = Services.SetObject("mh", moveHead, out error);
                     if (savedMoveHead == null)
                     {
-                        DialogHelper.ShowDialogError(this, this, $"{Resources.GetString(Resource.String.s213)}");
+                        // UI changes.
+                        RunOnUiThread(() =>
+                        {
+                            DialogHelper.ShowDialogError(this, this, $"{Resources.GetString(Resource.String.s213)}");
+                        });
+
                         return false;
                     }
                     else
@@ -382,7 +382,11 @@ namespace WMS
                     var savedMoveHead = Services.SetObject("mh", moveHead, out error);
                     if (savedMoveHead == null)
                     {
-                        DialogHelper.ShowDialogError(this, this, $"{Resources.GetString(Resource.String.s213)}");
+                        // UI changes.
+                        RunOnUiThread(() =>
+                        {
+                            DialogHelper.ShowDialogError(this, this, $"{Resources.GetString(Resource.String.s213)}");
+                        });
                         return false;
                     }
                     else
@@ -406,17 +410,22 @@ namespace WMS
 
         private void SaveIdent2DCode()
         {
-            var ident = tbIdent.Text.Trim();
-            string error;
-            openIdent = Services.GetObject("id", ident, out error);
-            if (openIdent == null)
+            // UI changes.
+            RunOnUiThread(() =>
             {
-                InUseObjects.Set("OpenIdent", new NameValueObject());
-            }
-            else
-            {
-                InUseObjects.Set("OpenIdent", openIdent);
-            }
+                var ident = tbIdent.Text.Trim();
+                string error;
+                openIdent = Services.GetObject("id", ident, out error);
+                if (openIdent == null)
+                {
+                    InUseObjects.Set("OpenIdent", new NameValueObject());
+                }
+                else
+                {
+                    InUseObjects.Set("OpenIdent", openIdent);
+                }
+            });
+
         }
 
         private async void ProcessIdent()
@@ -464,7 +473,7 @@ namespace WMS
                         parameters.Add(new Services.Parameter { Name = "acDocType", Type = "String", Value = moveHead.GetString("DocumentType") });
                         parameters.Add(new Services.Parameter { Name = "acWarehouse", Type = "String", Value = moveHead.GetString("Wharehouse") });
 
-                        var subjects = await AsyncServices.AsyncServices.GetObjectListBySqlAsync($"SELECT * FROM uWMSOrderItemByWarehouseTypeIn WHERE acIdent = @acIdent AND acDocType = @acDocType AND acWarehouse = @acWarehouse;", parameters);
+                        var subjects = await AsyncServices.AsyncServices.GetObjectListBySqlAsync($"SELECT acSubject, acKey, anNo, anQty, adDeliveryDeadline, acIdent, anPackQty FROM uWMSOrderItemByWarehouseTypeIn WHERE acIdent = @acIdent AND acDocType = @acDocType AND acWarehouse = @acWarehouse;", parameters);
 
                         if (!subjects.Success)
                         {
@@ -532,33 +541,42 @@ namespace WMS
         {
             if ((openIdent != null) && (orders != null) && (orders.Count > 0))
             {
+                // UI changes.
+                RunOnUiThread(() =>
+                {
+                    lbOrderInfo.Text = $"{Resources.GetString(Resource.String.s36)} (" + (displayedOrder + 1).ToString() + "/" + orders.Count.ToString() + ")";
+                    var order = orders.ElementAt(displayedOrder);
+                    Base.Store.OpenOrder = order;
+                    tbOrder.Text = order.Order + " / " + order.Position;
+                    tbConsignee.Text = order.Client;
+                    tbQty.Text = order.Quantity.ToString();
+                    var deadLine = order.Date;
+                    tbDeliveryDeadline.Text = deadLine == null ? "" : ((DateTime)deadLine).ToString("dd.MM.yyyy");
+                    btNext.Enabled = true;
+                    btConfirm.Enabled = true;
+                    btNext.Enabled = true;
+                    btConfirm.Enabled = true;
+                    tbOrder.Enabled = false;
+                    tbConsignee.Enabled = false;
+                    tbQty.Enabled = false;
+                    tbDeliveryDeadline.Enabled = false;
+                });
 
-                lbOrderInfo.Text = $"{Resources.GetString(Resource.String.s36)} (" + (displayedOrder + 1).ToString() + "/" + orders.Count.ToString() + ")";
-                var order = orders.ElementAt(displayedOrder);
-                Base.Store.OpenOrder = order;
-                tbOrder.Text = order.Order + " / " + order.Position;
-                tbConsignee.Text = order.Client;
-                tbQty.Text = order.Quantity.ToString();
-                var deadLine = order.Date;
-                tbDeliveryDeadline.Text = deadLine == null ? "" : ((DateTime)deadLine).ToString("dd.MM.yyyy");
-                btNext.Enabled = true;
-                btConfirm.Enabled = true;
-                btNext.Enabled = true;
-                btConfirm.Enabled = true;
-                tbOrder.Enabled = false;
-                tbConsignee.Enabled = false;
-                tbQty.Enabled = false;
-                tbDeliveryDeadline.Enabled = false;
             }
             else
             {
-                lbOrderInfo.Text = $"{Resources.GetString(Resource.String.s289)}";
-                tbOrder.Text = "";
-                tbConsignee.Text = "";
-                tbQty.Text = "";
-                tbDeliveryDeadline.Text = "";
-                btNext.Enabled = false;
-                btConfirm.Enabled = false;
+                // UI changes.
+                RunOnUiThread(() =>
+                {
+                    lbOrderInfo.Text = $"{Resources.GetString(Resource.String.s289)}";
+                    tbOrder.Text = "";
+                    tbConsignee.Text = "";
+                    tbQty.Text = "";
+                    tbDeliveryDeadline.Text = "";
+                    btNext.Enabled = false;
+                    btConfirm.Enabled = false;
+                });
+
 
             }
         }
@@ -650,7 +668,7 @@ namespace WMS
                 var parameters = new List<Services.Parameter>();
                 parameters.Add(new Services.Parameter { Name = "acKey", Type = "String", Value = newKey });
                 parameters.Add(new Services.Parameter { Name = "acIdent", Type = "String", Value = ident });
-                string query = $"SELECT * FROM uWMSOrderItemByWarehouseTypeIn WHERE acKey = @acKey AND acIdent = @acIdent";
+                string query = $"SELECT acKey, acSubject, anQty, adDeliveryDeadline, anNo FROM uWMSOrderItemByWarehouseTypeIn WHERE acKey = @acKey AND acIdent = @acIdent";
                 var resultQuery = await AsyncServices.AsyncServices.GetObjectListBySqlAsync(query, parameters);
 
                 if (!resultQuery.Success)

@@ -6,6 +6,7 @@ using Android.Media;
 using Android.Net;
 using Android.Views;
 using BarCode2D_Receiver;
+using System.Diagnostics;
 using TrendNET.WMS.Core.Data;
 using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
@@ -537,6 +538,7 @@ namespace WMS
             {
                 if (dist.Count == 1)
                 {
+
                     var element = dist.ElementAt(0);
                     moveItem = new NameValueObject("MoveItem");
                     moveItem.SetInt("HeadID", moveHead.GetInt("HeadID"));
@@ -686,12 +688,16 @@ namespace WMS
                     }
                     else
                     {
-                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s216)}" + result, ToastLength.Long).Show();
+                        // UI changes.
+                        RunOnUiThread(() =>
+                        {
+                            Toast.MakeText(this, $"{Resources.GetString(Resource.String.s216)}" + result, ToastLength.Long).Show();
+                        });
                     }
                 }
-                catch
+                catch (Exception ex)
                 {
-
+                    SentrySdk.CaptureException(ex);
                 }
             });
         }
@@ -788,7 +794,7 @@ namespace WMS
         {
             List<MultipleStock> data = new List<MultipleStock>();
 
-            var sql = "SELECT * FROM uWMSStockByWarehouse WHERE acIdent = @acIdent AND acWarehouse = @acWarehouse;";
+            var sql = "SELECT aclocation, anQty, acSerialNo, acSSCC FROM uWMSStockByWarehouse WHERE acIdent = @acIdent AND acWarehouse = @acWarehouse;";
             var parameters = new List<Services.Parameter>();
 
             parameters.Add(new Services.Parameter { Name = "acWarehouse", Type = "String", Value = moveHead.GetString("Wharehouse") });
@@ -864,7 +870,7 @@ namespace WMS
             parameters.Add(new Services.Parameter { Name = "acIdent", Type = "String", Value = acIdent });
 
 
-            var subjects = await AsyncServices.AsyncServices.GetObjectListBySqlAsync($"SELECT * FROM uWMSOrderItemByKeyOut WHERE acKey = @acKey AND anNo = @anNo AND acIdent = @acIdent;", parameters);
+            var subjects = await AsyncServices.AsyncServices.GetObjectListBySqlAsync($"SELECT acName, acSubject, acSerialNo, acSSCC, anQty, aclocation, acKey, acIdent, anNo, anPackQty FROM uWMSOrderItemByKeyOut WHERE acKey = @acKey AND anNo = @anNo AND acIdent = @acIdent;", parameters);
 
             if (!subjects.Success)
             {

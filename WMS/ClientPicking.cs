@@ -265,7 +265,7 @@ namespace WMS
                     parameters.Add(new Services.Parameter { Name = "acSubject", Type = "String", Value = moveHead.GetString("Receiver") });
                     parameters.Add(new Services.Parameter { Name = "acWarehouse", Type = "String", Value = moveHead.GetString("Wharehouse") });
 
-                    string sql = $"SELECT * FROM uWMSOrderItemBySubjectTypeWarehouseOut WHERE acDocType = @acDocType AND acSubject = @acSubject AND acWarehouse = @acWarehouse;";
+                    string sql = $"SELECT acIdent, aclocation, acName, acKey, anNo, anQty FROM uWMSOrderItemBySubjectTypeWarehouseOut WHERE acDocType = @acDocType AND acSubject = @acSubject AND acWarehouse = @acWarehouse;";
                     result = await AsyncServices.AsyncServices.GetObjectListBySqlAsync(sql, parameters);
                 }
                 if (moveHead != null && result != null && result.Success && result.Rows.Count > 0)
@@ -339,7 +339,7 @@ namespace WMS
                     parameters.Add(new Services.Parameter { Name = "acSubject", Type = "String", Value = moveHead.GetString("Receiver") });
                     parameters.Add(new Services.Parameter { Name = "acWarehouse", Type = "String", Value = moveHead.GetString("Wharehouse") });
 
-                    string sql = $"SELECT * FROM uWMSOrderItemBySubjectTypeWarehouseOutSUM WHERE acDocType = @acDocType AND acSubject = @acSubject AND acWarehouse = @acWarehouse;";
+                    string sql = $"SELECT acIdent, anLocation, acName, acKey, anNo, acActualLocation, anQty FROM uWMSOrderItemBySubjectTypeWarehouseOutSUM WHERE acDocType = @acDocType AND acSubject = @acSubject AND acWarehouse = @acWarehouse;";
                     result = await AsyncServices.AsyncServices.GetObjectListBySqlAsync(sql, parameters);
                 }
                 if (moveHead != null && result.Success && result.Rows.Count > 0)

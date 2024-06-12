@@ -157,7 +157,7 @@ namespace WMS
                                 parameters.Add(new Services.Parameter { Name = "acDocType", Type = "String", Value = dt.ID });
                                 parameters.Add(new Services.Parameter { Name = "acWarehouse", Type = "String", Value = wh.ID });
 
-                                var subjects = await AsyncServices.AsyncServices.GetObjectListBySqlAsync($"SELECT * FROM uWMSOrderSubjectByTypeWarehouseOut WHERE acDocType = @acDocType AND acWarehouse = @acWarehouse", parameters);
+                                var subjects = await AsyncServices.AsyncServices.GetObjectListBySqlAsync($"SELECT acSubject FROM uWMSOrderSubjectByTypeWarehouseOut WHERE acDocType = @acDocType AND acWarehouse = @acWarehouse", parameters);
 
 
                                 if (!subjects.Success)
@@ -350,7 +350,7 @@ namespace WMS
             objectExtra.Clear();
             docTypes = CommonData.ListDocTypes("P|N");
             initial += 1;
-            var result = await AsyncServices.AsyncServices.GetObjectListBySqlAsync("SELECT * FROM uWMSOrderDocTypeOut;");
+            var result = await AsyncServices.AsyncServices.GetObjectListBySqlAsync("SELECT acDocType, acName FROM uWMSOrderDocTypeOut;");
             if (!result.Success)
             {
                 RunOnUiThread(() =>

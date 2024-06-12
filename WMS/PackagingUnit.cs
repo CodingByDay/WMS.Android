@@ -486,12 +486,16 @@ namespace WMS
                         }
                         else
                         {
-                            Toast.MakeText(this, $"{Resources.GetString(Resource.String.s216)}" + result, ToastLength.Long).Show();
+                            // UI changes.
+                            RunOnUiThread(() =>
+                            {
+                                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s216)}" + result, ToastLength.Long).Show();
+                            });
                         }
                     }
-                    catch
+                    catch (Exception ex) 
                     {
-
+                        SentrySdk.CaptureException(ex);
                     }
                 }
             });

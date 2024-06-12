@@ -146,20 +146,20 @@ namespace WMS
 
         private void DeleteFromTouch(int index)
         {
-            popupDialog = new Dialog(this);
-            popupDialog.SetContentView(Resource.Layout.YesNoPopUp);
-            popupDialog.Window.SetSoftInputMode(SoftInput.AdjustResize);
-            popupDialog.Show();
-
-            popupDialog.Window.SetLayout(LayoutParams.MatchParent, LayoutParams.WrapContent);
-            popupDialog.Window.SetBackgroundDrawable(new ColorDrawable(Color.ParseColor("#081a45")));
-
-
-            // Access Popup layout fields like below
-            btnYes = popupDialog.FindViewById<Button>(Resource.Id.btnYes);
-            btnNo = popupDialog.FindViewById<Button>(Resource.Id.btnNo);
-            btnYes.Click += (e, ev) => { Yes(index); };
-            btnNo.Click += (e, ev) => { No(index); };
+            RunOnUiThread(() =>
+            {      
+                    popupDialog = new Dialog(this);
+                    popupDialog.SetContentView(Resource.Layout.YesNoPopUp);
+                    popupDialog.Window.SetSoftInputMode(SoftInput.AdjustResize);
+                    popupDialog.Show();
+                    popupDialog.Window.SetLayout(LayoutParams.MatchParent, LayoutParams.WrapContent);
+                    popupDialog.Window.SetBackgroundDrawable(new ColorDrawable(Color.ParseColor("#081a45")));
+                    // Access Popup layout fields like below
+                    btnYes = popupDialog.FindViewById<Button>(Resource.Id.btnYes);
+                    btnNo = popupDialog.FindViewById<Button>(Resource.Id.btnNo);
+                    btnYes.Click += (e, ev) => { Yes(index); };
+                    btnNo.Click += (e, ev) => { No(index); };
+            });
         }
 
         private void No(int index)
@@ -185,26 +185,43 @@ namespace WMS
                         await LoadPositions();
                         dataSource.Clear();
                         FillItemsList();
-                        popupDialog.Dismiss();
-                        popupDialog.Hide();
+
+                        RunOnUiThread(() =>
+                        {
+                            popupDialog.Dismiss();
+                            popupDialog.Hide();
+                        });
+
                     }
                     else
                     {
-                        string errorWebAppIssued = string.Format($"{Resources.GetString(Resource.String.s212)}" + result);
-                        Toast.MakeText(this, errorWebAppIssued, ToastLength.Long).Show();
                         positions = null;
+                        string errorWebAppIssued = string.Format($"{Resources.GetString(Resource.String.s212)}" + result);
+
+
+                        // UI changes.
+                        RunOnUiThread(() =>
+                        {
+                            Toast.MakeText(this, errorWebAppIssued, ToastLength.Long).Show();
+                            popupDialog.Dismiss();
+                            popupDialog.Hide();
+                        });    
+                        
                         await LoadPositions();
-                        popupDialog.Dismiss();
-                        popupDialog.Hide();
                         return;
                     }
                 }
                 else
                 {
-                    string errorWebAppIssued = string.Format($"{Resources.GetString(Resource.String.s213)}" + result);
-                    Toast.MakeText(this, errorWebAppIssued, ToastLength.Long).Show();
-                    popupDialog.Dismiss();
-                    popupDialog.Hide();
+                    // UI changes.
+                    RunOnUiThread(() =>
+                    {
+                        string errorWebAppIssued = string.Format($"{Resources.GetString(Resource.String.s213)}" + result);
+                        Toast.MakeText(this, errorWebAppIssued, ToastLength.Long).Show();
+                        popupDialog.Dismiss();
+                        popupDialog.Hide();
+                    });
+                
 
                     return;
                 }
@@ -226,7 +243,12 @@ namespace WMS
                 {
                     var item = positions.Items.ElementAt(i);
                     var created = item.GetDateTime("DateInserted");
-                    tbCreatedAt.Text = created == null ? "" : ((DateTime)created).ToString("dd.MM.yyyy");
+
+                    // UI changes.
+                    RunOnUiThread(() =>
+                    {
+                        tbCreatedAt.Text = created == null ? "" : ((DateTime)created).ToString("dd.MM.yyyy");
+                    });
 
                     var date = created == null ? "" : ((DateTime)created).ToString("dd.MM.yyyy");
                     if (item.GetString("DocumentTypeName") == "")
@@ -247,12 +269,23 @@ namespace WMS
                 }
                 else
                 {
-                    string errorWebApp = string.Format($"{Resources.GetString(Resource.String.s247)}");
-                    Toast.MakeText(this, errorWebApp, ToastLength.Long).Show();
+
+                    // UI changes.
+                    RunOnUiThread(() =>
+                    {
+                        string errorWebApp = string.Format($"{Resources.GetString(Resource.String.s247)}");
+                        Toast.MakeText(this, errorWebApp, ToastLength.Long).Show();
+                    });
+
                 }
             }
-            dataAdapter.NotifyDataSetChanged();
-            UniversalAdapterHelper.SelectPositionProgramaticaly(listData, 0);
+            // UI changes.
+            RunOnUiThread(() =>
+            {
+                dataAdapter.NotifyDataSetChanged();
+                UniversalAdapterHelper.SelectPositionProgramaticaly(listData, 0);
+            });
+           
         }
 
 
@@ -497,61 +530,68 @@ namespace WMS
             {
                 if ((positions != null) && (positions.Items.Count > 0))
                 {
-                    lbInfo.Text = $"{Resources.GetString(Resource.String.s12)} (" + (displayedPosition + 1).ToString() + "/" + positions.Items.Count + ")";
-                    var item = positions.Items[displayedPosition];
-                    tbBusEvent.Text = item.GetString("DocumentTypeName");
-                    tbOrder.Text = item.GetString("LinkKey");
-                    tbSupplier.Text = item.GetString("Issuer");
-                    tbItemCount.Text = item.GetInt("ItemCount").ToString();
-                    tbCreatedBy.Text = item.GetString("ClerkName");
-                    var created = item.GetDateTime("DateInserted");
-                    tbCreatedAt.Text = created == null ? "" : ((DateTime)created).ToString("dd.MM.yyyy");
-                    tbBusEvent.Enabled = false;
-                    tbOrder.Enabled = false;
-                    tbSupplier.Enabled = false;
-                    tbItemCount.Enabled = false;
-                    tbCreatedBy.Enabled = false;
-                    tbCreatedAt.Enabled = false;
-                    tbBusEvent.SetTextColor(Android.Graphics.Color.Black);
-                    tbOrder.SetTextColor(Android.Graphics.Color.Black);
-                    tbSupplier.SetTextColor(Android.Graphics.Color.Black);
-                    tbItemCount.SetTextColor(Android.Graphics.Color.Black);
-                    tbCreatedBy.SetTextColor(Android.Graphics.Color.Black);
-                    tbCreatedAt.SetTextColor(Android.Graphics.Color.Black);
-                    btNext.Enabled = true;
-                    btDelete.Enabled = true;
-                    btFinish.Enabled = true;
+                    RunOnUiThread(() =>
+                    {
+                        lbInfo.Text = $"{Resources.GetString(Resource.String.s12)} (" + (displayedPosition + 1).ToString() + "/" + positions.Items.Count + ")";
+                        var item = positions.Items[displayedPosition];
+                        tbBusEvent.Text = item.GetString("DocumentTypeName");
+                        tbOrder.Text = item.GetString("LinkKey");
+                        tbSupplier.Text = item.GetString("Issuer");
+                        tbItemCount.Text = item.GetInt("ItemCount").ToString();
+                        tbCreatedBy.Text = item.GetString("ClerkName");
+                        var created = item.GetDateTime("DateInserted");
+                        tbCreatedAt.Text = created == null ? "" : ((DateTime)created).ToString("dd.MM.yyyy");
+                        tbBusEvent.Enabled = false;
+                        tbOrder.Enabled = false;
+                        tbSupplier.Enabled = false;
+                        tbItemCount.Enabled = false;
+                        tbCreatedBy.Enabled = false;
+                        tbCreatedAt.Enabled = false;
+                        tbBusEvent.SetTextColor(Android.Graphics.Color.Black);
+                        tbOrder.SetTextColor(Android.Graphics.Color.Black);
+                        tbSupplier.SetTextColor(Android.Graphics.Color.Black);
+                        tbItemCount.SetTextColor(Android.Graphics.Color.Black);
+                        tbCreatedBy.SetTextColor(Android.Graphics.Color.Black);
+                        tbCreatedAt.SetTextColor(Android.Graphics.Color.Black);
+                        btNext.Enabled = true;
+                        btDelete.Enabled = true;
+                        btFinish.Enabled = true;
+                    });
+                
                 }
                 else
                 {
-                    lbInfo.Text = $"{Resources.GetString(Resource.String.s331)}";
-                    tbBusEvent.Text = "";
-                    tbOrder.Text = "";
-                    tbSupplier.Text = "";
-                    tbItemCount.Text = "";
-                    tbCreatedBy.Text = "";
-                    tbCreatedAt.Text = "";
-                    tbBusEvent.Enabled = false;
-                    tbOrder.Enabled = false;
-                    tbSupplier.Enabled = false;
-                    tbItemCount.Enabled = false;
-                    tbCreatedBy.Enabled = false;
-                    tbCreatedAt.Enabled = false;
-                    tbBusEvent.SetTextColor(Android.Graphics.Color.Black);
-                    tbOrder.SetTextColor(Android.Graphics.Color.Black);
-                    tbSupplier.SetTextColor(Android.Graphics.Color.Black);
-                    tbItemCount.SetTextColor(Android.Graphics.Color.Black);
-                    tbCreatedBy.SetTextColor(Android.Graphics.Color.Black);
-                    tbCreatedAt.SetTextColor(Android.Graphics.Color.Black);
-                    btNext.Enabled = false;
-                    btDelete.Enabled = false;
-                    btFinish.Enabled = false;
+                    RunOnUiThread(() =>
+                    {
+                        lbInfo.Text = $"{Resources.GetString(Resource.String.s331)}";
+                        tbBusEvent.Text = "";
+                        tbOrder.Text = "";
+                        tbSupplier.Text = "";
+                        tbItemCount.Text = "";
+                        tbCreatedBy.Text = "";
+                        tbCreatedAt.Text = "";
+                        tbBusEvent.Enabled = false;
+                        tbOrder.Enabled = false;
+                        tbSupplier.Enabled = false;
+                        tbItemCount.Enabled = false;
+                        tbCreatedBy.Enabled = false;
+                        tbCreatedAt.Enabled = false;
+                        tbBusEvent.SetTextColor(Android.Graphics.Color.Black);
+                        tbOrder.SetTextColor(Android.Graphics.Color.Black);
+                        tbSupplier.SetTextColor(Android.Graphics.Color.Black);
+                        tbItemCount.SetTextColor(Android.Graphics.Color.Black);
+                        tbCreatedBy.SetTextColor(Android.Graphics.Color.Black);
+                        tbCreatedAt.SetTextColor(Android.Graphics.Color.Black);
+                        btNext.Enabled = false;
+                        btDelete.Enabled = false;
+                        btFinish.Enabled = false;
+                    });
+
                 }
             }
-            catch
+            catch(Exception ex)
             {
-                // Not loaded yet.
-                return;
+                SentrySdk.CaptureException(ex);
             }
         }
 

@@ -1001,7 +1001,7 @@ namespace WMS
         private async Task GetConnectedPositions(string acKey, int anNo, string acIdent)
         {
             connectedPositions.Clear();
-            var sql = "SELECT * from uWMSOrderItemByKeyOut WHERE acKey = @acKey AND anNo = @anNo AND acIdent = @acIdent";
+            var sql = "SELECT acName, acSubject, acSerialNo, acSSCC, anQty, aclocation, anNo, acKey, acIdent, anPackQty from uWMSOrderItemByKeyOut WHERE acKey = @acKey AND anNo = @anNo AND acIdent = @acIdent";
             var parameters = new List<Services.Parameter>();
             parameters.Add(new Services.Parameter { Name = "acKey", Type = "String", Value = acKey });
             parameters.Add(new Services.Parameter { Name = "anNo", Type = "Int32", Value = anNo });
@@ -1249,7 +1249,7 @@ namespace WMS
         {
             List<MultipleStock> data = new List<MultipleStock>();
 
-            var sql = "SELECT * FROM uWMSStockByWarehouse WHERE acIdent = @acIdent AND acWarehouse = @acWarehouse;";
+            var sql = "SELECT aclocation, anQty, acSerialNo, acSSCC FROM uWMSStockByWarehouse WHERE acIdent = @acIdent AND acWarehouse = @acWarehouse;";
             var parameters = new List<Services.Parameter>();
 
             parameters.Add(new Services.Parameter { Name = "acWarehouse", Type = "String", Value = moveHead.GetString("Wharehouse") });

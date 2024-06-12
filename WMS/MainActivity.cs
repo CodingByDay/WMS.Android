@@ -2,6 +2,7 @@ using Android;
 using Android.Content;
 using Android.Content.PM;
 using Android.Graphics;
+using Android.InputMethodServices;
 using Android.Net;
 using Android.Preferences;
 using Android.Views;
@@ -158,12 +159,25 @@ namespace WMS
             btnRegistrationEvent.Clickable = true;
             btnRegistrationEvent.Enabled = true;
             btnRegistrationEvent.Click += BtnRegistrationEvent_Click;
+            Password.KeyPress += Password_KeyPress;
             App.Settings.login = false;
 
             InitializeSentryAsync();
 
             // Check and request necessary permissions at startup because of Google Play policies. 29.05.2024 Janko Jovièiæ
             // RequestNecessaryPermissions(); // For now not needed. 31.05.2024 Janko Jovièiæ
+        }
+
+        private void Password_KeyPress(object? sender, View.KeyEventArgs e)
+        {
+            if (e.KeyCode == Android.Views.Keycode.Enter)
+            {
+                BtnRegistrationEvent_Click(this, null);
+                e.Handled = true;
+            } else
+            {
+                e.Handled = false;
+            }
         }
 
         void RequestNecessaryPermissions()
@@ -326,11 +340,7 @@ namespace WMS
             }
         }
 
-        public override bool DispatchKeyEvent(Android.Views.KeyEvent e)
-        {
-            if (e.KeyCode == Keycode.Enter) { BtnRegistrationEvent_Click(this, null); }
-            return base.DispatchKeyEvent(e);
-        }
+      
 
 
         private void ChangeTheOrientation()
@@ -385,19 +395,7 @@ namespace WMS
             }
         }
 
-        public override bool OnKeyDown(Keycode keyCode, KeyEvent e)
-        {
-            switch (keyCode)
-            {
-                // in smart-phone
-                case Keycode.Enter:
-                    BtnRegistrationEvent_Click(this, null);
-                    break;
-                    // return true;
-            }
-            return base.OnKeyDown(keyCode, e);
-        }
-
+    
 
     }
 }

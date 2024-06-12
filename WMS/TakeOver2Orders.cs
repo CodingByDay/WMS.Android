@@ -320,7 +320,11 @@ namespace WMS
                 moveItemDivision = Services.GetObjectList("mid", out error, moveItem.GetInt("ItemID").ToString());
                 if (moveItemDivision == null)
                 {
-                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s247)}" + error, ToastLength.Long).Show();
+                    // UI changes.
+                    RunOnUiThread(() =>
+                    {
+                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s247)}" + error, ToastLength.Long).Show();
+                    });
                 }
             }
             catch (Exception err)
@@ -336,42 +340,51 @@ namespace WMS
         {
             if ((0 <= displayOrder) && (displayOrder < moveItemDivision.Items.Count))
             {
-                var mid = moveItemDivision.Items[displayOrder];
-                lblOrder.Text = $"{Resources.GetString(Resource.String.s14)} (" + (displayOrder + 1).ToString() + "/" + moveItemDivision.Items.Count.ToString() + ")";
-                tbNarocilo.Text = mid.GetString("Order");
-                tbKupec.Text = mid.GetString("Receiver");
-                var dd = mid.GetDateTime("DeliveryDeadline");
-                tbDatumDostave.Text = dd == null ? "" : ((DateTime)dd).ToString("dd.MM.yyyy");
+                // UI changes.
+                RunOnUiThread(() =>
+                {
+                    var mid = moveItemDivision.Items[displayOrder];
+                    lblOrder.Text = $"{Resources.GetString(Resource.String.s14)} (" + (displayOrder + 1).ToString() + "/" + moveItemDivision.Items.Count.ToString() + ")";
+                    tbNarocilo.Text = mid.GetString("Order");
+                    tbKupec.Text = mid.GetString("Receiver");
+                    var dd = mid.GetDateTime("DeliveryDeadline");
+                    tbDatumDostave.Text = dd == null ? "" : ((DateTime)dd).ToString("dd.MM.yyyy");
 
-                var availableQty = moveItem.GetDouble("Qty");
-                var alreadyAssigned = moveItemDivision.Items.Sum(i => i.GetDouble("AssignedQty"));
-                var maxQty = Math.Min(mid.GetDouble("OpenQty"), availableQty - alreadyAssigned);
-                tbKolicinaOdprta.Text = maxQty == 0.0 ? "" : maxQty.ToString("###,###,##0.00");
+                    var availableQty = moveItem.GetDouble("Qty");
+                    var alreadyAssigned = moveItemDivision.Items.Sum(i => i.GetDouble("AssignedQty"));
+                    var maxQty = Math.Min(mid.GetDouble("OpenQty"), availableQty - alreadyAssigned);
+                    tbKolicinaOdprta.Text = maxQty == 0.0 ? "" : maxQty.ToString("###,###,##0.00");
 
-                var assQty = mid.GetDouble("AssignedQty");
-                tbKolicinaPrevzetaDoSedaj.Text = assQty == 0.0 ? "" : assQty.ToString("###,###,##0.00");
-                tbKolicinaPrevzetaNova.Text = "";
-                tbKolicinaPrevzetaNova.Enabled = true;
+                    var assQty = mid.GetDouble("AssignedQty");
+                    tbKolicinaPrevzetaDoSedaj.Text = assQty == 0.0 ? "" : assQty.ToString("###,###,##0.00");
+                    tbKolicinaPrevzetaNova.Text = "";
+                    tbKolicinaPrevzetaNova.Enabled = true;
 
-                button1.Enabled = true;
-                button2.Enabled = true;
-                button3.Enabled = true;
-                button4.Enabled = true;
+                    button1.Enabled = true;
+                    button2.Enabled = true;
+                    button3.Enabled = true;
+                    button4.Enabled = true;
+                });
+
             }
             else
             {
+                // UI changes.
+                RunOnUiThread(() =>
+                {
+                    tbNarocilo.Text = "";
+                    tbKupec.Text = "";
+                    tbDatumDostave.Text = "";
+                    tbKolicinaOdprta.Text = "";
+                    tbKolicinaPrevzetaDoSedaj.Text = "";
+                    tbKolicinaPrevzetaNova.Text = "";
+                    tbKolicinaPrevzetaNova.Enabled = false;
+                    button1.Enabled = false;
+                    button2.Enabled = false;
+                    button3.Enabled = false;
+                    button4.Enabled = false;
+                });
 
-                tbNarocilo.Text = "";
-                tbKupec.Text = "";
-                tbDatumDostave.Text = "";
-                tbKolicinaOdprta.Text = "";
-                tbKolicinaPrevzetaDoSedaj.Text = "";
-                tbKolicinaPrevzetaNova.Text = "";
-                tbKolicinaPrevzetaNova.Enabled = false;
-                button1.Enabled = false;
-                button2.Enabled = false;
-                button3.Enabled = false;
-                button4.Enabled = false;
             }
         }
     }

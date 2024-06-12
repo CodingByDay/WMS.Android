@@ -11,5 +11,8 @@ namespace WMS.App
         public string url { get; set; }
         public string id { get; set; }
         public bool tablet { get; set; }
+        public string versionCode { get; set; }
+        public string versionName { get; set; }
+
     }
 }

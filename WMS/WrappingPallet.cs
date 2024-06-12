@@ -20,18 +20,22 @@ namespace WMS
 
         public void GetBarcode(string barcode)
         {
-            if (pallet.HasFocus)
+            RunOnUiThread(() =>
             {
-                if (barcode != "Scan fail")
+                if (pallet.HasFocus)
                 {
+                    if (barcode != "Scan fail")
+                    {
 
-                    pallet.Text = barcode;
+                        pallet.Text = barcode;
+                    }
+                    else
+                    {
+                        pallet.Text = "";
+                    }
                 }
-                else
-                {
-                    pallet.Text = "";
-                }
-            }
+            });
+       
         }
 
         protected override void OnCreate(Bundle savedInstanceState)
@@ -95,7 +99,11 @@ namespace WMS
 
         private void color()
         {
-            pallet.SetBackgroundColor(Android.Graphics.Color.Aqua);
+            RunOnUiThread(() =>
+            {
+                pallet.SetBackgroundColor(Android.Graphics.Color.Aqua);
+
+            });
         }
 
 
@@ -104,8 +112,14 @@ namespace WMS
         {
             await Task.Run(async () =>
             {
-   
-                string TextPallet = pallet.Text;
+                string TextPallet = string.Empty;
+
+                RunOnUiThread(() =>
+                {
+                    TextPallet = pallet.Text;
+
+                });
+
                 
 
                 var (success, result) = await WebApp.GetAsync("mode=palPck&pal=" + TextPallet, this);

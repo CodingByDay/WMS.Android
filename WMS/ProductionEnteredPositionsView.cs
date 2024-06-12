@@ -509,31 +509,26 @@ namespace WMS
                                 Dialog dialog = alert.Create();
                                 dialog.Show();
                             });
-
-
-
                         }
                     }
                     else
                     {
-
                         RunOnUiThread(() =>
                         {
                             string errorWebApp = string.Format($"{Resources.GetString(Resource.String.s218)}" + result);
                             Toast.MakeText(this, errorWebApp, ToastLength.Long).Show();
                         });
-
-
                     }
                 }
-                catch
+                catch (Exception ex)
                 {
-
+                    SentrySdk.CaptureException(ex);
                 }
-
             });
         }
-        private async void BtFinish_Click(object sender, EventArgs e)
+
+
+        private void BtFinish_Click(object sender, EventArgs e)
         {
             popupDialogConfirm = new Dialog(this);
             popupDialogConfirm.SetContentView(Resource.Layout.Confirmation);

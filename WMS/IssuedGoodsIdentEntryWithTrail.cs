@@ -453,7 +453,7 @@ namespace WMS
                         parameters.Add(new Services.Parameter { Name = "acKey", Type = "String", Value = password });
 
                         // New extra way of showing the data. 21.05.2024 Janko Jovičić
-                        string sql = $"SELECT * FROM uWMSOrderItemByKeyOutSUM WHERE acKey = @acKey;";
+                        string sql = $"SELECT acIdent, anLocation, acName, acActualLocation, acKey, anNo, anPackQty, anQty FROM uWMSOrderItemByKeyOutSUM WHERE acKey = @acKey;";
 
                         result = await AsyncServices.AsyncServices.GetObjectListBySqlAsync(sql, parameters);
 

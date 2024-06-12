@@ -50,7 +50,13 @@ namespace WMS
                 {
                     var item = positions.Items.ElementAt(i);
                     var created = item.GetDateTime("DateInserted");
-                    tbCreatedAt.Text = created == null ? "" : ((DateTime)created).ToString("dd.MM.yyyy");
+
+
+                    // UI changes.
+                    RunOnUiThread(() =>
+                    {
+                        tbCreatedAt.Text = created == null ? "" : ((DateTime)created).ToString("dd.MM.yyyy");
+                    });
                     var date = created == null ? "" : ((DateTime)created).ToString("dd.MM.yyyy");
                     data.Add(new UnfinishedIssuedList
                     {
@@ -63,20 +69,38 @@ namespace WMS
                 }
                 else
                 {
-                    string errorWebApp = string.Format($"{Resources.GetString(Resource.String.s247)}");
-                    Toast.MakeText(this, errorWebApp, ToastLength.Long).Show();
+                    // UI changes.
+                    RunOnUiThread(() =>
+                    {
+                        string errorWebApp = string.Format($"{Resources.GetString(Resource.String.s247)}");
+                        Toast.MakeText(this, errorWebApp, ToastLength.Long).Show();
+                    });
+
                 }
 
             }
 
-            dataAdapter.NotifyDataSetChanged();
-            UniversalAdapterHelper.SelectPositionProgramaticaly(listData, 0);
+
+
+            // UI changes.
+            RunOnUiThread(() =>
+            {
+                dataAdapter.NotifyDataSetChanged();
+                UniversalAdapterHelper.SelectPositionProgramaticaly(listData, 0);
+            });
+
         }
 
         private void No(int index)
         {
-            popupDialog.Dismiss();
-            popupDialog.Hide();
+            // UI changes.
+            RunOnUiThread(() =>
+            {
+                popupDialog.Dismiss();
+                popupDialog.Hide();
+            });
+
+
         }
 
         private async void Yes(int index)
@@ -495,66 +519,78 @@ namespace WMS
         {
             if ((positions != null) && (positions.Items.Count > 0))
             {
-                lbInfo.Text = $"{Resources.GetString(Resource.String.s205)} (" + (displayedPosition + 1).ToString() + "/" + positions.Items.Count + ")";
-                var item = positions.Items[displayedPosition];
 
-                tbBusEvent.Text = item.GetString("DocumentTypeName");
-                tbOrder.Text = item.GetString("LinkKey");
-                tbClient.Text = item.GetString("Receiver");
-                tbItemCount.Text = item.GetInt("ItemCount").ToString();
-                tbCreatedBy.Text = item.GetString("ClerkName");
-                SetUpClientPickingChange(item.GetString("CurrentFlow"));
-                var created = item.GetDateTime("DateInserted");
-                tbCreatedAt.Text = created == null ? "" : ((DateTime)created).ToString("dd.MM.yyyy");
+                // UI changes.
+                RunOnUiThread(() =>
+                {
+                    lbInfo.Text = $"{Resources.GetString(Resource.String.s205)} (" + (displayedPosition + 1).ToString() + "/" + positions.Items.Count + ")";
+                    var item = positions.Items[displayedPosition];
 
-                tbBusEvent.Enabled = false;
-                tbOrder.Enabled = false;
-                tbClient.Enabled = false;
-                tbItemCount.Enabled = false;
-                tbCreatedBy.Enabled = false;
-                tbCreatedAt.Enabled = false;
+                    tbBusEvent.Text = item.GetString("DocumentTypeName");
+                    tbOrder.Text = item.GetString("LinkKey");
+                    tbClient.Text = item.GetString("Receiver");
+                    tbItemCount.Text = item.GetInt("ItemCount").ToString();
+                    tbCreatedBy.Text = item.GetString("ClerkName");
+                    SetUpClientPickingChange(item.GetString("CurrentFlow"));
+                    var created = item.GetDateTime("DateInserted");
+                    tbCreatedAt.Text = created == null ? "" : ((DateTime)created).ToString("dd.MM.yyyy");
 
-                tbBusEvent.SetTextColor(Android.Graphics.Color.Black);
-                tbOrder.SetTextColor(Android.Graphics.Color.Black);
-                tbClient.SetTextColor(Android.Graphics.Color.Black);
-                tbItemCount.SetTextColor(Android.Graphics.Color.Black);
-                tbCreatedBy.SetTextColor(Android.Graphics.Color.Black);
-                tbCreatedAt.SetTextColor(Android.Graphics.Color.Black);
+                    tbBusEvent.Enabled = false;
+                    tbOrder.Enabled = false;
+                    tbClient.Enabled = false;
+                    tbItemCount.Enabled = false;
+                    tbCreatedBy.Enabled = false;
+                    tbCreatedAt.Enabled = false;
 
-                btNext.Enabled = true;
-                btDelete.Enabled = true;
-                btFinish.Enabled = true;
+                    tbBusEvent.SetTextColor(Android.Graphics.Color.Black);
+                    tbOrder.SetTextColor(Android.Graphics.Color.Black);
+                    tbClient.SetTextColor(Android.Graphics.Color.Black);
+                    tbItemCount.SetTextColor(Android.Graphics.Color.Black);
+                    tbCreatedBy.SetTextColor(Android.Graphics.Color.Black);
+                    tbCreatedAt.SetTextColor(Android.Graphics.Color.Black);
+
+                    btNext.Enabled = true;
+                    btDelete.Enabled = true;
+                    btFinish.Enabled = true;
+                });
+                
 
             }
             else
             {
-                lbInfo.Text = $"{Resources.GetString(Resource.String.s330)}";
 
-                tbBusEvent.Text = "";
-                tbOrder.Text = "";
-                tbClient.Text = "";
-                tbItemCount.Text = "";
-                tbCreatedBy.Text = "";
-                tbCreatedAt.Text = "";
+                // UI changes.
+                RunOnUiThread(() =>
+                {
+                    lbInfo.Text = $"{Resources.GetString(Resource.String.s330)}";
 
-                tbBusEvent.Enabled = false;
-                tbOrder.Enabled = false;
-                tbClient.Enabled = false;
-                tbItemCount.Enabled = false;
-                tbCreatedBy.Enabled = false;
-                tbCreatedAt.Enabled = false;
+                    tbBusEvent.Text = "";
+                    tbOrder.Text = "";
+                    tbClient.Text = "";
+                    tbItemCount.Text = "";
+                    tbCreatedBy.Text = "";
+                    tbCreatedAt.Text = "";
 
-                tbBusEvent.SetTextColor(Android.Graphics.Color.Black);
-                tbOrder.SetTextColor(Android.Graphics.Color.Black);
-                tbClient.SetTextColor(Android.Graphics.Color.Black);
-                tbItemCount.SetTextColor(Android.Graphics.Color.Black);
-                tbCreatedBy.SetTextColor(Android.Graphics.Color.Black);
-                tbCreatedAt.SetTextColor(Android.Graphics.Color.Black);
+                    tbBusEvent.Enabled = false;
+                    tbOrder.Enabled = false;
+                    tbClient.Enabled = false;
+                    tbItemCount.Enabled = false;
+                    tbCreatedBy.Enabled = false;
+                    tbCreatedAt.Enabled = false;
+
+                    tbBusEvent.SetTextColor(Android.Graphics.Color.Black);
+                    tbOrder.SetTextColor(Android.Graphics.Color.Black);
+                    tbClient.SetTextColor(Android.Graphics.Color.Black);
+                    tbItemCount.SetTextColor(Android.Graphics.Color.Black);
+                    tbCreatedBy.SetTextColor(Android.Graphics.Color.Black);
+                    tbCreatedAt.SetTextColor(Android.Graphics.Color.Black);
 
 
-                btNext.Enabled = false;
-                //  btDelete.Enabled = false;
-                btFinish.Enabled = false;
+                    btNext.Enabled = false;
+                    //  btDelete.Enabled = false;
+                    btFinish.Enabled = false;
+                });
+              
             }
         }
         public override bool OnKeyDown(Keycode keyCode, KeyEvent e)

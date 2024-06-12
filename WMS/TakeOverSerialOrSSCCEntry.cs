@@ -182,8 +182,13 @@ namespace WMS
                 }
                 else
                 {
-                    string errorWebApp = string.Format($"{Resources.GetString(Resource.String.s247)}");
-                    Toast.MakeText(this, errorWebApp, ToastLength.Long).Show();
+                    // UI changes.
+                    RunOnUiThread(() =>
+                    {
+                        string errorWebApp = string.Format($"{Resources.GetString(Resource.String.s247)}");
+                        Toast.MakeText(this, errorWebApp, ToastLength.Long).Show();
+                    });
+
                 }
 
             }
@@ -199,7 +204,12 @@ namespace WMS
 
                 if (positions == null)
                 {
-                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s213)}", ToastLength.Long).Show();
+                    // UI changes.
+                    RunOnUiThread(() =>
+                    {
+                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s213)}", ToastLength.Long).Show();
+
+                    });
 
                     return;
                 }
@@ -214,25 +224,35 @@ namespace WMS
 
         private void SetUpProcessDependentButtons()
         {
-            // This method changes the UI so it shows in a visible way that it is the update screen. - 18.03.2024
-            if (Base.Store.isUpdate)
+            // UI changes.
+            RunOnUiThread(() =>
             {
-                btSaveOrUpdate.Visibility = ViewStates.Gone;
-                btCreate.Text = $"{Resources.GetString(Resource.String.s290)}";
-            }
-            else if (Base.Store.code2D != null)
-            {
-                btSaveOrUpdate.Visibility = ViewStates.Gone;
-                // 2d code reading process.
-            }
+                // This method changes the UI so it shows in a visible way that it is the update screen. - 18.03.2024
+                if (Base.Store.isUpdate)
+                {
+                    btSaveOrUpdate.Visibility = ViewStates.Gone;
+                    btCreate.Text = $"{Resources.GetString(Resource.String.s290)}";
+                }
+                else if (Base.Store.code2D != null)
+                {
+                    btSaveOrUpdate.Visibility = ViewStates.Gone;
+                    // 2d code reading process.
+                }
+            });
+   
         }
 
 
         private void ColorFields()
         {
-            tbSSCC.SetBackgroundColor(Android.Graphics.Color.Aqua);
-            tbSerialNum.SetBackgroundColor(Android.Graphics.Color.Aqua);
-            tbLocation.SetBackgroundColor(Android.Graphics.Color.Aqua);
+            // UI changes.
+            RunOnUiThread(() =>
+            {
+                tbSSCC.SetBackgroundColor(Android.Graphics.Color.Aqua);
+                tbSerialNum.SetBackgroundColor(Android.Graphics.Color.Aqua);
+                tbLocation.SetBackgroundColor(Android.Graphics.Color.Aqua);
+            });
+
         }
 
         private async void SetUpForm()
@@ -355,7 +375,7 @@ namespace WMS
         private async void GetConnectedPositions(string acKey, int anNo, string acIdent, string acLocation = null)
         {
             connectedPositions.Clear();
-            var sql = "SELECT * from uWMSOrderItemByKeyIn WHERE acKey = @acKey AND anNo = @anNo AND acIdent = @acIdent";
+            var sql = "SELECT acName, acSubject, acSerialNo, acSSCC, anQty, aclocation, anNo, acKey from uWMSOrderItemByKeyIn WHERE acKey = @acKey AND anNo = @anNo AND acIdent = @acIdent";
             var parameters = new List<Services.Parameter>();
             parameters.Add(new Services.Parameter { Name = "acKey", Type = "String", Value = acKey });
             parameters.Add(new Services.Parameter { Name = "anNo", Type = "Int32", Value = anNo });
@@ -500,7 +520,11 @@ namespace WMS
                     }
                     else
                     {
-                        DialogHelper.ShowDialogError(this, this, $"{Resources.GetString(Resource.String.s218)}" + result);
+                        // UI changes.
+                        RunOnUiThread(() =>
+                        {
+                            DialogHelper.ShowDialogError(this, this, $"{Resources.GetString(Resource.String.s218)}" + result);
+                        });
                     }
                 }
                 catch
@@ -668,8 +692,14 @@ namespace WMS
 
         private bool IsLocationCorrect()
         {
-            // TODO: Add a way to check serial numbers
-            string location = tbLocation.Text;
+            string location = string.Empty;
+            // UI changes.
+            RunOnUiThread(() =>
+            {
+                // TODO: Add a way to check serial numbers
+                location = tbLocation.Text;
+
+            });
 
             if (!CommonData.IsValidLocation(moveHead.GetString("Wharehouse"), location))
             {
@@ -705,16 +735,20 @@ namespace WMS
                         moveItem.SetString("LinkKey", string.Empty);
                         moveItem.SetInt("LinkNo", 0);
                     }
-
-                    moveItem.SetString("Ident", openIdent.GetString("Code"));
-                    moveItem.SetString("SSCC", tbSSCC.Text.Trim());
-                    moveItem.SetString("SerialNo", tbSerialNum.Text.Trim());
-                    moveItem.SetDouble("Packing", Convert.ToDouble(tbPacking.Text.Trim()));
-                    moveItem.SetDouble("Factor", 1);
-                    moveItem.SetDouble("Qty", Convert.ToDouble(tbPacking.Text.Trim()));
-                    moveItem.SetInt("Clerk", Services.UserID());
-                    moveItem.SetString("Location", tbLocation.Text.Trim());
-                    moveItem.SetString("Palette", "1");
+                    // UI changes.
+                    RunOnUiThread(() =>
+                    {
+                        moveItem.SetString("Ident", openIdent.GetString("Code"));
+                        moveItem.SetString("SSCC", tbSSCC.Text.Trim());
+                        moveItem.SetString("SerialNo", tbSerialNum.Text.Trim());
+                        moveItem.SetDouble("Packing", Convert.ToDouble(tbPacking.Text.Trim()));
+                        moveItem.SetDouble("Factor", 1);
+                        moveItem.SetDouble("Qty", Convert.ToDouble(tbPacking.Text.Trim()));
+                        moveItem.SetInt("Clerk", Services.UserID());
+                        moveItem.SetString("Location", tbLocation.Text.Trim());
+                        moveItem.SetString("Palette", "1");
+                    });
+                   
 
                     string error;
 
@@ -877,16 +911,20 @@ namespace WMS
                         moveItem.SetString("LinkKey", string.Empty);
                         moveItem.SetInt("LinkNo", 0);
                     }
+                    // UI changes.
+                    RunOnUiThread(() =>
+                    {
+                        moveItem.SetString("Ident", openIdent.GetString("Code"));
+                        moveItem.SetString("SSCC", tbSSCC.Text.Trim());
+                        moveItem.SetString("SerialNo", tbSerialNum.Text.Trim());
+                        moveItem.SetDouble("Packing", Convert.ToDouble(tbPacking.Text.Trim()));
+                        moveItem.SetDouble("Factor", 1);
+                        moveItem.SetDouble("Qty", Convert.ToDouble(tbPacking.Text.Trim()));
+                        moveItem.SetInt("Clerk", Services.UserID());
+                        moveItem.SetString("Location", tbLocation.Text.Trim());
+                        moveItem.SetString("Palette", "1");
+                    });
 
-                    moveItem.SetString("Ident", openIdent.GetString("Code"));
-                    moveItem.SetString("SSCC", tbSSCC.Text.Trim());
-                    moveItem.SetString("SerialNo", tbSerialNum.Text.Trim());
-                    moveItem.SetDouble("Packing", Convert.ToDouble(tbPacking.Text.Trim()));
-                    moveItem.SetDouble("Factor", 1);
-                    moveItem.SetDouble("Qty", Convert.ToDouble(tbPacking.Text.Trim()));
-                    moveItem.SetInt("Clerk", Services.UserID());
-                    moveItem.SetString("Location", tbLocation.Text.Trim());
-                    moveItem.SetString("Palette", "1");
 
                     string error;
                     moveItem = Services.SetObject("mi", moveItem, out error);
@@ -896,11 +934,12 @@ namespace WMS
                         if (Base.Store.byOrder)
                         {
 
-                            var currentQty = Convert.ToDouble(tbPacking.Text.Trim());
-                            stock -= currentQty;
 
                             RunOnUiThread(() =>
                             {
+
+                                var currentQty = Convert.ToDouble(tbPacking.Text.Trim());
+                                stock -= currentQty;
                                 lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + stock.ToString(CommonData.GetQtyPicture()) + " )";
                             });
 
@@ -909,9 +948,14 @@ namespace WMS
                         // Check to see if the maximum is already reached.
                         if (stock <= 0)
                         {
-                            var intent = new Intent(this, typeof(TakeOverIdentEntry));
-                            intent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.NewTask);
-                            StartActivity(intent);
+                            // UI changes.
+                            RunOnUiThread(() =>
+                            {
+                                var intent = new Intent(this, typeof(TakeOverIdentEntry));
+                                intent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.NewTask);
+                                StartActivity(intent);
+                            });
+
                         }
 
                         RunOnUiThread(() =>

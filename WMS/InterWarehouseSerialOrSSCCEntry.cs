@@ -315,7 +315,10 @@ namespace WMS
                     }
                     else
                     {
-                        DialogHelper.ShowDialogError(this, this, $"{Resources.GetString(Resource.String.s218)}" + result);
+                        RunOnUiThread(() =>
+                        {
+                            DialogHelper.ShowDialogError(this, this, $"{Resources.GetString(Resource.String.s218)}" + result);
+                        });
                     }
                 }
                 finally
@@ -489,19 +492,25 @@ namespace WMS
             {
 
                 moveItem = new NameValueObject("MoveItem");
-                moveItem.SetInt("HeadID", moveHead.GetInt("HeadID"));
-                moveItem.SetString("LinkKey", string.Empty);
-                moveItem.SetInt("LinkNo", 0);
-                moveItem.SetString("Ident", tbIdent.Text);
-                moveItem.SetString("SSCC", tbSSCC.Text.Trim());
-                moveItem.SetString("SerialNo", tbSerialNum.Text.Trim());
-                moveItem.SetDouble("Packing", Convert.ToDouble(tbPacking.Text.Trim()));
-                moveItem.SetDouble("Factor", 1);
-                moveItem.SetDouble("Qty", Convert.ToDouble(tbPacking.Text.Trim()));
-                moveItem.SetInt("Clerk", Services.UserID());
-                moveItem.SetString("Location", tbLocation.Text.Trim());
-                moveItem.SetString("IssueLocation", tbIssueLocation.Text.Trim());
-                moveItem.SetString("Palette", "1");
+
+                // UI changes.
+                RunOnUiThread(() =>
+                {
+                    moveItem.SetInt("HeadID", moveHead.GetInt("HeadID"));
+                    moveItem.SetString("LinkKey", string.Empty);
+                    moveItem.SetInt("LinkNo", 0);
+                    moveItem.SetString("Ident", tbIdent.Text);
+                    moveItem.SetString("SSCC", tbSSCC.Text.Trim());
+                    moveItem.SetString("SerialNo", tbSerialNum.Text.Trim());
+                    moveItem.SetDouble("Packing", Convert.ToDouble(tbPacking.Text.Trim()));
+                    moveItem.SetDouble("Factor", 1);
+                    moveItem.SetDouble("Qty", Convert.ToDouble(tbPacking.Text.Trim()));
+                    moveItem.SetInt("Clerk", Services.UserID());
+                    moveItem.SetString("Location", tbLocation.Text.Trim());
+                    moveItem.SetString("IssueLocation", tbIssueLocation.Text.Trim());
+                    moveItem.SetString("Palette", "1");
+                });
+
 
                 string error;
 
@@ -596,7 +605,7 @@ namespace WMS
             string warehouse = moveHead.GetString("Issuer");
             parameters.Add(new Services.Parameter { Name = "acSSCC", Type = "String", Value = sscc });
             parameters.Add(new Services.Parameter { Name = "acWarehouse", Type = "String", Value = warehouse });
-            string sql = $"SELECT * FROM uWMSItemBySSCCWarehouse WHERE acSSCC = @acSSCC AND acWarehouse = @acWarehouse";
+            string sql = $"SELECT acIdent, aclocation, acSerialNo, acSSCC, anQty FROM uWMSItemBySSCCWarehouse WHERE acSSCC = @acSSCC AND acWarehouse = @acWarehouse";
             var ssccResult = await AsyncServices.AsyncServices.GetObjectListBySqlAsync(sql, parameters);
             RunOnUiThread(() =>
             {

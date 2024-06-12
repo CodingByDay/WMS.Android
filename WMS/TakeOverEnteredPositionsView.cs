@@ -182,12 +182,22 @@ namespace WMS
                 }
                 else
                 {
-                    string errorWebApp = string.Format($"{Resources.GetString(Resource.String.s247)}");
-                    Toast.MakeText(this, errorWebApp, ToastLength.Long).Show();
+                    // UI changes.
+                    RunOnUiThread(() =>
+                    {
+                        string errorWebApp = string.Format($"{Resources.GetString(Resource.String.s247)}");
+                        Toast.MakeText(this, errorWebApp, ToastLength.Long).Show();
+                    });
+
                 }
             }
 
-            dataAdapter.NotifyDataSetChanged();
+            // UI changes.
+            RunOnUiThread(() =>
+            {
+                dataAdapter.NotifyDataSetChanged();
+            });
+         
 
         }
 
@@ -493,7 +503,11 @@ namespace WMS
                     }
                     if (positions == null)
                     {
-                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s213)}" + error, ToastLength.Long).Show();
+                        // UI changes.
+                        RunOnUiThread(() =>
+                        {
+                            Toast.MakeText(this, $"{Resources.GetString(Resource.String.s213)}" + error, ToastLength.Long).Show();
+                        });
                         return;
                     }
                 }
@@ -560,76 +574,106 @@ namespace WMS
         {
             if ((positions != null) && (displayedPosition < positions.Items.Count))
             {
-                var item = positions.Items[displayedPosition];
-                lbInfo.Text = $"{Resources.GetString(Resource.String.s92)} (" + (displayedPosition + 1).ToString() + "/" + positions.Items.Count + ")";
 
-                tbIdent.Text = item.GetString("IdentName");
-                tbSSCC.Text = item.GetString("SSCC");
-                tbSerialNumber.Text = item.GetString("SerialNo");
+                var item = positions.Items[displayedPosition];
+
+                // UI changes.
+                RunOnUiThread(() =>
+                {
+                    lbInfo.Text = $"{Resources.GetString(Resource.String.s92)} (" + (displayedPosition + 1).ToString() + "/" + positions.Items.Count + ")";
+                    tbIdent.Text = item.GetString("IdentName");
+                    tbSSCC.Text = item.GetString("SSCC");
+                    tbSerialNumber.Text = item.GetString("SerialNo");
+                });
+
+   
+
+
                 if (await CommonData.GetSettingAsync("ShowNumberOfUnitsField", this) == "1")
                 {
-                    tbQty.Text = item.GetDouble("Factor").ToString() + " x " + item.GetDouble("Packing").ToString();
+                    // UI changes.
+                    RunOnUiThread(() =>
+                    {
+                        tbQty.Text = item.GetDouble("Factor").ToString() + " x " + item.GetDouble("Packing").ToString();
+                    });
+
                 }
                 else
                 {
-                    tbQty.Text = item.GetDouble("Qty").ToString();
+                    // UI changes.
+                    RunOnUiThread(() =>
+                    {
+                        tbQty.Text = item.GetDouble("Qty").ToString();
+
+                    });
+
                 }
-                tbLocation.Text = item.GetString("LocationName");
+                // UI changes.
+                RunOnUiThread(() =>
+                {
+                    tbLocation.Text = item.GetString("LocationName");
 
-                var created = item.GetDateTime("DateInserted");
-                tbCreatedBy.Text = created == null ? "" : ((DateTime)created).ToString("dd.MM.") + " " + item.GetString("ClerkName");
-
-
-
-                tbIdent.Enabled = false;
-                tbSSCC.Enabled = false;
-                tbSerialNumber.Enabled = false;
-                tbQty.Enabled = false;
-                tbLocation.Enabled = false;
-                tbCreatedBy.Enabled = false;
+                    var created = item.GetDateTime("DateInserted");
+                    tbCreatedBy.Text = created == null ? "" : ((DateTime)created).ToString("dd.MM.") + " " + item.GetString("ClerkName");
 
 
-                tbIdent.SetTextColor(Android.Graphics.Color.Black);
-                tbSSCC.SetTextColor(Android.Graphics.Color.Black);
-                tbQty.SetTextColor(Android.Graphics.Color.Black);
-                tbQty.SetTextColor(Android.Graphics.Color.Black);
-                tbLocation.SetTextColor(Android.Graphics.Color.Black);
-                tbCreatedBy.SetTextColor(Android.Graphics.Color.Black);
+
+                    tbIdent.Enabled = false;
+                    tbSSCC.Enabled = false;
+                    tbSerialNumber.Enabled = false;
+                    tbQty.Enabled = false;
+                    tbLocation.Enabled = false;
+                    tbCreatedBy.Enabled = false;
 
 
-                btUpdate.Enabled = true;
-                btDelete.Enabled = true;
+                    tbIdent.SetTextColor(Android.Graphics.Color.Black);
+                    tbSSCC.SetTextColor(Android.Graphics.Color.Black);
+                    tbQty.SetTextColor(Android.Graphics.Color.Black);
+                    tbQty.SetTextColor(Android.Graphics.Color.Black);
+                    tbLocation.SetTextColor(Android.Graphics.Color.Black);
+                    tbCreatedBy.SetTextColor(Android.Graphics.Color.Black);
+
+
+                    btUpdate.Enabled = true;
+                    btDelete.Enabled = true;
+                });
+
+          
             }
             else
             {
+                // UI changes.
+                RunOnUiThread(() =>
+                {
+                    lbInfo.Text = $"{Resources.GetString(Resource.String.s267)}";
 
-                lbInfo.Text = $"{Resources.GetString(Resource.String.s267)}";
-
-                tbIdent.Text = string.Empty;
-                tbSSCC.Text = string.Empty;
-                tbSerialNumber.Text = string.Empty;
-                tbQty.Text = string.Empty;
-
-
-
-                tbIdent.Enabled = false;
-                tbSSCC.Enabled = false;
-                tbSerialNumber.Enabled = false;
-                tbQty.Enabled = false;
-                tbLocation.Enabled = false;
-                tbCreatedBy.Enabled = false;
+                    tbIdent.Text = string.Empty;
+                    tbSSCC.Text = string.Empty;
+                    tbSerialNumber.Text = string.Empty;
+                    tbQty.Text = string.Empty;
 
 
-                tbIdent.SetTextColor(Android.Graphics.Color.Black);
-                tbSSCC.SetTextColor(Android.Graphics.Color.Black);
-                tbQty.SetTextColor(Android.Graphics.Color.Black);
-                tbQty.SetTextColor(Android.Graphics.Color.Black);
-                tbLocation.SetTextColor(Android.Graphics.Color.Black);
-                tbCreatedBy.SetTextColor(Android.Graphics.Color.Black);
 
-                btUpdate.Enabled = false;
-                btDelete.Enabled = false;
-                btNext.Enabled = false;
+                    tbIdent.Enabled = false;
+                    tbSSCC.Enabled = false;
+                    tbSerialNumber.Enabled = false;
+                    tbQty.Enabled = false;
+                    tbLocation.Enabled = false;
+                    tbCreatedBy.Enabled = false;
+
+
+                    tbIdent.SetTextColor(Android.Graphics.Color.Black);
+                    tbSSCC.SetTextColor(Android.Graphics.Color.Black);
+                    tbQty.SetTextColor(Android.Graphics.Color.Black);
+                    tbQty.SetTextColor(Android.Graphics.Color.Black);
+                    tbLocation.SetTextColor(Android.Graphics.Color.Black);
+                    tbCreatedBy.SetTextColor(Android.Graphics.Color.Black);
+
+                    btUpdate.Enabled = false;
+                    btDelete.Enabled = false;
+                    btNext.Enabled = false;
+                });
+
             }
         }
     }

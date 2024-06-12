@@ -118,20 +118,34 @@ namespace WMS
                     {
                         if (result.StartsWith("OK!"))
                         {
-                            var id = result.Split('+')[1];
-                            DialogHelper.ShowDialogSuccess(this, this, $"{Resources.GetString(Resource.String.s279)}" + id);
-                            output = 1;
-                            StartActivity(typeof(MainMenu));
+                            // UI changes.
+                            RunOnUiThread(() =>
+                            {
+                                var id = result.Split('+')[1];
+                                DialogHelper.ShowDialogSuccess(this, this, $"{Resources.GetString(Resource.String.s279)}" + id);
+                                output = 1;
+                                StartActivity(typeof(MainMenu));
+                            });
+
                         }
                         else
                         {
-                            output = 2;
-                            DialogHelper.ShowDialogError(this, this, $"{Resources.GetString(Resource.String.s280)}" + result);
+                            // UI changes.
+                            RunOnUiThread(() =>
+                            {
+                                output = 2;
+                                DialogHelper.ShowDialogError(this, this, $"{Resources.GetString(Resource.String.s280)}" + result);
+                            });
+
                         }
                     }
                     else
                     {
-                        DialogHelper.ShowDialogError(this, this, $"{Resources.GetString(Resource.String.s218)}" + result);
+                        // UI changes.
+                        RunOnUiThread(() =>
+                        {
+                            DialogHelper.ShowDialogError(this, this, $"{Resources.GetString(Resource.String.s218)}" + result);
+                        });
                     }
                 }
                 catch (Exception err)

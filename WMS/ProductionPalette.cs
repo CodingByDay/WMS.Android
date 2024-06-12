@@ -496,14 +496,21 @@ namespace WMS
                     });
 
                     var palInfo = new NameValueObject("PaletteInfo");
-                    palInfo.SetString("WorkOrder", tbWorkOrder.Text);
-                    palInfo.SetString("Ident", tbIdent.Text);
-                    palInfo.SetInt("Clerk", Services.UserID());
-                    palInfo.SetString("SerialNum", tbSerialNum.Text);
-                    palInfo.SetString("SSCC", tbSSCC.Text);
-                    palInfo.SetString("CardNums", string.Join(",", ScannedCardNumbers().Select(x => x.ToString()).ToArray()));
-                    palInfo.SetDouble("TotalQty", totalQty);
-                    palInfo.SetString("DeviceID", Services.DeviceUser());
+
+                    // UI changes.
+                    RunOnUiThread(() =>
+                    {
+                        palInfo.SetString("WorkOrder", tbWorkOrder.Text);
+                        palInfo.SetString("Ident", tbIdent.Text);
+                        palInfo.SetInt("Clerk", Services.UserID());
+                        palInfo.SetString("SerialNum", tbSerialNum.Text);
+                        palInfo.SetString("SSCC", tbSSCC.Text);
+                        palInfo.SetString("CardNums", string.Join(",", ScannedCardNumbers().Select(x => x.ToString()).ToArray()));
+                        palInfo.SetDouble("TotalQty", totalQty);
+                        palInfo.SetString("DeviceID", Services.DeviceUser());
+                    });
+
+
                     string error;
                     palInfo = Services.SetObject($"cf&&legCode={tbLegCode.Text}", palInfo, out error);
                     if (palInfo == null)
@@ -519,9 +526,8 @@ namespace WMS
                             alert.SetPositiveButton("Ok", (senderAlert, args) =>
                             {
                                 alert.Dispose();
-                                System.Threading.Thread.Sleep(500);
                                 StartActivity(typeof(MainMenu));
-
+                                Finish();
                             });
 
 
@@ -548,8 +554,8 @@ namespace WMS
                                 alert.SetPositiveButton("Ok", (senderAlert, args) =>
                                 {
                                     alert.Dispose();
-                                    System.Threading.Thread.Sleep(500);
                                     StartActivity(typeof(MainMenu));
+                                    Finish();
                                 });
                                 Dialog dialog = alert.Create();
                                 dialog.Show();
@@ -569,20 +575,13 @@ namespace WMS
                                 alert.SetPositiveButton("Ok", (senderAlert, args) =>
                                 {
                                     alert.Dispose();
-                                    System.Threading.Thread.Sleep(500);
                                     StartActivity(typeof(MainMenu));
-
-
+                                    Finish();
                                 });
-
-
 
                                 Dialog dialog = alert.Create();
                                 dialog.Show();
                             });
-
-
-
                         }
                     }
                 }
@@ -596,7 +595,7 @@ namespace WMS
             });
         }
 
-        private async void BtConfirm_Click(object sender, EventArgs e)
+        private  void BtConfirm_Click(object sender, EventArgs e)
         {
             RunOnUiThread(() =>
             {

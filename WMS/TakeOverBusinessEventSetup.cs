@@ -115,6 +115,7 @@ namespace WMS
 
         private async void InitializeAutocompleteControls()
         {
+
             try
             {
                 cbDocType.SelectAtPosition(0);

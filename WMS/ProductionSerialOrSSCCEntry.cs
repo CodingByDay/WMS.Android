@@ -204,11 +204,14 @@ namespace WMS
 
         private async Task<bool> SaveMoveItem()
         {
+      
+ 
+                if (string.IsNullOrEmpty(tbPacking.Text.Trim()))
+                {
+                    return true;
+                }
+  
 
-            if (string.IsNullOrEmpty(tbPacking.Text.Trim()))
-            {
-                return true;
-            }
 
             if (tbSSCC.Enabled && string.IsNullOrEmpty(tbSSCC.Text.Trim()))
             {
@@ -689,13 +692,18 @@ namespace WMS
         {
             await Task.Run(async () =>
             {
-                var resultAsync = SaveMoveItem().Result;
+                bool resultAsync =  false;
+
+
+                RunOnUiThread(() =>
+                {
+                    resultAsync = SaveMoveItem().Result;
+                });
                 if (resultAsync)
                 {
                     var headID = moveHead.GetInt("HeadID");
 
                     SelectSubjectBeforeFinish.ShowIfNeeded(headID);
-
 
                     try
                     {
@@ -770,15 +778,15 @@ namespace WMS
 
                         }
                     }
-                    catch
+                    catch (Exception ex)
                     {
-
+                        SentrySdk.CaptureException(ex);
                     }
                 }
             });
 
         }
-        private async void Button4_Click(object sender, EventArgs e)
+        private void Button4_Click(object sender, EventArgs e)
         {
             popupDialogConfirm = new Dialog(this);
             popupDialogConfirm.SetContentView(Resource.Layout.Confirmation);

@@ -1,7 +1,11 @@
-﻿using Android.Content;
+﻿using Android.App;
+using Android.Content;
 using Android.OS;
 using Android.Preferences;
 using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using TrendNET.WMS.Device.Services;
 
 namespace WMS.Caching
@@ -11,7 +15,7 @@ namespace WMS.Caching
     {
         private List<string> idents;
 
-        public override IBinder OnBind(Intent intent)
+        public override IBinder? OnBind(Intent intent)
         {
             return null;
         }
@@ -27,19 +31,28 @@ namespace WMS.Caching
         {
             try
             {
-                string error;
-                idents = Services.GetObjectSingularList("idx", out error, "");
-                // Shared preference can be used instead of the library for setting, use this in the future migrate from settings. 6.10.2023.
+
+                idents = await AsyncServices.AsyncServices.GetObjectAsyncSingularServiceCall("idx", "");
+
+                // Serialize idents to JSON
+                string identsJson = JsonConvert.SerializeObject(idents);
+
+                // Use SharedPreferences for caching
                 ISharedPreferences sharedPreferences = PreferenceManager.GetDefaultSharedPreferences(Application.Context);
                 ISharedPreferencesEditor editor = sharedPreferences.Edit();
-                string identsJson = JsonConvert.SerializeObject(idents);
+
+                // Store serialized data in SharedPreferences
                 editor.PutString("idents", identsJson);
                 editor.Apply();
 
+                // Stop the service when done
                 StopSelf();
             }
-            catch
+            catch (Exception ex)
             {
+                // Handle exceptions (e.g., log with Sentry)
+                SentrySdk.CaptureException(ex);
+                // Optionally retry or handle errors gracefully
             }
         }
     }

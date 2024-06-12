@@ -1,4 +1,7 @@
-﻿namespace WMS.App
+﻿using Android.Content;
+using Android.OS;
+
+namespace WMS.App
 {
     public static class HelpfulMethods
     {
@@ -16,5 +19,25 @@
                 return lastReturn;
             }
         }
+
+
+        public static object RunSafelyOnUIThreadReturnResult(Context context, Func<object> action)
+        {
+            object result = null;
+
+            var uiHandler = new Handler(context.MainLooper);
+            var uiThread = new Java.Lang.Thread(() =>
+            {
+                uiHandler.Post(() =>
+                {
+                    result = action();
+                });
+            });
+            uiThread.Start();
+            uiThread.Join(); // Wait for the UI thread to finish
+
+            return result;
+        }
+
     }
 }

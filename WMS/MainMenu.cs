@@ -127,14 +127,37 @@ namespace WMS
             string pickingChoice = await CommonData.GetSettingAsync("IssueProcessSelectbreaking", this);
 
 
+            // Get the package manager
+            PackageManager packageManager = PackageManager;
+
+            // Get the package name of your application
+            string packageName = PackageName;
+            int versionCode = 0;
+            string versionName = string.Empty;
+
+            try
+            {
+                // Get package info for the specified package name
+                PackageInfo packageInfo = packageManager.GetPackageInfo(packageName, 0);
+                // Access version code and version name
+                versionCode = packageInfo.VersionCode; // Integer value
+                versionName = packageInfo.VersionName; // String value
+
+            } catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+            }
+
             // Global scope for sentry 10.06.2024 Janko Jovičić
             SentrySdk.ConfigureScope(scope =>
-            {           
+            {
                 var currentUser = new User
                 {
                     url = App.Settings.RootURL,
                     id = App.Settings.ID,
-                    tablet = App.Settings.tablet
+                    tablet = App.Settings.tablet,
+                    versionName = versionName,
+                    versionCode = versionCode.ToString()
                 };
                 scope.SetExtra("WMS User", currentUser);
             });
@@ -154,9 +177,10 @@ namespace WMS
                 var stock = Services.GetObjectList("strl", out error, location);
                 if (stock == null)
                 {
-                    string WebError = string.Format($"{Resources.GetString(Resource.String.s216)}" + error);
                     RunOnUiThread(() =>
                     {
+                        string WebError = string.Format($"{Resources.GetString(Resource.String.s216)}" + error);
+
                         Toast.MakeText(this, WebError, ToastLength.Long).Show();
                     });
 

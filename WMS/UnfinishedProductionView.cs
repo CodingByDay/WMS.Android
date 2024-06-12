@@ -147,7 +147,12 @@ namespace WMS
                 {
                     var item = positions.Items.ElementAt(i);
                     var created = item.GetDateTime("DateInserted");
-                    tbCreatedAt.Text = created == null ? "" : ((DateTime)created).ToString("dd.MM.yyyy");
+
+                    // UI changes.
+                    RunOnUiThread(() =>
+                    {
+                        tbCreatedAt.Text = created == null ? "" : ((DateTime)created).ToString("dd.MM.yyyy");
+                    });
 
                     var date = created == null ? "" : ((DateTime)created).ToString("dd.MM.yyyy");
                     data.Add(new UnfinishedProductionList
@@ -161,8 +166,13 @@ namespace WMS
                 }
                 else
                 {
-                    string errorWebApp = string.Format($"{Resources.GetString(Resource.String.s247)}");
-                    DialogHelper.ShowDialogError(this, this, errorWebApp);
+                    // UI changes.
+                    RunOnUiThread(() =>
+                    {
+                        string errorWebApp = string.Format($"{Resources.GetString(Resource.String.s247)}");
+                        DialogHelper.ShowDialogError(this, this, errorWebApp);
+                    });
+
                 }
 
             }
@@ -173,8 +183,13 @@ namespace WMS
 
         private void No(int index)
         {
-            popupDialog.Dismiss();
-            popupDialog.Hide();
+            // UI changes.
+            RunOnUiThread(() =>
+            {
+                popupDialog.Dismiss();
+                popupDialog.Hide();
+            });
+           
         }
 
 
@@ -495,66 +510,76 @@ namespace WMS
         {
             if ((positions != null) && (positions.Items.Count > 0))
             {
-                lbInfo.Text = $"{Resources.GetString(Resource.String.s12)} (" + (displayedPosition + 1).ToString() + "/" + positions.Items.Count + ")";
-                var item = positions.Items[displayedPosition];
+                RunOnUiThread(() =>
+                {
+                    lbInfo.Text = $"{Resources.GetString(Resource.String.s12)} (" + (displayedPosition + 1).ToString() + "/" + positions.Items.Count + ")";
+                    var item = positions.Items[displayedPosition];
 
-                tbWorkOrder.Text = item.GetString("LinkKey");
-                tbClient.Text = item.GetString("Receiver");
-                tbIdent.Text = item.GetString("FirstIdent");
-                tbItemCount.Text = item.GetInt("ItemCount").ToString();
-                tbCreatedBy.Text = item.GetString("ClerkName");
+                    tbWorkOrder.Text = item.GetString("LinkKey");
+                    tbClient.Text = item.GetString("Receiver");
+                    tbIdent.Text = item.GetString("FirstIdent");
+                    tbItemCount.Text = item.GetInt("ItemCount").ToString();
+                    tbCreatedBy.Text = item.GetString("ClerkName");
 
-                var created = item.GetDateTime("DateInserted");
-                tbCreatedAt.Text = created == null ? "" : ((DateTime)created).ToString("dd.MM.yyyy");
+                    var created = item.GetDateTime("DateInserted");
+                    tbCreatedAt.Text = created == null ? "" : ((DateTime)created).ToString("dd.MM.yyyy");
 
-                tbWorkOrder.Enabled = false;
-                tbClient.Enabled = false;
-                tbIdent.Enabled = false;
-                tbItemCount.Enabled = false;
-                tbCreatedBy.Enabled = false;
-                tbCreatedAt.Enabled = false;
+                    tbWorkOrder.Enabled = false;
+                    tbClient.Enabled = false;
+                    tbIdent.Enabled = false;
+                    tbItemCount.Enabled = false;
+                    tbCreatedBy.Enabled = false;
+                    tbCreatedAt.Enabled = false;
 
 
-                tbWorkOrder.SetTextColor(Android.Graphics.Color.Black);
-                tbClient.SetTextColor(Android.Graphics.Color.Black);
-                tbIdent.SetTextColor(Android.Graphics.Color.Black);
-                tbItemCount.SetTextColor(Android.Graphics.Color.Black);
-                tbCreatedBy.SetTextColor(Android.Graphics.Color.Black);
-                tbCreatedAt.SetTextColor(Android.Graphics.Color.Black);
+                    tbWorkOrder.SetTextColor(Android.Graphics.Color.Black);
+                    tbClient.SetTextColor(Android.Graphics.Color.Black);
+                    tbIdent.SetTextColor(Android.Graphics.Color.Black);
+                    tbItemCount.SetTextColor(Android.Graphics.Color.Black);
+                    tbCreatedBy.SetTextColor(Android.Graphics.Color.Black);
+                    tbCreatedAt.SetTextColor(Android.Graphics.Color.Black);
 
-                btNext.Enabled = true;
-                btDelete.Enabled = true;
-                btFinish.Enabled = true;
+                    btNext.Enabled = true;
+                    btDelete.Enabled = true;
+                    btFinish.Enabled = true;
+                });
+
+
             }
             else
             {
-                lbInfo.Text = $"{Resources.GetString(Resource.String.s331)}";
 
-                tbWorkOrder.Text = "";
-                tbClient.Text = "";
-                tbIdent.Text = "";
-                tbItemCount.Text = "";
-                tbCreatedBy.Text = "";
-                tbCreatedAt.Text = "";
+                RunOnUiThread(() =>
+                {
+                    lbInfo.Text = $"{Resources.GetString(Resource.String.s331)}";
 
-                tbWorkOrder.Enabled = false;
-                tbClient.Enabled = false;
-                tbIdent.Enabled = false;
-                tbItemCount.Enabled = false;
-                tbCreatedBy.Enabled = false;
-                tbCreatedAt.Enabled = false;
+                    tbWorkOrder.Text = "";
+                    tbClient.Text = "";
+                    tbIdent.Text = "";
+                    tbItemCount.Text = "";
+                    tbCreatedBy.Text = "";
+                    tbCreatedAt.Text = "";
 
-                tbWorkOrder.SetTextColor(Android.Graphics.Color.Black);
-                tbClient.SetTextColor(Android.Graphics.Color.Black);
-                tbIdent.SetTextColor(Android.Graphics.Color.Black);
-                tbItemCount.SetTextColor(Android.Graphics.Color.Black);
-                tbCreatedBy.SetTextColor(Android.Graphics.Color.Black);
-                tbCreatedAt.SetTextColor(Android.Graphics.Color.Black);
+                    tbWorkOrder.Enabled = false;
+                    tbClient.Enabled = false;
+                    tbIdent.Enabled = false;
+                    tbItemCount.Enabled = false;
+                    tbCreatedBy.Enabled = false;
+                    tbCreatedAt.Enabled = false;
+
+                    tbWorkOrder.SetTextColor(Android.Graphics.Color.Black);
+                    tbClient.SetTextColor(Android.Graphics.Color.Black);
+                    tbIdent.SetTextColor(Android.Graphics.Color.Black);
+                    tbItemCount.SetTextColor(Android.Graphics.Color.Black);
+                    tbCreatedBy.SetTextColor(Android.Graphics.Color.Black);
+                    tbCreatedAt.SetTextColor(Android.Graphics.Color.Black);
 
 
-                btNext.Enabled = false;
-                btDelete.Enabled = false;
-                btFinish.Enabled = false;
+                    btNext.Enabled = false;
+                    btDelete.Enabled = false;
+                    btFinish.Enabled = false;
+                });
+
             }
         }
 

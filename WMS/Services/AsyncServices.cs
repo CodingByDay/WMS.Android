@@ -188,5 +188,32 @@ namespace WMS.AsyncServices
             }
         }
 
+
+        public static async Task <List<string>> GetObjectAsyncSingularServiceCall(string? table, string? pars)
+        {
+
+            var (success, result) = await WebApp.GetAsync("mode=list&table=" + table + "&pars=" + pars);
+
+            if (success)
+            {
+                try
+                {
+                    var startedAt = DateTime.Now;
+                    var nvol = CompactSerializer.Deserialize<List<string>>(result);                   
+                    return (nvol);
+                }
+                catch (Exception ex)
+                {
+                    string error = ex.Message;
+                    return (new List<string>());
+                }
+            }
+            else
+            {
+                string errorElse = result;
+                return (new List<string>());
+            }
+        }
+
     }
 }
