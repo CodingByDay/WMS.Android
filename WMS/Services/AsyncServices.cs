@@ -152,7 +152,7 @@ namespace WMS.AsyncServices
             /*if (context != null)
             {
                 LoaderManifest.LoaderManifestLoopResources(context);
-            }*/
+            } */
             string result;
             SqlQueryRequest requestObject;
             if (sqlParameters != null)

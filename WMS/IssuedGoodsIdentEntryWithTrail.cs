@@ -582,6 +582,7 @@ namespace WMS
                 base.RequestedOrientation = ScreenOrientation.Portrait;
                 base.SetContentView(Resource.Layout.IssuedGoodsIdentEntryWithTrail);
             }
+            LoaderManifest.LoaderManifestLoopResources(this);
 
             AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
             var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
@@ -611,7 +612,7 @@ namespace WMS
 
             if (openOrder == null && moveHead == null)
             {
-                throw new ApplicationException("Error, openIdent");
+                StartActivity(typeof(MainMenu))
             }
 
             if (trailFilters != null)
@@ -651,6 +652,9 @@ namespace WMS
                 BindService(serviceIntent, serviceConnection, Bind.AutoCreate);
             }
             tbIdentFilter.RequestFocus();
+
+            LoaderManifest.LoaderManifestLoopStop(this);
+
         }
 
 

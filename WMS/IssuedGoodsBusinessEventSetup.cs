@@ -100,6 +100,9 @@ namespace WMS
             cbExtra.ItemClick += CbExtra_ItemClick;
             cbWarehouse.ItemClick += CbWarehouse_ItemClick;
             await InitializeAutocompleteControls();
+
+
+            // continue here add the loaders
         }
 
         private async Task InitializeAutocompleteControls()
