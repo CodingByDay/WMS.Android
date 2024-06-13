@@ -78,7 +78,7 @@ namespace WMS
                 base.RequestedOrientation = ScreenOrientation.Portrait;
                 base.SetContentView(Resource.Layout.TakeOverSerialOrSSCCEntry);
             }
-            LoaderManifest.LoaderManifestLoopResources(this);
+
             AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
             var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
             _customToolbar.SetNavigationIcon(App.Settings.RootURL + "/Services/Logo");
@@ -117,23 +117,21 @@ namespace WMS
             ColorFields();
 
             // Stop the loader
-            LoaderManifest.LoaderManifestLoopStop(this);
 
             SetUpProcessDependentButtons();
 
             // Main logic for the entry
-            SetUpForm();
+            await SetUpForm();
 
 
             if (App.Settings.tablet)
             {
-                FillTheList();
+                await FillTheList();
             }
 
-            LoaderManifest.LoaderManifestLoopStop(this);
         }
 
-        private async void fillListAdapter()
+        private async Task fillListAdapter()
         {
 
             for (int i = 0; i < positions.Items.Count; i++)
@@ -194,12 +192,12 @@ namespace WMS
             }
 
         }
-        private async void FillTheList()
+        private async Task FillTheList()
         {
             try
             {
 
-                positions = await AsyncServices.AsyncServices.GetObjectListAsync("mi", moveHead.GetInt("HeadID").ToString());
+                positions = await AsyncServices.AsyncServices.GetObjectListAsync("mi", moveHead.GetInt("HeadID").ToString(), this);
                 InUseObjects.Set("TakeOverEnteredPositions", positions);
 
                 if (positions == null)
@@ -217,7 +215,7 @@ namespace WMS
             }
             finally
             {
-                fillListAdapter();
+                await fillListAdapter();
             }
         }
 
@@ -255,7 +253,7 @@ namespace WMS
 
         }
 
-        private async void SetUpForm()
+        private async Task SetUpForm()
         {
             // This is the default focus of the view.
             tbSSCC.RequestFocus();
@@ -300,19 +298,19 @@ namespace WMS
                 {
                     if (order.Packaging != -1)
                     {
-                        lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + quantity.ToString(CommonData.GetQtyPicture()) + " )";
+                        lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + quantity.ToString(await CommonData.GetQtyPictureAsync(this)) + " )";
                         tbPacking.Text = packaging.ToString();
                         stock = quantity;
                     }
                     else
                     {
                         quantity = order.Quantity ?? 0;
-                        lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + quantity.ToString(CommonData.GetQtyPicture()) + " )";
+                        lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + quantity.ToString(await CommonData.GetQtyPictureAsync(this)) + " )";
                         tbPacking.Text = quantity.ToString();
                         stock = quantity;
                     }
 
-                    GetConnectedPositions(order.Order, order.Position ?? -1, order.Ident);
+                    await GetConnectedPositions(order.Order, order.Position ?? -1, order.Ident);
                     tbLocation.Text = await CommonData.GetSettingAsync("DefaultPaletteLocation", this);
 
                     tbPacking.RequestFocus();
@@ -330,13 +328,13 @@ namespace WMS
                     if (Double.TryParse(code2d.netoWeight, out result))
                     {
                         qtyCheck = result;
-                        lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + qtyCheck.ToString(CommonData.GetQtyPicture()) + " )";
+                        lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + qtyCheck.ToString(await CommonData.GetQtyPictureAsync(this)) + " )";
                         tbPacking.Text = qtyCheck.ToString();
                         stock = qtyCheck;
 
                     }
 
-                    GetConnectedPositions(code2d.__helper__convertedOrder, code2d.__helper__position, code2d.ident);
+                    await GetConnectedPositions(code2d.__helper__convertedOrder, code2d.__helper__position, code2d.ident);
 
                     tbLocation.Text = await CommonData.GetSettingAsync("DefaultPaletteLocation", this);
                     // Reset the 2d code to nothing
@@ -372,7 +370,7 @@ namespace WMS
         /// <param name="acKey">Številka naročila</param>
         /// <param name="anNo">Pozicija znotraj naročila</param>
         /// <param name="acIdent">Ident</param>
-        private async void GetConnectedPositions(string acKey, int anNo, string acIdent, string acLocation = null)
+        private async Task GetConnectedPositions(string acKey, int anNo, string acIdent, string acLocation = null)
         {
             connectedPositions.Clear();
             var sql = "SELECT acName, acSubject, acSerialNo, acSSCC, anQty, aclocation, anNo, acKey from uWMSOrderItemByKeyIn WHERE acKey = @acKey AND anNo = @anNo AND acIdent = @acIdent";
@@ -385,7 +383,7 @@ namespace WMS
                 parameters.Add(new Services.Parameter { Name = "acLocation", Type = "String", Value = acLocation });
                 sql += " AND acLocation = @acLocation;";
             }
-            var subjects = await AsyncServices.AsyncServices.GetObjectListBySqlAsync(sql, parameters);
+            var subjects = await AsyncServices.AsyncServices.GetObjectListBySqlAsync(sql, parameters, this);
             if (!subjects.Success)
             {
                 RunOnUiThread(() =>
@@ -558,7 +556,7 @@ namespace WMS
                 if (double.TryParse(tbPacking.Text, out parsed) && stock >= parsed)
                 {
 
-                    var isCorrectLocation = IsLocationCorrect();
+                    var isCorrectLocation = await IsLocationCorrect();
                     if (!isCorrectLocation)
                     {
                         // Nepravilna lokacija za izbrano skladišče
@@ -690,7 +688,7 @@ namespace WMS
         }
 
 
-        private bool IsLocationCorrect()
+        private async Task<bool> IsLocationCorrect()
         {
             string location = string.Empty;
             // UI changes.
@@ -779,7 +777,7 @@ namespace WMS
             double parsed;
             if (double.TryParse(tbPacking.Text, out parsed) && stock >= parsed)
             {
-                var isCorrectLocation = IsLocationCorrect();
+                var isCorrectLocation = await IsLocationCorrect();
                 if (!isCorrectLocation)
                 {
                     // Nepravilna lokacija za izbrano skladišče
@@ -935,7 +933,7 @@ namespace WMS
                         {
 
 
-                            RunOnUiThread(() =>
+                            RunOnUiThread(async () =>
                             {
 
                                 var currentQty = Convert.ToDouble(tbPacking.Text.Trim());

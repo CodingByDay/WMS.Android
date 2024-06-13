@@ -246,7 +246,7 @@ namespace WMS
                 LoaderManifest.LoaderManifestLoop(this);
             }
         }
-        private void SpinnerIdent_ItemSelected(object sender, AdapterView.ItemSelectedEventArgs e)
+        private async void SpinnerIdent_ItemSelected(object sender, AdapterView.ItemSelectedEventArgs e)
         {
             var item = e.Position;
             var chosen = identData.ElementAt(item);
@@ -254,7 +254,7 @@ namespace WMS
             {
                 tbIdent.Text = chosen;
             }
-            ProcessIdent();
+            await ProcessIdent();
         }
 
    
@@ -428,10 +428,9 @@ namespace WMS
 
         }
 
-        private async void ProcessIdent()
+        private async Task ProcessIdent()
         {
             // Disable unwanted crashes because of not waiting for the result. 6.6.2024 Janko Jovičić
-            LoaderManifest.LoaderManifestLoopResources(this);
 
             var ident = tbIdent.Text.Trim();
             if (string.IsNullOrEmpty(ident)) { return; }
@@ -532,10 +531,7 @@ namespace WMS
                 SentrySdk.CaptureException(err);
                 return;
             }
-            finally
-            {
-                LoaderManifest.LoaderManifestLoopStop(this);
-            }
+ 
         }
         private void FillDisplayedOrderInfo()
         {
@@ -586,14 +582,14 @@ namespace WMS
         private int selected;
         private int selectedItem;
 
-        public void GetBarcode(string barcode)
+        public async void GetBarcode(string barcode)
         {
             if (barcode != "Scan fail" && barcode != "")
             {
                 if (HelperMethods.is2D(barcode) && tbIdent.HasFocus && preventDuplicate == false)
                 {
                     Parser2DCode parser2DCode = new Parser2DCode(barcode.Trim());
-                    jumpAhead(parser2DCode);
+                    await jumpAhead(parser2DCode);
                     preventDuplicate = true;
                 }
                 else if (HelperMethods.is2D(barcode) && tbIdent.HasFocus && preventDuplicate == true)
@@ -605,7 +601,7 @@ namespace WMS
                     var ident = barcode.Substring(0, barcode.Length - 16);
                     // 
                     tbIdent.Text = ident;
-                    ProcessIdent();
+                    await ProcessIdent();
                 }
                 else
                 {
@@ -613,7 +609,7 @@ namespace WMS
                     {
                         // 
                         tbIdent.Text = barcode;
-                        ProcessIdent();
+                        await ProcessIdent();
                     }
                 }
             }
@@ -641,7 +637,7 @@ namespace WMS
             return false;
         }
 
-        private async void jumpAhead(Parser2DCode parser2DCode)
+        private async Task jumpAhead(Parser2DCode parser2DCode)
         {
             String order = parser2DCode.clientOrder.ToString();
             string key = order;

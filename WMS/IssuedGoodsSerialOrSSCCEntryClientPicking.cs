@@ -115,7 +115,6 @@ namespace WMS
                 base.RequestedOrientation = ScreenOrientation.Portrait;
                 base.SetContentView(Resource.Layout.IssuedGoodsSerialOrSSCCEntryClientPicking);
             }
-            LoaderManifest.LoaderManifestLoopResources(this);
             // Definitions
             AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
             var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
@@ -130,7 +129,7 @@ namespace WMS
             tbPacking = FindViewById<EditText>(Resource.Id.tbPacking);
             cbMultipleLocations = FindViewById<Spinner>(Resource.Id.cbMultipleLocations);
 
-            if (CommonData.GetSetting("IssueSummaryView") == "1")
+            if (await CommonData.GetSettingAsync("IssueSummaryView", this) == "1")
             {
                 // If the company opted for this.
                 cbMultipleLocations.ItemSelected += CbMultipleLocations_ItemSelected;
@@ -177,13 +176,11 @@ namespace WMS
 
             SetUpProcessDependentButtons();
 
-            // Stop the loader
-            LoaderManifest.LoaderManifestLoopStop(this);
 
 
             if (App.Settings.tablet)
             {
-                fillItems();
+                await fillItems();
             }
 
             if (ssccRow.Visibility != ViewStates.Visible && serialRow.Visibility != ViewStates.Visible)
@@ -192,7 +189,6 @@ namespace WMS
                 tbPacking.SelectAll();
             }
 
-            LoaderManifest.LoaderManifestLoopStop(this);
         }
 
 
@@ -229,7 +225,7 @@ namespace WMS
         }
 
 
-        private async void fillItems()
+        private async Task fillItems()
         {
             var code = openIdent.GetString("Code");
             var wh = moveHead.GetString("Wharehouse");
@@ -279,7 +275,7 @@ namespace WMS
             {
                 if (createPositionAllowed && double.TryParse(tbPacking.Text, out parsed) && stock >= parsed)
                 {
-                    var isCorrectLocation = IsLocationCorrect();
+                    var isCorrectLocation = await IsLocationCorrect();
 
                     if (!isCorrectLocation)
                     {
@@ -355,7 +351,7 @@ namespace WMS
             double parsed;
             if (createPositionAllowed && double.TryParse(tbPacking.Text, out parsed) && stock >= parsed)
             {
-                var isCorrectLocation = IsLocationCorrect();
+                var isCorrectLocation = await IsLocationCorrect();
 
                 if (!isCorrectLocation)
                 {
@@ -375,11 +371,11 @@ namespace WMS
         }
 
 
-        private bool IsLocationCorrect()
+        private async Task<bool> IsLocationCorrect()
         {
             string location = tbLocation.Text;
 
-            if (!CommonData.IsValidLocation(moveHead.GetString("Wharehouse"), location))
+            if (!await CommonData.IsValidLocationAsync(moveHead.GetString("Wharehouse"), location, this))
             {
                 return false;
             }
@@ -562,10 +558,10 @@ namespace WMS
 
                         serialOverflowQuantity = Convert.ToDouble(tbPacking.Text.Trim());
                         stock -= serialOverflowQuantity;
-
+                        var picture = await CommonData.GetQtyPictureAsync(this);
                         RunOnUiThread(() =>
                         {
-                            lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + stock.ToString(CommonData.GetQtyPicture()) + " )";
+                            lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + stock.ToString(picture) + " )";
                         });
 
                         // Check to see if the maximum is already reached.
@@ -753,7 +749,7 @@ namespace WMS
                     byte[] trailBytes = Intent.GetByteArrayExtra("selected");
                     receivedTrail = ClientPickingPosition.Deserialize<ClientPickingPosition>(trailBytes);
 
-                    if (CommonData.GetSetting("IssueSummaryView") == "1")
+                    if (await CommonData.GetSettingAsync("IssueSummaryView", this) == "1")
                     {
                         cbMultipleLocations.Visibility = ViewStates.Visible;
                         adapterLocations = await GetStockState(receivedTrail);
@@ -766,7 +762,7 @@ namespace WMS
                     tbLocation.Text = receivedTrail.Location;
 
                     qtyCheck = Double.Parse(receivedTrail.Quantity);
-                    lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + qtyCheck.ToString(CommonData.GetQtyPicture()) + " )";
+                    lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + qtyCheck.ToString(await CommonData.GetQtyPictureAsync(this)) + " )";
                     stock = qtyCheck;
                     tbPacking.Text = qtyCheck.ToString();
                     await GetConnectedPositions(receivedTrail.Order, receivedTrail.No, receivedTrail.Ident);
@@ -800,7 +796,7 @@ namespace WMS
             parameters.Add(new Services.Parameter { Name = "acWarehouse", Type = "String", Value = moveHead.GetString("Wharehouse") });
             parameters.Add(new Services.Parameter { Name = "acIdent", Type = "String", Value = obj.Ident });
 
-            var stocks = await AsyncServices.AsyncServices.GetObjectListBySqlAsync(sql, parameters);
+            var stocks = await AsyncServices.AsyncServices.GetObjectListBySqlAsync(sql, parameters, this);
 
             if (stocks.Success && stocks.Rows.Count > 0)
             {
@@ -870,7 +866,7 @@ namespace WMS
             parameters.Add(new Services.Parameter { Name = "acIdent", Type = "String", Value = acIdent });
 
 
-            var subjects = await AsyncServices.AsyncServices.GetObjectListBySqlAsync($"SELECT acName, acSubject, acSerialNo, acSSCC, anQty, aclocation, acKey, acIdent, anNo, anPackQty FROM uWMSOrderItemByKeyOut WHERE acKey = @acKey AND anNo = @anNo AND acIdent = @acIdent;", parameters);
+            var subjects = await AsyncServices.AsyncServices.GetObjectListBySqlAsync($"SELECT * FROM uWMSOrderItemByKeyOut WHERE acKey = @acKey AND anNo = @anNo AND acIdent = @acIdent;", parameters, this);
 
             if (!subjects.Success)
             {

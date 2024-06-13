@@ -121,7 +121,7 @@ namespace WMS
             return filtered;
         }
 
-        public void GetBarcode(string barcode)
+        public async void GetBarcode(string barcode)
         {
             try
             {
@@ -142,7 +142,7 @@ namespace WMS
                             tbPacking.RequestFocus();
                         }
 
-                        FilterData();
+                        await FilterData();
                     }
                 }
                 else if (tbSerialNum.HasFocus)
@@ -155,7 +155,7 @@ namespace WMS
 
                         tbPacking.RequestFocus();
 
-                        FilterData();
+                        await FilterData();
                     }
                 }
                 else if (tbLocation.HasFocus)
@@ -166,7 +166,7 @@ namespace WMS
 
                         tbLocation.Text = barcode;
 
-                        FilterData();
+                        await FilterData();
 
                         if (isProccessOrderless)
                         {
@@ -183,7 +183,7 @@ namespace WMS
             }
         }
 
-        private void GetQuantityOrderLess()
+        private async void GetQuantityOrderLess()
         {
             if (openIdent != null && moveHead != null)
             {
@@ -192,12 +192,12 @@ namespace WMS
                 string warehouse = moveHead.GetString("Wharehouse");
                 string sscc = string.IsNullOrEmpty(tbSSCC.Text) ? null : tbSSCC.Text;
                 string serial = string.IsNullOrEmpty(tbSerialNum.Text) ? null : tbSerialNum.Text;
-                LoadStock(location, ident, warehouse, sscc, serial);
+                await LoadStock(location, ident, warehouse, sscc, serial);
             }
         }
 
 
-        private async void LoadStock(string location, string ident, string warehouse, string sscc = null, string serial = null)
+        private async Task LoadStock(string location, string ident, string warehouse, string sscc = null, string serial = null)
         {
             var parameters = new List<Services.Parameter>();
 
@@ -219,7 +219,7 @@ namespace WMS
                 parameters.Add(new Services.Parameter { Name = "acSerialNo", Type = "String", Value = serial });
             }
 
-            var qty = await AsyncServices.AsyncServices.GetObjectListBySqlAsync(sql, parameters);
+            var qty = await AsyncServices.AsyncServices.GetObjectListBySqlAsync(sql, parameters, this);
 
             if (qty.Success)
             {
@@ -228,7 +228,7 @@ namespace WMS
                 {
                     double result = (double?)qty.Rows[0].DoubleValue("anQty") ?? 0;
                     qtyCheck = result;
-                    lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + qtyCheck.ToString(CommonData.GetQtyPicture()) + " )";
+                    lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + qtyCheck.ToString(await CommonData.GetQtyPictureAsync(this)) + " )";
                     tbPacking.Text = qtyCheck.ToString();
                     stock = qtyCheck;
                 }
@@ -236,7 +236,7 @@ namespace WMS
                 {
                     double result = 0;
                     qtyCheck = result;
-                    lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + qtyCheck.ToString(CommonData.GetQtyPicture()) + " )";
+                    lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + qtyCheck.ToString(await CommonData.GetQtyPictureAsync(this)) + " )";
                     tbPacking.Text = qtyCheck.ToString();
                     stock = qtyCheck;
                 }
@@ -272,7 +272,6 @@ namespace WMS
                 base.RequestedOrientation = ScreenOrientation.Portrait;
                 base.SetContentView(Resource.Layout.IssuedGoodsSerialOrSSCCEntry);
             }
-            LoaderManifest.LoaderManifestLoopResources(this);
 
             // Definitions
             AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
@@ -299,7 +298,7 @@ namespace WMS
             btOverview = FindViewById<Button>(Resource.Id.btOverview);
             btExit = FindViewById<Button>(Resource.Id.btExit);
 
-            if (CommonData.GetSetting("IssueSummaryView") == "1")
+            if (await CommonData.GetSettingAsync("IssueSummaryView", this) == "1")
             {
                 // If the company opted for this.
                 cbMultipleLocations.ItemSelected += CbMultipleLocations_ItemSelected;
@@ -331,19 +330,18 @@ namespace WMS
 
             SetUpProcessDependentButtons();
             // Main logic for the entry
-            SetUpForm();
+            await SetUpForm();
 
             if (App.Settings.tablet)
             {
-                fillItems();
+                await fillItems();
             }
 
             // Stop the loader
-            LoaderManifest.LoaderManifestLoopStop(this);
         }
         private bool initialDropdownEvent = true;
 
-        private void CbMultipleLocations_ItemSelected(object? sender, AdapterView.ItemSelectedEventArgs e)
+        private async void CbMultipleLocations_ItemSelected(object? sender, AdapterView.ItemSelectedEventArgs e)
         {
 
 
@@ -372,7 +370,7 @@ namespace WMS
                 */
 
                 tbPacking.SelectAll();
-                FilterData();
+                await FilterData();
             }
             initialDropdownEvent = false;
         }
@@ -418,7 +416,7 @@ namespace WMS
         }
 
 
-        private async void fillItems()
+        private async Task fillItems()
         {
             var code = openIdent.GetString("Code");
             var wh = moveHead.GetString("Wharehouse");
@@ -455,7 +453,7 @@ namespace WMS
 
                 if (isProccessOrderless && double.TryParse(tbPacking.Text, out parsed) && stock >= parsed)
                 {
-                    var isCorrectLocation = IsLocationCorrect();
+                    var isCorrectLocation = await IsLocationCorrect();
 
                     if (!isCorrectLocation)
                     {
@@ -549,7 +547,7 @@ namespace WMS
             double parsed;
             if (isProccessOrderless && double.TryParse(tbPacking.Text, out parsed) && stock >= parsed)
             {
-                var isCorrectLocation = IsLocationCorrect();
+                var isCorrectLocation = await IsLocationCorrect();
 
                 if (!isCorrectLocation)
                 {
@@ -575,7 +573,7 @@ namespace WMS
             }
             else if (createPositionAllowed && double.TryParse(tbPacking.Text, out parsed) && stock >= parsed)
             {
-                var isCorrectLocation = IsLocationCorrect();
+                var isCorrectLocation = await IsLocationCorrect();
 
                 if (!isCorrectLocation)
                 {
@@ -591,11 +589,11 @@ namespace WMS
                 Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
             }
         }
-        private bool IsLocationCorrect()
+        private async Task<bool> IsLocationCorrect()
         {
             string location = tbLocation.Text;
 
-            if (!CommonData.IsValidLocation(moveHead.GetString("Wharehouse"), location))
+            if (!await CommonData.IsValidLocationAsync(moveHead.GetString("Wharehouse"), location, this))
             {
                 return false;
             }
@@ -808,7 +806,7 @@ namespace WMS
                     stock -= serialOverflowQuantity;
 
 
-                    lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + stock.ToString(CommonData.GetQtyPicture()) + " )";
+                    lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + stock.ToString(await CommonData.GetQtyPictureAsync(this)) + " )";
 
 
                     // Check to see if the maximum is already reached.
@@ -867,7 +865,7 @@ namespace WMS
             }
         }
 
-        private void FilterData()
+        private async Task FilterData()
         {
             data = FilterIssuedGoods(connectedPositions, tbSSCC.Text, tbSerialNum.Text, tbLocation.Text);
             if (data.Count == 1)
@@ -878,12 +876,12 @@ namespace WMS
                 if (element.anPackQty != -1 && element.anPackQty <= element.anQty)
                 {
                     tbPacking.Text = element.anPackQty.ToString();
-                    lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + quantity.ToString(CommonData.GetQtyPicture()) + " )";
+                    lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + quantity.ToString(await CommonData.GetQtyPictureAsync(this)) + " )";
                 }
                 else
                 {
                     tbPacking.Text = element.anQty.ToString();
-                    lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + quantity.ToString(CommonData.GetQtyPicture()) + " )";
+                    lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + quantity.ToString(await CommonData.GetQtyPictureAsync(this)) + " )";
                 }
                 if (serialRow.Visibility == ViewStates.Visible)
                 {
@@ -1007,7 +1005,7 @@ namespace WMS
             parameters.Add(new Services.Parameter { Name = "anNo", Type = "Int32", Value = anNo });
             parameters.Add(new Services.Parameter { Name = "acIdent", Type = "String", Value = acIdent });
 
-            var subjects = await AsyncServices.AsyncServices.GetObjectListBySqlAsync(sql, parameters);
+            var subjects = await AsyncServices.AsyncServices.GetObjectListBySqlAsync(sql, parameters, this);
             if (!subjects.Success)
             {
                 RunOnUiThread(() =>
@@ -1070,7 +1068,7 @@ namespace WMS
             }
         }
 
-        private async void SetUpForm()
+        private async Task SetUpForm()
         {
             if (App.Settings.tablet)
             {
@@ -1139,7 +1137,7 @@ namespace WMS
                         await GetConnectedPositions(receivedTrail.Key, receivedTrail.No, receivedTrail.Ident);
 
 
-                        if (CommonData.GetSetting("IssueSummaryView") == "1")
+                        if (await CommonData.GetSettingAsync("IssueSummaryView", this) == "1")
                         {
                             cbMultipleLocations.Visibility = ViewStates.Visible;
                             adapterLocations = await GetStockState(receivedTrail.Ident);
@@ -1155,19 +1153,19 @@ namespace WMS
                         if (receivedTrail.Packaging != -1 && Double.TryParse(receivedTrail.Qty, out double qty) && receivedTrail.Packaging <= qty)
                         {
                             packaging = receivedTrail.Packaging;
-                            lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + quantity.ToString(CommonData.GetQtyPicture()) + " )";
+                            lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + quantity.ToString(await CommonData.GetQtyPictureAsync(this)) + " )";
                             stock = quantity;
                             tbPacking.Text = packaging.ToString();
                         }
                         else
                         {
                             quantity = Double.Parse(receivedTrail.Qty);
-                            lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + quantity.ToString(CommonData.GetQtyPicture()) + " )";
+                            lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + quantity.ToString(await CommonData.GetQtyPictureAsync(this)) + " )";
                             stock = quantity;
                             tbPacking.Text = quantity.ToString();
                         }
 
-                        FilterData();
+                        await FilterData();
                     }
                     else if (Base.Store.modeIssuing == 2 && Base.Store.code2D != null)
                     {
@@ -1179,7 +1177,7 @@ namespace WMS
                         if (Double.TryParse(code2d.netoWeight, out result))
                         {
                             qtyCheck = result;
-                            lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + qtyCheck.ToString(CommonData.GetQtyPicture()) + " )";
+                            lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + qtyCheck.ToString(await CommonData.GetQtyPictureAsync(this)) + " )";
                             tbPacking.Text = qtyCheck.ToString();
                             stock = qtyCheck;
 
@@ -1193,7 +1191,7 @@ namespace WMS
                         tbPacking.RequestFocus();
                         tbPacking.SelectAll();
 
-                        FilterData();
+                        await FilterData();
                     }
                     else if (Base.Store.modeIssuing == 1)
                     {
@@ -1208,19 +1206,19 @@ namespace WMS
 
                             if (order.Packaging != -1 && packaging <= quantity)
                             {
-                                lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + quantity.ToString(CommonData.GetQtyPicture()) + " )";
+                                lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + quantity.ToString(await CommonData.GetQtyPictureAsync(this)) + " )";
                                 stock = quantity;
                             }
                             else
                             {
-                                lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + quantity.ToString(CommonData.GetQtyPicture()) + " )";
+                                lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + quantity.ToString(await CommonData.GetQtyPictureAsync(this)) + " )";
                                 stock = quantity;
                             }
 
                             await GetConnectedPositions(order.Order, order.Position ?? -1, order.Ident);
 
 
-                            if (CommonData.GetSetting("IssueSummaryView") == "1")
+                            if (await CommonData.GetSettingAsync("IssueSummaryView", this) == "1")
                             {
                                 cbMultipleLocations.Visibility = ViewStates.Visible;
                                 adapterLocations = await GetStockState(order.Ident);
@@ -1231,7 +1229,7 @@ namespace WMS
 
                             }
 
-                            FilterData();
+                            await FilterData();
 
                         }
                     }
@@ -1255,7 +1253,7 @@ namespace WMS
             parameters.Add(new Services.Parameter { Name = "acWarehouse", Type = "String", Value = moveHead.GetString("Wharehouse") });
             parameters.Add(new Services.Parameter { Name = "acIdent", Type = "String", Value = ident });
 
-            var stocks = await AsyncServices.AsyncServices.GetObjectListBySqlAsync(sql, parameters);
+            var stocks = await AsyncServices.AsyncServices.GetObjectListBySqlAsync(sql, parameters, this);
 
             if (stocks.Success && stocks.Rows.Count > 0)
             {
@@ -1299,11 +1297,11 @@ namespace WMS
         }
 
 
-        private void TbSerialNum_KeyPress(object? sender, View.KeyEventArgs e)
+        private async void TbSerialNum_KeyPress(object? sender, View.KeyEventArgs e)
         {
             if (e.KeyCode == Keycode.Enter && e.Event.Action == KeyEventActions.Down)
             {
-                FilterData();
+                await FilterData();
             }
             else
             {
@@ -1311,11 +1309,11 @@ namespace WMS
             }
         }
 
-        private void TbSSCC_KeyPress(object? sender, View.KeyEventArgs e)
+        private async void TbSSCC_KeyPress(object? sender, View.KeyEventArgs e)
         {
             if (e.KeyCode == Keycode.Enter && e.Event.Action == KeyEventActions.Down)
             {
-                FilterData();
+                await FilterData();
             }
             else
             {
@@ -1324,13 +1322,13 @@ namespace WMS
         }
 
 
-        private void TbLocation_KeyPress(object? sender, View.KeyEventArgs e)
+        private async void TbLocation_KeyPress(object? sender, View.KeyEventArgs e)
         {
             if (e.KeyCode == Keycode.Enter && e.Event.Action == KeyEventActions.Down)
             {
                 if (isProccessOrderless)
                 {
-                    var isCorrectLocation = IsLocationCorrect();
+                    var isCorrectLocation = await IsLocationCorrect();
 
                     if (!isCorrectLocation)
                     {
@@ -1350,7 +1348,7 @@ namespace WMS
                 e.Handled = false;
             }
 
-            FilterData();
+            await FilterData();
         }
 
     }

@@ -30,7 +30,7 @@ namespace WMS
         int soundPoolId;
         private Barcode2D barcode2D;
 
-        public void GetBarcode(string barcode)
+        public async void GetBarcode(string barcode)
         {
             if (tbWorkOrder.HasFocus)
             {
@@ -43,7 +43,7 @@ namespace WMS
                     tbName.Text = "";
 
                     tbWorkOrder.Text = barcode;
-                    ProcessWorkOrder();
+                    await ProcessWorkOrder();
                 }
                 else
                 {
@@ -114,11 +114,11 @@ namespace WMS
             new IntentFilter(ConnectivityManager.ConnectivityAction));
 
 
-            tbWorkOrder.EditorAction += (sender, e) =>
+            tbWorkOrder.EditorAction += async (sender, e) =>
             {
                 if (e.ActionId == ImeAction.Done || e.Event.Action == KeyEventActions.Down)
                 {
-                    ProcessWorkOrder();
+                    await ProcessWorkOrder();
                 }
             };
 
@@ -154,9 +154,9 @@ namespace WMS
                 LoaderManifest.LoaderManifestLoop(this);
             }
         }
-        private void TbOpenQty_FocusChange(object sender, View.FocusChangeEventArgs e)
+        private async void TbOpenQty_FocusChange(object sender, View.FocusChangeEventArgs e)
         {
-            ProcessWorkOrder();
+            await ProcessWorkOrder();
         }
 
         private void Button2_Click(object sender, EventArgs e)
@@ -185,9 +185,9 @@ namespace WMS
             }
         }
 
-        private void BtConfirm_Click(object sender, EventArgs e)
+        private async void BtConfirm_Click(object sender, EventArgs e)
         {
-            if (SaveMoveHead())
+            if (await SaveMoveHead())
             {
                 StartActivity(typeof(ProductionSerialOrSSCCEntry));
                 Finish();
@@ -207,7 +207,7 @@ namespace WMS
         }
 
 
-        private bool SaveMoveHead()
+        private async Task<bool> SaveMoveHead()
         {
             NameValueObject workOrder = null;
 
@@ -231,7 +231,7 @@ namespace WMS
 
             }
 
-            var ident = CommonData.LoadIdent(tbIdent.Text.Trim());
+            var ident = await CommonData.LoadIdentAsync(tbIdent.Text.Trim(), this);
             if (ident == null) { return false; }
 
             if (moveHead == null) { moveHead = new NameValueObject("MoveHead"); }
@@ -326,7 +326,7 @@ namespace WMS
             return base.OnKeyDown(keyCode, e);
         }
 
-        private void ProcessWorkOrder()
+        private async Task ProcessWorkOrder()
         {
             tbOpenQty.Text = "";
             tbClient.Text = "";
@@ -358,12 +358,12 @@ namespace WMS
                     }
                     else
                     {
-                        tbOpenQty.Text = workOrder.GetDouble("OpenQty").ToString(CommonData.GetQtyPicture());
+                        tbOpenQty.Text = workOrder.GetDouble("OpenQty").ToString(await CommonData.GetQtyPictureAsync(this));
                         tbClient.Text = workOrder.GetString("Consignee");
                         tbIdent.Text = workOrder.GetString("Ident");
                         tbName.Text = workOrder.GetString("Name");
 
-                        if (CommonData.GetSetting("ProductionIgnoreIdentCardInfo") == "1")
+                        if (await CommonData.GetSettingAsync("ProductionIgnoreIdentCardInfo", this) == "1")
                         {
                             btCard.Visibility = ViewStates.Visible;
                             btPalette.Visibility = ViewStates.Visible;

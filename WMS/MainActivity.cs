@@ -57,7 +57,7 @@ namespace WMS
             var id = App.Settings.ID.ToString();
 
             // Using the asynchronous GetAsync method
-            var (success, result) = await WebApp.GetAsync("mode=deviceActive", this);
+            var (success, result) = await WebApp.GetAsync("mode=deviceActive");
 
             if (success)
             {
@@ -75,18 +75,13 @@ namespace WMS
                     if (string.IsNullOrEmpty(Password.Text.Trim())) { return; }
 
                     Services.ClearUserInfo();
-                    string error;
-                    bool valid = false;
 
-                    try
-                    {
-                        valid = Services.IsValidUser(Password.Text.Trim(), out error);
-                    }
-                    catch (Exception err)
-                    {
-                        SentrySdk.CaptureException(err);
-                        return;
-                    }
+                    string error;
+
+
+            
+                    var valid = await Services.IsValidUserAsync(Password.Text.Trim());
+                 
 
                     if (valid)
                     {

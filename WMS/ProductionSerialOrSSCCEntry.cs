@@ -123,13 +123,15 @@ namespace WMS
 
             if (stock != null)
             {
-                stock.Items.ForEach(x =>
+                stock.Items.ForEach(async x =>
                 {
+                    var picture = await CommonData.GetQtyPictureAsync(this);
+
                     data.Add(new ProductionSerialOrSSCCList
                     {
                         Ident = x.GetString("Ident"),
                         Location = x.GetString("Location"),
-                        Qty = x.GetDouble("RealStock").ToString(CommonData.GetQtyPicture()),
+                        Qty = x.GetDouble("RealStock").ToString(picture),
                         SerialNumber = x.GetString("SerialNo")
 
                     });
@@ -152,7 +154,7 @@ namespace WMS
         private ZoomageView? image;
         private Barcode2D barcode2D;
 
-        private void GetWorkOrderDefaultQty()
+        private async Task GetWorkOrderDefaultQty()
         {
             if (getWorkOrderDefaultQty == null)
             {
@@ -188,7 +190,7 @@ namespace WMS
                         }
                         else
                         {
-                            tbPacking.Text = qty.ToString(CommonData.GetQtyPicture());
+                            tbPacking.Text = qty.ToString(await CommonData.GetQtyPictureAsync(this));
                         }
                     }
                 }
@@ -242,7 +244,7 @@ namespace WMS
                 }
             }
 
-            if (!CommonData.IsValidLocation(moveHead.GetString("Wharehouse"), tbLocation.Text.Trim()))
+            if (!await CommonData.IsValidLocationAsync(moveHead.GetString("Wharehouse"), tbLocation.Text.Trim(), this))
             {
                 RunOnUiThread(() =>
                 {
@@ -319,9 +321,11 @@ namespace WMS
                             var max = Math.Abs(openWorkOrder.GetDouble("OpenQty"));
                             if (Math.Abs(qty) > max)
                             {
+                                var picture = await CommonData.GetQtyPictureAsync(this);
+                                string SuccessMessage = string.Format($"{Resources.GetString(Resource.String.s40)} (" + qty.ToString(picture) + ") ne sme presegati max. količine (" + max.ToString(await CommonData.GetQtyPictureAsync(this)) + ")!");
+
                                 RunOnUiThread(() =>
                                 {
-                                    string SuccessMessage = string.Format($"{Resources.GetString(Resource.String.s40)} (" + qty.ToString(CommonData.GetQtyPicture()) + ") ne sme presegati max. količine (" + max.ToString(CommonData.GetQtyPicture()) + ")!");
                                     DialogHelper.ShowDialogError(this, this, SuccessMessage);
                                     tbPacking.RequestFocus();
                                 });
@@ -386,15 +390,13 @@ namespace WMS
             }
         }
 
-        private void fillSugestedLocation(string warehouse)
+        private async Task fillSugestedLocation(string warehouse)
         {
-            var location = CommonData.GetSetting("DefaultProductionLocation");
+            var location = await CommonData.GetSettingAsync("DefaultProductionLocation", this);
             tbLocation.Text = location;
-
-
         }
 
-        private void ProcessSerialNum()
+        private async void ProcessSerialNum()
         {
             if (string.IsNullOrEmpty(tbSerialNum.Text.Trim()))
             {
@@ -406,7 +408,7 @@ namespace WMS
                     return;
                 }
             }
-            GetWorkOrderDefaultQty();
+            await GetWorkOrderDefaultQty();
         }
         private bool CheckWorkOrderOpenQty()
         {
@@ -465,7 +467,7 @@ namespace WMS
             tbLocation.Text = item.Location;
 
         }
-        protected override void OnCreate(Bundle savedInstanceState)
+        protected override async void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             SetTheme(Resource.Style.AppTheme_NoActionBar);
@@ -521,14 +523,14 @@ namespace WMS
                 {
                     StartActivity(typeof(MainMenu));
                 }
-                lbQty.Text = $"{Resources.GetString(Resource.String.s40)} (" + openWorkOrder.GetDouble("OpenQty").ToString(CommonData.GetQtyPicture()) + ")";
+                lbQty.Text = $"{Resources.GetString(Resource.String.s40)} (" + openWorkOrder.GetDouble("OpenQty").ToString(await CommonData.GetQtyPictureAsync(this)) + ")";
             }
             catch (Exception err)
             {
                 SentrySdk.CaptureException(err);
             }
 
-            var ident = CommonData.LoadIdent(openWorkOrder.GetString("Ident"));
+            var ident = await CommonData.LoadIdentAsync(openWorkOrder.GetString("Ident"), this);
 
             showPictureIdent(ident.GetString("Code"));
             identCode = ident.GetString("Code");
@@ -545,7 +547,7 @@ namespace WMS
 
                 tbSerialNum.Text = moveItem.GetString("SerialNo");
 
-                tbPacking.Text = moveItem.GetDouble("Packing").ToString(CommonData.GetQtyPicture());
+                tbPacking.Text = moveItem.GetDouble("Packing").ToString(await CommonData.GetQtyPictureAsync(this));
 
 
                 tbPacking.RequestFocus();
@@ -580,10 +582,10 @@ namespace WMS
             }
 
 
-            if (tbSSCC.Enabled && (CommonData.GetSetting("AutoCreateSSCCProduction") == "1"))
+            if (tbSSCC.Enabled && (await CommonData.GetSettingAsync("AutoCreateSSCCProduction", this) == "1"))
             {
 
-                tbSSCC.Text = CommonData.GetNextSSCC();
+                tbSSCC.Text = await CommonData.GetNextSSCCAsync(this);
                 tbPacking.RequestFocus();
 
             }
@@ -664,11 +666,11 @@ namespace WMS
 
 
 
-        private void TbSSCC_FocusChange(object sender, View.FocusChangeEventArgs e)
+        private async void TbSSCC_FocusChange(object sender, View.FocusChangeEventArgs e)
         {
             var warehouse = moveHead.GetString("Wharehouse");
 
-            fillSugestedLocation(warehouse);
+            await fillSugestedLocation(warehouse);
         }
 
         private void color()
@@ -703,7 +705,7 @@ namespace WMS
                 {
                     var headID = moveHead.GetInt("HeadID");
 
-                    SelectSubjectBeforeFinish.ShowIfNeeded(headID);
+                    await SelectSubjectBeforeFinish.ShowIfNeeded(headID);
 
                     try
                     {

@@ -21,7 +21,7 @@ public static class Queries
         }
         else
         {
-            response.warehouse = CommonData.GetSetting("DefaultWarehouse");
+            response.warehouse = await CommonData.GetSettingAsync("DefaultWarehouse");
             response.main = false;
         }
         return response;
@@ -42,7 +42,7 @@ public static class Queries
         }
         else
         {
-            response.warehouse = CommonData.GetSetting("DefaultWarehouse");
+            response.warehouse = await CommonData.GetSettingAsync("DefaultWarehouse");
             response.main = false;
         }
         return response;

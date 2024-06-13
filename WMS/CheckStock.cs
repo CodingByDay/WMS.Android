@@ -47,13 +47,13 @@ namespace WMS
         private Dialog popupDialog;
         private ZoomageView? image;
 
-        public void GetBarcode(string barcode)
+        public async void GetBarcode(string barcode)
         {
             if (tbIdent.HasFocus)
             {
 
                 tbIdent.Text = barcode;
-                ProcessStock();
+                await ProcessStock();
                 showPictureIdent(tbIdent.Text);
             }
             else if (tbLocation.HasFocus)
@@ -84,10 +84,11 @@ namespace WMS
             // Access Popup layout fields like below
 
         }
-        private string LoadStockFromStockSerialNo(string warehouse, string location, string ident)
+        private async Task<string> LoadStockFromStockSerialNo(string warehouse, string location, string ident)
         {
             try
             {
+                var picture = await CommonData.GetQtyPictureAsync(this);
                 string error;
                 var stock = Services.GetObjectList("str", out error, warehouse + "|" + location + "|" + ident);
                 if (stock == null)
@@ -99,7 +100,7 @@ namespace WMS
                 }
                 else
                 {
-                    return string.Join("\r\n", stock.Items.Select(x => "L:" + x.GetString("Location") + " = " + x.GetDouble("RealStock").ToString(CommonData.GetQtyPicture())).ToArray());
+                    return string.Join("\r\n", stock.Items.Select(x => "L:" + x.GetString("Location") + " = " + x.GetDouble("RealStock").ToString(picture)).ToArray());
                 }
             }
             catch (Exception err)
@@ -115,7 +116,7 @@ namespace WMS
 
 
 
-        private void ProcessStock()
+        private async Task ProcessStock()
         {
             var wh = spinnerAdapterList.ElementAt(temporaryPositionWarehouse);
             if (wh == null)
@@ -125,7 +126,7 @@ namespace WMS
 
             if (!string.IsNullOrEmpty(tbLocation.Text.Trim()))
             {
-                if (!CommonData.IsValidLocation(wh.ID, tbLocation.Text.Trim()))
+                if (!await CommonData.IsValidLocationAsync(wh.ID, tbLocation.Text.Trim(), this))
                 {
                     string WebError = string.Format($"{Resources.GetString(Resource.String.s234)}");
                     DialogHelper.ShowDialogError(this, this, WebError);
@@ -141,7 +142,7 @@ namespace WMS
                 return;
             }
 
-            stock = LoadStockFromStockSerialNo(wh.ID, tbLocation.Text.Trim(), tbIdent.Text.Trim());
+            stock = await LoadStockFromStockSerialNo(wh.ID, tbLocation.Text.Trim(), tbIdent.Text.Trim());
             lbStock.Text = $"{Resources.GetString(Resource.String.s155)}:\r\n" + stock;
             isEmptyStock();
         }
@@ -216,6 +217,7 @@ namespace WMS
 
             btShowStock = FindViewById<Button>(Resource.Id.btShowStock);
             btShowStock.Click += BtShowStock_Click;
+            
             button1 = FindViewById<Button>(Resource.Id.button1);
             button1.Click += Button1_Click;
             lbStock = FindViewById<TextView>(Resource.Id.lbStock);
@@ -225,7 +227,7 @@ namespace WMS
 
             barcode2D = new Barcode2D(this, this);
             // First load the warehouses.
-            var whs = CommonData.ListWarehouses();
+            var whs = await CommonData.ListWarehousesAsync();
             whs.Items.ForEach(wh =>
             {
                 spinnerAdapterList.Add(new ComboBoxItem { ID = wh.GetString("Subject"), Text = wh.GetString("Name") });
@@ -254,7 +256,7 @@ namespace WMS
                 UpdateSuggestions(userInput);
             };
 
-            var dw = CommonData.GetSetting("DefaultWarehouse");
+            var dw = await CommonData.GetSettingAsync("DefaultWarehouse", this);
             if (!string.IsNullOrEmpty(dw))
             {
                 temporaryPositionWarehouse = cbWarehouses.SetItemByString(dw);
@@ -388,23 +390,24 @@ namespace WMS
             this.Finish();
         }
 
-        private void BtShowStock_Click(object sender, System.EventArgs e)
+        private async void BtShowStock_Click(object sender, System.EventArgs e)
         {
             data.Clear();
-            ProcessStock();
+            await ProcessStock();
             if (App.Settings.tablet)
             {
-                fillItemsOfList();
+                await fillItemsOfList();
                 showPictureIdent(tbIdent.Text);
             }
 
         }
 
-        private void fillItemsOfList()
+        private async Task fillItemsOfList()
         {
             var wh = spinnerAdapterList.ElementAt(temporaryPositionWarehouse);
             string error;
             var stock = Services.GetObjectList("str", out error, wh.ID + "||" + tbIdent.Text);
+            var picture = await CommonData.GetQtyPictureAsync(this);
             // return string.Join("\r\n", stock.Items.Select(x => "L:" + x.GetString("Location") + " = " + x.GetDouble("RealStock").ToString(CommonData.GetQtyPicture())).ToArray());
             stock.Items.ForEach(x =>
             {
@@ -412,7 +415,7 @@ namespace WMS
                 {
                     Ident = x.GetString("Ident"),
                     Location = x.GetString("Location"),
-                    Quantity = x.GetDouble("RealStock").ToString(CommonData.GetQtyPicture())
+                    Quantity = x.GetDouble("RealStock").ToString(picture)
                 });
             });
             dataAdapter.NotifyDataSetChanged();

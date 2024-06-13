@@ -60,7 +60,6 @@ namespace WMS
                 base.RequestedOrientation = ScreenOrientation.Portrait;
                 base.SetContentView(Resource.Layout.UnfinishedProductionView);
             }
-            LoaderManifest.LoaderManifestLoopResources(this);
             AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
             var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
             _customToolbar.SetNavigationIcon(App.Settings.RootURL + "/Services/Logo");
@@ -107,7 +106,6 @@ namespace WMS
             yourLinearLayout.SetOnTouchListener(gestureListener);
 
 
-            LoaderManifest.LoaderManifestLoopStop(this);
 
 
         }
@@ -193,7 +191,7 @@ namespace WMS
         }
 
 
-        private async void Yes(int index)
+        private async Task Yes(int index)
         {
             var item = positions.Items[index];
             var id = item.GetInt("HeadID");
@@ -260,7 +258,7 @@ namespace WMS
             // Access Popup layout fields like below
             btnYes = popupDialog.FindViewById<Button>(Resource.Id.btnYes);
             btnNo = popupDialog.FindViewById<Button>(Resource.Id.btnNo);
-            btnYes.Click += (e, ev) => { Yes(index); };
+            btnYes.Click += async (e, ev) => { await Yes(index); };
             btnNo.Click += (e, ev) => { No(index); };
         }
 
@@ -486,7 +484,7 @@ namespace WMS
             try
             {
 
-                positions = await AsyncServices.AsyncServices.GetObjectListAsync("mhp", "W");
+                positions = await AsyncServices.AsyncServices.GetObjectListAsync("mhp", "W", this);
 
                 if (positions == null)
                 {

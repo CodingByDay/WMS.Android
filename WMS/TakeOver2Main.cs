@@ -31,13 +31,13 @@ namespace WMS
         private NameValueObject moveHead = (NameValueObject)InUseObjects.Get("MoveHead");
         private NameValueObject moveItem = (NameValueObject)InUseObjects.Get("MoveItem");
 
-        public void GetBarcode(string barcode)
+        public async void GetBarcode(string barcode)
         {
             if (tbIdent.HasFocus)
             {
 
                 tbIdent.Text = barcode;
-                ProcessIdent();
+                await ProcessIdent();
             }
             else if (tbLocation.HasFocus)
             {
@@ -45,11 +45,11 @@ namespace WMS
                 tbLocation.Text = barcode;
             }
         }
-        private void ProcessIdent()
+        private async Task ProcessIdent()
         {
             try
             {
-                var ident = CommonData.LoadIdent(tbIdent.Text.Trim());
+                var ident = await CommonData.LoadIdentAsync(tbIdent.Text.Trim(), this);
                 if (ident == null)
                 {
 
@@ -137,7 +137,7 @@ namespace WMS
                 return null;
             }
 
-            if (!CommonData.IsValidLocation(await CommonData.GetSettingAsync("DefaultWarehouse", this), tbLocation.Text.Trim()))
+            if (!await CommonData.IsValidLocationAsync(await CommonData.GetSettingAsync("DefaultWarehouse", this), tbLocation.Text.Trim(), this))
             {
                 Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
                 return null;
@@ -152,7 +152,7 @@ namespace WMS
                     return null;
                 }
 
-                var ident = CommonData.LoadIdent(tbIdent.Text.Trim());
+                var ident = await CommonData.LoadIdentAsync(tbIdent.Text.Trim(), this);
                 if (ident == null) { return null; }
 
                 double kol;
@@ -269,7 +269,7 @@ namespace WMS
             if (moveItem != null)
             {
 
-                var ident = CommonData.LoadIdent(moveItem.GetString("Ident"));
+                var ident = await CommonData.LoadIdentAsync(moveItem.GetString("Ident"), this);
 
                 if (ident == null)
                 {
@@ -422,13 +422,13 @@ namespace WMS
             }
             return base.OnKeyDown(keyCode, e);
         }
-        private void TbIdent_KeyPress(object sender, View.KeyEventArgs e)
+        private async void TbIdent_KeyPress(object sender, View.KeyEventArgs e)
         {
             e.Handled = false;
             if (e.Event.Action == KeyEventActions.Down && e.KeyCode == Keycode.Enter)
             {
                 // Add your logic here. 
-                ProcessIdent();
+                await ProcessIdent();
                 e.Handled = true;
 
             }

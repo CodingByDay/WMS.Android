@@ -138,11 +138,11 @@ namespace WMS
             SetUpForm();
         }
 
-        private void TbPacking_FocusChange(object? sender, View.FocusChangeEventArgs e)
+        private async void TbPacking_FocusChange(object? sender, View.FocusChangeEventArgs e)
         {
             if (e.HasFocus)
             {
-                LoadStock(tbIssueLocation.Text, tbIdent.Text, moveHead.GetString("Issuer"), tbSSCC.Text, tbSerialNum.Text);
+                await LoadStock(tbIssueLocation.Text, tbIdent.Text, moveHead.GetString("Issuer"), tbSSCC.Text, tbSerialNum.Text);
             }
         }
 
@@ -185,7 +185,7 @@ namespace WMS
             selected = e.Position;
             var item = items.ElementAt(selected);
         }
-        private async void FillTheIdentLocationList(string ident)
+        private async Task FillTheIdentLocationList(string ident)
         {
             var wh = moveHead.GetString("Receiver");
             var list = await AdapterStore.getStockForWarehouseAndIdent(wh, ident);
@@ -216,11 +216,11 @@ namespace WMS
             e.Handled = false;
         }
 
-        private void TbIdent_KeyPress(object? sender, View.KeyEventArgs e)
+        private async void TbIdent_KeyPress(object? sender, View.KeyEventArgs e)
         {
             if (e.KeyCode == Keycode.Enter && e.Event.Action == KeyEventActions.Down)
             {
-                ProcessIdent(false);
+                await ProcessIdent(false);
             }
             e.Handled = false;
         }
@@ -340,7 +340,7 @@ namespace WMS
                 if (double.TryParse(tbPacking.Text, out parsed) && stock >= parsed)
                 {
 
-                    var isCorrectLocation = IsLocationCorrect();
+                    var isCorrectLocation = await IsLocationCorrect();
                     if (!isCorrectLocation)
                     {
                         // Nepravilna lokacija za izbrano skladišče
@@ -393,7 +393,7 @@ namespace WMS
             }
         }
 
-        private async void LoadStock(string location, string ident, string warehouse, string sscc = null, string serial = null)
+        private async Task LoadStock(string location, string ident, string warehouse, string sscc = null, string serial = null)
         {
 
             var parameters = new List<Services.Parameter>();
@@ -416,7 +416,7 @@ namespace WMS
                 parameters.Add(new Services.Parameter { Name = "acSerialNo", Type = "String", Value = serial });
             }
 
-            var qty = await AsyncServices.AsyncServices.GetObjectListBySqlAsync(sql, parameters);
+            var qty = await AsyncServices.AsyncServices.GetObjectListBySqlAsync(sql, parameters, this);
 
             if (qty != null && qty.Success)
             {
@@ -425,7 +425,7 @@ namespace WMS
                 {
                     double result = (double?)qty.Rows[0].DoubleValue("anQty") ?? 0;
                     qtyCheck = result;
-                    lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + qtyCheck.ToString(CommonData.GetQtyPicture()) + " )";
+                    lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + qtyCheck.ToString(await CommonData.GetQtyPictureAsync(this)) + " )";
                     tbPacking.Text = qtyCheck.ToString();
                     stock = qtyCheck;
                 }
@@ -433,7 +433,7 @@ namespace WMS
                 {
                     double result = 0;
                     qtyCheck = result;
-                    lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + qtyCheck.ToString(CommonData.GetQtyPicture()) + " )";
+                    lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + qtyCheck.ToString(await CommonData.GetQtyPictureAsync(this)) + " )";
                     tbPacking.Text = qtyCheck.ToString();
                     stock = qtyCheck;
                 }
@@ -444,11 +444,11 @@ namespace WMS
         }
 
 
-        private bool IsLocationCorrect()
+        private async Task <bool> IsLocationCorrect()
         {
             string location = tbLocation.Text;
 
-            if (CommonData.IsValidLocation(moveHead.GetString("Issuer"), location) && CommonData.IsValidLocation(moveHead.GetString("Receiver"), location))
+            if (await CommonData.IsValidLocationAsync(moveHead.GetString("Issuer"), location, this) && await CommonData.IsValidLocationAsync(moveHead.GetString("Receiver"), location, this))
             {
                 return true;
             }
@@ -530,7 +530,7 @@ namespace WMS
 
 
 
-        private void SetUpForm()
+        private async void SetUpForm()
         {
             // This is the default focus of the view.
             tbSSCC.RequestFocus();
@@ -538,7 +538,7 @@ namespace WMS
             if (Base.Store.isUpdate && moveItem != null)
             {
                 tbIdent.Text = moveItem.GetString("Ident");
-                ProcessIdent(true);
+                await ProcessIdent(true);
                 tbSerialNum.Text = moveItem.GetString("SerialNo");
                 tbPacking.Text = moveItem.GetDouble("Qty").ToString();
                 tbSSCC.Text = moveItem.GetString("SSCC");
@@ -567,7 +567,7 @@ namespace WMS
                 {
 
                     tbIdent.Text = barcode;
-                    ProcessIdent(false);
+                    await ProcessIdent(false);
                     tbSSCC.RequestFocus();
                 }
                 else if (tbSSCC.HasFocus)
@@ -586,7 +586,7 @@ namespace WMS
                 {
 
                     tbIssueLocation.Text = barcode;
-                    LoadStock(tbIssueLocation.Text, tbIdent.Text, moveHead.GetString("Issuer"), tbSSCC.Text, tbSerialNum.Text);
+                    await LoadStock(tbIssueLocation.Text, tbIdent.Text, moveHead.GetString("Issuer"), tbSSCC.Text, tbSerialNum.Text);
                     tbLocation.RequestFocus();
                 }
                 else if (tbLocation.HasFocus)
@@ -613,7 +613,7 @@ namespace WMS
                 {
                     tbIdent.Text = ssccResult.Rows[0].StringValue("acIdent");
                     // Process ident, recommended location is processed as well. 23.04.2024 Janko Jovičić
-                    ProcessIdent(false);
+                    Task.Run(async () => await ProcessIdent(false)).Wait();
                     tbIssueLocation.Text = ssccResult.Rows[0].StringValue("aclocation");
                     tbSerialNum.Text = ssccResult.Rows[0].StringValue("acSerialNo");
                     tbSSCC.Text = ssccResult.Rows[0].StringValue("acSSCC").ToString();
@@ -631,9 +631,9 @@ namespace WMS
         }
 
 
-        private void ProcessIdent(bool update)
+        private async Task ProcessIdent(bool update)
         {
-            activityIdent = CommonData.LoadIdent(tbIdent.Text.Trim());
+            activityIdent = await CommonData.LoadIdentAsync(tbIdent.Text.Trim(), this);
 
             if (activityIdent != null)
             {
@@ -654,7 +654,7 @@ namespace WMS
                     return;
                 }
 
-                if (CommonData.GetSetting("IgnoreStockHistory") != "1" && !update)
+                if (await CommonData.GetSettingAsync("IgnoreStockHistory", this) != "1" && !update)
                 {
                     try
                     {
@@ -686,7 +686,7 @@ namespace WMS
                     lbIdentName.Enabled = false;
                 }
 
-                FillTheIdentLocationList(activityIdent.GetString("Code"));
+                await FillTheIdentLocationList(activityIdent.GetString("Code"));
 
 
             }

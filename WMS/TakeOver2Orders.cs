@@ -33,7 +33,7 @@ namespace WMS
         private int displayOrder = 0;
         private Button logout;
 
-        protected override void OnCreate(Bundle savedInstanceState)
+        protected override async void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             SetTheme(Resource.Style.AppTheme_NoActionBar);
@@ -81,7 +81,7 @@ namespace WMS
 
             }
 
-            var ident = CommonData.LoadIdent(moveItem.GetString("Ident"));
+            var ident = await CommonData.LoadIdentAsync(moveItem.GetString("Ident"), this);
             if (ident == null)
             {
                 Toast.MakeText(this, "Invalid ident at this point: " + moveItem.GetString("Ident"), ToastLength.Long).Show();

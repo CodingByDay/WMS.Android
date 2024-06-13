@@ -105,7 +105,7 @@ namespace WMS
             await FillWarehouses();
             warehouseLabel = FindViewById<TextView>(Resource.Id.warehouseLabel);
             if (string.IsNullOrEmpty(tbUnits.Text.Trim())) { tbUnits.Text = "1"; }
-            if (CommonData.GetSetting("ShowNumberOfUnitsField") == "1")
+            if (await CommonData.GetSettingAsync("ShowNumberOfUnitsField", this) == "1")
             {
                 lbUnits.Visibility = ViewStates.Visible;
                 tbUnits.Visibility = ViewStates.Visible;
@@ -121,7 +121,7 @@ namespace WMS
             Application.Context.RegisterReceiver(_broadcastReceiver,
             new IntentFilter(ConnectivityManager.ConnectivityAction));
 
-            if (CommonData.GetSetting("AutoCreateSSCC") == "1")
+            if (await CommonData.GetSettingAsync("AutoCreateSSCC", this) == "1")
             {
                 tbSSCC.RequestFocus();
             }
@@ -134,19 +134,19 @@ namespace WMS
 
 
 
-        private void TbSSCC_KeyPress(object sender, View.KeyEventArgs e)
+        private async void TbSSCC_KeyPress(object sender, View.KeyEventArgs e)
         {
             if (e.KeyCode == Keycode.Enter && e.Event.Action == 0)
             {
 
-                if (CommonData.GetSetting("AutoCreateSSCC") == "1" && tbSSCC.Text != string.Empty)
+                if (await CommonData.GetSettingAsync("AutoCreateSSCC", this) == "1" && tbSSCC.Text != string.Empty)
                 {
                     string error;
                     dataObject = GetSSCCData(tbSSCC.Text);
                     if (dataObject.Items != null)
                     {
                         var ident = dataObject.StringValue("acIdent");
-                        var loadIdent = CommonData.LoadIdent(ident);
+                        var loadIdent = await CommonData.LoadIdentAsync(ident, this);
                         string idname = loadIdent.GetString("Name");
                         if (string.IsNullOrEmpty(ident)) { return; }
                         if (loadIdent != null)
@@ -192,7 +192,7 @@ namespace WMS
                 else
                 {
                     e.Handled = true;
-                    ProcessStock();
+                    await ProcessStock();
                     tbPacking.RequestFocus();
                 }
             }
@@ -226,9 +226,9 @@ namespace WMS
 
         private async Task FillWarehouses()
         {
-            await Task.Run(() =>
+            await Task.Run(async() =>
             {
-                var warehouses = CommonData.ListWarehouses();
+                var warehouses = await CommonData.ListWarehousesAsync();
 
                 if (warehouses != null)
                 {
@@ -301,25 +301,25 @@ namespace WMS
 
 
 
-        private void TbIdent_KeyPress(object sender, View.KeyEventArgs e)
+        private async void TbIdent_KeyPress(object sender, View.KeyEventArgs e)
         {
             e.Handled = false;
             if (e.Event.Action == KeyEventActions.Down && e.KeyCode == Keycode.Enter)
             {
                 // add your logic here 
-                ProcessIdent();
+                await ProcessIdent();
                 e.Handled = true;
             }
         }
 
-        private void TbIdent_FocusChange(object sender, View.FocusChangeEventArgs e)
+        private async void TbIdent_FocusChange(object sender, View.FocusChangeEventArgs e)
         {
 
-            ProcessLocation();
+            await ProcessLocation();
 
-            if (CommonData.GetSetting("AutoCreateSSCC") != "1")
+            if (await CommonData.GetSettingAsync("AutoCreateSSCC", this) != "1")
             {
-                var loadIdent = CommonData.LoadIdent(tbIdent.Text);
+                var loadIdent = await CommonData.LoadIdentAsync(tbIdent.Text, this);
 
                 if (loadIdent != null)
                 {
@@ -334,7 +334,7 @@ namespace WMS
                     {
                         if (tbIdent.Text != string.Empty)
                         {
-                            ProcessStock();
+                            await ProcessStock();
                         }
 
                     }
@@ -386,7 +386,7 @@ namespace WMS
             }
         }
 
-        private string LoadStock(string warehouse, string location, string sscc, string serialNum, string ident)
+        private async Task<string> LoadStock(string warehouse, string location, string sscc, string serialNum, string ident)
         {
 
             string error;
@@ -411,7 +411,7 @@ namespace WMS
 
             }
 
-            return stock.GetDouble("RealStock").ToString(CommonData.GetQtyPicture());
+            return stock.GetDouble("RealStock").ToString(await CommonData.GetQtyPictureAsync(this));
 
         }
 
@@ -576,11 +576,11 @@ namespace WMS
             warehouseLabel.Text = $"{Resources.GetString(Resource.String.s28)}: " + warehouseAdapter.ElementAt(temporaryPosWarehouse);
         }
 
-        private void ProcessIdent()
+        private async Task ProcessIdent()
         {
             var ident = tbIdent.Text.Trim();
             if (string.IsNullOrEmpty(ident)) { return; }
-            var identObj = CommonData.LoadIdent(ident);
+            var identObj = await CommonData.LoadIdentAsync(ident, this);
             if (identObj != null)
             {
                 tbIdent.Text = identObj.GetString("Code");
@@ -615,7 +615,7 @@ namespace WMS
             tbTitle.Text = "";
         }
 
-        private async void ProcessStock()
+        private async Task ProcessStock()
         {
             var warehouse = warehouseAdapter.ElementAt(temporaryPosWarehouse);
             if (warehouse == null)
@@ -650,7 +650,7 @@ namespace WMS
             try
             {
                 var location = tbLocation.Text.Trim();
-                if (!CommonData.IsValidLocation(warehouse.ID, location))
+                if (!await CommonData.IsValidLocationAsync(warehouse.ID, location, this))
                 {
                     Toast.MakeText(this, $"{Resources.GetString(Resource.String.s258)} '" + location + $"' {Resources.GetString(Resource.String.s272)} '" + warehouse.ID + "'!", ToastLength.Long).Show();
                     return;
@@ -676,23 +676,23 @@ namespace WMS
 
                 if (tbSSCC.Enabled && tbSerialNum.Enabled)
                 {
-                    result = LoadStock(warehouse.ID, location, sscc, serialNum, ident);
+                    result = await LoadStock(warehouse.ID, location, sscc, serialNum, ident);
                     moveItemInner = Services.GetObject("miissl", headID.ToString() + "|" + ident + "|" + serialNum + "|" + sscc + "|" + location, out result);
                 }
                 else if (tbSSCC.Enabled && !tbSerialNum.Enabled)
                 {
-                    result = LoadStock(warehouse.ID, location, sscc, string.Empty, ident);
+                    result = await LoadStock(warehouse.ID, location, sscc, string.Empty, ident);
                     moveItemInner = Services.GetObject("miissl", headID.ToString() + "|" + ident + "||" + sscc + "|" + location, out result);
 
                 }
                 else if (!tbSSCC.Enabled && tbSerialNum.Enabled)
                 {
-                    result = LoadStock(warehouse.ID, location, string.Empty, tbSerialNum.Text, ident);
+                    result = await LoadStock(warehouse.ID, location, string.Empty, tbSerialNum.Text, ident);
                     moveItemInner = Services.GetObject("miissl", headID.ToString() + "|" + ident + "|" + serialNum + "||" + location, out result);
                 }
                 else
                 {
-                    result = LoadStock(warehouse.ID, location, string.Empty, string.Empty, ident);
+                    result = await LoadStock(warehouse.ID, location, string.Empty, string.Empty, ident);
                     moveItemInner = Services.GetObject("miissl", headID.ToString() + "|" + ident + "|||" + location, out result);
                 }
                 if (moveItemInner != null)
@@ -703,8 +703,8 @@ namespace WMS
                 double q = dataObject.DoubleValue("anQty") ?? 0;
                 if (dataObject != null)
                 {
-                    lbPacking.Text = $"{Resources.GetString(Resource.String.s83)} ({q.ToString(CommonData.GetQtyPicture())})";
-                    tbPacking.Text = q.ToString(CommonData.GetQtyPicture());
+                    lbPacking.Text = $"{Resources.GetString(Resource.String.s83)} ({q.ToString(await CommonData.GetQtyPictureAsync(this))})";
+                    tbPacking.Text = q.ToString(await CommonData.GetQtyPictureAsync(this));
 
                 }
                 else if (result != null)
@@ -722,7 +722,7 @@ namespace WMS
                 SentrySdk.CaptureException(err);
             }
         }
-        public void GetBarcode(string barcode)
+        public async void GetBarcode(string barcode)
         {
             if (tbSSCC.HasFocus)
             {
@@ -733,7 +733,7 @@ namespace WMS
                 if (dataObject != null)
                 {
                     var ident = dataObject.StringValue("acIdent");
-                    var loadIdent = CommonData.LoadIdent(ident);
+                    var loadIdent = await CommonData.LoadIdentAsync(ident, this);
                     string idname = loadIdent.GetString("Name");
                     if (string.IsNullOrEmpty(ident)) { return; }
                     if (loadIdent != null)
@@ -757,7 +757,7 @@ namespace WMS
                     }
                     tbLocation.Text = location;
                     tbTitle.Text = idname;
-                    ProcessStock();
+                    await ProcessStock();
                     tbPacking.RequestFocus();
                 }
                 else
@@ -769,20 +769,20 @@ namespace WMS
             {
 
                 tbLocation.Text = barcode;
-                ProcessLocation();
+                await ProcessLocation();
 
             }
             else if (tbSerialNum.HasFocus)
             {
 
                 tbSerialNum.Text = barcode;
-                ProcessStock();
+                await ProcessStock();
             }
             else if (tbIdent.HasFocus)
             {
 
                 tbIdent.Text = barcode;
-                ProcessIdent();
+                await ProcessIdent();
             }
         }
 
@@ -910,7 +910,7 @@ namespace WMS
             return true;
         }
 
-        private void ProcessLocation()
+        private async Task ProcessLocation()
         {
             var warehouse = warehouseAdapter.ElementAt(temporaryPosWarehouse);
             if (warehouse == null)
@@ -922,7 +922,7 @@ namespace WMS
             }
 
             var location = tbLocation.Text.Trim();
-            if (!CommonData.IsValidLocation(warehouse.ID, location))
+            if (!await CommonData.IsValidLocationAsync(warehouse.ID, location, this))
             {
                 Toast.MakeText(this, $"{Resources.GetString(Resource.String.s258)} '" + location + $"' {Resources.GetString(Resource.String.s272)} '" + warehouse.ID + "'!", ToastLength.Long).Show();
 

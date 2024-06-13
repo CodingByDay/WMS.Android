@@ -44,7 +44,7 @@ namespace WMS
         }
 
 
-        public void GetBarcode(string barcode)
+        public async void GetBarcode(string barcode)
         {
             if (tbSSCC.HasFocus)
             {
@@ -69,15 +69,15 @@ namespace WMS
             {
 
                 tbLocation.Text = barcode;
-                ProcessQty();
+                await ProcessQty();
                 tbQty.RequestFocus();
             }
         }
 
-        private void ProcessIdent()
+        private async Task ProcessIdent()
         {
             var ident = tbIdent.Text.Trim();
-            var identObj = CommonData.LoadIdent(ident);
+            var identObj = await CommonData.LoadIdentAsync(ident, this);
             if (identObj != null)
             {
                 tbTitle.Text = identObj.GetString("Name");
@@ -96,7 +96,7 @@ namespace WMS
 
 
 
-        protected override void OnCreate(Bundle savedInstanceState)
+        protected override async void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             SetTheme(Resource.Style.AppTheme_NoActionBar);
@@ -133,14 +133,14 @@ namespace WMS
             tbSSCC.FocusChange += TbSSCC_FocusChange;
             cbWarehouse.ItemSelected += CbWarehouse_ItemSelected;
             cbSubject.ItemSelected += CbSubject_ItemSelected;
-            var warehouses = CommonData.ListWarehouses();
+            var warehouses = await CommonData.ListWarehousesAsync();
 
             warehouses.Items.ForEach(w =>
             {
                 warehouseAdapter.Add(new ComboBoxItem { ID = w.GetString("Subject"), Text = w.GetString("Name") });
             });
 
-            var subjects = CommonData.ListReprintSubjects();
+            var subjects = await CommonData.ListReprintSubjectsAsync();
 
             subjects.Items.ForEach(s =>
             {
@@ -162,7 +162,7 @@ namespace WMS
 
             tbIdent.RequestFocus();
 
-            SetDefault();
+            await SetDefault();
 
             var _broadcastReceiver = new NetworkStatusBroadcastReceiver();
             _broadcastReceiver.ConnectionStatusChanged += OnNetworkStatusChanged;
@@ -196,15 +196,15 @@ namespace WMS
             }
         }
 
-        private void SetDefault()
+        private async Task SetDefault()
         {
             tbQty.Text = "1";
-            tbLocation.Text = CommonData.GetSetting("DefaultPaletteLocation");
+            tbLocation.Text = await CommonData.GetSettingAsync("DefaultPaletteLocation", this);
         }
 
-        private void TbTitle_FocusChange(object sender, View.FocusChangeEventArgs e)
+        private async void TbTitle_FocusChange(object sender, View.FocusChangeEventArgs e)
         {
-            ProcessIdent();
+            await ProcessIdent();
         }
 
         private void CbSubject_ItemSelected(object sender, AdapterView.ItemSelectedEventArgs e)
@@ -246,7 +246,7 @@ namespace WMS
         }
 
 
-        private void ProcessQty()
+        private async Task ProcessQty()
         {
             btPrint.Enabled = false;
 
@@ -262,7 +262,7 @@ namespace WMS
             var ident = tbIdent.Text.Trim();
             if (string.IsNullOrEmpty(ident)) { return; }
 
-            var identObj = CommonData.LoadIdent(ident);
+            var identObj = await CommonData.LoadIdentAsync(ident, this);
             if (identObj != null)
             {
                 ident = identObj.GetString("Code");
@@ -271,7 +271,7 @@ namespace WMS
 
             if (LoadStock(warehouse.ID, tbLocation.Text.Trim(), sscc, serialNo, ident))
             {
-                tbQty.Text = stock.GetDouble("RealStock").ToString(CommonData.GetQtyPicture());
+                tbQty.Text = stock.GetDouble("RealStock").ToString(await CommonData.GetQtyPictureAsync(this));
                 btPrint.Enabled = true;
             }
             else
@@ -282,9 +282,9 @@ namespace WMS
             tbQty.RequestFocus();
         }
 
-        private void TbSSCC_FocusChange(object sender, View.FocusChangeEventArgs e)
+        private async void TbSSCC_FocusChange(object sender, View.FocusChangeEventArgs e)
         {
-            ProcessIdent();
+            await ProcessIdent();
         }
         public override bool OnKeyDown(Keycode keyCode, KeyEvent e)
         {

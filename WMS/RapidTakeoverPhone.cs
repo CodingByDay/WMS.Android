@@ -108,7 +108,7 @@ namespace WMS
             }
 
         }
-        protected override void OnCreate(Bundle savedInstanceState)
+        protected override async void OnCreate(Bundle savedInstanceState)
         {
 
             base.OnCreate(savedInstanceState);
@@ -146,7 +146,7 @@ namespace WMS
             color();
 
 
-            var whs = CommonData.ListWarehouses();
+            var whs = await CommonData.ListWarehousesAsync();
 
             whs.Items.ForEach(wh =>
             {
@@ -201,7 +201,7 @@ namespace WMS
         private async void BtConfirm_Click(object sender, EventArgs e)
         {
 
-            if (saveHead())
+            if (await saveHead())
             {
                 try
                 {
@@ -254,10 +254,10 @@ namespace WMS
         }
 
 
-        private bool saveHead()
+        private async Task<bool> saveHead()
         {
             var warehouse = data.ElementAt(tempLocation);
-            if (!CommonData.IsValidLocation(warehouse.ID, tbLocation.Text.Trim()))
+            if (!await CommonData.IsValidLocationAsync(warehouse.ID, tbLocation.Text.Trim(), this))
             {
                 string WebError = string.Format($"{Resources.GetString(Resource.String.s271)}" + tbLocation.Text.Trim() + "ni veljavna za sladišče:" + " " + data.ElementAt(tempLocation).Text + "!");
                 Toast.MakeText(this, WebError, ToastLength.Long).Show();

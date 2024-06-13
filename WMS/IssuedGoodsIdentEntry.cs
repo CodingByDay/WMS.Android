@@ -45,13 +45,13 @@ namespace WMS
 
 
 
-        public void GetBarcode(string barcode)
+        public async void GetBarcode(string barcode)
         {
             // pass
             if (tbIdent.HasFocus)
             {
                 tbIdent.Text = barcode;
-                ProcessIdent();
+                await ProcessIdent();
             }
         }
         public void color()
@@ -59,10 +59,9 @@ namespace WMS
             tbIdent.SetBackgroundColor(Android.Graphics.Color.Aqua);
         }
 
-        private async void ProcessIdent()
+        private async Task ProcessIdent()
         {
-            // Disable unwanted crashes because of not waiting for the result. 6.6.2024 Janko Jovičić
-            LoaderManifest.LoaderManifestLoopResources(this);
+
 
             var ident = tbIdent.Text.Trim();
             if (string.IsNullOrEmpty(ident)) { return; }
@@ -171,10 +170,7 @@ namespace WMS
                 return;
 
             }
-            finally
-            {
-                LoaderManifest.LoaderManifestLoopStop(this);
-            }
+
         }
 
         private void FillDisplayedOrderInfo()
@@ -362,11 +358,11 @@ namespace WMS
             FillDisplayedOrderInfo();
         }
 
-        private void TbIdent_KeyPress(object? sender, View.KeyEventArgs e)
+        private async void TbIdent_KeyPress(object? sender, View.KeyEventArgs e)
         {
             if (e.KeyCode == Keycode.Enter && e.Event.Action == KeyEventActions.Down)
             {
-                ProcessIdent();
+               await ProcessIdent();
             }
 
             e.Handled = false;
@@ -444,7 +440,7 @@ namespace WMS
 
 
 
-        private void SpinnerIdent_ItemSelected(object sender, AdapterView.ItemSelectedEventArgs e)
+        private async void SpinnerIdent_ItemSelected(object sender, AdapterView.ItemSelectedEventArgs e)
         {
             var item = e.Position;
             var chosen = identData.ElementAt(item);
@@ -452,7 +448,7 @@ namespace WMS
             {
                 tbIdent.Text = chosen;
             }
-            ProcessIdent();
+            await ProcessIdent();
         }
 
 

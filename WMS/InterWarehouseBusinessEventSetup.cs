@@ -31,7 +31,7 @@ namespace WMS
         private CustomAutoCompleteAdapter<ComboBoxItem> adapterIssue;
         private CustomAutoCompleteAdapter<ComboBoxItem> adapterReceive;
 
-        protected override void OnCreate(Bundle savedInstanceState)
+        protected override async void OnCreate(Bundle savedInstanceState)
         {
             SetTheme(Resource.Style.AppTheme_NoActionBar);
             base.OnCreate(savedInstanceState);
@@ -45,14 +45,13 @@ namespace WMS
                 base.RequestedOrientation = ScreenOrientation.Portrait;
                 base.SetContentView(Resource.Layout.InterWarehouseBusinessEventSetup);
             }
-            LoaderManifest.LoaderManifestLoopResources(this);
             AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
             var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
             _customToolbar.SetNavigationIcon(App.Settings.RootURL + "/Services/Logo");
             SetSupportActionBar(_customToolbar._toolbar);
             SupportActionBar.SetDisplayShowTitleEnabled(false);
             // Views
-            var defDocument = CommonData.GetSetting("DefaultInterWareHouseDocType");
+            var defDocument = await CommonData.GetSettingAsync("DefaultInterWareHouseDocType", this);
             if (!string.IsNullOrWhiteSpace(defDocument))
             {
                 documentCode = defDocument;
@@ -61,7 +60,7 @@ namespace WMS
             cbIssueWH = FindViewById<CustomAutoCompleteTextView>(Resource.Id.cbIssueWH);
             cbReceiveWH = FindViewById<CustomAutoCompleteTextView>(Resource.Id.cbRecceiveWH);
             objectDocType.Add(new ComboBoxItem { ID = "Default", Text = Resources.GetString(Resource.String.s261) });
-            docTypes = CommonData.ListDocTypes("E|");
+            docTypes = await CommonData.ListDocTypesAsync("E|");
             docTypes.Items.ForEach(dt =>
             {
                 objectDocType.Add(new ComboBoxItem { ID = dt.GetString("Code"), Text = dt.GetString("Code") + " " + dt.GetString("Name") });
@@ -73,7 +72,7 @@ namespace WMS
             cbDocType.Adapter = adapter;
 
 
-            var warehouses = CommonData.ListWarehouses();
+            var warehouses = await CommonData.ListWarehousesAsync();
             if (warehouses != null)
             {
                 warehouses.Items.ForEach(dt =>
@@ -118,7 +117,6 @@ namespace WMS
             cbIssueWH.ItemClick += CbIssueWH_ItemClick;
             cbReceiveWH.ItemClick += CbReceiveWH_ItemClick;
             InitializeAutocompleteControls();
-            LoaderManifest.LoaderManifestLoopStop(this);
         }
 
 

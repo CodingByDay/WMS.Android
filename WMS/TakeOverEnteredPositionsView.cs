@@ -104,7 +104,7 @@ namespace WMS
 
             if (App.Settings.tablet)
             {
-                fillList();
+                await fillList();
                 UniversalAdapterHelper.SelectPositionProgramaticaly(listData, 0);
 
             }
@@ -132,7 +132,7 @@ namespace WMS
         }
 
 
-        private async void fillList()
+        private async Task fillList()
         {
 
             for (int i = 0; i < positions.Items.Count; i++)
@@ -201,11 +201,11 @@ namespace WMS
 
         }
 
-        private void Select(int postionOfTheItemInTheList)
+        private async void Select(int postionOfTheItemInTheList)
         {
             displayedPosition = postionOfTheItemInTheList;
             if (displayedPosition >= positions.Items.Count) { displayedPosition = 0; }
-            FillDisplayedItem();
+            await FillDisplayedItem();
         }
 
         public bool IsOnline()
@@ -282,7 +282,7 @@ namespace WMS
                             if (App.Settings.tablet)
                             {
                                 data.Clear();
-                                fillList();
+                                await fillList();
                             }
                             popupDialog.Dismiss();
                             popupDialog.Hide();
@@ -464,7 +464,7 @@ namespace WMS
 
         }
 
-        private void BtNext_Click(object sender, EventArgs e)
+        private async void BtNext_Click(object sender, EventArgs e)
         {
             if (App.Settings.tablet)
             {
@@ -483,7 +483,7 @@ namespace WMS
 
             displayedPosition++;
             if (displayedPosition >= positions.Items.Count) { displayedPosition = 0; }
-            FillDisplayedItem();
+            await FillDisplayedItem();
         }
 
         private async Task LoadPositions()
@@ -498,7 +498,7 @@ namespace WMS
 
                     if (positions == null)
                     {
-                        positions = await AsyncServices.AsyncServices.GetObjectListAsync("mi", moveHead.GetInt("HeadID").ToString());
+                        positions = await AsyncServices.AsyncServices.GetObjectListAsync("mi", moveHead.GetInt("HeadID").ToString(), this);
                         InUseObjects.Set("TakeOverEnteredPositions", positions);
                     }
                     if (positions == null)
@@ -512,7 +512,7 @@ namespace WMS
                     }
                 }
                 displayedPosition = 0;
-                FillDisplayedItem();
+                await FillDisplayedItem();
             }
             catch (Exception error)
             {
@@ -570,7 +570,7 @@ namespace WMS
             return base.OnKeyDown(keyCode, e);
         }
 
-        private async void FillDisplayedItem()
+        private async Task FillDisplayedItem()
         {
             if ((positions != null) && (displayedPosition < positions.Items.Count))
             {

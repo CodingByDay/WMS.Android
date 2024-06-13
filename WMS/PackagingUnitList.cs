@@ -241,14 +241,14 @@ namespace WMS
             Finish();
         }
 
-        private void BtNext_Click(object sender, EventArgs e)
+        private async void BtNext_Click(object sender, EventArgs e)
         {
             displayedPosition++;
             if (displayedPosition >= positions.Items.Count) { displayedPosition = 0; }
-            FillDisplayedItem();
+            await FillDisplayedItem();
         }
 
-        private void LoadPositions()
+        private async void LoadPositions()
         {
 
             try
@@ -272,7 +272,7 @@ namespace WMS
                 }
 
                 displayedPosition = 0;
-                FillDisplayedItem();
+                await FillDisplayedItem();
             }
             catch (Exception err)
             {
@@ -282,7 +282,7 @@ namespace WMS
 
             }
         }
-        private void FillDisplayedItem()
+        private async Task FillDisplayedItem()
         {
             if ((positions != null) && (displayedPosition < positions.Items.Count))
             {
@@ -292,7 +292,7 @@ namespace WMS
                 tbIdent.Text = item.GetString("IdentName");
                 tbSSCC.Text = item.GetString("SSCC");
                 tbSerialNo.Text = item.GetString("SerialNo");
-                tbQty.Text = item.GetDouble("Qty").ToString(CommonData.GetQtyPicture());
+                tbQty.Text = item.GetDouble("Qty").ToString(await CommonData.GetQtyPictureAsync(this));
                 tbLocation.Text = item.GetString("Location");
 
                 var created = item.GetDateTime("DateIns");

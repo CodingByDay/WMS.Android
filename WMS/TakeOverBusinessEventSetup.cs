@@ -48,7 +48,6 @@ namespace WMS
                 base.RequestedOrientation = ScreenOrientation.Portrait;
                 base.SetContentView(Resource.Layout.TakeOverBusinessEventSetup);
             }
-            LoaderManifest.LoaderManifestLoopResources(this);
             AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
             var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
             _customToolbar.SetNavigationIcon(App.Settings.RootURL + "/Services/Logo");
@@ -70,7 +69,7 @@ namespace WMS
             btnOrderMode.Click += BtnOrderMode_Click;
             logout.Click += Logout_Click;
             btnOrderMode.Enabled = await Services.HasPermission("TNET_WMS_BLAG_ACQ_NORDER", "R", this);
-            var warehouses = CommonData.ListWarehouses();
+            var warehouses = await CommonData.ListWarehousesAsync();
             if (warehouses != null)
             {
                 warehouses.Items.ForEach(wh =>
@@ -90,7 +89,7 @@ namespace WMS
             cbDocType.Adapter = adapterDoc;
             adapterDoc.SetNotifyOnChange(true);
 
-            UpdateForm();
+            await UpdateForm();
 
 
             var dw = await CommonData.GetSettingAsync("DefaultWarehouse", this);
@@ -109,11 +108,10 @@ namespace WMS
             cbSubject.ItemClick += CbSubject_ItemClick;
             cbWarehouse.ItemClick += CbWarehouse_ItemClick;
 
-            InitializeAutocompleteControls();
-            LoaderManifest.LoaderManifestLoopStop(this);
+            await InitializeAutocompleteControls();
         }
 
-        private async void InitializeAutocompleteControls()
+        private async Task InitializeAutocompleteControls()
         {
 
             try
@@ -230,7 +228,7 @@ namespace WMS
             }
             byOrder = !byOrder;
             Base.Store.byOrder = byOrder;
-            UpdateForm();
+            await UpdateForm();
 
         }
 
@@ -240,7 +238,7 @@ namespace WMS
             NextStep();
         }
 
-        private void UpdateForm()
+        private async Task UpdateForm()
         {
             try
             {
@@ -258,7 +256,7 @@ namespace WMS
                     {
                         cbSubject.Visibility = ViewStates.Invisible;
                     }
-                    docTypes = CommonData.ListDocTypes("I|N");
+                    docTypes = await CommonData.ListDocTypesAsync("I|N");
                     if (App.Settings.tablet)
                     {
                         btnOrderMode.Text = base.Resources.GetString(Resource.String.s138);
@@ -283,7 +281,7 @@ namespace WMS
                     }
                     if (cbSubject.Adapter == null || cbSubject.Count() == 0)
                     {
-                        var subjects = CommonData.ListSubjects();
+                        var subjects = await CommonData.ListSubjectsAsync();
                         subjects.Items.ForEach(s =>
                         {
                             objectcbSubject.Add(new ComboBoxItem { ID = s.GetString("ID"), Text = s.GetString("ID") });
@@ -296,7 +294,7 @@ namespace WMS
                         cbSubject.Adapter = adapterSubject;
                     }
 
-                    docTypes = CommonData.ListDocTypes("P|F");
+                    docTypes = await CommonData.ListDocTypesAsync("P|F");
 
                     if (App.Settings.tablet)
                     {
