@@ -6,6 +6,7 @@ using Android.Preferences;
 using Android.Views;
 using BarCode2D_Receiver;
 using Newtonsoft.Json;
+using System.Collections.Concurrent;
 using TrendNET.WMS.Device.Services;
 using WMS.App;
 using AlertDialog = Android.App.AlertDialog;
@@ -110,13 +111,27 @@ namespace WMS
 
         private List<string> GetCustomSuggestions(string userInput)
         {
+            if (savedIdents != null)
+            {
+                // In order to improve performance try to implement paralel processing. 23.05.2024 Janko Jovičić
 
-            return savedIdents
-                .Where(suggestion => suggestion.ToLower().Contains(userInput.ToLower())).Take(10000)
-                .ToList();
+                var lowerUserInput = userInput.ToLower();
+                var result = new ConcurrentBag<string>();
+
+                Parallel.ForEach(savedIdents, suggestion =>
+                {
+                    if (suggestion.ToLower().Contains(lowerUserInput))
+                    {
+                        result.Add(suggestion);
+                    }
+                });
+
+                return result.Take(100).ToList();
+            }
+
+            // Service not yet loaded. 6.6.2024 J.J
+            return new List<string>();
         }
-
-
 
         public bool IsOnline()
         {

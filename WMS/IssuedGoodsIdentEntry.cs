@@ -61,116 +61,123 @@ namespace WMS
 
         private async Task ProcessIdent()
         {
-
-
-            var ident = tbIdent.Text.Trim();
-            if (string.IsNullOrEmpty(ident)) { return; }
             try
             {
-                string error;
-                openIdent = Services.GetObject("id", ident, out error);
-                if (openIdent == null)
+                LoaderManifest.LoaderManifestLoopResources(this);
+                var ident = tbIdent.Text.Trim();
+                if (string.IsNullOrEmpty(ident)) { return; }
+                try
                 {
-                    string SuccessMessage = string.Format($"{Resources.GetString(Resource.String.s229)}" + error);
-                    Toast.MakeText(this, SuccessMessage, ToastLength.Long).Show();
-                    tbIdent.Text = "";
-                    tbIdent.RequestFocus();
-                    tbNaziv.Text = "";
-                }
-                else
-                {
-                    ident = openIdent.GetString("Code");
-                    tbIdent.Text = ident;
-                    InUseObjects.Set("OpenIdent", openIdent);
-                    var isPackaging = openIdent.GetBool("IsPackaging");
-                    if (!moveHead.GetBool("ByOrder") || isPackaging)
+                    string error;
+                    openIdent = Services.GetObject("id", ident, out error);
+                    if (openIdent == null)
                     {
-                        if (SaveMoveHead())
-                        {
-                            StartActivity(typeof(IssuedGoodsSerialOrSSCCEntry));
-                            Finish();
-                        }
-                        return;
+                        string SuccessMessage = string.Format($"{Resources.GetString(Resource.String.s229)}" + error);
+                        Toast.MakeText(this, SuccessMessage, ToastLength.Long).Show();
+                        tbIdent.Text = "";
+                        tbIdent.RequestFocus();
+                        tbNaziv.Text = "";
                     }
                     else
                     {
-                        tbNaziv.Text = openIdent.GetString("Name");
-
-                        var parameters = new List<Services.Parameter>();
-                        //string debug = $"SELECT * from uWMSOrderItemByItemTypeWarehouseOut WHERE acIdent = {ident} AND acDocType = {moveHead.GetString("DocumentType")} AND acWarehouse = {moveHead.GetString("Wharehouse")};";
-
-                        parameters.Add(new Services.Parameter { Name = "acIdent", Type = "String", Value = ident });
-                        parameters.Add(new Services.Parameter { Name = "acDocType", Type = "String", Value = moveHead.GetString("DocumentType") });
-                        parameters.Add(new Services.Parameter { Name = "acWarehouse", Type = "String", Value = moveHead.GetString("Wharehouse") });
-
-                        var subjects = await AsyncServices.AsyncServices.GetObjectListBySqlAsync($"SELECT acSubject, acKey, anNo, anQty, DeliveryDeadline, acIdent, anPackQty from uWMSOrderItemByItemTypeWarehouseOut WHERE acIdent = @acIdent AND acDocType = @acDocType AND acWarehouse = @acWarehouse ORDER BY acKey, anNo;", parameters);
-
-                        if (!subjects.Success)
+                        ident = openIdent.GetString("Code");
+                        tbIdent.Text = ident;
+                        InUseObjects.Set("OpenIdent", openIdent);
+                        var isPackaging = openIdent.GetBool("IsPackaging");
+                        if (!moveHead.GetBool("ByOrder") || isPackaging)
                         {
-                            RunOnUiThread(() =>
+                            if (SaveMoveHead())
                             {
-
-                                AlertDialog.Builder alert = new AlertDialog.Builder(this);
-                                alert.SetTitle($"{Resources.GetString(Resource.String.s265)}");
-                                alert.SetMessage($"{subjects.Error}");
-                                alert.SetPositiveButton("Ok", (senderAlert, args) =>
-                                {
-                                    alert.Dispose();
-                                });
-                                Dialog dialog = alert.Create();
-                                dialog.Show();
-
-                                SentrySdk.CaptureMessage(subjects.Error);
-                                return;
-                            });
+                                StartActivity(typeof(IssuedGoodsSerialOrSSCCEntry));
+                                Finish();
+                            }
+                            return;
                         }
                         else
                         {
-                            if (subjects.Rows.Count > 0)
+                            tbNaziv.Text = openIdent.GetString("Name");
+
+                            var parameters = new List<Services.Parameter>();
+                            //string debug = $"SELECT * from uWMSOrderItemByItemTypeWarehouseOut WHERE acIdent = {ident} AND acDocType = {moveHead.GetString("DocumentType")} AND acWarehouse = {moveHead.GetString("Wharehouse")};";
+
+                            parameters.Add(new Services.Parameter { Name = "acIdent", Type = "String", Value = ident });
+                            parameters.Add(new Services.Parameter { Name = "acDocType", Type = "String", Value = moveHead.GetString("DocumentType") });
+                            parameters.Add(new Services.Parameter { Name = "acWarehouse", Type = "String", Value = moveHead.GetString("Wharehouse") });
+
+                            var subjects = await AsyncServices.AsyncServices.GetObjectListBySqlAsync($"SELECT acSubject, acKey, anNo, anQty, DeliveryDeadline, acIdent, anPackQty from uWMSOrderItemByItemTypeWarehouseOut WHERE acIdent = @acIdent AND acDocType = @acDocType AND acWarehouse = @acWarehouse ORDER BY acKey, anNo;", parameters);
+
+                            if (!subjects.Success)
                             {
-                                for (int i = 0; i < subjects.Rows.Count; i++)
+                                RunOnUiThread(() =>
                                 {
 
-                                    var row = subjects.Rows[i];
-
-                                    orders.Add(new OpenOrder
+                                    AlertDialog.Builder alert = new AlertDialog.Builder(this);
+                                    alert.SetTitle($"{Resources.GetString(Resource.String.s265)}");
+                                    alert.SetMessage($"{subjects.Error}");
+                                    alert.SetPositiveButton("Ok", (senderAlert, args) =>
                                     {
-                                        Client = row.StringValue("acSubject"),
-                                        Order = row.StringValue("acKey"),
-                                        Position = (int?)row.IntValue("anNo"),
-                                        Quantity = row.DoubleValue("anQty"),
-                                        Date = row.DateTimeValue("DeliveryDeadline"),
-                                        Ident = row.StringValue("acIdent"),
-                                        Packaging = row.DoubleValue("anPackQty")
+                                        alert.Dispose();
                                     });
+                                    Dialog dialog = alert.Create();
+                                    dialog.Show();
 
-                                }
-
-                                displayedOrder = 0;
-
-                                if (App.Settings.tablet)
+                                    SentrySdk.CaptureMessage(subjects.Error);
+                                    return;
+                                });
+                            }
+                            else
+                            {
+                                if (subjects.Rows.Count > 0)
                                 {
-                                    dataAdapter.NotifyDataSetChanged();
-                                    UniversalAdapterHelper.SelectPositionProgramaticaly(listData, 0);
+                                    for (int i = 0; i < subjects.Rows.Count; i++)
+                                    {
+
+                                        var row = subjects.Rows[i];
+
+                                        orders.Add(new OpenOrder
+                                        {
+                                            Client = row.StringValue("acSubject"),
+                                            Order = row.StringValue("acKey"),
+                                            Position = (int?)row.IntValue("anNo"),
+                                            Quantity = row.DoubleValue("anQty"),
+                                            Date = row.DateTimeValue("DeliveryDeadline"),
+                                            Ident = row.StringValue("acIdent"),
+                                            Packaging = row.DoubleValue("anPackQty")
+                                        });
+
+                                    }
+
+                                    displayedOrder = 0;
+
+                                    if (App.Settings.tablet)
+                                    {
+                                        dataAdapter.NotifyDataSetChanged();
+                                        UniversalAdapterHelper.SelectPositionProgramaticaly(listData, 0);
+                                    }
                                 }
                             }
                         }
                     }
+
+                    FillDisplayedOrderInfo();
+
+                    tbIdent.SetSelection(0, tbIdent.Text.Length);
+
                 }
+                catch (Exception err)
+                {
 
-                FillDisplayedOrderInfo();
+                    SentrySdk.CaptureException(err);
+                    return;
 
-                tbIdent.SetSelection(0, tbIdent.Text.Length);
-
-            }
-            catch (Exception err)
+                }
+            } catch (Exception ex)
             {
-
-                SentrySdk.CaptureException(err);
-                return;
-
+                SentrySdk.CaptureException(ex);
+            } finally
+            {
+                LoaderManifest.LoaderManifestLoopStop(this);
             }
-
         }
 
         private void FillDisplayedOrderInfo()

@@ -20,6 +20,7 @@ namespace WMS
 
         public void GetBarcode(string barcode)
         {
+
             RunOnUiThread(() =>
             {
                 if (pallet.HasFocus)
