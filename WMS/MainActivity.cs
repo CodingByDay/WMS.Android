@@ -165,15 +165,17 @@ namespace WMS
 
         private void Password_KeyPress(object? sender, View.KeyEventArgs e)
         {
-            if (e.KeyCode == Android.Views.Keycode.Enter)
+            if (e.Event.Action == KeyEventActions.Down && e.KeyCode == Android.Views.Keycode.Enter)
             {
                 BtnRegistrationEvent_Click(this, null);
                 e.Handled = true;
-            } else
+            }
+            else
             {
                 e.Handled = false;
             }
         }
+
 
         void RequestNecessaryPermissions()
         {
@@ -386,7 +388,12 @@ namespace WMS
         {
             if (permissionsGranted)
             {
+                LoaderManifest.LoaderManifestLoopResources(this);
+
                 await ProcessRegistrationAsync();
+
+                LoaderManifest.LoaderManifestLoopStop(this);
+
             }
         }
 

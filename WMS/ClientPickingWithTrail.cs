@@ -14,7 +14,7 @@ using AlertDialog = Android.App.AlertDialog;
 namespace WMS
 {
     [Activity(Label = "ClientPicking", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
-    public class ClientPicking : CustomBaseActivity, IBarcodeResult
+    public class ClientPickingWithTrail : CustomBaseActivity, IBarcodeResult
     {
         private NameValueObject moveHead = (NameValueObject)InUseObjects.Get("MoveHead");
         private NameValueObject openOrder = (NameValueObject)InUseObjects.Get("OpenOrder");
@@ -66,6 +66,8 @@ namespace WMS
                 base.SetContentView(Resource.Layout.ClientPicking);
             }
 
+            LoaderManifest.LoaderManifestLoopResources(this);
+
             AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
             var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
             _customToolbar.SetNavigationIcon(App.Settings.RootURL + "/Services/Logo");
@@ -102,6 +104,8 @@ namespace WMS
             {
                 await initializeView();
             }
+
+            LoaderManifest.LoaderManifestLoopStop(this);
 
         }
 
@@ -256,7 +260,13 @@ namespace WMS
                 if (moveHead != null)
                 {
                     adapter = new ClientPickingAdapter(this, positions);
-                    ivTrail.Adapter = adapter;
+
+                    // UI changes.
+                    RunOnUiThread(() =>
+                    {
+                        ivTrail.Adapter = adapter;
+                    });
+
                     var parameters = new List<Services.Parameter>();
 
                     parameters.Add(new Services.Parameter { Name = "acDocType", Type = "String", Value = moveHead.GetString("DocumentType") });
@@ -330,7 +340,13 @@ namespace WMS
                 if (moveHead != null)
                 {
                     adapter = new ClientPickingAdapter(this, positions);
-                    ivTrail.Adapter = adapter;
+
+                    // UI changes.
+                    RunOnUiThread(() =>
+                    {
+                        ivTrail.Adapter = adapter;
+
+                    });
                     var parameters = new List<Services.Parameter>();
 
                     parameters.Add(new Services.Parameter { Name = "acDocType", Type = "String", Value = moveHead.GetString("DocumentType") });

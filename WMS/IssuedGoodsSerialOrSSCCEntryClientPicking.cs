@@ -114,7 +114,11 @@ namespace WMS
             {
                 base.RequestedOrientation = ScreenOrientation.Portrait;
                 base.SetContentView(Resource.Layout.IssuedGoodsSerialOrSSCCEntryClientPicking);
+
+
             }
+
+
             // Definitions
             AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
             var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
@@ -503,7 +507,7 @@ namespace WMS
                         {
                             if (Base.Store.modeIssuing == 3)
                             {
-                                StartActivity(typeof(ClientPicking));
+                                StartActivity(typeof(ClientPickingWithTrail));
                                 Finish();
                             }
                         });
@@ -567,7 +571,7 @@ namespace WMS
                         // Check to see if the maximum is already reached.
                         if (stock <= 0)
                         {
-                            StartActivity(typeof(ClientPicking));
+                            StartActivity(typeof(ClientPickingWithTrail));
                         }
 
                         RunOnUiThread(() =>

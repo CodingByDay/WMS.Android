@@ -612,7 +612,7 @@ namespace WMS
 
             if (openOrder == null && moveHead == null)
             {
-                StartActivity(typeof(MainMenu))
+                StartActivity(typeof(MainMenu));
             }
 
             if (trailFilters != null)

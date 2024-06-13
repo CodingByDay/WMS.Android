@@ -938,7 +938,7 @@ namespace WMS
 
                                 var currentQty = Convert.ToDouble(tbPacking.Text.Trim());
                                 stock -= currentQty;
-                                lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + stock.ToString(CommonData.GetQtyPicture()) + " )";
+                                lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + stock.ToString(await CommonData.GetQtyPictureAsync(this)) + " )";
                             });
 
                         }

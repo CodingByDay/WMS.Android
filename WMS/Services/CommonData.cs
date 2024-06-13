@@ -19,7 +19,7 @@ namespace TrendNET.WMS.Device.Services
 
         private static string qtyPicture = null;
 
-       /* 
+       /*
         public static string GetQtyPicture()
         {
             if (qtyPicture == null)

@@ -266,9 +266,15 @@ namespace WMS
         {
             await Task.Run(async () =>
             {
+              
+
                 try
                 {
- 
+                    RunOnUiThread(() =>
+                    {
+                        LoaderManifest.LoaderManifestLoopResources(this);
+                    });
+
                     int selectedFlow = Base.Store.modeIssuing;
                     if (selectedFlow == 2)
                     {
@@ -329,6 +335,13 @@ namespace WMS
                 catch (Exception ex)
                 {
                     SentrySdk.CaptureException(ex);
+
+                } finally
+                {
+                    RunOnUiThread(() =>
+                    {
+                        LoaderManifest.LoaderManifestLoopStop(this);
+                    });
                 }
 
             });
@@ -336,7 +349,6 @@ namespace WMS
         private void BtnLogout_Click(object sender, EventArgs e)
         {
             StartActivity(typeof(MainMenu));
-            Finish();
             Finish();
         }
 

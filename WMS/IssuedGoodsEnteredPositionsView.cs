@@ -527,7 +527,7 @@ namespace WMS
             }
             else if (flow == "3")
             {
-                StartActivity(typeof(ClientPicking));
+                StartActivity(typeof(ClientPickingWithTrail));
                 this.Finish();
             }
         }

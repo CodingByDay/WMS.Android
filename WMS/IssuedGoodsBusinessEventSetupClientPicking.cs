@@ -330,7 +330,7 @@ namespace WMS
             moveHead.SetString("Wharehouse", currentWarehouse);
             moveHead.SetString("Receiver", currentClient);
             InUseObjects.Set("MoveHead", moveHead);
-            StartActivity(typeof(ClientPicking));
+            StartActivity(typeof(ClientPickingWithTrail));
         }
 
 
