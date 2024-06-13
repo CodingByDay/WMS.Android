@@ -402,14 +402,12 @@ namespace WMS
         private async void BtnYes_Click(object sender, EventArgs e)
         {
 
-
-            var item = positions.Items[displayedPosition];
-            var id = item.GetInt("HeadID");
-
-
             try
             {
 
+                var item = positions.Items[displayedPosition];
+                var id = item.GetInt("HeadID");
+                LoaderManifest.LoaderManifestLoopResources(this);
                 var (success, result) = await WebApp.GetAsync("mode=delMoveHead&head=" + id.ToString() + "&deleter=" + Services.UserID().ToString(), this);
                 if (success)
                 {
@@ -453,7 +451,7 @@ namespace WMS
             {
                 popupDialog.Dismiss();
                 popupDialog.Hide();
-
+                LoaderManifest.LoaderManifestLoopStop(this);
             }
 
 
@@ -516,7 +514,7 @@ namespace WMS
 
                     try
                     {
-                        positions = await AsyncServices.AsyncServices.GetObjectListAsync("mhp", "E", this);
+                        positions = await AsyncServices.AsyncServices.GetObjectListAsync("mh", "E", this);
                     }
                     catch (Exception)
                     {

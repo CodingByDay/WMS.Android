@@ -224,9 +224,6 @@
       <HintPath>..\..\WMS stabile\WMS.Android.Production\ScannerQR\bin\Debug\DeviceAPI.dll</HintPath>
     </Reference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Testing\" />
-  </ItemGroup>
 
 	
 

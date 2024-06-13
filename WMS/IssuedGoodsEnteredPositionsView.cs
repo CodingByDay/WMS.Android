@@ -103,7 +103,9 @@ namespace WMS
             InUseObjects.ClearExcept(new string[] { "MoveHead", "OpenOrder" });
             if (moveHead == null)
             {
-                throw new ApplicationException("Data error");
+                var ex = new ApplicationException("Data error");
+                SentrySdk.CaptureException(ex);
+                StartActivity(typeof(MainActivity));
             }
             LoadPositions();
 
@@ -333,7 +335,7 @@ namespace WMS
             var id = item.GetInt("ItemID");
             try
             {
-
+                LoaderManifest.LoaderManifestLoopResources(this);
                 var (success, result) = await WebApp.GetAsync("mode=delMoveItem&item=" + id.ToString() + "&deleter=" + Services.UserID().ToString(), this);
                 if (success)
                 {
@@ -365,10 +367,13 @@ namespace WMS
             }
             catch (Exception err)
             {
-
+                
                 SentrySdk.CaptureException(err);
                 return;
 
+            } finally
+            {
+                LoaderManifest.LoaderManifestLoopStop(this);
             }
 
         }

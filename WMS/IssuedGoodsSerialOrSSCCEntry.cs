@@ -442,91 +442,101 @@ namespace WMS
 
         private async void BtCreate_Click(object? sender, EventArgs e)
         {
-            if (!isProccessOrderless)
+            try
             {
-                CheckData();
-            }
-
-            if (!Base.Store.isUpdate)
-            {
-                double parsed;
-
-                if (isProccessOrderless && double.TryParse(tbPacking.Text, out parsed) && stock >= parsed)
+                LoaderManifest.LoaderManifestLoopResources(this);
+                if (!isProccessOrderless)
                 {
-                    var isCorrectLocation = await IsLocationCorrect();
-
-                    if (!isCorrectLocation)
-                    {
-                        // Nepravilna lokacija za izbrano skladišče
-                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s333)}", ToastLength.Long).Show();
-                        return;
-                    }
-
-                    await CreateMethodFromStart();
-                }
-                else if (createPositionAllowed && double.TryParse(tbPacking.Text, out parsed) && stock == 0)
-                {
-
-                    if (Base.Store.modeIssuing == 2)
-                    {
-                        StartActivity(typeof(IssuedGoodsIdentEntryWithTrail));
-                        Finish();
-                    }
-                    else if (Base.Store.modeIssuing == 1)
-                    {
-                        StartActivity(typeof(IssuedGoodsIdentEntry));
-                        Finish();
-                    }
-
-                }
-                else if (createPositionAllowed && double.TryParse(tbPacking.Text, out parsed) && stock >= parsed)
-                {
-                    await CreateMethodFromStart();
+                    CheckData();
                 }
 
-                else
+                if (!Base.Store.isUpdate)
                 {
-                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
-                }
-            }
-            else
-            {
-                // Update flow.
+                    double parsed;
 
-                double newQty;
-                if (Double.TryParse(tbPacking.Text, out newQty))
-                {
-                    if (newQty > moveItem.GetDouble("Qty"))
+                    if (isProccessOrderless && double.TryParse(tbPacking.Text, out parsed) && stock >= parsed)
                     {
-                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s291)}", ToastLength.Long).Show();
+                        var isCorrectLocation = await IsLocationCorrect();
+
+                        if (!isCorrectLocation)
+                        {
+                            // Nepravilna lokacija za izbrano skladišče
+                            Toast.MakeText(this, $"{Resources.GetString(Resource.String.s333)}", ToastLength.Long).Show();
+                            return;
+                        }
+
+                        await CreateMethodFromStart();
                     }
+                    else if (createPositionAllowed && double.TryParse(tbPacking.Text, out parsed) && stock == 0)
+                    {
+
+                        if (Base.Store.modeIssuing == 2)
+                        {
+                            StartActivity(typeof(IssuedGoodsIdentEntryWithTrail));
+                            Finish();
+                        }
+                        else if (Base.Store.modeIssuing == 1)
+                        {
+                            StartActivity(typeof(IssuedGoodsIdentEntry));
+                            Finish();
+                        }
+
+                    }
+                    else if (createPositionAllowed && double.TryParse(tbPacking.Text, out parsed) && stock >= parsed)
+                    {
+                        await CreateMethodFromStart();
+                    }
+
                     else
                     {
-                        var parameters = new List<Services.Parameter>();
-                        var tt = moveItem.GetInt("ItemID");
-                        parameters.Add(new Services.Parameter { Name = "anQty", Type = "Decimal", Value = newQty });
-                        parameters.Add(new Services.Parameter { Name = "anItemID", Type = "Int32", Value = moveItem.GetInt("ItemID") });
-                        string debugString = $"UPDATE uWMSMoveItem SET anQty = {newQty} WHERE anIDItem = {moveItem.GetInt("ItemID")}";
-                        var subjects = Services.Update($"UPDATE uWMSMoveItem SET anQty = @anQty WHERE anIDItem = @anItemID;", parameters);
-                        if (!subjects.Success)
+                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
+                    }
+                }
+                else
+                {
+                    // Update flow.
+
+                    double newQty;
+                    if (Double.TryParse(tbPacking.Text, out newQty))
+                    {
+                        if (newQty > moveItem.GetDouble("Qty"))
                         {
-                            RunOnUiThread(() =>
-                            {
-                                SentrySdk.CaptureMessage(subjects.Error);
-                                return;
-                            });
+                            Toast.MakeText(this, $"{Resources.GetString(Resource.String.s291)}", ToastLength.Long).Show();
                         }
                         else
                         {
-                            StartActivity(typeof(IssuedGoodsEnteredPositionsView));
-                            Finish();
+                            var parameters = new List<Services.Parameter>();
+                            var tt = moveItem.GetInt("ItemID");
+                            parameters.Add(new Services.Parameter { Name = "anQty", Type = "Decimal", Value = newQty });
+                            parameters.Add(new Services.Parameter { Name = "anItemID", Type = "Int32", Value = moveItem.GetInt("ItemID") });
+                            string debugString = $"UPDATE uWMSMoveItem SET anQty = {newQty} WHERE anIDItem = {moveItem.GetInt("ItemID")}";
+                            var subjects = Services.Update($"UPDATE uWMSMoveItem SET anQty = @anQty WHERE anIDItem = @anItemID;", parameters);
+                            if (!subjects.Success)
+                            {
+                                RunOnUiThread(() =>
+                                {
+                                    SentrySdk.CaptureMessage(subjects.Error);
+                                    return;
+                                });
+                            }
+                            else
+                            {
+                                StartActivity(typeof(IssuedGoodsEnteredPositionsView));
+                                Finish();
+                            }
                         }
                     }
+                    else
+                    {
+                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
+                    }
                 }
-                else
-                {
-                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
-                }
+            } catch(Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+            } finally
+            {
+                LoaderManifest.LoaderManifestLoopStop(this);
             }
         }
         private void CheckData()
@@ -539,54 +549,64 @@ namespace WMS
         }
         private async void BtCreateSame_Click(object? sender, EventArgs e)
         {
-            if (!isProccessOrderless)
+            try
             {
-                CheckData();
-            }
-
-            double parsed;
-            if (isProccessOrderless && double.TryParse(tbPacking.Text, out parsed) && stock >= parsed)
-            {
-                var isCorrectLocation = await IsLocationCorrect();
-
-                if (!isCorrectLocation)
+                LoaderManifest.LoaderManifestLoopResources(this);
+                if (!isProccessOrderless)
                 {
-                    // Nepravilna lokacija za izbrano skladišče
-                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s333)}", ToastLength.Long).Show();
-                    return;
+                    CheckData();
                 }
 
-                await CreateMethodSame();
-            }
-            else if (createPositionAllowed && double.TryParse(tbPacking.Text, out parsed) && stock == 0)
-            {
-                if (Base.Store.modeIssuing == 2)
+                double parsed;
+                if (isProccessOrderless && double.TryParse(tbPacking.Text, out parsed) && stock >= parsed)
                 {
-                    StartActivity(typeof(IssuedGoodsIdentEntryWithTrail));
-                    Finish();
-                }
-                else if (Base.Store.modeIssuing == 1)
-                {
-                    StartActivity(typeof(IssuedGoodsIdentEntry));
-                    Finish();
-                }
-            }
-            else if (createPositionAllowed && double.TryParse(tbPacking.Text, out parsed) && stock >= parsed)
-            {
-                var isCorrectLocation = await IsLocationCorrect();
+                    var isCorrectLocation = await IsLocationCorrect();
 
-                if (!isCorrectLocation)
-                {
-                    // Nepravilna lokacija za izbrano skladišče
-                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s333)}", ToastLength.Long).Show();
-                    return;
-                }
+                    if (!isCorrectLocation)
+                    {
+                        // Nepravilna lokacija za izbrano skladišče
+                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s333)}", ToastLength.Long).Show();
+                        return;
+                    }
 
-                await CreateMethodSame();
-            }
-            else
+                    await CreateMethodSame();
+                }
+                else if (createPositionAllowed && double.TryParse(tbPacking.Text, out parsed) && stock == 0)
+                {
+                    if (Base.Store.modeIssuing == 2)
+                    {
+                        StartActivity(typeof(IssuedGoodsIdentEntryWithTrail));
+                        Finish();
+                    }
+                    else if (Base.Store.modeIssuing == 1)
+                    {
+                        StartActivity(typeof(IssuedGoodsIdentEntry));
+                        Finish();
+                    }
+                }
+                else if (createPositionAllowed && double.TryParse(tbPacking.Text, out parsed) && stock >= parsed)
+                {
+                    var isCorrectLocation = await IsLocationCorrect();
+
+                    if (!isCorrectLocation)
+                    {
+                        // Nepravilna lokacija za izbrano skladišče
+                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s333)}", ToastLength.Long).Show();
+                        return;
+                    }
+
+                    await CreateMethodSame();
+                }
+                else
+                {
+                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
+                }
+            } catch (Exception ex)
             {
-                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
+                SentrySdk.CaptureException(ex);
+            } finally
+            {
+                LoaderManifest.LoaderManifestLoopStop(this);
             }
         }
         private async Task<bool> IsLocationCorrect()
@@ -656,7 +676,17 @@ namespace WMS
 
         private async void BtnYesConfirm_Click(object sender, EventArgs e)
         {
-            await FinishMethod();
+            try
+            {
+                LoaderManifest.LoaderManifestLoopResources(this);
+                await FinishMethod();
+            } catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+            } finally
+            {
+                LoaderManifest.LoaderManifestLoopStop(this);
+            }
         }
 
         private void BtOverview_Click(object? sender, EventArgs e)

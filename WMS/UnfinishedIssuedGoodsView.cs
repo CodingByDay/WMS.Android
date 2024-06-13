@@ -111,7 +111,7 @@ namespace WMS
 
             try
             {
-
+                LoaderManifest.LoaderManifestLoopResources(this);
                 var (success, result) = await WebApp.GetAsync("mode=delMoveHead&head=" + id.ToString() + "&deleter=" + Services.UserID().ToString(), this);
                 if (success)
                 {
@@ -148,10 +148,12 @@ namespace WMS
             }
             catch (Exception err)
             {
-
                 SentrySdk.CaptureException(err);
                 return;
 
+            } finally
+            {
+                LoaderManifest.LoaderManifestLoopStop(this);
             }
 
             string errorWebApp = string.Format($"{Resources.GetString(Resource.String.s214)}");
@@ -228,7 +230,7 @@ namespace WMS
             var index = e.Position;
             DeleteFromTouch(index);
         }
-        private void DeleteFromTouch(int index)
+        private async void DeleteFromTouch(int index)
         {
             popupDialog = new Dialog(this);
             popupDialog.SetContentView(Resource.Layout.YesNoPopUp);
@@ -242,7 +244,7 @@ namespace WMS
             // Access Popup layout fields like below
             btnYes = popupDialog.FindViewById<Button>(Resource.Id.btnYes);
             btnNo = popupDialog.FindViewById<Button>(Resource.Id.btnNo);
-            btnYes.Click += async (e, ev) => { Yes(index); };
+            btnYes.Click += async (e, ev) => { await Yes(index); };
             btnNo.Click += (e, ev) => { No(index); };
         }
         private void ListData_ItemClick(object? sender, AdapterView.ItemClickEventArgs e)
@@ -409,14 +411,11 @@ namespace WMS
         private async void BtnYes_Click(object sender, EventArgs e)
         {
 
-
-            var item = positions.Items[displayedPosition];
-            var id = item.GetInt("HeadID");
-
-
             try
             {
-
+                var item = positions.Items[displayedPosition];
+                var id = item.GetInt("HeadID");
+                LoaderManifest.LoaderManifestLoopResources(this);
                 var (success, result) = await WebApp.GetAsync("mode=delMoveHead&head=" + id.ToString() + "&deleter=" + Services.UserID().ToString(), this);
                 if (success)
                 {
@@ -456,7 +455,12 @@ namespace WMS
                     return;
                 }
             }
-            catch { }
+            catch(Exception ex) {
+                SentrySdk.CaptureException(ex);           
+            } finally
+            {
+                LoaderManifest.LoaderManifestLoopStop(this);
+            }
         }
 
         private void BtFinish_Click(object sender, EventArgs e)

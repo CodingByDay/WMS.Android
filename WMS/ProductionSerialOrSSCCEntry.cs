@@ -823,18 +823,28 @@ namespace WMS
 
         private void BtSaveOrUpdate_Click(object sender, EventArgs e)
         {
-            if (SaveMoveItem().Result)
+            try
             {
-                if (editMode)
+                LoaderManifest.LoaderManifestLoopResources(this);
+                if (SaveMoveItem().Result)
                 {
-                    StartActivity(typeof(ProductionEnteredPositionsView));
-                    Finish();
+                    if (editMode)
+                    {
+                        StartActivity(typeof(ProductionEnteredPositionsView));
+                        Finish();
+                    }
+                    else
+                    {
+                        StartActivity(typeof(ProductionSerialOrSSCCEntry));
+                        Finish();
+                    }
                 }
-                else
-                {
-                    StartActivity(typeof(ProductionSerialOrSSCCEntry));
-                    Finish();
-                }
+            } catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+            } finally
+            {
+                LoaderManifest.LoaderManifestLoopStop(this);
             }
         }
     }

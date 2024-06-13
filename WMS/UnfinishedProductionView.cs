@@ -395,14 +395,14 @@ namespace WMS
         private async void BtnYes_Click(object sender, EventArgs e)
         {
 
-            var item = positions.Items[displayedPosition];
-            var id = item.GetInt("HeadID");
-
-
+         
 
             try
             {
+                var item = positions.Items[displayedPosition];
+                var id = item.GetInt("HeadID");
 
+                LoaderManifest.LoaderManifestLoopResources(this);
                 var (success, result) = await WebApp.GetAsync("mode=delMoveHead&head=" + id.ToString() + "&deleter=" + Services.UserID().ToString() + Services.UserID().ToString(), this);
 
                 if (success)
@@ -441,10 +441,12 @@ namespace WMS
             }
             catch (Exception err)
             {
-
                 SentrySdk.CaptureException(err);
                 return;
 
+            } finally
+            {
+                LoaderManifest.LoaderManifestLoopStop(this);
             }
    
         }
@@ -488,7 +490,7 @@ namespace WMS
             try
             {
 
-                positions = await AsyncServices.AsyncServices.GetObjectListAsync("mhp", "W", this);
+                positions = await AsyncServices.AsyncServices.GetObjectListAsync("mh", "W", this);
 
                 if (positions == null)
                 {

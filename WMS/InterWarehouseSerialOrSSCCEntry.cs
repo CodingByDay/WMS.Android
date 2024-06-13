@@ -261,7 +261,17 @@ namespace WMS
 
         private async void BtnYesConfirm_Click(object sender, EventArgs e)
         {
-            await FinishMethod();
+            try
+            {
+                LoaderManifest.LoaderManifestLoopResources(this);
+                await FinishMethod();
+            } catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+            } finally
+            {
+                LoaderManifest.LoaderManifestLoopStop(this);
+            }
         }
 
 
@@ -334,62 +344,72 @@ namespace WMS
 
         private async void BtCreate_Click(object? sender, EventArgs e)
         {
-            if (!Base.Store.isUpdate)
+            try
             {
-                double parsed;
-                if (double.TryParse(tbPacking.Text, out parsed) && stock >= parsed)
+                LoaderManifest.LoaderManifestLoopResources(this);
+                if (!Base.Store.isUpdate)
                 {
-
-                    var isCorrectLocation = await IsLocationCorrect();
-                    if (!isCorrectLocation)
+                    double parsed;
+                    if (double.TryParse(tbPacking.Text, out parsed) && stock >= parsed)
                     {
-                        // Nepravilna lokacija za izbrano skladišče
-                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s333)}", ToastLength.Long).Show();
-                        return;
-                    }
 
-                    await CreateMethodFromStart();
-                }
-            }
-            else
-            {
-                // Update flow.
-                double newQty;
-
-                if (Double.TryParse(tbPacking.Text, out newQty))
-                {
-                    if (newQty > moveItem.GetDouble("Qty"))
-                    {
-                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s291)}", ToastLength.Long).Show();
-                    }
-                    else
-                    {
-                        var parameters = new List<Services.Parameter>();
-                        var tt = moveItem.GetInt("ItemID");
-                        parameters.Add(new Services.Parameter { Name = "anQty", Type = "Decimal", Value = newQty });
-                        parameters.Add(new Services.Parameter { Name = "anItemID", Type = "Int32", Value = moveItem.GetInt("ItemID") });
-                        string debugString = $"UPDATE uWMSMoveItem SET anQty = {newQty} WHERE anIDItem = {moveItem.GetInt("ItemID")}";
-                        var subjects = Services.Update($"UPDATE uWMSMoveItem SET anQty = @anQty WHERE anIDItem = @anItemID;", parameters);
-                        if (!subjects.Success)
+                        var isCorrectLocation = await IsLocationCorrect();
+                        if (!isCorrectLocation)
                         {
-                            RunOnUiThread(() =>
-                            {
-                                SentrySdk.CaptureMessage(subjects.Error);
+                            // Nepravilna lokacija za izbrano skladišče
+                            Toast.MakeText(this, $"{Resources.GetString(Resource.String.s333)}", ToastLength.Long).Show();
+                            return;
+                        }
 
-                                return;
-                            });
-                        }
-                        else
-                        {
-                            StartActivity(typeof(IssuedGoodsEnteredPositionsView));
-                            Finish();
-                        }
+                        await CreateMethodFromStart();
                     }
                 }
                 else
                 {
-                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
+                    // Update flow.
+                    double newQty;
+
+                    if (Double.TryParse(tbPacking.Text, out newQty))
+                    {
+                        if (newQty > moveItem.GetDouble("Qty"))
+                        {
+                            Toast.MakeText(this, $"{Resources.GetString(Resource.String.s291)}", ToastLength.Long).Show();
+                        }
+                        else
+                        {
+                            var parameters = new List<Services.Parameter>();
+                            var tt = moveItem.GetInt("ItemID");
+                            parameters.Add(new Services.Parameter { Name = "anQty", Type = "Decimal", Value = newQty });
+                            parameters.Add(new Services.Parameter { Name = "anItemID", Type = "Int32", Value = moveItem.GetInt("ItemID") });
+                            string debugString = $"UPDATE uWMSMoveItem SET anQty = {newQty} WHERE anIDItem = {moveItem.GetInt("ItemID")}";
+                            var subjects = Services.Update($"UPDATE uWMSMoveItem SET anQty = @anQty WHERE anIDItem = @anItemID;", parameters);
+                            if (!subjects.Success)
+                            {
+                                RunOnUiThread(() =>
+                                {
+                                    SentrySdk.CaptureMessage(subjects.Error);
+
+                                    return;
+                                });
+                            }
+                            else
+                            {
+                                StartActivity(typeof(IssuedGoodsEnteredPositionsView));
+                                Finish();
+                            }
+                        }
+                    }
+                    else
+                    {
+                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
+                    }
                 }
+            } catch(Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+            } finally
+            {
+                LoaderManifest.LoaderManifestLoopStop(this);
             }
         }
 
@@ -461,17 +481,28 @@ namespace WMS
 
         private async void BtSaveOrUpdate_Click(object? sender, EventArgs e)
         {
-            if (activityIdent != null)
+            try
             {
-                if (activityIdent.GetBool("isSSCC") && tbSSCC.Text != string.Empty)
+                LoaderManifest.LoaderManifestLoopResources(this);
+
+                if (activityIdent != null)
                 {
-                    await CreateMethodFromStart();
+                    if (activityIdent.GetBool("isSSCC") && tbSSCC.Text != string.Empty)
+                    {
+                        await CreateMethodFromStart();
+                    }
+                    else
+                    {
+                        lbQty.Text = Resources.GetString(Resource.String.s83);
+                        tbSerialNum.Text = string.Empty;
+                    }
                 }
-                else
-                {
-                    lbQty.Text = Resources.GetString(Resource.String.s83);
-                    tbSerialNum.Text = string.Empty;
-                }
+            } catch(Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+            } finally
+            {
+                LoaderManifest.LoaderManifestLoopStop(this);
             }
         }
 
@@ -493,23 +524,21 @@ namespace WMS
 
                 moveItem = new NameValueObject("MoveItem");
 
-                // UI changes.
-                RunOnUiThread(() =>
-                {
-                    moveItem.SetInt("HeadID", moveHead.GetInt("HeadID"));
-                    moveItem.SetString("LinkKey", string.Empty);
-                    moveItem.SetInt("LinkNo", 0);
-                    moveItem.SetString("Ident", tbIdent.Text);
-                    moveItem.SetString("SSCC", tbSSCC.Text.Trim());
-                    moveItem.SetString("SerialNo", tbSerialNum.Text.Trim());
-                    moveItem.SetDouble("Packing", Convert.ToDouble(tbPacking.Text.Trim()));
-                    moveItem.SetDouble("Factor", 1);
-                    moveItem.SetDouble("Qty", Convert.ToDouble(tbPacking.Text.Trim()));
-                    moveItem.SetInt("Clerk", Services.UserID());
-                    moveItem.SetString("Location", tbLocation.Text.Trim());
-                    moveItem.SetString("IssueLocation", tbIssueLocation.Text.Trim());
-                    moveItem.SetString("Palette", "1");
-                });
+         
+                moveItem.SetInt("HeadID", moveHead.GetInt("HeadID"));
+                moveItem.SetString("LinkKey", string.Empty);
+                moveItem.SetInt("LinkNo", 0);
+                moveItem.SetString("Ident", tbIdent.Text);
+                moveItem.SetString("SSCC", tbSSCC.Text.Trim());
+                moveItem.SetString("SerialNo", tbSerialNum.Text.Trim());
+                moveItem.SetDouble("Packing", Convert.ToDouble(tbPacking.Text.Trim()));
+                moveItem.SetDouble("Factor", 1);
+                moveItem.SetDouble("Qty", Convert.ToDouble(tbPacking.Text.Trim()));
+                moveItem.SetInt("Clerk", Services.UserID());
+                moveItem.SetString("Location", tbLocation.Text.Trim());
+                moveItem.SetString("IssueLocation", tbIssueLocation.Text.Trim());
+                moveItem.SetString("Palette", "1");
+                
 
 
                 string error;

@@ -559,23 +559,21 @@ namespace WMS
 
                     if (moveItem != null && error == string.Empty)
                     {
-
-                        serialOverflowQuantity = Convert.ToDouble(tbPacking.Text.Trim());
-                        stock -= serialOverflowQuantity;
                         var picture = await CommonData.GetQtyPictureAsync(this);
                         RunOnUiThread(() =>
                         {
+
+                            serialOverflowQuantity = Convert.ToDouble(tbPacking.Text.Trim());
+                            stock -= serialOverflowQuantity;
+                                               
                             lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + stock.ToString(picture) + " )";
-                        });
-
-                        // Check to see if the maximum is already reached.
-                        if (stock <= 0)
-                        {
-                            StartActivity(typeof(ClientPickingWithTrail));
-                        }
-
-                        RunOnUiThread(() =>
-                        {
+                      
+                            // Check to see if the maximum is already reached.
+                            if (stock <= 0)
+                            {
+                                StartActivity(typeof(ClientPickingWithTrail));
+                            }
+                  
                             // Succesfull position creation
                             if (ssccRow.Visibility == ViewStates.Visible)
                             {
@@ -597,7 +595,6 @@ namespace WMS
 
                         createPositionAllowed = true;
                         await GetConnectedPositions(element.acKey, element.anNo, element.acIdent);
-
                     }
                 }
                 else

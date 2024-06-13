@@ -308,7 +308,7 @@ namespace WMS
 
             try
             {
-
+                LoaderManifest.LoaderManifestLoopResources(this);
                 var (success, result) = await WebApp.GetAsync("mode=delMoveItem&item=" + id.ToString() + "&deleter=" + Services.UserID().ToString(), this);
 
                 if (success)
@@ -355,6 +355,9 @@ namespace WMS
                 SentrySdk.CaptureException(err);
                 return;
 
+            } finally
+            {
+                LoaderManifest.LoaderManifestLoopStop(this);
             }
 
             string WebError = string.Format($"{Resources.GetString(Resource.String.s214)}");

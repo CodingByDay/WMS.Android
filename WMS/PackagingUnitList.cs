@@ -284,13 +284,43 @@ namespace WMS
             if ((positions != null) && (displayedPosition < positions.Items.Count))
             {
                 var item = positions.Items[displayedPosition];
-
+                var picture = await CommonData.GetQtyPictureAsync(this);
                 // UI changes.
-                RunOnUiThread(() =>
+                RunOnUiThread(async () =>
                 {
-                    Toast.MakeText(this, errorWebAppIssued, ToastLength.Long).Show();
-                    popupDialog.Dismiss();
-                    popupDialog.Hide();
+                    var item = positions.Items[displayedPosition];
+                    lbInfo.Text = $"{Resources.GetString(Resource.String.s92)} (" + (displayedPosition + 1).ToString() + "/" + positions.Items.Count + ")";
+
+                    tbIdent.Text = item.GetString("IdentName");
+                    tbSSCC.Text = item.GetString("SSCC");
+                    tbSerialNo.Text = item.GetString("SerialNo");
+                    tbQty.Text = item.GetDouble("Qty").ToString(picture);
+                    tbLocation.Text = item.GetString("Location");
+
+                    var created = item.GetDateTime("DateIns");
+                    tbCreatedBy.Text = created == null ? "" : ((DateTime)created).ToString("dd.MM.") + " " + item.GetString("ClerkName");
+
+                    btUpdate.Enabled = true;
+                    btDelete.Enabled = true;
+                    btNext.Enabled = true;
+
+
+
+                    tbIdent.Enabled = false;
+                    tbSSCC.Enabled = false;
+                    tbSerialNo.Enabled = false;
+                    tbQty.Enabled = false;
+                    tbLocation.Enabled = false;
+                    tbCreatedBy.Enabled = false;
+
+
+
+                    tbIdent.SetTextColor(Android.Graphics.Color.Black);
+                    tbSSCC.SetTextColor(Android.Graphics.Color.Black);
+                    tbSerialNo.SetTextColor(Android.Graphics.Color.Black);
+                    tbQty.SetTextColor(Android.Graphics.Color.Black);
+                    tbLocation.SetTextColor(Android.Graphics.Color.Black);
+                    tbCreatedBy.SetTextColor(Android.Graphics.Color.Black);
                 });
 
             }

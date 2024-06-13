@@ -382,6 +382,7 @@ namespace WMS
 
         private void BtDelete_Click(object sender, EventArgs e)
         {
+           
             if (positions.Items.Count > 0)
             {
                 popupDialog = new Dialog(this);
@@ -408,12 +409,17 @@ namespace WMS
         {
 
 
-            var item = positions.Items[displayedPosition];
-            var id = item.GetInt("HeadID");
+        
 
 
             try
             {
+
+                var item = positions.Items[displayedPosition];
+                var id = item.GetInt("HeadID");
+
+
+                LoaderManifest.LoaderManifestLoopResources(this);
 
 
                 var (success, result) = await WebApp.GetAsync("mode=delMoveHead&head=" + id.ToString() + "&deleter=" + Services.UserID().ToString(), this);
@@ -459,7 +465,7 @@ namespace WMS
             {
                 popupDialog.Dismiss();
                 popupDialog.Hide();
-
+                LoaderManifest.LoaderManifestLoopStop(this);
             }
 
         }
@@ -511,7 +517,7 @@ namespace WMS
         {
             try
             {
-                positions = await AsyncServices.AsyncServices.GetObjectListAsync("mhp", "I", this);
+                positions = await AsyncServices.AsyncServices.GetObjectListAsync("mh", "I", this);
 
                 if (positions == null)
                 {

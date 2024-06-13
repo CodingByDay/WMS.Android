@@ -435,6 +435,7 @@ namespace WMS
             if (string.IsNullOrEmpty(ident)) { return; }
             try
             {
+                LoaderManifest.LoaderManifestLoopResources(this);
                 string error;
                 openIdent = Services.GetObject("id", ident, out error);
                 if (openIdent == null)
@@ -529,9 +530,13 @@ namespace WMS
             {
                 SentrySdk.CaptureException(err);
                 return;
+            } finally
+            {
+                LoaderManifest.LoaderManifestLoopStop(this);
             }
- 
         }
+
+
         private void FillDisplayedOrderInfo()
         {
             if ((openIdent != null) && (orders != null) && (orders.Count > 0))

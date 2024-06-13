@@ -370,19 +370,15 @@ namespace WMS
         /// <param name="acKey">Številka naročila</param>
         /// <param name="anNo">Pozicija znotraj naročila</param>
         /// <param name="acIdent">Ident</param>
-        private async Task GetConnectedPositions(string acKey, int anNo, string acIdent, string acLocation = null)
+        private async Task GetConnectedPositions(string acKey, int anNo, string acIdent)
         {
             connectedPositions.Clear();
-            var sql = "SELECT acName, acSubject, acSerialNo, acSSCC, anQty, aclocation, anNo, acKey from uWMSOrderItemByKeyIn WHERE acKey = @acKey AND anNo = @anNo AND acIdent = @acIdent";
+            var sql = "SELECT acName, acSubject, anQty, anNo, acKey from uWMSOrderItemByKeyIn WHERE acKey = @acKey AND anNo = @anNo AND acIdent = @acIdent";
             var parameters = new List<Services.Parameter>();
             parameters.Add(new Services.Parameter { Name = "acKey", Type = "String", Value = acKey });
             parameters.Add(new Services.Parameter { Name = "anNo", Type = "Int32", Value = anNo });
             parameters.Add(new Services.Parameter { Name = "acIdent", Type = "String", Value = acIdent });
-            if (acLocation != null)
-            {
-                parameters.Add(new Services.Parameter { Name = "acLocation", Type = "String", Value = acLocation });
-                sql += " AND acLocation = @acLocation;";
-            }
+     
             var subjects = await AsyncServices.AsyncServices.GetObjectListBySqlAsync(sql, parameters, this);
             if (!subjects.Success)
             {
@@ -412,10 +408,7 @@ namespace WMS
                         {
                             acName = row.StringValue("acName"),
                             acSubject = row.StringValue("acSubject"),
-                            acSerialNo = row.StringValue("acSerialNo"),
-                            acSSCC = row.StringValue("acSSCC"),
                             anQty = row.DoubleValue("anQty"),
-                            aclocation = row.StringValue("aclocation"),
                             anNo = (int)(row.IntValue("anNo") ?? -1),
                             acKey = row.StringValue("acKey"),
                             acIdent = row.StringValue("acIdent")
@@ -463,7 +456,17 @@ namespace WMS
 
         private async void BtnYesConfirm_Click(object sender, EventArgs e)
         {
-            await FinishMethod();
+            try
+            {
+                LoaderManifest.LoaderManifestLoopResources(this);
+                await FinishMethod();
+            } catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+            } finally
+            {
+                LoaderManifest.LoaderManifestLoopStop(this);
+            }
         }
 
         private async Task FinishMethod()
@@ -547,104 +550,116 @@ namespace WMS
 
         private async void BtCreate_Click(object? sender, EventArgs e)
         {
-            if (!Base.Store.isUpdate)
+            try
             {
+                LoaderManifest.LoaderManifestLoopResources(this);
 
-                double parsed;
-                if (double.TryParse(tbPacking.Text, out parsed) && stock >= parsed)
+                if (!Base.Store.isUpdate)
                 {
 
-                    var isCorrectLocation = await IsLocationCorrect();
-                    if (!isCorrectLocation)
+                    double parsed;
+                    if (double.TryParse(tbPacking.Text, out parsed) && stock >= parsed)
                     {
-                        // Nepravilna lokacija za izbrano skladišče
-                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s333)}", ToastLength.Long).Show();
-                        return;
-                    }
 
-                    if (Base.Store.byOrder)
-                    {
-                        var isDuplicatedSerial = IsDuplicatedSerialOrAndSSCC(tbSerialNum.Text ?? string.Empty, tbSSCC.Text ?? string.Empty);
-
-                        if (isDuplicatedSerial)
+                        var isCorrectLocation = await IsLocationCorrect();
+                        if (!isCorrectLocation)
                         {
-                            // Duplicirana serijska in/ali sscc koda.
-                            Toast.MakeText(this, $"{Resources.GetString(Resource.String.s334)}", ToastLength.Long).Show();
+                            // Nepravilna lokacija za izbrano skladišče
+                            Toast.MakeText(this, $"{Resources.GetString(Resource.String.s333)}", ToastLength.Long).Show();
                             return;
                         }
-                    }
-                    else
-                    {
 
-                        string ident = openIdent.GetString("Code");
-                        string warehouse = string.Empty;
-
-                        if (Base.Store.isUpdate)
+                        if (Base.Store.byOrder)
                         {
-                            warehouse = moveItem.GetString("Wharehouse");
-                        }
-                        else
-                        {
-                            warehouse = moveHead.GetString("Wharehouse");
-                        }
+                            var isDuplicatedSerial = IsDuplicatedSerialOrAndSSCC(tbSerialNum.Text ?? string.Empty, tbSSCC.Text ?? string.Empty);
+                            var fieldsExist = ssccRow.Visibility == ViewStates.Visible || serialRow.Visibility == ViewStates.Visible;
 
-                        var isDuplicatedSerial = await IsDuplicatedSerialOrAndSSCCNotByOrder(ident, warehouse, tbSerialNum.Text, tbSSCC.Text);
-
-                        if (isDuplicatedSerial)
-                        {
-                            // Duplicirana serijska in/ali sscc koda.
-                            Toast.MakeText(this, $"{Resources.GetString(Resource.String.s334)}", ToastLength.Long).Show();
-                            return;
-                        }
-                    }
-
-
-                    await CreateMethodFromStart();
-                }
-                else
-                {
-                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
-                }
-
-            }
-            else
-            {
-                // Update flow.
-                double newQty;
-                if (Double.TryParse(tbPacking.Text, out newQty))
-                {
-                    if (newQty > moveItem.GetDouble("Qty"))
-                    {
-                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s291)}", ToastLength.Long).Show();
-                    }
-
-                    else
-                    {
-                        var parameters = new List<Services.Parameter>();
-                        var tt = moveItem.GetInt("ItemID");
-                        parameters.Add(new Services.Parameter { Name = "anQty", Type = "Decimal", Value = newQty });
-                        parameters.Add(new Services.Parameter { Name = "anItemID", Type = "Int32", Value = moveItem.GetInt("ItemID") });
-                        string debugString = $"UPDATE uWMSMoveItem SET anQty = {newQty} WHERE anIDItem = {moveItem.GetInt("ItemID")}";
-                        var subjects = Services.Update($"UPDATE uWMSMoveItem SET anQty = @anQty WHERE anIDItem = @anItemID;", parameters);
-                        if (!subjects.Success)
-                        {
-                            RunOnUiThread(() =>
+                            if (isDuplicatedSerial && fieldsExist)
                             {
-                                SentrySdk.CaptureMessage(subjects.Error);
+                                // Duplicirana serijska in/ali sscc koda.
+                                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s334)}", ToastLength.Long).Show();
                                 return;
-                            });
+                            }
                         }
                         else
                         {
-                            StartActivity(typeof(IssuedGoodsEnteredPositionsView));
-                            Finish();
+
+                            string ident = openIdent.GetString("Code");
+                            string warehouse = string.Empty;
+
+                            if (Base.Store.isUpdate)
+                            {
+                                warehouse = moveItem.GetString("Wharehouse");
+                            }
+                            else
+                            {
+                                warehouse = moveHead.GetString("Wharehouse");
+                            }
+
+                            var isDuplicatedSerial = await IsDuplicatedSerialOrAndSSCCNotByOrder(ident, warehouse, tbSerialNum.Text, tbSSCC.Text);
+
+                            if (isDuplicatedSerial)
+                            {
+                                // Duplicirana serijska in/ali sscc koda.
+                                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s334)}", ToastLength.Long).Show();
+                                return;
+                            }
                         }
+
+
+                        await CreateMethodFromStart();
                     }
+                    else
+                    {
+                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
+                    }
+
                 }
                 else
                 {
-                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
+                    // Update flow.
+                    double newQty;
+                    if (Double.TryParse(tbPacking.Text, out newQty))
+                    {
+                        if (newQty > moveItem.GetDouble("Qty"))
+                        {
+                            Toast.MakeText(this, $"{Resources.GetString(Resource.String.s291)}", ToastLength.Long).Show();
+                        }
+
+                        else
+                        {
+                            var parameters = new List<Services.Parameter>();
+                            var tt = moveItem.GetInt("ItemID");
+                            parameters.Add(new Services.Parameter { Name = "anQty", Type = "Decimal", Value = newQty });
+                            parameters.Add(new Services.Parameter { Name = "anItemID", Type = "Int32", Value = moveItem.GetInt("ItemID") });
+                            string debugString = $"UPDATE uWMSMoveItem SET anQty = {newQty} WHERE anIDItem = {moveItem.GetInt("ItemID")}";
+                            var subjects = Services.Update($"UPDATE uWMSMoveItem SET anQty = @anQty WHERE anIDItem = @anItemID;", parameters);
+                            if (!subjects.Success)
+                            {
+                                RunOnUiThread(() =>
+                                {
+                                    SentrySdk.CaptureMessage(subjects.Error);
+                                    return;
+                                });
+                            }
+                            else
+                            {
+                                StartActivity(typeof(IssuedGoodsEnteredPositionsView));
+                                Finish();
+                            }
+                        }
+                    }
+                    else
+                    {
+                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
+                    }
                 }
+            } catch(Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+            } finally
+            {
+                LoaderManifest.LoaderManifestLoopStop(this);
             }
         }
 
@@ -731,19 +746,17 @@ namespace WMS
                         moveItem.SetString("LinkKey", string.Empty);
                         moveItem.SetInt("LinkNo", 0);
                     }
-                    // UI changes.
-                    RunOnUiThread(() =>
-                    {
-                        moveItem.SetString("Ident", openIdent.GetString("Code"));
-                        moveItem.SetString("SSCC", tbSSCC.Text.Trim());
-                        moveItem.SetString("SerialNo", tbSerialNum.Text.Trim());
-                        moveItem.SetDouble("Packing", Convert.ToDouble(tbPacking.Text.Trim()));
-                        moveItem.SetDouble("Factor", 1);
-                        moveItem.SetDouble("Qty", Convert.ToDouble(tbPacking.Text.Trim()));
-                        moveItem.SetInt("Clerk", Services.UserID());
-                        moveItem.SetString("Location", tbLocation.Text.Trim());
-                        moveItem.SetString("Palette", "1");
-                    });
+
+                    moveItem.SetString("Ident", openIdent.GetString("Code"));
+                    moveItem.SetString("SSCC", tbSSCC.Text.Trim());
+                    moveItem.SetString("SerialNo", tbSerialNum.Text.Trim());
+                    moveItem.SetDouble("Packing", Convert.ToDouble(tbPacking.Text.Trim()));
+                    moveItem.SetDouble("Factor", 1);
+                    moveItem.SetDouble("Qty", Convert.ToDouble(tbPacking.Text.Trim()));
+                    moveItem.SetInt("Clerk", Services.UserID());
+                    moveItem.SetString("Location", tbLocation.Text.Trim());
+                    moveItem.SetString("Palette", "1");
+            
                    
 
                     string error;
@@ -772,55 +785,66 @@ namespace WMS
 
         private async void BtSaveOrUpdate_Click(object sender, EventArgs e)
         {
-            double parsed;
-            if (double.TryParse(tbPacking.Text, out parsed) && stock >= parsed)
+            try
             {
-                var isCorrectLocation = await IsLocationCorrect();
-                if (!isCorrectLocation)
-                {
-                    // Nepravilna lokacija za izbrano skladišče
-                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s333)}", ToastLength.Long).Show();
-                    return;
-                }
-                if (Base.Store.byOrder)
-                {
-                    var isDuplicatedSerial = IsDuplicatedSerialOrAndSSCC(tbSerialNum.Text ?? string.Empty, tbSSCC.Text ?? string.Empty);
+                LoaderManifest.LoaderManifestLoopResources(this);
 
-                    if (isDuplicatedSerial)
+                double parsed;
+                if (double.TryParse(tbPacking.Text, out parsed) && stock >= parsed)
+                {
+                    var isCorrectLocation = await IsLocationCorrect();
+                    if (!isCorrectLocation)
                     {
-                        // Duplicirana serijska in/ali sscc koda.
-                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s334)}", ToastLength.Long).Show();
+                        // Nepravilna lokacija za izbrano skladišče
+                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s333)}", ToastLength.Long).Show();
                         return;
                     }
-                }
-                else
-                {
-                    string ident = openIdent.GetString("Code");
-                    string warehouse = string.Empty;
-
-                    if (Base.Store.isUpdate)
+                    if (Base.Store.byOrder)
                     {
-                        warehouse = moveItem.GetString("Wharehouse");
-
+                        var isDuplicatedSerial = IsDuplicatedSerialOrAndSSCC(tbSerialNum.Text ?? string.Empty, tbSSCC.Text ?? string.Empty);
+                        var fieldsExist = ssccRow.Visibility == ViewStates.Visible || serialRow.Visibility == ViewStates.Visible;
+                        if (isDuplicatedSerial && fieldsExist)
+                        {
+                            // Duplicirana serijska in/ali sscc koda.
+                            Toast.MakeText(this, $"{Resources.GetString(Resource.String.s334)}", ToastLength.Long).Show();
+                            return;
+                        }
                     }
                     else
                     {
-                        warehouse = moveHead.GetString("Wharehouse");
+                        string ident = openIdent.GetString("Code");
+                        string warehouse = string.Empty;
+
+                        if (Base.Store.isUpdate)
+                        {
+                            warehouse = moveItem.GetString("Wharehouse");
+
+                        }
+                        else
+                        {
+                            warehouse = moveHead.GetString("Wharehouse");
+                        }
+                        var isDuplicatedSerial = await IsDuplicatedSerialOrAndSSCCNotByOrder(ident, warehouse, tbSerialNum.Text, tbSSCC.Text);
+                        if (isDuplicatedSerial)
+                        {
+                            // Duplicirana serijska in/ali sscc koda.
+                            Toast.MakeText(this, $"{Resources.GetString(Resource.String.s334)}", ToastLength.Long).Show();
+                            return;
+                        }
                     }
-                    var isDuplicatedSerial = await IsDuplicatedSerialOrAndSSCCNotByOrder(ident, warehouse, tbSerialNum.Text, tbSSCC.Text);
-                    if (isDuplicatedSerial)
-                    {
-                        // Duplicirana serijska in/ali sscc koda.
-                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s334)}", ToastLength.Long).Show();
-                        return;
-                    }
+                    await CreateMethodSame();
                 }
-                await CreateMethodSame();
-            }
-            else
+                else
+                {
+                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
+                    return;
+                }
+            } catch (Exception ex)
             {
-                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
-                return;
+                SentrySdk.CaptureException(ex);
+            } finally
+            {
+                LoaderManifest.LoaderManifestLoopStop(this);
             }
         }
 
@@ -881,6 +905,8 @@ namespace WMS
 
         private async Task CreateMethodSame()
         {
+            var picture = await CommonData.GetQtyPictureAsync(this);
+
             await Task.Run(() =>
             {
                 if (connectedPositions.Count == 1 || !Base.Store.byOrder)
@@ -907,19 +933,17 @@ namespace WMS
                         moveItem.SetString("LinkKey", string.Empty);
                         moveItem.SetInt("LinkNo", 0);
                     }
-                    // UI changes.
-                    RunOnUiThread(() =>
-                    {
-                        moveItem.SetString("Ident", openIdent.GetString("Code"));
-                        moveItem.SetString("SSCC", tbSSCC.Text.Trim());
-                        moveItem.SetString("SerialNo", tbSerialNum.Text.Trim());
-                        moveItem.SetDouble("Packing", Convert.ToDouble(tbPacking.Text.Trim()));
-                        moveItem.SetDouble("Factor", 1);
-                        moveItem.SetDouble("Qty", Convert.ToDouble(tbPacking.Text.Trim()));
-                        moveItem.SetInt("Clerk", Services.UserID());
-                        moveItem.SetString("Location", tbLocation.Text.Trim());
-                        moveItem.SetString("Palette", "1");
-                    });
+
+                    moveItem.SetString("Ident", openIdent.GetString("Code"));
+                    moveItem.SetString("SSCC", tbSSCC.Text.Trim());
+                    moveItem.SetString("SerialNo", tbSerialNum.Text.Trim());
+                    moveItem.SetDouble("Packing", Convert.ToDouble(tbPacking.Text.Trim()));
+                    moveItem.SetDouble("Factor", 1);
+                    moveItem.SetDouble("Qty", Convert.ToDouble(tbPacking.Text.Trim()));
+                    moveItem.SetInt("Clerk", Services.UserID());
+                    moveItem.SetString("Location", tbLocation.Text.Trim());
+                    moveItem.SetString("Palette", "1");
+                    
 
 
                     string error;
@@ -930,49 +954,44 @@ namespace WMS
                         if (Base.Store.byOrder)
                         {
 
-
-                            RunOnUiThread(async () =>
+                            
+                            RunOnUiThread(() =>
                             {
 
                                 var currentQty = Convert.ToDouble(tbPacking.Text.Trim());
                                 stock -= currentQty;
-                                lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + stock.ToString(await CommonData.GetQtyPictureAsync(this)) + " )";
-                            });
+                                lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + stock.ToString(picture) + " )";
 
-                        }
 
-                        // Check to see if the maximum is already reached.
-                        if (stock <= 0)
-                        {
-                            // UI changes.
-                            RunOnUiThread(() =>
-                            {
-                                var intent = new Intent(this, typeof(TakeOverIdentEntry));
-                                intent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.NewTask);
-                                StartActivity(intent);
-                            });
-
-                        }
-
-                        RunOnUiThread(() =>
-                        {
-                            // Succesfull position creation
-                            if (ssccRow.Visibility == ViewStates.Visible)
-                            {
-                                tbSSCC.Text = string.Empty;
-                                tbSSCC.RequestFocus();
-                            }
-                            if (serialRow.Visibility == ViewStates.Visible)
-                            {
-                                tbSerialNum.Text = string.Empty;
-
-                                if (ssccRow.Visibility == ViewStates.Gone)
+                                if (stock <= 0)
                                 {
-                                    tbSerialNum.RequestFocus();
+
+                                    var intent = new Intent(this, typeof(TakeOverIdentEntry));
+                                    intent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.NewTask);
+                                    StartActivity(intent);
+                                 
                                 }
-                            }
-                            // tbPacking.Text = string.Empty; This seems to be more logical if commented out. User wants to just scan serial codes. 5.15.2024 Janko Jovičić
-                        });
+
+                                // Succesfull position creation
+                                if (ssccRow.Visibility == ViewStates.Visible)
+                                {
+                                    tbSSCC.Text = string.Empty;
+                                    tbSSCC.RequestFocus();
+                                }
+                                if (serialRow.Visibility == ViewStates.Visible)
+                                {
+                                    tbSerialNum.Text = string.Empty;
+
+                                    if (ssccRow.Visibility == ViewStates.Gone)
+                                    {
+                                        tbSerialNum.RequestFocus();
+                                    }
+                                }
+                                // tbPacking.Text = string.Empty; This seems to be more logical if commented out. User wants to just scan serial codes. 5.15.2024 Janko Jovičić
+
+                            });
+                        }
+
                     }
                 }
                 else

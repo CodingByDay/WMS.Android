@@ -276,7 +276,7 @@ namespace WMS
 
                 try
                 {
-
+                    LoaderManifest.LoaderManifestLoopResources(this);
                     var (success, result) = await WebApp.GetAsync("mode=delMoveItem&item=" + id.ToString() + "&deleter=" + Services.UserID().ToString(), this);
                     if (success)
                     {
@@ -315,8 +315,8 @@ namespace WMS
                 {
                     popupDialog.Dismiss();
                     popupDialog.Hide();
+                    LoaderManifest.LoaderManifestLoopStop(this);
                 }
-
         }
         private async Task FinishMethod()
         {
