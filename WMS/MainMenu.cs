@@ -359,9 +359,7 @@ namespace WMS
         }
 
         private void BtnLogout_Click(object sender, EventArgs e)
-        {
-
-        
+        {       
             Intent intent = new Intent(this, typeof(MainActivity));
             intent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
             StartActivity(intent);

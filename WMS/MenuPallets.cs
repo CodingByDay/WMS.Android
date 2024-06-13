@@ -69,10 +69,7 @@ namespace WMS
             StartActivity(typeof(WrappingPallet)); // Wrapping pallet new functionality.
             Finish();
         }
-        public override void OnBackPressed()
-        {
-            base.OnBackPressed();
-        }
+  
         private void Shipped_Click(object sender, EventArgs e)
         {
             StartActivity(typeof(ShippingPallet)); // Shipping pallet new functionality.

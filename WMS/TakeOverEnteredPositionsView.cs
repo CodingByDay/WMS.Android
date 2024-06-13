@@ -97,7 +97,13 @@ namespace WMS
             btDelete.Click += BtDelete_Click;
             button5.Click += Button5_Click;
             InUseObjects.ClearExcept(new string[] { "MoveHead" });
-            if (moveHead == null) { throw new ApplicationException("moveHead not known at this point!?"); }
+
+            if (moveHead == null) {
+                
+                var ex = new ApplicationException("moveHead not known at this point at TakeoverEnteredPositionsView!? Location: OnCreate ");
+                SentrySdk.CaptureException(ex);
+                StartActivity(typeof(MainActivity));
+            }
 
 
             await LoadPositions();
@@ -265,7 +271,6 @@ namespace WMS
         private async void BtnYes_Click(object sender, EventArgs e)
         {
 
-            {
                 var item = positions.Items[displayedPosition];
                 var id = item.GetInt("ItemID");
 
@@ -290,6 +295,7 @@ namespace WMS
                         else
                         {
                             Toast.MakeText(this, $"{Resources.GetString(Resource.String.s212)}" + result, ToastLength.Long).Show();
+
                             positions = null;
                             await LoadPositions();
                             popupDialog.Dismiss();
@@ -310,8 +316,6 @@ namespace WMS
                     popupDialog.Dismiss();
                     popupDialog.Hide();
                 }
-
-            }
 
         }
         private async Task FinishMethod()
@@ -372,14 +376,14 @@ namespace WMS
                         });
                     }
                 }
-                catch
+                catch (Exception ex) 
                 {
-                
+                    SentrySdk.CaptureException(ex);
                 }
             });
 
         }
-        private async void BtFinish_Click(object sender, EventArgs e)
+        private void BtFinish_Click(object sender, EventArgs e)
         {
             popupDialogConfirm = new Dialog(this);
             popupDialogConfirm.SetContentView(Resource.Layout.Confirmation);
@@ -418,14 +422,15 @@ namespace WMS
                 InUseObjects.Set("MoveHead", moveHead);
                 InUseObjects.Set("MoveItem", null);
                 StartActivity(typeof(TakeOver2Main));
-
+                Finish();
                 return;
 
             }
             else
-
+            {
                 StartActivity(typeof(TakeOverIdentEntry));
-            Finish();
+                Finish();
+            }
         }
 
         private async void BtUpdate_Click(object sender, EventArgs e)

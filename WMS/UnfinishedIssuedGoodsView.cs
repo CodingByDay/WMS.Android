@@ -177,6 +177,7 @@ namespace WMS
                 base.RequestedOrientation = ScreenOrientation.Portrait;
                 base.SetContentView(Resource.Layout.UnfinishedIssuedGoodsView);
             }
+
             LoaderManifest.LoaderManifestLoopResources(this);
 
             AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
@@ -216,6 +217,8 @@ namespace WMS
             LinearLayout yourLinearLayout = FindViewById<LinearLayout>(Resource.Id.fling);
             // Initialize the GestureDetector
             yourLinearLayout.SetOnTouchListener(gestureListener);
+
+
             LoaderManifest.LoaderManifestLoopStop(this);
 
         }
@@ -248,6 +251,7 @@ namespace WMS
             Select(selected);
             selectedItem = selected;
         }
+
         private void Select(int postionOfTheItemInTheList)
         {
             if (positions != null)
@@ -438,6 +442,7 @@ namespace WMS
                         await LoadPositions();
                         popupDialog.Dismiss();
                         popupDialog.Hide();
+
                         return;
                     }
                 }
@@ -452,7 +457,6 @@ namespace WMS
                 }
             }
             catch { }
-
         }
 
         private void BtFinish_Click(object sender, EventArgs e)
@@ -494,10 +498,8 @@ namespace WMS
 
         private async Task LoadPositions()
         {
-
             try
             {
-
 
                 positions = await AsyncServices.AsyncServices.GetObjectListAsync("mhp", "P", this);
 

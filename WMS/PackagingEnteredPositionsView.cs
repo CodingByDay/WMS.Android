@@ -102,10 +102,7 @@ namespace WMS
                 LoaderManifest.LoaderManifestLoop(this);
             }
         }
-        public override void OnBackPressed()
-        {
-            base.OnBackPressed();
-        }
+
         private void BtClose_Click(object sender, EventArgs e)
         {
             StartActivity(typeof(MainMenu));

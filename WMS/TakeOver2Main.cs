@@ -308,9 +308,7 @@ namespace WMS
         {
             if (await SaveItem(false) != null)
             {
-                var progress = new ProgressDialogClass();
-
-                progress.ShowDialogSync(this, $"{Resources.GetString(Resource.String.s262)}");
+        
                 try
                 {
 
@@ -318,12 +316,12 @@ namespace WMS
                     PrintingCommon.SetNVOCommonData(ref nvo);
                     nvo.SetString("Ident", tbIdent.Text);
                     PrintingCommon.SendToServer(nvo);
-                    Toast.MakeText(this, "Uspešno. ", ToastLength.Long).Show();
+                    Toast.MakeText(this, "Success. ", ToastLength.Long).Show();
 
                 }
-                finally
+                catch(Exception ex)
                 {
-                    progress.StopDialogSync();
+                    SentrySdk.CaptureException(ex);
                 }
             }
         }
@@ -335,7 +333,6 @@ namespace WMS
                 InUseObjects.Set("MoveItem", null);
                 StartActivity(typeof(TakeOver2Main));
                 Finish();
-
             }
         }
 
@@ -346,7 +343,6 @@ namespace WMS
                 InUseObjects.Set("MoveItem", moveItem);
                 StartActivity(typeof(TakeOver2Orders));
                 Finish();
-
             }
         }
 

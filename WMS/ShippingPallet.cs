@@ -139,13 +139,8 @@ namespace WMS
             await Task.Run(async () =>
             {
 
-
-
                 try
                 {
-
-
-
 
                     var (success, result) = await WebApp.GetAsync("mode=palMac&pal=" + ETpallet + "&mac=" + ETmachine, this);
                     if (success)
@@ -227,7 +222,7 @@ namespace WMS
                 }
                 catch (Exception ex)
                 {
-
+                    SentrySdk.CaptureException(ex);
 
                     RunOnUiThread(() =>
                     {
@@ -250,11 +245,7 @@ namespace WMS
                         dialog.Show();
                     });
                 }
-                finally
-                {
-                }
-
-
+              
             });
         }
 

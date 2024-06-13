@@ -63,7 +63,6 @@ namespace WMS
 
             LoaderManifest.LoaderManifestLoopResources(this);
 
-
             AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
             var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
             _customToolbar.SetNavigationIcon(App.Settings.RootURL + "/Services/Logo");
@@ -106,6 +105,7 @@ namespace WMS
             LinearLayout yourLinearLayout = FindViewById<LinearLayout>(Resource.Id.fling);
             // Initialize the GestureDetector
             yourLinearLayout.SetOnTouchListener(gestureListener);
+
             LoaderManifest.LoaderManifestLoopStop(this);
 
         }
@@ -322,12 +322,6 @@ namespace WMS
             }
         }
 
-
-        public override void OnBackPressed()
-        {
-
-            base.OnBackPressed();
-        }
         public override bool OnKeyDown(Keycode keyCode, KeyEvent e)
         {
             switch (keyCode)
@@ -378,7 +372,6 @@ namespace WMS
             NameValueObject moveHead = new NameValueObject("MoveHead");
             moveHead.SetBool("Saved", false);
             InUseObjects.Set("MoveHead", moveHead);
-
             StartActivity(typeof(InterWarehouseBusinessEventSetup));
             Finish();
         }
@@ -482,6 +475,7 @@ namespace WMS
             InUseObjects.Set("MoveHead", moveHead);
 
             StartActivity(typeof(InterWarehouseEnteredPositionsView));
+
             Finish();
 
         }

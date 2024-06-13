@@ -446,13 +446,11 @@ namespace WMS
         {
             StartActivity(typeof(MainMenu));
             Finish();
-            Finish();
         }
 
         private void BtOverview_Click(object? sender, EventArgs e)
         {
             StartActivity(typeof(TakeOverEnteredPositionsView));
-            Finish();
             Finish();
         }
 
@@ -525,9 +523,9 @@ namespace WMS
                         });
                     }
                 }
-                catch
+                catch (Exception ex)
                 {
-                   
+                    SentrySdk.CaptureException(ex);
                 }
             });
         }
@@ -699,7 +697,7 @@ namespace WMS
 
             });
 
-            if (!CommonData.IsValidLocation(moveHead.GetString("Wharehouse"), location))
+            if (!await CommonData.IsValidLocationAsync(moveHead.GetString("Wharehouse"), location, this))
             {
                 return false;
             }
@@ -1040,7 +1038,6 @@ namespace WMS
                 {
                     if (barcode != "Scan fail")
                     {
-                        // 
 
                         tbSSCC.Text = barcode;
 
@@ -1059,7 +1056,6 @@ namespace WMS
                 {
                     if (barcode != "Scan fail")
                     {
-                        // 
 
                         tbSerialNum.Text = barcode;
 
@@ -1071,7 +1067,6 @@ namespace WMS
                 {
                     if (barcode != "Scan fail")
                     {
-                        // 
 
                         tbLocation.Text = barcode;
 

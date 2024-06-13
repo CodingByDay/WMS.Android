@@ -141,10 +141,7 @@ namespace WMS
 
         private async void BtConfirm_Click(object sender, EventArgs e)
         {
-
-
             await ProcessData();
-
         }
 
         private async Task ProcessData()

@@ -117,7 +117,6 @@ namespace WMS
             {
                 base.RequestedOrientation = ScreenOrientation.Landscape;
                 base.SetContentView(Resource.Layout.RapidTakeover);
-                // TODO: Add a adapter 
             }
             else
             {

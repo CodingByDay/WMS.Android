@@ -60,6 +60,7 @@ namespace WMS
                 base.RequestedOrientation = ScreenOrientation.Portrait;
                 base.SetContentView(Resource.Layout.UnfinishedProductionView);
             }
+
             LoaderManifest.LoaderManifestLoopResources(this);
 
             AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);

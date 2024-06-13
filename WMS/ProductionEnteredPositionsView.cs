@@ -184,9 +184,6 @@ namespace WMS
         }
 
 
-
-
-
         private void ListData_ItemLongClick(object sender, AdapterView.ItemLongClickEventArgs e)
         {
             selected = e.Position;
@@ -342,12 +339,7 @@ namespace WMS
                         Button5_Click(this, null);
                     }
                     break;
-
-
                     //return true;
-
-
-
             }
             return base.OnKeyDown(keyCode, e);
         }

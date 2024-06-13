@@ -424,7 +424,6 @@ namespace TrendNET.WMS.Device.Services
                 {
                     var startedAt = DateTime.Now;
                     var nvo = CompactSerializer.Deserialize<NameValueObject>(result);
-                    Log.Write(new LogEntry("END REQUEST: [Device/DeserializeObject];" + (DateTime.Now - startedAt).TotalMilliseconds.ToString()));
                     error = nvo == null ? "Ne obstaja (" + table + "; " + id + ")!" : "";
                     return nvo;
                 }
@@ -447,14 +446,12 @@ namespace TrendNET.WMS.Device.Services
             string result;
             var startedAt = DateTime.Now;
             var serData = CompactSerializer.Serialize<NameValueObject>(data);
-            Log.Write(new LogEntry("END REQUEST: [Device/SerializeObject];" + (DateTime.Now - startedAt).TotalMilliseconds.ToString()));
             if (WebApp.Post("mode=setObj&table=" + table, serData, out result))
             {
                 try
                 {
                     startedAt = DateTime.Now;
                     var nvo = CompactSerializer.Deserialize<NameValueObject>(result);
-                    Log.Write(new LogEntry("END REQUEST: [Device/DeserializeObject];" + (DateTime.Now - startedAt).TotalMilliseconds.ToString()));
                     error = nvo == null ? "Zapis objekta ni uspel!" : "";
 
                     return nvo;
@@ -473,79 +470,17 @@ namespace TrendNET.WMS.Device.Services
             }
         }
 
-        public static void ReportException(Exception ex)
-        {
-            var data = ex.ToString();
-            while (ex.InnerException != null)
-            {
-                ex = ex.InnerException;
-
-                data += " --- " + ex.ToString();
-            }
-
-            var guid = Guid.NewGuid().ToString();
-            using (var sw = new StreamWriter(Path.Combine(WMSDeviceConfig.ExePath(), "UnhandledExceptions!" + guid + ".txt"), true, Encoding.UTF8))
-            {
-                sw.WriteLine("Version: " + CommonData.Version);
-                sw.WriteLine(data);
-            }
-
-            ReportData(data);
-        }
 
         public static object reportLock = new object();
         public static string instanceInfo = Guid.NewGuid().ToString().Split('-')[0];
 
-        public static void ReportData(string data)
-        {
-            lock (reportLock)
-            {
-                using (var sw = new StreamWriter(Path.Combine(WMSDeviceConfig.ExePath(), "UnhandledExceptions-" + instanceInfo + ".txt"), true, Encoding.UTF8))
-                {
-                    sw.WriteLine();
-                    sw.WriteLine(DateTime.Now.ToString("s") + " " + instanceInfo + " " + CommonData.Version);
-                    sw.WriteLine(data);
-                }
-            }
-        }
+    
 
         private static bool pdRunning = false;
         private static DateTime lastCall = DateTime.MinValue;
         private static string lastEventName = null;
         private static byte[] image;
 
-        public static void PreventDups(string eventName, Action a)
-        {
-            var block = false;
-            if (eventName == lastEventName)
-            {
-                if (pdRunning || lastCall >= DateTime.UtcNow.AddSeconds(-3))
-                {
-                    block = true;
-                    lastCall = DateTime.UtcNow;
-                }
-            }
-
-            if (block)
-            {
-                Log.Write(new LogEntry("PreventDups: prevented duplicate event for " + eventName + " @ " + DateTime.UtcNow.ToString()));
-            }
-            else
-            {
-                Log.Write(new LogEntry("PreventDups: event executed " + eventName + " @ " + DateTime.UtcNow.ToString()));
-                pdRunning = true;
-                try
-                {
-                    lastEventName = eventName;
-                    lastCall = DateTime.UtcNow;
-                    a();
-                    lastCall = DateTime.UtcNow;
-                }
-                finally
-                {
-                    pdRunning = false;
-                }
-            }
-        }
+       
     }
 }

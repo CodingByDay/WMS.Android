@@ -141,10 +141,7 @@ namespace WMS
                             SentrySdk.CaptureException(err);
 
                         }
-
-
                         if ((bool)warning)
-
                         {
                             data = Services.GetObject("cwns", tbWorkOrder.Text + "|" + tbIdent.Text + "|1", out error);
                             if (data == null)
@@ -234,8 +231,8 @@ namespace WMS
                     alert.SetPositiveButton("Ok", (senderAlert, args) =>
                     {
                         alert.Dispose();
-                        Thread.Sleep(500);
-                        this.Finish();
+                        StartActivity(typeof(MainMenu));
+                        Finish();
                     });
 
                     Dialog dialog = alert.Create();
@@ -249,8 +246,7 @@ namespace WMS
                     pr.SetInt("CardID", nvo.GetInt("ID"));
                     PrintingCommon.SendToServer(pr);
                     StartActivity(typeof(ProductionCard));
-                    this.Finish();
-                    Finish();
+                    Finish();                
                 }
             }
             catch (Exception err)

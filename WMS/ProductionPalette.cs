@@ -92,8 +92,6 @@ namespace WMS
             popupDialog.Show();
             popupDialog.Window.SetLayout(LayoutParams.MatchParent, LayoutParams.WrapContent);
             popupDialog.Window.SetBackgroundDrawable(new ColorDrawable(Color.ParseColor("#081a45")));
-
-
             btnYes = popupDialog.FindViewById<Button>(Resource.Id.btnYes);
             btnNo = popupDialog.FindViewById<Button>(Resource.Id.btnNo);
             btnNo.Click += BtnNo_Click1;
@@ -131,8 +129,6 @@ namespace WMS
 
         private void ProcessSerialNum()
         {
-
-
             try
             {
                 string error;
@@ -141,7 +137,6 @@ namespace WMS
                 {
                     string WebError = string.Format($"{Resources.GetString(Resource.String.s216)}" + error);
                     Toast.MakeText(this, WebError, ToastLength.Long).Show();
-
                     return;
                 }
 
@@ -190,7 +185,7 @@ namespace WMS
                         stKartona = Convert.ToInt32(data.Substring(tbSerialNum.Text.Length)).ToString();
 
                     }
-                    catch (Exception error)
+                    catch (Exception)
                     {
                         Toast.MakeText(this, $"{Resources.GetString(Resource.String.s265)}", ToastLength.Long).Show();
                     }
@@ -281,7 +276,12 @@ namespace WMS
                     Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
                 }
             }
-            catch { return; }
+            catch (Exception ex)           
+            {
+                SentrySdk.CaptureException(ex);
+                return; 
+            
+            }
         }
 
         protected override async void OnCreate(Bundle savedInstanceState)

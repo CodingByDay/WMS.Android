@@ -16,25 +16,19 @@ namespace TrendNET.WMS.Device.App
         private int _threadId;
         private int _procId;
 
-        /// <summary>
-        /// Creates a log entry with given info, timing and num of elements for which timing was given.
-        /// </summary>
+  
         public LogEntry(string info, double time, int elements)
         {
             Set(info, time, elements);
         }
 
-        /// <summary>
-        /// Creates a log entry with given info and timing.
-        /// </summary>
+ 
         public LogEntry(string info, double time)
         {
             Set(info, time, -1);
         }
 
-        /// <summary>
-        /// Creates a log entry with given info.
-        /// </summary>
+
         public LogEntry(string info)
         {
             Set(info, -1, -1);
@@ -94,57 +88,6 @@ namespace TrendNET.WMS.Device.App
         private static Object syncLock = new Object();
         private static Queue<LogEntry> entries = new Queue<LogEntry>();
 
-        /// <summary>
-        /// Writes a single log entry into the log queue.
-        /// </summary>
-        public static void Write(LogEntry data)
-        {
-            lock (syncLock)
-            {
-                entries.Enqueue(data);
-            }
-        }
 
-        /// <summary>
-        /// Handles periodic dumping of queued log entries into log file.
-        /// </summary>
-        public static void Dumper()
-        {
-            Thread.CurrentThread.IsBackground = true;
-            Log.Write(new LogEntry("Log.Dumper started"));
-            while (true)
-            {
-                try
-                {
-                    Thread.Sleep(20000);
-                    DumpEntries();
-                }
-                catch (Exception e)
-                {
-                    Log.Write(new LogEntry("Log Dumper failed: " + e.ToString()));
-                }
-            }
-        }
-
-        /// <summary>
-        /// Writes pending log entries into log file.
-        /// </summary>
-        public static void DumpEntries()
-        {
-            lock (syncLock)
-            {
-                if (entries.Count > 0)
-                {
-                    var procId = Process.GetCurrentProcess().Id;
-                    var data = new StringBuilder();
-                    while (entries.Count > 0)
-                    {
-                        LogEntry le = entries.Dequeue();
-                        data.AppendLine(le.Info);
-                    }
-                    Services.Services.ReportData(data.ToString());
-                }
-            }
-        }
     }
 }

@@ -144,7 +144,6 @@ namespace WMS
                 InUseObjects.Set("MoveItem", null);
                 StartActivity(typeof(TakeOver2Main));
                 Finish();
-
             }
         }
 
@@ -166,7 +165,7 @@ namespace WMS
 
             if (SaveState())
             {
-                // wf
+
                 try
                 {
                     Toast.MakeText(this, $"{Resources.GetString(Resource.String.s326)}", ToastLength.Long).Show();

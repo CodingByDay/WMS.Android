@@ -20,7 +20,7 @@ namespace WMS
         SoundPool soundPool;
         int soundPoolId;
         private Barcode2D barcode2D;
-        private ProgressDialogClass progress;
+
 
         private List<string> identData = new List<string>();
         private List<string> returnList;
@@ -37,13 +37,10 @@ namespace WMS
 
             }
         }
-        public override void OnBackPressed()
-        {
-            base.OnBackPressed();
-        }
+ 
 
 
-        protected async override void OnCreate(Bundle savedInstanceState)
+        protected  override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             SetTheme(Resource.Style.AppTheme_NoActionBar);
@@ -195,6 +192,7 @@ namespace WMS
 
             await Task.Run(async () =>
             {
+                LoaderManifest.LoaderManifestLoopResources(this);
 
 
                 try
@@ -292,6 +290,7 @@ namespace WMS
                 catch (Exception ex)
                 {
 
+                    SentrySdk.CaptureException(ex);
 
                     RunOnUiThread(() =>
                     {
@@ -307,12 +306,10 @@ namespace WMS
                         Dialog dialog = alert.Create();
                         dialog.Show();
                     });
-                }
-                finally
+                } finally
                 {
-                    progress.StopDialogSync();
+                    LoaderManifest.LoaderManifestLoopStop(this);
                 }
-
 
             });
         }

@@ -57,7 +57,7 @@ namespace WMS
             {
 
                 tbIdent.Text = barcode;
-                ProcessIdent();
+                await ProcessIdent();
 
             }
             else if (tbSerialNum.HasFocus && barcode != "Scan fail")
@@ -149,7 +149,7 @@ namespace WMS
 
 
             var adapterWarehouses = new ArrayAdapter<ComboBoxItem>(this,
-           Android.Resource.Layout.SimpleSpinnerItem, warehouseAdapter);
+            Android.Resource.Layout.SimpleSpinnerItem, warehouseAdapter);
 
             adapterWarehouses.SetDropDownViewResource(Android.Resource.Layout.SimpleSpinnerDropDownItem);
             cbWarehouse.Adapter = adapterWarehouses;

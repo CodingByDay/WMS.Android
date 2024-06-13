@@ -126,7 +126,6 @@ namespace WMS
             selected = e.Position;
             Select(selected);
             selectedItem = selected;
-
             btConfirm.PerformClick();
         }
 
@@ -171,12 +170,12 @@ namespace WMS
 
             FillDisplayedOrderInfo();
         }
-        private void TbIdent_KeyPress(object? sender, View.KeyEventArgs e)
+        private async void TbIdent_KeyPress(object? sender, View.KeyEventArgs e)
         {
             if (e.KeyCode == Keycode.Enter && e.Event.Action == KeyEventActions.Down)
             {
                 e.Handled = true;
-                ProcessIdent();
+                await ProcessIdent();
             }
         }
 

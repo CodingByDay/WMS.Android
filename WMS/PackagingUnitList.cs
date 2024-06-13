@@ -72,7 +72,10 @@ namespace WMS
             btCreate.Click += BtCreate_Click;
             btLogout.Click += BtLogout_Click;
 
-            if (head == null) { throw new ApplicationException("head not known at this point!?"); }
+            if (head == null) { 
+                var head = new ApplicationException("head not known at this point!? Location: PackagingUnitList"); 
+                SentrySdk.CaptureException(head );
+            }
 
             LoadPositions();
 
@@ -187,12 +190,9 @@ namespace WMS
         }
 
         private async void BtnYes_Click(object sender, EventArgs e)
-        {
-
-            {
+        {            
                 var item = positions.Items[displayedPosition];
                 var id = item.GetInt("ItemID");
-
 
                 try
                 {
@@ -227,10 +227,7 @@ namespace WMS
                     SentrySdk.CaptureException(err);
                     return;
 
-                }
-
-
-            }
+                }           
         }
 
         private void BtUpdate_Click(object sender, EventArgs e)
@@ -287,38 +284,15 @@ namespace WMS
             if ((positions != null) && (displayedPosition < positions.Items.Count))
             {
                 var item = positions.Items[displayedPosition];
-                lbInfo.Text = $"{Resources.GetString(Resource.String.s92)} (" + (displayedPosition + 1).ToString() + "/" + positions.Items.Count + ")";
 
-                tbIdent.Text = item.GetString("IdentName");
-                tbSSCC.Text = item.GetString("SSCC");
-                tbSerialNo.Text = item.GetString("SerialNo");
-                tbQty.Text = item.GetDouble("Qty").ToString(await CommonData.GetQtyPictureAsync(this));
-                tbLocation.Text = item.GetString("Location");
+                // UI changes.
+                RunOnUiThread(() =>
+                {
+                    Toast.MakeText(this, errorWebAppIssued, ToastLength.Long).Show();
+                    popupDialog.Dismiss();
+                    popupDialog.Hide();
+                });
 
-                var created = item.GetDateTime("DateIns");
-                tbCreatedBy.Text = created == null ? "" : ((DateTime)created).ToString("dd.MM.") + " " + item.GetString("ClerkName");
-
-                btUpdate.Enabled = true;
-                btDelete.Enabled = true;
-                btNext.Enabled = true;
-
-
-
-                tbIdent.Enabled = false;
-                tbSSCC.Enabled = false;
-                tbSerialNo.Enabled = false;
-                tbQty.Enabled = false;
-                tbLocation.Enabled = false;
-                tbCreatedBy.Enabled = false;
-
-
-
-                tbIdent.SetTextColor(Android.Graphics.Color.Black);
-                tbSSCC.SetTextColor(Android.Graphics.Color.Black);
-                tbSerialNo.SetTextColor(Android.Graphics.Color.Black);
-                tbQty.SetTextColor(Android.Graphics.Color.Black);
-                tbLocation.SetTextColor(Android.Graphics.Color.Black);
-                tbCreatedBy.SetTextColor(Android.Graphics.Color.Black);
             }
             else
             {

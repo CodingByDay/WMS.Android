@@ -21,18 +21,12 @@ namespace WMS
             if ((await CommonData.GetSettingAsync("WorkOrderFinishWithSubject") ?? "0") == "1")
             {
                 NameValueObjectList data;
-
-
-
                 try
                 {
                     string error;
                     data = Services.GetObjectList("hs", out error, headID.ToString());
                     if (data == null)
                     {
-
-
-
                         return;
                     }
                 }

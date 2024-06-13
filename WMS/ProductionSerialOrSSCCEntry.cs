@@ -109,9 +109,8 @@ namespace WMS
                 tbLocation.Text = barcode;
             }
         }
+
         private static bool? checkWorkOrderOpenQty = null;
-
-
 
         private void fillItems()
         {
@@ -208,10 +207,10 @@ namespace WMS
         {
       
  
-                if (string.IsNullOrEmpty(tbPacking.Text.Trim()))
-                {
-                    return true;
-                }
+            if (string.IsNullOrEmpty(tbPacking.Text.Trim()))
+            {
+                return true;
+            }
   
 
 
@@ -540,7 +539,6 @@ namespace WMS
             editMode = moveItem != null;
 
             if (editMode)
-
             {
 
                 tbSSCC.Text = moveItem.GetString("SSCC");
@@ -555,10 +553,8 @@ namespace WMS
             }
 
             else
-
             {
                 if (tbSSCC.Enabled)
-
                 {
                     tbSSCC.RequestFocus();
                 }
@@ -621,8 +617,9 @@ namespace WMS
                 imagePNG.Click += (e, ev) => { ImageClick(d); };
 
             }
-            catch (Exception error)
+            catch (Exception ex)
             {
+                SentrySdk.CaptureException(ex);
                 return;
             }
 
@@ -696,11 +693,11 @@ namespace WMS
             {
                 bool resultAsync =  false;
 
-
                 RunOnUiThread(() =>
                 {
                     resultAsync = SaveMoveItem().Result;
                 });
+
                 if (resultAsync)
                 {
                     var headID = moveHead.GetInt("HeadID");
@@ -816,7 +813,6 @@ namespace WMS
         private async void BtnYesConfirm_Click(object sender, EventArgs e)
         {
             await FinishMethod();
-
         }
 
         private void Button3_Click(object sender, EventArgs e)

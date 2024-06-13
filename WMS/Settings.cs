@@ -91,7 +91,7 @@ namespace WMS
             StartService(serviceIntent);
         }
 
-        private async void Bin_Click(object sender, EventArgs e)
+        private void Bin_Click(object sender, EventArgs e)
         {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.SetMessage($"{Resources.GetString(Resource.String.s322)}");
