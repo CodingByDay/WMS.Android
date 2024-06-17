@@ -1182,6 +1182,7 @@ namespace WMS
 
                         if (receivedTrail.Packaging != -1 && Double.TryParse(receivedTrail.Qty, out double qty) && receivedTrail.Packaging <= qty)
                         {
+                            quantity = Double.Parse(receivedTrail.Qty);
                             packaging = receivedTrail.Packaging;
                             lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + quantity.ToString(await CommonData.GetQtyPictureAsync(this)) + " )";
                             stock = quantity;
