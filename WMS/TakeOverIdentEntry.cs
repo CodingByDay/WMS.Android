@@ -468,11 +468,34 @@ namespace WMS
 
                         var parameters = new List<Services.Parameter>();
 
+
+                        string sql = $"SELECT acSubject, acKey, anNo, anQty, adDeliveryDeadline, acIdent, anPackQty FROM uWMSOrderItemByWarehouseTypeIn WHERE acIdent = @acIdent AND acDocType = @acDocType AND acWarehouse = @acWarehouse";
+
+                        if (moveHead != null)
+                        {
+                            string? subject = moveHead.GetString("Receiver");
+                            if (!string.IsNullOrEmpty(subject))
+                            {
+                                sql += " AND acSubject = @acSubject;";
+                                parameters.Add(new Services.Parameter { Name = "acSubject", Type = "String", Value = subject });
+                            } else
+                            {
+                                sql += ";";
+                            }
+
+                        }
+                        else
+                        {
+                            StartActivity(typeof(MainMenu));
+                            Finish();
+                        }
+
+
                         parameters.Add(new Services.Parameter { Name = "acIdent", Type = "String", Value = ident });
                         parameters.Add(new Services.Parameter { Name = "acDocType", Type = "String", Value = moveHead.GetString("DocumentType") });
                         parameters.Add(new Services.Parameter { Name = "acWarehouse", Type = "String", Value = moveHead.GetString("Wharehouse") });
 
-                        var subjects = await AsyncServices.AsyncServices.GetObjectListBySqlAsync($"SELECT acSubject, acKey, anNo, anQty, adDeliveryDeadline, acIdent, anPackQty FROM uWMSOrderItemByWarehouseTypeIn WHERE acIdent = @acIdent AND acDocType = @acDocType AND acWarehouse = @acWarehouse;", parameters);
+                        var subjects = await AsyncServices.AsyncServices.GetObjectListBySqlAsync(sql, parameters);
 
                         if (!subjects.Success)
                         {
