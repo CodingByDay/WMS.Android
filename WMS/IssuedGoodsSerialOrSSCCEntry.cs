@@ -65,7 +65,6 @@ namespace WMS
         private Dialog popupDialogConfirm;
         private Dialog popupDialogMain;
         private Dialog popupDialogMainIssueing;
-        private ProgressDialogClass progress;
         private double qtyCheck = 0;
         private string qtyStock;
         private string query;
@@ -1002,12 +1001,9 @@ namespace WMS
                         Toast.MakeText(this, $"{Resources.GetString(Resource.String.s216)}" + result, ToastLength.Long).Show();
                     }
                 }
-                finally
+                catch(Exception ex)
                 {
-                    RunOnUiThread(() =>
-                    {
-                        progress.StopDialogSync();
-                    });
+                    SentrySdk.CaptureException(ex);
                 }
             });
         }

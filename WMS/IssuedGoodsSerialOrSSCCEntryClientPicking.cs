@@ -42,7 +42,6 @@ namespace WMS
         private Button btExit;
 
         private static bool? checkIssuedOpenQty = null;
-        private ProgressDialogClass progress;
         private Dialog popupDialogMain;
         private Button btConfirm;
         private EditText tbSSCCpopup;

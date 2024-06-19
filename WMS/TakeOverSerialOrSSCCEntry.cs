@@ -51,7 +51,6 @@ namespace WMS
         private Dialog popupDialogConfirm;
         private Button? btnYesConfirm;
         private Button? btnNoConfirm;
-        private ProgressDialogClass progress;
         private ListView listData;
         private UniversalAdapter<TakeoverDocument> dataAdapter;
         private List<TakeoverDocument> items = new List<TakeoverDocument>();

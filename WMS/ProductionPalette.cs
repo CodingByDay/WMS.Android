@@ -45,7 +45,6 @@ namespace WMS
         private bool result;
         private bool target;
         private string stKartona;
-        private ProgressDialogClass progress;
         private double collectiveAmount;
 
         public void GetBarcode(string barcode)
@@ -488,12 +487,7 @@ namespace WMS
 
                 try
                 {
-                    RunOnUiThread(() =>
-                    {
-                        progress = new ProgressDialogClass();
-                        progress.ShowDialogSync(this, $"{Resources.GetString(Resource.String.s308)}");
-
-                    });
+             
 
                     var palInfo = new NameValueObject("PaletteInfo");
 
@@ -518,7 +512,7 @@ namespace WMS
 
                         RunOnUiThread(() =>
                         {
-                            progress.StopDialogSync();
+         
                             AlertDialog.Builder alert = new AlertDialog.Builder(this);
                             alert.SetTitle($"{Resources.GetString(Resource.String.s265)}");
                             alert.SetMessage($"{Resources.GetString(Resource.String.s216)}" + error);
@@ -544,7 +538,6 @@ namespace WMS
                         {
                             RunOnUiThread(() =>
                             {
-                                progress.StopDialogSync();
                                 var id = result.Split('+')[1];
 
                                 AlertDialog.Builder alert = new AlertDialog.Builder(this);
@@ -567,7 +560,6 @@ namespace WMS
                         {
                             RunOnUiThread(() =>
                             {
-                                progress.StopDialogSync();
                                 AlertDialog.Builder alert = new AlertDialog.Builder(this);
                                 alert.SetTitle($"{Resources.GetString(Resource.String.s265)}");
                                 alert.SetMessage($"{Resources.GetString(Resource.String.s216)}" + result);
@@ -585,12 +577,9 @@ namespace WMS
                         }
                     }
                 }
-                finally
+                catch(Exception ex)
                 {
-                    RunOnUiThread(() =>
-                    {
-                        progress.StopDialogSync();
-                    });
+                    SentrySdk.CaptureException(ex);
                 }
             });
         }

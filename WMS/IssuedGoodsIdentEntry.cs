@@ -98,13 +98,36 @@ namespace WMS
                             tbNaziv.Text = openIdent.GetString("Name");
 
                             var parameters = new List<Services.Parameter>();
-                            //string debug = $"SELECT * from uWMSOrderItemByItemTypeWarehouseOut WHERE acIdent = {ident} AND acDocType = {moveHead.GetString("DocumentType")} AND acWarehouse = {moveHead.GetString("Wharehouse")};";
+
+                            // string debug = $"SELECT * from uWMSOrderItemByItemTypeWarehouseOut WHERE acIdent = {ident} AND acDocType = {moveHead.GetString("DocumentType")} AND acWarehouse = {moveHead.GetString("Wharehouse")};";
+
+                            string sql = $"SELECT acSubject, acKey, anNo, anQty, DeliveryDeadline, acIdent, anPackQty from uWMSOrderItemByItemTypeWarehouseOut WHERE acIdent = @acIdent AND acDocType = @acDocType AND acWarehouse = @acWarehouse";
+
+                            if(moveHead!=null)
+                            {
+                                string? subject = moveHead.GetString("Receiver");
+                                if(!string.IsNullOrEmpty(subject))
+                                {
+                                    sql += " AND acSubject = @acSubject  ORDER BY acKey, anNo;";
+                                    parameters.Add(new Services.Parameter { Name = "acSubject", Type = "String", Value = subject });
+                                }
+                                else
+                                {
+                                    sql += " ORDER BY acKey, anNo;";
+                                }
+                            } else
+                            {
+                                StartActivity(typeof(MainMenu));
+                                Finish();
+                            }
 
                             parameters.Add(new Services.Parameter { Name = "acIdent", Type = "String", Value = ident });
                             parameters.Add(new Services.Parameter { Name = "acDocType", Type = "String", Value = moveHead.GetString("DocumentType") });
                             parameters.Add(new Services.Parameter { Name = "acWarehouse", Type = "String", Value = moveHead.GetString("Wharehouse") });
 
-                            var subjects = await AsyncServices.AsyncServices.GetObjectListBySqlAsync($"SELECT acSubject, acKey, anNo, anQty, DeliveryDeadline, acIdent, anPackQty from uWMSOrderItemByItemTypeWarehouseOut WHERE acIdent = @acIdent AND acDocType = @acDocType AND acWarehouse = @acWarehouse ORDER BY acKey, anNo;", parameters);
+
+
+                            var subjects = await AsyncServices.AsyncServices.GetObjectListBySqlAsync(sql, parameters);
 
                             if (!subjects.Success)
                             {
@@ -339,6 +362,8 @@ namespace WMS
             tbConsignee.Enabled = false;
             tbDeliveryDeadline.Enabled = false;
             tbQty.Enabled = false;
+
+
         }
 
 
@@ -497,7 +522,10 @@ namespace WMS
 
                 FillDisplayedOrderInfo();
 
-                UniversalAdapterHelper.SelectPositionProgramaticaly(listData, displayedOrder);
+                if (App.Settings.tablet)
+                {
+                    UniversalAdapterHelper.SelectPositionProgramaticaly(listData, displayedOrder);
+                }
 
             }
             catch { return; }

@@ -331,12 +331,9 @@ namespace WMS
                         });
                     }
                 }
-                finally
+                catch(Exception ex) 
                 {
-                    RunOnUiThread(() =>
-                    {
-                        progress.StopDialogSync();
-                    });
+                    SentrySdk.CaptureException(ex);
                 }
             });
         }
