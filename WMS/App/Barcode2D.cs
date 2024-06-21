@@ -48,7 +48,7 @@ namespace BarCode2D_Receiver
                 var barcodeDataReceiver = new BarcodeDataReceiver(this.iBarcodeResult);
                 IntentFilter intentFilter = new IntentFilter();
                 intentFilter.AddAction("com.scanner.broadcast");
-                context.RegisterReceiver(barcodeDataReceiver, intentFilter);
+                context.RegisterReceiver(barcodeDataReceiver, intentFilter, ReceiverFlags.NotExported);
 
                 Base.Store.lastBarcodeDataReceiver = barcodeDataReceiver;
                 Base.Store.lastScanningContext = context;

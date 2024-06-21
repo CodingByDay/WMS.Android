@@ -213,7 +213,7 @@ namespace WMS
             var _broadcastReceiver = new NetworkStatusBroadcastReceiver();
             _broadcastReceiver.ConnectionStatusChanged += OnNetworkStatusChanged;
             Application.Context.RegisterReceiver(_broadcastReceiver,
-            new IntentFilter(ConnectivityManager.ConnectivityAction));
+            new IntentFilter(ConnectivityManager.ConnectivityAction), ReceiverFlags.NotExported);
             GestureListener gestureListener = new GestureListener(this);
             gestureDetector = new GestureDetector(this, new GestureListener(this));
             LinearLayout yourLinearLayout = FindViewById<LinearLayout>(Resource.Id.fling);

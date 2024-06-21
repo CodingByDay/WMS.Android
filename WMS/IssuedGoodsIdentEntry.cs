@@ -354,7 +354,7 @@ namespace WMS
             var _broadcastReceiver = new NetworkStatusBroadcastReceiver();
             _broadcastReceiver.ConnectionStatusChanged += OnNetworkStatusChanged;
             Application.Context.RegisterReceiver(_broadcastReceiver,
-            new IntentFilter(ConnectivityManager.ConnectivityAction));
+            new IntentFilter(ConnectivityManager.ConnectivityAction), ReceiverFlags.NotExported);
 
 
             // These are read only. 6.6.2024 JJ

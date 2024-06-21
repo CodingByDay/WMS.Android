@@ -105,7 +105,7 @@ namespace WMS
             var _broadcastReceiver = new NetworkStatusBroadcastReceiver();
             _broadcastReceiver.ConnectionStatusChanged += OnNetworkStatusChanged;
             Application.Context.RegisterReceiver(_broadcastReceiver,
-            new IntentFilter(ConnectivityManager.ConnectivityAction));
+            new IntentFilter(ConnectivityManager.ConnectivityAction), ReceiverFlags.NotExported);
             cbDocType.ItemClick += CbDocType_ItemClick;
             cbExtra.ItemClick += CbExtra_ItemClick;
             cbWarehouse.ItemClick += CbWarehouse_ItemClick;

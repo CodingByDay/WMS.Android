@@ -111,7 +111,7 @@ namespace WMS
             _broadcastReceiver.ConnectionStatusChanged += OnNetworkStatusChanged;
             Application.Context.RegisterReceiver(_broadcastReceiver,
 
-            new IntentFilter(ConnectivityManager.ConnectivityAction));
+            new IntentFilter(ConnectivityManager.ConnectivityAction), ReceiverFlags.NotExported);
 
 
             tbWorkOrder.EditorAction += async (sender, e) =>

@@ -99,36 +99,44 @@ namespace WMS
         }
         private async Task<bool> SaveHead()
         {
-            if (!moveHead.GetBool("Saved"))
+            try
             {
-                moveHead.SetString("DocumentType", await CommonData.GetSettingAsync("DirectTakeOverDocType", this));
+                if (!moveHead.GetBool("Saved"))
+                {
+                    moveHead.SetString("DocumentType", await CommonData.GetSettingAsync("DirectTakeOverDocType", this));
 
-                if (string.IsNullOrEmpty(moveHead.GetString("DocumentType")))
-                {
-                    StartActivity(typeof(MainMenu));
-                    Finish();
-                }
-                moveHead.SetString("Wharehouse", await CommonData.GetSettingAsync("DefaultWarehouse", this));
-                moveHead.SetBool("ByOrder", false);
-                moveHead.SetInt("Clerk", Services.UserID());
-                moveHead.SetString("Type", "I");
-                moveHead.SetString("LinkKey", "");
-                string error;
-                var savedMoveHead = Services.SetObject("mh", moveHead, out error);
-                if (savedMoveHead == null)
-                {
-                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s216)}" + error, ToastLength.Long).Show();
+                    if (string.IsNullOrEmpty(moveHead.GetString("DocumentType")))
+                    {
+                        StartActivity(typeof(MainMenu));
+                        Finish();
+                    }
+                    moveHead.SetString("Wharehouse", await CommonData.GetSettingAsync("DefaultWarehouse", this));
+                    moveHead.SetBool("ByOrder", false);
+                    moveHead.SetInt("Clerk", Services.UserID());
+                    moveHead.SetString("Type", "I");
+                    moveHead.SetString("LinkKey", "");
+                    string error;
+                    var savedMoveHead = Services.SetObject("mh", moveHead, out error);
+                    if (savedMoveHead == null)
+                    {
+                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s216)}" + error, ToastLength.Long).Show();
 
-                    return false;
+                        return false;
+                    }
+                    else
+                    {
+                        moveHead.SetInt("HeadID", savedMoveHead.GetInt("HeadID"));
+                        moveHead.SetBool("Saved", true);
+                    }
                 }
-                else
-                {
-                    moveHead.SetInt("HeadID", savedMoveHead.GetInt("HeadID"));
-                    moveHead.SetBool("Saved", true);
-                }
+
+                return true;
+
+            } catch(Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+                return false;
             }
-
-            return true;
         }
         private async Task<NameValueObject?> SaveItem(bool allowEmpty)
         {
@@ -285,7 +293,7 @@ namespace WMS
             var _broadcastReceiver = new NetworkStatusBroadcastReceiver();
             _broadcastReceiver.ConnectionStatusChanged += OnNetworkStatusChanged;
             Application.Context.RegisterReceiver(_broadcastReceiver,
-            new IntentFilter(ConnectivityManager.ConnectivityAction));
+            new IntentFilter(ConnectivityManager.ConnectivityAction), ReceiverFlags.NotExported);
 
 
             tbIdent.RequestFocus();

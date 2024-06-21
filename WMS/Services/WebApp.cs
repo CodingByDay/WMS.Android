@@ -262,25 +262,11 @@ namespace TrendNET.WMS.Device.Services
                     }
                 }
             }
-            catch (HttpRequestException ex)
-            {
-                result = ex.Message;
-                SentrySdk.CaptureException(ex);
-            }
-
-            catch (TaskCanceledException ex)
-            {
-                result = "Request timed out.";
-                SentrySdk.CaptureException(ex);
-            }
-
             catch (Exception ex)
             {
                 result = ex.Message;
-                SentrySdk.CaptureException(ex);
+                SentrySdk.CaptureMessage(ex + "The request url is: " + rqURL );
             }
-
-
 
             return (success, result);
         }

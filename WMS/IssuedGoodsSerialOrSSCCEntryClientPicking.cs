@@ -163,7 +163,7 @@ namespace WMS
             var _broadcastReceiver = new NetworkStatusBroadcastReceiver();
             _broadcastReceiver.ConnectionStatusChanged += OnNetworkStatusChanged;
             Application.Context.RegisterReceiver(_broadcastReceiver,
-                new IntentFilter(ConnectivityManager.ConnectivityAction));
+                new IntentFilter(ConnectivityManager.ConnectivityAction), ReceiverFlags.NotExported);
             ssccRow = FindViewById<LinearLayout>(Resource.Id.sscc_row);
             serialRow = FindViewById<LinearLayout>(Resource.Id.serial_row);
 
