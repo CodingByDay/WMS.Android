@@ -1,4 +1,5 @@
 ﻿using Square.Picasso;
+using WMS.ExceptionStore;
 
 public class CustomToolbar
 {
@@ -8,29 +9,42 @@ public class CustomToolbar
 
     public CustomToolbar(Activity activity, AndroidX.AppCompat.Widget.Toolbar toolbar, int navIconImageViewId)
     {
-        _activity = activity;
-        _toolbar = toolbar;
-        _navIconImageViewId = navIconImageViewId;
+        try
+        {
+            _activity = activity;
+            _toolbar = toolbar;
+            _navIconImageViewId = navIconImageViewId;
+        }
+        catch (Exception ex)
+        {
+            GlobalExceptions.ReportGlobalException(ex);
+        }
     }
 
     public void SetNavigationIcon(string imageUrl, ImageView image = null)
     {
         try
         {
-            ImageView navIconImageView = _toolbar.FindViewById<ImageView>(_navIconImageViewId);
+            try
+            {
+                ImageView navIconImageView = _toolbar.FindViewById<ImageView>(_navIconImageViewId);
 
-            // Load and set the image with Picasso
-            Picasso.With(_activity)
-                .Load(imageUrl)
-                .Into(navIconImageView);
+                // Load and set the image with Picasso
+                Picasso.With(_activity)
+                    .Load(imageUrl)
+                    .Into(navIconImageView);
 
-            // Make the ImageView visible
-            navIconImageView.Visibility = Android.Views.ViewStates.Visible;
+                // Make the ImageView visible
+                navIconImageView.Visibility = Android.Views.ViewStates.Visible;
+            }
+            catch
+            {
+                return;
+            }
         }
-        catch
+        catch (Exception ex)
         {
-            return;
+            GlobalExceptions.ReportGlobalException(ex);
         }
-
     }
 }

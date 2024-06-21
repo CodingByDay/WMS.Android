@@ -14,6 +14,7 @@ using System.Diagnostics;
 using TrendNET.WMS.Device.Services;
 using WMS.App;
 using WMS.Background;
+using WMS.ExceptionStore;
 using Xamarin.Essentials;
 namespace WMS
 {
@@ -48,78 +49,93 @@ namespace WMS
 
         public bool IsOnline()
         {
-            var cm = (ConnectivityManager)GetSystemService(ConnectivityService);
-            return cm.ActiveNetworkInfo == null ? false : cm.ActiveNetworkInfo.IsConnected;
+            try
+            {
+                var cm = (ConnectivityManager)GetSystemService(ConnectivityService);
+                return cm.ActiveNetworkInfo == null ? false : cm.ActiveNetworkInfo.IsConnected;
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+                return false;
+            }
         }
 
         private async Task ProcessRegistrationAsync()
         {
-            var id = App.Settings.ID.ToString();
-
-            // Using the asynchronous GetAsync method
-            var (success, result) = await WebApp.GetAsync("mode=deviceActive");
-
-            if (success)
+            try
             {
-                if (result != "Active!")
+                var id = App.Settings.ID.ToString();
+
+                // Using the asynchronous GetAsync method
+                var (success, result) = await WebApp.GetAsync("mode=deviceActive");
+
+                if (success)
                 {
-                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s294)}", ToastLength.Long).Show();
-                    return;
-                }
-
-                var inactivity = new Intent(this, typeof(Inactivity));
-                StartService(inactivity);
-
-                if (IsOnline())
-                {
-                    if (string.IsNullOrEmpty(Password.Text.Trim())) { return; }
-
-                    Services.ClearUserInfo();
-
-                    string error;
-
-
-            
-                    var valid = await Services.IsValidUserAsync(Password.Text.Trim());
-                 
-
-                    if (valid)
+                    if (result != "Active!")
                     {
-                        if (await Services.HasPermission("TNET_WMS", "R", this))
+                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s294)}", ToastLength.Long).Show();
+                        return;
+                    }
+
+                    var inactivity = new Intent(this, typeof(Inactivity));
+                    StartService(inactivity);
+
+                    if (IsOnline())
+                    {
+                        if (string.IsNullOrEmpty(Password.Text.Trim())) { return; }
+
+                        Services.ClearUserInfo();
+
+                        string error;
+
+
+
+                        var valid = await Services.IsValidUserAsync(Password.Text.Trim());
+
+
+                        if (valid)
                         {
-                            StartActivity(typeof(MainMenu));
-                            Password.Text = "";
-                            isValid = true;
-                            Finish();
+                            if (await Services.HasPermission("TNET_WMS", "R", this))
+                            {
+                                StartActivity(typeof(MainMenu));
+                                Password.Text = "";
+                                isValid = true;
+                                Finish();
+                            }
+                            else
+                            {
+                                Password.Text = "";
+                                isValid = false;
+                                string toast = $"{Resources.GetString(Resource.String.s295)}";
+                                Toast.MakeText(this, toast, ToastLength.Long).Show();
+                            }
                         }
                         else
                         {
                             Password.Text = "";
                             isValid = false;
-                            string toast = $"{Resources.GetString(Resource.String.s295)}";
+                            string toast = $"{Resources.GetString(Resource.String.s296)}";
                             Toast.MakeText(this, toast, ToastLength.Long).Show();
                         }
                     }
                     else
                     {
-                        Password.Text = "";
-                        isValid = false;
-                        string toast = $"{Resources.GetString(Resource.String.s296)}";
+                        // Not connected 
+                        string toast = $"{Resources.GetString(Resource.String.s297)}";
                         Toast.MakeText(this, toast, ToastLength.Long).Show();
                     }
                 }
                 else
                 {
-                    // Not connected 
+                    // Handle failure case
                     string toast = $"{Resources.GetString(Resource.String.s297)}";
                     Toast.MakeText(this, toast, ToastLength.Long).Show();
                 }
             }
-            else
+            catch (Exception ex)
             {
-                // Handle failure case
-                string toast = $"{Resources.GetString(Resource.String.s297)}";
-                Toast.MakeText(this, toast, ToastLength.Long).Show();
+                GlobalExceptions.ReportGlobalException(ex);
             }
         }
 
@@ -128,176 +144,246 @@ namespace WMS
 
         protected async override void OnCreate(Bundle savedInstanceState)
         {
-            App.Settings.restart = false;
+            try
+            {
+                App.Settings.restart = false;
 
-            ChangeTheOrientation();
-            base.OnCreate(savedInstanceState);
-            Xamarin.Essentials.Platform.Init(this, savedInstanceState);
-            SetContentView(Resource.Layout.LoginActivity);
+                ChangeTheOrientation();
+                base.OnCreate(savedInstanceState);
+                Xamarin.Essentials.Platform.Init(this, savedInstanceState);
+                SetContentView(Resource.Layout.LoginActivity);
 
-            Password = FindViewById<EditText>(Resource.Id.tbPassword);
-            Password.InputType = Android.Text.InputTypes.NumberVariationPassword |
-            Android.Text.InputTypes.ClassNumber;
-            img = FindViewById<ImageView>(Resource.Id.imglogo);
-            txtVersion = FindViewById<TextView>(Resource.Id.txtVersion);
-            chSlovenian = FindViewById<LinearLayout>(Resource.Id.chSlovenian);
-            chEnglish = FindViewById<LinearLayout>(Resource.Id.chSlovenian);
-            imgSlovenian = FindViewById<ImageView>(Resource.Id.imgSlovenian);
-            imgEnglish = FindViewById<ImageView>(Resource.Id.imgEnglish);
-            SetUpLanguages();
-            GetLogo();
-            var _broadcastReceiver = new NetworkStatusBroadcastReceiver();
-            _broadcastReceiver.ConnectionStatusChanged += OnNetworkStatusChanged;
-            Application.Context.RegisterReceiver(_broadcastReceiver,
-            new IntentFilter(ConnectivityManager.ConnectivityAction), ReceiverFlags.NotExported);
-            Button btnRegistrationEvent = FindViewById<Button>(Resource.Id.btnRegistrationClick);
-            btnRegistrationEvent.Clickable = true;
-            btnRegistrationEvent.Enabled = true;
-            btnRegistrationEvent.Click += BtnRegistrationEvent_Click;
-            Password.KeyPress += Password_KeyPress;
-            App.Settings.login = false;
+                Password = FindViewById<EditText>(Resource.Id.tbPassword);
+                Password.InputType = Android.Text.InputTypes.NumberVariationPassword |
+                Android.Text.InputTypes.ClassNumber;
+                img = FindViewById<ImageView>(Resource.Id.imglogo);
+                txtVersion = FindViewById<TextView>(Resource.Id.txtVersion);
+                chSlovenian = FindViewById<LinearLayout>(Resource.Id.chSlovenian);
+                chEnglish = FindViewById<LinearLayout>(Resource.Id.chSlovenian);
+                imgSlovenian = FindViewById<ImageView>(Resource.Id.imgSlovenian);
+                imgEnglish = FindViewById<ImageView>(Resource.Id.imgEnglish);
+                SetUpLanguages();
+                GetLogo();
+                var _broadcastReceiver = new NetworkStatusBroadcastReceiver();
+                _broadcastReceiver.ConnectionStatusChanged += OnNetworkStatusChanged;
+                Application.Context.RegisterReceiver(_broadcastReceiver,
+                new IntentFilter(ConnectivityManager.ConnectivityAction), ReceiverFlags.NotExported);
+                Button btnRegistrationEvent = FindViewById<Button>(Resource.Id.btnRegistrationClick);
+                btnRegistrationEvent.Clickable = true;
+                btnRegistrationEvent.Enabled = true;
+                btnRegistrationEvent.Click += BtnRegistrationEvent_Click;
+                Password.KeyPress += Password_KeyPress;
+                App.Settings.login = false;
 
-            InitializeSentryAsync();
+                InitializeSentryAsync();
 
-            // Check and request necessary permissions at startup because of Google Play policies. 29.05.2024 Janko Jovièiæ
-            // RequestNecessaryPermissions(); // For now not needed. 31.05.2024 Janko Jovièiæ
+                // Check and request necessary permissions at startup because of Google Play policies. 29.05.2024 Janko Jovièiæ
+                // RequestNecessaryPermissions(); // For now not needed. 31.05.2024 Janko Jovièiæ
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
         }
 
         private void Password_KeyPress(object? sender, View.KeyEventArgs e)
         {
-            if (e.Event.Action == KeyEventActions.Down && e.KeyCode == Android.Views.Keycode.Enter)
+            try
             {
-                BtnRegistrationEvent_Click(this, null);
-                e.Handled = true;
+                if (e.Event.Action == KeyEventActions.Down && e.KeyCode == Android.Views.Keycode.Enter)
+                {
+                    BtnRegistrationEvent_Click(this, null);
+                    e.Handled = true;
+                }
+                else
+                {
+                    e.Handled = false;
+                }
             }
-            else
+            catch (Exception ex)
             {
-                e.Handled = false;
+                GlobalExceptions.ReportGlobalException(ex);
             }
         }
 
 
         void RequestNecessaryPermissions()
         {
-            string[] requiredPermissions = new string[]
+            try
             {
+                string[] requiredPermissions = new string[]
+                {
                 Manifest.Permission.Bluetooth
-            };
+                };
 
-            CheckAndRequestPermissions(requiredPermissions);
+                CheckAndRequestPermissions(requiredPermissions);
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
         }
 
         void CheckAndRequestPermissions(string[] permissions)
         {
-
-            var permissionsToRequest = new List<string>();
-
-            foreach (var permission in permissions)
+            try
             {
-                if (ContextCompat.CheckSelfPermission(this, permission) != (int)Permission.Granted)
+                var permissionsToRequest = new List<string>();
+
+                foreach (var permission in permissions)
                 {
-                    permissionsToRequest.Add(permission);
+                    if (ContextCompat.CheckSelfPermission(this, permission) != (int)Permission.Granted)
+                    {
+                        permissionsToRequest.Add(permission);
+                    }
+                }
+
+                if (permissionsToRequest.Count > 0)
+                {
+                    ActivityCompat.RequestPermissions(this, permissionsToRequest.ToArray(), RequestPermissionsId);
+                }
+
+
+                else
+                {
+                    // All permissions are already granted
+                    OnAllPermissionsGranted();
                 }
             }
-
-            if (permissionsToRequest.Count > 0)
+            catch (Exception ex)
             {
-                ActivityCompat.RequestPermissions(this, permissionsToRequest.ToArray(), RequestPermissionsId);
-            }
-
-
-            else
-            {
-                // All permissions are already granted
-                OnAllPermissionsGranted();
+                GlobalExceptions.ReportGlobalException(ex);
             }
         }
 
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Permission[] grantResults)
         {
-            if (requestCode == RequestPermissionsId)
+            try
             {
-                bool allGranted = grantResults.Any(x => x == Permission.Granted);
+                if (requestCode == RequestPermissionsId)
+                {
+                    bool allGranted = grantResults.Any(x => x == Permission.Granted);
 
-                if (allGranted)
-                {
-                    OnAllPermissionsGranted();
+                    if (allGranted)
+                    {
+                        OnAllPermissionsGranted();
+                    }
+                    else
+                    {
+                        // Handle the case where permissions are not granted
+                        OnPermissionsDenied();
+                    }
                 }
-                else
-                {
-                    // Handle the case where permissions are not granted
-                    OnPermissionsDenied();
-                }
+
+
+                base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
             }
-
-
-            base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
         }
 
         void OnAllPermissionsGranted()
         {
-            // All necessary permissions are granted, proceed with the app's functionality
-            permissionsGranted = true;
+            try
+            {
+                // All necessary permissions are granted, proceed with the app's functionality
+                permissionsGranted = true;
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
         }
 
         void OnPermissionsDenied()
         {
-            // Inform the user that not all permissions were granted and the app might not work properly
-            Snackbar.Make(FindViewById(Android.Resource.Id.Content), "Permissions denied. The app may not function correctly.", Snackbar.LengthIndefinite)
-                .SetAction("Settings", v =>
-                {
-                    // Open app settings
-                    var intent = new Android.Content.Intent(Android.Provider.Settings.ActionApplicationDetailsSettings);
-                    var uri = Android.Net.Uri.FromParts("package", PackageName, null);
-                    intent.SetData(uri);
-                    StartActivity(intent);
-                })
-                .Show();
+            try
+            {
+                // Inform the user that not all permissions were granted and the app might not work properly
+                Snackbar.Make(FindViewById(Android.Resource.Id.Content), "Permissions denied. The app may not function correctly.", Snackbar.LengthIndefinite)
+                    .SetAction("Settings", v =>
+                    {
+                        // Open app settings
+                        var intent = new Android.Content.Intent(Android.Provider.Settings.ActionApplicationDetailsSettings);
+                        var uri = Android.Net.Uri.FromParts("package", PackageName, null);
+                        intent.SetData(uri);
+                        StartActivity(intent);
+                    })
+                    .Show();
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
         }
 
         public void InitializeSentryAsync()
         {
-            SentrySdk.Init(o =>
+            try
             {
-                // Tells which project in Sentry to send events to:
-                o.Dsn = "https://4da007db4594a10f53ab292097e612f8@o4507304617836544.ingest.de.sentry.io/4507304993751120";
-            });
+                SentrySdk.Init(o =>
+                {
+                    // Tells which project in Sentry to send events to:
+                    o.Dsn = "https://4da007db4594a10f53ab292097e612f8@o4507304617836544.ingest.de.sentry.io/4507304993751120";
+                });
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
         }
 
 
 
         public string GetAppVersion()
         {
-            return AppInfo.VersionString;
+            try
+            {
+                return AppInfo.VersionString;
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+                return string.Empty;
+            }
         }
 
         private void SetUpLanguages()
         {
-            ISharedPreferences sharedPreferences = PreferenceManager.GetDefaultSharedPreferences(Application.Context);
-            ISharedPreferencesEditor editor = sharedPreferences.Edit();
+            try
+            {
+                ISharedPreferences sharedPreferences = PreferenceManager.GetDefaultSharedPreferences(Application.Context);
+                ISharedPreferencesEditor editor = sharedPreferences.Edit();
 
-            // Create a color matrix for the highlight effect
-            float[] colorMatrixValues = {
+                // Create a color matrix for the highlight effect
+                float[] colorMatrixValues = {
                 2, 0, 0, 0, 0, // Red
                 0, 2, 0, 0, 0, // Green
                 0, 0, 2, 0, 0, // Blue
                 0, 0, 0, 1, 0  // Alpha
             };
 
-            ColorMatrix colorMatrix = new ColorMatrix(colorMatrixValues);
-            highlightFilter = new ColorMatrixColorFilter(colorMatrix);
-            txtVersion.Text = "v." + GetAppVersion();
-            var language = Resources.Configuration.Locale.Country;
+                ColorMatrix colorMatrix = new ColorMatrix(colorMatrixValues);
+                highlightFilter = new ColorMatrixColorFilter(colorMatrix);
+                txtVersion.Text = "v." + GetAppVersion();
+                var language = Resources.Configuration.Locale.Country;
 
-            if (language == "SI")
-            {
-                imgSlovenian.SetColorFilter(highlightFilter);
-                Base.Store.language = "sl";
+                if (language == "SI")
+                {
+                    imgSlovenian.SetColorFilter(highlightFilter);
+                    Base.Store.language = "sl";
+                }
+                else if (language == "US")
+                {
+                    imgEnglish.SetColorFilter(highlightFilter);
+                    Base.Store.language = "en";
+                }
             }
-            else if (language == "US")
+            catch (Exception ex)
             {
-                imgEnglish.SetColorFilter(highlightFilter);
-                Base.Store.language = "en";
+                GlobalExceptions.ReportGlobalException(ex);
             }
         }
 
@@ -305,35 +391,49 @@ namespace WMS
         {
             try
             {
-                var url = App.Settings.RootURL + "/Services/Logo";
-                // Load and set the image with Picasso
-                Picasso.Get()
-                    .Load(url)
-                    .Into(img);
+                try
+                {
+                    var url = App.Settings.RootURL + "/Services/Logo";
+                    // Load and set the image with Picasso
+                    Picasso.Get()
+                        .Load(url)
+                        .Into(img);
+                }
+                catch
+                {
+                    return;
+                }
             }
-            catch
+            catch (Exception ex)
             {
-                return;
+                GlobalExceptions.ReportGlobalException(ex);
             }
         }
 
 
         private void OnNetworkStatusChanged(object sender, EventArgs e)
         {
-            if (IsOnline())
+            try
             {
-                try
+                if (IsOnline())
                 {
-                    LoaderManifest.LoaderManifestLoopStop(this);
+                    try
+                    {
+                        LoaderManifest.LoaderManifestLoopStop(this);
+                    }
+                    catch (Exception err)
+                    {
+                        SentrySdk.CaptureException(err);
+                    }
                 }
-                catch (Exception err)
+                else
                 {
-                    SentrySdk.CaptureException(err);
+                    LoaderManifest.LoaderManifestLoop(this);
                 }
             }
-            else
+            catch (Exception ex)
             {
-                LoaderManifest.LoaderManifestLoop(this);
+                GlobalExceptions.ReportGlobalException(ex);
             }
         }
 
@@ -342,13 +442,20 @@ namespace WMS
 
         private void ChangeTheOrientation()
         {
-            if (App.Settings.tablet == true)
+            try
             {
-                base.RequestedOrientation = Android.Content.PM.ScreenOrientation.Landscape;
+                if (App.Settings.tablet == true)
+                {
+                    base.RequestedOrientation = Android.Content.PM.ScreenOrientation.Landscape;
+                }
+                else
+                {
+                    base.RequestedOrientation = Android.Content.PM.ScreenOrientation.Portrait;
+                }
             }
-            else
+            catch (Exception ex)
             {
-                base.RequestedOrientation = Android.Content.PM.ScreenOrientation.Portrait;
+                GlobalExceptions.ReportGlobalException(ex);
             }
         }
 
@@ -358,42 +465,72 @@ namespace WMS
 
         public override bool OnOptionsItemSelected(IMenuItem item)
         {
-            switch (item.ItemId)
+            try
             {
-                case Resource.Id.action_setting1:
-                    {
-                        Finish();
-                        StartActivity(typeof(Settings));
-                        Finish();
-                        return true;
-                    }
+                switch (item.ItemId)
+                {
+                    case Resource.Id.action_setting1:
+                        {
+                            Finish();
+                            StartActivity(typeof(Settings));
+                            Finish();
+                            return true;
+                        }
 
+                }
+
+                return base.OnOptionsItemSelected(item);
             }
-
-            return base.OnOptionsItemSelected(item);
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+                return false;
+            }
         }
         private void Listener_Click(object sender, EventArgs e)
         {
-            StartActivity(typeof(Settings));
-            Finish();
+            try
+            {
+                StartActivity(typeof(Settings));
+                Finish();
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
         }
 
         public override bool OnCreateOptionsMenu(IMenu menu)
         {
-            MenuInflater.Inflate(Resource.Layout.popup_action, menu);
-            return base.OnCreateOptionsMenu(menu);
+            try
+            {
+                MenuInflater.Inflate(Resource.Layout.popup_action, menu);
+                return base.OnCreateOptionsMenu(menu);
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+                return false;
+            }
         }
 
         private async void BtnRegistrationEvent_Click(object sender, System.EventArgs e)
         {
-            if (permissionsGranted)
+            try
             {
-                LoaderManifest.LoaderManifestLoopResources(this);
+                if (permissionsGranted)
+                {
+                    LoaderManifest.LoaderManifestLoopResources(this);
 
-                await ProcessRegistrationAsync();
+                    await ProcessRegistrationAsync();
 
-                LoaderManifest.LoaderManifestLoopStop(this);
+                    LoaderManifest.LoaderManifestLoopStop(this);
 
+                }
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
             }
         }
 

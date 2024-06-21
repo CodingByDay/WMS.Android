@@ -10,6 +10,7 @@ using TrendNET.WMS.Core.Data;
 using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
 using WMS.App;
+using WMS.ExceptionStore;
 using static Android.App.ActionBar;
 using AlertDialog = Android.App.AlertDialog;
 using WebApp = TrendNET.WMS.Device.Services.WebApp;
@@ -61,308 +62,344 @@ namespace WMS
         private double quantity;
         protected async override void OnCreate(Bundle savedInstanceState)
         {
-            base.OnCreate(savedInstanceState);
-            SetTheme(Resource.Style.AppTheme_NoActionBar);
-
-            if (App.Settings.tablet)
+            try
             {
-                base.RequestedOrientation = ScreenOrientation.Landscape;
-                base.SetContentView(Resource.Layout.TakeOverSerialOrSSCCEntryTablet);
-                listData = FindViewById<ListView>(Resource.Id.listData);
-                dataAdapter = UniversalAdapterHelper.GetTakeoverSerialOrSSCCEntry(this, data);
-                listData.Adapter = dataAdapter;
+                base.OnCreate(savedInstanceState);
+                SetTheme(Resource.Style.AppTheme_NoActionBar);
+
+                if (App.Settings.tablet)
+                {
+                    base.RequestedOrientation = ScreenOrientation.Landscape;
+                    base.SetContentView(Resource.Layout.TakeOverSerialOrSSCCEntryTablet);
+                    listData = FindViewById<ListView>(Resource.Id.listData);
+                    dataAdapter = UniversalAdapterHelper.GetTakeoverSerialOrSSCCEntry(this, data);
+                    listData.Adapter = dataAdapter;
+                }
+                else
+                {
+                    base.RequestedOrientation = ScreenOrientation.Portrait;
+                    base.SetContentView(Resource.Layout.TakeOverSerialOrSSCCEntry);
+                }
+
+                AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
+                var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
+                _customToolbar.SetNavigationIcon(App.Settings.RootURL + "/Services/Logo");
+                SetSupportActionBar(_customToolbar._toolbar);
+                SupportActionBar.SetDisplayShowTitleEnabled(false);
+                tbIdent = FindViewById<EditText>(Resource.Id.tbIdent);
+                tbSSCC = FindViewById<EditText>(Resource.Id.tbSSCC);
+                tbSerialNum = FindViewById<EditText>(Resource.Id.tbSerialNum);
+                tbLocation = FindViewById<EditText>(Resource.Id.tbLocation);
+                tbPacking = FindViewById<EditText>(Resource.Id.tbPacking);
+                tbIdent.InputType = Android.Text.InputTypes.ClassNumber;
+                tbSSCC.InputType = Android.Text.InputTypes.ClassNumber;
+                tbLocation.InputType = Android.Text.InputTypes.ClassNumber;
+                btSaveOrUpdate = FindViewById<Button>(Resource.Id.btSaveOrUpdate);
+                btCreate = FindViewById<Button>(Resource.Id.btCreate);
+                btFinish = FindViewById<Button>(Resource.Id.btFinish);
+                btOverview = FindViewById<Button>(Resource.Id.btOverview);
+                btBack = FindViewById<Button>(Resource.Id.btBack);
+                lbQty = FindViewById<TextView>(Resource.Id.lbQty);
+                lbUnits = FindViewById<TextView>(Resource.Id.lbUnits);
+                Window.SetSoftInputMode(Android.Views.SoftInput.AdjustResize);
+                barcode2D = new Barcode2D(this, this);
+                ssccRow = FindViewById<LinearLayout>(Resource.Id.sscc_row);
+                serialRow = FindViewById<LinearLayout>(Resource.Id.serial_row);
+                btSaveOrUpdate.Click += BtSaveOrUpdate_Click;
+                btCreate.Click += BtCreate_Click;
+                btFinish.Click += BtFinish_Click;
+                btOverview.Click += BtOverview_Click;
+                btBack.Click += BtBack_Click;
+
+                // Method calls
+
+                CheckIfApplicationStopingException();
+
+                // Color the fields that can be scanned
+                ColorFields();
+
+                // Stop the loader
+
+                SetUpProcessDependentButtons();
+
+                // Main logic for the entry
+                await SetUpForm();
+
+
+                if (App.Settings.tablet)
+                {
+                    await FillTheList();
+                }
             }
-            else
+            catch (Exception ex)
             {
-                base.RequestedOrientation = ScreenOrientation.Portrait;
-                base.SetContentView(Resource.Layout.TakeOverSerialOrSSCCEntry);
+                GlobalExceptions.ReportGlobalException(ex);
             }
-
-            AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
-            var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
-            _customToolbar.SetNavigationIcon(App.Settings.RootURL + "/Services/Logo");
-            SetSupportActionBar(_customToolbar._toolbar);
-            SupportActionBar.SetDisplayShowTitleEnabled(false);
-            tbIdent = FindViewById<EditText>(Resource.Id.tbIdent);
-            tbSSCC = FindViewById<EditText>(Resource.Id.tbSSCC);
-            tbSerialNum = FindViewById<EditText>(Resource.Id.tbSerialNum);
-            tbLocation = FindViewById<EditText>(Resource.Id.tbLocation);
-            tbPacking = FindViewById<EditText>(Resource.Id.tbPacking);
-            tbIdent.InputType = Android.Text.InputTypes.ClassNumber;
-            tbSSCC.InputType = Android.Text.InputTypes.ClassNumber;
-            tbLocation.InputType = Android.Text.InputTypes.ClassNumber;
-            btSaveOrUpdate = FindViewById<Button>(Resource.Id.btSaveOrUpdate);
-            btCreate = FindViewById<Button>(Resource.Id.btCreate);
-            btFinish = FindViewById<Button>(Resource.Id.btFinish);
-            btOverview = FindViewById<Button>(Resource.Id.btOverview);
-            btBack = FindViewById<Button>(Resource.Id.btBack);
-            lbQty = FindViewById<TextView>(Resource.Id.lbQty);
-            lbUnits = FindViewById<TextView>(Resource.Id.lbUnits);
-            Window.SetSoftInputMode(Android.Views.SoftInput.AdjustResize);
-            barcode2D = new Barcode2D(this, this);
-            ssccRow = FindViewById<LinearLayout>(Resource.Id.sscc_row);
-            serialRow = FindViewById<LinearLayout>(Resource.Id.serial_row);
-            btSaveOrUpdate.Click += BtSaveOrUpdate_Click;
-            btCreate.Click += BtCreate_Click;
-            btFinish.Click += BtFinish_Click;
-            btOverview.Click += BtOverview_Click;
-            btBack.Click += BtBack_Click;
-
-            // Method calls
-
-            CheckIfApplicationStopingException();
-
-            // Color the fields that can be scanned
-            ColorFields();
-
-            // Stop the loader
-
-            SetUpProcessDependentButtons();
-
-            // Main logic for the entry
-            await SetUpForm();
-
-
-            if (App.Settings.tablet)
-            {
-                await FillTheList();
-            }
-
         }
 
         private async Task fillListAdapter()
         {
-
-            for (int i = 0; i < positions.Items.Count; i++)
+            try
             {
-                if (i < positions.Items.Count && positions.Items.Count > 0)
+                for (int i = 0; i < positions.Items.Count; i++)
                 {
-
-                    var item = positions.Items.ElementAt(i);
-                    var created = item.GetDateTime("DateInserted");
-                    var numbering = i + 1;
-                    bool setting;
-
-                    if (await CommonData.GetSettingAsync("ShowNumberOfUnitsField", this) == "1")
+                    if (i < positions.Items.Count && positions.Items.Count > 0)
                     {
-                        setting = false;
+
+                        var item = positions.Items.ElementAt(i);
+                        var created = item.GetDateTime("DateInserted");
+                        var numbering = i + 1;
+                        bool setting;
+
+                        if (await CommonData.GetSettingAsync("ShowNumberOfUnitsField", this) == "1")
+                        {
+                            setting = false;
+                        }
+                        else
+                        {
+                            setting = true;
+                        }
+                        if (setting)
+                        {
+                            tempUnit = item.GetDouble("Qty").ToString();
+
+                        }
+                        else
+                        {
+                            tempUnit = item.GetDouble("Factor").ToString();
+                        }
+
+                        string error;
+                        var ident = item.GetString("Ident").Trim();
+                        var openIdent = Services.GetObject("id", ident, out error);
+                        //  var ident = CommonData.LoadIdent(item.GetString("Ident"));
+                        var identName = openIdent.GetString("Name");
+                        var date = created == null ? "" : ((DateTime)created).ToString("dd.MM.yyyy");
+                        data.Add(new TakeoverDocument
+                        {
+                            ident = item.GetString("Ident"),
+                            serial = item.GetString("SerialNo"),
+                            sscc = item.GetString("SSCC"),
+                            location = item.GetString("Location"),
+                            quantity = tempUnit,
+                        });
+
                     }
                     else
                     {
-                        setting = true;
-                    }
-                    if (setting)
-                    {
-                        tempUnit = item.GetDouble("Qty").ToString();
+                        // UI changes.
+                        RunOnUiThread(() =>
+                        {
+                            string errorWebApp = string.Format($"{Resources.GetString(Resource.String.s247)}");
+                            Toast.MakeText(this, errorWebApp, ToastLength.Long).Show();
+                        });
 
                     }
-                    else
-                    {
-                        tempUnit = item.GetDouble("Factor").ToString();
-                    }
-
-                    string error;
-                    var ident = item.GetString("Ident").Trim();
-                    var openIdent = Services.GetObject("id", ident, out error);
-                    //  var ident = CommonData.LoadIdent(item.GetString("Ident"));
-                    var identName = openIdent.GetString("Name");
-                    var date = created == null ? "" : ((DateTime)created).ToString("dd.MM.yyyy");
-                    data.Add(new TakeoverDocument
-                    {
-                        ident = item.GetString("Ident"),
-                        serial = item.GetString("SerialNo"),
-                        sscc = item.GetString("SSCC"),
-                        location = item.GetString("Location"),
-                        quantity = tempUnit,
-                    });
 
                 }
-                else
-                {
-                    // UI changes.
-                    RunOnUiThread(() =>
-                    {
-                        string errorWebApp = string.Format($"{Resources.GetString(Resource.String.s247)}");
-                        Toast.MakeText(this, errorWebApp, ToastLength.Long).Show();
-                    });
-
-                }
-
             }
-
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
         }
         private async Task FillTheList()
         {
             try
             {
-
-                positions = await AsyncServices.AsyncServices.GetObjectListAsync("mi", moveHead.GetInt("HeadID").ToString(), this);
-                InUseObjects.Set("TakeOverEnteredPositions", positions);
-
-                if (positions == null)
+                try
                 {
-                    // UI changes.
-                    RunOnUiThread(() =>
+
+                    positions = await AsyncServices.AsyncServices.GetObjectListAsync("mi", moveHead.GetInt("HeadID").ToString(), this);
+                    InUseObjects.Set("TakeOverEnteredPositions", positions);
+
+                    if (positions == null)
                     {
-                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s213)}", ToastLength.Long).Show();
+                        // UI changes.
+                        RunOnUiThread(() =>
+                        {
+                            Toast.MakeText(this, $"{Resources.GetString(Resource.String.s213)}", ToastLength.Long).Show();
 
-                    });
+                        });
 
-                    return;
+                        return;
+                    }
+
                 }
-
+                finally
+                {
+                    await fillListAdapter();
+                }
             }
-            finally
+            catch (Exception ex)
             {
-                await fillListAdapter();
+                GlobalExceptions.ReportGlobalException(ex);
             }
         }
 
 
         private void SetUpProcessDependentButtons()
         {
-            // UI changes.
-            RunOnUiThread(() =>
+            try
             {
-                // This method changes the UI so it shows in a visible way that it is the update screen. - 18.03.2024
-                if (Base.Store.isUpdate)
+                // UI changes.
+                RunOnUiThread(() =>
                 {
-                    btSaveOrUpdate.Visibility = ViewStates.Gone;
-                    btCreate.Text = $"{Resources.GetString(Resource.String.s290)}";
-                }
-                else if (Base.Store.code2D != null)
-                {
-                    btSaveOrUpdate.Visibility = ViewStates.Gone;
-                    // 2d code reading process.
-                }
-            });
-   
+                    // This method changes the UI so it shows in a visible way that it is the update screen. - 18.03.2024
+                    if (Base.Store.isUpdate)
+                    {
+                        btSaveOrUpdate.Visibility = ViewStates.Gone;
+                        btCreate.Text = $"{Resources.GetString(Resource.String.s290)}";
+                    }
+                    else if (Base.Store.code2D != null)
+                    {
+                        btSaveOrUpdate.Visibility = ViewStates.Gone;
+                        // 2d code reading process.
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
         }
 
 
         private void ColorFields()
         {
-            // UI changes.
-            RunOnUiThread(() =>
+            try
             {
-                tbSSCC.SetBackgroundColor(Android.Graphics.Color.Aqua);
-                tbSerialNum.SetBackgroundColor(Android.Graphics.Color.Aqua);
-                tbLocation.SetBackgroundColor(Android.Graphics.Color.Aqua);
-            });
-
+                // UI changes.
+                RunOnUiThread(() =>
+                {
+                    tbSSCC.SetBackgroundColor(Android.Graphics.Color.Aqua);
+                    tbSerialNum.SetBackgroundColor(Android.Graphics.Color.Aqua);
+                    tbLocation.SetBackgroundColor(Android.Graphics.Color.Aqua);
+                });
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
         }
 
         private async Task SetUpForm()
         {
-            // This is the default focus of the view.
-            tbSSCC.RequestFocus();
+            try
+            {
+                // This is the default focus of the view.
+                tbSSCC.RequestFocus();
 
-            if (!openIdent.GetBool("isSSCC"))
-            {
-                ssccRow.Visibility = ViewStates.Gone;
-                tbSerialNum.RequestFocus();
-            }
-
-            if (!openIdent.GetBool("HasSerialNumber"))
-            {
-                serialRow.Visibility = ViewStates.Gone;
-                tbPacking.RequestFocus();
-            }
-
-            if (Base.Store.isUpdate)
-            {
-                // Update logic ?? it seems to be true.
-                tbIdent.Text = moveItem.GetString("IdentName");
-                tbSerialNum.Text = moveItem.GetString("SerialNo");
-                tbSSCC.Text = moveItem.GetString("SSCC");
-                tbLocation.Text = moveItem.GetString("Location");
-                tbPacking.Text = moveItem.GetDouble("Qty").ToString();
-                lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + moveItem.GetDouble("Qty").ToString() + " )";
-                btCreate.Text = $"{Resources.GetString(Resource.String.s290)}";
-                // Lock down all other fields
-                tbIdent.Enabled = false;
-                tbSerialNum.Enabled = false;
-                tbSSCC.Enabled = false;
-                tbLocation.Enabled = false;
-            }
-            else
-            {
-                tbIdent.Text = openIdent.GetString("Code") + " " + openIdent.GetString("Name");
-                // This flow is for idents.
-                var order = Base.Store.OpenOrder;
-                var code2d = Base.Store.code2D;
-                packaging = order.Packaging ?? 0;
-                quantity = order.Quantity ?? 0;
-                if (order != null)
+                if (!openIdent.GetBool("isSSCC"))
                 {
-                    if (packaging != -1 && packaging <= quantity)
-                    {
-                        lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + quantity.ToString(await CommonData.GetQtyPictureAsync(this)) + " )";
-                        tbPacking.Text = packaging.ToString();
-                        stock = quantity;
-                    }
-                    else
-                    {
-                        quantity = order.Quantity ?? 0;
-                        lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + quantity.ToString(await CommonData.GetQtyPictureAsync(this)) + " )";
-                        tbPacking.Text = quantity.ToString();
-                        stock = quantity;
-                    }
-
-                    await GetConnectedPositions(order.Order, order.Position ?? -1, order.Ident);
-                    tbLocation.Text = await CommonData.GetSettingAsync("DefaultPaletteLocation", this);
-
-                    tbPacking.RequestFocus();
-                    tbPacking.SelectAll();
-
+                    ssccRow.Visibility = ViewStates.Gone;
+                    tbSerialNum.RequestFocus();
                 }
-                else if (code2d != null)
+
+                if (!openIdent.GetBool("HasSerialNumber"))
                 {
-
-                    tbSerialNum.Text = code2d.charge;
-                    qtyCheck = 0;
-                    double result;
-
-                    // Try to parse the string to a double
-                    if (Double.TryParse(code2d.netoWeight, out result))
-                    {
-                        qtyCheck = result;
-                        lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + qtyCheck.ToString(await CommonData.GetQtyPictureAsync(this)) + " )";
-                        tbPacking.Text = qtyCheck.ToString();
-                        stock = qtyCheck;
-
-                    }
-
-                    await GetConnectedPositions(code2d.__helper__convertedOrder, code2d.__helper__position, code2d.ident);
-
-                    tbLocation.Text = await CommonData.GetSettingAsync("DefaultPaletteLocation", this);
-                    // Reset the 2d code to nothing
-                    Base.Store.code2D = null;
-
+                    serialRow.Visibility = ViewStates.Gone;
                     tbPacking.RequestFocus();
-                    tbPacking.SelectAll();
+                }
+
+                if (Base.Store.isUpdate)
+                {
+                    // Update logic ?? it seems to be true.
+                    tbIdent.Text = moveItem.GetString("IdentName");
+                    tbSerialNum.Text = moveItem.GetString("SerialNo");
+                    tbSSCC.Text = moveItem.GetString("SSCC");
+                    tbLocation.Text = moveItem.GetString("Location");
+                    tbPacking.Text = moveItem.GetDouble("Qty").ToString();
+                    lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + moveItem.GetDouble("Qty").ToString() + " )";
+                    btCreate.Text = $"{Resources.GetString(Resource.String.s290)}";
+                    // Lock down all other fields
+                    tbIdent.Enabled = false;
+                    tbSerialNum.Enabled = false;
+                    tbSSCC.Enabled = false;
+                    tbLocation.Enabled = false;
                 }
                 else
                 {
-                    // This is the orderless process.
-                    qtyCheck = 10000000;
-                    tbLocation.Text = await CommonData.GetSettingAsync("DefaultPaletteLocation", this);
-                    lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + Resources.GetString(Resource.String.s335) + " )";
-                    stock = qtyCheck;
-                    tbPacking.RequestFocus();
-                    tbPacking.SelectAll();
+                    tbIdent.Text = openIdent.GetString("Code") + " " + openIdent.GetString("Name");
+                    // This flow is for idents.
+                    var order = Base.Store.OpenOrder;
+                    var code2d = Base.Store.code2D;
+                    packaging = order.Packaging ?? 0;
+                    quantity = order.Quantity ?? 0;
+                    if (order != null)
+                    {
+                        if (packaging != -1 && packaging <= quantity)
+                        {
+                            lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + quantity.ToString(await CommonData.GetQtyPictureAsync(this)) + " )";
+                            tbPacking.Text = packaging.ToString();
+                            stock = quantity;
+                        }
+                        else
+                        {
+                            quantity = order.Quantity ?? 0;
+                            lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + quantity.ToString(await CommonData.GetQtyPictureAsync(this)) + " )";
+                            tbPacking.Text = quantity.ToString();
+                            stock = quantity;
+                        }
+
+                        await GetConnectedPositions(order.Order, order.Position ?? -1, order.Ident);
+                        tbLocation.Text = await CommonData.GetSettingAsync("DefaultPaletteLocation", this);
+
+                        tbPacking.RequestFocus();
+                        tbPacking.SelectAll();
+
+                    }
+                    else if (code2d != null)
+                    {
+
+                        tbSerialNum.Text = code2d.charge;
+                        qtyCheck = 0;
+                        double result;
+
+                        // Try to parse the string to a double
+                        if (Double.TryParse(code2d.netoWeight, out result))
+                        {
+                            qtyCheck = result;
+                            lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + qtyCheck.ToString(await CommonData.GetQtyPictureAsync(this)) + " )";
+                            tbPacking.Text = qtyCheck.ToString();
+                            stock = qtyCheck;
+
+                        }
+
+                        await GetConnectedPositions(code2d.__helper__convertedOrder, code2d.__helper__position, code2d.ident);
+
+                        tbLocation.Text = await CommonData.GetSettingAsync("DefaultPaletteLocation", this);
+                        // Reset the 2d code to nothing
+                        Base.Store.code2D = null;
+
+                        tbPacking.RequestFocus();
+                        tbPacking.SelectAll();
+                    }
+                    else
+                    {
+                        // This is the orderless process.
+                        qtyCheck = 10000000;
+                        tbLocation.Text = await CommonData.GetSettingAsync("DefaultPaletteLocation", this);
+                        lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + Resources.GetString(Resource.String.s335) + " )";
+                        stock = qtyCheck;
+                        tbPacking.RequestFocus();
+                        tbPacking.SelectAll();
+                    }
+
                 }
 
+                isPackaging = openIdent.GetBool("IsPackaging");
+
+                if (isPackaging)
+                {
+                    ssccRow.Visibility = ViewStates.Gone;
+                    serialRow.Visibility = ViewStates.Gone;
+                }
             }
-
-            isPackaging = openIdent.GetBool("IsPackaging");
-
-            if (isPackaging)
+            catch (Exception ex)
             {
-                ssccRow.Visibility = ViewStates.Gone;
-                serialRow.Visibility = ViewStates.Gone;
+                GlobalExceptions.ReportGlobalException(ex);
             }
-
         }
 
         /// </summary>
@@ -371,49 +408,56 @@ namespace WMS
         /// <param name="acIdent">Ident</param>
         private async Task GetConnectedPositions(string acKey, int anNo, string acIdent)
         {
-            connectedPositions.Clear();
-            var sql = "SELECT acName, acSubject, anQty, anNo, acKey from uWMSOrderItemByKeyIn WHERE acKey = @acKey AND anNo = @anNo AND acIdent = @acIdent";
-            var parameters = new List<Services.Parameter>();
-            parameters.Add(new Services.Parameter { Name = "acKey", Type = "String", Value = acKey });
-            parameters.Add(new Services.Parameter { Name = "anNo", Type = "Int32", Value = anNo });
-            parameters.Add(new Services.Parameter { Name = "acIdent", Type = "String", Value = acIdent });
-     
-            var subjects = await AsyncServices.AsyncServices.GetObjectListBySqlAsync(sql, parameters, this);
-            if (!subjects.Success)
+            try
             {
-                RunOnUiThread(() =>
+                connectedPositions.Clear();
+                var sql = "SELECT acName, acSubject, anQty, anNo, acKey from uWMSOrderItemByKeyIn WHERE acKey = @acKey AND anNo = @anNo AND acIdent = @acIdent";
+                var parameters = new List<Services.Parameter>();
+                parameters.Add(new Services.Parameter { Name = "acKey", Type = "String", Value = acKey });
+                parameters.Add(new Services.Parameter { Name = "anNo", Type = "Int32", Value = anNo });
+                parameters.Add(new Services.Parameter { Name = "acIdent", Type = "String", Value = acIdent });
+
+                var subjects = await AsyncServices.AsyncServices.GetObjectListBySqlAsync(sql, parameters, this);
+                if (!subjects.Success)
                 {
-                    AlertDialog.Builder alert = new AlertDialog.Builder(this);
-                    alert.SetTitle($"{Resources.GetString(Resource.String.s265)}");
-                    alert.SetMessage($"{subjects.Error}");
-                    alert.SetPositiveButton("Ok", (senderAlert, args) =>
+                    RunOnUiThread(() =>
                     {
-                        alert.Dispose();
-                    });
-                    Dialog dialog = alert.Create();
-                    dialog.Show();
-                    SentrySdk.CaptureMessage(subjects.Error);
-                    return;
-                });
-            }
-            else
-            {
-                if (subjects.Rows.Count > 0)
-                {
-                    for (int i = 0; i < subjects.Rows.Count; i++)
-                    {
-                        var row = subjects.Rows[i];
-                        connectedPositions.Add(new Takeover
+                        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+                        alert.SetTitle($"{Resources.GetString(Resource.String.s265)}");
+                        alert.SetMessage($"{subjects.Error}");
+                        alert.SetPositiveButton("Ok", (senderAlert, args) =>
                         {
-                            acName = row.StringValue("acName"),
-                            acSubject = row.StringValue("acSubject"),
-                            anQty = row.DoubleValue("anQty"),
-                            anNo = (int)(row.IntValue("anNo") ?? -1),
-                            acKey = row.StringValue("acKey"),
-                            acIdent = row.StringValue("acIdent")
+                            alert.Dispose();
                         });
+                        Dialog dialog = alert.Create();
+                        dialog.Show();
+                        SentrySdk.CaptureMessage(subjects.Error);
+                        return;
+                    });
+                }
+                else
+                {
+                    if (subjects.Rows.Count > 0)
+                    {
+                        for (int i = 0; i < subjects.Rows.Count; i++)
+                        {
+                            var row = subjects.Rows[i];
+                            connectedPositions.Add(new Takeover
+                            {
+                                acName = row.StringValue("acName"),
+                                acSubject = row.StringValue("acSubject"),
+                                anQty = row.DoubleValue("anQty"),
+                                anNo = (int)(row.IntValue("anNo") ?? -1),
+                                acKey = row.StringValue("acKey"),
+                                acIdent = row.StringValue("acIdent")
+                            });
+                        }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
             }
         }
 
@@ -421,145 +465,461 @@ namespace WMS
 
         private void CheckIfApplicationStopingException()
         {
-            if (moveHead != null && openIdent != null)
+            try
             {
-                // No error here, safe (ish) to continue
-                return;
-            }
-            else
-            {
-                // Destroy the activity
+                if (moveHead != null && openIdent != null)
+                {
+                    // No error here, safe (ish) to continue
+                    return;
+                }
+                else
+                {
+                    // Destroy the activity
 
-                StartActivity(typeof(MainMenu));
-                Finish();
+                    StartActivity(typeof(MainMenu));
+                    Finish();
+                }
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
             }
         }
         private void BtBack_Click(object? sender, EventArgs e)
         {
-            StartActivity(typeof(MainMenu));
-            Finish();
+            try
+            {
+                StartActivity(typeof(MainMenu));
+                Finish();
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
         }
 
         private void BtOverview_Click(object? sender, EventArgs e)
         {
-            StartActivity(typeof(TakeOverEnteredPositionsView));
-            Finish();
+            try
+            {
+                StartActivity(typeof(TakeOverEnteredPositionsView));
+                Finish();
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
         }
 
 
         private void BtnNoConfirm_Click(object sender, EventArgs e)
         {
-            popupDialogConfirm.Dismiss();
-            popupDialogConfirm.Hide();
+            try
+            {
+                popupDialogConfirm.Dismiss();
+                popupDialogConfirm.Hide();
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
         }
 
         private async void BtnYesConfirm_Click(object sender, EventArgs e)
         {
             try
             {
-                LoaderManifest.LoaderManifestLoopResources(this);
-                await FinishMethod();
-            } catch (Exception ex)
-            {
-                SentrySdk.CaptureException(ex);
-            } finally
-            {
-                LoaderManifest.LoaderManifestLoopStop(this);
-            }
-        }
-
-        private async Task FinishMethod()
-        {
-            await Task.Run(async () =>
-            {
-              
-
                 try
                 {
-                    var headID = moveHead.GetInt("HeadID");
-                    var (success, result) = await WebApp.GetAsync("mode=finish&stock=add&print=" + Services.DeviceUser() + "&id=" + headID.ToString(), this);
-                    if (success)
-                    {
-                        if (result.StartsWith("OK!"))
-                        {
-                            RunOnUiThread(() =>
-                            {
-                                var id = result.Split('+')[1];
-                                AlertDialog.Builder alert = new AlertDialog.Builder(this);
-                                alert.SetTitle($"{Resources.GetString(Resource.String.s263)}");
-                                alert.SetMessage($"{Resources.GetString(Resource.String.s264)}" + id);
-                                alert.SetPositiveButton("Ok", (senderAlert, args) =>
-                                {
-                                    alert.Dispose();
-                                    StartActivity(typeof(MainMenu));
-                                    Finish();
-                                });
-                                Dialog dialog = alert.Create();
-                                dialog.Show();
-                            });
-                        }
-                        else
-                        {
-                            RunOnUiThread(() =>
-                            {
-                                AlertDialog.Builder alert = new AlertDialog.Builder(this);
-                                alert.SetTitle($"{Resources.GetString(Resource.String.s265)}");
-                                alert.SetMessage($"{Resources.GetString(Resource.String.s266)}" + result);
-                                alert.SetPositiveButton("Ok", (senderAlert, args) =>
-                                {
-                                    alert.Dispose();
-                                    StartActivity(typeof(MainMenu));
-                                    Finish();
-                                });
-                                Dialog dialog = alert.Create();
-                                dialog.Show();
-                            });
-                        }
-                    }
-                    else
-                    {
-                        // UI changes.
-                        RunOnUiThread(() =>
-                        {
-                            DialogHelper.ShowDialogError(this, this, $"{Resources.GetString(Resource.String.s218)}" + result);
-                        });
-                    }
+                    LoaderManifest.LoaderManifestLoopResources(this);
+                    await FinishMethod();
                 }
                 catch (Exception ex)
                 {
                     SentrySdk.CaptureException(ex);
                 }
-            });
+                finally
+                {
+                    LoaderManifest.LoaderManifestLoopStop(this);
+                }
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
+        }
+
+        private async Task FinishMethod()
+        {
+            try
+            {
+                await Task.Run(async () =>
+                {
+
+
+                    try
+                    {
+                        var headID = moveHead.GetInt("HeadID");
+                        var (success, result) = await WebApp.GetAsync("mode=finish&stock=add&print=" + Services.DeviceUser() + "&id=" + headID.ToString(), this);
+                        if (success)
+                        {
+                            if (result.StartsWith("OK!"))
+                            {
+                                RunOnUiThread(() =>
+                                {
+                                    var id = result.Split('+')[1];
+                                    AlertDialog.Builder alert = new AlertDialog.Builder(this);
+                                    alert.SetTitle($"{Resources.GetString(Resource.String.s263)}");
+                                    alert.SetMessage($"{Resources.GetString(Resource.String.s264)}" + id);
+                                    alert.SetPositiveButton("Ok", (senderAlert, args) =>
+                                    {
+                                        alert.Dispose();
+                                        StartActivity(typeof(MainMenu));
+                                        Finish();
+                                    });
+                                    Dialog dialog = alert.Create();
+                                    dialog.Show();
+                                });
+                            }
+                            else
+                            {
+                                RunOnUiThread(() =>
+                                {
+                                    AlertDialog.Builder alert = new AlertDialog.Builder(this);
+                                    alert.SetTitle($"{Resources.GetString(Resource.String.s265)}");
+                                    alert.SetMessage($"{Resources.GetString(Resource.String.s266)}" + result);
+                                    alert.SetPositiveButton("Ok", (senderAlert, args) =>
+                                    {
+                                        alert.Dispose();
+                                        StartActivity(typeof(MainMenu));
+                                        Finish();
+                                    });
+                                    Dialog dialog = alert.Create();
+                                    dialog.Show();
+                                });
+                            }
+                        }
+                        else
+                        {
+                            // UI changes.
+                            RunOnUiThread(() =>
+                            {
+                                DialogHelper.ShowDialogError(this, this, $"{Resources.GetString(Resource.String.s218)}" + result);
+                            });
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        SentrySdk.CaptureException(ex);
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
         }
 
         private void BtFinish_Click(object? sender, EventArgs e)
         {
-            popupDialogConfirm = new Dialog(this);
-            popupDialogConfirm.SetContentView(Resource.Layout.Confirmation);
-            popupDialogConfirm.Window.SetSoftInputMode(SoftInput.AdjustResize);
-            popupDialogConfirm.Show();
-            popupDialogConfirm.Window.SetLayout(LayoutParams.MatchParent, LayoutParams.WrapContent);
-            popupDialogConfirm.Window.SetBackgroundDrawable(new ColorDrawable(Color.ParseColor("#081a45")));
-            // Access Popup layout fields like below
-            btnYesConfirm = popupDialogConfirm.FindViewById<Button>(Resource.Id.btnYes);
-            btnNoConfirm = popupDialogConfirm.FindViewById<Button>(Resource.Id.btnNo);
-            btnYesConfirm.Click += BtnYesConfirm_Click;
-            btnNoConfirm.Click += BtnNoConfirm_Click;
+            try
+            {
+                popupDialogConfirm = new Dialog(this);
+                popupDialogConfirm.SetContentView(Resource.Layout.Confirmation);
+                popupDialogConfirm.Window.SetSoftInputMode(SoftInput.AdjustResize);
+                popupDialogConfirm.Show();
+                popupDialogConfirm.Window.SetLayout(LayoutParams.MatchParent, LayoutParams.WrapContent);
+                popupDialogConfirm.Window.SetBackgroundDrawable(new ColorDrawable(Color.ParseColor("#081a45")));
+                // Access Popup layout fields like below
+                btnYesConfirm = popupDialogConfirm.FindViewById<Button>(Resource.Id.btnYes);
+                btnNoConfirm = popupDialogConfirm.FindViewById<Button>(Resource.Id.btnNo);
+                btnYesConfirm.Click += BtnYesConfirm_Click;
+                btnNoConfirm.Click += BtnNoConfirm_Click;
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
         }
 
         private async void BtCreate_Click(object? sender, EventArgs e)
         {
             try
             {
-                LoaderManifest.LoaderManifestLoopResources(this);
-
-                if (!Base.Store.isUpdate)
+                try
                 {
+                    LoaderManifest.LoaderManifestLoopResources(this);
+
+                    if (!Base.Store.isUpdate)
+                    {
+
+                        double parsed;
+                        if (double.TryParse(tbPacking.Text, out parsed) && stock >= parsed)
+                        {
+
+                            var isCorrectLocation = await IsLocationCorrect();
+                            if (!isCorrectLocation)
+                            {
+                                // Nepravilna lokacija za izbrano skladišče
+                                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s333)}", ToastLength.Long).Show();
+                                return;
+                            }
+
+                            if (Base.Store.byOrder)
+                            {
+                                var isDuplicatedSerial = IsDuplicatedSerialOrAndSSCC(tbSerialNum.Text ?? string.Empty, tbSSCC.Text ?? string.Empty);
+                                var fieldsExist = ssccRow.Visibility == ViewStates.Visible || serialRow.Visibility == ViewStates.Visible;
+
+                                if (isDuplicatedSerial && fieldsExist)
+                                {
+                                    // Duplicirana serijska in/ali sscc koda.
+                                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s334)}", ToastLength.Long).Show();
+                                    return;
+                                }
+                            }
+                            else
+                            {
+
+                                string ident = openIdent.GetString("Code");
+                                string warehouse = string.Empty;
+
+                                if (Base.Store.isUpdate)
+                                {
+                                    warehouse = moveItem.GetString("Wharehouse");
+                                }
+                                else
+                                {
+                                    warehouse = moveHead.GetString("Wharehouse");
+                                }
+
+                                var isDuplicatedSerial = await IsDuplicatedSerialOrAndSSCCNotByOrder(ident, warehouse, tbSerialNum.Text, tbSSCC.Text);
+
+                                if (isDuplicatedSerial)
+                                {
+                                    // Duplicirana serijska in/ali sscc koda.
+                                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s334)}", ToastLength.Long).Show();
+                                    return;
+                                }
+                            }
+
+
+                            await CreateMethodFromStart();
+                        }
+                        else
+                        {
+                            Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
+                        }
+
+                    }
+                    else
+                    {
+                        // Update flow.
+                        double newQty;
+                        if (Double.TryParse(tbPacking.Text, out newQty))
+                        {
+                            if (newQty > moveItem.GetDouble("Qty"))
+                            {
+                                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s291)}", ToastLength.Long).Show();
+                            }
+
+                            else
+                            {
+                                var parameters = new List<Services.Parameter>();
+                                var tt = moveItem.GetInt("ItemID");
+                                parameters.Add(new Services.Parameter { Name = "anQty", Type = "Decimal", Value = newQty });
+                                parameters.Add(new Services.Parameter { Name = "anItemID", Type = "Int32", Value = moveItem.GetInt("ItemID") });
+                                string debugString = $"UPDATE uWMSMoveItem SET anQty = {newQty} WHERE anIDItem = {moveItem.GetInt("ItemID")}";
+                                var subjects = Services.Update($"UPDATE uWMSMoveItem SET anQty = @anQty WHERE anIDItem = @anItemID;", parameters);
+                                if (!subjects.Success)
+                                {
+                                    RunOnUiThread(() =>
+                                    {
+                                        SentrySdk.CaptureMessage(subjects.Error);
+                                        return;
+                                    });
+                                }
+                                else
+                                {
+                                    StartActivity(typeof(IssuedGoodsEnteredPositionsView));
+                                    Finish();
+                                }
+                            }
+                        }
+                        else
+                        {
+                            Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    SentrySdk.CaptureException(ex);
+                }
+                finally
+                {
+                    LoaderManifest.LoaderManifestLoopStop(this);
+                }
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
+        }
+
+        private bool IsDuplicatedSerialOrAndSSCC(string? serial = null, string? sscc = null)
+        {
+            try
+            {
+                bool result = false;
+
+                string ident = string.Empty;
+
+                ident = openIdent.GetString("Code");
+
+                var parameters = new List<Services.Parameter>();
+                parameters.Add(new Services.Parameter { Name = "acIdent", Type = "String", Value = ident });
+
+                string sql = "SELECT COUNT(*) AS anResult FROM uWMSMoveItemInClick WHERE acIdent = @acIdent";
+                if (serial != null && serial != string.Empty)
+                {
+                    parameters.Add(new Services.Parameter { Name = "acSerialno", Type = "String", Value = serial });
+                    sql += " AND acSerialNo = @acSerialno";
+                }
+                if (sscc != null && sscc != string.Empty)
+                {
+                    parameters.Add(new Services.Parameter { Name = "acSSCC", Type = "String", Value = sscc });
+                    sql += " AND acSSCC = @acSSCC;";
+                }
+
+                var duplicates = Services.GetObjectListBySql(sql, parameters);
+
+                if (duplicates.Success)
+                {
+                    int numberRows = (int)(duplicates.Rows[0].IntValue("anResult") ?? 0);
+                    if (numberRows > 0)
+                    {
+                        result = true;
+                    }
+                }
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+                return false;
+            }
+        }
+
+
+        private async Task<bool> IsLocationCorrect()
+        {
+            try
+            {
+                string location = string.Empty;
+                // UI changes.
+                RunOnUiThread(() =>
+                {
+                    // TODO: Add a way to check serial numbers
+                    location = tbLocation.Text;
+
+                });
+
+                if (!await CommonData.IsValidLocationAsync(moveHead.GetString("Wharehouse"), location, this))
+                {
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+                return false;
+            }
+        }
+
+        private async Task CreateMethodFromStart()
+        {
+            try
+            {
+                await Task.Run(() =>
+                {
+                    if (connectedPositions.Count == 1 || !Base.Store.byOrder)
+                    {
+                        var element = new Takeover { };
+                        if (Base.Store.byOrder)
+                        {
+                            element = connectedPositions.ElementAt(0);
+                        }
+                        moveItem = new NameValueObject("MoveItem");
+                        moveItem.SetInt("HeadID", moveHead.GetInt("HeadID"));
+
+                        if (Base.Store.byOrder)
+                        {
+                            moveItem.SetString("LinkKey", element.acKey);
+                            moveItem.SetInt("LinkNo", element.anNo);
+                        }
+                        else
+                        {
+                            moveItem.SetString("LinkKey", string.Empty);
+                            moveItem.SetInt("LinkNo", 0);
+                        }
+
+                        moveItem.SetString("Ident", openIdent.GetString("Code"));
+                        moveItem.SetString("SSCC", tbSSCC.Text.Trim());
+                        moveItem.SetString("SerialNo", tbSerialNum.Text.Trim());
+                        moveItem.SetDouble("Packing", Convert.ToDouble(tbPacking.Text.Trim()));
+                        moveItem.SetDouble("Factor", 1);
+                        moveItem.SetDouble("Qty", Convert.ToDouble(tbPacking.Text.Trim()));
+                        moveItem.SetInt("Clerk", Services.UserID());
+                        moveItem.SetString("Location", tbLocation.Text.Trim());
+                        moveItem.SetString("Palette", "1");
+
+
+
+                        string error;
+
+                        moveItem = Services.SetObject("mi", moveItem, out error);
+
+                        if (moveItem != null && error == string.Empty)
+                        {
+                            RunOnUiThread(() =>
+                            {
+
+                                var intent = new Intent(this, typeof(TakeOverIdentEntry));
+                                intent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.NewTask);
+                                StartActivity(intent);
+
+                            });
+
+                        }
+                    }
+                    else
+                    {
+                        return;
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
+        }
+
+        private async void BtSaveOrUpdate_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                try
+                {
+                    LoaderManifest.LoaderManifestLoopResources(this);
 
                     double parsed;
                     if (double.TryParse(tbPacking.Text, out parsed) && stock >= parsed)
                     {
-
                         var isCorrectLocation = await IsLocationCorrect();
                         if (!isCorrectLocation)
                         {
@@ -567,12 +927,10 @@ namespace WMS
                             Toast.MakeText(this, $"{Resources.GetString(Resource.String.s333)}", ToastLength.Long).Show();
                             return;
                         }
-
                         if (Base.Store.byOrder)
                         {
                             var isDuplicatedSerial = IsDuplicatedSerialOrAndSSCC(tbSerialNum.Text ?? string.Empty, tbSSCC.Text ?? string.Empty);
                             var fieldsExist = ssccRow.Visibility == ViewStates.Visible || serialRow.Visibility == ViewStates.Visible;
-
                             if (isDuplicatedSerial && fieldsExist)
                             {
                                 // Duplicirana serijska in/ali sscc koda.
@@ -582,21 +940,19 @@ namespace WMS
                         }
                         else
                         {
-
                             string ident = openIdent.GetString("Code");
                             string warehouse = string.Empty;
 
                             if (Base.Store.isUpdate)
                             {
                                 warehouse = moveItem.GetString("Wharehouse");
+
                             }
                             else
                             {
                                 warehouse = moveHead.GetString("Wharehouse");
                             }
-
                             var isDuplicatedSerial = await IsDuplicatedSerialOrAndSSCCNotByOrder(ident, warehouse, tbSerialNum.Text, tbSSCC.Text);
-
                             if (isDuplicatedSerial)
                             {
                                 // Duplicirana serijska in/ali sscc koda.
@@ -604,497 +960,322 @@ namespace WMS
                                 return;
                             }
                         }
-
-
-                        await CreateMethodFromStart();
+                        await CreateMethodSame();
                     }
                     else
                     {
                         Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
-                    }
-
-                }
-                else
-                {
-                    // Update flow.
-                    double newQty;
-                    if (Double.TryParse(tbPacking.Text, out newQty))
-                    {
-                        if (newQty > moveItem.GetDouble("Qty"))
-                        {
-                            Toast.MakeText(this, $"{Resources.GetString(Resource.String.s291)}", ToastLength.Long).Show();
-                        }
-
-                        else
-                        {
-                            var parameters = new List<Services.Parameter>();
-                            var tt = moveItem.GetInt("ItemID");
-                            parameters.Add(new Services.Parameter { Name = "anQty", Type = "Decimal", Value = newQty });
-                            parameters.Add(new Services.Parameter { Name = "anItemID", Type = "Int32", Value = moveItem.GetInt("ItemID") });
-                            string debugString = $"UPDATE uWMSMoveItem SET anQty = {newQty} WHERE anIDItem = {moveItem.GetInt("ItemID")}";
-                            var subjects = Services.Update($"UPDATE uWMSMoveItem SET anQty = @anQty WHERE anIDItem = @anItemID;", parameters);
-                            if (!subjects.Success)
-                            {
-                                RunOnUiThread(() =>
-                                {
-                                    SentrySdk.CaptureMessage(subjects.Error);
-                                    return;
-                                });
-                            }
-                            else
-                            {
-                                StartActivity(typeof(IssuedGoodsEnteredPositionsView));
-                                Finish();
-                            }
-                        }
-                    }
-                    else
-                    {
-                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
-                    }
-                }
-            } catch(Exception ex)
-            {
-                SentrySdk.CaptureException(ex);
-            } finally
-            {
-                LoaderManifest.LoaderManifestLoopStop(this);
-            }
-        }
-
-        private bool IsDuplicatedSerialOrAndSSCC(string? serial = null, string? sscc = null)
-        {
-            bool result = false;
-
-            string ident = string.Empty;
-
-            ident = openIdent.GetString("Code");
-
-            var parameters = new List<Services.Parameter>();
-            parameters.Add(new Services.Parameter { Name = "acIdent", Type = "String", Value = ident });
-
-            string sql = "SELECT COUNT(*) AS anResult FROM uWMSMoveItemInClick WHERE acIdent = @acIdent";
-            if (serial != null && serial != string.Empty)
-            {
-                parameters.Add(new Services.Parameter { Name = "acSerialno", Type = "String", Value = serial });
-                sql += " AND acSerialNo = @acSerialno";
-            }
-            if (sscc != null && sscc != string.Empty)
-            {
-                parameters.Add(new Services.Parameter { Name = "acSSCC", Type = "String", Value = sscc });
-                sql += " AND acSSCC = @acSSCC;";
-            }
-
-            var duplicates = Services.GetObjectListBySql(sql, parameters);
-
-            if (duplicates.Success)
-            {
-                int numberRows = (int)(duplicates.Rows[0].IntValue("anResult") ?? 0);
-                if (numberRows > 0)
-                {
-                    result = true;
-                }
-            }
-
-            return result;
-        }
-
-
-        private async Task<bool> IsLocationCorrect()
-        {
-            string location = string.Empty;
-            // UI changes.
-            RunOnUiThread(() =>
-            {
-                // TODO: Add a way to check serial numbers
-                location = tbLocation.Text;
-
-            });
-
-            if (!await CommonData.IsValidLocationAsync(moveHead.GetString("Wharehouse"), location, this))
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
-        }
-
-        private async Task CreateMethodFromStart()
-        {
-            await Task.Run(() =>
-            {
-                if (connectedPositions.Count == 1 || !Base.Store.byOrder)
-                {
-                    var element = new Takeover { };
-                    if (Base.Store.byOrder)
-                    {
-                        element = connectedPositions.ElementAt(0);
-                    }
-                    moveItem = new NameValueObject("MoveItem");
-                    moveItem.SetInt("HeadID", moveHead.GetInt("HeadID"));
-
-                    if (Base.Store.byOrder)
-                    {
-                        moveItem.SetString("LinkKey", element.acKey);
-                        moveItem.SetInt("LinkNo", element.anNo);
-                    }
-                    else
-                    {
-                        moveItem.SetString("LinkKey", string.Empty);
-                        moveItem.SetInt("LinkNo", 0);
-                    }
-
-                    moveItem.SetString("Ident", openIdent.GetString("Code"));
-                    moveItem.SetString("SSCC", tbSSCC.Text.Trim());
-                    moveItem.SetString("SerialNo", tbSerialNum.Text.Trim());
-                    moveItem.SetDouble("Packing", Convert.ToDouble(tbPacking.Text.Trim()));
-                    moveItem.SetDouble("Factor", 1);
-                    moveItem.SetDouble("Qty", Convert.ToDouble(tbPacking.Text.Trim()));
-                    moveItem.SetInt("Clerk", Services.UserID());
-                    moveItem.SetString("Location", tbLocation.Text.Trim());
-                    moveItem.SetString("Palette", "1");
-            
-                   
-
-                    string error;
-
-                    moveItem = Services.SetObject("mi", moveItem, out error);
-
-                    if (moveItem != null && error == string.Empty)
-                    {
-                        RunOnUiThread(() =>
-                        {
-
-                            var intent = new Intent(this, typeof(TakeOverIdentEntry));
-                            intent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.NewTask);
-                            StartActivity(intent);
-
-                        });
-
-                    }
-                }
-                else
-                {
-                    return;
-                }
-            });
-        }
-
-        private async void BtSaveOrUpdate_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                LoaderManifest.LoaderManifestLoopResources(this);
-
-                double parsed;
-                if (double.TryParse(tbPacking.Text, out parsed) && stock >= parsed)
-                {
-                    var isCorrectLocation = await IsLocationCorrect();
-                    if (!isCorrectLocation)
-                    {
-                        // Nepravilna lokacija za izbrano skladišče
-                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s333)}", ToastLength.Long).Show();
                         return;
                     }
-                    if (Base.Store.byOrder)
-                    {
-                        var isDuplicatedSerial = IsDuplicatedSerialOrAndSSCC(tbSerialNum.Text ?? string.Empty, tbSSCC.Text ?? string.Empty);
-                        var fieldsExist = ssccRow.Visibility == ViewStates.Visible || serialRow.Visibility == ViewStates.Visible;
-                        if (isDuplicatedSerial && fieldsExist)
-                        {
-                            // Duplicirana serijska in/ali sscc koda.
-                            Toast.MakeText(this, $"{Resources.GetString(Resource.String.s334)}", ToastLength.Long).Show();
-                            return;
-                        }
-                    }
-                    else
-                    {
-                        string ident = openIdent.GetString("Code");
-                        string warehouse = string.Empty;
-
-                        if (Base.Store.isUpdate)
-                        {
-                            warehouse = moveItem.GetString("Wharehouse");
-
-                        }
-                        else
-                        {
-                            warehouse = moveHead.GetString("Wharehouse");
-                        }
-                        var isDuplicatedSerial = await IsDuplicatedSerialOrAndSSCCNotByOrder(ident, warehouse, tbSerialNum.Text, tbSSCC.Text);
-                        if (isDuplicatedSerial)
-                        {
-                            // Duplicirana serijska in/ali sscc koda.
-                            Toast.MakeText(this, $"{Resources.GetString(Resource.String.s334)}", ToastLength.Long).Show();
-                            return;
-                        }
-                    }
-                    await CreateMethodSame();
                 }
-                else
+                catch (Exception ex)
                 {
-                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
-                    return;
+                    SentrySdk.CaptureException(ex);
                 }
-            } catch (Exception ex)
+                finally
+                {
+                    LoaderManifest.LoaderManifestLoopStop(this);
+                }
+            }
+            catch (Exception ex)
             {
-                SentrySdk.CaptureException(ex);
-            } finally
-            {
-                LoaderManifest.LoaderManifestLoopStop(this);
+                GlobalExceptions.ReportGlobalException(ex);
             }
         }
 
         private async Task<bool> IsDuplicatedSerialOrAndSSCCNotByOrder(string ident, string warehouse, string serial = null, string sscc = null)
         {
-            string serialDuplication = await CommonData.GetSettingAsync("NoSerialnoDupOut", this);
-            string identType = openIdent.GetString("SerialNo");
-
-            if (serialDuplication == "1")
+            try
             {
-                if (identType == "O")
+                string serialDuplication = await CommonData.GetSettingAsync("NoSerialnoDupOut", this);
+                string identType = openIdent.GetString("SerialNo");
+
+                if (serialDuplication == "1")
                 {
-
-                    string sql = "SELECT COUNT(*) as anResult FROM uWMSMoveItemInClickNoOrder WHERE acIdent = @acIdent and acWharehouse = @acWharehouse";
-
-                    if (serial != null)
+                    if (identType == "O")
                     {
-                        sql += " AND acSerialno = @acSerialno";
-                    }
 
-                    if (sscc != null)
-                    {
-                        sql += " AND acSSCC = @acSSCC";
-                    }
+                        string sql = "SELECT COUNT(*) as anResult FROM uWMSMoveItemInClickNoOrder WHERE acIdent = @acIdent and acWharehouse = @acWharehouse";
 
-                    if (warehouse != null)
-                    {
-                        sql += " AND acWharehouse = @acWharehouse";
-                    }
-
-                    var parameters = new List<Services.Parameter>();
-
-                    parameters.Add(new Services.Parameter { Name = "acIdent", Type = "String", Value = ident });
-                    parameters.Add(new Services.Parameter { Name = "acSerialno", Type = "String", Value = serial });
-                    parameters.Add(new Services.Parameter { Name = "acSSCC", Type = "String", Value = sscc });
-                    parameters.Add(new Services.Parameter { Name = "acWharehouse", Type = "String", Value = warehouse });
-
-                    var duplicates = Services.GetObjectListBySql(sql, parameters);
-
-                    if (duplicates.Success)
-                    {
-                        int numberOfDuplicates = (int?)duplicates.Rows[0].IntValue("anResult") ?? 0;
-                        if (numberOfDuplicates > 0)
+                        if (serial != null)
                         {
-                            return true;
+                            sql += " AND acSerialno = @acSerialno";
                         }
-                        else
-                        {
-                            return false;
-                        }
-                    }
 
-                    return false;
+                        if (sscc != null)
+                        {
+                            sql += " AND acSSCC = @acSSCC";
+                        }
+
+                        if (warehouse != null)
+                        {
+                            sql += " AND acWharehouse = @acWharehouse";
+                        }
+
+                        var parameters = new List<Services.Parameter>();
+
+                        parameters.Add(new Services.Parameter { Name = "acIdent", Type = "String", Value = ident });
+                        parameters.Add(new Services.Parameter { Name = "acSerialno", Type = "String", Value = serial });
+                        parameters.Add(new Services.Parameter { Name = "acSSCC", Type = "String", Value = sscc });
+                        parameters.Add(new Services.Parameter { Name = "acWharehouse", Type = "String", Value = warehouse });
+
+                        var duplicates = Services.GetObjectListBySql(sql, parameters);
+
+                        if (duplicates.Success)
+                        {
+                            int numberOfDuplicates = (int?)duplicates.Rows[0].IntValue("anResult") ?? 0;
+                            if (numberOfDuplicates > 0)
+                            {
+                                return true;
+                            }
+                            else
+                            {
+                                return false;
+                            }
+                        }
+
+                        return false;
+                    }
                 }
+                return false;
             }
-            return false;
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+                return false;
+            }
         }
 
         private async Task CreateMethodSame()
         {
-            var picture = await CommonData.GetQtyPictureAsync(this);
-
-            await Task.Run(() =>
+            try
             {
-                if (connectedPositions.Count == 1 || !Base.Store.byOrder)
+                var picture = await CommonData.GetQtyPictureAsync(this);
+
+                await Task.Run(() =>
                 {
-                    var element = new Takeover { };
-
-                    if (Base.Store.byOrder)
+                    if (connectedPositions.Count == 1 || !Base.Store.byOrder)
                     {
-                        element = connectedPositions.ElementAt(0);
-                    }
-
-                    // This solves the problem of updating the item. The problem occurs because of the old way of passing data.
-                    moveItem = new NameValueObject("MoveItem");
-                    moveItem.SetInt("HeadID", moveHead.GetInt("HeadID"));
-
-                    if (Base.Store.byOrder)
-                    {
-                        moveItem.SetString("LinkKey", element.acKey);
-                        moveItem.SetInt("LinkNo", element.anNo);
-                    }
-                    else
-                    {
-                        // update proccess
-                        moveItem.SetString("LinkKey", string.Empty);
-                        moveItem.SetInt("LinkNo", 0);
-                    }
-
-                    moveItem.SetString("Ident", openIdent.GetString("Code"));
-                    moveItem.SetString("SSCC", tbSSCC.Text.Trim());
-                    moveItem.SetString("SerialNo", tbSerialNum.Text.Trim());
-                    moveItem.SetDouble("Packing", Convert.ToDouble(tbPacking.Text.Trim()));
-                    moveItem.SetDouble("Factor", 1);
-                    moveItem.SetDouble("Qty", Convert.ToDouble(tbPacking.Text.Trim()));
-                    moveItem.SetInt("Clerk", Services.UserID());
-                    moveItem.SetString("Location", tbLocation.Text.Trim());
-                    moveItem.SetString("Palette", "1");
-                    
-
-
-                    string error;
-                    moveItem = Services.SetObject("mi", moveItem, out error);
-                    if (moveItem != null && error == string.Empty)
-                    {
+                        var element = new Takeover { };
 
                         if (Base.Store.byOrder)
                         {
-
-                            
-                            RunOnUiThread(() =>
-                            {
-
-                                var currentQty = Convert.ToDouble(tbPacking.Text.Trim());
-                                stock -= currentQty;
-                                lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + stock.ToString(picture) + " )";
-
-
-                                if (stock <= 0)
-                                {
-
-                                    var intent = new Intent(this, typeof(TakeOverIdentEntry));
-                                    intent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.NewTask);
-                                    StartActivity(intent);
-                                 
-                                }
-
-                                // Succesfull position creation
-                                if (ssccRow.Visibility == ViewStates.Visible)
-                                {
-                                    tbSSCC.Text = string.Empty;
-                                    tbSSCC.RequestFocus();
-                                }
-                                if (serialRow.Visibility == ViewStates.Visible)
-                                {
-                                    tbSerialNum.Text = string.Empty;
-
-                                    if (ssccRow.Visibility == ViewStates.Gone)
-                                    {
-                                        tbSerialNum.RequestFocus();
-                                    }
-                                }
-                                // tbPacking.Text = string.Empty; This seems to be more logical if commented out. User wants to just scan serial codes. 5.15.2024 Janko Jovičić
-
-                            });
+                            element = connectedPositions.ElementAt(0);
                         }
 
+                        // This solves the problem of updating the item. The problem occurs because of the old way of passing data.
+                        moveItem = new NameValueObject("MoveItem");
+                        moveItem.SetInt("HeadID", moveHead.GetInt("HeadID"));
+
+                        if (Base.Store.byOrder)
+                        {
+                            moveItem.SetString("LinkKey", element.acKey);
+                            moveItem.SetInt("LinkNo", element.anNo);
+                        }
+                        else
+                        {
+                            // update proccess
+                            moveItem.SetString("LinkKey", string.Empty);
+                            moveItem.SetInt("LinkNo", 0);
+                        }
+
+                        moveItem.SetString("Ident", openIdent.GetString("Code"));
+                        moveItem.SetString("SSCC", tbSSCC.Text.Trim());
+                        moveItem.SetString("SerialNo", tbSerialNum.Text.Trim());
+                        moveItem.SetDouble("Packing", Convert.ToDouble(tbPacking.Text.Trim()));
+                        moveItem.SetDouble("Factor", 1);
+                        moveItem.SetDouble("Qty", Convert.ToDouble(tbPacking.Text.Trim()));
+                        moveItem.SetInt("Clerk", Services.UserID());
+                        moveItem.SetString("Location", tbLocation.Text.Trim());
+                        moveItem.SetString("Palette", "1");
+
+
+
+                        string error;
+                        moveItem = Services.SetObject("mi", moveItem, out error);
+                        if (moveItem != null && error == string.Empty)
+                        {
+
+                            if (Base.Store.byOrder)
+                            {
+
+
+                                RunOnUiThread(() =>
+                                {
+
+                                    var currentQty = Convert.ToDouble(tbPacking.Text.Trim());
+                                    stock -= currentQty;
+                                    lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + stock.ToString(picture) + " )";
+
+
+                                    if (stock <= 0)
+                                    {
+
+                                        var intent = new Intent(this, typeof(TakeOverIdentEntry));
+                                        intent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.NewTask);
+                                        StartActivity(intent);
+
+                                    }
+
+                                    // Succesfull position creation
+                                    if (ssccRow.Visibility == ViewStates.Visible)
+                                    {
+                                        tbSSCC.Text = string.Empty;
+                                        tbSSCC.RequestFocus();
+                                    }
+                                    if (serialRow.Visibility == ViewStates.Visible)
+                                    {
+                                        tbSerialNum.Text = string.Empty;
+
+                                        if (ssccRow.Visibility == ViewStates.Gone)
+                                        {
+                                            tbSerialNum.RequestFocus();
+                                        }
+                                    }
+                                    // tbPacking.Text = string.Empty; This seems to be more logical if commented out. User wants to just scan serial codes. 5.15.2024 Janko Jovičić
+
+                                });
+                            }
+
+                        }
                     }
-                }
-                else
-                {
-                    return;
-                }
-            });
+                    else
+                    {
+                        return;
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
         }
 
         public bool IsOnline()
         {
-            var cm = (ConnectivityManager)GetSystemService(ConnectivityService);
-            return cm.ActiveNetworkInfo == null ? false : cm.ActiveNetworkInfo.IsConnected;
+            try
+            {
+                var cm = (ConnectivityManager)GetSystemService(ConnectivityService);
+                return cm.ActiveNetworkInfo == null ? false : cm.ActiveNetworkInfo.IsConnected;
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+                return false;
+            }
         }
 
         private void OnNetworkStatusChanged(object sender, EventArgs e)
         {
-            if (IsOnline())
+            try
             {
-                try
+                if (IsOnline())
                 {
-                    LoaderManifest.LoaderManifestLoopStop(this);
+                    try
+                    {
+                        LoaderManifest.LoaderManifestLoopStop(this);
+                    }
+                    catch (Exception err)
+                    {
+                        SentrySdk.CaptureException(err);
+                    }
                 }
-                catch (Exception err)
+                else
                 {
-                    SentrySdk.CaptureException(err);
+                    LoaderManifest.LoaderManifestLoop(this);
                 }
             }
-            else
+            catch (Exception ex)
             {
-                LoaderManifest.LoaderManifestLoop(this);
+                GlobalExceptions.ReportGlobalException(ex);
             }
         }
 
         public override bool OnKeyDown(Keycode keyCode, KeyEvent e)
         {
-            switch (keyCode)
+            try
             {
-                case Keycode.F2:
-                    BtSaveOrUpdate_Click(this, null);
-                    break;
-                case Keycode.F3:
-                    BtCreate_Click(this, null);
-                    break;
-                case Keycode.F4:
-                    BtFinish_Click(this, null);
-                    break;
-                case Keycode.F5:
-                    BtOverview_Click(this, null);
-                    break;
-                case Keycode.F8:
-                    BtBack_Click(this, null);
-                    break;
+                switch (keyCode)
+                {
+                    case Keycode.F2:
+                        BtSaveOrUpdate_Click(this, null);
+                        break;
+                    case Keycode.F3:
+                        BtCreate_Click(this, null);
+                        break;
+                    case Keycode.F4:
+                        BtFinish_Click(this, null);
+                        break;
+                    case Keycode.F5:
+                        BtOverview_Click(this, null);
+                        break;
+                    case Keycode.F8:
+                        BtBack_Click(this, null);
+                        break;
+                }
+                return base.OnKeyDown(keyCode, e);
             }
-            return base.OnKeyDown(keyCode, e);
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+                return false;
+            }
         }
 
         public void GetBarcode(string barcode)
         {
             try
             {
-                if (tbSSCC.HasFocus)
+                try
                 {
-                    if (barcode != "Scan fail")
+                    if (tbSSCC.HasFocus)
                     {
-
-                        tbSSCC.Text = barcode;
-
-                        if (serialRow.Visibility == ViewStates.Visible)
+                        if (barcode != "Scan fail")
                         {
-                            tbSerialNum.RequestFocus();
+
+                            tbSSCC.Text = barcode;
+
+                            if (serialRow.Visibility == ViewStates.Visible)
+                            {
+                                tbSerialNum.RequestFocus();
+                            }
+                            else
+                            {
+                                tbPacking.RequestFocus();
+                            }
+
                         }
-                        else
+                    }
+                    else if (tbSerialNum.HasFocus)
+                    {
+                        if (barcode != "Scan fail")
                         {
+
+                            tbSerialNum.Text = barcode;
+
                             tbPacking.RequestFocus();
+
                         }
+                    }
+                    else if (tbLocation.HasFocus)
+                    {
+                        if (barcode != "Scan fail")
+                        {
 
+                            tbLocation.Text = barcode;
+
+                        }
                     }
                 }
-                else if (tbSerialNum.HasFocus)
+                catch (Exception ex)
                 {
-                    if (barcode != "Scan fail")
-                    {
-
-                        tbSerialNum.Text = barcode;
-
-                        tbPacking.RequestFocus();
-
-                    }
-                }
-                else if (tbLocation.HasFocus)
-                {
-                    if (barcode != "Scan fail")
-                    {
-
-                        tbLocation.Text = barcode;
-
-                    }
+                    SentrySdk.CaptureException(ex);
+                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s225)}", ToastLength.Long).Show();
                 }
             }
             catch (Exception ex)
             {
-                SentrySdk.CaptureException(ex);
-                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s225)}", ToastLength.Long).Show();
+                GlobalExceptions.ReportGlobalException(ex);
             }
         }
     }

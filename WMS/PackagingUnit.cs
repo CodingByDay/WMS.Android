@@ -8,6 +8,7 @@ using TrendNET.WMS.Core.Data;
 using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
 using WMS.App;
+using WMS.ExceptionStore;
 using AlertDialog = Android.App.AlertDialog;
 using WebApp = TrendNET.WMS.Device.Services.WebApp;
 
@@ -42,88 +43,108 @@ namespace WMS
 
         public async void GetBarcode(string barcode)
         {
-
-            if (!string.IsNullOrEmpty(barcode))
+            try
             {
-
-                if (tbSSCC.HasFocus)
+                if (!string.IsNullOrEmpty(barcode))
                 {
 
-                    tbSSCC.Text = barcode;
-                    tbSerialNo.RequestFocus();
-                }
-
-                else if (tbLocation.HasFocus)
-                {
-
-                    tbLocation.Text = barcode;
-                    if (tbLocation.Text != "Scan fail")
+                    if (tbSSCC.HasFocus)
                     {
-                        tbSSCC.RequestFocus();
-                        if (!tbSSCC.Enabled && !tbSerialNo.Enabled) { await ProcessQty(); }
-                    }
-                    else
-                    {
-                        tbLocation.Text = "";
-                        tbLocation.RequestFocus();
+
+                        tbSSCC.Text = barcode;
+                        tbSerialNo.RequestFocus();
                     }
 
-
-                }
-                else if (tbIdent.HasFocus)
-                {
-
-                    tbIdent.Text = barcode;
-                    if (tbIdent.Text != "Scan fail")
+                    else if (tbLocation.HasFocus)
                     {
-                        await ProcessIdent();
-                        tbLocation.RequestFocus();
+
+                        tbLocation.Text = barcode;
+                        if (tbLocation.Text != "Scan fail")
+                        {
+                            tbSSCC.RequestFocus();
+                            if (!tbSSCC.Enabled && !tbSerialNo.Enabled) { await ProcessQty(); }
+                        }
+                        else
+                        {
+                            tbLocation.Text = "";
+                            tbLocation.RequestFocus();
+                        }
+
+
                     }
-                    else
+                    else if (tbIdent.HasFocus)
                     {
-                        tbIdent.Text = "";
-                        tbIdent.RequestFocus();
+
+                        tbIdent.Text = barcode;
+                        if (tbIdent.Text != "Scan fail")
+                        {
+                            await ProcessIdent();
+                            tbLocation.RequestFocus();
+                        }
+                        else
+                        {
+                            tbIdent.Text = "";
+                            tbIdent.RequestFocus();
+                        }
+
                     }
+                    else if (tbSerialNo.HasFocus)
+                    {
 
+
+                        tbSerialNo.Text = barcode;
+                        await ProcessQty();
+                    }
                 }
-                else if (tbSerialNo.HasFocus)
-                {
 
-
-                    tbSerialNo.Text = barcode;
-                    await ProcessQty();
-                }
             }
-
-
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
 
 
         }
         private async Task ProcessIdent()
         {
-            if (!string.IsNullOrEmpty(tbIdent.Text))
+            try
             {
-                var ident = await CommonData.LoadIdentAsync(tbIdent.Text.Trim(), this);
-                tbIdentName.Text = ident == null ? "" : ident.GetString("Name");
-                tbSSCC.Enabled = ident == null ? false : ident.GetBool("isSSCC");
-                tbSerialNo.Enabled = ident == null ? false : ident.GetBool("HasSerialNumber");
-                color();
-                tbLocation.RequestFocus();
+                if (!string.IsNullOrEmpty(tbIdent.Text))
+                {
+                    var ident = await CommonData.LoadIdentAsync(tbIdent.Text.Trim(), this);
+                    tbIdentName.Text = ident == null ? "" : ident.GetString("Name");
+                    tbSSCC.Enabled = ident == null ? false : ident.GetBool("isSSCC");
+                    tbSerialNo.Enabled = ident == null ? false : ident.GetBool("HasSerialNumber");
+                    color();
+                    tbLocation.RequestFocus();
+                }
+                else
+                {
+                    tbIdent.Text = "";
+                }
             }
-            else
+            catch (Exception ex)
             {
-                tbIdent.Text = "";
+                GlobalExceptions.ReportGlobalException(ex);
             }
         }
         private bool HasData()
         {
-            var ident = tbIdent.Text.Trim();
-            var location = tbLocation.Text.Trim();
-            var sscc = tbSSCC.Text.Trim();
-            var serialNo = tbSerialNo.Text.Trim();
+            try
+            {
+                var ident = tbIdent.Text.Trim();
+                var location = tbLocation.Text.Trim();
+                var sscc = tbSSCC.Text.Trim();
+                var serialNo = tbSerialNo.Text.Trim();
 
-            if (string.IsNullOrEmpty(ident) && string.IsNullOrEmpty(location) && string.IsNullOrEmpty(sscc) && string.IsNullOrEmpty(serialNo)) { return false; }
-            return true;
+                if (string.IsNullOrEmpty(ident) && string.IsNullOrEmpty(location) && string.IsNullOrEmpty(sscc) && string.IsNullOrEmpty(serialNo)) { return false; }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+                return false;
+            }
         }
 
 
@@ -131,443 +152,568 @@ namespace WMS
 
         private void color()
         {
-            if (tbSSCC.Enabled == true || tbSerialNo.Enabled == true)
+            try
             {
-                tbSSCC.SetBackgroundColor(Android.Graphics.Color.Aqua);
-                tbSerialNo.SetBackgroundColor(Android.Graphics.Color.Aqua);
-                tbLocation.SetBackgroundColor(Android.Graphics.Color.Aqua);
+                if (tbSSCC.Enabled == true || tbSerialNo.Enabled == true)
+                {
+                    tbSSCC.SetBackgroundColor(Android.Graphics.Color.Aqua);
+                    tbSerialNo.SetBackgroundColor(Android.Graphics.Color.Aqua);
+                    tbLocation.SetBackgroundColor(Android.Graphics.Color.Aqua);
+                }
+                else if (tbSSCC.Enabled == true)
+                {
+                    tbSSCC.SetBackgroundColor(Android.Graphics.Color.Aqua);
+                    tbLocation.SetBackgroundColor(Android.Graphics.Color.Aqua);
+
+                }
+                else if (tbSerialNo.Enabled == true)
+                {
+                    tbSerialNo.SetBackgroundColor(Android.Graphics.Color.Aqua);
+                    tbLocation.SetBackgroundColor(Android.Graphics.Color.Aqua);
+
+                }
             }
-            else if (tbSSCC.Enabled == true)
+            catch (Exception ex)
             {
-                tbSSCC.SetBackgroundColor(Android.Graphics.Color.Aqua);
-                tbLocation.SetBackgroundColor(Android.Graphics.Color.Aqua);
-
+                GlobalExceptions.ReportGlobalException(ex);
             }
-            else if (tbSerialNo.Enabled == true)
-            {
-                tbSerialNo.SetBackgroundColor(Android.Graphics.Color.Aqua);
-                tbLocation.SetBackgroundColor(Android.Graphics.Color.Aqua);
-
-            }
-
 
 
         }
 
         private async Task<bool> ProcessData()
         {
-            var ident = tbIdent.Text.Trim();
-            var warehouse = head.GetString("Warehouse");
-            var location = tbLocation.Text.Trim();
-            var sscc = tbSSCC.Text.Trim();
-            var serialNo = tbSerialNo.Text.Trim();
-
-            if (string.IsNullOrEmpty(ident))
+            try
             {
-                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
+                var ident = tbIdent.Text.Trim();
+                var warehouse = head.GetString("Warehouse");
+                var location = tbLocation.Text.Trim();
+                var sscc = tbSSCC.Text.Trim();
+                var serialNo = tbSerialNo.Text.Trim();
 
+                if (string.IsNullOrEmpty(ident))
+                {
+                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
+
+                    return false;
+                }
+
+                if (!await CommonData.IsValidLocationAsync(warehouse, location, this))
+                {
+                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
+                    return false;
+                }
+
+                if (tbSSCC.Enabled && string.IsNullOrEmpty(sscc))
+                {
+                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
+                    return false;
+                }
+
+                if (tbSerialNo.Enabled && string.IsNullOrEmpty(serialNo))
+                {
+                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
+                    return false;
+                }
+
+                var qty = Convert.ToDouble(tbQty.Text.Trim());
+                if (qty > stock.GetDouble("RealStock"))
+                {
+                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s40)} (" + qty.ToString(await CommonData.GetQtyPictureAsync(this)) + ") presega zalogo (" + stock.GetDouble("RealStock").ToString(await CommonData.GetQtyPictureAsync(this)) + ")!", ToastLength.Long).Show();
+                    return false;
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
                 return false;
             }
-
-            if (!await CommonData.IsValidLocationAsync(warehouse, location, this))
-            {
-                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
-                return false;
-            }
-
-            if (tbSSCC.Enabled && string.IsNullOrEmpty(sscc))
-            {
-                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
-                return false;
-            }
-
-            if (tbSerialNo.Enabled && string.IsNullOrEmpty(serialNo))
-            {
-                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
-                return false;
-            }
-
-            var qty = Convert.ToDouble(tbQty.Text.Trim());
-            if (qty > stock.GetDouble("RealStock"))
-            {
-                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s40)} (" + qty.ToString(await CommonData.GetQtyPictureAsync(this)) + ") presega zalogo (" + stock.GetDouble("RealStock").ToString(await CommonData.GetQtyPictureAsync(this)) + ")!", ToastLength.Long).Show();
-                return false;
-            }
-
-            return true;
         }
 
         private async Task<bool> SavePackagingItem()
         {
-            if (!HasData()) { return true; }
-            if (await ProcessData())
+            try
             {
-                if (item == null) { item = new NameValueObject("PackagingItem"); }
-
-                item.SetInt("HeadID", head.GetInt("HeadID"));
-                item.SetString("Ident", tbIdent.Text.Trim());
-                item.SetString("SerialNo", tbSerialNo.Text.Trim());
-                item.SetString("SSCC", tbSSCC.Text.Trim());
-                item.SetDouble("Qty", Convert.ToDouble(tbQty.Text.Trim()));
-                item.SetString("Location", tbLocation.Text.Trim());
-                item.SetInt("Clerk", Services.UserID());
-
-                string error;
-                item = Services.SetObject("pi", item, out error);
-                if (item != null)
+                if (!HasData()) { return true; }
+                if (await ProcessData())
                 {
-                    return true;
+                    if (item == null) { item = new NameValueObject("PackagingItem"); }
+
+                    item.SetInt("HeadID", head.GetInt("HeadID"));
+                    item.SetString("Ident", tbIdent.Text.Trim());
+                    item.SetString("SerialNo", tbSerialNo.Text.Trim());
+                    item.SetString("SSCC", tbSSCC.Text.Trim());
+                    item.SetDouble("Qty", Convert.ToDouble(tbQty.Text.Trim()));
+                    item.SetString("Location", tbLocation.Text.Trim());
+                    item.SetInt("Clerk", Services.UserID());
+
+                    string error;
+                    item = Services.SetObject("pi", item, out error);
+                    if (item != null)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s213)}" + error, ToastLength.Long).Show();
+                        return false;
+                    }
                 }
                 else
                 {
-                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s213)}" + error, ToastLength.Long).Show();
                     return false;
                 }
             }
-            else
+            catch (Exception ex)
             {
+                GlobalExceptions.ReportGlobalException(ex);
                 return false;
             }
         }
 
         private async Task ProcessQty()
         {
-            var ident = tbIdent.Text.Trim();
-            var warehouse = head.GetString("Warehouse");
-            var location = tbLocation.Text.Trim();
-            var sscc = tbSSCC.Text.Trim();
-            var serialNo = tbSerialNo.Text.Trim();
+            try
+            {
+                var ident = tbIdent.Text.Trim();
+                var warehouse = head.GetString("Warehouse");
+                var location = tbLocation.Text.Trim();
+                var sscc = tbSSCC.Text.Trim();
+                var serialNo = tbSerialNo.Text.Trim();
 
-            if (string.IsNullOrEmpty(ident))
-            {
-                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
-                return;
-            }
+                if (string.IsNullOrEmpty(ident))
+                {
+                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
+                    return;
+                }
 
-            if (!await CommonData.IsValidLocationAsync(warehouse, location, this))
-            {
-                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
-                return;
-            }
+                if (!await CommonData.IsValidLocationAsync(warehouse, location, this))
+                {
+                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
+                    return;
+                }
 
-            if (tbSSCC.Enabled && string.IsNullOrEmpty(sscc))
-            {
-                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
-                return;
-            }
+                if (tbSSCC.Enabled && string.IsNullOrEmpty(sscc))
+                {
+                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
+                    return;
+                }
 
-            if (tbSerialNo.Enabled && string.IsNullOrEmpty(serialNo))
-            {
-                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
-                return;
-            }
+                if (tbSerialNo.Enabled && string.IsNullOrEmpty(serialNo))
+                {
+                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
+                    return;
+                }
 
-            if (LoadStock(warehouse, location, sscc, serialNo, ident))
-            {
-                label.Text = $"{Resources.GetString(Resource.String.s40)} (" + stock.GetDouble("RealStock").ToString(await CommonData.GetQtyPictureAsync(this)) + "):";
-                tbQty.Text = stock.GetDouble("RealStock").ToString(await CommonData.GetQtyPictureAsync(this));
+                if (LoadStock(warehouse, location, sscc, serialNo, ident))
+                {
+                    label.Text = $"{Resources.GetString(Resource.String.s40)} (" + stock.GetDouble("RealStock").ToString(await CommonData.GetQtyPictureAsync(this)) + "):";
+                    tbQty.Text = stock.GetDouble("RealStock").ToString(await CommonData.GetQtyPictureAsync(this));
+                }
+                else
+                {
+                    label.Text = $"{Resources.GetString(Resource.String.s240)}";
+                    tbQty.Text = "";
+                }
             }
-            else
+            catch (Exception ex)
             {
-                label.Text = $"{Resources.GetString(Resource.String.s240)}";
-                tbQty.Text = "";
+                GlobalExceptions.ReportGlobalException(ex);
             }
         }
         private bool LoadStock(string warehouse, string location, string sscc, string serialNum, string ident)
         {
             try
             {
-
-
-                string error;
-                stock = Services.GetObject("str", warehouse + "|" + location + "|" + sscc + "|" + serialNum + "|" + ident, out error);
-                if (stock == null)
+                try
                 {
-                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s216)}", ToastLength.Long).Show();
-                    return false;
+
+
+                    string error;
+                    stock = Services.GetObject("str", warehouse + "|" + location + "|" + sscc + "|" + serialNum + "|" + ident, out error);
+                    if (stock == null)
+                    {
+                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s216)}", ToastLength.Long).Show();
+                        return false;
+                    }
+
+                    return true;
                 }
+                catch (Exception err)
+                {
 
-                return true;
+                    SentrySdk.CaptureException(err);
+                    return false;
+
+                }
             }
-            catch (Exception err)
+            catch (Exception ex)
             {
-
-                SentrySdk.CaptureException(err);
+                GlobalExceptions.ReportGlobalException(ex);
                 return false;
-
             }
         }
 
         protected override async void OnCreate(Bundle savedInstanceState)
         {
-            base.OnCreate(savedInstanceState);
-            SetTheme(Resource.Style.AppTheme_NoActionBar);
-            if (App.Settings.tablet)
+            try
             {
-                base.RequestedOrientation = ScreenOrientation.Landscape;
-                base.SetContentView(Resource.Layout.PackagingUnitTablet);
+                base.OnCreate(savedInstanceState);
+                SetTheme(Resource.Style.AppTheme_NoActionBar);
+                if (App.Settings.tablet)
+                {
+                    base.RequestedOrientation = ScreenOrientation.Landscape;
+                    base.SetContentView(Resource.Layout.PackagingUnitTablet);
+                }
+                else
+                {
+                    base.RequestedOrientation = ScreenOrientation.Portrait;
+                    base.SetContentView(Resource.Layout.PackagingUnit);
+                }
+                AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
+                var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
+                _customToolbar.SetNavigationIcon(App.Settings.RootURL + "/Services/Logo");
+                SetSupportActionBar(_customToolbar._toolbar);
+                SupportActionBar.SetDisplayShowTitleEnabled(false);
+                tbIdent = FindViewById<EditText>(Resource.Id.tbIdent);
+                tbIdentName = FindViewById<EditText>(Resource.Id.tbIdentName);
+                tbLocation = FindViewById<EditText>(Resource.Id.tbLocation);
+                tbSSCC = FindViewById<EditText>(Resource.Id.tbSSCC);
+                tbSerialNo = FindViewById<EditText>(Resource.Id.tbSerialNo);
+                tbQty = FindViewById<EditText>(Resource.Id.tbQty);
+                label = FindViewById<TextView>(Resource.Id.label);
+                btNegate = FindViewById<Button>(Resource.Id.btNegate);
+                btNew = FindViewById<Button>(Resource.Id.btNew);
+                btList = FindViewById<Button>(Resource.Id.btList);
+                btFinish = FindViewById<Button>(Resource.Id.btFinish);
+                btExit = FindViewById<Button>(Resource.Id.btExit);
+
+                tbQty.FocusChange += TbQty_FocusChange;
+
+                btNew.Click += BtNew_Click;
+                btList.Click += BtList_Click;
+                btFinish.Click += BtFinish_Click;
+                btExit.Click += BtExit_Click;
+                btNegate.Click += BtNegate_Click;
+
+                barcode2D = new Barcode2D(this, this);
+                tbIdentName.FocusChange += TbIdentName_FocusChange;
+                if (item != null)
+                {
+                    tbIdent.Text = item.GetString("Ident");
+                    await ProcessIdent();
+                    tbLocation.Text = item.GetString("Location");
+                    tbSSCC.Text = item.GetString("SSCC");
+                    tbSerialNo.Text = item.GetString("SerialNo");
+                    await ProcessQty();
+                    tbQty.Text = item.GetDouble("Qty").ToString(await CommonData.GetQtyPictureAsync(this));
+                }
+
+
+
+                tbIdent.SetBackgroundColor(Android.Graphics.Color.Aqua);
+
+                tbIdent.RequestFocus();
+
+                var _broadcastReceiver = new NetworkStatusBroadcastReceiver();
+                _broadcastReceiver.ConnectionStatusChanged += OnNetworkStatusChanged;
+                Application.Context.RegisterReceiver(_broadcastReceiver,
+                new IntentFilter(ConnectivityManager.ConnectivityAction), ReceiverFlags.NotExported);
             }
-            else
+            catch (Exception ex)
             {
-                base.RequestedOrientation = ScreenOrientation.Portrait;
-                base.SetContentView(Resource.Layout.PackagingUnit);
+                GlobalExceptions.ReportGlobalException(ex);
             }
-            AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
-            var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
-            _customToolbar.SetNavigationIcon(App.Settings.RootURL + "/Services/Logo");
-            SetSupportActionBar(_customToolbar._toolbar);
-            SupportActionBar.SetDisplayShowTitleEnabled(false);
-            tbIdent = FindViewById<EditText>(Resource.Id.tbIdent);
-            tbIdentName = FindViewById<EditText>(Resource.Id.tbIdentName);
-            tbLocation = FindViewById<EditText>(Resource.Id.tbLocation);
-            tbSSCC = FindViewById<EditText>(Resource.Id.tbSSCC);
-            tbSerialNo = FindViewById<EditText>(Resource.Id.tbSerialNo);
-            tbQty = FindViewById<EditText>(Resource.Id.tbQty);
-            label = FindViewById<TextView>(Resource.Id.label);
-            btNegate = FindViewById<Button>(Resource.Id.btNegate);
-            btNew = FindViewById<Button>(Resource.Id.btNew);
-            btList = FindViewById<Button>(Resource.Id.btList);
-            btFinish = FindViewById<Button>(Resource.Id.btFinish);
-            btExit = FindViewById<Button>(Resource.Id.btExit);
-
-            tbQty.FocusChange += TbQty_FocusChange;
-
-            btNew.Click += BtNew_Click;
-            btList.Click += BtList_Click;
-            btFinish.Click += BtFinish_Click;
-            btExit.Click += BtExit_Click;
-            btNegate.Click += BtNegate_Click;
-
-            barcode2D = new Barcode2D(this, this);
-            tbIdentName.FocusChange += TbIdentName_FocusChange;
-            if (item != null)
-            {
-                tbIdent.Text = item.GetString("Ident");
-                await ProcessIdent();
-                tbLocation.Text = item.GetString("Location");
-                tbSSCC.Text = item.GetString("SSCC");
-                tbSerialNo.Text = item.GetString("SerialNo");
-                await ProcessQty();
-                tbQty.Text = item.GetDouble("Qty").ToString(await CommonData.GetQtyPictureAsync(this));
-            }
-
-
-
-            tbIdent.SetBackgroundColor(Android.Graphics.Color.Aqua);
-
-            tbIdent.RequestFocus();
-
-            var _broadcastReceiver = new NetworkStatusBroadcastReceiver();
-            _broadcastReceiver.ConnectionStatusChanged += OnNetworkStatusChanged;
-            Application.Context.RegisterReceiver(_broadcastReceiver,
-            new IntentFilter(ConnectivityManager.ConnectivityAction), ReceiverFlags.NotExported);
         }
 
 
         public bool IsOnline()
         {
-            var cm = (ConnectivityManager)GetSystemService(ConnectivityService);
-            return cm.ActiveNetworkInfo == null ? false : cm.ActiveNetworkInfo.IsConnected;
-
+            try
+            {
+                var cm = (ConnectivityManager)GetSystemService(ConnectivityService);
+                return cm.ActiveNetworkInfo == null ? false : cm.ActiveNetworkInfo.IsConnected;
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+                return false;
+            }
         }
 
         private void OnNetworkStatusChanged(object sender, EventArgs e)
         {
-            if (IsOnline())
+            try
             {
+                if (IsOnline())
+                {
 
-                try
-                {
-                    LoaderManifest.LoaderManifestLoopStop(this);
+                    try
+                    {
+                        LoaderManifest.LoaderManifestLoopStop(this);
+                    }
+                    catch (Exception err)
+                    {
+                        SentrySdk.CaptureException(err);
+                    }
                 }
-                catch (Exception err)
+                else
                 {
-                    SentrySdk.CaptureException(err);
+                    LoaderManifest.LoaderManifestLoop(this);
                 }
             }
-            else
+            catch (Exception ex)
             {
-                LoaderManifest.LoaderManifestLoop(this);
+                GlobalExceptions.ReportGlobalException(ex);
             }
         }
 
         private async void TbQty_FocusChange(object sender, View.FocusChangeEventArgs e)
         {
-            await ProcessQty();
+            try
+            {
+                await ProcessQty();
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
         }
 
         private async void TbIdentName_FocusChange(object sender, View.FocusChangeEventArgs e)
         {
-            await ProcessIdent();
+            try
+            {
+                await ProcessIdent();
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
         }
 
         private async void Check_Click(object sender, EventArgs e)
         {
-            await ProcessIdent();
-            tbLocation.RequestFocus();
-
+            try
+            {
+                await ProcessIdent();
+                tbLocation.RequestFocus();
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
         }
 
         private void BtNegate_Click(object sender, EventArgs e)
         {
-            var qty = tbQty.Text;
-            if (qty.Trim().StartsWith("-"))
+            try
             {
-                qty = qty.Trim().Substring(1);
+                var qty = tbQty.Text;
+                if (qty.Trim().StartsWith("-"))
+                {
+                    qty = qty.Trim().Substring(1);
+                }
+                else
+                {
+                    qty = "-" + qty;
+                }
+                tbQty.Text = qty;
             }
-            else
+            catch (Exception ex)
             {
-                qty = "-" + qty;
+                GlobalExceptions.ReportGlobalException(ex);
             }
-            tbQty.Text = qty;
         }
 
         private void BtExit_Click(object sender, EventArgs e)
         {
-            StartActivity(typeof(MainMenu));
-            Finish();
+            try
+            {
+                StartActivity(typeof(MainMenu));
+                Finish();
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
         }
         private async Task FinishMethod()
         {
-
-            await Task.Run(async () =>
+            try
             {
-                if (await SavePackagingItem())
+                await Task.Run(async () =>
                 {
-
-                    try
+                    if (await SavePackagingItem())
                     {
 
-                        var headID = head.GetInt("HeadID");
-
-                        var (success, result) = await WebApp.GetAsync("mode=finishPack&print=" + Services.DeviceUser() + "&id=" + headID.ToString(), this);
-                        if (success)
+                        try
                         {
-                            if (result.StartsWith("OK!"))
+
+                            var headID = head.GetInt("HeadID");
+
+                            var (success, result) = await WebApp.GetAsync("mode=finishPack&print=" + Services.DeviceUser() + "&id=" + headID.ToString(), this);
+                            if (success)
                             {
-
-                                var id = result.Split('+')[1];
-
-                                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s264)}" + id, ToastLength.Long).Show();
-                                AlertDialog.Builder alert = new AlertDialog.Builder(this);
-                                alert.SetTitle($"{Resources.GetString(Resource.String.s263)}");
-                                alert.SetMessage($"{Resources.GetString(Resource.String.s264)}" + id);
-
-                                alert.SetPositiveButton("Ok", (senderAlert, args) =>
+                                if (result.StartsWith("OK!"))
                                 {
-                                    alert.Dispose();
-                                    StartActivity(typeof(MainMenu));
-                                    Finish();
-                                });
 
+                                    var id = result.Split('+')[1];
 
-                                Dialog dialog = alert.Create();
-                                dialog.Show();
-
-                            }
-                            else
-                            {
-                                RunOnUiThread(() =>
-                                {
+                                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s264)}" + id, ToastLength.Long).Show();
                                     AlertDialog.Builder alert = new AlertDialog.Builder(this);
-                                    alert.SetTitle($"{Resources.GetString(Resource.String.s265)}");
-                                    alert.SetMessage($"{Resources.GetString(Resource.String.s266)}" + result);
+                                    alert.SetTitle($"{Resources.GetString(Resource.String.s263)}");
+                                    alert.SetMessage($"{Resources.GetString(Resource.String.s264)}" + id);
 
                                     alert.SetPositiveButton("Ok", (senderAlert, args) =>
                                     {
                                         alert.Dispose();
+                                        StartActivity(typeof(MainMenu));
+                                        Finish();
                                     });
+
 
                                     Dialog dialog = alert.Create();
                                     dialog.Show();
-                                });
 
+                                }
+                                else
+                                {
+                                    RunOnUiThread(() =>
+                                    {
+                                        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+                                        alert.SetTitle($"{Resources.GetString(Resource.String.s265)}");
+                                        alert.SetMessage($"{Resources.GetString(Resource.String.s266)}" + result);
+
+                                        alert.SetPositiveButton("Ok", (senderAlert, args) =>
+                                        {
+                                            alert.Dispose();
+                                        });
+
+                                        Dialog dialog = alert.Create();
+                                        dialog.Show();
+                                    });
+
+                                }
+                            }
+                            else
+                            {
+                                // UI changes.
+                                RunOnUiThread(() =>
+                                {
+                                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s216)}" + result, ToastLength.Long).Show();
+                                });
                             }
                         }
-                        else
+                        catch (Exception ex)
                         {
-                            // UI changes.
-                            RunOnUiThread(() =>
-                            {
-                                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s216)}" + result, ToastLength.Long).Show();
-                            });
+                            SentrySdk.CaptureException(ex);
                         }
                     }
-                    catch (Exception ex) 
-                    {
-                        SentrySdk.CaptureException(ex);
-                    }
-                }
-            });
+                });
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
 
         }
         private async void BtFinish_Click(object sender, EventArgs e)
         {
-            await FinishMethod();
-
+            try
+            {
+                await FinishMethod();
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
 
         }
         public override bool OnKeyDown(Keycode keyCode, KeyEvent e)
         {
-            switch (keyCode)
+            try
             {
-                // in smartphone
-                case Keycode.F2:
-                    if (btNew.Enabled == true)
-                    {
-                        BtNew_Click(this, null);
-                    }
-                    break;
+                switch (keyCode)
+                {
+                    // in smartphone
+                    case Keycode.F2:
+                        if (btNew.Enabled == true)
+                        {
+                            BtNew_Click(this, null);
+                        }
+                        break;
 
-                case Keycode.F3:
-                    if (btList.Enabled == true)
-                    {
-                        BtList_Click(this, null);
-                    }
-                    break;
-                case Keycode.F4:
-                    if (btFinish.Enabled == true)
-                    {
-                        BtFinish_Click(this, null);
-                    }
-                    break;
+                    case Keycode.F3:
+                        if (btList.Enabled == true)
+                        {
+                            BtList_Click(this, null);
+                        }
+                        break;
+                    case Keycode.F4:
+                        if (btFinish.Enabled == true)
+                        {
+                            BtFinish_Click(this, null);
+                        }
+                        break;
 
-                case Keycode.F8:
-                    BtExit_Click(this, null);
-                    break;
+                    case Keycode.F8:
+                        BtExit_Click(this, null);
+                        break;
 
-                case Keycode.F5:
-                    if (check.Enabled == true)
-                    {
-                        Check_Click(this, null);
-                    }
-                    break;
+                    case Keycode.F5:
+                        if (check.Enabled == true)
+                        {
+                            Check_Click(this, null);
+                        }
+                        break;
 
 
+                }
+                return base.OnKeyDown(keyCode, e);
             }
-            return base.OnKeyDown(keyCode, e);
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+                return false;
+            }
         }
 
         private async void BtList_Click(object sender, EventArgs e)
         {
-            if (await SavePackagingItem())
+            try
             {
-                InUseObjects.Set("PackagingItem", null);
-                StartActivity(typeof(PackagingUnitList));
-                Finish();
+                if (await SavePackagingItem())
+                {
+                    InUseObjects.Set("PackagingItem", null);
+                    StartActivity(typeof(PackagingUnitList));
+                    Finish();
 
+                }
             }
-
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
         }
 
         private async void BtNew_Click(object sender, EventArgs e)
         {
-            if (await SavePackagingItem())
+            try
             {
-                InUseObjects.Set("PackagingItem", null);
-                StartActivity(typeof(PackagingUnit));
-                Finish();
+                if (await SavePackagingItem())
+                {
+                    InUseObjects.Set("PackagingItem", null);
+                    StartActivity(typeof(PackagingUnit));
+                    Finish();
 
+                }
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
             }
         }
     }

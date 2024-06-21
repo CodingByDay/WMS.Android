@@ -7,6 +7,7 @@ using Android.Views;
 using TrendNET.WMS.Device.Services;
 using WMS.App;
 using WMS.Caching;
+using WMS.ExceptionStore;
 using Xamarin.ANRWatchDog;
 using Xamarin.Essentials;
 using static Android.App.ActionBar;
@@ -42,215 +43,265 @@ namespace WMS
 
         protected override async void OnCreate(Bundle savedInstanceState)
         {
-            base.OnCreate(savedInstanceState);
-            SetTheme(Resource.Style.AppTheme_NoActionBar);
-
-            if (App.Settings.tablet)
-            {
-                base.RequestedOrientation = ScreenOrientation.Landscape;
-                base.SetContentView(Resource.Layout.MainMenuTablet);
-                buttonRapidTakeover = FindViewById<Button>(Resource.Id.rapidTakeover);
-                buttonRapidTakeover.Click += ButtonRapidTakeover_Click;
-                rapidListview = FindViewById<ListView>(Resource.Id.rapidListview);
-                dataCleanup = await FillTheCleanupList();
-                dataAdapter = UniversalAdapterHelper.GetMainMenu(this, dataCleanup);
-                rapidListview.Adapter = dataAdapter;
-                UniversalAdapterHelper.SelectPositionProgramaticaly(rapidListview, 0);
-            }
-            else
-            {
-                base.RequestedOrientation = ScreenOrientation.Portrait;
-                base.SetContentView(Resource.Layout.MainMenu);
-            }
-
-            AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
-            var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
-            _customToolbar.SetNavigationIcon(App.Settings.RootURL + "/Services/Logo");
-            SetSupportActionBar(_customToolbar._toolbar);
-            SupportActionBar.SetDisplayShowTitleEnabled(false);
-            var flag = Services.isTablet(App.Settings.device);
-            IDdevice = App.Settings.ID;
-            target = App.Settings.device;
-            result = App.Settings.tablet;
-            button = FindViewById<Button>(Resource.Id.goodsTakeOver);
-            button.Click += Button_Click;
-            buttons.Add(button);
-            buttonInterWarehouse = FindViewById<Button>(Resource.Id.goodsInterWarehouse);
-            buttonInterWarehouse.Click += ButtonInterWarehouse_Click;
-            buttons.Add(buttonInterWarehouse);
-            buttonUnfinished = FindViewById<Button>(Resource.Id.goodsProduction);
-            buttonUnfinished.Click += ButtonUnfinished_Click;
-            buttons.Add(buttonUnfinished);
-            buttonIssued = FindViewById<Button>(Resource.Id.goodsIssued);
-            buttonIssued.Click += ButtonIssued_Click;
-            buttons.Add(buttonIssued);
-            buttonPrint = FindViewById<Button>(Resource.Id.btnPrint);
-            buttonPrint.Click += ButtonPrint_Click;
-            buttons.Add(buttonPrint);
-            btnInventory = FindViewById<Button>(Resource.Id.btnInventory);
-            btnInventory.Click += BtnInventory_Click;
-            buttons.Add(btnInventory);
-            btnCheckStock = FindViewById<Button>(Resource.Id.btCheckStock);
-            btnCheckStock.Click += BtnCheckStock_Click;
-            buttons.Add(btnCheckStock);
-            btnPackaging = FindViewById<Button>(Resource.Id.goodsPackaging);
-            btnPackaging.Click += BtnPackaging_Click;
-            buttons.Add(btnPackaging);
-            btnLogout = FindViewById<Button>(Resource.Id.logout);
-            btnLogout.Click += BtnLogout_Click;
-            PalletsMenu = FindViewById<Button>(Resource.Id.PalletsMenu);
-            buttons.Add(PalletsMenu);
-            buttonInterWarehouse.Enabled = await Services.HasPermission("TNET_WMS_BLAG_TRN", "R", this);
-            buttonIssued.Enabled = await Services.HasPermission("TNET_WMS_BLAG_SND", "R", this);
-            buttonUnfinished.Enabled = await Services.HasPermission("TNET_WMS_BLAG_PROD", "R", this);
-            button.Enabled = await Services.HasPermission("TNET_WMS_BLAG_ACQ", "R", this);
-            btnPackaging.Enabled = await Services.HasPermission("TNET_WMS_BLAG_PKG", "R", this);
-            buttonPrint.Enabled = await Services.HasPermission("TNET_WMS_OTHR_PRINT", "R", this);
-            btnInventory.Enabled = await Services.HasPermission("TNET_WMS_OTHR_INV", "R", this);
-            btRecalculate = FindViewById<Button>(Resource.Id.btRecalculate);
-            btRecalculate.Click += BtRecalculate_Click;
-            PalletsMenu.Enabled = await Services.HasPermission("TNET_WMS_BLAG_PAL", "R", this);
-            PalletsMenu.Click += PalletsMenu_Click;
-            HideDisabled(buttons);
-            var _broadcastReceiver = new NetworkStatusBroadcastReceiver();
-            _broadcastReceiver.ConnectionStatusChanged += OnNetworkStatusChanged;
-            Application.Context.RegisterReceiver(_broadcastReceiver,
-            new IntentFilter(ConnectivityManager.ConnectivityAction), ReceiverFlags.NotExported);
-            Caching.Caching.SavedList = new List<string>();
-            DownloadResources();
-            // Reseting the global update variable.
-            Base.Store.isUpdate = false;
-            Base.Store.OpenOrder = null;
-            Base.Store.byOrder = true;
-            Base.Store.code2D = null;
-
-            string pickingChoice = await CommonData.GetSettingAsync("IssueProcessSelectbreaking", this);
-
-
-            // Get the package manager
-            PackageManager packageManager = PackageManager;
-
-            // Get the package name of your application
-            string packageName = PackageName;
-            int versionCode = 0;
-            string versionName = string.Empty;
-
             try
             {
-                // Get package info for the specified package name
-                PackageInfo packageInfo = packageManager.GetPackageInfo(packageName, 0);
-                // Access version code and version name
-                versionCode = packageInfo.VersionCode; // Integer value
-                versionName = packageInfo.VersionName; // String value
+                base.OnCreate(savedInstanceState);
+                SetTheme(Resource.Style.AppTheme_NoActionBar);
 
-            } catch (Exception ex)
-            {
-                SentrySdk.CaptureException(ex);
-            }
-
-            // Global scope for sentry 10.06.2024 Janko Jovičić
-            SentrySdk.ConfigureScope(scope =>
-            {
-                var currentUser = new User
+                if (App.Settings.tablet)
                 {
-                    url = App.Settings.RootURL,
-                    id = App.Settings.ID,
-                    tablet = App.Settings.tablet,
-                    versionName = versionName,
-                    versionCode = versionCode.ToString()
-                };
-                scope.SetExtra("WMS User", currentUser);
-            });
+                    base.RequestedOrientation = ScreenOrientation.Landscape;
+                    base.SetContentView(Resource.Layout.MainMenuTablet);
+                    buttonRapidTakeover = FindViewById<Button>(Resource.Id.rapidTakeover);
+                    buttonRapidTakeover.Click += ButtonRapidTakeover_Click;
+                    rapidListview = FindViewById<ListView>(Resource.Id.rapidListview);
+                    dataCleanup = await FillTheCleanupList();
+                    dataAdapter = UniversalAdapterHelper.GetMainMenu(this, dataCleanup);
+                    rapidListview.Adapter = dataAdapter;
+                    UniversalAdapterHelper.SelectPositionProgramaticaly(rapidListview, 0);
+                }
+                else
+                {
+                    base.RequestedOrientation = ScreenOrientation.Portrait;
+                    base.SetContentView(Resource.Layout.MainMenu);
+                }
 
+                AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
+                var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
+                _customToolbar.SetNavigationIcon(App.Settings.RootURL + "/Services/Logo");
+                SetSupportActionBar(_customToolbar._toolbar);
+                SupportActionBar.SetDisplayShowTitleEnabled(false);
+                var flag = Services.isTablet(App.Settings.device);
+                IDdevice = App.Settings.ID;
+                target = App.Settings.device;
+                result = App.Settings.tablet;
+                button = FindViewById<Button>(Resource.Id.goodsTakeOver);
+                button.Click += Button_Click;
+                buttons.Add(button);
+                buttonInterWarehouse = FindViewById<Button>(Resource.Id.goodsInterWarehouse);
+                buttonInterWarehouse.Click += ButtonInterWarehouse_Click;
+                buttons.Add(buttonInterWarehouse);
+                buttonUnfinished = FindViewById<Button>(Resource.Id.goodsProduction);
+                buttonUnfinished.Click += ButtonUnfinished_Click;
+                buttons.Add(buttonUnfinished);
+                buttonIssued = FindViewById<Button>(Resource.Id.goodsIssued);
+                buttonIssued.Click += ButtonIssued_Click;
+                buttons.Add(buttonIssued);
+                buttonPrint = FindViewById<Button>(Resource.Id.btnPrint);
+                buttonPrint.Click += ButtonPrint_Click;
+                buttons.Add(buttonPrint);
+                btnInventory = FindViewById<Button>(Resource.Id.btnInventory);
+                btnInventory.Click += BtnInventory_Click;
+                buttons.Add(btnInventory);
+                btnCheckStock = FindViewById<Button>(Resource.Id.btCheckStock);
+                btnCheckStock.Click += BtnCheckStock_Click;
+                buttons.Add(btnCheckStock);
+                btnPackaging = FindViewById<Button>(Resource.Id.goodsPackaging);
+                btnPackaging.Click += BtnPackaging_Click;
+                buttons.Add(btnPackaging);
+                btnLogout = FindViewById<Button>(Resource.Id.logout);
+                btnLogout.Click += BtnLogout_Click;
+                PalletsMenu = FindViewById<Button>(Resource.Id.PalletsMenu);
+                buttons.Add(PalletsMenu);
+                buttonInterWarehouse.Enabled = await Services.HasPermission("TNET_WMS_BLAG_TRN", "R", this);
+                buttonIssued.Enabled = await Services.HasPermission("TNET_WMS_BLAG_SND", "R", this);
+                buttonUnfinished.Enabled = await Services.HasPermission("TNET_WMS_BLAG_PROD", "R", this);
+                button.Enabled = await Services.HasPermission("TNET_WMS_BLAG_ACQ", "R", this);
+                btnPackaging.Enabled = await Services.HasPermission("TNET_WMS_BLAG_PKG", "R", this);
+                buttonPrint.Enabled = await Services.HasPermission("TNET_WMS_OTHR_PRINT", "R", this);
+                btnInventory.Enabled = await Services.HasPermission("TNET_WMS_OTHR_INV", "R", this);
+                btRecalculate = FindViewById<Button>(Resource.Id.btRecalculate);
+                btRecalculate.Click += BtRecalculate_Click;
+                PalletsMenu.Enabled = await Services.HasPermission("TNET_WMS_BLAG_PAL", "R", this);
+                PalletsMenu.Click += PalletsMenu_Click;
+                HideDisabled(buttons);
+                var _broadcastReceiver = new NetworkStatusBroadcastReceiver();
+                _broadcastReceiver.ConnectionStatusChanged += OnNetworkStatusChanged;
+                Application.Context.RegisterReceiver(_broadcastReceiver,
+                new IntentFilter(ConnectivityManager.ConnectivityAction), ReceiverFlags.NotExported);
+                Caching.Caching.SavedList = new List<string>();
+                DownloadResources();
+                // Reseting the global update variable.
+                Base.Store.isUpdate = false;
+                Base.Store.OpenOrder = null;
+                Base.Store.byOrder = true;
+                Base.Store.code2D = null;
+
+                string pickingChoice = await CommonData.GetSettingAsync("IssueProcessSelectbreaking", this);
+
+
+                // Get the package manager
+                PackageManager packageManager = PackageManager;
+
+                // Get the package name of your application
+                string packageName = PackageName;
+                int versionCode = 0;
+                string versionName = string.Empty;
+
+                try
+                {
+                    // Get package info for the specified package name
+                    PackageInfo packageInfo = packageManager.GetPackageInfo(packageName, 0);
+                    // Access version code and version name
+                    versionCode = packageInfo.VersionCode; // Integer value
+                    versionName = packageInfo.VersionName; // String value
+
+                }
+                catch (Exception ex)
+                {
+                    SentrySdk.CaptureException(ex);
+                }
+
+                // Global scope for sentry 10.06.2024 Janko Jovičić
+                SentrySdk.ConfigureScope(scope =>
+                {
+                    var currentUser = new User
+                    {
+                        url = App.Settings.RootURL,
+                        id = App.Settings.ID,
+                        tablet = App.Settings.tablet,
+                        versionName = versionName,
+                        versionCode = versionCode.ToString()
+                    };
+                    scope.SetExtra("WMS User", currentUser);
+                });
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
         }
 
 
 
         private async Task<List<CleanupLocation>> FillTheCleanupList()
         {
-            var location = await CommonData.GetSettingAsync("DefaultProductionLocation", this);
-            List<CleanupLocation> data = new List<CleanupLocation>();
-            await Task.Run(async () =>
+            try
             {
-
-                string error;
-                var stock = Services.GetObjectList("strl", out error, location);
-                if (stock == null)
+                var location = await CommonData.GetSettingAsync("DefaultProductionLocation", this);
+                List<CleanupLocation> data = new List<CleanupLocation>();
+                await Task.Run(async () =>
                 {
-                    RunOnUiThread(() =>
+
+                    string error;
+                    var stock = Services.GetObjectList("strl", out error, location);
+                    if (stock == null)
                     {
-                        string WebError = string.Format($"{Resources.GetString(Resource.String.s216)}" + error);
+                        RunOnUiThread(() =>
+                        {
+                            string WebError = string.Format($"{Resources.GetString(Resource.String.s216)}" + error);
 
-                        Toast.MakeText(this, WebError, ToastLength.Long).Show();
-                    });
+                            Toast.MakeText(this, WebError, ToastLength.Long).Show();
+                        });
 
 
-                }
-                else
-                {
-                    stock.Items.ForEach(x =>
+                    }
+                    else
                     {
-                        var ident = x.GetString("Ident");
-                        var location = x.GetString("Location");
-                        var SSCC = x.GetString("SSCC");
-                        var Name = x.GetString("Name");
-                        var Serial = x.GetString("SerialNo");
-                        data.Add(new CleanupLocation { Name = Name, Ident = ident, Location = location, Serial = Serial, SSCC = SSCC });
-                    });
-                }
+                        stock.Items.ForEach(x =>
+                        {
+                            var ident = x.GetString("Ident");
+                            var location = x.GetString("Location");
+                            var SSCC = x.GetString("SSCC");
+                            var Name = x.GetString("Name");
+                            var Serial = x.GetString("SerialNo");
+                            data.Add(new CleanupLocation { Name = Name, Ident = ident, Location = location, Serial = Serial, SSCC = SSCC });
+                        });
+                    }
 
 
 
-            });
-            return data;
+                });
+                return data;
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+                return new List<CleanupLocation>();
+            }
         }
 
 
         private void ButtonRapidTakeover_Click(object? sender, EventArgs e)
         {
-            StartActivity(typeof(RapidTakeoverPhone));
+            try
+            {
+                StartActivity(typeof(RapidTakeoverPhone));
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
         }
 
         public string GetAppVersion()
         {
-            return AppInfo.BuildString;
+            try
+            {
+                return AppInfo.BuildString;
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+                return string.Empty;
+            }
         }
         private void DownloadResources()
         {
-
-            if (!App.Settings.login)
+            try
             {
-                var intent = new Intent(this, typeof(CachingService));
-                base.StartService(intent);
-                App.Settings.login = true;
+                if (!App.Settings.login)
+                {
+                    var intent = new Intent(this, typeof(CachingService));
+                    base.StartService(intent);
+                    App.Settings.login = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
             }
         }
 
         public bool IsOnline()
         {
-            var cm = (ConnectivityManager)GetSystemService(ConnectivityService);
-            return cm.ActiveNetworkInfo == null ? false : cm.ActiveNetworkInfo.IsConnected;
-
+            try
+            {
+                var cm = (ConnectivityManager)GetSystemService(ConnectivityService);
+                return cm.ActiveNetworkInfo == null ? false : cm.ActiveNetworkInfo.IsConnected;
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+                return false;
+            }
         }
 
         private void OnNetworkStatusChanged(object sender, EventArgs e)
         {
-            if (IsOnline())
+            try
             {
+                if (IsOnline())
+                {
 
-                try
-                {
-                    LoaderManifest.LoaderManifestLoopStop(this);
+                    try
+                    {
+                        LoaderManifest.LoaderManifestLoopStop(this);
+                    }
+                    catch (Exception err)
+                    {
+                        SentrySdk.CaptureException(err);
+                    }
                 }
-                catch (Exception err)
+                else
                 {
-                    SentrySdk.CaptureException(err);
+
+                    LoaderManifest.LoaderManifestLoop(this);
                 }
             }
-            else
+            catch (Exception ex)
             {
-
-                LoaderManifest.LoaderManifestLoop(this);
+                GlobalExceptions.ReportGlobalException(ex);
             }
         }
 
@@ -260,175 +311,266 @@ namespace WMS
 
         private void BtRecalculate_Click(object sender, EventArgs e)
         {
-            StartActivity(typeof(RecalculateInventory));
+            try
+            {
+                StartActivity(typeof(RecalculateInventory));
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
         }
 
         private void HideDisabled(List<Button> buttons)
         {
-            foreach (Button btn in buttons)
+            try
             {
-                if (btn.Enabled == false)
+                foreach (Button btn in buttons)
                 {
-                    btn.SetBackgroundColor(Android.Graphics.Color.DarkGray);
-                    btn.SetTextColor(Android.Graphics.Color.White);
+                    if (btn.Enabled == false)
+                    {
+                        btn.SetBackgroundColor(Android.Graphics.Color.DarkGray);
+                        btn.SetTextColor(Android.Graphics.Color.White);
+                    }
+                    else
+                    {
+                        continue;
+                    }
                 }
-                else
-                {
-                    continue;
-                }
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
             }
         }
 
         private void PalletsMenu_Click(object sender, EventArgs e)
         {
-            StartActivity(typeof(MenuPallets));
+            try
+            {
+                StartActivity(typeof(MenuPallets));
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
         }
 
 
 
         public override bool OnKeyDown(Keycode keyCode, KeyEvent e)
         {
-            switch (keyCode)
+            try
             {
-                // In smartphone
-                case Keycode.F1:
+                switch (keyCode)
+                {
+                    // In smartphone
+                    case Keycode.F1:
 
-                    if (button.Enabled == true)
-                    {
-                        Button_Click(this, null);
+                        if (button.Enabled == true)
+                        {
+                            Button_Click(this, null);
 
-                    }
-                    break;
+                        }
+                        break;
 
-                // Return true;
+                    // Return true;
 
-                case Keycode.F2:
-                    if (buttonInterWarehouse.Enabled == true)
-                    {
-                        ButtonInterWarehouse_Click(this, null);
-                    }
+                    case Keycode.F2:
+                        if (buttonInterWarehouse.Enabled == true)
+                        {
+                            ButtonInterWarehouse_Click(this, null);
+                        }
 
-                    break;
-
-
-                case Keycode.F3:
-                    if (buttonUnfinished.Enabled == true)
-                    {
-                        ButtonUnfinished_Click(this, null);
-                    }
-                    break;
-
-                case Keycode.F4:
-                    if (buttonIssued.Enabled == true)
-                    {
-                        ButtonIssued_Click(this, null);
-                    }
-                    break;
+                        break;
 
 
-                case Keycode.F5:
-                    if (btnPackaging.Enabled == true)
-                    {
-                        BtnPackaging_Click(this, null);
-                    }
-                    break;
+                    case Keycode.F3:
+                        if (buttonUnfinished.Enabled == true)
+                        {
+                            ButtonUnfinished_Click(this, null);
+                        }
+                        break;
+
+                    case Keycode.F4:
+                        if (buttonIssued.Enabled == true)
+                        {
+                            ButtonIssued_Click(this, null);
+                        }
+                        break;
 
 
-                case Keycode.F6:
-                    if (buttonPrint.Enabled == true)
-                    {
-                        ButtonPrint_Click(this, null);
-                    }
-                    break;
+                    case Keycode.F5:
+                        if (btnPackaging.Enabled == true)
+                        {
+                            BtnPackaging_Click(this, null);
+                        }
+                        break;
 
-                case Keycode.F7:
-                    if (btnInventory.Enabled == true)
-                    {
-                        BtnInventory_Click(this, null);
-                    }
-                    break;
-                case Keycode.F8:
-                    if (btnCheckStock.Enabled == true)
-                    {
-                        BtnCheckStock_Click(this, null);
-                    }
-                    break;
-                    // return true;
+
+                    case Keycode.F6:
+                        if (buttonPrint.Enabled == true)
+                        {
+                            ButtonPrint_Click(this, null);
+                        }
+                        break;
+
+                    case Keycode.F7:
+                        if (btnInventory.Enabled == true)
+                        {
+                            BtnInventory_Click(this, null);
+                        }
+                        break;
+                    case Keycode.F8:
+                        if (btnCheckStock.Enabled == true)
+                        {
+                            BtnCheckStock_Click(this, null);
+                        }
+                        break;
+                        // return true;
+                }
+                return base.OnKeyDown(keyCode, e);
             }
-            return base.OnKeyDown(keyCode, e);
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+                return false;
+            }
         }
 
         private void BtnLogout_Click(object sender, EventArgs e)
-        {       
-            Intent intent = new Intent(this, typeof(MainActivity));
-            intent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
-            StartActivity(intent);
-            Finish();
+        {
+            try
+            {
+                Intent intent = new Intent(this, typeof(MainActivity));
+                intent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
+                StartActivity(intent);
+                Finish();
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
         }
 
  
         private void BtnPackaging_Click(object sender, EventArgs e)
         {
-            StartActivity(typeof(PackagingEnteredPositionsView));
+            try
+            {
+                StartActivity(typeof(PackagingEnteredPositionsView));
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
         }
 
         private void BtnCheckStock_Click(object sender, EventArgs e)
         {
-            StartActivity(typeof(CheckStock));
+            try
+            {
+                StartActivity(typeof(CheckStock));
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
         }
 
         private void BtnInventory_Click(object sender, EventArgs e)
         {
-            StartActivity(typeof(InventoryMenu));
+            try
+            {
+                StartActivity(typeof(InventoryMenu));
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
         }
 
         private void ButtonPrint_Click(object sender, EventArgs e)
         {
-            StartActivity(typeof(PrintingMenu));
-
+            try
+            {
+                StartActivity(typeof(PrintingMenu));
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
         }
 
         private void ButtonIssued_Click(object sender, EventArgs e)
         {
-
-            StartActivity(typeof(UnfinishedIssuedGoodsView));
-
+            try
+            {
+                StartActivity(typeof(UnfinishedIssuedGoodsView));
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
         }
 
 
         private void Button_Click_Without_Inner_Menu(object sender, EventArgs e)
         {
-
-            StartActivity(typeof(UnfinishedTakeoversView));
-
+            try
+            {
+                StartActivity(typeof(UnfinishedTakeoversView));
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
         }
 
 
 
         private void ButtonUnfinished_Click(object sender, EventArgs e)
         {
-
-            StartActivity(typeof(UnfinishedProductionView));
+            try
+            {
+                StartActivity(typeof(UnfinishedProductionView));
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
         }
 
         private void ButtonInterWarehouse_Click(object sender, EventArgs e)
         {
-            StartActivity(typeof(UnfinishedInterWarehouseView));
+            try
+            {
+                StartActivity(typeof(UnfinishedInterWarehouseView));
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
         }
 
         private async void Button_Click(object sender, EventArgs e)
         {
-
-            var isShown = await CommonData.GetSettingAsync("UseFastTakeOver", this);
-            if (isShown == "1")
+            try
             {
-                StartActivity(typeof(Choice));
+                var isShown = await CommonData.GetSettingAsync("UseFastTakeOver", this);
+                if (isShown == "1")
+                {
+                    StartActivity(typeof(Choice));
+                }
+                else
+                {
+                    StartActivity(typeof(UnfinishedTakeoversView));
+                }
             }
-            else
+            catch (Exception ex)
             {
-                StartActivity(typeof(UnfinishedTakeoversView));
+                GlobalExceptions.ReportGlobalException(ex);
             }
-
         }
     }
 }

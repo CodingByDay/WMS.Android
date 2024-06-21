@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 using System.Collections.Concurrent;
 using TrendNET.WMS.Device.Services;
 using WMS.App;
+using WMS.ExceptionStore;
 using AlertDialog = Android.App.AlertDialog;
 namespace WMS
 {
@@ -31,11 +32,16 @@ namespace WMS
 
         public void GetBarcode(string barcode)
         {
-            if (ident.HasFocus)
+            try
             {
-
-                ident.Text = barcode;
-
+                if (ident.HasFocus)
+                {
+                    ident.Text = barcode;
+                }
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
             }
         }
  
@@ -43,120 +49,156 @@ namespace WMS
 
         protected  override void OnCreate(Bundle savedInstanceState)
         {
-            base.OnCreate(savedInstanceState);
-            SetTheme(Resource.Style.AppTheme_NoActionBar);
-            // Create your application here
-            if (App.Settings.tablet)
+            try
             {
-                base.RequestedOrientation = ScreenOrientation.Landscape;
-                base.SetContentView(Resource.Layout.RecalculateInventoryTablet);
+                base.OnCreate(savedInstanceState);
+                SetTheme(Resource.Style.AppTheme_NoActionBar);
+                // Create your application here
+                if (App.Settings.tablet)
+                {
+                    base.RequestedOrientation = ScreenOrientation.Landscape;
+                    base.SetContentView(Resource.Layout.RecalculateInventoryTablet);
+                }
+                else
+                {
+                    base.RequestedOrientation = ScreenOrientation.Portrait;
+                    base.SetContentView(Resource.Layout.RecalculateInventory);
+                }
+                AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
+                var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
+                _customToolbar.SetNavigationIcon(App.Settings.RootURL + "/Services/Logo");
+                SetSupportActionBar(_customToolbar._toolbar);
+                SupportActionBar.SetDisplayShowTitleEnabled(false);
+                ident = FindViewById<EditText>(Resource.Id.ident);
+
+                btCalculate = FindViewById<Button>(Resource.Id.btCalculate);
+
+                barcode2D = new Barcode2D(this, this);
+
+                color();
+
+
+
+                btCalculate.Click += BtCalculate_Click;
+                tbIdent = FindViewById<CustomAutoCompleteTextView>(Resource.Id.ident);
+
+                ISharedPreferences sharedPreferences = PreferenceManager.GetDefaultSharedPreferences(Application.Context);
+                ISharedPreferencesEditor editor = sharedPreferences.Edit();
+                string savedIdentsJson = sharedPreferences.GetString("idents", "");
+                if (!string.IsNullOrEmpty(savedIdentsJson))
+                {
+                    savedIdents = JsonConvert.DeserializeObject<List<string>>(savedIdentsJson);
+                }
+                tbIdent.LongClick += ClearTheFields;
+                tbIdentAdapter = new CustomAutoCompleteAdapter<string>(this, Android.Resource.Layout.SimpleDropDownItem1Line, new List<string>());
+                tbIdent.Adapter = tbIdentAdapter;
+                tbIdent.TextChanged += (sender, e) =>
+                {
+                    string userInput = e.Text.ToString();
+                    UpdateSuggestions(userInput);
+                };
+
+                tbIdent.LongClick += ClearTheFields;
+                var DataAdapter = new CustomAutoCompleteAdapter<string>(this,
+                Android.Resource.Layout.SimpleSpinnerItem, identData);
+                DataAdapter.SetDropDownViewResource(Android.Resource.Layout.SimpleSpinnerDropDownItem);
+                ident.LongClick += ClearTheFields;
+                var _broadcastReceiver = new NetworkStatusBroadcastReceiver();
+                _broadcastReceiver.ConnectionStatusChanged += OnNetworkStatusChanged;
+                Application.Context.RegisterReceiver(_broadcastReceiver,
+                new IntentFilter(ConnectivityManager.ConnectivityAction), ReceiverFlags.NotExported);
             }
-            else
+            catch (Exception ex)
             {
-                base.RequestedOrientation = ScreenOrientation.Portrait;
-                base.SetContentView(Resource.Layout.RecalculateInventory);
+                GlobalExceptions.ReportGlobalException(ex);
             }
-            AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
-            var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
-            _customToolbar.SetNavigationIcon(App.Settings.RootURL + "/Services/Logo");
-            SetSupportActionBar(_customToolbar._toolbar);
-            SupportActionBar.SetDisplayShowTitleEnabled(false);
-            ident = FindViewById<EditText>(Resource.Id.ident);
-
-            btCalculate = FindViewById<Button>(Resource.Id.btCalculate);
-
-            barcode2D = new Barcode2D(this, this);
-
-            color();
-
-
-
-            btCalculate.Click += BtCalculate_Click;
-            tbIdent = FindViewById<CustomAutoCompleteTextView>(Resource.Id.ident);
-
-            ISharedPreferences sharedPreferences = PreferenceManager.GetDefaultSharedPreferences(Application.Context);
-            ISharedPreferencesEditor editor = sharedPreferences.Edit();
-            string savedIdentsJson = sharedPreferences.GetString("idents", "");
-            if (!string.IsNullOrEmpty(savedIdentsJson))
-            {
-                savedIdents = JsonConvert.DeserializeObject<List<string>>(savedIdentsJson);
-            }
-            tbIdent.LongClick += ClearTheFields;
-            tbIdentAdapter = new CustomAutoCompleteAdapter<string>(this, Android.Resource.Layout.SimpleDropDownItem1Line, new List<string>());
-            tbIdent.Adapter = tbIdentAdapter;
-            tbIdent.TextChanged += (sender, e) =>
-            {
-                string userInput = e.Text.ToString();
-                UpdateSuggestions(userInput);
-            };
-
-            tbIdent.LongClick += ClearTheFields;
-            var DataAdapter = new CustomAutoCompleteAdapter<string>(this,
-            Android.Resource.Layout.SimpleSpinnerItem, identData);
-            DataAdapter.SetDropDownViewResource(Android.Resource.Layout.SimpleSpinnerDropDownItem);
-            ident.LongClick += ClearTheFields;
-            var _broadcastReceiver = new NetworkStatusBroadcastReceiver();
-            _broadcastReceiver.ConnectionStatusChanged += OnNetworkStatusChanged;
-            Application.Context.RegisterReceiver(_broadcastReceiver,
-            new IntentFilter(ConnectivityManager.ConnectivityAction), ReceiverFlags.NotExported);
         }
 
         private void UpdateSuggestions(string userInput)
         {
-            List<string> suggestions = GetCustomSuggestions(userInput);
-            tbIdentAdapter.Clear();
-            tbIdentAdapter.AddAll(suggestions);
-            tbIdentAdapter.NotifyDataSetChanged();
+            try
+            {
+                List<string> suggestions = GetCustomSuggestions(userInput);
+                tbIdentAdapter.Clear();
+                tbIdentAdapter.AddAll(suggestions);
+                tbIdentAdapter.NotifyDataSetChanged();
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
         }
 
         private List<string> GetCustomSuggestions(string userInput)
         {
-            if (savedIdents != null)
+            try
             {
-                // In order to improve performance try to implement paralel processing. 23.05.2024 Janko Jovičić
-
-                var lowerUserInput = userInput.ToLower();
-                var result = new ConcurrentBag<string>();
-
-                Parallel.ForEach(savedIdents, suggestion =>
+                if (savedIdents != null)
                 {
-                    if (suggestion.ToLower().Contains(lowerUserInput))
+                    // In order to improve performance try to implement paralel processing. 23.05.2024 Janko Jovičić
+
+                    var lowerUserInput = userInput.ToLower();
+                    var result = new ConcurrentBag<string>();
+
+                    Parallel.ForEach(savedIdents, suggestion =>
                     {
-                        result.Add(suggestion);
-                    }
-                });
+                        if (suggestion.ToLower().Contains(lowerUserInput))
+                        {
+                            result.Add(suggestion);
+                        }
+                    });
 
-                return result.Take(100).ToList();
+                    return result.Take(100).ToList();
+                }
+
+                // Service not yet loaded. 6.6.2024 J.J
+                return new List<string>();
             }
-
-            // Service not yet loaded. 6.6.2024 J.J
-            return new List<string>();
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+                return new List<string>();
+            }
         }
 
         public bool IsOnline()
         {
-            var cm = (ConnectivityManager)GetSystemService(ConnectivityService);
-            return cm.ActiveNetworkInfo == null ? false : cm.ActiveNetworkInfo.IsConnected;
-
+            try
+            {
+                var cm = (ConnectivityManager)GetSystemService(ConnectivityService);
+                return cm.ActiveNetworkInfo == null ? false : cm.ActiveNetworkInfo.IsConnected;
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+                return false;
+            }
         }
 
         private void OnNetworkStatusChanged(object sender, EventArgs e)
         {
-            if (IsOnline())
+            try
             {
+                if (IsOnline())
+                {
 
-                try
-                {
-                    LoaderManifest.LoaderManifestLoopStop(this);
+                    try
+                    {
+                        LoaderManifest.LoaderManifestLoopStop(this);
+                    }
+                    catch (Exception err)
+                    {
+                        SentrySdk.CaptureException(err);
+                    }
                 }
-                catch (Exception err)
+                else
                 {
-                    SentrySdk.CaptureException(err);
+                    LoaderManifest.LoaderManifestLoop(this);
                 }
             }
-            else
+            catch (Exception ex)
             {
-                LoaderManifest.LoaderManifestLoop(this);
+                GlobalExceptions.ReportGlobalException(ex);
             }
         }
 
@@ -164,90 +206,145 @@ namespace WMS
 
         private void ClearTheFields(object sender, View.LongClickEventArgs e)
         {
-            ident.Text = "";
+            try
+            {
+                ident.Text = "";
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
         }
 
 
         private async void BtCalculate_Click(object sender, EventArgs e)
         {
-            var value = ident.Text;
-            await FinishMethod(value);
+            try
+            {
+                var value = ident.Text;
+                await FinishMethod(value);
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
         }
 
         private void color()
         {
-            ident.SetBackgroundColor(Android.Graphics.Color.Aqua);
+            try
+            {
+                ident.SetBackgroundColor(Android.Graphics.Color.Aqua);
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
         }
 
 
         public override bool OnKeyDown(Keycode keyCode, KeyEvent e)
         {
-            switch (keyCode)
+            try
             {
-                // In smartphone.  
-                case Keycode.F2:
-                    if (btCalculate.Enabled == true)
-                    {
-                        BtCalculate_Click(this, null);
-                    }
-                    break;
+                switch (keyCode)
+                {
+                    // In smartphone.  
+                    case Keycode.F2:
+                        if (btCalculate.Enabled == true)
+                        {
+                            BtCalculate_Click(this, null);
+                        }
+                        break;
 
 
 
+                }
+                return base.OnKeyDown(keyCode, e);
             }
-            return base.OnKeyDown(keyCode, e);
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+                return false;
+            }
         }
 
 
 
         private async Task FinishMethod(string ident)
         {
-
-
-
-            await Task.Run(async () =>
+            try
             {
-                LoaderManifest.LoaderManifestLoopResources(this);
 
 
-                try
+                await Task.Run(async () =>
                 {
+                    LoaderManifest.LoaderManifestLoopResources(this);
 
 
-        
-
-
-                    var (success, result) = await WebApp.GetAsync("mode=recalc&id=" + ident, this);
-                    if (success)
+                    try
                     {
 
 
-                        if (result == "OK")
+
+
+
+                        var (success, result) = await WebApp.GetAsync("mode=recalc&id=" + ident, this);
+                        if (success)
                         {
-                            RunOnUiThread(() =>
+
+
+                            if (result == "OK")
                             {
-
-
-                                AlertDialog.Builder alert = new AlertDialog.Builder(this);
-
-                                alert.SetTitle($"{Resources.GetString(Resource.String.s263)}");
-
-
-                                alert.SetMessage($"{Resources.GetString(Resource.String.s318)}");
-
-                                alert.SetPositiveButton("Ok", (senderAlert, args) =>
+                                RunOnUiThread(() =>
                                 {
-                                    alert.Dispose();
-                                    StartActivity(typeof(MainMenu));
-                                    Finish();
+
+
+                                    AlertDialog.Builder alert = new AlertDialog.Builder(this);
+
+                                    alert.SetTitle($"{Resources.GetString(Resource.String.s263)}");
+
+
+                                    alert.SetMessage($"{Resources.GetString(Resource.String.s318)}");
+
+                                    alert.SetPositiveButton("Ok", (senderAlert, args) =>
+                                    {
+                                        alert.Dispose();
+                                        StartActivity(typeof(MainMenu));
+                                        Finish();
+                                    });
+
+
+
+                                    Dialog dialog = alert.Create();
+                                    dialog.Show();
                                 });
 
+                            }
+                            else
+                            {
+                                RunOnUiThread(() =>
+                                {
 
 
-                                Dialog dialog = alert.Create();
-                                dialog.Show();
-                            });
+                                    AlertDialog.Builder alert = new AlertDialog.Builder(this);
+                                    alert.SetTitle($"{Resources.GetString(Resource.String.s265)}");
+                                    alert.SetMessage($"Napaka: {result}");
 
+                                    alert.SetPositiveButton("Ok", (senderAlert, args) =>
+                                    {
+                                        alert.Dispose();
+                                        StartActivity(typeof(MainMenu));
+                                        Finish();
+
+                                    });
+
+
+
+                                    Dialog dialog = alert.Create();
+                                    dialog.Show();
+                                });
+                            }
                         }
                         else
                         {
@@ -257,7 +354,7 @@ namespace WMS
 
                                 AlertDialog.Builder alert = new AlertDialog.Builder(this);
                                 alert.SetTitle($"{Resources.GetString(Resource.String.s265)}");
-                                alert.SetMessage($"Napaka: {result}");
+                                alert.SetMessage($"{Resources.GetString(Resource.String.s213)}");
 
                                 alert.SetPositiveButton("Ok", (senderAlert, args) =>
                                 {
@@ -272,61 +369,42 @@ namespace WMS
                                 Dialog dialog = alert.Create();
                                 dialog.Show();
                             });
+
+
+
                         }
                     }
-                    else
+                    catch (Exception ex)
                     {
+
+                        SentrySdk.CaptureException(ex);
+
                         RunOnUiThread(() =>
                         {
-
-
                             AlertDialog.Builder alert = new AlertDialog.Builder(this);
                             alert.SetTitle($"{Resources.GetString(Resource.String.s265)}");
-                            alert.SetMessage($"{Resources.GetString(Resource.String.s213)}");
-
+                            alert.SetMessage($"{Resources.GetString(Resource.String.s247)}" + ex.Message);
                             alert.SetPositiveButton("Ok", (senderAlert, args) =>
                             {
                                 alert.Dispose();
                                 StartActivity(typeof(MainMenu));
                                 Finish();
-
                             });
-
-
-
                             Dialog dialog = alert.Create();
                             dialog.Show();
                         });
-
-
-
                     }
-                }
-                catch (Exception ex)
-                {
-
-                    SentrySdk.CaptureException(ex);
-
-                    RunOnUiThread(() =>
+                    finally
                     {
-                        AlertDialog.Builder alert = new AlertDialog.Builder(this);
-                        alert.SetTitle($"{Resources.GetString(Resource.String.s265)}");
-                        alert.SetMessage($"{Resources.GetString(Resource.String.s247)}" + ex.Message);
-                        alert.SetPositiveButton("Ok", (senderAlert, args) =>
-                        {
-                            alert.Dispose();
-                            StartActivity(typeof(MainMenu));
-                            Finish();
-                        });
-                        Dialog dialog = alert.Create();
-                        dialog.Show();
-                    });
-                } finally
-                {
-                    LoaderManifest.LoaderManifestLoopStop(this);
-                }
+                        LoaderManifest.LoaderManifestLoopStop(this);
+                    }
 
-            });
+                });
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
         }
     }
 }

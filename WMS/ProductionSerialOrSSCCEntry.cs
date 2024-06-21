@@ -11,6 +11,7 @@ using TrendNET.WMS.Core.Data;
 using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
 using WMS.App;
+using WMS.ExceptionStore;
 using static Android.App.ActionBar;
 using AlertDialog = Android.App.AlertDialog;
 using WebApp = TrendNET.WMS.Device.Services.WebApp;
@@ -41,72 +42,86 @@ namespace WMS
 
         public override bool OnKeyDown(Keycode keyCode, KeyEvent e)
         {
-            switch (keyCode)
+            try
             {
+                switch (keyCode)
+                {
 
-                case Keycode.F2:
-                    if (btSaveOrUpdate.Enabled == true)
-                    {
-                        BtSaveOrUpdate_Click(this, null);
-                    }
-                    break;
+                    case Keycode.F2:
+                        if (btSaveOrUpdate.Enabled == true)
+                        {
+                            BtSaveOrUpdate_Click(this, null);
+                        }
+                        break;
 
-                case Keycode.F3:
-                    if (button3.Enabled == true)
-                    {
-                        Button3_Click(this, null);
-                    }
-                    break;
+                    case Keycode.F3:
+                        if (button3.Enabled == true)
+                        {
+                            Button3_Click(this, null);
+                        }
+                        break;
 
-                case Keycode.F4://
-                    if (button4.Enabled == true)
-                    {
-                        Button4_Click(this, null);
-                    }
-                    break;
+                    case Keycode.F4://
+                        if (button4.Enabled == true)
+                        {
+                            Button4_Click(this, null);
+                        }
+                        break;
 
-                case Keycode.F8:
-                    if (button5.Enabled == true)
-                    {
-                        Button5_Click(this, null);
-                    }
-                    break;
+                    case Keycode.F8:
+                        if (button5.Enabled == true)
+                        {
+                            Button5_Click(this, null);
+                        }
+                        break;
 
+                }
+                return base.OnKeyDown(keyCode, e);
             }
-            return base.OnKeyDown(keyCode, e);
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+                return false;
+            }
         }
         public void GetBarcode(string barcode)
         {
-
-            if (tbSSCC.HasFocus)
+            try
             {
-                if (barcode != "Scan fail")
+                if (tbSSCC.HasFocus)
                 {
-                    tbSSCC.Text = "";
-                    tbSerialNum.Text = "";
-                    tbPacking.Text = "";
-                    tbLocation.Text = "";
-                    tbIdent.Text = "";
+                    if (barcode != "Scan fail")
+                    {
+                        tbSSCC.Text = "";
+                        tbSerialNum.Text = "";
+                        tbPacking.Text = "";
+                        tbLocation.Text = "";
+                        tbIdent.Text = "";
 
-                    tbSSCC.Text = barcode;
-                    tbSerialNum.RequestFocus();
+                        tbSSCC.Text = barcode;
+                        tbSerialNum.RequestFocus();
 
+                    }
+                }
+                else if (tbSerialNum.HasFocus)
+                {
+                    if (barcode != "Scan fail")
+                    {
+
+                        tbSerialNum.Text = barcode;
+                        ProcessSerialNum();
+                        tbLocation.RequestFocus();
+                    }
+                }
+                else if (tbLocation.HasFocus)
+                {
+
+                    tbLocation.Text = barcode;
                 }
             }
-            else if (tbSerialNum.HasFocus)
+            catch (Exception ex)
             {
-                if (barcode != "Scan fail")
-                {
-
-                    tbSerialNum.Text = barcode;
-                    ProcessSerialNum();
-                    tbLocation.RequestFocus();
-                }
-            }
-            else if (tbLocation.HasFocus)
-            {
-
-                tbLocation.Text = barcode;
+                GlobalExceptions.ReportGlobalException(ex);
             }
         }
 
@@ -114,32 +129,37 @@ namespace WMS
 
         private void fillItems()
         {
-
-            string error;
-            var stock = Services.GetObjectList("str", out error, moveHead.GetString("Wharehouse") + "||" + identCode); /* Defined at the beggining of the activity. */
-            var number = stock.Items.Count();
-
-
-            if (stock != null)
+            try
             {
-                stock.Items.ForEach(async x =>
+                string error;
+                var stock = Services.GetObjectList("str", out error, moveHead.GetString("Wharehouse") + "||" + identCode); /* Defined at the beggining of the activity. */
+                var number = stock.Items.Count();
+
+
+                if (stock != null)
                 {
-                    var picture = await CommonData.GetQtyPictureAsync(this);
-
-                    data.Add(new ProductionSerialOrSSCCList
+                    stock.Items.ForEach(async x =>
                     {
-                        Ident = x.GetString("Ident"),
-                        Location = x.GetString("Location"),
-                        Qty = x.GetDouble("RealStock").ToString(picture),
-                        SerialNumber = x.GetString("SerialNo")
+                        var picture = await CommonData.GetQtyPictureAsync(this);
 
+                        data.Add(new ProductionSerialOrSSCCList
+                        {
+                            Ident = x.GetString("Ident"),
+                            Location = x.GetString("Location"),
+                            Qty = x.GetDouble("RealStock").ToString(picture),
+                            SerialNumber = x.GetString("SerialNo")
+
+                        });
                     });
-                });
 
-                dataAdapter.NotifyDataSetChanged();
+                    dataAdapter.NotifyDataSetChanged();
 
+                }
             }
-
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
         }
 
         private static bool? getWorkOrderDefaultQty = null;
@@ -155,115 +175,223 @@ namespace WMS
 
         private async Task GetWorkOrderDefaultQty()
         {
-            if (getWorkOrderDefaultQty == null)
+            try
             {
-
-                try
-                {
-                    string error;
-                    var useObj = Services.GetObject("wodqUse", "", out error);
-                    getWorkOrderDefaultQty = useObj == null ? false : useObj.GetBool("Use");
-                }
-                catch (Exception err)
+                if (getWorkOrderDefaultQty == null)
                 {
 
-                    SentrySdk.CaptureException(err);
-                    return;
-
-                }
-            }
-
-            if ((bool)getWorkOrderDefaultQty)
-            {
-
-                try
-                {
-                    string error;
-                    var qtyObj = Services.GetObject("wodq", openWorkOrder.GetString("Key") + "|" + openWorkOrder.GetString("Ident"), out error);
-                    if (qtyObj != null)
+                    try
                     {
-                        var qty = qtyObj.GetDouble("DefaultQty");
-                        if (qty < 0)
-                        {
-                            getWorkOrderDefaultQty = false;
-                        }
-                        else
-                        {
-                            tbPacking.Text = qty.ToString(await CommonData.GetQtyPictureAsync(this));
-                        }
+                        string error;
+                        var useObj = Services.GetObject("wodqUse", "", out error);
+                        getWorkOrderDefaultQty = useObj == null ? false : useObj.GetBool("Use");
+                    }
+                    catch (Exception err)
+                    {
+
+                        SentrySdk.CaptureException(err);
+                        return;
+
                     }
                 }
-                catch (Exception err)
+
+                if ((bool)getWorkOrderDefaultQty)
                 {
 
-                    SentrySdk.CaptureException(err);
-                    return;
+                    try
+                    {
+                        string error;
+                        var qtyObj = Services.GetObject("wodq", openWorkOrder.GetString("Key") + "|" + openWorkOrder.GetString("Ident"), out error);
+                        if (qtyObj != null)
+                        {
+                            var qty = qtyObj.GetDouble("DefaultQty");
+                            if (qty < 0)
+                            {
+                                getWorkOrderDefaultQty = false;
+                            }
+                            else
+                            {
+                                tbPacking.Text = qty.ToString(await CommonData.GetQtyPictureAsync(this));
+                            }
+                        }
+                    }
+                    catch (Exception err)
+                    {
 
+                        SentrySdk.CaptureException(err);
+                        return;
+
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
             }
         }
 
         private async Task<bool> SaveMoveItem()
         {
-      
- 
-            if (string.IsNullOrEmpty(tbPacking.Text.Trim()))
+            try
             {
-                return true;
-            }
-  
 
-
-            if (tbSSCC.Enabled && string.IsNullOrEmpty(tbSSCC.Text.Trim()))
-            {
-                RunOnUiThread(() =>
+                if (string.IsNullOrEmpty(tbPacking.Text.Trim()))
                 {
-                    string SuccessMessage = string.Format($"{Resources.GetString(Resource.String.s254)}");
-                    DialogHelper.ShowDialogError(this, this, SuccessMessage);
+                    return true;
+                }
 
-                    tbSSCC.RequestFocus();
-                });
 
-                return false;
-            }
 
-            if (tbSerialNum.Enabled && string.IsNullOrEmpty(tbSerialNum.Text.Trim()))
-            {
-                tbSerialNum.Text = GetNextSerialNum();
-                if (string.IsNullOrEmpty(tbSerialNum.Text.Trim()))
+                if (tbSSCC.Enabled && string.IsNullOrEmpty(tbSSCC.Text.Trim()))
                 {
                     RunOnUiThread(() =>
                     {
-                        string SuccessMessage = string.Format($"{Resources.GetString(Resource.String.s314)}");
+                        string SuccessMessage = string.Format($"{Resources.GetString(Resource.String.s254)}");
                         DialogHelper.ShowDialogError(this, this, SuccessMessage);
-                        tbSerialNum.RequestFocus();
+
+                        tbSSCC.RequestFocus();
                     });
 
                     return false;
                 }
-            }
 
-            if (!await CommonData.IsValidLocationAsync(moveHead.GetString("Wharehouse"), tbLocation.Text.Trim(), this))
-            {
-                RunOnUiThread(() =>
+                if (tbSerialNum.Enabled && string.IsNullOrEmpty(tbSerialNum.Text.Trim()))
                 {
-                    string SuccessMessage = string.Format($"{Resources.GetString(Resource.String.s258)} '" + tbLocation.Text.Trim() + $"' {Resources.GetString(Resource.String.s272)} '" + moveHead.GetString("Wharehouse") + "'!");
-                    DialogHelper.ShowDialogError(this, this, SuccessMessage);
-                    tbLocation.RequestFocus();
-                });
+                    tbSerialNum.Text = GetNextSerialNum();
+                    if (string.IsNullOrEmpty(tbSerialNum.Text.Trim()))
+                    {
+                        RunOnUiThread(() =>
+                        {
+                            string SuccessMessage = string.Format($"{Resources.GetString(Resource.String.s314)}");
+                            DialogHelper.ShowDialogError(this, this, SuccessMessage);
+                            tbSerialNum.RequestFocus();
+                        });
 
-                return false;
-            }
+                        return false;
+                    }
+                }
 
-            string error;
-            try
-            {
-
-
-                if (tbSSCC.Enabled)
+                if (!await CommonData.IsValidLocationAsync(moveHead.GetString("Wharehouse"), tbLocation.Text.Trim(), this))
                 {
-                    var stock = Services.GetObject("sts", tbSSCC.Text.Trim(), out error);
-                    if (stock == null)
+                    RunOnUiThread(() =>
+                    {
+                        string SuccessMessage = string.Format($"{Resources.GetString(Resource.String.s258)} '" + tbLocation.Text.Trim() + $"' {Resources.GetString(Resource.String.s272)} '" + moveHead.GetString("Wharehouse") + "'!");
+                        DialogHelper.ShowDialogError(this, this, SuccessMessage);
+                        tbLocation.RequestFocus();
+                    });
+
+                    return false;
+                }
+
+                string error;
+                try
+                {
+
+
+                    if (tbSSCC.Enabled)
+                    {
+                        var stock = Services.GetObject("sts", tbSSCC.Text.Trim(), out error);
+                        if (stock == null)
+                        {
+                            RunOnUiThread(() =>
+                            {
+                                string SuccessMessage = string.Format($"{Resources.GetString(Resource.String.s213)}" + error);
+                                DialogHelper.ShowDialogError(this, this, SuccessMessage);
+                            });
+
+
+                            return false;
+                        }
+
+                        if (stock.GetBool("ExistsSSCC"))
+                        {
+                            RunOnUiThread(() =>
+                            {
+                                string SuccessMessage = string.Format($"{Resources.GetString(Resource.String.s315)}");
+                                DialogHelper.ShowDialogError(this, this, SuccessMessage);
+                            });
+
+
+                            return false;
+                        }
+                    }
+                    if (string.IsNullOrEmpty(tbPacking.Text.Trim()))
+                    {
+                        RunOnUiThread(() =>
+                        {
+                            string SuccessMessage = string.Format($"{Resources.GetString(Resource.String.s270)}");
+                            DialogHelper.ShowDialogError(this, this, SuccessMessage);
+                        });
+
+                        return false;
+                    }
+                    else
+                    {
+                        try
+                        {
+                            var qty = Convert.ToDouble(tbPacking.Text.Trim());
+
+                            if (qty == 0.0)
+                            {
+                                RunOnUiThread(() =>
+                                {
+                                    string SuccessMessage = string.Format($"{Resources.GetString(Resource.String.s298)}");
+                                    DialogHelper.ShowDialogError(this, this, SuccessMessage);
+                                });
+
+
+                                return false;
+                            }
+
+                            if (CheckWorkOrderOpenQty())
+                            {
+                                var max = Math.Abs(openWorkOrder.GetDouble("OpenQty"));
+                                if (Math.Abs(qty) > max)
+                                {
+                                    var picture = await CommonData.GetQtyPictureAsync(this);
+                                    string SuccessMessage = string.Format($"{Resources.GetString(Resource.String.s40)} (" + qty.ToString(picture) + ") ne sme presegati max. količine (" + max.ToString(await CommonData.GetQtyPictureAsync(this)) + ")!");
+
+                                    RunOnUiThread(() =>
+                                    {
+                                        DialogHelper.ShowDialogError(this, this, SuccessMessage);
+                                        tbPacking.RequestFocus();
+                                    });
+
+                                    return false;
+                                }
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            RunOnUiThread(() =>
+                            {
+                                string SuccessMessage = string.Format($"{Resources.GetString(Resource.String.s220)}");
+                                DialogHelper.ShowDialogError(this, this, SuccessMessage);
+
+                                tbPacking.RequestFocus();
+                            });
+
+                            return false;
+                        }
+                    }
+
+
+
+                    if (moveItem == null) { moveItem = new NameValueObject("MoveItem"); }
+                    moveItem.SetInt("HeadID", moveHead.GetInt("HeadID"));
+                    moveItem.SetString("LinkKey", openWorkOrder.GetString("Key"));
+                    moveItem.SetInt("LinkNo", 0);
+                    moveItem.SetString("Ident", openWorkOrder.GetString("Ident"));
+                    moveItem.SetString("SSCC", tbSSCC.Text.Trim());
+                    moveItem.SetString("SerialNo", tbSerialNum.Text.Trim());
+                    moveItem.SetDouble("Packing", Convert.ToDouble(tbPacking.Text.Trim()));
+                    moveItem.SetDouble("Factor", 1);
+                    moveItem.SetDouble("Qty", Convert.ToDouble(tbPacking.Text.Trim()) * 1);
+                    moveItem.SetString("Location", tbLocation.Text.Trim());
+                    moveItem.SetInt("Clerk", Services.UserID());
+
+                    moveItem = Services.SetObject("mi", moveItem, out error);
+                    if (moveItem == null)
                     {
                         RunOnUiThread(() =>
                         {
@@ -274,150 +402,11 @@ namespace WMS
 
                         return false;
                     }
-
-                    if (stock.GetBool("ExistsSSCC"))
+                    else
                     {
-                        RunOnUiThread(() =>
-                        {
-                            string SuccessMessage = string.Format($"{Resources.GetString(Resource.String.s315)}");
-                            DialogHelper.ShowDialogError(this, this, SuccessMessage);
-                        });
-
-
-                        return false;
+                        InUseObjects.Invalidate("MoveItem");
+                        return true;
                     }
-                }
-                if (string.IsNullOrEmpty(tbPacking.Text.Trim()))
-                {
-                    RunOnUiThread(() =>
-                    {
-                        string SuccessMessage = string.Format($"{Resources.GetString(Resource.String.s270)}");
-                        DialogHelper.ShowDialogError(this, this, SuccessMessage);
-                    });
-
-                    return false;
-                }
-                else
-                {
-                    try
-                    {
-                        var qty = Convert.ToDouble(tbPacking.Text.Trim());
-
-                        if (qty == 0.0)
-                        {
-                            RunOnUiThread(() =>
-                            {
-                                string SuccessMessage = string.Format($"{Resources.GetString(Resource.String.s298)}");
-                                DialogHelper.ShowDialogError(this, this, SuccessMessage);
-                            });
-
-
-                            return false;
-                        }
-
-                        if (CheckWorkOrderOpenQty())
-                        {
-                            var max = Math.Abs(openWorkOrder.GetDouble("OpenQty"));
-                            if (Math.Abs(qty) > max)
-                            {
-                                var picture = await CommonData.GetQtyPictureAsync(this);
-                                string SuccessMessage = string.Format($"{Resources.GetString(Resource.String.s40)} (" + qty.ToString(picture) + ") ne sme presegati max. količine (" + max.ToString(await CommonData.GetQtyPictureAsync(this)) + ")!");
-
-                                RunOnUiThread(() =>
-                                {
-                                    DialogHelper.ShowDialogError(this, this, SuccessMessage);
-                                    tbPacking.RequestFocus();
-                                });
-
-                                return false;
-                            }
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        RunOnUiThread(() =>
-                        {
-                            string SuccessMessage = string.Format($"{Resources.GetString(Resource.String.s220)}");
-                            DialogHelper.ShowDialogError(this, this, SuccessMessage);
-
-                            tbPacking.RequestFocus();
-                        });
-
-                        return false;
-                    }
-                }
-
-
-
-                if (moveItem == null) { moveItem = new NameValueObject("MoveItem"); }
-                moveItem.SetInt("HeadID", moveHead.GetInt("HeadID"));
-                moveItem.SetString("LinkKey", openWorkOrder.GetString("Key"));
-                moveItem.SetInt("LinkNo", 0);
-                moveItem.SetString("Ident", openWorkOrder.GetString("Ident"));
-                moveItem.SetString("SSCC", tbSSCC.Text.Trim());
-                moveItem.SetString("SerialNo", tbSerialNum.Text.Trim());
-                moveItem.SetDouble("Packing", Convert.ToDouble(tbPacking.Text.Trim()));
-                moveItem.SetDouble("Factor", 1);
-                moveItem.SetDouble("Qty", Convert.ToDouble(tbPacking.Text.Trim()) * 1);
-                moveItem.SetString("Location", tbLocation.Text.Trim());
-                moveItem.SetInt("Clerk", Services.UserID());
-
-                moveItem = Services.SetObject("mi", moveItem, out error);
-                if (moveItem == null)
-                {
-                    RunOnUiThread(() =>
-                    {
-                        string SuccessMessage = string.Format($"{Resources.GetString(Resource.String.s213)}" + error);
-                        DialogHelper.ShowDialogError(this, this, SuccessMessage);
-                    });
-
-
-                    return false;
-                }
-                else
-                {
-                    InUseObjects.Invalidate("MoveItem");
-                    return true;
-                }
-            }
-            catch (Exception err)
-            {
-
-                SentrySdk.CaptureException(err);
-                return false;
-
-            }
-        }
-
-        private async Task fillSugestedLocation(string warehouse)
-        {
-            var location = await CommonData.GetSettingAsync("DefaultProductionLocation", this);
-            tbLocation.Text = location;
-        }
-
-        private async void ProcessSerialNum()
-        {
-            if (string.IsNullOrEmpty(tbSerialNum.Text.Trim()))
-            {
-                tbSerialNum.Text = GetNextSerialNum();
-                if (string.IsNullOrEmpty(tbSerialNum.Text.Trim()))
-                {
-
-                    tbSerialNum.RequestFocus();
-                    return;
-                }
-            }
-            await GetWorkOrderDefaultQty();
-        }
-        private bool CheckWorkOrderOpenQty()
-        {
-            if (checkWorkOrderOpenQty == null)
-            {
-                try
-                {
-                    string error;
-                    var useObj = Services.GetObject("cwooqUse", "", out error);
-                    checkWorkOrderOpenQty = useObj == null ? false : useObj.GetBool("Use");
                 }
                 catch (Exception err)
                 {
@@ -427,237 +416,350 @@ namespace WMS
 
                 }
             }
-            return (bool)checkWorkOrderOpenQty;
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+                return false;
+            }
+        }
+
+        private async Task fillSugestedLocation(string warehouse)
+        {
+            try
+            {
+                var location = await CommonData.GetSettingAsync("DefaultProductionLocation", this);
+                tbLocation.Text = location;
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
+        }
+
+        private async void ProcessSerialNum()
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(tbSerialNum.Text.Trim()))
+                {
+                    tbSerialNum.Text = GetNextSerialNum();
+                    if (string.IsNullOrEmpty(tbSerialNum.Text.Trim()))
+                    {
+
+                        tbSerialNum.RequestFocus();
+                        return;
+                    }
+                }
+                await GetWorkOrderDefaultQty();
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
+        }
+        private bool CheckWorkOrderOpenQty()
+        {
+            try
+            {
+                if (checkWorkOrderOpenQty == null)
+                {
+                    try
+                    {
+                        string error;
+                        var useObj = Services.GetObject("cwooqUse", "", out error);
+                        checkWorkOrderOpenQty = useObj == null ? false : useObj.GetBool("Use");
+                    }
+                    catch (Exception err)
+                    {
+
+                        SentrySdk.CaptureException(err);
+                        return false;
+
+                    }
+                }
+                return (bool)checkWorkOrderOpenQty;
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+                return false;
+            }
         }
         private string GetNextSerialNum()
         {
-
             try
             {
-
-                string error;
-                var ident = openWorkOrder.GetString("Ident");
-                var workOrder = openWorkOrder.GetString("Key");
-                var serNumObj = Services.GetObject("sn", ident + "|" + workOrder, out error);
-
-
-                if (serNumObj != null)
+                try
                 {
-                    return serNumObj.GetString("SerialNo");
+
+                    string error;
+                    var ident = openWorkOrder.GetString("Ident");
+                    var workOrder = openWorkOrder.GetString("Key");
+                    var serNumObj = Services.GetObject("sn", ident + "|" + workOrder, out error);
+
+
+                    if (serNumObj != null)
+                    {
+                        return serNumObj.GetString("SerialNo");
+                    }
+                    else
+                    {
+                        return "";
+                    }
                 }
-                else
+                catch (Exception err)
                 {
+
+                    SentrySdk.CaptureException(err);
                     return "";
+
                 }
             }
-            catch (Exception err)
+            catch (Exception ex)
             {
-
-                SentrySdk.CaptureException(err);
-                return "";
-
+                GlobalExceptions.ReportGlobalException(ex);
+                return string.Empty;
             }
         }
 
         private void ListData_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
         {
-            var selected = e.Position;
-            var item = data.ElementAt(selected);
-            tbLocation.Text = item.Location;
-
+            try
+            {
+                var selected = e.Position;
+                var item = data.ElementAt(selected);
+                tbLocation.Text = item.Location;
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
         }
         protected override async void OnCreate(Bundle savedInstanceState)
         {
-            base.OnCreate(savedInstanceState);
-            SetTheme(Resource.Style.AppTheme_NoActionBar);
-            if (App.Settings.tablet)
-            {
-                base.RequestedOrientation = ScreenOrientation.Landscape;
-                base.SetContentView(Resource.Layout.ProductionSerialOrSSCCEntryTablet);
-                listData = FindViewById<ListView>(Resource.Id.listData);
-                dataAdapter = UniversalAdapterHelper.GetProductionSerialOrSSCCEntry(this, data);
-                listData.Adapter = dataAdapter;
-                imagePNG = FindViewById<ImageView>(Resource.Id.imagePNG);
-
-            }
-            else
-            {
-                base.RequestedOrientation = ScreenOrientation.Portrait;
-                base.SetContentView(Resource.Layout.ProductionSerialOrSSCCEntry);
-            }
-            AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
-            var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
-            _customToolbar.SetNavigationIcon(App.Settings.RootURL + "/Services/Logo");
-            SetSupportActionBar(_customToolbar._toolbar);
-            SupportActionBar.SetDisplayShowTitleEnabled(false);
-            tbIdent = FindViewById<EditText>(Resource.Id.tbIdent);
-            tbSSCC = FindViewById<EditText>(Resource.Id.tbSSCC);
-            tbSerialNum = FindViewById<EditText>(Resource.Id.tbSerialNum);
-            tbLocation = FindViewById<EditText>(Resource.Id.tbLocation);
-            tbPacking = FindViewById<EditText>(Resource.Id.tbPacking);
-            lbQty = FindViewById<TextView>(Resource.Id.lbQty);
-            btSaveOrUpdate = FindViewById<Button>(Resource.Id.btSaveOrUpdate);
-            button3 = FindViewById<Button>(Resource.Id.button3);
-            button4 = FindViewById<Button>(Resource.Id.button4);
-            button5 = FindViewById<Button>(Resource.Id.button5);
-            tbIdent.InputType = Android.Text.InputTypes.ClassNumber;
-            tbSSCC.InputType = Android.Text.InputTypes.ClassNumber;
-            tbSerialNum.InputType = Android.Text.InputTypes.ClassNumber;
-            tbLocation.InputType = Android.Text.InputTypes.ClassNumber;
-            color();
-            tbSSCC.RequestFocus();
-            btSaveOrUpdate.Click += BtSaveOrUpdate_Click;
-            button3.Click += Button3_Click;
-            button4.Click += Button4_Click;
-            button5.Click += Button5_Click;
-            tbSSCC.FocusChange += TbSSCC_FocusChange;
-            barcode2D = new Barcode2D(this, this);
             try
             {
-
-                var key = moveHead.GetString("LinkKey");
-                string error;
-                openWorkOrder = Services.GetObject("wo", key, out error);
-                if (openWorkOrder == null)
+                base.OnCreate(savedInstanceState);
+                SetTheme(Resource.Style.AppTheme_NoActionBar);
+                if (App.Settings.tablet)
                 {
-                    StartActivity(typeof(MainMenu));
-                }
-                lbQty.Text = $"{Resources.GetString(Resource.String.s40)} (" + openWorkOrder.GetDouble("OpenQty").ToString(await CommonData.GetQtyPictureAsync(this)) + ")";
-            }
-            catch (Exception err)
-            {
-                SentrySdk.CaptureException(err);
-            }
-
-            var ident = await CommonData.LoadIdentAsync(openWorkOrder.GetString("Ident"), this);
-
-            showPictureIdent(ident.GetString("Code"));
-            identCode = ident.GetString("Code");
-            tbIdent.Text = ident.GetString("Code") + " " + ident.GetString("Name");
-            tbSSCC.Enabled = ident.GetBool("isSSCC");
-            tbSerialNum.Enabled = ident.GetBool("HasSerialNumber");
-            editMode = moveItem != null;
-
-            if (editMode)
-            {
-
-                tbSSCC.Text = moveItem.GetString("SSCC");
-
-                tbSerialNum.Text = moveItem.GetString("SerialNo");
-
-                tbPacking.Text = moveItem.GetDouble("Packing").ToString(await CommonData.GetQtyPictureAsync(this));
-
-
-                tbPacking.RequestFocus();
-
-            }
-
-            else
-            {
-                if (tbSSCC.Enabled)
-                {
-                    tbSSCC.RequestFocus();
-                }
-
-                else if (tbSerialNum.Enabled)
-
-                {
-
-                    tbSerialNum.RequestFocus();
+                    base.RequestedOrientation = ScreenOrientation.Landscape;
+                    base.SetContentView(Resource.Layout.ProductionSerialOrSSCCEntryTablet);
+                    listData = FindViewById<ListView>(Resource.Id.listData);
+                    dataAdapter = UniversalAdapterHelper.GetProductionSerialOrSSCCEntry(this, data);
+                    listData.Adapter = dataAdapter;
+                    imagePNG = FindViewById<ImageView>(Resource.Id.imagePNG);
 
                 }
-
                 else
-
                 {
+                    base.RequestedOrientation = ScreenOrientation.Portrait;
+                    base.SetContentView(Resource.Layout.ProductionSerialOrSSCCEntry);
+                }
+                AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
+                var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
+                _customToolbar.SetNavigationIcon(App.Settings.RootURL + "/Services/Logo");
+                SetSupportActionBar(_customToolbar._toolbar);
+                SupportActionBar.SetDisplayShowTitleEnabled(false);
+                tbIdent = FindViewById<EditText>(Resource.Id.tbIdent);
+                tbSSCC = FindViewById<EditText>(Resource.Id.tbSSCC);
+                tbSerialNum = FindViewById<EditText>(Resource.Id.tbSerialNum);
+                tbLocation = FindViewById<EditText>(Resource.Id.tbLocation);
+                tbPacking = FindViewById<EditText>(Resource.Id.tbPacking);
+                lbQty = FindViewById<TextView>(Resource.Id.lbQty);
+                btSaveOrUpdate = FindViewById<Button>(Resource.Id.btSaveOrUpdate);
+                button3 = FindViewById<Button>(Resource.Id.button3);
+                button4 = FindViewById<Button>(Resource.Id.button4);
+                button5 = FindViewById<Button>(Resource.Id.button5);
+                tbIdent.InputType = Android.Text.InputTypes.ClassNumber;
+                tbSSCC.InputType = Android.Text.InputTypes.ClassNumber;
+                tbSerialNum.InputType = Android.Text.InputTypes.ClassNumber;
+                tbLocation.InputType = Android.Text.InputTypes.ClassNumber;
+                color();
+                tbSSCC.RequestFocus();
+                btSaveOrUpdate.Click += BtSaveOrUpdate_Click;
+                button3.Click += Button3_Click;
+                button4.Click += Button4_Click;
+                button5.Click += Button5_Click;
+                tbSSCC.FocusChange += TbSSCC_FocusChange;
+                barcode2D = new Barcode2D(this, this);
+                try
+                {
+
+                    var key = moveHead.GetString("LinkKey");
+                    string error;
+                    openWorkOrder = Services.GetObject("wo", key, out error);
+                    if (openWorkOrder == null)
+                    {
+                        StartActivity(typeof(MainMenu));
+                    }
+                    lbQty.Text = $"{Resources.GetString(Resource.String.s40)} (" + openWorkOrder.GetDouble("OpenQty").ToString(await CommonData.GetQtyPictureAsync(this)) + ")";
+                }
+                catch (Exception err)
+                {
+                    SentrySdk.CaptureException(err);
+                }
+
+                var ident = await CommonData.LoadIdentAsync(openWorkOrder.GetString("Ident"), this);
+
+                showPictureIdent(ident.GetString("Code"));
+                identCode = ident.GetString("Code");
+                tbIdent.Text = ident.GetString("Code") + " " + ident.GetString("Name");
+                tbSSCC.Enabled = ident.GetBool("isSSCC");
+                tbSerialNum.Enabled = ident.GetBool("HasSerialNumber");
+                editMode = moveItem != null;
+
+                if (editMode)
+                {
+
+                    tbSSCC.Text = moveItem.GetString("SSCC");
+
+                    tbSerialNum.Text = moveItem.GetString("SerialNo");
+
+                    tbPacking.Text = moveItem.GetDouble("Packing").ToString(await CommonData.GetQtyPictureAsync(this));
+
 
                     tbPacking.RequestFocus();
 
                 }
 
+                else
+                {
+                    if (tbSSCC.Enabled)
+                    {
+                        tbSSCC.RequestFocus();
+                    }
+
+                    else if (tbSerialNum.Enabled)
+
+                    {
+
+                        tbSerialNum.RequestFocus();
+
+                    }
+
+                    else
+
+                    {
+
+                        tbPacking.RequestFocus();
+
+                    }
+
+                }
+
+
+                if (tbSSCC.Enabled && (await CommonData.GetSettingAsync("AutoCreateSSCCProduction", this) == "1"))
+                {
+
+                    tbSSCC.Text = await CommonData.GetNextSSCCAsync(this);
+                    tbPacking.RequestFocus();
+
+                }
+                ProcessSerialNum();
+                var _broadcastReceiver = new NetworkStatusBroadcastReceiver();
+                _broadcastReceiver.ConnectionStatusChanged += OnNetworkStatusChanged;
+                Application.Context.RegisterReceiver(_broadcastReceiver,
+                new IntentFilter(ConnectivityManager.ConnectivityAction), ReceiverFlags.NotExported);
+                if (App.Settings.tablet)
+                {
+                    fillItems();
+                }
             }
-
-
-            if (tbSSCC.Enabled && (await CommonData.GetSettingAsync("AutoCreateSSCCProduction", this) == "1"))
+            catch (Exception ex)
             {
-
-                tbSSCC.Text = await CommonData.GetNextSSCCAsync(this);
-                tbPacking.RequestFocus();
-
-            }
-            ProcessSerialNum();
-            var _broadcastReceiver = new NetworkStatusBroadcastReceiver();
-            _broadcastReceiver.ConnectionStatusChanged += OnNetworkStatusChanged;
-            Application.Context.RegisterReceiver(_broadcastReceiver,
-            new IntentFilter(ConnectivityManager.ConnectivityAction), ReceiverFlags.NotExported);
-            if (App.Settings.tablet)
-            {
-                fillItems();
+                GlobalExceptions.ReportGlobalException(ex);
             }
         }
         public bool IsOnline()
         {
-            var cm = (ConnectivityManager)GetSystemService(ConnectivityService);
-            return cm.ActiveNetworkInfo == null ? false : cm.ActiveNetworkInfo.IsConnected;
-
+            try
+            {
+                var cm = (ConnectivityManager)GetSystemService(ConnectivityService);
+                return cm.ActiveNetworkInfo == null ? false : cm.ActiveNetworkInfo.IsConnected;
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+                return false;
+            }
         }
 
         private void showPictureIdent(string ident)
         {
             try
             {
-                Android.Graphics.Bitmap show = Services.GetImageFromServerIdent(moveHead.GetString("Wharehouse"), ident);
-                var debug = moveHead.GetString("Wharehouse");
-                Drawable d = new BitmapDrawable(Resources, show);
+                try
+                {
+                    Android.Graphics.Bitmap show = Services.GetImageFromServerIdent(moveHead.GetString("Wharehouse"), ident);
+                    var debug = moveHead.GetString("Wharehouse");
+                    Drawable d = new BitmapDrawable(Resources, show);
 
-                imagePNG.SetImageDrawable(d);
-                imagePNG.Visibility = ViewStates.Visible;
+                    imagePNG.SetImageDrawable(d);
+                    imagePNG.Visibility = ViewStates.Visible;
 
 
-                imagePNG.Click += (e, ev) => { ImageClick(d); };
+                    imagePNG.Click += (e, ev) => { ImageClick(d); };
 
+                }
+                catch (Exception ex)
+                {
+                    SentrySdk.CaptureException(ex);
+                    return;
+                }
             }
             catch (Exception ex)
             {
-                SentrySdk.CaptureException(ex);
-                return;
+                GlobalExceptions.ReportGlobalException(ex);
             }
-
         }
 
 
         private void ImageClick(Drawable d)
         {
-            popupDialog = new Dialog(this);
-            popupDialog.SetContentView(Resource.Layout.WarehousePicture);
-            popupDialog.Window.SetSoftInputMode(SoftInput.AdjustResize);
-            popupDialog.Show();
-            popupDialog.Window.SetLayout(LayoutParams.MatchParent, LayoutParams.WrapContent);
-            popupDialog.Window.SetBackgroundDrawableResource(Android.Resource.Color.HoloBlueBright);
-            image = popupDialog.FindViewById<ZoomageView>(Resource.Id.image);
-            image.SetMinimumHeight(500);
-            image.SetMinimumWidth(800);
-            image.SetImageDrawable(d);
-
+            try
+            {
+                popupDialog = new Dialog(this);
+                popupDialog.SetContentView(Resource.Layout.WarehousePicture);
+                popupDialog.Window.SetSoftInputMode(SoftInput.AdjustResize);
+                popupDialog.Show();
+                popupDialog.Window.SetLayout(LayoutParams.MatchParent, LayoutParams.WrapContent);
+                popupDialog.Window.SetBackgroundDrawableResource(Android.Resource.Color.HoloBlueBright);
+                image = popupDialog.FindViewById<ZoomageView>(Resource.Id.image);
+                image.SetMinimumHeight(500);
+                image.SetMinimumWidth(800);
+                image.SetImageDrawable(d);
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
         }
 
         private void OnNetworkStatusChanged(object sender, EventArgs e)
         {
-            if (IsOnline())
+            try
             {
+                if (IsOnline())
+                {
 
-                try
-                {
-                    LoaderManifest.LoaderManifestLoopStop(this);
+                    try
+                    {
+                        LoaderManifest.LoaderManifestLoopStop(this);
+                    }
+                    catch (Exception err)
+                    {
+                        SentrySdk.CaptureException(err);
+                    }
                 }
-                catch (Exception err)
+                else
                 {
-                    SentrySdk.CaptureException(err);
+                    LoaderManifest.LoaderManifestLoop(this);
                 }
             }
-            else
+            catch (Exception ex)
             {
-                LoaderManifest.LoaderManifestLoop(this);
+                GlobalExceptions.ReportGlobalException(ex);
             }
         }
 
@@ -665,86 +767,130 @@ namespace WMS
 
         private async void TbSSCC_FocusChange(object sender, View.FocusChangeEventArgs e)
         {
-            var warehouse = moveHead.GetString("Wharehouse");
+            try
+            {
+                var warehouse = moveHead.GetString("Wharehouse");
 
-            await fillSugestedLocation(warehouse);
+                await fillSugestedLocation(warehouse);
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
         }
 
         private void color()
         {
-
-            tbSSCC.SetBackgroundColor(Android.Graphics.Color.Aqua);
-            tbSerialNum.SetBackgroundColor(Android.Graphics.Color.Aqua);
-            tbLocation.SetBackgroundColor(Android.Graphics.Color.Aqua);
+            try
+            {
+                tbSSCC.SetBackgroundColor(Android.Graphics.Color.Aqua);
+                tbSerialNum.SetBackgroundColor(Android.Graphics.Color.Aqua);
+                tbLocation.SetBackgroundColor(Android.Graphics.Color.Aqua);
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
         }
 
 
         private void Button5_Click(object sender, EventArgs e)
         {
-            StartActivity(typeof(MainMenu));
-            Finish();
+            try
+            {
+                StartActivity(typeof(MainMenu));
+                Finish();
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
         }
 
 
 
         private async Task FinishMethod()
         {
-            await Task.Run(async () =>
+            try
             {
-                bool resultAsync =  false;
-
-                RunOnUiThread(() =>
+                await Task.Run(async () =>
                 {
-                    resultAsync = SaveMoveItem().Result;
-                });
+                    bool resultAsync = false;
 
-                if (resultAsync)
-                {
-                    var headID = moveHead.GetInt("HeadID");
-
-                    await SelectSubjectBeforeFinish.ShowIfNeeded(headID);
-
-                    try
+                    RunOnUiThread(() =>
                     {
+                        resultAsync = SaveMoveItem().Result;
+                    });
 
-                        var (success, result) = await WebApp.GetAsync("mode=finish&stock=add&print=" + Services.DeviceUser() + "&id=" + headID.ToString(), this);
-                        if (success)
+                    if (resultAsync)
+                    {
+                        var headID = moveHead.GetInt("HeadID");
+
+                        await SelectSubjectBeforeFinish.ShowIfNeeded(headID);
+
+                        try
                         {
-                            if (result.StartsWith("OK!"))
-                            {
-                                RunOnUiThread(() =>
-                                {
-                                    var id = result.Split('+')[1];
-                                    AlertDialog.Builder alert = new AlertDialog.Builder(this);
-                                    alert.SetTitle($"{Resources.GetString(Resource.String.s263)}");
-                                    alert.SetMessage($"{Resources.GetString(Resource.String.s264)}" + id);
 
-                                    alert.SetPositiveButton("Ok", (senderAlert, args) =>
+                            var (success, result) = await WebApp.GetAsync("mode=finish&stock=add&print=" + Services.DeviceUser() + "&id=" + headID.ToString(), this);
+                            if (success)
+                            {
+                                if (result.StartsWith("OK!"))
+                                {
+                                    RunOnUiThread(() =>
                                     {
-                                        alert.Dispose();
-                                        StartActivity(typeof(MainMenu));
-                                        Finish();
+                                        var id = result.Split('+')[1];
+                                        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+                                        alert.SetTitle($"{Resources.GetString(Resource.String.s263)}");
+                                        alert.SetMessage($"{Resources.GetString(Resource.String.s264)}" + id);
+
+                                        alert.SetPositiveButton("Ok", (senderAlert, args) =>
+                                        {
+                                            alert.Dispose();
+                                            StartActivity(typeof(MainMenu));
+                                            Finish();
+                                        });
+
+                                        Dialog dialog = alert.Create();
+                                        dialog.Show();
                                     });
 
-                                    Dialog dialog = alert.Create();
-                                    dialog.Show();
-                                });
+
+                                }
+                                else
+                                {
+                                    RunOnUiThread(() =>
+                                    {
+                                        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+                                        alert.SetTitle($"{Resources.GetString(Resource.String.s265)}");
+                                        alert.SetMessage($"{Resources.GetString(Resource.String.s266)}" + result);
+
+                                        alert.SetPositiveButton("Ok", (senderAlert, args) =>
+                                        {
+                                            alert.Dispose();
+                                            StartActivity(typeof(MainMenu));
+                                            Finish();
+                                        });
+
+                                        Dialog dialog = alert.Create();
+                                        dialog.Show();
+                                    });
 
 
+                                }
                             }
                             else
                             {
+
                                 RunOnUiThread(() =>
                                 {
                                     AlertDialog.Builder alert = new AlertDialog.Builder(this);
                                     alert.SetTitle($"{Resources.GetString(Resource.String.s265)}");
-                                    alert.SetMessage($"{Resources.GetString(Resource.String.s266)}" + result);
+                                    alert.SetMessage($"{Resources.GetString(Resource.String.s218)}" + result);
 
                                     alert.SetPositiveButton("Ok", (senderAlert, args) =>
                                     {
                                         alert.Dispose();
-                                        StartActivity(typeof(MainMenu));
-                                        Finish();
+
                                     });
 
                                     Dialog dialog = alert.Create();
@@ -752,99 +898,117 @@ namespace WMS
                                 });
 
 
+
                             }
                         }
-                        else
+                        catch (Exception ex)
                         {
-
-                            RunOnUiThread(() =>
-                            {
-                                AlertDialog.Builder alert = new AlertDialog.Builder(this);
-                                alert.SetTitle($"{Resources.GetString(Resource.String.s265)}");
-                                alert.SetMessage($"{Resources.GetString(Resource.String.s218)}" + result);
-
-                                alert.SetPositiveButton("Ok", (senderAlert, args) =>
-                                {
-                                    alert.Dispose();
-
-                                });
-
-                                Dialog dialog = alert.Create();
-                                dialog.Show();
-                            });
-
-
-
+                            SentrySdk.CaptureException(ex);
                         }
                     }
-                    catch (Exception ex)
-                    {
-                        SentrySdk.CaptureException(ex);
-                    }
-                }
-            });
-
+                });
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
         }
         private void Button4_Click(object sender, EventArgs e)
         {
-            popupDialogConfirm = new Dialog(this);
-            popupDialogConfirm.SetContentView(Resource.Layout.Confirmation);
-            popupDialogConfirm.Window.SetSoftInputMode(SoftInput.AdjustResize);
-            popupDialogConfirm.Show();
+            try
+            {
+                popupDialogConfirm = new Dialog(this);
+                popupDialogConfirm.SetContentView(Resource.Layout.Confirmation);
+                popupDialogConfirm.Window.SetSoftInputMode(SoftInput.AdjustResize);
+                popupDialogConfirm.Show();
 
-            popupDialogConfirm.Window.SetLayout(LayoutParams.MatchParent, LayoutParams.WrapContent);
-            popupDialogConfirm.Window.SetBackgroundDrawable(new ColorDrawable(Color.ParseColor("#081a45")));
+                popupDialogConfirm.Window.SetLayout(LayoutParams.MatchParent, LayoutParams.WrapContent);
+                popupDialogConfirm.Window.SetBackgroundDrawable(new ColorDrawable(Color.ParseColor("#081a45")));
 
 
-            // Access Popup layout fields like below
-            btnYesConfirm = popupDialogConfirm.FindViewById<Button>(Resource.Id.btnYes);
-            btnNoConfirm = popupDialogConfirm.FindViewById<Button>(Resource.Id.btnNo);
-            btnYesConfirm.Click += BtnYesConfirm_Click;
-            btnNoConfirm.Click += BtnNoConfirm_Click;
-
+                // Access Popup layout fields like below
+                btnYesConfirm = popupDialogConfirm.FindViewById<Button>(Resource.Id.btnYes);
+                btnNoConfirm = popupDialogConfirm.FindViewById<Button>(Resource.Id.btnNo);
+                btnYesConfirm.Click += BtnYesConfirm_Click;
+                btnNoConfirm.Click += BtnNoConfirm_Click;
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
         }
 
         private void BtnNoConfirm_Click(object sender, EventArgs e)
         {
-            popupDialogConfirm.Dismiss();
-            popupDialogConfirm.Hide();
+            try
+            {
+                popupDialogConfirm.Dismiss();
+                popupDialogConfirm.Hide();
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
         }
 
         private async void BtnYesConfirm_Click(object sender, EventArgs e)
         {
-            await FinishMethod();
+            try
+            {
+                await FinishMethod();
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
         }
 
         private void Button3_Click(object sender, EventArgs e)
         {
-            StartActivity(typeof(ProductionEnteredPositionsView));
-            Finish();
+            try
+            {
+                StartActivity(typeof(ProductionEnteredPositionsView));
+                Finish();
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
         }
 
         private void BtSaveOrUpdate_Click(object sender, EventArgs e)
         {
             try
             {
-                LoaderManifest.LoaderManifestLoopResources(this);
-                if (SaveMoveItem().Result)
+                try
                 {
-                    if (editMode)
+                    LoaderManifest.LoaderManifestLoopResources(this);
+                    if (SaveMoveItem().Result)
                     {
-                        StartActivity(typeof(ProductionEnteredPositionsView));
-                        Finish();
-                    }
-                    else
-                    {
-                        StartActivity(typeof(ProductionSerialOrSSCCEntry));
-                        Finish();
+                        if (editMode)
+                        {
+                            StartActivity(typeof(ProductionEnteredPositionsView));
+                            Finish();
+                        }
+                        else
+                        {
+                            StartActivity(typeof(ProductionSerialOrSSCCEntry));
+                            Finish();
+                        }
                     }
                 }
-            } catch (Exception ex)
+                catch (Exception ex)
+                {
+                    SentrySdk.CaptureException(ex);
+                }
+                finally
+                {
+                    LoaderManifest.LoaderManifestLoopStop(this);
+                }
+            }
+            catch (Exception ex)
             {
-                SentrySdk.CaptureException(ex);
-            } finally
-            {
-                LoaderManifest.LoaderManifestLoopStop(this);
+                GlobalExceptions.ReportGlobalException(ex);
             }
         }
     }

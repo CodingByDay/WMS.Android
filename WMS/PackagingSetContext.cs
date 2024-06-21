@@ -8,6 +8,7 @@ using TrendNET.WMS.Core.Data;
 using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
 using WMS.App;
+using WMS.ExceptionStore;
 namespace WMS
 {
     [Activity(Label = "PackagingSetContext", ScreenOrientation = ScreenOrientation.Portrait)]
@@ -28,191 +29,261 @@ namespace WMS
 
         public void GetBarcode(string barcode)
         {
-            // implements the interface.
-            if (tbSSCC.HasFocus)
+            try
             {
+                // implements the interface.
+                if (tbSSCC.HasFocus)
+                {
 
-                tbSSCC.Text = barcode;
+                    tbSSCC.Text = barcode;
+                }
+                else if (tbLocation.HasFocus)
+                {
+
+                    tbLocation.Text = barcode;
+                }
             }
-            else if (tbLocation.HasFocus)
+            catch (Exception ex)
             {
-
-                tbLocation.Text = barcode;
+                GlobalExceptions.ReportGlobalException(ex);
             }
         }
 
 
         protected override async void OnCreate(Bundle savedInstanceState)
         {
-            base.OnCreate(savedInstanceState);
-            SetTheme(Resource.Style.AppTheme_NoActionBar);
-            if (App.Settings.tablet)
+            try
             {
-                base.RequestedOrientation = ScreenOrientation.Landscape;
-                base.SetContentView(Resource.Layout.PackagingSetContextTablet);
+                base.OnCreate(savedInstanceState);
+                SetTheme(Resource.Style.AppTheme_NoActionBar);
+                if (App.Settings.tablet)
+                {
+                    base.RequestedOrientation = ScreenOrientation.Landscape;
+                    base.SetContentView(Resource.Layout.PackagingSetContextTablet);
 
 
+                }
+                else
+                {
+                    base.RequestedOrientation = ScreenOrientation.Portrait;
+                    base.SetContentView(Resource.Layout.PackagingSetContext);
+                }
+                AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
+                var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
+                _customToolbar.SetNavigationIcon(App.Settings.RootURL + "/Services/Logo");
+                SetSupportActionBar(_customToolbar._toolbar);
+                SupportActionBar.SetDisplayShowTitleEnabled(false);
+                cbWarehouse = FindViewById<Spinner>(Resource.Id.cbWarehouse);
+                tbLocation = FindViewById<EditText>(Resource.Id.tbLocation);
+                tbSSCC = FindViewById<EditText>(Resource.Id.tbSSCC);
+                btConfirm = FindViewById<Button>(Resource.Id.btConfirm);
+                btExit = FindViewById<Button>(Resource.Id.btExit);
+                btConfirm.Click += BtConfirm_Click;
+                btExit.Click += BtExit_Click;
+                cbWarehouse.ItemSelected += CbWarehouse_ItemSelected;
+
+                barcode2D = new Barcode2D(this, this);
+
+                Color();
+
+
+                var whs = await CommonData.ListWarehousesAsync();
+
+
+                whs.Items.ForEach(wh =>
+                {
+                    objectsPackaging.Add(new ComboBoxItem { ID = wh.GetString("Subject"), Text = wh.GetString("Name") });
+                });
+                var adapterWarehouse = new CustomAutoCompleteAdapter<ComboBoxItem>(this,
+                Android.Resource.Layout.SimpleSpinnerItem, objectsPackaging);
+
+                adapterWarehouse.SetDropDownViewResource(Android.Resource.Layout.SimpleSpinnerDropDownItem);
+                cbWarehouse.Adapter = adapterWarehouse;
+
+
+                var _broadcastReceiver = new NetworkStatusBroadcastReceiver();
+                _broadcastReceiver.ConnectionStatusChanged += OnNetworkStatusChanged;
+                Application.Context.RegisterReceiver(_broadcastReceiver,
+                new IntentFilter(ConnectivityManager.ConnectivityAction), ReceiverFlags.NotExported);
             }
-            else
+            catch (Exception ex)
             {
-                base.RequestedOrientation = ScreenOrientation.Portrait;
-                base.SetContentView(Resource.Layout.PackagingSetContext);
+                GlobalExceptions.ReportGlobalException(ex);
             }
-            AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
-            var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
-            _customToolbar.SetNavigationIcon(App.Settings.RootURL + "/Services/Logo");
-            SetSupportActionBar(_customToolbar._toolbar);
-            SupportActionBar.SetDisplayShowTitleEnabled(false);
-            cbWarehouse = FindViewById<Spinner>(Resource.Id.cbWarehouse);
-            tbLocation = FindViewById<EditText>(Resource.Id.tbLocation);
-            tbSSCC = FindViewById<EditText>(Resource.Id.tbSSCC);
-            btConfirm = FindViewById<Button>(Resource.Id.btConfirm);
-            btExit = FindViewById<Button>(Resource.Id.btExit);
-            btConfirm.Click += BtConfirm_Click;
-            btExit.Click += BtExit_Click;
-            cbWarehouse.ItemSelected += CbWarehouse_ItemSelected;
-
-            barcode2D = new Barcode2D(this, this);
-
-            Color();
-
-
-            var whs = await CommonData.ListWarehousesAsync();
-
-
-            whs.Items.ForEach(wh =>
-            {
-                objectsPackaging.Add(new ComboBoxItem { ID = wh.GetString("Subject"), Text = wh.GetString("Name") });
-            });
-            var adapterWarehouse = new CustomAutoCompleteAdapter<ComboBoxItem>(this,
-            Android.Resource.Layout.SimpleSpinnerItem, objectsPackaging);
-
-            adapterWarehouse.SetDropDownViewResource(Android.Resource.Layout.SimpleSpinnerDropDownItem);
-            cbWarehouse.Adapter = adapterWarehouse;
-
-
-            var _broadcastReceiver = new NetworkStatusBroadcastReceiver();
-            _broadcastReceiver.ConnectionStatusChanged += OnNetworkStatusChanged;
-            Application.Context.RegisterReceiver(_broadcastReceiver,
-            new IntentFilter(ConnectivityManager.ConnectivityAction), ReceiverFlags.NotExported);
         }
 
 
         public bool IsOnline()
         {
-            var cm = (ConnectivityManager)GetSystemService(ConnectivityService);
-            return cm.ActiveNetworkInfo == null ? false : cm.ActiveNetworkInfo.IsConnected;
-
+            try
+            {
+                var cm = (ConnectivityManager)GetSystemService(ConnectivityService);
+                return cm.ActiveNetworkInfo == null ? false : cm.ActiveNetworkInfo.IsConnected;
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+                return false;
+            }
         }
 
         private void OnNetworkStatusChanged(object sender, EventArgs e)
         {
-            if (IsOnline())
+            try
             {
+                if (IsOnline())
+                {
 
-                try
-                {
-                    LoaderManifest.LoaderManifestLoopStop(this);
+                    try
+                    {
+                        LoaderManifest.LoaderManifestLoopStop(this);
+                    }
+                    catch (Exception err)
+                    {
+                        SentrySdk.CaptureException(err);
+                    }
                 }
-                catch (Exception err)
+                else
                 {
-                    SentrySdk.CaptureException(err);
+                    LoaderManifest.LoaderManifestLoop(this);
                 }
             }
-            else
+            catch (Exception ex)
             {
-                LoaderManifest.LoaderManifestLoop(this);
+                GlobalExceptions.ReportGlobalException(ex);
             }
         }
 
         private void Color()
         {
-            tbLocation.SetBackgroundColor(Android.Graphics.Color.Aqua);
-            tbSSCC.SetBackgroundColor(Android.Graphics.Color.Aqua);
-
+            try
+            {
+                tbLocation.SetBackgroundColor(Android.Graphics.Color.Aqua);
+                tbSSCC.SetBackgroundColor(Android.Graphics.Color.Aqua);
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
         }
 
 
         private void BtExit_Click(object sender, EventArgs e)
         {
-            StartActivity(typeof(MainMenu));
-            Finish();
+            try
+            {
+                StartActivity(typeof(MainMenu));
+                Finish();
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
         }
 
         private async void BtConfirm_Click(object sender, EventArgs e)
         {
-            await ProcessData();
+            try
+            {
+                await ProcessData();
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
         }
 
         private async Task ProcessData()
         {
-            temporaryString = objectsPackaging.ElementAt(temporaryPositionWarehouse).ID;
-
-            if (!await CommonData.IsValidLocationAsync(temporaryString, tbLocation.Text.Trim(), this))
+            try
             {
-                string toast = string.Format($"{Resources.GetString(Resource.String.s270)}");
-                Toast.MakeText(this, toast, ToastLength.Long).Show();
-                return;
+                temporaryString = objectsPackaging.ElementAt(temporaryPositionWarehouse).ID;
+
+                if (!await CommonData.IsValidLocationAsync(temporaryString, tbLocation.Text.Trim(), this))
+                {
+                    string toast = string.Format($"{Resources.GetString(Resource.String.s270)}");
+                    Toast.MakeText(this, toast, ToastLength.Long).Show();
+                    return;
+                }
+
+                if (string.IsNullOrEmpty(tbSSCC.Text.Trim()))
+                {
+                    string toast = string.Format($"{Resources.GetString(Resource.String.s270)}");
+                    Toast.MakeText(this, toast, ToastLength.Long).Show();
+                    return;
+                }
+
+                var head = new NameValueObject("PackagingHead");
+                head.SetInt("HeadID", 0);
+                head.SetString("Warehouse", objectsPackaging.ElementAt(temporaryPositionWarehouse).ID);
+                head.SetString("ReceivingLocation", tbLocation.Text.Trim());
+                head.SetString("SSCC", tbSSCC.Text.Trim());
+                head.SetInt("Clerk", Services.UserID());
+
+                string error;
+                head = Services.SetObject("ph", head, out error);
+                if (head != null)
+                {
+                    InUseObjects.Set("PackagingHead", head);
+                    StartActivity(typeof(PackagingUnit));
+                    Finish();
+                }
+                else
+                {
+                    string toast = string.Format($"{Resources.GetString(Resource.String.s213)}");
+                    Toast.MakeText(this, toast, ToastLength.Long).Show();
+                    return;
+                }
             }
-
-            if (string.IsNullOrEmpty(tbSSCC.Text.Trim()))
+            catch (Exception ex)
             {
-                string toast = string.Format($"{Resources.GetString(Resource.String.s270)}");
-                Toast.MakeText(this, toast, ToastLength.Long).Show();
-                return;
-            }
-
-            var head = new NameValueObject("PackagingHead");
-            head.SetInt("HeadID", 0);
-            head.SetString("Warehouse", objectsPackaging.ElementAt(temporaryPositionWarehouse).ID);
-            head.SetString("ReceivingLocation", tbLocation.Text.Trim());
-            head.SetString("SSCC", tbSSCC.Text.Trim());
-            head.SetInt("Clerk", Services.UserID());
-
-            string error;
-            head = Services.SetObject("ph", head, out error);
-            if (head != null)
-            {
-                InUseObjects.Set("PackagingHead", head);
-                StartActivity(typeof(PackagingUnit));
-                Finish();
-            }
-            else
-            {
-                string toast = string.Format($"{Resources.GetString(Resource.String.s213)}");
-                Toast.MakeText(this, toast, ToastLength.Long).Show();
-                return;
+                GlobalExceptions.ReportGlobalException(ex);
             }
         }
 
         private void CbWarehouse_ItemSelected(object sender, AdapterView.ItemSelectedEventArgs e)
         {
-            Spinner spinner = (Spinner)sender;
-            if (e.Position != 0)
+            try
             {
-                temporaryPositionWarehouse = e.Position;
+                Spinner spinner = (Spinner)sender;
+                if (e.Position != 0)
+                {
+                    temporaryPositionWarehouse = e.Position;
+                }
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
             }
         }
 
         public override bool OnKeyDown(Keycode keyCode, KeyEvent e)
         {
-            switch (keyCode)
+            try
             {
-                // in smartphone
-                case Keycode.F2:
-                    if (btConfirm.Enabled == true)
-                    {
-                        BtConfirm_Click(this, null);
-                    }
-                    break;
+                switch (keyCode)
+                {
+                    // in smartphone
+                    case Keycode.F2:
+                        if (btConfirm.Enabled == true)
+                        {
+                            BtConfirm_Click(this, null);
+                        }
+                        break;
 
-                case Keycode.F8:
-                    BtExit_Click(this, null);
-                    break;
+                    case Keycode.F8:
+                        BtExit_Click(this, null);
+                        break;
 
 
+                }
+                return base.OnKeyDown(keyCode, e);
             }
-            return base.OnKeyDown(keyCode, e);
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+                return false;
+            }
         }
 
 

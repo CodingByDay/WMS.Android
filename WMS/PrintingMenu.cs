@@ -4,6 +4,7 @@ using Android.Net;
 using Android.Views;
 using TrendNET.WMS.Device.Services;
 using WMS.App;
+using WMS.ExceptionStore;
 namespace WMS
 {
     [Activity(Label = "PrintingMenu")]
@@ -17,113 +18,156 @@ namespace WMS
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
-            ChangeTheOrientation();
-            base.OnCreate(savedInstanceState);
-            SetTheme(Resource.Style.AppTheme_NoActionBar);
-
-            if (App.Settings.tablet)
+            try
             {
-                base.RequestedOrientation = ScreenOrientation.Landscape;
-                base.SetContentView(Resource.Layout.PrintingMenuTablet);
+                ChangeTheOrientation();
+                base.OnCreate(savedInstanceState);
+                SetTheme(Resource.Style.AppTheme_NoActionBar);
 
+                if (App.Settings.tablet)
+                {
+                    base.RequestedOrientation = ScreenOrientation.Landscape;
+                    base.SetContentView(Resource.Layout.PrintingMenuTablet);
+
+                }
+                else
+                {
+                    base.RequestedOrientation = ScreenOrientation.Portrait;
+                    base.SetContentView(Resource.Layout.PrintingMenu);
+                }
+                AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
+                var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
+                _customToolbar.SetNavigationIcon(App.Settings.RootURL + "/Services/Logo");
+                SetSupportActionBar(_customToolbar._toolbar);
+                SupportActionBar.SetDisplayShowTitleEnabled(false);
+                button1 = FindViewById<Button>(Resource.Id.button1);
+                button1.Click += Button1_Click;
+                button2 = FindViewById<Button>(Resource.Id.button2);
+                button2.Click += Button_Click;
+
+                button6 = FindViewById<Button>(Resource.Id.button6);
+                button6.Click += Button6_Click;
+
+                var _broadcastReceiver = new NetworkStatusBroadcastReceiver();
+                _broadcastReceiver.ConnectionStatusChanged += OnNetworkStatusChanged;
+                Application.Context.RegisterReceiver(_broadcastReceiver,
+                new IntentFilter(ConnectivityManager.ConnectivityAction), ReceiverFlags.NotExported);
             }
-            else
+            catch (Exception ex)
             {
-                base.RequestedOrientation = ScreenOrientation.Portrait;
-                base.SetContentView(Resource.Layout.PrintingMenu);
+                GlobalExceptions.ReportGlobalException(ex);
             }
-            AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
-            var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
-            _customToolbar.SetNavigationIcon(App.Settings.RootURL + "/Services/Logo");
-            SetSupportActionBar(_customToolbar._toolbar);
-            SupportActionBar.SetDisplayShowTitleEnabled(false);
-            button1 = FindViewById<Button>(Resource.Id.button1);
-            button1.Click += Button1_Click;
-            button2 = FindViewById<Button>(Resource.Id.button2);
-            button2.Click += Button_Click;
-
-            button6 = FindViewById<Button>(Resource.Id.button6);
-            button6.Click += Button6_Click;
-
-            var _broadcastReceiver = new NetworkStatusBroadcastReceiver();
-            _broadcastReceiver.ConnectionStatusChanged += OnNetworkStatusChanged;
-            Application.Context.RegisterReceiver(_broadcastReceiver,
-            new IntentFilter(ConnectivityManager.ConnectivityAction), ReceiverFlags.NotExported);
         }
         public bool IsOnline()
         {
-            var cm = (ConnectivityManager)GetSystemService(ConnectivityService);
-            return cm.ActiveNetworkInfo == null ? false : cm.ActiveNetworkInfo.IsConnected;
-
+            try
+            {
+                var cm = (ConnectivityManager)GetSystemService(ConnectivityService);
+                return cm.ActiveNetworkInfo == null ? false : cm.ActiveNetworkInfo.IsConnected;
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+                return false;
+            }
         }
 
         private void OnNetworkStatusChanged(object sender, EventArgs e)
         {
-            if (IsOnline())
+            try
             {
+                if (IsOnline())
+                {
 
-                try
-                {
-                    LoaderManifest.LoaderManifestLoopStop(this);
+                    try
+                    {
+                        LoaderManifest.LoaderManifestLoopStop(this);
+                    }
+                    catch (Exception err)
+                    {
+                        SentrySdk.CaptureException(err);
+                    }
                 }
-                catch (Exception err)
+                else
                 {
-                    SentrySdk.CaptureException(err);
+                    LoaderManifest.LoaderManifestLoop(this);
                 }
             }
-            else
+            catch (Exception ex)
             {
-                LoaderManifest.LoaderManifestLoop(this);
+                GlobalExceptions.ReportGlobalException(ex);
             }
         }
 
 
         private void ChangeTheOrientation()
         {
-            if (App.Settings.tablet == true)
+            try
             {
-                base.RequestedOrientation = Android.Content.PM.ScreenOrientation.Landscape;
-            }
-            else
-            {
-                base.RequestedOrientation = Android.Content.PM.ScreenOrientation.Portrait;
+                if (App.Settings.tablet == true)
+                {
+                    base.RequestedOrientation = Android.Content.PM.ScreenOrientation.Landscape;
+                }
+                else
+                {
+                    base.RequestedOrientation = Android.Content.PM.ScreenOrientation.Portrait;
 
+                }
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
             }
         }
 
 
         public override bool OnKeyDown(Keycode keyCode, KeyEvent e)
         {
-            switch (keyCode)
+            try
             {
-                // In smartphone
-                case Keycode.F2:
-                    Button1_Click(this, null);
-                    break;
-                // Return true;
+                switch (keyCode)
+                {
+                    // In smartphone
+                    case Keycode.F2:
+                        Button1_Click(this, null);
+                        break;
+                    // Return true;
 
-                case Keycode.F3:
-                    Button_Click(this, null);
-                    break;
-
-
-                case Keycode.F4:
-                    Button1_Click(this, null);
-                    break;
+                    case Keycode.F3:
+                        Button_Click(this, null);
+                        break;
 
 
-                case Keycode.F8:
-                    Button6_Click(this, null);
-                    break;
+                    case Keycode.F4:
+                        Button1_Click(this, null);
+                        break;
 
-                    // return true;
+
+                    case Keycode.F8:
+                        Button6_Click(this, null);
+                        break;
+
+                        // return true;
+                }
+                return base.OnKeyDown(keyCode, e);
             }
-            return base.OnKeyDown(keyCode, e);
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+                return false;
+            }
         }
         private void Button6_Click(object sender, EventArgs e)
         {
-            StartActivity(typeof(MainMenu));
-            Finish();
+            try
+            {
+                StartActivity(typeof(MainMenu));
+                Finish();
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
         }
 
 
@@ -131,14 +175,28 @@ namespace WMS
 
         private void Button_Click(object sender, EventArgs e)
         {
-            StartActivity(typeof(PrintingSSCCCodes));
-            Finish();
+            try
+            {
+                StartActivity(typeof(PrintingSSCCCodes));
+                Finish();
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
         }
 
         private void Button1_Click(object sender, EventArgs e)
         {
-            StartActivity(typeof(PrintingReprintLabels));
-            Finish();
+            try
+            {
+                StartActivity(typeof(PrintingReprintLabels));
+                Finish();
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
         }
     }
 }

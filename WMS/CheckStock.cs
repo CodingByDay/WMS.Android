@@ -5,6 +5,7 @@ using Android.Media;
 using Android.Net;
 using Android.Preferences;
 using Android.Views;
+using AndroidX.AppCompat.View.Menu;
 using BarCode2D_Receiver;
 using Com.Jsibbold.Zoomage;
 
@@ -13,6 +14,7 @@ using System.Collections.Concurrent;
 using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
 using WMS.App;
+using WMS.ExceptionStore;
 using static Android.App.ActionBar;
 
 namespace WMS
@@ -50,17 +52,24 @@ namespace WMS
 
         public async void GetBarcode(string barcode)
         {
-            if (tbIdent.HasFocus)
+            try
             {
+                if (tbIdent.HasFocus)
+                {
 
-                tbIdent.Text = barcode;
-                await ProcessStock();
-                showPictureIdent(tbIdent.Text);
+                    tbIdent.Text = barcode;
+                    await ProcessStock();
+                    showPictureIdent(tbIdent.Text);
+                }
+                else if (tbLocation.HasFocus)
+                {
+
+                    tbLocation.Text = barcode;
+                }
             }
-            else if (tbLocation.HasFocus)
+            catch (Exception ex)
             {
-
-                tbLocation.Text = barcode;
+                GlobalExceptions.ReportGlobalException(ex);
             }
         }
 
@@ -68,46 +77,60 @@ namespace WMS
 
         private void ImageClick(Drawable d)
         {
-            popupDialog = new Dialog(this);
-            popupDialog.SetContentView(Resource.Layout.WarehousePicture);
-            popupDialog.Window.SetSoftInputMode(SoftInput.AdjustResize);
-            popupDialog.Show();
+            try
+            {
+                popupDialog = new Dialog(this);
+                popupDialog.SetContentView(Resource.Layout.WarehousePicture);
+                popupDialog.Window.SetSoftInputMode(SoftInput.AdjustResize);
+                popupDialog.Show();
 
-            popupDialog.Window.SetLayout(LayoutParams.MatchParent, LayoutParams.WrapContent);
-            popupDialog.Window.SetBackgroundDrawableResource(Android.Resource.Color.HoloBlueBright);
-            image = popupDialog.FindViewById<ZoomageView>(Resource.Id.image);
-            image.SetMinimumHeight(500);
+                popupDialog.Window.SetLayout(LayoutParams.MatchParent, LayoutParams.WrapContent);
+                popupDialog.Window.SetBackgroundDrawableResource(Android.Resource.Color.HoloBlueBright);
+                image = popupDialog.FindViewById<ZoomageView>(Resource.Id.image);
+                image.SetMinimumHeight(500);
 
-            image.SetMinimumWidth(800);
+                image.SetMinimumWidth(800);
 
-            image.SetImageDrawable(d);
+                image.SetImageDrawable(d);
 
-            // Access Popup layout fields like below
-
+                // Access Popup layout fields like below
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
         }
         private async Task<string> LoadStockFromStockSerialNo(string warehouse, string location, string ident)
         {
             try
             {
-                var picture = await CommonData.GetQtyPictureAsync(this);
-                string error;
-                var stock = Services.GetObjectList("str", out error, warehouse + "|" + location + "|" + ident);
-                if (stock == null)
+                try
                 {
-                    string WebError = string.Format($"{Resources.GetString(Resource.String.s216)}" + error);
-                    DialogHelper.ShowDialogError(this, this, WebError);
+                    var picture = await CommonData.GetQtyPictureAsync(this);
+                    string error;
+                    var stock = Services.GetObjectList("str", out error, warehouse + "|" + location + "|" + ident);
+                    if (stock == null)
+                    {
+                        string WebError = string.Format($"{Resources.GetString(Resource.String.s216)}" + error);
+                        DialogHelper.ShowDialogError(this, this, WebError);
 
+                        return "";
+                    }
+                    else
+                    {
+                        return string.Join("\r\n", stock.Items.Select(x => "L:" + x.GetString("Location") + " = " + x.GetDouble("RealStock").ToString(picture)).ToArray());
+                    }
+                }
+                catch (Exception err)
+                {
+                    SentrySdk.CaptureException(err);
                     return "";
                 }
-                else
-                {
-                    return string.Join("\r\n", stock.Items.Select(x => "L:" + x.GetString("Location") + " = " + x.GetDouble("RealStock").ToString(picture)).ToArray());
-                }
             }
-            catch (Exception err)
+            catch (Exception ex)
             {
-                SentrySdk.CaptureException(err);
-                return "";
+                GlobalExceptions.ReportGlobalException(ex);
+                return string.Empty;
             }
         }
 
@@ -119,162 +142,198 @@ namespace WMS
 
         private async Task ProcessStock()
         {
-            var wh = spinnerAdapterList.ElementAt(temporaryPositionWarehouse);
-            if (wh == null)
+            try
             {
-                return;
-            }
-
-            if (!string.IsNullOrEmpty(tbLocation.Text.Trim()))
-            {
-                if (!await CommonData.IsValidLocationAsync(wh.ID, tbLocation.Text.Trim(), this))
+                var wh = spinnerAdapterList.ElementAt(temporaryPositionWarehouse);
+                if (wh == null)
                 {
-                    string WebError = string.Format($"{Resources.GetString(Resource.String.s234)}");
-                    DialogHelper.ShowDialogError(this, this, WebError);
                     return;
                 }
-            }
 
-            if (string.IsNullOrEmpty(tbIdent.Text.Trim()))
+                if (!string.IsNullOrEmpty(tbLocation.Text.Trim()))
+                {
+                    if (!await CommonData.IsValidLocationAsync(wh.ID, tbLocation.Text.Trim(), this))
+                    {
+                        string WebError = string.Format($"{Resources.GetString(Resource.String.s234)}");
+                        DialogHelper.ShowDialogError(this, this, WebError);
+                        return;
+                    }
+                }
+
+                if (string.IsNullOrEmpty(tbIdent.Text.Trim()))
+                {
+                    string WebError = string.Format($"{Resources.GetString(Resource.String.s235)}");
+                    DialogHelper.ShowDialogError(this, this, WebError);
+
+                    return;
+                }
+
+                stock = await LoadStockFromStockSerialNo(wh.ID, tbLocation.Text.Trim(), tbIdent.Text.Trim());
+                lbStock.Text = $"{Resources.GetString(Resource.String.s155)}:\r\n" + stock;
+                isEmptyStock();
+            }
+            catch (Exception ex)
             {
-                string WebError = string.Format($"{Resources.GetString(Resource.String.s235)}");
-                DialogHelper.ShowDialogError(this, this, WebError);
-
-                return;
+                GlobalExceptions.ReportGlobalException(ex);
             }
-
-            stock = await LoadStockFromStockSerialNo(wh.ID, tbLocation.Text.Trim(), tbIdent.Text.Trim());
-            lbStock.Text = $"{Resources.GetString(Resource.String.s155)}:\r\n" + stock;
-            isEmptyStock();
         }
 
         private void isEmptyStock()
         {
-            if (stock != "")
+            try
             {
-                lbStock.SetBackgroundColor(Android.Graphics.Color.Green);
+                if (stock != "")
+                {
+                    lbStock.SetBackgroundColor(Android.Graphics.Color.Green);
+                }
+                else
+                {
+                    lbStock.SetBackgroundColor(Android.Graphics.Color.Red);
+                }
             }
-            else
+            catch (Exception ex)
             {
-                lbStock.SetBackgroundColor(Android.Graphics.Color.Red);
+                GlobalExceptions.ReportGlobalException(ex);
             }
         }
 
         private void color()
         {
-            tbIdent.SetBackgroundColor(Android.Graphics.Color.Aqua);
-            tbLocation.SetBackgroundColor(Android.Graphics.Color.Aqua);
+            try
+            {
+                tbIdent.SetBackgroundColor(Android.Graphics.Color.Aqua);
+                tbLocation.SetBackgroundColor(Android.Graphics.Color.Aqua);
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
         }
 
 
 
         public override bool OnKeyDown(Keycode keyCode, KeyEvent e)
         {
-            switch (keyCode)
+            try
             {
-                // Setting F2 to method ProccesStock()
-                case Keycode.F2:
-                    BtShowStock_Click(this, null);
-                    break;
+                switch (keyCode)
+                {
+                    // Setting F2 to method ProccesStock()
+                    case Keycode.F2:
+                        BtShowStock_Click(this, null);
+                        break;
 
-                case Keycode.F8:
-                    Button1_Click(this, null);
-                    break;
-                    // return true;
+                    case Keycode.F8:
+                        Button1_Click(this, null);
+                        break;
+                        // return true;
+                }
+                return base.OnKeyDown(keyCode, e);
             }
-            return base.OnKeyDown(keyCode, e);
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+                return false;
+            }
         }
 
         protected override async void OnCreate(Bundle savedInstanceState)
         {
-            base.OnCreate(savedInstanceState);
-            SetTheme(Resource.Style.AppTheme_NoActionBar);
-
-            // Create your application here.
-            if (App.Settings.tablet)
+            try
             {
-                base.RequestedOrientation = ScreenOrientation.Landscape;
-                base.SetContentView(Resource.Layout.CheckStockTablet);
-                imagePNG = FindViewById<ImageView>(Resource.Id.imagePNG);
-                listData = FindViewById<ListView>(Resource.Id.listData);
-                dataAdapter = UniversalAdapterHelper.GetCheckStock(this, data);
-                listData.Adapter = dataAdapter;
+                base.OnCreate(savedInstanceState);
+                SetTheme(Resource.Style.AppTheme_NoActionBar);
+
+                // Create your application here.
+                if (App.Settings.tablet)
+                {
+                    base.RequestedOrientation = ScreenOrientation.Landscape;
+                    base.SetContentView(Resource.Layout.CheckStockTablet);
+                    imagePNG = FindViewById<ImageView>(Resource.Id.imagePNG);
+                    listData = FindViewById<ListView>(Resource.Id.listData);
+                    dataAdapter = UniversalAdapterHelper.GetCheckStock(this, data);
+                    listData.Adapter = dataAdapter;
+                }
+                else
+                {
+                    base.RequestedOrientation = ScreenOrientation.Portrait;
+                    base.SetContentView(Resource.Layout.CheckStock);
+                }
+
+                AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
+                var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
+                _customToolbar.SetNavigationIcon(App.Settings.RootURL + "/Services/Logo");
+                SetSupportActionBar(_customToolbar._toolbar);
+                SupportActionBar.SetDisplayShowTitleEnabled(false);
+
+                cbWarehouses = FindViewById<CustomAutoCompleteTextView>(Resource.Id.cbWarehouses);
+                tbLocation = FindViewById<CustomAutoCompleteTextView>(Resource.Id.tbLocation);
+                tbIdent = FindViewById<CustomAutoCompleteTextView>(Resource.Id.tbIdent);
+
+                btShowStock = FindViewById<Button>(Resource.Id.btShowStock);
+                btShowStock.Click += BtShowStock_Click;
+
+                button1 = FindViewById<Button>(Resource.Id.button1);
+                button1.Click += Button1_Click;
+                lbStock = FindViewById<TextView>(Resource.Id.lbStock);
+
+                color();
+
+
+                barcode2D = new Barcode2D(this, this);
+                // First load the warehouses.
+                var whs = await CommonData.ListWarehousesAsync();
+                whs.Items.ForEach(wh =>
+                {
+                    spinnerAdapterList.Add(new ComboBoxItem { ID = wh.GetString("Subject"), Text = wh.GetString("Name") });
+                });
+                lbStock = FindViewById<TextView>(Resource.Id.lbStock);
+                var adapterWarehouse = new CustomAutoCompleteAdapter<ComboBoxItem>(this,
+                Android.Resource.Layout.SimpleSpinnerItem, spinnerAdapterList);
+                adapterWarehouse.SetDropDownViewResource(Android.Resource.Layout.SimpleSpinnerDropDownItem);
+                cbWarehouses.Adapter = adapterWarehouse;
+                identData = Caching.Caching.SavedList;
+                ISharedPreferences sharedPreferences = PreferenceManager.GetDefaultSharedPreferences(Application.Context);
+                ISharedPreferencesEditor editor = sharedPreferences.Edit();
+                string savedIdentsJson = sharedPreferences.GetString("idents", "");
+                if (!string.IsNullOrEmpty(savedIdentsJson))
+                {
+                    // Deserialize the JSON string back to a List<string>
+                    savedIdents = JsonConvert.DeserializeObject<List<string>>(savedIdentsJson);
+                    // Now you have your list of idents in the savedIdents variable
+                }
+
+                tbIdentAdapter = new CustomAutoCompleteAdapter<string>(this, Android.Resource.Layout.SimpleDropDownItem1Line, new List<string>());
+                tbIdent.Adapter = tbIdentAdapter;
+                tbIdent.TextChanged += (sender, e) =>
+                {
+                    string userInput = e.Text.ToString();
+                    UpdateSuggestions(userInput);
+                };
+
+                var dw = await CommonData.GetSettingAsync("DefaultWarehouse", this);
+                if (!string.IsNullOrEmpty(dw))
+                {
+                    temporaryPositionWarehouse = cbWarehouses.SetItemByString(dw);
+                    await GetLocationsForGivenWarehouse(spinnerAdapterList.ElementAt(temporaryPositionWarehouse).Text);
+                    DataAdapterLocation = new CustomAutoCompleteAdapter<string>(this,
+                    Android.Resource.Layout.SimpleSpinnerItem, locationData);
+                    tbLocation.Adapter = null;
+                    tbLocation.Adapter = DataAdapterLocation;
+                }
+
+                var _broadcastReceiver = new NetworkStatusBroadcastReceiver();
+                _broadcastReceiver.ConnectionStatusChanged += OnNetworkStatusChanged;
+                Application.Context.RegisterReceiver(_broadcastReceiver,
+                new IntentFilter(ConnectivityManager.ConnectivityAction), ReceiverFlags.NotExported);
+
+                cbWarehouses.ItemClick += CbWarehouses_ItemClick;
+                tbLocation.ItemClick += TbLocation_ItemClick;
             }
-            else
+            catch (Exception ex)
             {
-                base.RequestedOrientation = ScreenOrientation.Portrait;
-                base.SetContentView(Resource.Layout.CheckStock);
+                GlobalExceptions.ReportGlobalException(ex);
             }
-
-            AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
-            var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
-            _customToolbar.SetNavigationIcon(App.Settings.RootURL + "/Services/Logo");
-            SetSupportActionBar(_customToolbar._toolbar);
-            SupportActionBar.SetDisplayShowTitleEnabled(false);
-
-            cbWarehouses = FindViewById<CustomAutoCompleteTextView>(Resource.Id.cbWarehouses);
-            tbLocation = FindViewById<CustomAutoCompleteTextView>(Resource.Id.tbLocation);
-            tbIdent = FindViewById<CustomAutoCompleteTextView>(Resource.Id.tbIdent);
-
-            btShowStock = FindViewById<Button>(Resource.Id.btShowStock);
-            btShowStock.Click += BtShowStock_Click;
-            
-            button1 = FindViewById<Button>(Resource.Id.button1);
-            button1.Click += Button1_Click;
-            lbStock = FindViewById<TextView>(Resource.Id.lbStock);
-
-            color();
-
-
-            barcode2D = new Barcode2D(this, this);
-            // First load the warehouses.
-            var whs = await CommonData.ListWarehousesAsync();
-            whs.Items.ForEach(wh =>
-            {
-                spinnerAdapterList.Add(new ComboBoxItem { ID = wh.GetString("Subject"), Text = wh.GetString("Name") });
-            });
-            lbStock = FindViewById<TextView>(Resource.Id.lbStock);
-            var adapterWarehouse = new CustomAutoCompleteAdapter<ComboBoxItem>(this,
-            Android.Resource.Layout.SimpleSpinnerItem, spinnerAdapterList);
-            adapterWarehouse.SetDropDownViewResource(Android.Resource.Layout.SimpleSpinnerDropDownItem);
-            cbWarehouses.Adapter = adapterWarehouse;
-            identData = Caching.Caching.SavedList;
-            ISharedPreferences sharedPreferences = PreferenceManager.GetDefaultSharedPreferences(Application.Context);
-            ISharedPreferencesEditor editor = sharedPreferences.Edit();
-            string savedIdentsJson = sharedPreferences.GetString("idents", "");
-            if (!string.IsNullOrEmpty(savedIdentsJson))
-            {
-                // Deserialize the JSON string back to a List<string>
-                savedIdents = JsonConvert.DeserializeObject<List<string>>(savedIdentsJson);
-                // Now you have your list of idents in the savedIdents variable
-            }
-
-            tbIdentAdapter = new CustomAutoCompleteAdapter<string>(this, Android.Resource.Layout.SimpleDropDownItem1Line, new List<string>());
-            tbIdent.Adapter = tbIdentAdapter;
-            tbIdent.TextChanged += (sender, e) =>
-            {
-                string userInput = e.Text.ToString();
-                UpdateSuggestions(userInput);
-            };
-
-            var dw = await CommonData.GetSettingAsync("DefaultWarehouse", this);
-            if (!string.IsNullOrEmpty(dw))
-            {
-                temporaryPositionWarehouse = cbWarehouses.SetItemByString(dw);
-                await GetLocationsForGivenWarehouse(spinnerAdapterList.ElementAt(temporaryPositionWarehouse).Text);
-                DataAdapterLocation = new CustomAutoCompleteAdapter<string>(this,
-                Android.Resource.Layout.SimpleSpinnerItem, locationData);
-                tbLocation.Adapter = null;
-                tbLocation.Adapter = DataAdapterLocation;
-            }
-
-            var _broadcastReceiver = new NetworkStatusBroadcastReceiver();
-            _broadcastReceiver.ConnectionStatusChanged += OnNetworkStatusChanged;
-            Application.Context.RegisterReceiver(_broadcastReceiver,
-            new IntentFilter(ConnectivityManager.ConnectivityAction), ReceiverFlags.NotExported);
-
-            cbWarehouses.ItemClick += CbWarehouses_ItemClick;
-            tbLocation.ItemClick += TbLocation_ItemClick;
         }
 
 
@@ -282,200 +341,306 @@ namespace WMS
         {
             try
             {
-                string wh = spinnerAdapterList.ElementAt(temporaryPositionWarehouse).ID;
-                Android.Graphics.Bitmap show = Services.GetImageFromServerIdent(wh, ident);
+                try
+                {
+                    string wh = spinnerAdapterList.ElementAt(temporaryPositionWarehouse).ID;
+                    Android.Graphics.Bitmap show = Services.GetImageFromServerIdent(wh, ident);
 
-                Drawable d = new BitmapDrawable(Resources, show);
+                    Drawable d = new BitmapDrawable(Resources, show);
 
-                imagePNG.SetImageDrawable(d);
-                imagePNG.Visibility = ViewStates.Visible;
+                    imagePNG.SetImageDrawable(d);
+                    imagePNG.Visibility = ViewStates.Visible;
 
 
-                imagePNG.Click += (e, ev) => { ImageClick(d); };
+                    imagePNG.Click += (e, ev) => { ImageClick(d); };
 
+                }
+                catch (Exception error)
+                {
+                    var log = error;
+                    return;
+                }
             }
-            catch (Exception error)
+            catch (Exception ex)
             {
-                var log = error;
-                return;
+                GlobalExceptions.ReportGlobalException(ex);
             }
-
         }
         private void TbLocation_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
         {
+            try
+            {
+
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
         }
 
         private async void CbWarehouses_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
         {
-            if (e.Position != 0)
+            try
             {
-                temporaryPositionWarehouse = e.Position;
+                if (e.Position != 0)
+                {
+                    temporaryPositionWarehouse = e.Position;
+                }
+                await GetLocationsForGivenWarehouse(spinnerAdapterList.ElementAt(temporaryPositionWarehouse).ID);
+                DataAdapterLocation = new CustomAutoCompleteAdapter<string>(this,
+                Android.Resource.Layout.SimpleSpinnerItem, locationData);
+                tbLocation.Adapter = null;
+                tbLocation.Adapter = DataAdapterLocation;
             }
-            await GetLocationsForGivenWarehouse(spinnerAdapterList.ElementAt(temporaryPositionWarehouse).ID);
-            DataAdapterLocation = new CustomAutoCompleteAdapter<string>(this,
-            Android.Resource.Layout.SimpleSpinnerItem, locationData);
-            tbLocation.Adapter = null;
-            tbLocation.Adapter = DataAdapterLocation;
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
         }
 
         private void UpdateSuggestions(string userInput)
         {
-            // Provide custom suggestions based on user input
-            List<string> suggestions = GetCustomSuggestions(userInput);
-            // Clear the existing suggestions and add the new ones
-            tbIdentAdapter.Clear();
-            tbIdentAdapter.AddAll(suggestions);
-            tbIdentAdapter.NotifyDataSetChanged();
+            try
+            {
+                // Provide custom suggestions based on user input
+                List<string> suggestions = GetCustomSuggestions(userInput);
+                // Clear the existing suggestions and add the new ones
+                tbIdentAdapter.Clear();
+                tbIdentAdapter.AddAll(suggestions);
+                tbIdentAdapter.NotifyDataSetChanged();
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
         }
 
         private List<string> GetCustomSuggestions(string userInput)
         {
-            if (savedIdents != null)
+            try
             {
-                // In order to improve performance try to implement paralel processing. 23.05.2024 Janko Jovičić
-
-                var lowerUserInput = userInput.ToLower();
-                var result = new ConcurrentBag<string>();
-
-                Parallel.ForEach(savedIdents, suggestion =>
+                if (savedIdents != null)
                 {
-                    if (suggestion.ToLower().Contains(lowerUserInput))
+                    // In order to improve performance try to implement paralel processing. 23.05.2024 Janko Jovičić
+
+                    var lowerUserInput = userInput.ToLower();
+                    var result = new ConcurrentBag<string>();
+
+                    Parallel.ForEach(savedIdents, suggestion =>
                     {
-                        result.Add(suggestion);
-                    }
-                });
+                        if (suggestion.ToLower().Contains(lowerUserInput))
+                        {
+                            result.Add(suggestion);
+                        }
+                    });
 
-                return result.Take(100).ToList();
+                    return result.Take(100).ToList();
+                }
+
+                // Service not yet loaded. 6.6.2024 J.J
+                return new List<string>();
             }
-
-            // Service not yet loaded. 6.6.2024 J.J
-            return new List<string>();
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+                return new List<string>();
+            }
         }
 
         public bool IsOnline()
         {
-            var cm = (ConnectivityManager)GetSystemService(ConnectivityService);
-            return cm.ActiveNetworkInfo == null ? false : cm.ActiveNetworkInfo.IsConnected;
+            try
+            {
+                var cm = (ConnectivityManager)GetSystemService(ConnectivityService);
+                return cm.ActiveNetworkInfo == null ? false : cm.ActiveNetworkInfo.IsConnected;
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+                return false;
+            }
         }
 
         private void OnNetworkStatusChanged(object sender, EventArgs e)
         {
-            if (IsOnline())
+            try
             {
-                try
+                if (IsOnline())
                 {
-                    LoaderManifest.LoaderManifestLoopStop(this);
+                    try
+                    {
+                        LoaderManifest.LoaderManifestLoopStop(this);
+                    }
+                    catch (Exception err)
+                    {
+                        SentrySdk.CaptureException(err);
+                    }
                 }
-                catch (Exception err)
+                else
                 {
-                    SentrySdk.CaptureException(err);
+                    LoaderManifest.LoaderManifestLoop(this);
                 }
             }
-            else
+            catch (Exception ex)
             {
-                LoaderManifest.LoaderManifestLoop(this);
+                GlobalExceptions.ReportGlobalException(ex);
             }
         }
 
         private void SpinnerLocation_ItemSelected(object sender, AdapterView.ItemSelectedEventArgs e)
         {
-            if (!initial)
+            try
             {
-                tbLocation.Text = locationData.ElementAt(e.Position);
+                if (!initial)
+                {
+                    tbLocation.Text = locationData.ElementAt(e.Position);
+                }
+                else
+                {
+                    tbLocation.Text = string.Empty;
+                    initial = false;
+                }
             }
-            else
+            catch (Exception ex)
             {
-                tbLocation.Text = string.Empty;
-                initial = false;
+                GlobalExceptions.ReportGlobalException(ex);
             }
         }
 
         private void SpinnerIdent_ItemSelected(object sender, AdapterView.ItemSelectedEventArgs e)
         {
-            tbIdent.Text = identData.ElementAt(e.Position);
+            try
+            {
+                tbIdent.Text = identData.ElementAt(e.Position);
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
         }
 
         public override void OnBackPressed()
         {
-            base.OnBackPressed();
+            try
+            {
+                base.OnBackPressed();
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
         }
 
         private void Button1_Click(object sender, System.EventArgs e)
         {
-            this.Finish();
+            try
+            {
+                this.Finish();
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
         }
 
         private async void BtShowStock_Click(object sender, System.EventArgs e)
         {
-            data.Clear();
-            await ProcessStock();
-            if (App.Settings.tablet)
+            try
             {
-                await fillItemsOfList();
-                showPictureIdent(tbIdent.Text);
+                data.Clear();
+                await ProcessStock();
+                if (App.Settings.tablet)
+                {
+                    await fillItemsOfList();
+                    showPictureIdent(tbIdent.Text);
+                }
             }
-
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
         }
 
         private async Task fillItemsOfList()
         {
-            var wh = spinnerAdapterList.ElementAt(temporaryPositionWarehouse);
-            string error;
-            var stock = Services.GetObjectList("str", out error, wh.ID + "||" + tbIdent.Text);
-            var picture = await CommonData.GetQtyPictureAsync(this);
-            // return string.Join("\r\n", stock.Items.Select(x => "L:" + x.GetString("Location") + " = " + x.GetDouble("RealStock").ToString(CommonData.GetQtyPicture())).ToArray());
-            stock.Items.ForEach(x =>
+            try
             {
-                data.Add(new CheckStockAddonList
+                var wh = spinnerAdapterList.ElementAt(temporaryPositionWarehouse);
+                string error;
+                var stock = Services.GetObjectList("str", out error, wh.ID + "||" + tbIdent.Text);
+                var picture = await CommonData.GetQtyPictureAsync(this);
+                // return string.Join("\r\n", stock.Items.Select(x => "L:" + x.GetString("Location") + " = " + x.GetDouble("RealStock").ToString(CommonData.GetQtyPicture())).ToArray());
+                stock.Items.ForEach(x =>
                 {
-                    Ident = x.GetString("Ident"),
-                    Location = x.GetString("Location"),
-                    Quantity = x.GetDouble("RealStock").ToString(picture)
+                    data.Add(new CheckStockAddonList
+                    {
+                        Ident = x.GetString("Ident"),
+                        Location = x.GetString("Location"),
+                        Quantity = x.GetDouble("RealStock").ToString(picture)
+                    });
                 });
-            });
-            dataAdapter.NotifyDataSetChanged();
+                dataAdapter.NotifyDataSetChanged();
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
         }
 
         private async Task GetLocationsForGivenWarehouse(string warehouse)
         {
-            await Task.Run(() =>
+            try
             {
-                locationAdapter = new CustomAutoCompleteAdapter<string>(this,
-                    Android.Resource.Layout.SimpleSpinnerItem, locationData);
+                await Task.Run(() =>
+                {
+                    locationAdapter = new CustomAutoCompleteAdapter<string>(this,
+                        Android.Resource.Layout.SimpleSpinnerItem, locationData);
 
-                locationData.Clear();
-                List<string> result = new List<string>();
-                string error;
-                var issuerLocs = Services.GetObjectList("lo", out error, spinnerAdapterList.ElementAt(temporaryPositionWarehouse).Text);
-                var debi = issuerLocs.Items.Count();
-                if (issuerLocs == null)
-                {
-                    DialogHelper.ShowDialogError(this, this, $"{Resources.GetString(Resource.String.s225)}");
-                }
-                else
-                {
-                    issuerLocs.Items.ForEach(x =>
+                    locationData.Clear();
+                    List<string> result = new List<string>();
+                    string error;
+                    var issuerLocs = Services.GetObjectList("lo", out error, spinnerAdapterList.ElementAt(temporaryPositionWarehouse).Text);
+                    var debi = issuerLocs.Items.Count();
+                    if (issuerLocs == null)
                     {
-                        var location = x.GetString("LocationID");
-                        locationData.Add(location);
-                        // Notify the adapter state change!
-                    });
-                }
-            });
+                        DialogHelper.ShowDialogError(this, this, $"{Resources.GetString(Resource.String.s225)}");
+                    }
+                    else
+                    {
+                        issuerLocs.Items.ForEach(x =>
+                        {
+                            var location = x.GetString("LocationID");
+                            locationData.Add(location);
+                            // Notify the adapter state change!
+                        });
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
         }
 
         private async void CbWarehouses_ItemSelected(object sender, AdapterView.ItemSelectedEventArgs e)
         {
-            Spinner spinner = (Spinner)sender;
-            if (e.Position != 0)
+            try
             {
-                temporaryPositionWarehouse = e.Position;
+                Spinner spinner = (Spinner)sender;
+                if (e.Position != 0)
+                {
+                    temporaryPositionWarehouse = e.Position;
+                }
+                await GetLocationsForGivenWarehouse(spinnerAdapterList.ElementAt(temporaryPositionWarehouse).Text);
+                DataAdapterLocation = new CustomAutoCompleteAdapter<string>(this,
+                Android.Resource.Layout.SimpleSpinnerItem, locationData);
+                tbLocation.Adapter = null;
+                tbLocation.Adapter = DataAdapterLocation;
             }
-            await GetLocationsForGivenWarehouse(spinnerAdapterList.ElementAt(temporaryPositionWarehouse).Text);
-            DataAdapterLocation = new CustomAutoCompleteAdapter<string>(this,
-            Android.Resource.Layout.SimpleSpinnerItem, locationData);
-            tbLocation.Adapter = null;
-            tbLocation.Adapter = DataAdapterLocation;
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
         }
     }
 }

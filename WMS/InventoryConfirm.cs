@@ -6,6 +6,7 @@ using TrendNET.WMS.Core.Data;
 using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
 using WMS.App;
+using WMS.ExceptionStore;
 using WebApp = TrendNET.WMS.Device.Services.WebApp;
 namespace WMS
 {
@@ -30,72 +31,93 @@ namespace WMS
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
-            base.OnCreate(savedInstanceState);
-            SetTheme(Resource.Style.AppTheme_NoActionBar);
-            if (App.Settings.tablet)
+            try
             {
-                base.RequestedOrientation = ScreenOrientation.Landscape;
-                base.SetContentView(Resource.Layout.InventoryConfirmTablet);
+                base.OnCreate(savedInstanceState);
+                SetTheme(Resource.Style.AppTheme_NoActionBar);
+                if (App.Settings.tablet)
+                {
+                    base.RequestedOrientation = ScreenOrientation.Landscape;
+                    base.SetContentView(Resource.Layout.InventoryConfirmTablet);
+                }
+                else
+                {
+                    base.RequestedOrientation = ScreenOrientation.Portrait;
+                    base.SetContentView(Resource.Layout.InventoryConfirm);
+                }
+                AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
+                var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
+                _customToolbar.SetNavigationIcon(App.Settings.RootURL + "/Services/Logo");
+                SetSupportActionBar(_customToolbar._toolbar);
+                SupportActionBar.SetDisplayShowTitleEnabled(false);
+                lbInfo = FindViewById<TextView>(Resource.Id.lbInfo);
+                tbWarehouse = FindViewById<EditText>(Resource.Id.tbWarehouse);
+                tbTitle = FindViewById<EditText>(Resource.Id.tbTitle);
+                tbDate = FindViewById<EditText>(Resource.Id.tbDate);
+                tbItems = FindViewById<EditText>(Resource.Id.tbItems);
+                tbCreatedBy = FindViewById<EditText>(Resource.Id.tbCreatedBy);
+                tbCreatedAt = FindViewById<EditText>(Resource.Id.tbCreatedAt);
+                target = FindViewById<Button>(Resource.Id.target);
+                target.Click += Target_Click;
+                btNext = FindViewById<Button>(Resource.Id.btNext);
+
+                button3 = FindViewById<Button>(Resource.Id.button3);
+
+                btNext.Click += BtNext_Click;
+
+                button3.Click += Button3_Click;
+
+                InUseObjects.Clear();
+
+                LoadPositions();
+
+                var _broadcastReceiver = new NetworkStatusBroadcastReceiver();
+                _broadcastReceiver.ConnectionStatusChanged += OnNetworkStatusChanged;
+                Application.Context.RegisterReceiver(_broadcastReceiver,
+                new IntentFilter(ConnectivityManager.ConnectivityAction), ReceiverFlags.NotExported);
             }
-            else
+            catch (Exception ex)
             {
-                base.RequestedOrientation = ScreenOrientation.Portrait;
-                base.SetContentView(Resource.Layout.InventoryConfirm);
+                GlobalExceptions.ReportGlobalException(ex);
             }
-            AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
-            var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
-            _customToolbar.SetNavigationIcon(App.Settings.RootURL + "/Services/Logo");
-            SetSupportActionBar(_customToolbar._toolbar);
-            SupportActionBar.SetDisplayShowTitleEnabled(false);
-            lbInfo = FindViewById<TextView>(Resource.Id.lbInfo);
-            tbWarehouse = FindViewById<EditText>(Resource.Id.tbWarehouse);
-            tbTitle = FindViewById<EditText>(Resource.Id.tbTitle);
-            tbDate = FindViewById<EditText>(Resource.Id.tbDate);
-            tbItems = FindViewById<EditText>(Resource.Id.tbItems);
-            tbCreatedBy = FindViewById<EditText>(Resource.Id.tbCreatedBy);
-            tbCreatedAt = FindViewById<EditText>(Resource.Id.tbCreatedAt);
-            target = FindViewById<Button>(Resource.Id.target);
-            target.Click += Target_Click;
-            btNext = FindViewById<Button>(Resource.Id.btNext);
-
-            button3 = FindViewById<Button>(Resource.Id.button3);
-
-            btNext.Click += BtNext_Click;
-
-            button3.Click += Button3_Click;
-
-            InUseObjects.Clear();
-
-            LoadPositions();
-
-            var _broadcastReceiver = new NetworkStatusBroadcastReceiver();
-            _broadcastReceiver.ConnectionStatusChanged += OnNetworkStatusChanged;
-            Application.Context.RegisterReceiver(_broadcastReceiver,
-            new IntentFilter(ConnectivityManager.ConnectivityAction), ReceiverFlags.NotExported);
         }
         public bool IsOnline()
         {
-            var cm = (ConnectivityManager)GetSystemService(ConnectivityService);
-            return cm.ActiveNetworkInfo == null ? false : cm.ActiveNetworkInfo.IsConnected;
-
+            try
+            {
+                var cm = (ConnectivityManager)GetSystemService(ConnectivityService);
+                return cm.ActiveNetworkInfo == null ? false : cm.ActiveNetworkInfo.IsConnected;
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+                return false;
+            }
         }
         private void OnNetworkStatusChanged(object sender, EventArgs e)
         {
-            if (IsOnline())
+            try
             {
+                if (IsOnline())
+                {
 
-                try
-                {
-                    LoaderManifest.LoaderManifestLoopStop(this);
+                    try
+                    {
+                        LoaderManifest.LoaderManifestLoopStop(this);
+                    }
+                    catch (Exception err)
+                    {
+                        SentrySdk.CaptureException(err);
+                    }
                 }
-                catch (Exception err)
+                else
                 {
-                    SentrySdk.CaptureException(err);
+                    LoaderManifest.LoaderManifestLoop(this);
                 }
             }
-            else
+            catch (Exception ex)
             {
-                LoaderManifest.LoaderManifestLoop(this);
+                GlobalExceptions.ReportGlobalException(ex);
             }
         }
 
@@ -103,50 +125,183 @@ namespace WMS
 
         public async Task DoWorkAsync()
         {
-            await Task.Run(async () =>
+            try
             {
-
-                var moveHead = positions.Items[displayedPosition];
-
-                try
+                await Task.Run(async () =>
                 {
-                    var headID = moveHead.GetInt("HeadID");
 
-                    var (success, result) = await WebApp.GetAsync("mode=finish&id=" + headID.ToString(), this);
+                    var moveHead = positions.Items[displayedPosition];
 
-                    if (success)
+                    try
                     {
-                        if (result.StartsWith("OK!"))
-                        {
-                            // UI changes.
-                            RunOnUiThread(() =>
-                            {
-                                var id = result.Split('+')[1];
-                                DialogHelper.ShowDialogSuccess(this, this, $"{Resources.GetString(Resource.String.s279)}" + id);
-                                output = 1;
-                                StartActivity(typeof(MainMenu));
-                            });
+                        var headID = moveHead.GetInt("HeadID");
 
+                        var (success, result) = await WebApp.GetAsync("mode=finish&id=" + headID.ToString(), this);
+
+                        if (success)
+                        {
+                            if (result.StartsWith("OK!"))
+                            {
+                                // UI changes.
+                                RunOnUiThread(() =>
+                                {
+                                    var id = result.Split('+')[1];
+                                    DialogHelper.ShowDialogSuccess(this, this, $"{Resources.GetString(Resource.String.s279)}" + id);
+                                    output = 1;
+                                    StartActivity(typeof(MainMenu));
+                                });
+
+                            }
+                            else
+                            {
+                                // UI changes.
+                                RunOnUiThread(() =>
+                                {
+                                    output = 2;
+                                    DialogHelper.ShowDialogError(this, this, $"{Resources.GetString(Resource.String.s280)}" + result);
+                                });
+
+                            }
                         }
                         else
                         {
                             // UI changes.
                             RunOnUiThread(() =>
                             {
-                                output = 2;
-                                DialogHelper.ShowDialogError(this, this, $"{Resources.GetString(Resource.String.s280)}" + result);
+                                DialogHelper.ShowDialogError(this, this, $"{Resources.GetString(Resource.String.s218)}" + result);
                             });
-
                         }
                     }
-                    else
+                    catch (Exception err)
                     {
-                        // UI changes.
-                        RunOnUiThread(() =>
-                        {
-                            DialogHelper.ShowDialogError(this, this, $"{Resources.GetString(Resource.String.s218)}" + result);
-                        });
+
+                        SentrySdk.CaptureException(err);
+                        return;
+
                     }
+                });
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
+        }
+
+
+
+        private async void Target_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                await DoWorkAsync();
+
+                if (output == 1)
+                {
+                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s243)}", ToastLength.Long).Show();
+                }
+                else
+                {
+                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s244)}", ToastLength.Long).Show();
+                }
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
+        }
+
+
+        private void Button3_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                StartActivity(typeof(MainMenu));
+                Finish();
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
+        }
+
+
+        public override bool OnKeyDown(Keycode keyCode, KeyEvent e)
+        {
+            try
+            {
+                switch (keyCode)
+                {
+
+                    case Keycode.F2:
+                        if (btNext.Enabled == true)
+                        {
+                            BtNext_Click(this, null);
+                        }
+                        break;
+
+
+                    case Keycode.F3:
+                        if (target.Enabled == true)
+                        {
+                            Target_Click(this, null);
+                        }
+                        break;
+
+                    case Keycode.F8:
+                        if (button3.Enabled == true)
+                        {
+                            Button3_Click(this, null);
+                        }
+                        break;
+                }
+                return base.OnKeyDown(keyCode, e);
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+                return false;
+            }
+        }
+
+
+
+        private void BtNext_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                displayedPosition++;
+                if (displayedPosition >= positions.Items.Count) { displayedPosition = 0; }
+                FillDisplayedItem();
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
+        }
+
+        private void LoadPositions()
+        {
+            try
+            {
+                try
+                {
+                    if (positions == null)
+                    {
+                        var error = "";
+                        if (positions == null)
+                        {
+                            positions = Services.GetObjectList("mh", out error, "N");
+                        }
+                        if (positions == null)
+                        {
+                            DialogHelper.ShowDialogError(this, this, $"{Resources.GetString(Resource.String.s213)}" + error);
+
+                            return;
+                        }
+                    }
+
+                    displayedPosition = 0;
+                    FillDisplayedItem();
                 }
                 catch (Exception err)
                 {
@@ -155,103 +310,10 @@ namespace WMS
                     return;
 
                 }
-            });
-        }
-
-
-
-        private async void Target_Click(object sender, EventArgs e)
-        {
-
-            await DoWorkAsync();
-
-            if (output == 1)
-            {
-                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s243)}", ToastLength.Long).Show();
             }
-            else
+            catch (Exception ex)
             {
-                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s244)}", ToastLength.Long).Show();
-            }
-
-        }
-
-
-        private void Button3_Click(object sender, EventArgs e)
-        {
-            StartActivity(typeof(MainMenu));
-            Finish();
-        }
-
-
-        public override bool OnKeyDown(Keycode keyCode, KeyEvent e)
-        {
-            switch (keyCode)
-            {
-
-                case Keycode.F2:
-                    if (btNext.Enabled == true)
-                    {
-                        BtNext_Click(this, null);
-                    }
-                    break;
-
-
-                case Keycode.F3:
-                    if (target.Enabled == true)
-                    {
-                        Target_Click(this, null);
-                    }
-                    break;
-
-                case Keycode.F8:
-                    if (button3.Enabled == true)
-                    {
-                        Button3_Click(this, null);
-                    }
-                    break;
-            }
-            return base.OnKeyDown(keyCode, e);
-        }
-
-
-
-        private void BtNext_Click(object sender, EventArgs e)
-        {
-            displayedPosition++;
-            if (displayedPosition >= positions.Items.Count) { displayedPosition = 0; }
-            FillDisplayedItem();
-        }
-
-        private void LoadPositions()
-        {
-
-            try
-            {
-                if (positions == null)
-                {
-                    var error = "";
-                    if (positions == null)
-                    {
-                        positions = Services.GetObjectList("mh", out error, "N");
-                    }
-                    if (positions == null)
-                    {
-                        DialogHelper.ShowDialogError(this, this, $"{Resources.GetString(Resource.String.s213)}" + error);
-
-                        return;
-                    }
-                }
-
-                displayedPosition = 0;
-                FillDisplayedItem();
-            }
-            catch (Exception err)
-            {
-
-                SentrySdk.CaptureException(err);
-                return;
-
+                GlobalExceptions.ReportGlobalException(ex);
             }
         }
 
@@ -260,60 +322,67 @@ namespace WMS
 
         private void FillDisplayedItem()
         {
-            if ((positions != null) && (positions.Items.Count > 0))
+            try
             {
-                lbInfo.Text = $"{Resources.GetString(Resource.String.s123)} (" + (displayedPosition + 1).ToString() + "/" + positions.Items.Count + ")";
-                var item = positions.Items[displayedPosition];
+                if ((positions != null) && (positions.Items.Count > 0))
+                {
+                    lbInfo.Text = $"{Resources.GetString(Resource.String.s123)} (" + (displayedPosition + 1).ToString() + "/" + positions.Items.Count + ")";
+                    var item = positions.Items[displayedPosition];
 
-                tbWarehouse.Text = item.GetString("Wharehouse");
-                tbTitle.Text = item.GetString("WharehouseName");
-                var date = item.GetDateTime("Date");
-                tbDate.Text = date == null ? "" : ((DateTime)date).ToString("dd.MM.yyyy");
-                tbItems.Text = item.GetInt("ItemCount").ToString();
-                tbCreatedBy.Text = item.GetString("ClerkName");
+                    tbWarehouse.Text = item.GetString("Wharehouse");
+                    tbTitle.Text = item.GetString("WharehouseName");
+                    var date = item.GetDateTime("Date");
+                    tbDate.Text = date == null ? "" : ((DateTime)date).ToString("dd.MM.yyyy");
+                    tbItems.Text = item.GetInt("ItemCount").ToString();
+                    tbCreatedBy.Text = item.GetString("ClerkName");
 
-                var created = item.GetDateTime("DateInserted");
-                tbCreatedAt.Text = created == null ? "" : ((DateTime)created).ToString("dd.MM.yyyy");
-                btNext.Enabled = true;
-                target.Enabled = true;
-                tbWarehouse.Enabled = false;
-                tbTitle.Enabled = false;
-                tbDate.Enabled = false;
-                tbItems.Enabled = false;
-                tbCreatedBy.Enabled = false;
-                tbCreatedAt.Enabled = false;
-                tbWarehouse.SetTextColor(Android.Graphics.Color.Black);
-                tbTitle.SetTextColor(Android.Graphics.Color.Black);
-                tbDate.SetTextColor(Android.Graphics.Color.Black);
-                tbItems.SetTextColor(Android.Graphics.Color.Black);
-                tbCreatedBy.SetTextColor(Android.Graphics.Color.Black);
-                tbCreatedAt.SetTextColor(Android.Graphics.Color.Black);
+                    var created = item.GetDateTime("DateInserted");
+                    tbCreatedAt.Text = created == null ? "" : ((DateTime)created).ToString("dd.MM.yyyy");
+                    btNext.Enabled = true;
+                    target.Enabled = true;
+                    tbWarehouse.Enabled = false;
+                    tbTitle.Enabled = false;
+                    tbDate.Enabled = false;
+                    tbItems.Enabled = false;
+                    tbCreatedBy.Enabled = false;
+                    tbCreatedAt.Enabled = false;
+                    tbWarehouse.SetTextColor(Android.Graphics.Color.Black);
+                    tbTitle.SetTextColor(Android.Graphics.Color.Black);
+                    tbDate.SetTextColor(Android.Graphics.Color.Black);
+                    tbItems.SetTextColor(Android.Graphics.Color.Black);
+                    tbCreatedBy.SetTextColor(Android.Graphics.Color.Black);
+                    tbCreatedAt.SetTextColor(Android.Graphics.Color.Black);
 
+                }
+                else
+                {
+                    lbInfo.Text = $"{Resources.GetString(Resource.String.s281)}";
+
+                    tbWarehouse.Text = "";
+                    tbTitle.Text = "";
+                    tbDate.Text = "";
+                    tbItems.Text = "";
+                    tbCreatedBy.Text = "";
+                    tbCreatedAt.Text = "";
+                    btNext.Enabled = false;
+                    target.Enabled = false;
+                    tbWarehouse.Enabled = false;
+                    tbTitle.Enabled = false;
+                    tbDate.Enabled = false;
+                    tbItems.Enabled = false;
+                    tbCreatedBy.Enabled = false;
+                    tbCreatedAt.Enabled = false;
+                    tbWarehouse.SetTextColor(Android.Graphics.Color.Black);
+                    tbTitle.SetTextColor(Android.Graphics.Color.Black);
+                    tbDate.SetTextColor(Android.Graphics.Color.Black);
+                    tbItems.SetTextColor(Android.Graphics.Color.Black);
+                    tbCreatedBy.SetTextColor(Android.Graphics.Color.Black);
+                    tbCreatedAt.SetTextColor(Android.Graphics.Color.Black);
+                }
             }
-            else
+            catch (Exception ex)
             {
-                lbInfo.Text = $"{Resources.GetString(Resource.String.s281)}";
-
-                tbWarehouse.Text = "";
-                tbTitle.Text = "";
-                tbDate.Text = "";
-                tbItems.Text = "";
-                tbCreatedBy.Text = "";
-                tbCreatedAt.Text = "";
-                btNext.Enabled = false;
-                target.Enabled = false;
-                tbWarehouse.Enabled = false;
-                tbTitle.Enabled = false;
-                tbDate.Enabled = false;
-                tbItems.Enabled = false;
-                tbCreatedBy.Enabled = false;
-                tbCreatedAt.Enabled = false;
-                tbWarehouse.SetTextColor(Android.Graphics.Color.Black);
-                tbTitle.SetTextColor(Android.Graphics.Color.Black);
-                tbDate.SetTextColor(Android.Graphics.Color.Black);
-                tbItems.SetTextColor(Android.Graphics.Color.Black);
-                tbCreatedBy.SetTextColor(Android.Graphics.Color.Black);
-                tbCreatedAt.SetTextColor(Android.Graphics.Color.Black);
+                GlobalExceptions.ReportGlobalException(ex);
             }
         }
 
