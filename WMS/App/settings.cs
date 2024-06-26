@@ -50,7 +50,7 @@ namespace WMS.App
 
         public static string ID
         {
-            get => AppSettings.GetValueOrDefault(nameof(ID), string.Empty);
+            get => AppSettings.GetValueOrDefault(nameof(ID), "0005");
             set => AppSettings.AddOrUpdateValue(nameof(ID), value);
         }
 
@@ -68,8 +68,14 @@ namespace WMS.App
 
         public static string RootURL
         {
-            get => AppSettings.GetValueOrDefault(nameof(RootURL), string.Empty);
+            get => AppSettings.GetValueOrDefault(nameof(RootURL), "http://wms-skisea-test.in-sist.si");
             set => AppSettings.AddOrUpdateValue(nameof(RootURL), value);
+        }
+
+        public static string versionAPI
+        {
+            get => AppSettings.GetValueOrDefault(nameof(versionAPI), "http://swift-update.in-sist.si");
+            set => AppSettings.AddOrUpdateValue(nameof(versionAPI), value);
         }
     }
 }

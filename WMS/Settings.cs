@@ -16,6 +16,7 @@ namespace WMS
     {
         private EditText ID;
         private EditText rootURL;
+        private EditText versionApi;
         private TextView version;
         private Button ok;
         private ImageView bin;
@@ -47,6 +48,7 @@ namespace WMS
                 bluetooth.Click += Bluetooth_Click;
                 ID = FindViewById<EditText>(Resource.Id.IDdevice);
                 rootURL = FindViewById<EditText>(Resource.Id.rootURL);
+                versionApi = FindViewById<EditText>(Resource.Id.versionManagmentUrl);
                 cbDevice = FindViewById<Spinner>(Resource.Id.cbDevice);
                 ok = FindViewById<Button>(Resource.Id.ok);
                 ok.Click += Ok_Click;
@@ -223,6 +225,7 @@ namespace WMS
                 App.Settings.device = dev;
                 App.Settings.RootURL = rootURL.Text;
                 App.Settings.ID = ID.Text;
+                App.Settings.versionAPI = versionApi.Text;
                 ID.Text = App.Settings.ID;
                 StartActivity(typeof(MainActivity));
                 Finish();

@@ -100,6 +100,35 @@
             android:id="@+id/IDdevice" />
 
     </LinearLayout>
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:paddingTop="5dp">
+
+        <TextView
+            android:textStyle="bold"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:paddingLeft="4dp"
+            android:gravity="center_vertical"
+            android:paddingTop="4dp"
+            android:text="@string/s351"
+         />
+
+        <EditText
+            android:textStyle="bold"
+            android:singleLine="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.50"
+            android:paddingTop="5dp"
+            android:background="@drawable/editText_bg_grey"
+            android:layout_marginRight="2dp"
+            android:id="@+id/versionManagmentUrl" />
+
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="fill_parent"

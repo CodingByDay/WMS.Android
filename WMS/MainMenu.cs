@@ -4,6 +4,7 @@ using Android.Graphics;
 using Android.Graphics.Drawables;
 using Android.Net;
 using Android.Views;
+using Java.Nio.FileNio.Attributes;
 using TrendNET.WMS.Device.Services;
 using WMS.App;
 using WMS.Caching;
@@ -165,6 +166,13 @@ namespace WMS
                     };
                     scope.SetExtra("WMS User", currentUser);
                 });
+
+
+
+
+                if(!string.IsNullOrEmpty(App.Settings.versionAPI)) {
+                    await CheckForUpdate(versionCode);
+                }
             }
             catch (Exception ex)
             {
@@ -172,8 +180,66 @@ namespace WMS
             }
         }
 
+        private async Task CheckForUpdate(int version)
+        {
+            try
+            {
+                string baseUrl = App.Settings.versionAPI; // Replace with your actual base URL
+                string endpoint = "/api/app/check-for-update";
+                string applicationName = "WMS";
+                int versionCode = version;
+                string download = "/api/app/download-update?applicationName=WMS";
+                // Construct the full URL with parameters
+                string url = $"{baseUrl}{endpoint}?applicationName={applicationName}&versionCode={versionCode}";
+                string urlDownload = $"{baseUrl}{download}";
+                using (HttpClient client = new HttpClient())
+                {
+                    // Send a GET request
+                    HttpResponseMessage response = await client.GetAsync(url);
+
+                    // Check if the response is successful
+                    if (response.IsSuccessStatusCode)
+                    {
+                        // Read and handle the response here
+                        string responseBody = await response.Content.ReadAsStringAsync();
 
 
+                        if (responseBody == "New update available!")
+                        {
+                            UpdateService.DownloadApk(urlDownload);
+                        }
+                        else
+                        {
+                            Console.WriteLine($"Failed to request update check. Status code: {response.StatusCode}");
+                            // Handle unsuccessful response
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Exception while checking for update: {ex.Message}");
+                // Handle exceptions
+            }
+        }
+
+
+
+        private void InstallApk(string apkFilePath)
+        {
+            try
+            {
+                Intent intent = new Intent(Intent.ActionView);
+                intent.SetDataAndType(Android.Net.Uri.FromFile(new Java.IO.File(apkFilePath)), "application/vnd.android.package-archive");
+                intent.SetFlags(ActivityFlags.NewTask);
+                intent.AddFlags(ActivityFlags.GrantReadUriPermission);
+                Android.App.Application.Context.StartActivity(intent);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Exception while installing APK: {ex.Message}");
+            }
+        }
         private async Task<List<CleanupLocation>> FillTheCleanupList()
         {
             try
