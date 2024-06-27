@@ -4,8 +4,10 @@ using Android.Content.PM;
 using Android.Graphics;
 using Android.InputMethodServices;
 using Android.Net;
+using Android.OS;
 using Android.Preferences;
 using Android.Views;
+using Android.Widget;
 using AndroidX.Core.App;
 using AndroidX.Core.Content;
 using Google.Android.Material.Snackbar;
@@ -16,6 +18,7 @@ using WMS.App;
 using WMS.Background;
 using WMS.ExceptionStore;
 using Xamarin.Essentials;
+using static Android.OS.Build;
 namespace WMS
 {
 
@@ -44,6 +47,8 @@ namespace WMS
         private static readonly HttpClient httpClient = new HttpClient();
         const int RequestPermissionsId = 0;
         bool permissionsGranted = true;
+        private ProgressBar progressBar;
+        private TextView progressText;
 
         public object MenuInflaterFinal { get; private set; }
 
@@ -60,6 +65,150 @@ namespace WMS
                 return false;
             }
         }
+        private static Android.Net.Uri GetUriForFile(string filePath, Context context)
+        {
+            Java.IO.File file = new Java.IO.File(filePath);
+
+            // Replace "your.package.name.provider" with your FileProvider authority declared in AndroidManifest.xml
+            Android.Net.Uri apkUri = AndroidX.Core.Content.FileProvider.GetUriForFile(context, "your.package.name.provider", file);
+
+            return apkUri;
+        }
+
+
+        private const int RequestStoragePermissionId = 1;
+        private const int RequestManageAllFilesAccessPermissionId = 2;
+
+        private async Task CheckForUpdate(int version)
+        {
+            try
+            {
+
+                
+                string location = "/storage/emulated/0/Download/downloadedApp.apk";
+                /*
+                Intent promptInstall = new Intent(Intent.ActionView)
+               .SetDataAndType(Android.Net.Uri.Parse("file:///path/to/your.apk"),
+                    "application/vnd.android.package-archive");
+                StartActivity(promptInstall);
+
+                */
+
+
+                Java.IO.File apkFile = new Java.IO.File(location);
+                if (apkFile.Exists())
+                {
+
+                }
+
+
+                string baseUrl = App.Settings.versionAPI; // Replace with your actual base URL
+                string endpoint = "/api/app/check-for-update";
+                string applicationName = "WMS";
+                int versionCode = version;
+                string download = "/api/app/download-update?applicationName=WMS";
+                // Construct the full URL with parameters
+                string url = $"{baseUrl}{endpoint}?applicationName={applicationName}&versionCode={versionCode}";
+                urlDownload = $"{baseUrl}{download}";
+                using (HttpClient client = new HttpClient())
+                {
+                    // Send a GET request
+                    HttpResponseMessage response = await client.GetAsync(url);
+
+                    // Check if the response is successful
+                    if (response.IsSuccessStatusCode)
+                    {
+                        // Read and handle the response here
+                        string responseBody = await response.Content.ReadAsStringAsync();
+
+
+                        if (responseBody == "New update available!")
+                        {
+
+                            // Check for storage permissions
+                            if (ContextCompat.CheckSelfPermission(this, Manifest.Permission.WriteExternalStorage) != Permission.Granted ||
+                                (Build.VERSION.SdkInt >= BuildVersionCodes.R && !Android.OS.Environment.IsExternalStorageManager))
+                            {
+                                // Request permissions
+                                ActivityCompat.RequestPermissions(this, new string[] { Manifest.Permission.WriteExternalStorage }, RequestStoragePermissionId);
+                            }
+                            else if (Build.VERSION.SdkInt >= BuildVersionCodes.R && !Android.OS.Environment.IsExternalStorageManager)
+                            {
+                                Intent intent = new Intent(Android.Provider.Settings.ActionManageAppAllFilesAccessPermission);
+                                intent.SetData(Android.Net.Uri.Parse($"package:{Application.Context.PackageName}"));
+                                StartActivityForResult(intent, RequestManageAllFilesAccessPermissionId);
+                            }
+                            else
+                            {
+                                // Permissions granted, start downloading
+                                UpdateService.DownloadAndInstallAPK(urlDownload, this);
+                            }
+                        }
+                        else
+                        {
+                            // Handle unsuccessful response
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Exception while checking for update: {ex.Message}");
+                // Handle exceptions
+            }
+        }
+
+
+        public override async void OnRequestPermissionsResult(int requestCode, string[] permissions, Permission[] grantResults)
+        {
+            base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+
+            if (requestCode == RequestStoragePermissionId)
+            {
+                if (grantResults.Length > 0 && grantResults[0] == Permission.Granted)
+                {
+                    if (Build.VERSION.SdkInt >= BuildVersionCodes.R && !Android.OS.Environment.IsExternalStorageManager)
+                    {
+                        Intent intent = new Intent(Android.Provider.Settings.ActionManageAppAllFilesAccessPermission);
+                        intent.SetData(Android.Net.Uri.Parse($"package:{Application.Context.PackageName}"));
+                        StartActivityForResult(intent, RequestManageAllFilesAccessPermissionId);
+                    }
+                    else
+                    {
+                        // Permissions granted, start downloading
+                        UpdateService.DownloadAndInstallAPK(urlDownload, this);
+                    }
+                }
+                else
+                {
+                    Toast.MakeText(this, "Storage permission is required to download files", ToastLength.Short).Show();
+                }
+            }
+        }
+
+
+        protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
+        {
+            base.OnActivityResult(requestCode, resultCode, data);
+
+            if (requestCode == RequestManageAllFilesAccessPermissionId)
+            {
+                if (Android.OS.Environment.IsExternalStorageManager)
+                {
+                    // Permissions granted, start downloading
+                    UpdateService.DownloadAndInstallAPK(urlDownload, this);
+                }
+                else
+                {
+                    Toast.MakeText(this, "Manage external storage permission is required to download files", ToastLength.Short).Show();
+                }
+            }
+        }
+
+        private string urlDownload = string.Empty;
+
+    
+
 
         private async Task ProcessRegistrationAsync()
         {
@@ -152,7 +301,8 @@ namespace WMS
                 base.OnCreate(savedInstanceState);
                 Xamarin.Essentials.Platform.Init(this, savedInstanceState);
                 SetContentView(Resource.Layout.LoginActivity);
-
+                progressBar = FindViewById<ProgressBar>(Resource.Id.progressBar);
+                progressText = FindViewById<TextView>(Resource.Id.progressText);
                 Password = FindViewById<EditText>(Resource.Id.tbPassword);
                 Password.InputType = Android.Text.InputTypes.NumberVariationPassword |
                 Android.Text.InputTypes.ClassNumber;
@@ -179,6 +329,32 @@ namespace WMS
 
                 // Check and request necessary permissions at startup because of Google Play policies. 29.05.2024 Janko Jovièiæ
                 // RequestNecessaryPermissions(); // For now not needed. 31.05.2024 Janko Jovièiæ
+                PackageManager packageManager = PackageManager;
+
+                // Get the package name of your application
+                string packageName = PackageName;
+                int versionCode = 0;
+                string versionName = string.Empty;
+
+                try
+                {
+                    // Get package info for the specified package name
+                    PackageInfo packageInfo = packageManager.GetPackageInfo(packageName, 0);
+                    // Access version code and version name
+                    versionCode = packageInfo.VersionCode; // Integer value
+                    versionName = packageInfo.VersionName; // String value
+
+                }
+                catch (Exception ex)
+                {
+                    SentrySdk.CaptureException(ex);
+                }
+
+
+                if (!string.IsNullOrEmpty(App.Settings.versionAPI))
+                {
+                    await CheckForUpdate(versionCode);
+                }
             }
             catch (Exception ex)
             {
@@ -256,33 +432,7 @@ namespace WMS
             }
         }
 
-        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Permission[] grantResults)
-        {
-            try
-            {
-                if (requestCode == RequestPermissionsId)
-                {
-                    bool allGranted = grantResults.Any(x => x == Permission.Granted);
 
-                    if (allGranted)
-                    {
-                        OnAllPermissionsGranted();
-                    }
-                    else
-                    {
-                        // Handle the case where permissions are not granted
-                        OnPermissionsDenied();
-                    }
-                }
-
-
-                base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
-            }
-            catch (Exception ex)
-            {
-                GlobalExceptions.ReportGlobalException(ex);
-            }
-        }
 
         void OnAllPermissionsGranted()
         {

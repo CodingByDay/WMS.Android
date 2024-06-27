@@ -170,9 +170,6 @@ namespace WMS
 
 
 
-                if(!string.IsNullOrEmpty(App.Settings.versionAPI)) {
-                    await CheckForUpdate(versionCode);
-                }
             }
             catch (Exception ex)
             {
@@ -180,48 +177,7 @@ namespace WMS
             }
         }
 
-        private async Task CheckForUpdate(int version)
-        {
-            try
-            {
-                string baseUrl = App.Settings.versionAPI; // Replace with your actual base URL
-                string endpoint = "/api/app/check-for-update";
-                string applicationName = "WMS";
-                int versionCode = version;
-                string download = "/api/app/download-update?applicationName=WMS";
-                // Construct the full URL with parameters
-                string url = $"{baseUrl}{endpoint}?applicationName={applicationName}&versionCode={versionCode}";
-                string urlDownload = $"{baseUrl}{download}";
-                using (HttpClient client = new HttpClient())
-                {
-                    // Send a GET request
-                    HttpResponseMessage response = await client.GetAsync(url);
-
-                    // Check if the response is successful
-                    if (response.IsSuccessStatusCode)
-                    {
-                        // Read and handle the response here
-                        string responseBody = await response.Content.ReadAsStringAsync();
-
-
-                        if (responseBody == "New update available!")
-                        {
-                            UpdateService.DownloadApk(urlDownload);
-                        }
-                        else
-                        {
-                            Console.WriteLine($"Failed to request update check. Status code: {response.StatusCode}");
-                            // Handle unsuccessful response
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Exception while checking for update: {ex.Message}");
-                // Handle exceptions
-            }
-        }
+    
 
 
 

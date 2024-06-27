@@ -105,5 +105,32 @@ namespace WMS.App
             NetworkInfo info = GetNetworkInfo(context);
             return (info != null && info.IsConnected);
         }
+
+        public static void LoaderManifestLoopUpdate(Context context)
+        {
+   
+            try
+            {
+                Activity activity = context as Activity;
+
+                activity.RunOnUiThread(() =>
+                {
+                    if (progress != null)
+                    {
+                        progress.StopDialogSync();
+                    }
+
+                    progress = new ProgressDialogClass();
+                    progress.ShowDialogSync(context, "Downloading the update...");
+
+                });
+
+            }
+            catch (Exception e)
+            {
+                SentrySdk.CaptureException(e);
+            }
+            
+        }
     }
 }

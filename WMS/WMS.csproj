@@ -14,13 +14,12 @@
     <PackageIcon></PackageIcon>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <AndroidPackageFormat>aab</AndroidPackageFormat>
+    <AndroidPackageFormat>apk</AndroidPackageFormat>
     <NoWarn>1701;1702;8765;8602;8601,8622,8600,8604,8618</NoWarn>
     <RunAOTCompilation>True</RunAOTCompilation>
     <AndroidCreatePackagePerAbi>False</AndroidCreatePackagePerAbi>
     <AndroidEnableMultiDex>False</AndroidEnableMultiDex>
     <AndroidUseAapt2>True</AndroidUseAapt2>
-    <AndroidLinkTool>r8</AndroidLinkTool>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <NoWarn>1701;1702;8765;8602;8601,8622,8600,8604,8618</NoWarn>
@@ -28,8 +27,9 @@
     <AndroidCreatePackagePerAbi>False</AndroidCreatePackagePerAbi>
     <AndroidEnableMultiDex>False</AndroidEnableMultiDex>
     <AndroidUseAapt2>True</AndroidUseAapt2>
-    <AndroidPackageFormat>aab</AndroidPackageFormat>
+    <AndroidPackageFormat>apk</AndroidPackageFormat>
     <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
+    <DebugSymbols>True</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
     <AndroidResource Remove="Resources\layout\ClientPickingAdapterView.xml" />
@@ -199,6 +199,7 @@
     <None Remove="Resources\values-sl\styles.xml" />
     <None Remove="Resources\values\colors.xml" />
     <None Remove="Resources\values\styles.xml" />
+    <None Remove="Resources\xml\file_paths.xml" />
     <None Remove="Resources\xml\network_security_config.xml" />
   </ItemGroup>
   <ItemGroup>

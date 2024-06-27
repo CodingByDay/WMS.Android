@@ -165,6 +165,20 @@
        
 
         </LinearLayout>
-     
+     <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:indeterminate="false"
+        android:max="100"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/progressText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="0%"
+        android:visibility="gone"
+        android:gravity="center" />
     </LinearLayout>
 </LinearLayout> 
