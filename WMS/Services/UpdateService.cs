@@ -1,62 +1,95 @@
 ﻿using Android.App;
 using Android.Content;
 using Android.OS;
-using AndroidX.Core.Content;
+using Android.Views;
+using Android.Widget;
 using Java.IO;
 using System;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
-using AndroidX.ConstraintLayout.Core.Motion.Utils;
-using WMS.App;
+using Resource = Xamarin.Essentials.Resource;
 
 namespace TrendNET.WMS.Device.Services
 {
     public static class UpdateService
     {
-        public static void DownloadAndInstallAPK(string url, Context context)
+        public static void DownloadAndInstallAPK(string url, Context context, string fileName)
         {
             try
             {
-                LoaderManifest.LoaderManifestLoopUpdate(context);
+                // Create an AlertDialog programmatically
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.SetCancelable(false); // Set dialog to non-cancelable
+                builder.SetTitle("Updating WMS.");
 
-                string apkFileName = "downloadedApp.apk";
+                // Create a LinearLayout to hold the progress components
+                LinearLayout layout = new LinearLayout(context);
+                layout.Orientation = Orientation.Vertical;
+                layout.SetPadding(50, 50, 50, 50); // Example padding
+
+                // Create a ProgressBar
+                ProgressBar progressBar = new ProgressBar(context, null, Android.Resource.Attribute.ProgressBarStyleHorizontal);
+                progressBar.LayoutParameters = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.WrapContent);
+                progressBar.Indeterminate = false;
+                progressBar.Max = 100;
+                layout.AddView(progressBar);
+
+                // Create a TextView for progress text
+                TextView textProgress = new TextView(context);
+                textProgress.LayoutParameters = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.WrapContent);
+                textProgress.Gravity = GravityFlags.Center;
+                textProgress.Text = "Downloading...";
+                layout.AddView(textProgress);
+
+                builder.SetView(layout);
+
+                // Create and show the AlertDialog
+                AlertDialog dialog = builder.Create();
+                dialog.Show();
+
+                string apkFileName = fileName;
                 string apkFilePath = Path.Combine(Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDownloads).AbsolutePath, apkFileName);
 
                 DownloadManager.Request request = new DownloadManager.Request(Android.Net.Uri.Parse(url));
                 request.SetAllowedNetworkTypes(DownloadNetwork.Wifi | DownloadNetwork.Mobile);
                 request.SetAllowedOverRoaming(false);
-                request.SetTitle("Downloading APK");
-                request.SetDestinationUri(Android.Net.Uri.Parse("file://" + apkFilePath)); // Set the destination directly
+                request.SetDestinationUri(Android.Net.Uri.Parse("file://" + apkFilePath));
+                request.SetNotificationVisibility(DownloadVisibility.Visible);
 
                 DownloadManager manager = (DownloadManager)context.GetSystemService(Context.DownloadService);
                 long downloadId = manager.Enqueue(request);
 
                 // Register a BroadcastReceiver to listen for download completion
-                BroadcastReceiver receiver = new DownloadCompleteReceiver(apkFilePath, context, downloadId);
+                BroadcastReceiver receiver = new DownloadCompleteReceiver(apkFilePath, context, downloadId, dialog, progressBar, textProgress);
                 context.RegisterReceiver(receiver, new IntentFilter(DownloadManager.ActionDownloadComplete));
+
+                // Start the progress update task
+                Task.Run(() => UpdateProgress(manager, downloadId, progressBar, textProgress, context));
             }
             catch (Exception ex)
             {
                 SentrySdk.CaptureException(ex);
-                // Handle exceptions, log them, etc. 27.06.2024 Janko Jovčić
-            }
-            finally
-            {
-                LoaderManifest.LoaderManifestLoopStop(context);
             }
         }
+
 
         private class DownloadCompleteReceiver : BroadcastReceiver
         {
             private string apkFilePath;
             private Context context;
             private long downloadId;
+            private AlertDialog dialog;
+            private ProgressBar progressBar;
+            private TextView textProgress;
 
-            public DownloadCompleteReceiver(string apkFilePath, Context context, long downloadId)
+            public DownloadCompleteReceiver(string apkFilePath, Context context, long downloadId, AlertDialog dialog, ProgressBar progressBar, TextView textProgress)
             {
                 this.apkFilePath = apkFilePath;
                 this.context = context;
                 this.downloadId = downloadId;
+                this.dialog = dialog;
+                this.progressBar = progressBar;
+                this.textProgress = textProgress;
             }
 
             public override async void OnReceive(Context context, Intent intent)
@@ -66,6 +99,9 @@ namespace TrendNET.WMS.Device.Services
                 {
                     // Unregister the BroadcastReceiver
                     context.UnregisterReceiver(this);
+
+                    // Dismiss the dialog
+                    dialog.Dismiss();
 
                     // Install the APK
                     await InstallAPK(apkFilePath);
@@ -83,10 +119,9 @@ namespace TrendNET.WMS.Device.Services
                 {
                     Intent intent = new Intent(Intent.ActionView);
 
-                    // Check Android version to determine how to handle URI
                     if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
                     {
-                        Android.Net.Uri apkURI = Xamarin.Essentials.FileProvider.GetUriForFile(Android.App.Application.Context, "si.in_sist.wms.provider", apkFile);
+                        Android.Net.Uri apkURI = Xamarin.Essentials.FileProvider.GetUriForFile(Application.Context, "si.in_sist.wms.provider", apkFile);
                         intent.SetDataAndType(apkURI, "application/vnd.android.package-archive");
                         intent.AddFlags(ActivityFlags.NewTask);
                         intent.AddFlags(ActivityFlags.GrantReadUriPermission);
@@ -99,25 +134,57 @@ namespace TrendNET.WMS.Device.Services
                         intent.SetFlags(ActivityFlags.NewTask);
                     }
 
-                    // Start the installation process
                     MainThread.BeginInvokeOnMainThread(() =>
                     {
                         Application.Context.StartActivity(intent);
                     });
 
-                    // Delay to ensure the installation starts
                     await Task.Delay(5000);
-
-                    // Handle installation success event
                 }
-
             }
             catch (Exception ex)
             {
-                SentrySdk.CaptureException(ex); 
+                SentrySdk.CaptureException(ex);
             }
         }
 
-     
+        private static async Task UpdateProgress(DownloadManager manager, long downloadId, ProgressBar progressBar, TextView textProgress, Context context)
+        {
+            bool downloading = true;
+
+            DownloadManager.Query query = new DownloadManager.Query();
+            query.SetFilterById(downloadId);
+
+            while (downloading)
+            {
+                await Task.Delay(1000);
+
+                using (var cursor = manager.InvokeQuery(query))
+                {
+                    if (cursor != null && cursor.MoveToFirst())
+                    {
+                        int bytesDownloaded = cursor.GetInt(cursor.GetColumnIndex(DownloadManager.ColumnBytesDownloadedSoFar));
+                        int bytesTotal = cursor.GetInt(cursor.GetColumnIndex(DownloadManager.ColumnTotalSizeBytes));
+
+                        if (cursor.GetInt(cursor.GetColumnIndex(DownloadManager.ColumnStatus)) == (int)DownloadStatus.Successful)
+                        {
+                            downloading = false;
+                        }
+
+                        if (bytesTotal > 0)
+                        {
+                            int progress = (int)((bytesDownloaded * 100L) / bytesTotal);
+
+                            // Update the ProgressBar and text on the UI thread
+                            MainThread.BeginInvokeOnMainThread(() =>
+                            {
+                                progressBar.Progress = progress;
+                                textProgress.Text = $"{progress}%";
+                            });
+                        }
+                    }
+                }
+            }
+        }
     }
 }

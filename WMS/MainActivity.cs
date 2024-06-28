@@ -83,25 +83,6 @@ namespace WMS
         {
             try
             {
-
-                
-                string location = "/storage/emulated/0/Download/downloadedApp.apk";
-                /*
-                Intent promptInstall = new Intent(Intent.ActionView)
-               .SetDataAndType(Android.Net.Uri.Parse("file:///path/to/your.apk"),
-                    "application/vnd.android.package-archive");
-                StartActivity(promptInstall);
-
-                */
-
-
-                Java.IO.File apkFile = new Java.IO.File(location);
-                if (apkFile.Exists())
-                {
-
-                }
-
-
                 string baseUrl = App.Settings.versionAPI; // Replace with your actual base URL
                 string endpoint = "/api/app/check-for-update";
                 string applicationName = "WMS";
@@ -122,9 +103,9 @@ namespace WMS
                         string responseBody = await response.Content.ReadAsStringAsync();
 
 
-                        if (responseBody == "New update available!")
+                        if (responseBody != string.Empty)
                         {
-
+                            apkFileName = responseBody;
                             // Check for storage permissions
                             if (ContextCompat.CheckSelfPermission(this, Manifest.Permission.WriteExternalStorage) != Permission.Granted ||
                                 (Build.VERSION.SdkInt >= BuildVersionCodes.R && !Android.OS.Environment.IsExternalStorageManager))
@@ -141,24 +122,23 @@ namespace WMS
                             else
                             {
                                 // Permissions granted, start downloading
-                                UpdateService.DownloadAndInstallAPK(urlDownload, this);
+                                UpdateService.DownloadAndInstallAPK(urlDownload, this, apkFileName);
                             }
-                        }
-                        else
+                        } else
                         {
-                            // Handle unsuccessful response
+                            apkFileName = string.Empty;
                         }
                     }
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Exception while checking for update: {ex.Message}");
+                SentrySdk.CaptureException(ex);
                 // Handle exceptions
             }
         }
 
-
+        private string apkFileName = string.Empty;
         public override async void OnRequestPermissionsResult(int requestCode, string[] permissions, Permission[] grantResults)
         {
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -176,7 +156,7 @@ namespace WMS
                     else
                     {
                         // Permissions granted, start downloading
-                        UpdateService.DownloadAndInstallAPK(urlDownload, this);
+                        UpdateService.DownloadAndInstallAPK(urlDownload, this, apkFileName);
                     }
                 }
                 else
@@ -196,7 +176,7 @@ namespace WMS
                 if (Android.OS.Environment.IsExternalStorageManager)
                 {
                     // Permissions granted, start downloading
-                    UpdateService.DownloadAndInstallAPK(urlDownload, this);
+                    UpdateService.DownloadAndInstallAPK(urlDownload, this, apkFileName);
                 }
                 else
                 {
