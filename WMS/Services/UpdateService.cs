@@ -136,7 +136,16 @@ namespace TrendNET.WMS.Device.Services
 
                     MainThread.BeginInvokeOnMainThread(() =>
                     {
-                        Application.Context.StartActivity(intent);
+                        try
+                        {
+                            Application.Context.StartActivity(intent);
+                        }
+                        catch (Exception ex)
+                        {
+                            // Log the exception
+                            SentrySdk.CaptureException(ex);
+                            // Optionally, show a toast or dialog indicating installation failure
+                        }
                     });
 
                     await Task.Delay(5000);
