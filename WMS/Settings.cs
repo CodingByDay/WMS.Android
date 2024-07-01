@@ -55,6 +55,7 @@ namespace WMS
                 ID.Text = App.Settings.ID;
                 version = FindViewById<TextView>(Resource.Id.version);
                 rootURL.Text = App.Settings.RootURL;
+                versionApi.Text = App.Settings.versionAPI;
                 var adapter = new ArrayAdapter<String>(this,
                 Android.Resource.Layout.SimpleSpinnerItem, arrayData);
                 bin = FindViewById<ImageView>(Resource.Id.bin);

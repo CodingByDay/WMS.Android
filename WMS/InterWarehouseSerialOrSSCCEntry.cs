@@ -609,9 +609,10 @@ namespace WMS
         {
             try
             {
-                string location = tbLocation.Text;
+                string locationIssuer = tbIssueLocation.Text;
+                string locationReceiver = tbLocation.Text;
 
-                if (await CommonData.IsValidLocationAsync(moveHead.GetString("Issuer"), location, this) && await CommonData.IsValidLocationAsync(moveHead.GetString("Receiver"), location, this))
+                if (await CommonData.IsValidLocationAsync(moveHead.GetString("Issuer"), locationIssuer, this) && await CommonData.IsValidLocationAsync(moveHead.GetString("Receiver"), locationReceiver, this))
                 {
                     return true;
                 }
