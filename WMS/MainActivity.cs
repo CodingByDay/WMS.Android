@@ -102,29 +102,40 @@ namespace WMS
                         // Read and handle the response here
                         string responseBody = await response.Content.ReadAsStringAsync();
 
-
                         if (responseBody != string.Empty)
                         {
                             apkFileName = responseBody;
                             // Check for storage permissions
-                            if (ContextCompat.CheckSelfPermission(this, Manifest.Permission.WriteExternalStorage) != Permission.Granted ||
-                                (Build.VERSION.SdkInt >= BuildVersionCodes.R && !Android.OS.Environment.IsExternalStorageManager))
+                            if (Build.VERSION.SdkInt >= BuildVersionCodes.R)
                             {
-                                // Request permissions
-                                ActivityCompat.RequestPermissions(this, new string[] { Manifest.Permission.WriteExternalStorage }, RequestStoragePermissionId);
-                            }
-                            else if (Build.VERSION.SdkInt >= BuildVersionCodes.R && !Android.OS.Environment.IsExternalStorageManager)
-                            {
-                                Intent intent = new Intent(Android.Provider.Settings.ActionManageAppAllFilesAccessPermission);
-                                intent.SetData(Android.Net.Uri.Parse($"package:{Application.Context.PackageName}"));
-                                StartActivityForResult(intent, RequestManageAllFilesAccessPermissionId);
+                                if (!Android.OS.Environment.IsExternalStorageManager)
+                                {
+                                    // Request Manage External Storage permission
+                                    Intent intent = new Intent(Android.Provider.Settings.ActionManageAppAllFilesAccessPermission);
+                                    intent.SetData(Android.Net.Uri.Parse($"package:{Application.Context.PackageName}"));
+                                    StartActivityForResult(intent, RequestManageAllFilesAccessPermissionId);
+                                }
+                                else
+                                {
+                                    // Permissions granted, start downloading
+                                    UpdateService.DownloadAndInstallAPK(urlDownload, this, apkFileName);
+                                }
                             }
                             else
                             {
-                                // Permissions granted, start downloading
-                                UpdateService.DownloadAndInstallAPK(urlDownload, this, apkFileName);
+                                if (ContextCompat.CheckSelfPermission(this, Manifest.Permission.WriteExternalStorage) != Permission.Granted)
+                                {
+                                    // Request WRITE_EXTERNAL_STORAGE permission
+                                    ActivityCompat.RequestPermissions(this, new string[] { Manifest.Permission.WriteExternalStorage }, RequestStoragePermissionId);
+                                }
+                                else
+                                {
+                                    // Permissions granted, start downloading
+                                    UpdateService.DownloadAndInstallAPK(urlDownload, this, apkFileName);
+                                }
                             }
-                        } else
+                        }
+                        else
                         {
                             apkFileName = string.Empty;
                         }
@@ -139,7 +150,7 @@ namespace WMS
         }
 
         private string apkFileName = string.Empty;
-        public override async void OnRequestPermissionsResult(int requestCode, string[] permissions, Permission[] grantResults)
+        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Permission[] grantResults)
         {
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
 
@@ -173,14 +184,14 @@ namespace WMS
 
             if (requestCode == RequestManageAllFilesAccessPermissionId)
             {
-                if (Android.OS.Environment.IsExternalStorageManager)
+                if (Build.VERSION.SdkInt >= BuildVersionCodes.R && Android.OS.Environment.IsExternalStorageManager)
                 {
                     // Permissions granted, start downloading
                     UpdateService.DownloadAndInstallAPK(urlDownload, this, apkFileName);
                 }
                 else
                 {
-                    Toast.MakeText(this, "Manage external storage permission is required to download files", ToastLength.Short).Show();
+                    Toast.MakeText(this, "Manage All Files permission is required to download files", ToastLength.Short).Show();
                 }
             }
         }
