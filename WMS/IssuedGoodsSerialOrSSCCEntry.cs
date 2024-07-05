@@ -1085,7 +1085,7 @@ namespace WMS
                     var element = data.ElementAt(0);
 
                     // This is perhaps not needed due to the quantity checking requirments. lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + element.anQty.ToString() + " )";
-                    if (element.anPackQty != -1 && element.anPackQty <= element.anQty)
+                    if (element.anPackQty != -1 && element.anPackQty <= element.anQty && await CommonData.GetSettingAsync("UsePackagingQuantity") == "1")
                     {
                         tbPacking.Text = element.anPackQty.ToString();
                         lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + quantity.ToString(await CommonData.GetQtyPictureAsync(this)) + " )";
@@ -1387,7 +1387,7 @@ namespace WMS
 
                             tbLocation.Text = receivedTrail.Location;
 
-                            if (receivedTrail.Packaging != -1 && Double.TryParse(receivedTrail.Qty, out double qty) && receivedTrail.Packaging <= qty)
+                            if (receivedTrail.Packaging != -1 && Double.TryParse(receivedTrail.Qty, out double qty) && receivedTrail.Packaging <= qty && await CommonData.GetSettingAsync("UsePackagingQuantity") == "1")
                             {
                                 quantity = Double.Parse(receivedTrail.Qty);
                                 packaging = receivedTrail.Packaging;
@@ -1442,7 +1442,7 @@ namespace WMS
                                 packaging = order.Packaging ?? 0;
                                 quantity = order.Quantity ?? 0;
 
-                                if (order.Packaging != -1 && packaging <= quantity)
+                                if (order.Packaging != -1 && packaging <= quantity && await CommonData.GetSettingAsync("UsePackagingQuantity") == "1")
                                 {
                                     lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + quantity.ToString(await CommonData.GetQtyPictureAsync(this)) + " )";
                                     stock = quantity;
