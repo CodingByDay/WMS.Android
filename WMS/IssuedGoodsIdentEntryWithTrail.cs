@@ -1001,7 +1001,7 @@ namespace WMS
                     if (SaveMoveHead())
                     {
                         Base.Store.isUpdate = false;
-                        if (trails.Count() - 1 == 0)
+                        if (trails.Count()  == 1)
                         {
                             var lastItem = new NameValueObject("LastItem");
                             lastItem.SetBool("IsLastItem", true);
