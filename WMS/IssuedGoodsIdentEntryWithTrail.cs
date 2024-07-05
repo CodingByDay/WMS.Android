@@ -118,7 +118,7 @@ namespace WMS
                                 if (adapterObj.returnNumberOfItems() == 0)
                                 {
                                     tbIdentFilter.Text = string.Empty;
-                                }
+                                } 
                                 chooseIdentOnly(ident);
                             }
                             else
@@ -128,7 +128,7 @@ namespace WMS
                                 if (adapterObj.returnNumberOfItems() == 0)
                                 {
                                     tbIdentFilter.Text = string.Empty;
-                                }
+                                } 
 
                             }
                         }
@@ -143,7 +143,10 @@ namespace WMS
                             }
                         }
                     }
-                    listener.updateData(adapterObj.returnData());
+
+
+                    var dataToUpdate = adapterObj.returnData();
+                    listener.updateData(dataToUpdate);
                 }
                 catch (Exception err)
                 {
@@ -988,7 +991,7 @@ namespace WMS
                     {
                         RunOnUiThread(() =>
                         {
-                            Toast.MakeText(this, "Izdelek ni izbran.", ToastLength.Long);
+                            Toast.MakeText(this, "Izdelek ni izbran.", ToastLength.Long).Show();
                         });
 
                         return;

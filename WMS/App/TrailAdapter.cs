@@ -8,8 +8,10 @@ namespace WMS.App
     {
         public List<Trail> sList;
         private Context sContext;
-
+        private int selectedIndex = -1;
         private Trail selected;
+
+        public override int Count => sList.Count;
 
         public TrailAdapter(Context context, List<Trail> list)
         {
@@ -22,32 +24,31 @@ namespace WMS.App
             return selected;
         }
 
-        public void setSelected(Trail selected)
-        {
-            this.selected = selected;
-        }
+
 
         public void setSelected(int position)
         {
             selected = sList[position];
+            selectedIndex = position;
+            NotifyDataSetChanged();
         }
 
-        public override int Count
+  
+        public int getIdFromAdapter(Trail trail)
         {
-            get
+            int result = -1;
+            int counter = 0;
+            foreach(Trail item in sList)
             {
-                return sList.Count;
+                if (item == trail)
+                {
+                    result = counter;
+                }
+
+                counter += 1;
             }
-        }
 
-        public override Java.Lang.Object GetItem(int position)
-        {
-            return null;
-        }
-
-        public override long GetItemId(int position)
-        {
-            return position;
+            return result;
         }
 
         public override View GetView(int position, View convertView, ViewGroup parent)
@@ -70,6 +71,17 @@ namespace WMS.App
 
                 TextView Name = row.FindViewById<TextView>(Resource.Id.Name);
                 Name.Text = sList[position].Name;
+
+
+                if (position == selectedIndex)
+                {
+                    row.SetBackgroundColor(Android.Graphics.Color.ParseColor("#80000000")); // screen_background_dark_transparent equivalent 5. jul .2024 Janko Jovičić
+
+                }
+                else
+                {
+                    row.SetBackgroundColor(Android.Graphics.Color.Transparent); 
+                }
             }
             catch (Exception ex)
             {
@@ -81,6 +93,8 @@ namespace WMS.App
 
         public void Filter(List<Trail> data, bool byIdent, string val, bool restart)
         {
+            selected = null;
+            selectedIndex = -1;
             if (restart)
             {
                 sList = data;
@@ -98,6 +112,11 @@ namespace WMS.App
             {
                 sList = data.Where(data => data.Location.Contains(val)).ToList();
             }
+            if(sList.Count == 1)
+            {
+                selected = sList.ElementAt(0);
+                selectedIndex = 0;
+            }
             base.NotifyDataSetChanged();
         }
 
@@ -111,9 +130,19 @@ namespace WMS.App
             return sList.Count;
         }
 
-        public void NotifyDataSetChanged()
+        public override void NotifyDataSetChanged()
         {
             base.NotifyDataSetChanged();
+        }
+
+        public override Java.Lang.Object? GetItem(int position)
+        {
+            return 1111;
+        }
+
+        public override long GetItemId(int position)
+        {
+            return 1111;
         }
     }
 }
