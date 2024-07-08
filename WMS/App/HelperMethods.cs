@@ -1,4 +1,6 @@
-﻿namespace WMS.App
+﻿using Android.Views;
+
+namespace WMS.App
 {
     public static class HelperMethods
     {
@@ -14,6 +16,8 @@
             }
         }
 
-      
+
+
+
     }
 }

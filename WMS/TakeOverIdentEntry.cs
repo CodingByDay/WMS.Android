@@ -49,6 +49,7 @@ namespace WMS
         private ListView listData;
         private UniversalAdapter<TakeOverIdentList> dataAdapter;
         private List<TakeOverIdentList> data = new List<TakeOverIdentList>();
+        private const int ScannerInputDelay = 500; // Adjust this delay as needed
 
         protected async override void OnCreate(Bundle savedInstanceState)
         {
@@ -117,17 +118,26 @@ namespace WMS
                 tbIdent.KeyPress += TbIdent_KeyPress;
                 tbIdent.AfterTextChanged += TbIdent_AfterTextChanged;
                 tbIdent.RequestFocus();
-
+                tbIdent.TextChanged += TbIdent_TextChanged;
                 // These are read only. 6.6.2024 JJ
                 tbOrder.Enabled = false;
                 tbConsignee.Enabled = false;
                 tbDeliveryDeadline.Enabled = false;
                 tbQty.Enabled = false;
+
+
+
+                // Services needed because of the external scanner. 8. jul. 2024
             }
             catch (Exception ex)
             {
                 GlobalExceptions.ReportGlobalException(ex);
             }
+        }
+
+        private void TbIdent_TextChanged(object? sender, Android.Text.TextChangedEventArgs e)
+        {
+            
         }
 
         private void ListData_ItemLongClick(object? sender, AdapterView.ItemLongClickEventArgs e)
@@ -210,11 +220,25 @@ namespace WMS
         {
             try
             {
+ 
+                
                 if (e.KeyCode == Keycode.Enter && e.Event.Action == KeyEventActions.Down)
                 {
+                    
                     e.Handled = true;
-                    await ProcessIdent();
-                }
+
+                    if(App.Settings.tablet)
+                    {
+                        await Task.Delay(ScannerInputDelay);
+                        await ProcessIdent();
+
+                    }
+                    else
+                    {
+                        await ProcessIdent();
+                    }
+                } 
+                
             }
             catch (Exception ex)
             {

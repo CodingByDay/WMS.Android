@@ -43,6 +43,7 @@
     <None Remove="Resources\drawable\system_update.png" />
     <None Remove="Resources\drawable\united_kingdom.png" />
     <None Remove="Resources\drawable\warning.png" />
+    <None Remove="Resources\drawable\wms.png" />
     <None Remove="Resources\layout\border.xml" />
     <None Remove="Resources\layout\button_design.xml" />
     <None Remove="Resources\layout\CheckStock.xml" />

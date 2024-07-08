@@ -199,6 +199,11 @@ namespace WMS
                 try
                 {
                     var obj = adapter.returnSelected();
+
+                    if(obj == null)
+                    {
+                        throw new NullReferenceException("Adapter returned a null object but how exactly?");
+                    }
                     var ident = obj.Ident;
                     var location = obj.Location;
                     var qty = Convert.ToDouble(obj.Quantity);
@@ -233,8 +238,8 @@ namespace WMS
                             moveHead.SetInt("Clerk", Services.UserID());
                             moveHead.SetString("CurrentFlow", Base.Store.modeIssuing.ToString());
                             moveHead.SetString("Type", "P");
-                            moveHead.SetString("Receiver", moveHead.GetString("Receiver"));
-                            moveHead.SetString("LinkKey", orderCurrent.Order);
+                            moveHead.SetString("Receiver", moveHead.GetString("Receiver") ?? throw new NullReferenceException("Movehead is the reason for the null reference exception."));
+                            moveHead.SetString("LinkKey", orderCurrent.Order ?? throw new NullReferenceException("Order current is the reason for the null reference exception."));
 
                             var savedMoveHead = Services.SetObject("mh", moveHead, out error);
                             if (savedMoveHead == null)
@@ -574,7 +579,9 @@ namespace WMS
                             }
                         }
                     }
-                    listener.updateData(adapter.returnData());
+
+
+                    listener.updateData(adapter.returnData() ?? throw new NullReferenceException("Adapter return data method returned null."));
                 }
                 catch (Exception error)
                 {

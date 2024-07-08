@@ -608,9 +608,10 @@ namespace WMS
         {
             try
             {
-                switch (item.ItemId)
+                int itemId = item.ItemId;
+                switch (itemId)
                 {
-                    case Resource.Id.action_setting1:
+                    case Resource.Id.setting:
                         {
                             Finish();
                             StartActivity(typeof(Settings));
