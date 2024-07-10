@@ -32,6 +32,7 @@ namespace WMS
         public BarcodeDataReceiver? lastBarcodeDataReceiver { get; set; } = null;
 
         public CustomAutoCompleteTextView CurrentAutoCompleteInstance { get; set; }
+        public bool OnlyOneSuggestion { get; set; } = false;
 
         // Reset method using reflection
         public void ResetValues()

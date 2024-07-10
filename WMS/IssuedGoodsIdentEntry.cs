@@ -43,8 +43,7 @@ namespace WMS
         private UniversalAdapter<OpenOrder> dataAdapter;
         private int selected;
         private int selectedItem;
-
-
+        private List<string> suggestions = new List<string>();
 
         public async void GetBarcode(string barcode)
         {
@@ -463,10 +462,12 @@ namespace WMS
                 {
                     if (App.Settings.tablet)
                     {
-                        /* Because of the nature of the external scanner and the nature of the autocomplete component this is needed. 10. jul. 2024 Janko Jovičić */
-                        Base.Store.CurrentAutoCompleteInstance = tbIdent;
-                        await HelperMethods.TabletHaltCorrectly(this);
-                        await ProcessIdent();
+                        if (await HelperMethods.TabletHaltCorrectly(this))
+                        {
+                            tbIdent.Text = suggestions.ElementAt(0);
+                            Base.Store.OnlyOneSuggestion = false;
+                            await ProcessIdent();
+                        }
                     }
                     else
                     {
@@ -507,9 +508,18 @@ namespace WMS
                 }
                 else
                 {
+                    suggestions.Clear();
                     // Provide custom suggestions based on user input
-                    List<string> suggestions = GetCustomSuggestions(userInput);
+                    suggestions = GetCustomSuggestions(userInput);
                     // Clear the existing suggestions and add the new ones
+                    if (suggestions.Count == 1)
+                    {
+                        Base.Store.OnlyOneSuggestion = true;
+                    }
+                    else
+                    {
+                        Base.Store.OnlyOneSuggestion = false;
+                    }
                     tbIdentAdapter.Clear();
                     tbIdentAdapter.AddAll(suggestions);
                     tbIdentAdapter.NotifyDataSetChanged();

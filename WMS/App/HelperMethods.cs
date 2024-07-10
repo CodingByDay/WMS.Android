@@ -76,34 +76,25 @@ namespace WMS.App
 
 
 
-        public async static Task TabletHaltCorrectly(Context context)
+        public async static Task<bool> TabletHaltCorrectly(Context context)
         {
-
             LoaderManifest.LoaderManifestLoopResources(context);
-            string initialText = Base.Store.CurrentAutoCompleteInstance.Text;
             int iterations = 0;
-            int maxIterations = 5;
             // Loop to check if text remains unchanged after 1 second intervals
-            while (iterations < maxIterations)
-            {
+            while (!Base.Store.OnlyOneSuggestion)
+            { 
+                if(iterations == 5)
+                {
+                    Base.Store.OnlyOneSuggestion = false;
+                    return false;
+                }
                 await Task.Delay(1000); // Wait for 1 second
-
-                // Check if the text has changed
-                if (Base.Store.CurrentAutoCompleteInstance.Text == initialText)
-                {
-                    // Text has not changed, show message or perform action
-                    LoaderManifest.LoaderManifestLoopStop(context);
-                    return; // Exit the method
-                }
-                else
-                {
-                    // Update initialText to current text and continue checking
-                    initialText = Base.Store.CurrentAutoCompleteInstance.Text;
-                }
                 iterations++;
             }
             LoaderManifest.LoaderManifestLoopStop(context);
             // If maxIterations is reached without the condition being met;
+            Base.Store.OnlyOneSuggestion = true;
+            return true;
         }
 
     }

@@ -113,6 +113,7 @@ namespace WMS
                 _broadcastReceiver.ConnectionStatusChanged += OnNetworkStatusChanged;
                 Application.Context.RegisterReceiver(_broadcastReceiver,
                 new IntentFilter(ConnectivityManager.ConnectivityAction), ReceiverFlags.NotExported);
+
                 // UpdateSuggestions(string.Empty);
                 InputMethodManager imm = (InputMethodManager)GetSystemService(Context.InputMethodService);
                 imm.ShowSoftInput(tbIdent, ShowFlags.Forced);
@@ -120,7 +121,6 @@ namespace WMS
                 tbIdent.KeyPress += TbIdent_KeyPress;
                 tbIdent.AfterTextChanged += TbIdent_AfterTextChanged;
                 tbIdent.RequestFocus();
-                tbIdent.TextChanged += TbIdent_TextChanged;
                 // These are read only. 6.6.2024 JJ
                 tbOrder.Enabled = false;
                 tbConsignee.Enabled = false;
@@ -135,10 +135,7 @@ namespace WMS
             }
         }
 
-        private void TbIdent_TextChanged(object? sender, Android.Text.TextChangedEventArgs e)
-        {
-
-        }
+   
 
         private void ListData_ItemLongClick(object? sender, AdapterView.ItemLongClickEventArgs e)
         {
@@ -224,12 +221,15 @@ namespace WMS
                 {
 
                     e.Handled = true;
+
                     if (App.Settings.tablet)
                     {
-                        /* Because of the nature of the external scanner and the nature of the autocomplete component this is needed. 10. jul. 2024 Janko Jovičić */
-                        Base.Store.CurrentAutoCompleteInstance = tbIdent;
-                        await HelperMethods.TabletHaltCorrectly(this);                      
-                        await ProcessIdent();
+                        if (await HelperMethods.TabletHaltCorrectly(this))
+                        {
+                            tbIdent.Text = suggestions.ElementAt(0);
+                            Base.Store.OnlyOneSuggestion = false;
+                            await ProcessIdent();
+                        }
                     }
                     else
                     {
@@ -277,8 +277,18 @@ namespace WMS
         {
             try
             {
+                suggestions.Clear();
                 // Provide custom suggestions based on user input
-                List<string> suggestions = GetCustomSuggestions(userInput);
+                suggestions = GetCustomSuggestions(userInput);
+
+                if(suggestions.Count == 1)
+                {
+                    Base.Store.OnlyOneSuggestion = true;
+                } else
+                {
+                    Base.Store.OnlyOneSuggestion = false;
+                }
+
                 // Clear the existing suggestions and add the new ones
                 tbIdentAdapter.Clear();
                 tbIdentAdapter.AddAll(suggestions);
@@ -781,6 +791,7 @@ namespace WMS
         private bool preventDuplicate = false;
         private int selected;
         private int selectedItem;
+        private List<string> suggestions = new List<string>();
 
         public async void GetBarcode(string barcode)
         {
