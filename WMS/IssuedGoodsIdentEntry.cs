@@ -461,7 +461,17 @@ namespace WMS
             {
                 if (e.KeyCode == Keycode.Enter && e.Event.Action == KeyEventActions.Down)
                 {
-                    await ProcessIdent();
+                    if (App.Settings.tablet)
+                    {
+                        /* Because of the nature of the external scanner and the nature of the autocomplete component this is needed. 10. jul. 2024 Janko Jovičić */
+                        Base.Store.CurrentAutoCompleteInstance = tbIdent;
+                        await HelperMethods.TabletHaltCorrectly(this);
+                        await ProcessIdent();
+                    }
+                    else
+                    {
+                        await ProcessIdent();
+                    }
                 }
 
                 e.Handled = false;

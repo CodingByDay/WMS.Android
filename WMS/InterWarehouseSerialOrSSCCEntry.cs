@@ -13,6 +13,7 @@ using TrendNET.WMS.Device.Services;
 using WMS.App;
 using WMS.ExceptionStore;
 using static Android.App.ActionBar;
+using static Android.Views.ViewTreeObserver;
 using AlertDialog = Android.App.AlertDialog;
 using WebApp = TrendNET.WMS.Device.Services.WebApp;
 
@@ -161,27 +162,7 @@ namespace WMS
             }
         }
 
-        private void ImageClick(Drawable d)
-        {
-            try
-            {
-                popupDialog = new Dialog(this);
-                popupDialog.SetContentView(Resource.Layout.WarehousePicture);
-                popupDialog.Window.SetSoftInputMode(SoftInput.AdjustResize);
-                popupDialog.Show();
-                popupDialog.KeyPress += PopupDialog_KeyPress;
-                popupDialog.Window.SetLayout(LayoutParams.MatchParent, LayoutParams.WrapContent);
-                popupDialog.Window.SetBackgroundDrawableResource(Android.Resource.Color.HoloBlueBright);
-                image = popupDialog.FindViewById<ZoomageView>(Resource.Id.image);
-                image.SetMinimumHeight(500);
-                image.SetMinimumWidth(800);
-                image.SetImageDrawable(d);
-            }
-            catch (Exception ex)
-            {
-                GlobalExceptions.ReportGlobalException(ex);
-            }
-        }
+     
         private void PopupDialog_KeyPress(object sender, DialogKeyEventArgs e)
         {
             try
@@ -836,8 +817,14 @@ namespace WMS
                         lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + ssccResult.Rows[0].DoubleValue("anQty").ToString() + " )";
                         tbPacking.Text = ssccResult.Rows[0].DoubleValue("anQty").ToString();
                         stock = ssccResult.Rows[0].DoubleValue("anQty");
-                        tbPacking.RequestFocus();
-                        tbPacking.SelectAll();
+
+                        tbLocation.RequestFocus();
+
+                        // Post a runnable to select text after the focus is set
+                        tbLocation.Post(() =>
+                        {
+                            tbLocation.SetSelection(0, tbLocation.Text.Length); // Select all text
+                        });
                     }
                     else
                     {
