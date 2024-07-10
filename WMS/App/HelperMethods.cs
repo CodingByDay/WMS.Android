@@ -80,19 +80,23 @@ namespace WMS.App
         {
             LoaderManifest.LoaderManifestLoopResources(context);
             int iterations = 0;
-            // Loop to check if text remains unchanged after 1 second intervals
-            while (!Base.Store.OnlyOneSuggestion)
-            { 
-                if(iterations == 5)
+            int maxIterations = 10; 
+
+            // Loop to check if text remains unchanged after 1-second intervals
+            while (Base.Store.suggestions.Count != 1)
+            {
+                if (iterations >= maxIterations)
                 {
+                    LoaderManifest.LoaderManifestLoopStop(context);
                     Base.Store.OnlyOneSuggestion = false;
                     return false;
                 }
-                await Task.Delay(1000); // Wait for 1 second
+
+                await Task.Delay(1000); 
                 iterations++;
             }
+
             LoaderManifest.LoaderManifestLoopStop(context);
-            // If maxIterations is reached without the condition being met;
             Base.Store.OnlyOneSuggestion = true;
             return true;
         }

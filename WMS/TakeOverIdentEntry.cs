@@ -219,15 +219,12 @@ namespace WMS
             {
                 if (e.KeyCode == Keycode.Enter && e.Event.Action == KeyEventActions.Down)
                 {
-
                     e.Handled = true;
-
                     if (App.Settings.tablet)
                     {
                         if (await HelperMethods.TabletHaltCorrectly(this))
                         {
-                            tbIdent.Text = suggestions.ElementAt(0);
-                            Base.Store.OnlyOneSuggestion = false;
+                            tbIdent.Text = Base.Store.suggestions.ElementAt(0);
                             await ProcessIdent();
                         }
                     }
@@ -277,21 +274,14 @@ namespace WMS
         {
             try
             {
-                suggestions.Clear();
+                Base.Store.suggestions.Clear();
                 // Provide custom suggestions based on user input
-                suggestions = GetCustomSuggestions(userInput);
+                Base.Store.suggestions = GetCustomSuggestions(userInput);
 
-                if(suggestions.Count == 1)
-                {
-                    Base.Store.OnlyOneSuggestion = true;
-                } else
-                {
-                    Base.Store.OnlyOneSuggestion = false;
-                }
 
                 // Clear the existing suggestions and add the new ones
                 tbIdentAdapter.Clear();
-                tbIdentAdapter.AddAll(suggestions);
+                tbIdentAdapter.AddAll(Base.Store.suggestions);
                 tbIdentAdapter.NotifyDataSetChanged();
             }
             catch (Exception ex)

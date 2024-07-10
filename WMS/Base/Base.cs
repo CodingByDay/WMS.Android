@@ -23,6 +23,7 @@ namespace WMS
         public OpenOrder OpenOrder { get; set; }
 
         public string language = string.Empty;
+        public List<string> suggestions { get; set; } = new List<string>();
 
         public Parser2DCode? code2D { get; set; }
 
