@@ -862,18 +862,30 @@ namespace WMS
                 {
                     if (!activityIdent.GetBool("isSSCC"))
                     {
-                        ssccRow.Visibility = ViewStates.Gone;
+                        RunOnUiThread(() =>
+                        {
+                            ssccRow.Visibility = ViewStates.Gone;
+                        });
+                      
                     }
 
                     if (!activityIdent.GetBool("HasSerialNumber"))
                     {
-                        serialRow.Visibility = ViewStates.Gone;
+                       
+                        RunOnUiThread(() =>
+                        {
+                            serialRow.Visibility = ViewStates.Gone;
+                        });
                     }
 
                     if (activityIdent == null)
                     {
-                        tbIdent.Text = "";
-                        lbIdentName.Text = "";
+                      
+                        RunOnUiThread(() =>
+                        {
+                            tbIdent.Text = "";
+                            lbIdentName.Text = "";
+                        });
                         return;
                     }
 
@@ -885,7 +897,12 @@ namespace WMS
                             var recommededLocation = Services.GetObject("rl", activityIdent.GetString("Code") + "|" + moveHead.GetString("Receiver"), out error);
                             if (recommededLocation != null)
                             {
-                                tbLocation.Text = recommededLocation.GetString("Location");
+
+                                RunOnUiThread(() =>
+                                {
+                                    tbLocation.Text = recommededLocation.GetString("Location");
+                                });
+                              
                             }
                         }
                         catch (Exception err)
@@ -901,12 +918,20 @@ namespace WMS
 
                     if (!update)
                     {
-                        tbSSCC.Enabled = activityIdent.GetBool("isSSCC");
-                        tbSerialNum.Enabled = activityIdent.GetBool("HasSerialNumber");
+                        RunOnUiThread(() =>
+                        {
+                            tbSSCC.Enabled = activityIdent.GetBool("isSSCC");
+                            tbSerialNum.Enabled = activityIdent.GetBool("HasSerialNumber");
+                        });
+                      
                     }
                     else
                     {
-                        lbIdentName.Enabled = false;
+                        RunOnUiThread(() =>
+                        {
+                            lbIdentName.Enabled = false;
+                        });
+
                     }
 
                     await FillTheIdentLocationList(activityIdent.GetString("Code"));

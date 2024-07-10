@@ -31,6 +31,8 @@ namespace WMS
         public Context? lastScanningContext { get; set; } = null;
         public BarcodeDataReceiver? lastBarcodeDataReceiver { get; set; } = null;
 
+        public CustomAutoCompleteTextView CurrentAutoCompleteInstance { get; set; }
+
         // Reset method using reflection
         public void ResetValues()
         {

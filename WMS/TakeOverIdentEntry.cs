@@ -9,6 +9,7 @@ using Aspose.Words.Fonts;
 using BarCode2D_Receiver;
 using Newtonsoft.Json;
 using System.Collections.Concurrent;
+using System.ComponentModel;
 using TrendNET.WMS.Core.Data;
 using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
@@ -115,6 +116,7 @@ namespace WMS
                 // UpdateSuggestions(string.Empty);
                 InputMethodManager imm = (InputMethodManager)GetSystemService(Context.InputMethodService);
                 imm.ShowSoftInput(tbIdent, ShowFlags.Forced);
+
                 tbIdent.KeyPress += TbIdent_KeyPress;
                 tbIdent.AfterTextChanged += TbIdent_AfterTextChanged;
                 tbIdent.RequestFocus();
@@ -124,8 +126,6 @@ namespace WMS
                 tbConsignee.Enabled = false;
                 tbDeliveryDeadline.Enabled = false;
                 tbQty.Enabled = false;
-
-
 
                 // Services needed because of the external scanner. 8. jul. 2024
             }
@@ -137,7 +137,7 @@ namespace WMS
 
         private void TbIdent_TextChanged(object? sender, Android.Text.TextChangedEventArgs e)
         {
-            
+
         }
 
         private void ListData_ItemLongClick(object? sender, AdapterView.ItemLongClickEventArgs e)
@@ -220,25 +220,22 @@ namespace WMS
         {
             try
             {
- 
-                
                 if (e.KeyCode == Keycode.Enter && e.Event.Action == KeyEventActions.Down)
                 {
-                    
+
                     e.Handled = true;
-
-                    if(App.Settings.tablet)
+                    if (App.Settings.tablet)
                     {
-                        await Task.Delay(ScannerInputDelay);
+                        /* Because of the nature of the external scanner and the nature of the autocomplete component this is needed. 10. jul. 2024 Janko Jovičić */
+                        Base.Store.CurrentAutoCompleteInstance = tbIdent;
+                        await HelperMethods.TabletHaltCorrectly(this);                      
                         await ProcessIdent();
-
                     }
                     else
                     {
                         await ProcessIdent();
                     }
-                } 
-                
+                }
             }
             catch (Exception ex)
             {
@@ -367,7 +364,7 @@ namespace WMS
             }
         }
 
-   
+
 
         private void Button5_Click(object sender, EventArgs e)
         {
@@ -804,7 +801,6 @@ namespace WMS
                     else if (!CheckIdent(barcode) && barcode.Length > 17 && barcode.Contains("400") && tbIdent.HasFocus)
                     {
                         var ident = barcode.Substring(0, barcode.Length - 16);
-                        // 
                         tbIdent.Text = ident;
                         await ProcessIdent();
                     }
@@ -812,7 +808,6 @@ namespace WMS
                     {
                         if (tbIdent.HasFocus)
                         {
-                            // 
                             tbIdent.Text = barcode;
                             await ProcessIdent();
                         }

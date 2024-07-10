@@ -170,6 +170,7 @@
                 android:id="@+id/textView1" />
 
             <EditText
+                android:focusable="true"
                 android:textStyle="bold"
                 android:enabled="false"
                 android:singleLine="true"

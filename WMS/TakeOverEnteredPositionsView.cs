@@ -203,7 +203,7 @@ namespace WMS
                         {
                             Ident = item.GetString("Ident"),
                             SerialNumber = item.GetString("SerialNo"),
-                            SSCC = HelpfulMethods.lastReturn(item.GetString("SSCC"), 5),
+                            SSCC = HelperMethods.lastReturn(item.GetString("SSCC"), 5),
                             Quantity = tempUnit,
                             Position = numbering.ToString(),
                             Name = identName.Trim(),
@@ -773,6 +773,7 @@ namespace WMS
                         tbQty.SetTextColor(Android.Graphics.Color.Black);
                         tbLocation.SetTextColor(Android.Graphics.Color.Black);
                         tbCreatedBy.SetTextColor(Android.Graphics.Color.Black);
+                        tbSerialNumber.SetTextColor(Android.Graphics.Color.Black);
 
 
                         btUpdate.Enabled = true;
@@ -809,6 +810,7 @@ namespace WMS
                         tbQty.SetTextColor(Android.Graphics.Color.Black);
                         tbLocation.SetTextColor(Android.Graphics.Color.Black);
                         tbCreatedBy.SetTextColor(Android.Graphics.Color.Black);
+                        tbSerialNumber.SetTextColor(Android.Graphics.Color.Black);
 
                         btUpdate.Enabled = false;
                         btDelete.Enabled = false;

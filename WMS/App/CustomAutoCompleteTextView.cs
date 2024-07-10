@@ -6,6 +6,7 @@ using Android.Util;
 using Android.Views;
 using Android.Views.InputMethods;
 using TrendNET.WMS.Device.App;
+using WMS.ExceptionStore;
 using Keycode = Android.Views.Keycode;
 
 public class CustomAutoCompleteTextView : AutoCompleteTextView
@@ -43,8 +44,8 @@ public class CustomAutoCompleteTextView : AutoCompleteTextView
         {
             if (e.Event.Action == Android.Views.MotionEventActions.Up)
             {
-                ShowDropDown();
-                ShowKeyboard();
+                ShowDropDownSafely();
+                ShowKeyboardSafely();
                 RequestFocus();
                 Handler handler = new Handler();
                 handler.PostDelayed(() =>
@@ -55,8 +56,6 @@ public class CustomAutoCompleteTextView : AutoCompleteTextView
             }
         };
     }
-
-
 
     public void ShowKeyboard()
     {
@@ -86,7 +85,7 @@ public class CustomAutoCompleteTextView : AutoCompleteTextView
 
     protected override void OnFocusChanged(bool gainFocus, [GeneratedEnum] FocusSearchDirection direction, Rect previouslyFocusedRect)
     {
-        ShowKeyboard();
+        ShowKeyboardSafely();
         base.OnFocusChanged(gainFocus, direction, previouslyFocusedRect);
         try
         {
@@ -94,8 +93,8 @@ public class CustomAutoCompleteTextView : AutoCompleteTextView
             {
                 if (Adapter != null && Adapter.Count > 0)
                 {
-                    ShowDropDown();
-                    ShowKeyboard();
+                    ShowDropDownSafely();
+                    ShowKeyboardSafely();
                 }
             }
         }
@@ -104,10 +103,6 @@ public class CustomAutoCompleteTextView : AutoCompleteTextView
             SentrySdk.CaptureException(e);
         }
     }
-
-
-
-
 
     public void SelectAtPosition(int position)
     {
@@ -141,5 +136,37 @@ public class CustomAutoCompleteTextView : AutoCompleteTextView
         }
         return index;
     }
+
+    public void ShowKeyboardSafely()
+    {
+        try
+        {
+            var imm = (InputMethodManager)Context.GetSystemService(Context.InputMethodService);
+            if (imm != null && Context is Activity activity && !activity.IsFinishing)
+            {
+                activity.RunOnUiThread(() => imm.ShowSoftInput(this, ShowFlags.Implicit));
+            }
+        }
+        catch (Exception ex)
+        {
+            GlobalExceptions.ReportGlobalException(ex);
+        }
+    }
+
+    private void ShowDropDownSafely()
+    {
+        try
+        {
+            if (Context is Activity activity && !activity.IsFinishing && WindowToken != null)
+            {
+                activity.RunOnUiThread(() => ShowDropDown());
+            }
+        }
+        catch (Exception ex)
+        {
+            GlobalExceptions.ReportGlobalException(ex);
+        }
+    }
+
 
 }
