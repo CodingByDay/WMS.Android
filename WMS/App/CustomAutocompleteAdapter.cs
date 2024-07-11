@@ -1,6 +1,7 @@
 ﻿using Android.Content;
 using Android.Views;
 using Android.Widget;
+using System.Collections.Concurrent;
 using TrendNET.WMS.Device.App;
 
 
@@ -17,7 +18,7 @@ public class CustomAutoCompleteAdapter<T> : ArrayAdapter<T>
        : base(context, textViewResourceId, new List<T>(objects.Take(100))) // Initialize with the first 1000 items
     {
         inflater = LayoutInflater.From(context);
-        originalItems = objects != null ? new List<T>(objects) : new List<T>();
+        originalItems = objects != null ? InitializeOriginalItems(objects) : new List<T>();
     }
 
     public override View GetView(int position, View convertView, ViewGroup parent)
@@ -34,7 +35,22 @@ public class CustomAutoCompleteAdapter<T> : ArrayAdapter<T>
 
         return view;
     }
-
+    private List<T> InitializeOriginalItems(List<T> objects)
+    {
+        if (objects.Count > 1000)
+        {
+            var bag = new ConcurrentBag<T>();
+            Parallel.ForEach(objects, item =>
+            {
+                bag.Add(item);
+            });
+            return bag.ToList();
+        }
+        else
+        {
+            return new List<T>(objects);
+        }
+    }
 
     public ComboBoxItem GetComboBoxItem(int position)
     {

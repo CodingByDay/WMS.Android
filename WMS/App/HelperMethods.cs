@@ -1,5 +1,7 @@
 ﻿using Android.Content;
 using Android.Views;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 
 namespace WMS.App
 {
@@ -74,7 +76,23 @@ namespace WMS.App
             }
         }
 
+        public static  List<string> DeserializeJsonStream(string json)
+        {
+            List<string> items = new List<string>();
 
+            using (StringReader stringReader = new StringReader(json))
+            using (JsonTextReader jsonReader = new JsonTextReader(stringReader))
+            {
+                JArray jsonArray = JArray.Load(jsonReader);
+
+                foreach (var item in jsonArray)
+                {
+                    items.Add(item.ToString());
+                }
+            }
+
+            return items;
+        }
 
 
     }
