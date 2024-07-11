@@ -53,7 +53,7 @@ namespace WMS
                 if (tbIdent.HasFocus)
                 {
                     tbIdent.Text = barcode;
-                    await ProcessIdent();
+                    await ProcessIdent(false);
                 }
             }
             catch (Exception ex)
@@ -73,7 +73,7 @@ namespace WMS
             }
         }
 
-        private async Task ProcessIdent()
+        private async Task ProcessIdent(bool cleanUp)
         {
             try
             {
@@ -81,7 +81,23 @@ namespace WMS
                 {
                     LoaderManifest.LoaderManifestLoopResources(this);
                     var ident = tbIdent.Text.Trim();
-                    if (string.IsNullOrEmpty(ident)) { return; }
+
+
+                    if (cleanUp)
+                    {
+                        ident = string.Empty;
+                    }
+
+
+                    if (string.IsNullOrEmpty(ident)) {
+
+                        orders.Clear();
+                        FillDisplayedOrderInfo();
+                        if (App.Settings.tablet)
+                        {
+                            dataAdapter.NotifyDataSetChanged();
+                        }
+                    }
                     try
                     {
                         string error;
@@ -97,7 +113,11 @@ namespace WMS
                         else
                         {
                             ident = openIdent.GetString("Code");
-                            tbIdent.Text = ident;
+                            if (ident != tbIdent.Text)
+                            {
+                                // Needed because of the bimex process. 11. jul. 2024 Janko Jovičić
+                                tbIdent.Text = ident;
+                            }
                             InUseObjects.Set("OpenIdent", openIdent);
                             var isPackaging = openIdent.GetBool("IsPackaging");
                             if (!moveHead.GetBool("ByOrder") || isPackaging)
@@ -145,7 +165,7 @@ namespace WMS
 
 
                                 var subjects = await AsyncServices.AsyncServices.GetObjectListBySqlAsync(sql, parameters);
-
+                                orders.Clear();
                                 if (!subjects.Success)
                                 {
                                     RunOnUiThread(() =>
@@ -372,7 +392,6 @@ namespace WMS
                 btConfirm.Enabled = false;
                 barcode2D = new Barcode2D(this, this);
                 btNext.Click += BtNext_Click;
-                tbIdent.KeyPress += TbIdent_KeyPress;
                 btConfirm.Click += BtConfirm_Click;
                 button4.Click += Button4_Click;
                 button5.Click += Button5_Click;
@@ -382,20 +401,21 @@ namespace WMS
                 string savedIdentsJson = sharedPreferences.GetString("idents", "");
                 if (!string.IsNullOrEmpty(savedIdentsJson))
                 {
+                    LoaderManifest.LoaderManifestLoopResources(this);
                     savedIdents = JsonConvert.DeserializeObject<List<string>>(savedIdentsJson);
+                    tbIdentAdapter = new CustomAutoCompleteAdapter<string>(this, Android.Resource.Layout.SimpleDropDownItem1Line, savedIdents);
+                    tbIdent.Adapter = tbIdentAdapter;
+                    tbIdentAdapter.SingleItemEvent += TbIdentAdapter_SingleItemEvent;
+                    LoaderManifest.LoaderManifestLoopStop(this);
                 }
-                tbIdentAdapter = new CustomAutoCompleteAdapter<string>(this, Android.Resource.Layout.SimpleDropDownItem1Line, new List<string>());
-                tbIdent.Adapter = tbIdentAdapter;
-                tbIdent.TextChanged += (sender, e) =>
-                {
-                    string userInput = e.Text.ToString();
-                    UpdateSuggestions(userInput);
-                };
+    
                 var _broadcastReceiver = new NetworkStatusBroadcastReceiver();
                 _broadcastReceiver.ConnectionStatusChanged += OnNetworkStatusChanged;
                 Application.Context.RegisterReceiver(_broadcastReceiver,
                 new IntentFilter(ConnectivityManager.ConnectivityAction), ReceiverFlags.NotExported);
 
+                tbIdent.RequestFocus();
+                tbIdent.TextChanged += TbIdent_TextChanged;
 
                 // These are read only. 6.6.2024 JJ
                 tbOrder.Enabled = false;
@@ -412,6 +432,22 @@ namespace WMS
 
 
 
+
+        private async void TbIdentAdapter_SingleItemEvent(string barcode)
+        {
+            var item = tbIdentAdapter.GetItem(0);
+            tbIdent.SetText(item.ToString(), false);
+            await ProcessIdent(false);
+            tbIdent.SelectAll();
+
+        }
+        private async void TbIdent_TextChanged(object? sender, Android.Text.TextChangedEventArgs e)
+        {
+            if (e.Text.ToString() == string.Empty)
+            {
+                await ProcessIdent(true);
+            }
+        }
         private void ListData_ItemLongClick(object? sender, AdapterView.ItemLongClickEventArgs e)
         {
             try
@@ -454,31 +490,7 @@ namespace WMS
             }
         }
 
-        private async void TbIdent_KeyPress(object? sender, View.KeyEventArgs e)
-        {
-            try
-            {
-                if (e.KeyCode == Keycode.Enter && e.Event.Action == KeyEventActions.Down)
-                {
-                    if (App.Settings.tablet)
-                    {
-                        
-                        // If maxIterations is reached without the condition being met;
-                        await ProcessIdent();                       
-                    }
-                    else
-                    {
-                        await ProcessIdent();
-                    }
-                }
-
-                e.Handled = false;
-            }
-            catch (Exception ex)
-            {
-                GlobalExceptions.ReportGlobalException(ex);
-            }
-        }
+   
 
         public bool IsOnline()
         {
@@ -584,23 +596,7 @@ namespace WMS
 
 
 
-        private async void SpinnerIdent_ItemSelected(object sender, AdapterView.ItemSelectedEventArgs e)
-        {
-            try
-            {
-                var item = e.Position;
-                var chosen = identData.ElementAt(item);
-                if (chosen != "")
-                {
-                    tbIdent.Text = chosen;
-                }
-                await ProcessIdent();
-            }
-            catch (Exception ex)
-            {
-                GlobalExceptions.ReportGlobalException(ex);
-            }
-        }
+ 
 
 
 

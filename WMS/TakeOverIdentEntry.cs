@@ -109,14 +109,16 @@ namespace WMS
                 
                 if (!string.IsNullOrEmpty(savedIdentsJson))
                 {
-                    // Put a loader here for good measure
+                    LoaderManifest.LoaderManifestLoopResources(this);
                     savedIdents = JsonConvert.DeserializeObject<List<string>>(savedIdentsJson);
                     tbIdentAdapter = new CustomAutoCompleteAdapter<string>(this, Android.Resource.Layout.SimpleDropDownItem1Line, savedIdents);
                     tbIdent.Adapter = tbIdentAdapter;
                     tbIdentAdapter.SingleItemEvent += TbIdentAdapter_SingleItemEvent;
+                    LoaderManifest.LoaderManifestLoopStop(this);
+
                 }
 
-            
+
 
                 var _broadcastReceiver = new NetworkStatusBroadcastReceiver();
                 _broadcastReceiver.ConnectionStatusChanged += OnNetworkStatusChanged;
@@ -156,6 +158,7 @@ namespace WMS
             var item = tbIdentAdapter.GetItem(0);
             tbIdent.SetText(item.ToString(), false);
             await ProcessIdent(false);
+            tbIdent.SelectAll();
             
         }
 
@@ -341,23 +344,7 @@ namespace WMS
                 GlobalExceptions.ReportGlobalException(ex);
             }
         }
-        private async void SpinnerIdent_ItemSelected(object sender, AdapterView.ItemSelectedEventArgs e)
-        {
-            try
-            {
-                var item = e.Position;
-                var chosen = identData.ElementAt(item);
-                if (chosen != "")
-                {
-                    tbIdent.Text = chosen;
-                }
-                await ProcessIdent(false);
-            }
-            catch (Exception ex)
-            {
-                GlobalExceptions.ReportGlobalException(ex);
-            }
-        }
+  
 
 
 
@@ -593,9 +580,12 @@ namespace WMS
 
                 if (string.IsNullOrEmpty(ident)) {
                     orders.Clear();
-                    data.Clear();
-                    dataAdapter.NotifyDataSetChanged();
                     FillDisplayedOrderInfo();
+                    if (App.Settings.tablet)
+                    {
+                        data.Clear();
+                        dataAdapter.NotifyDataSetChanged();
+                    }
                 }
                 try
                 {

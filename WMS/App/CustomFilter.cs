@@ -1,6 +1,7 @@
 ﻿using Android.Runtime;
 using Android.Widget;
 using Java.Lang;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -22,21 +23,22 @@ public class CustomFilter<T> : Filter
 
         if (adapter.originalItems != null && adapter.originalItems.Count > 0 && constraint != null)
         {
-            List<T> filteredList = new List<T>();
+            string filterString = constraint.ToString().ToLower();
 
-            foreach (var originalItem in adapter.originalItems)
+            var filteredItems = new ConcurrentBag<T>();
+
+            Parallel.ForEach(originalItems, item =>
             {
-                string itemText = originalItem.ToString();
-
-                // Implement your filter logic here (example: case-insensitive contains)
-                if (itemText.ToLowerInvariant().Contains(constraint.ToString().ToLowerInvariant()))
+                if (item.ToString().ToLower().StartsWith(filterString))
                 {
-                    filteredList.Add(originalItem);
+                    filteredItems.Add(item);
                 }
-            }
+            });
 
-            result.Count = filteredList.Count;
-            result.Values = FromArray(filteredList.Select(item => item.ToJavaObject()).ToArray());
+            var resultList = filteredItems.Take(100).ToList();
+
+            result.Values = FromArray(resultList.Select(item => item.ToJavaObject()).ToArray());
+            result.Count = resultList.Count;
         }
         else
         {

@@ -118,9 +118,10 @@ public class CustomAutoCompleteTextView : AutoCompleteTextView
     public int SetItemByString(string value)
     {
         int index = -1;
-
         // Type conversion for the adapter.
         var cbAdapter = Adapter as CustomAutoCompleteAdapter<ComboBoxItem>;
+
+   
         if (cbAdapter != null)
         {
             index = -1;

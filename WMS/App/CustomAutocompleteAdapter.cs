@@ -14,7 +14,7 @@ public class CustomAutoCompleteAdapter<T> : ArrayAdapter<T>
     public event SingleItemEventHandler SingleItemEvent;
 
     public CustomAutoCompleteAdapter(Context context, int textViewResourceId, List<T> objects)
-        : base(context, textViewResourceId, objects)
+       : base(context, textViewResourceId, new List<T>(objects.Take(100))) // Initialize with the first 1000 items
     {
         inflater = LayoutInflater.From(context);
         originalItems = objects != null ? new List<T>(objects) : new List<T>();
