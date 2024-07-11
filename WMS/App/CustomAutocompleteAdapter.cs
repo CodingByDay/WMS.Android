@@ -5,11 +5,14 @@ using TrendNET.WMS.Device.App;
 public class CustomAutoCompleteAdapter<T> : ArrayAdapter<T>
 {
     private LayoutInflater inflater;
-
+    public List<T> originalItems;
     public CustomAutoCompleteAdapter(Context context, int textViewResourceId, List<T> objects)
         : base(context, textViewResourceId, objects)
     {
         inflater = LayoutInflater.From(context);
+        originalItems = objects != null ? new List<T>(objects) : new List<T>();
+        var debug = true;
+
     }
 
     public override View GetView(int position, View convertView, ViewGroup parent)
@@ -32,5 +35,14 @@ public class CustomAutoCompleteAdapter<T> : ArrayAdapter<T>
     {
         ComboBoxItem? comboBoxItem = base.GetItem(position) as ComboBoxItem;
         return comboBoxItem ?? new ComboBoxItem();
+    }
+
+
+    public override Filter Filter
+    {
+        get
+        {
+            return new CustomFilter<T>(this, originalItems);
+        }
     }
 }

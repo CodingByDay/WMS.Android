@@ -57,6 +57,8 @@ public class CustomAutoCompleteTextView : AutoCompleteTextView
         };
     }
 
+
+
     public void ShowKeyboard()
     {
         InputMethodManager imm = (InputMethodManager)Context.GetSystemService(Context.InputMethodService);
@@ -157,7 +159,7 @@ public class CustomAutoCompleteTextView : AutoCompleteTextView
     {
         try
         {
-            if (Context is Activity activity && !activity.IsFinishing && WindowToken != null)
+            if (Context is Activity activity && !activity.IsFinishing && WindowToken != null && Adapter.Count > 0)
             {
                 activity.RunOnUiThread(() => ShowDropDown());
             }

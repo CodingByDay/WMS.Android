@@ -3,6 +3,7 @@ using Android.Content.PM;
 using Android.Media;
 using Android.Net;
 using Android.Preferences;
+using Android.Renderscripts;
 using Android.Views;
 using Android.Views.InputMethods;
 using Aspose.Words.Fonts;
@@ -102,13 +103,17 @@ namespace WMS
                 ISharedPreferencesEditor editor = sharedPreferences.Edit();
                 string savedIdentsJson = sharedPreferences.GetString("idents", "");
 
+
+                
                 if (!string.IsNullOrEmpty(savedIdentsJson))
                 {
                     savedIdents = JsonConvert.DeserializeObject<List<string>>(savedIdentsJson);
+                    tbIdentAdapter = new CustomAutoCompleteAdapter<string>(this, Android.Resource.Layout.SimpleDropDownItem1Line, savedIdents);
+                    tbIdent.Adapter = tbIdentAdapter;
                 }
 
-                tbIdentAdapter = new CustomAutoCompleteAdapter<string>(this, Android.Resource.Layout.SimpleDropDownItem1Line, new List<string>());
-                tbIdent.Adapter = tbIdentAdapter;
+            
+
                 var _broadcastReceiver = new NetworkStatusBroadcastReceiver();
                 _broadcastReceiver.ConnectionStatusChanged += OnNetworkStatusChanged;
                 Application.Context.RegisterReceiver(_broadcastReceiver,
@@ -119,8 +124,8 @@ namespace WMS
                 imm.ShowSoftInput(tbIdent, ShowFlags.Forced);
 
                 tbIdent.KeyPress += TbIdent_KeyPress;
-                tbIdent.AfterTextChanged += TbIdent_AfterTextChanged;
                 tbIdent.RequestFocus();
+                tbIdent.TextChanged += TbIdent_TextChanged;
                 // These are read only. 6.6.2024 JJ
                 tbOrder.Enabled = false;
                 tbConsignee.Enabled = false;
@@ -135,7 +140,163 @@ namespace WMS
             }
         }
 
-   
+        private async void TbIdentAdapter_SingleItemEvent(string barcode)
+        {
+            await ProcessIdentTablet(barcode);
+        }
+
+        private void TbIdent_TextChanged(object? sender, Android.Text.TextChangedEventArgs e)
+        {
+            try
+            {
+
+                string newText = tbIdent.Text;         
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
+        }
+
+        private async Task ProcessIdentTablet(string value)
+        {
+            try
+            {
+                // Disable unwanted crashes because of not waiting for the result. 6.6.2024 Janko Jovičić
+
+                var ident = value;
+                if (string.IsNullOrEmpty(ident)) { return; }
+                try
+                {
+                    LoaderManifest.LoaderManifestLoopResources(this);
+                    string error;
+                    openIdent = Services.GetObject("id", ident, out error);
+                    if (openIdent == null)
+                    {
+                        string SuccessMessage = string.Format($"{Resources.GetString(Resource.String.s229)}" + error);
+                        Toast.MakeText(this, SuccessMessage, ToastLength.Long).Show();
+                        tbIdent.Text = "";
+                        tbIdent.RequestFocus();
+                        tbNaziv.Text = "";
+                    }
+                    else
+                    {
+                        ident = openIdent.GetString("Code");
+
+                        InUseObjects.Set("OpenIdent", openIdent);
+                        var isPackaging = openIdent.GetBool("IsPackaging");
+                        if (!moveHead.GetBool("ByOrder") || isPackaging)
+                        {
+                            if (SaveMoveHead())
+                            {
+                                var intent = new Intent(this, typeof(TakeOverSerialOrSSCCEntry));
+                                StartActivity(intent);
+                                Finish();
+                            }
+                            return;
+                        }
+                        else
+                        {
+                            tbNaziv.Text = openIdent.GetString("Name");
+
+                            var parameters = new List<Services.Parameter>();
+
+
+                            string sql = $"SELECT acSubject, acKey, anNo, anQty, adDeliveryDeadline, acIdent, anPackQty FROM uWMSOrderItemByWarehouseTypeIn WHERE acIdent = @acIdent AND acDocType = @acDocType AND acWarehouse = @acWarehouse";
+
+                            if (moveHead != null)
+                            {
+                                string? subject = moveHead.GetString("Receiver");
+                                if (!string.IsNullOrEmpty(subject))
+                                {
+                                    sql += " AND acSubject = @acSubject;";
+                                    parameters.Add(new Services.Parameter { Name = "acSubject", Type = "String", Value = subject });
+                                }
+                                else
+                                {
+                                    sql += ";";
+                                }
+
+                            }
+                            else
+                            {
+                                StartActivity(typeof(MainMenu));
+                                Finish();
+                            }
+
+
+                            parameters.Add(new Services.Parameter { Name = "acIdent", Type = "String", Value = ident });
+                            parameters.Add(new Services.Parameter { Name = "acDocType", Type = "String", Value = moveHead.GetString("DocumentType") });
+                            parameters.Add(new Services.Parameter { Name = "acWarehouse", Type = "String", Value = moveHead.GetString("Wharehouse") });
+
+                            var subjects = await AsyncServices.AsyncServices.GetObjectListBySqlAsync(sql, parameters);
+
+                            if (!subjects.Success)
+                            {
+                                RunOnUiThread(() =>
+                                {
+                                    AlertDialog.Builder alert = new AlertDialog.Builder(this);
+                                    alert.SetTitle($"{Resources.GetString(Resource.String.s265)}");
+                                    alert.SetMessage($"{subjects.Error}");
+                                    alert.SetPositiveButton("Ok", (senderAlert, args) =>
+                                    {
+                                        alert.Dispose();
+                                    });
+                                    Dialog dialog = alert.Create();
+                                    dialog.Show();
+
+                                    SentrySdk.CaptureMessage(subjects.Error);
+                                    return;
+                                });
+                            }
+                            else
+                            {
+                                if (subjects.Rows.Count > 0)
+                                {
+                                    for (int i = 0; i < subjects.Rows.Count; i++)
+                                    {
+                                        var row = subjects.Rows[i];
+                                        orders.Add(new OpenOrder
+                                        {
+                                            Client = row.StringValue("acSubject"),
+                                            Order = row.StringValue("acKey"),
+                                            Position = (int?)row.IntValue("anNo"),
+                                            Quantity = row.DoubleValue("anQty"),
+                                            Date = row.DateTimeValue("adDeliveryDeadline"),
+                                            Ident = row.StringValue("acIdent"),
+                                            Packaging = row.DoubleValue("anPackQty")
+                                        });
+
+                                    }
+                                    displayedOrder = 0;
+                                }
+                            }
+                        }
+                    }
+
+                    FillDisplayedOrderInfo();
+
+                    if (App.Settings.tablet)
+                    {
+                        fillList(ident);
+                    }
+
+                }
+                catch (Exception err)
+                {
+                    SentrySdk.CaptureException(err);
+                    return;
+                }
+                finally
+                {
+                    LoaderManifest.LoaderManifestLoopStop(this);
+                }
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
+        }
 
         private void ListData_ItemLongClick(object? sender, AdapterView.ItemLongClickEventArgs e)
         {
@@ -220,17 +381,11 @@ namespace WMS
                 if (e.KeyCode == Keycode.Enter && e.Event.Action == KeyEventActions.Down)
                 {
                     e.Handled = true;
-                    if (App.Settings.tablet)
+                    if (!App.Settings.tablet)
                     {
-                        if (await HelperMethods.TabletHaltCorrectly(this))
-                        {
-                            tbIdent.Text = Base.Store.suggestions.ElementAt(0);
-                            await ProcessIdent();
-                        }
-                    }
-                    else
-                    {
+
                         await ProcessIdent();
+             
                     }
                 }
             }
@@ -240,18 +395,7 @@ namespace WMS
             }
         }
 
-        private void TbIdent_AfterTextChanged(object? sender, Android.Text.AfterTextChangedEventArgs e)
-        {
-            try
-            {
-                string newText = tbIdent.Text;
-                UpdateSuggestions(newText);
-            }
-            catch (Exception ex)
-            {
-                GlobalExceptions.ReportGlobalException(ex);
-            }
-        }
+   
 
 
 
@@ -270,19 +414,22 @@ namespace WMS
         }
 
 
-        private void UpdateSuggestions(string userInput)
+        private async void UpdateSuggestions(string userInput)
         {
             try
             {
-                Base.Store.suggestions.Clear();
+                suggestions.Clear();
                 // Provide custom suggestions based on user input
-                Base.Store.suggestions = GetCustomSuggestions(userInput);
-
+                suggestions = GetCustomSuggestions(userInput);
 
                 // Clear the existing suggestions and add the new ones
+
                 tbIdentAdapter.Clear();
-                tbIdentAdapter.AddAll(Base.Store.suggestions);
+                tbIdentAdapter.AddAll(suggestions);
                 tbIdentAdapter.NotifyDataSetChanged();
+
+ 
+
             }
             catch (Exception ex)
             {
@@ -782,6 +929,7 @@ namespace WMS
         private int selected;
         private int selectedItem;
         private List<string> suggestions = new List<string>();
+        private bool singleItem = false;
 
         public async void GetBarcode(string barcode)
         {

@@ -462,11 +462,9 @@ namespace WMS
                 {
                     if (App.Settings.tablet)
                     {
-                        if (await HelperMethods.TabletHaltCorrectly(this))
-                        {
-                            tbIdent.Text = Base.Store.suggestions.ElementAt(0);
-                            await ProcessIdent();
-                        }
+                        
+                        // If maxIterations is reached without the condition being met;
+                        await ProcessIdent();                       
                     }
                     else
                     {
@@ -507,13 +505,13 @@ namespace WMS
                 }
                 else
                 {
-                    Base.Store.suggestions.Clear();
+                    suggestions.Clear();
                     // Provide custom suggestions based on user input
-                    Base.Store.suggestions = GetCustomSuggestions(userInput);
+                    suggestions = GetCustomSuggestions(userInput);
                     // Clear the existing suggestions and add the new ones
    
                     tbIdentAdapter.Clear();
-                    tbIdentAdapter.AddAll(Base.Store.suggestions);
+                    tbIdentAdapter.AddAll(suggestions);
                     tbIdentAdapter.NotifyDataSetChanged();
                 }
             }

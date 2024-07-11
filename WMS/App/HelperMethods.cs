@@ -76,30 +76,6 @@ namespace WMS.App
 
 
 
-        public async static Task<bool> TabletHaltCorrectly(Context context)
-        {
-            LoaderManifest.LoaderManifestLoopResources(context);
-            int iterations = 0;
-            int maxIterations = 10; 
-
-            // Loop to check if text remains unchanged after 1-second intervals
-            while (Base.Store.suggestions.Count != 1)
-            {
-                if (iterations >= maxIterations)
-                {
-                    LoaderManifest.LoaderManifestLoopStop(context);
-                    Base.Store.OnlyOneSuggestion = false;
-                    return false;
-                }
-
-                await Task.Delay(1000); 
-                iterations++;
-            }
-
-            LoaderManifest.LoaderManifestLoopStop(context);
-            Base.Store.OnlyOneSuggestion = true;
-            return true;
-        }
 
     }
 }
