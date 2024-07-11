@@ -8,7 +8,7 @@ public class CustomFilter<T> : Filter
 {
     private readonly CustomAutoCompleteAdapter<T> adapter;
     private readonly List<T> originalItems;
-
+    private string lastRaisedString = string.Empty;
     public CustomFilter(CustomAutoCompleteAdapter<T> adapter, List<T> originalItems)
     {
         this.adapter = adapter;
@@ -18,6 +18,7 @@ public class CustomFilter<T> : Filter
     protected override FilterResults PerformFiltering(ICharSequence constraint)
     {
         FilterResults result = new FilterResults();
+        int repeating = adapter.Count;
 
         if (adapter.originalItems != null && adapter.originalItems.Count > 0 && constraint != null)
         {
@@ -70,11 +71,15 @@ public class CustomFilter<T> : Filter
             adapter.NotifyDataSetInvalidated();
         }
 
+        var ignore = constraint!=null && lastRaisedString.StartsWith(constraint.ToString()) && constraint.ToString().Count() < lastRaisedString.Count();
         // Check if only one item is left after filtering
-        if (adapter.Count == 1)
+        if (adapter.Count == 1 && !ignore)
         {
             T singleItem = adapter.GetItem(0);
             string singleItemString = singleItem.ToString(); // Assuming ToString() gives us the string representation we need
+            adapter.RaiseOneItemRemaining(singleItemString);
+            lastRaisedString = singleItemString;
+
         }
     }
 

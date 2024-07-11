@@ -6,6 +6,7 @@ using Android.Preferences;
 using Android.Renderscripts;
 using Android.Views;
 using Android.Views.InputMethods;
+using Android.Widget;
 using Aspose.Words.Fonts;
 using BarCode2D_Receiver;
 using Newtonsoft.Json;
@@ -16,6 +17,7 @@ using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
 using WMS.App;
 using WMS.ExceptionStore;
+using static Android.Renderscripts.Sampler;
 using AlertDialog = Android.App.AlertDialog;
 namespace WMS
 {
@@ -107,9 +109,11 @@ namespace WMS
                 
                 if (!string.IsNullOrEmpty(savedIdentsJson))
                 {
+                    // Put a loader here for good measure
                     savedIdents = JsonConvert.DeserializeObject<List<string>>(savedIdentsJson);
                     tbIdentAdapter = new CustomAutoCompleteAdapter<string>(this, Android.Resource.Layout.SimpleDropDownItem1Line, savedIdents);
                     tbIdent.Adapter = tbIdentAdapter;
+                    tbIdentAdapter.SingleItemEvent += TbIdentAdapter_SingleItemEvent;
                 }
 
             
@@ -123,7 +127,6 @@ namespace WMS
                 InputMethodManager imm = (InputMethodManager)GetSystemService(Context.InputMethodService);
                 imm.ShowSoftInput(tbIdent, ShowFlags.Forced);
 
-                tbIdent.KeyPress += TbIdent_KeyPress;
                 tbIdent.RequestFocus();
                 tbIdent.TextChanged += TbIdent_TextChanged;
                 // These are read only. 6.6.2024 JJ
@@ -140,163 +143,26 @@ namespace WMS
             }
         }
 
+        private async void TbIdent_TextChanged(object? sender, Android.Text.TextChangedEventArgs e)
+        {
+            if(e.Text.ToString() == string.Empty)
+            {
+                await ProcessIdent(true);
+            }
+        }
+
         private async void TbIdentAdapter_SingleItemEvent(string barcode)
         {
-            await ProcessIdentTablet(barcode);
+            var item = tbIdentAdapter.GetItem(0);
+            tbIdent.SetText(item.ToString(), false);
+            await ProcessIdent(false);
+            
         }
 
-        private void TbIdent_TextChanged(object? sender, Android.Text.TextChangedEventArgs e)
-        {
-            try
-            {
-
-                string newText = tbIdent.Text;         
-            }
-            catch (Exception ex)
-            {
-                GlobalExceptions.ReportGlobalException(ex);
-            }
-        }
-
-        private async Task ProcessIdentTablet(string value)
-        {
-            try
-            {
-                // Disable unwanted crashes because of not waiting for the result. 6.6.2024 Janko Jovičić
-
-                var ident = value;
-                if (string.IsNullOrEmpty(ident)) { return; }
-                try
-                {
-                    LoaderManifest.LoaderManifestLoopResources(this);
-                    string error;
-                    openIdent = Services.GetObject("id", ident, out error);
-                    if (openIdent == null)
-                    {
-                        string SuccessMessage = string.Format($"{Resources.GetString(Resource.String.s229)}" + error);
-                        Toast.MakeText(this, SuccessMessage, ToastLength.Long).Show();
-                        tbIdent.Text = "";
-                        tbIdent.RequestFocus();
-                        tbNaziv.Text = "";
-                    }
-                    else
-                    {
-                        ident = openIdent.GetString("Code");
-
-                        InUseObjects.Set("OpenIdent", openIdent);
-                        var isPackaging = openIdent.GetBool("IsPackaging");
-                        if (!moveHead.GetBool("ByOrder") || isPackaging)
-                        {
-                            if (SaveMoveHead())
-                            {
-                                var intent = new Intent(this, typeof(TakeOverSerialOrSSCCEntry));
-                                StartActivity(intent);
-                                Finish();
-                            }
-                            return;
-                        }
-                        else
-                        {
-                            tbNaziv.Text = openIdent.GetString("Name");
-
-                            var parameters = new List<Services.Parameter>();
 
 
-                            string sql = $"SELECT acSubject, acKey, anNo, anQty, adDeliveryDeadline, acIdent, anPackQty FROM uWMSOrderItemByWarehouseTypeIn WHERE acIdent = @acIdent AND acDocType = @acDocType AND acWarehouse = @acWarehouse";
 
-                            if (moveHead != null)
-                            {
-                                string? subject = moveHead.GetString("Receiver");
-                                if (!string.IsNullOrEmpty(subject))
-                                {
-                                    sql += " AND acSubject = @acSubject;";
-                                    parameters.Add(new Services.Parameter { Name = "acSubject", Type = "String", Value = subject });
-                                }
-                                else
-                                {
-                                    sql += ";";
-                                }
-
-                            }
-                            else
-                            {
-                                StartActivity(typeof(MainMenu));
-                                Finish();
-                            }
-
-
-                            parameters.Add(new Services.Parameter { Name = "acIdent", Type = "String", Value = ident });
-                            parameters.Add(new Services.Parameter { Name = "acDocType", Type = "String", Value = moveHead.GetString("DocumentType") });
-                            parameters.Add(new Services.Parameter { Name = "acWarehouse", Type = "String", Value = moveHead.GetString("Wharehouse") });
-
-                            var subjects = await AsyncServices.AsyncServices.GetObjectListBySqlAsync(sql, parameters);
-
-                            if (!subjects.Success)
-                            {
-                                RunOnUiThread(() =>
-                                {
-                                    AlertDialog.Builder alert = new AlertDialog.Builder(this);
-                                    alert.SetTitle($"{Resources.GetString(Resource.String.s265)}");
-                                    alert.SetMessage($"{subjects.Error}");
-                                    alert.SetPositiveButton("Ok", (senderAlert, args) =>
-                                    {
-                                        alert.Dispose();
-                                    });
-                                    Dialog dialog = alert.Create();
-                                    dialog.Show();
-
-                                    SentrySdk.CaptureMessage(subjects.Error);
-                                    return;
-                                });
-                            }
-                            else
-                            {
-                                if (subjects.Rows.Count > 0)
-                                {
-                                    for (int i = 0; i < subjects.Rows.Count; i++)
-                                    {
-                                        var row = subjects.Rows[i];
-                                        orders.Add(new OpenOrder
-                                        {
-                                            Client = row.StringValue("acSubject"),
-                                            Order = row.StringValue("acKey"),
-                                            Position = (int?)row.IntValue("anNo"),
-                                            Quantity = row.DoubleValue("anQty"),
-                                            Date = row.DateTimeValue("adDeliveryDeadline"),
-                                            Ident = row.StringValue("acIdent"),
-                                            Packaging = row.DoubleValue("anPackQty")
-                                        });
-
-                                    }
-                                    displayedOrder = 0;
-                                }
-                            }
-                        }
-                    }
-
-                    FillDisplayedOrderInfo();
-
-                    if (App.Settings.tablet)
-                    {
-                        fillList(ident);
-                    }
-
-                }
-                catch (Exception err)
-                {
-                    SentrySdk.CaptureException(err);
-                    return;
-                }
-                finally
-                {
-                    LoaderManifest.LoaderManifestLoopStop(this);
-                }
-            }
-            catch (Exception ex)
-            {
-                GlobalExceptions.ReportGlobalException(ex);
-            }
-        }
+     
 
         private void ListData_ItemLongClick(object? sender, AdapterView.ItemLongClickEventArgs e)
         {
@@ -332,6 +198,7 @@ namespace WMS
         {
             try
             {
+                data.Clear();
                 if (orders != null)
                 {
                     orders.ForEach(x =>
@@ -374,26 +241,7 @@ namespace WMS
                 GlobalExceptions.ReportGlobalException(ex);
             }
         }
-        private async void TbIdent_KeyPress(object? sender, View.KeyEventArgs e)
-        {
-            try
-            {
-                if (e.KeyCode == Keycode.Enter && e.Event.Action == KeyEventActions.Down)
-                {
-                    e.Handled = true;
-                    if (!App.Settings.tablet)
-                    {
-
-                        await ProcessIdent();
-             
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                GlobalExceptions.ReportGlobalException(ex);
-            }
-        }
+ 
 
    
 
@@ -503,7 +351,7 @@ namespace WMS
                 {
                     tbIdent.Text = chosen;
                 }
-                await ProcessIdent();
+                await ProcessIdent(false);
             }
             catch (Exception ex)
             {
@@ -731,14 +579,24 @@ namespace WMS
             }
         }
 
-        private async Task ProcessIdent()
+        private async Task ProcessIdent(bool cleanUp)
         {
             try
             {
                 // Disable unwanted crashes because of not waiting for the result. 6.6.2024 Janko Jovičić
+                var ident = tbIdent.Text;
 
-                var ident = tbIdent.Text.Trim();
-                if (string.IsNullOrEmpty(ident)) { return; }
+                if(cleanUp)
+                {
+                    ident = string.Empty;
+                }
+
+                if (string.IsNullOrEmpty(ident)) {
+                    orders.Clear();
+                    data.Clear();
+                    dataAdapter.NotifyDataSetChanged();
+                    FillDisplayedOrderInfo();
+                }
                 try
                 {
                     LoaderManifest.LoaderManifestLoopResources(this);
@@ -755,7 +613,13 @@ namespace WMS
                     else
                     {
                         ident = openIdent.GetString("Code");
-                        tbIdent.Text = ident;
+
+                        if (ident != tbIdent.Text)
+                        {
+                            // Needed because of the bimex process. 11. jul. 2024 Janko Jovičić
+                            tbIdent.Text = ident;
+                        }
+
                         InUseObjects.Set("OpenIdent", openIdent);
                         var isPackaging = openIdent.GetBool("IsPackaging");
                         if (!moveHead.GetBool("ByOrder") || isPackaging)
@@ -803,6 +667,7 @@ namespace WMS
                             parameters.Add(new Services.Parameter { Name = "acWarehouse", Type = "String", Value = moveHead.GetString("Wharehouse") });
 
                             var subjects = await AsyncServices.AsyncServices.GetObjectListBySqlAsync(sql, parameters);
+                            orders.Clear();
 
                             if (!subjects.Success)
                             {
@@ -854,7 +719,6 @@ namespace WMS
                         fillList(ident);
                     }
 
-                    tbIdent.SetSelection(0, tbIdent.Text.Length);
                 }
                 catch (Exception err)
                 {
@@ -951,14 +815,14 @@ namespace WMS
                     {
                         var ident = barcode.Substring(0, barcode.Length - 16);
                         tbIdent.Text = ident;
-                        await ProcessIdent();
+                        await ProcessIdent(false);
                     }
                     else
                     {
                         if (tbIdent.HasFocus)
                         {
                             tbIdent.Text = barcode;
-                            await ProcessIdent();
+                            await ProcessIdent(false);
                         }
                     }
                 }
