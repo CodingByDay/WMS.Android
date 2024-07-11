@@ -424,47 +424,74 @@ namespace WMS
 
         private async void LoadIdentDataAsync()
         {
-            await Task.Run(() => LoadData());
-
-            // After loading the data, update the UI on the main thread
-            RunOnUiThread(() =>
+            try
             {
-                if (savedIdents != null)
+                await Task.Run(() => LoadData());
+
+                // After loading the data, update the UI on the main thread
+                RunOnUiThread(() =>
                 {
-                    tbIdentAdapter = new CustomAutoCompleteAdapter<string>(this, Android.Resource.Layout.SimpleDropDownItem1Line, savedIdents);
-                    tbIdent.Adapter = tbIdentAdapter;
-                    tbIdentAdapter.SingleItemEvent += TbIdentAdapter_SingleItemEvent;
-                }
-            });
+                    if (savedIdents != null)
+                    {
+                        tbIdentAdapter = new CustomAutoCompleteAdapter<string>(this, Android.Resource.Layout.SimpleDropDownItem1Line, savedIdents);
+                        tbIdent.Adapter = tbIdentAdapter;
+                        tbIdentAdapter.SingleItemEvent += TbIdentAdapter_SingleItemEvent;
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
         }
 
         private void LoadData()
         {
-            ISharedPreferences sharedPreferences = PreferenceManager.GetDefaultSharedPreferences(Application.Context);
-            string savedIdentsJson = sharedPreferences.GetString("idents", "");
-
-            if (!string.IsNullOrEmpty(savedIdentsJson))
+            try
             {
-                LoaderManifest.LoaderManifestLoopResources(this);
-                savedIdents = JsonConvert.DeserializeObject<List<string>>(savedIdentsJson);
-                LoaderManifest.LoaderManifestLoopStop(this);
+                ISharedPreferences sharedPreferences = PreferenceManager.GetDefaultSharedPreferences(Application.Context);
+                string savedIdentsJson = sharedPreferences.GetString("idents", "");
+
+                if (!string.IsNullOrEmpty(savedIdentsJson))
+                {
+                    LoaderManifest.LoaderManifestLoopResources(this);
+                    savedIdents = JsonConvert.DeserializeObject<List<string>>(savedIdentsJson);
+                    LoaderManifest.LoaderManifestLoopStop(this);
+                }
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
             }
         }
 
 
         private async void TbIdentAdapter_SingleItemEvent(string barcode)
         {
-            var item = tbIdentAdapter.GetItem(0);
-            tbIdent.SetText(item.ToString(), false);
-            await ProcessIdent(false);
-            tbIdent.SelectAll();
-
+            try
+            {
+                var item = tbIdentAdapter.GetItem(0);
+                tbIdent.SetText(item.ToString(), false);
+                await ProcessIdent(false);
+                tbIdent.SelectAll();
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
         }
         private async void TbIdent_TextChanged(object? sender, Android.Text.TextChangedEventArgs e)
         {
-            if (e.Text.ToString() == string.Empty)
+            try
             {
-                await ProcessIdent(true);
+                if (e.Text.ToString() == string.Empty)
+                {
+                    await ProcessIdent(true);
+                }
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
             }
         }
         private void ListData_ItemLongClick(object? sender, AdapterView.ItemLongClickEventArgs e)
@@ -611,14 +638,6 @@ namespace WMS
                 GlobalExceptions.ReportGlobalException(ex);
             }
         }
-
-
-
-
- 
-
-
-
 
         private void Button5_Click(object sender, EventArgs e)
         {

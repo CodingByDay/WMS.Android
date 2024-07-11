@@ -4,6 +4,7 @@ using Java.Lang;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using WMS.ExceptionStore;
 
 public class CustomFilter<T> : Filter
 {
@@ -18,75 +19,93 @@ public class CustomFilter<T> : Filter
 
     protected override FilterResults PerformFiltering(ICharSequence constraint)
     {
-        FilterResults result = new FilterResults();
-        int repeating = adapter.Count;
-
-        if (adapter.originalItems != null && adapter.originalItems.Count > 0 && constraint != null)
+        try
         {
-            string filterString = constraint.ToString().ToLower();
+            FilterResults result = new FilterResults();
+            int repeating = adapter.Count;
 
-            var filteredItems = new ConcurrentBag<T>();
-
-            Parallel.ForEach(originalItems, item =>
+            if (adapter.originalItems != null && adapter.originalItems.Count > 0 && constraint != null)
             {
-                if (item.ToString().ToLower().StartsWith(filterString))
+                string filterString = constraint.ToString().ToLower();
+
+                var filteredItems = new ConcurrentBag<T>();
+
+                Parallel.ForEach(originalItems, item =>
                 {
-                    filteredItems.Add(item);
-                }
-            });
+                    if (item.ToString().ToLower().StartsWith(filterString))
+                    {
+                        filteredItems.Add(item);
+                    }
+                });
 
-            var resultList = filteredItems.Take(100).ToList();
+                var resultList = filteredItems.Take(100).ToList();
 
-            result.Values = FromArray(resultList.Select(item => item.ToJavaObject()).ToArray());
-            result.Count = resultList.Count;
+                result.Values = FromArray(resultList.Select(item => item.ToJavaObject()).ToArray());
+                result.Count = resultList.Count;
+            }
+            else
+            {
+                // If originalItems is null or empty, provide empty results
+                result.Count = 0;
+                result.Values = null;
+            }
+
+            return result;
         }
-        else
+        catch (System.Exception ex)
         {
-            // If originalItems is null or empty, provide empty results
+            FilterResults result = new FilterResults();
             result.Count = 0;
             result.Values = null;
+            GlobalExceptions.ReportGlobalException(ex);
+            return result;
         }
-
-        return result;
     }
 
 
 
     protected override void PublishResults(ICharSequence constraint, FilterResults results)
     {
-        adapter.Clear();
-
-        if (results != null && results.Count > 0 && results.Values != null)
+        try
         {
-            var resultValues = results.Values.ToArray<Java.Lang.Object>();
+            adapter.Clear();
 
-            foreach (var item in resultValues)
+            if (results != null && results.Count > 0 && results.Values != null)
             {
-                T typedItem = item.ToNetObject<T>();
-                adapter.Add(typedItem);
+                var resultValues = results.Values.ToArray<Java.Lang.Object>();
+
+                foreach (var item in resultValues)
+                {
+                    T typedItem = item.ToNetObject<T>();
+                    adapter.Add(typedItem);
+                }
+
+                adapter.NotifyDataSetChanged();
+            }
+            else
+            {
+                adapter.NotifyDataSetInvalidated();
             }
 
-            adapter.NotifyDataSetChanged();
-        }
-        else
-        {
-            adapter.NotifyDataSetInvalidated();
-        }
+            var ignore = constraint != null && lastRaisedString.StartsWith(constraint.ToString()) && constraint.ToString().Count() < lastRaisedString.Count();
+            // Check if only one item is left after filtering
+            if (adapter.Count == 1 && !ignore)
+            {
+                T singleItem = adapter.GetItem(0);
+                string singleItemString = singleItem.ToString(); // Assuming ToString() gives us the string representation we need
+                adapter.RaiseOneItemRemaining(singleItemString);
+                lastRaisedString = singleItemString;
 
-        var ignore = constraint!=null && lastRaisedString.StartsWith(constraint.ToString()) && constraint.ToString().Count() < lastRaisedString.Count();
-        // Check if only one item is left after filtering
-        if (adapter.Count == 1 && !ignore)
+            }
+        }
+        catch (System.Exception ex)
         {
-            T singleItem = adapter.GetItem(0);
-            string singleItemString = singleItem.ToString(); // Assuming ToString() gives us the string representation we need
-            adapter.RaiseOneItemRemaining(singleItemString);
-            lastRaisedString = singleItemString;
-
+            GlobalExceptions.ReportGlobalException(ex);
         }
     }
-
-
 }
+
+
 public static class ObjectExtensions
 {
     public static T ToNetObject<T>(this Java.Lang.Object obj)

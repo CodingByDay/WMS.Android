@@ -395,6 +395,15 @@ namespace WMS
                     ssccRow.Visibility = ViewStates.Gone;
                     serialRow.Visibility = ViewStates.Gone;
                 }
+
+                if (ssccRow.Visibility == ViewStates.Visible && (CommonData.GetSetting("AutoCreateSSCC") == "1"))
+                {
+                    tbSSCC.Text = CommonData.GetNextSSCC();
+                    if(serialRow.Visibility == ViewStates.Visible)
+                    {
+                        tbSerialNum.RequestFocus();
+                    }
+                }
             }
             catch (Exception ex)
             {

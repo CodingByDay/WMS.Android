@@ -24,6 +24,7 @@ public class CustomAutoCompleteAdapter<T> : ArrayAdapter<T>
     public override View GetView(int position, View convertView, ViewGroup parent)
     {
         View view = convertView;
+
         if (view == null)
         {
             view = inflater.Inflate(WMS.Resource.Layout.custom_dropdown_item, null, false);

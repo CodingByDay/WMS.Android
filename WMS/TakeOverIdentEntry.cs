@@ -101,24 +101,7 @@ namespace WMS
                 btConfirm.Click += BtConfirm_Click;
                 button4.Click += Button4_Click;
                 button5.Click += Button5_Click;
-                ISharedPreferences sharedPreferences = PreferenceManager.GetDefaultSharedPreferences(Application.Context);
-                ISharedPreferencesEditor editor = sharedPreferences.Edit();
-                string savedIdentsJson = sharedPreferences.GetString("idents", "");
-
-
-                
-                if (!string.IsNullOrEmpty(savedIdentsJson))
-                {
-                    LoaderManifest.LoaderManifestLoopResources(this);
-                    savedIdents = JsonConvert.DeserializeObject<List<string>>(savedIdentsJson);
-                    tbIdentAdapter = new CustomAutoCompleteAdapter<string>(this, Android.Resource.Layout.SimpleDropDownItem1Line, savedIdents);
-                    tbIdent.Adapter = tbIdentAdapter;
-                    tbIdentAdapter.SingleItemEvent += TbIdentAdapter_SingleItemEvent;
-                    LoaderManifest.LoaderManifestLoopStop(this);
-
-                }
-
-
+     
 
                 var _broadcastReceiver = new NetworkStatusBroadcastReceiver();
                 _broadcastReceiver.ConnectionStatusChanged += OnNetworkStatusChanged;
@@ -138,6 +121,9 @@ namespace WMS
                 tbQty.Enabled = false;
 
                 // Services needed because of the external scanner. 8. jul. 2024
+
+
+                LoadIdentDataAsync();
             }
             catch (Exception ex)
             {
@@ -145,21 +131,80 @@ namespace WMS
             }
         }
 
+
+        private async void LoadIdentDataAsync()
+        {
+            try
+            {
+                await Task.Run(() => LoadData());
+
+                // After loading the data, update the UI on the main thread
+                RunOnUiThread(() =>
+                {
+                    if (savedIdents != null)
+                    {
+                        tbIdentAdapter = new CustomAutoCompleteAdapter<string>(this, Android.Resource.Layout.SimpleDropDownItem1Line, savedIdents);
+                        tbIdent.Adapter = tbIdentAdapter;
+                        tbIdentAdapter.SingleItemEvent += TbIdentAdapter_SingleItemEvent;
+                    }
+                });
+            } catch(Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
+        }
+
+        private void LoadData()
+        {
+            try
+            {
+                ISharedPreferences sharedPreferences = PreferenceManager.GetDefaultSharedPreferences(Application.Context);
+                string savedIdentsJson = sharedPreferences.GetString("idents", "");
+
+                if (!string.IsNullOrEmpty(savedIdentsJson))
+                {
+                    LoaderManifest.LoaderManifestLoopResources(this);
+                    savedIdents = JsonConvert.DeserializeObject<List<string>>(savedIdentsJson);
+                    LoaderManifest.LoaderManifestLoopStop(this);
+                }
+            } catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
+        }
+
+
+
+
+
         private async void TbIdent_TextChanged(object? sender, Android.Text.TextChangedEventArgs e)
         {
-            if(e.Text.ToString() == string.Empty)
+            try
             {
-                await ProcessIdent(true);
+                if (e.Text.ToString() == string.Empty)
+                {
+                    await ProcessIdent(true);
+                }
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
             }
         }
 
         private async void TbIdentAdapter_SingleItemEvent(string barcode)
         {
-            var item = tbIdentAdapter.GetItem(0);
-            tbIdent.SetText(item.ToString(), false);
-            await ProcessIdent(false);
-            tbIdent.SelectAll();
-            
+            try
+            {
+                var item = tbIdentAdapter.GetItem(0);
+                tbIdent.SetText(item.ToString(), false);
+                await ProcessIdent(false);
+                tbIdent.SelectAll();
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
         }
 
 
