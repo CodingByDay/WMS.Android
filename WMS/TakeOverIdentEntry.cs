@@ -21,7 +21,7 @@ using static Android.Renderscripts.Sampler;
 using AlertDialog = Android.App.AlertDialog;
 namespace WMS
 {
-    [Activity(Label = "TakeOverIdentEntry", ScreenOrientation = ScreenOrientation.Portrait)]
+    [Activity(Label = "WMS")]
     public class TakeOverIdentEntry : CustomBaseActivity, IBarcodeResult
 
     {
@@ -114,14 +114,13 @@ namespace WMS
 
                 tbIdent.RequestFocus();
                 tbIdent.TextChanged += TbIdent_TextChanged;
+
                 // These are read only. 6.6.2024 JJ
                 tbOrder.Enabled = false;
                 tbConsignee.Enabled = false;
                 tbDeliveryDeadline.Enabled = false;
                 tbQty.Enabled = false;
-
-                // Services needed because of the external scanner. 8. jul. 2024
-
+                tbNaziv.Enabled = false;
 
                 LoadIdentDataAsync();
             }

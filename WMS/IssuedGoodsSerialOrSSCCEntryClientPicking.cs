@@ -18,7 +18,7 @@ using AlertDialog = Android.App.AlertDialog;
 using WebApp = TrendNET.WMS.Device.Services.WebApp;
 namespace WMS
 {
-    [Activity(Label = "IssuedGoodsSerialOrSSCCEntryClientPicking", ScreenOrientation = ScreenOrientation.Portrait)]
+    [Activity(Label = "WMS")]
     public class IssuedGoodsSerialOrSSCCEntryClientPicking : CustomBaseActivity, IBarcodeResult
     {
 

@@ -15,7 +15,7 @@ using AlertDialog = Android.App.AlertDialog;
 
 namespace WMS
 {
-    [Activity(Label = "IssuedGoodsIdentEntry", ScreenOrientation = ScreenOrientation.Portrait)]
+    [Activity(Label = "WMS")]
     public class IssuedGoodsIdentEntry : CustomBaseActivity, IBarcodeResult
     {
         private CustomAutoCompleteTextView tbIdent;
@@ -411,7 +411,7 @@ namespace WMS
                 tbConsignee.Enabled = false;
                 tbDeliveryDeadline.Enabled = false;
                 tbQty.Enabled = false;
-
+                tbNaziv.Enabled = false;
 
                 LoadIdentDataAsync();
 

@@ -13,7 +13,7 @@ using WMS.ExceptionStore;
 using AlertDialog = Android.App.AlertDialog;
 namespace WMS
 {
-    [Activity(Label = "RecalculateInventory")]
+    [Activity(Label = "WMS")]
     public class RecalculateInventory : CustomBaseActivity, IBarcodeResult
     {
 
@@ -90,13 +90,8 @@ namespace WMS
                     savedIdents = JsonConvert.DeserializeObject<List<string>>(savedIdentsJson);
                 }
                 tbIdent.LongClick += ClearTheFields;
-                tbIdentAdapter = new CustomAutoCompleteAdapter<string>(this, Android.Resource.Layout.SimpleDropDownItem1Line, new List<string>());
-                tbIdent.Adapter = tbIdentAdapter;
-                tbIdent.TextChanged += (sender, e) =>
-                {
-                    string userInput = e.Text.ToString();
-                    UpdateSuggestions(userInput);
-                };
+          
+            
 
                 tbIdent.LongClick += ClearTheFields;
                 var DataAdapter = new CustomAutoCompleteAdapter<string>(this,
@@ -107,12 +102,59 @@ namespace WMS
                 _broadcastReceiver.ConnectionStatusChanged += OnNetworkStatusChanged;
                 Application.Context.RegisterReceiver(_broadcastReceiver,
                 new IntentFilter(ConnectivityManager.ConnectivityAction), ReceiverFlags.NotExported);
+
+
+                LoadIdentDataAsync();
             }
             catch (Exception ex)
             {
                 GlobalExceptions.ReportGlobalException(ex);
             }
         }
+
+
+        private async void LoadIdentDataAsync()
+        {
+            try
+            {
+                await Task.Run(() => LoadData());
+
+                // After loading the data, update the UI on the main thread
+                RunOnUiThread(() =>
+                {
+                    if (savedIdents != null)
+                    {
+                        tbIdentAdapter = new CustomAutoCompleteAdapter<string>(this, Android.Resource.Layout.SimpleDropDownItem1Line, savedIdents);
+                        tbIdent.Adapter = tbIdentAdapter;
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
+        }
+
+        private void LoadData()
+        {
+            try
+            {
+                ISharedPreferences sharedPreferences = PreferenceManager.GetDefaultSharedPreferences(Application.Context);
+                string savedIdentsJson = sharedPreferences.GetString("idents", "");
+
+                if (!string.IsNullOrEmpty(savedIdentsJson))
+                {
+                    LoaderManifest.LoaderManifestLoopResources(this);
+                    savedIdents = JsonConvert.DeserializeObject<List<string>>(savedIdentsJson);
+                    LoaderManifest.LoaderManifestLoopStop(this);
+                }
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
+        }
+
 
         private void UpdateSuggestions(string userInput)
         {

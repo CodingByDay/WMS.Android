@@ -7,7 +7,7 @@ using WMS.App;
 using WMS.ExceptionStore;
 namespace WMS
 {
-    [Activity(Label = "PrintingMenu")]
+    [Activity(Label = "WMS")]
     public class PrintingMenu : CustomBaseActivity
     {
         public static string target = App.Settings.device;

@@ -18,7 +18,7 @@ using AlertDialog = Android.App.AlertDialog;
 
 namespace WMS
 {
-    [Activity(Label = "ProductionPalette", ScreenOrientation = ScreenOrientation.Portrait)]
+    [Activity(Label = "WMS")]
     public class ProductionPalette : CustomBaseActivity, IBarcodeResult
 
     {

@@ -11,7 +11,7 @@ using WMS.Printing;
 
 namespace WMS
 {
-    [Activity(Label = "TakeOver2Orders", ScreenOrientation = ScreenOrientation.Portrait)]
+    [Activity(Label = "WMS")]
     public class TakeOver2Orders : CustomBaseActivity
     {
         private EditText tbIdent;

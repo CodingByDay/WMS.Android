@@ -12,7 +12,7 @@ using WMS.App;
 using WMS.ExceptionStore;
 namespace WMS
 {
-    [Activity(Label = "ProductionWorkOrderSetup", ScreenOrientation = ScreenOrientation.Portrait)]
+    [Activity(Label = "WMS")]
     public class ProductionWorkOrderSetup : CustomBaseActivity, IBarcodeResult
     {
         private NameValueObject moveHead = null;

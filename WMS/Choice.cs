@@ -4,7 +4,7 @@ using WMS.ExceptionStore;
 
 namespace WMS
 {
-    [Activity(Label = "choiceProduction")]
+    [Activity(Label = "WMS")]
     public class Choice : CustomBaseActivity
     {
         private Button production;

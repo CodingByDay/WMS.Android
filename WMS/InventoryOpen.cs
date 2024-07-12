@@ -10,7 +10,7 @@ using WMS.ExceptionStore;
 using WebApp = TrendNET.WMS.Device.Services.WebApp;
 namespace WMS
 {
-    [Activity(Label = "InventoryOpen", ScreenOrientation = ScreenOrientation.Portrait)]
+    [Activity(Label = "WMS")]
     public class InventoryOpen : CustomBaseActivity
     {
         private Spinner cbWarehouse;

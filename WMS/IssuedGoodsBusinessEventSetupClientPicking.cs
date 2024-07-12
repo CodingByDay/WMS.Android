@@ -10,7 +10,7 @@ using WMS.ExceptionStore;
 using AlertDialog = Android.App.AlertDialog;
 namespace WMS
 {
-    [Activity(Label = "IssuedGoodsBusinessEventSetupClientPicking", ScreenOrientation = ScreenOrientation.Portrait)]
+    [Activity(Label = "WMS")]
     public class IssuedGoodsBusinessEventSetupClientPicking : CustomBaseActivity
     {
         private int initial = 0;

@@ -19,7 +19,7 @@ using WebApp = TrendNET.WMS.Device.Services.WebApp;
 
 namespace WMS
 {
-    [Activity(Label = "InterWarehouseSerialOrSSCCEntry", ScreenOrientation = ScreenOrientation.Portrait)]
+    [Activity(Label = "WMS")]
     public class InterWarehouseSerialOrSSCCEntry : CustomBaseActivity, IBarcodeResult
     {
         private EditText? tbIdent;

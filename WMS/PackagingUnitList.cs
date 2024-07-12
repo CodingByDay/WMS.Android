@@ -13,7 +13,7 @@ using static Android.App.ActionBar;
 using WebApp = TrendNET.WMS.Device.Services.WebApp;
 namespace WMS
 {
-    [Activity(Label = "PackagingUnitList")]
+    [Activity(Label = "WMS")]
     public class PackagingUnitList : CustomBaseActivity
 
     {

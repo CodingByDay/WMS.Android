@@ -9,7 +9,7 @@ using WMS.App;
 using WMS.ExceptionStore;
 namespace WMS
 {
-    [Activity(Label = "SelectSubjectBeforeFinish", ScreenOrientation = ScreenOrientation.Portrait)]
+    [Activity(Label = "WMS")]
     public class SelectSubjectBeforeFinish : CustomBaseActivity
     {
         private int HeadID;

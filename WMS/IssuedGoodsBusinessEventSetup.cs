@@ -9,7 +9,7 @@ using WMS.App;
 using WMS.ExceptionStore;
 namespace WMS
 {
-    [Activity(Label = "IssuedGoodsBusinessEventSetup", ScreenOrientation = ScreenOrientation.Portrait)]
+    [Activity(Label = "WMS")]
     public class IssuedGoodsBusinessEventSetup : CustomBaseActivity
     {
         private int initial = 0;
@@ -433,15 +433,29 @@ namespace WMS
         {
             try
             {
-                // Fixing clicking the order without choosing an order...
-                if (cbExtra.Visibility == ViewStates.Visible && cbExtra.Text == string.Empty)
+                if(App.Settings.tablet)
                 {
-                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s286)}", ToastLength.Long).Show();
-                }
-                else
+                    if (rlExtra.Visibility == ViewStates.Visible && cbExtra.Text == string.Empty)
+                    {
+                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s286)}", ToastLength.Long).Show();
+                        return;
+                    }
+                    else
+                    {
+                        NextStep();
+                    }
+                } else
                 {
-                    NextStep();
-                }
+                    if (cbExtra.Visibility == ViewStates.Visible && cbExtra.Text == string.Empty)
+                    {
+                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s286)}", ToastLength.Long).Show();
+                        return;
+                    }
+                    else
+                    {
+                        NextStep();
+                    }
+                }          
             }
             catch (Exception ex)
             {

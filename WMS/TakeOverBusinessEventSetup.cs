@@ -9,7 +9,7 @@ using WMS.App;
 using WMS.ExceptionStore;
 namespace WMS
 {
-    [Activity(Label = "TakeOverBusinessEventSetup", ScreenOrientation = ScreenOrientation.Portrait)]
+    [Activity(Label = "WMS")]
     public class TakeOverBusinessEventSetup : CustomBaseActivity
     {
         private CustomAutoCompleteTextView cbDocType;

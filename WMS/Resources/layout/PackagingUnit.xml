@@ -179,15 +179,7 @@
             android:layout_marginRight="2dp"
             android:id="@+id/tbQty" />
 
-        <Button
-            android:text="@string/s94"
-            android:layout_width="74.0dp"
-            android:layout_height="33dp"
-            android:layout_marginTop="-5dp"
-            android:background="@color/rikoMain"
-            android:textColor="@color/white"
-            android:layout_marginLeft="4dp"
-            android:id="@+id/btNegate" />
+ 
 
     </LinearLayout>
     <TextView

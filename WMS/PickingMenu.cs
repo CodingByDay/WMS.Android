@@ -5,7 +5,7 @@ using TrendNET.WMS.Device.App;
 using WMS.ExceptionStore;
 namespace WMS
 {
-    [Activity(Label = "PickingMenu", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
+    [Activity(Label = "WMS")]
     public class PickingMenu : CustomBaseActivity
     {
         private Button ident;

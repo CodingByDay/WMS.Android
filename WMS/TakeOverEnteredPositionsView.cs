@@ -14,7 +14,7 @@ using AlertDialog = Android.App.AlertDialog;
 using WebApp = TrendNET.WMS.Device.Services.WebApp;
 namespace WMS
 {
-    [Activity(Label = "TakeOverEnteredPositionsView", ScreenOrientation = ScreenOrientation.Portrait)]
+    [Activity(Label = "WMS")]
     public class TakeOverEnteredPositionsView : CustomBaseActivity
     {
         private TextView lbInfo;

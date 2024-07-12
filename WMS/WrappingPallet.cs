@@ -8,7 +8,7 @@ using WMS.ExceptionStore;
 using AlertDialog = Android.App.AlertDialog;
 namespace WMS
 {
-    [Activity(Label = "WrappingPallet")]
+    [Activity(Label = "WMS")]
     public class WrappingPallet : CustomBaseActivity, IBarcodeResult
     {
         private EditText pallet;

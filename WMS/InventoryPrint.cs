@@ -10,7 +10,7 @@ using WMS.ExceptionStore;
 using WMS.Printing;
 namespace WMS
 {
-    [Activity(Label = "InventoryPrint", ScreenOrientation = ScreenOrientation.Portrait)]
+    [Activity(Label = "WMS")]
     public class InventoryPrint : CustomBaseActivity
     {
         private Spinner cbWarehouse;

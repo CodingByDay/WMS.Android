@@ -14,7 +14,7 @@ using AlertDialog = Android.App.AlertDialog;
 using WebApp = TrendNET.WMS.Device.Services.WebApp;
 namespace WMS
 {
-    [Activity(Label = "IssuedGoodsEnteredPositionsView", ScreenOrientation = ScreenOrientation.Portrait)]
+    [Activity(Label = "WMS")]
     public class IssuedGoodsEnteredPositionsView : CustomBaseActivity
     {
         private int displayedPosition = 0;

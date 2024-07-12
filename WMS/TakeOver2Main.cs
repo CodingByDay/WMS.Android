@@ -13,7 +13,7 @@ using WMS.Printing;
 
 namespace WMS
 {
-    [Activity(Label = "TakeOver2Main", ScreenOrientation = ScreenOrientation.Portrait)]
+    [Activity(Label = "WMS")]
     public class TakeOver2Main : CustomBaseActivity, IBarcodeResult
     {
         SoundPool soundPool;

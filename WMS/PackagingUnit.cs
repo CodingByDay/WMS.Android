@@ -14,7 +14,7 @@ using WebApp = TrendNET.WMS.Device.Services.WebApp;
 
 namespace WMS
 {
-    [Activity(Label = "PackagingUnit", ScreenOrientation = ScreenOrientation.Portrait)]
+    [Activity(Label = "WMS")]
     public class PackagingUnit : CustomBaseActivity, IBarcodeResult
     {
 
@@ -27,7 +27,6 @@ namespace WMS
         private EditText tbSSCC;
         private EditText tbSerialNo;
         private EditText tbQty;
-        private Button btNegate;
         private Button btNew;
         private Button btList;
         private Button btFinish;
@@ -102,9 +101,9 @@ namespace WMS
             {
                 GlobalExceptions.ReportGlobalException(ex);
             }
-
-
         }
+
+
         private async Task ProcessIdent()
         {
             try
@@ -384,7 +383,6 @@ namespace WMS
                 tbSerialNo = FindViewById<EditText>(Resource.Id.tbSerialNo);
                 tbQty = FindViewById<EditText>(Resource.Id.tbQty);
                 label = FindViewById<TextView>(Resource.Id.label);
-                btNegate = FindViewById<Button>(Resource.Id.btNegate);
                 btNew = FindViewById<Button>(Resource.Id.btNew);
                 btList = FindViewById<Button>(Resource.Id.btList);
                 btFinish = FindViewById<Button>(Resource.Id.btFinish);
@@ -396,7 +394,6 @@ namespace WMS
                 btList.Click += BtList_Click;
                 btFinish.Click += BtFinish_Click;
                 btExit.Click += BtExit_Click;
-                btNegate.Click += BtNegate_Click;
 
                 barcode2D = new Barcode2D(this, this);
                 tbIdentName.FocusChange += TbIdentName_FocusChange;
@@ -507,26 +504,7 @@ namespace WMS
             }
         }
 
-        private void BtNegate_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                var qty = tbQty.Text;
-                if (qty.Trim().StartsWith("-"))
-                {
-                    qty = qty.Trim().Substring(1);
-                }
-                else
-                {
-                    qty = "-" + qty;
-                }
-                tbQty.Text = qty;
-            }
-            catch (Exception ex)
-            {
-                GlobalExceptions.ReportGlobalException(ex);
-            }
-        }
+     
 
         private void BtExit_Click(object sender, EventArgs e)
         {

@@ -287,7 +287,6 @@ namespace WMS
             try
             {
                 App.Settings.restart = false;
-
                 ChangeTheOrientation();
                 base.OnCreate(savedInstanceState);
                 Xamarin.Essentials.Platform.Init(this, savedInstanceState);

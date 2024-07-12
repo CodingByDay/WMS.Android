@@ -17,7 +17,7 @@ using AlertDialog = Android.App.AlertDialog;
 using WebApp = TrendNET.WMS.Device.Services.WebApp;
 namespace WMS
 {
-    [Activity(Label = "TakeOverSerialOrSSCCEntry", ScreenOrientation = ScreenOrientation.Portrait)]
+    [Activity(Label = "WMS")]
     public class TakeOverSerialOrSSCCEntry : CustomBaseActivity, IBarcodeResult
     {
         private NameValueObject openIdent = (NameValueObject)InUseObjects.Get("OpenIdent");

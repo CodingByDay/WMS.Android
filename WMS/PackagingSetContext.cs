@@ -11,10 +11,10 @@ using WMS.App;
 using WMS.ExceptionStore;
 namespace WMS
 {
-    [Activity(Label = "PackagingSetContext", ScreenOrientation = ScreenOrientation.Portrait)]
+    [Activity(Label = "WMS")]
     public class PackagingSetContext : CustomBaseActivity, IBarcodeResult
     {
-        private Spinner cbWarehouse;
+        private CustomAutoCompleteTextView cbWarehouse;
         private EditText tbLocation;
         private EditText tbSSCC;
         private Button btConfirm;
@@ -60,8 +60,6 @@ namespace WMS
                 {
                     base.RequestedOrientation = ScreenOrientation.Landscape;
                     base.SetContentView(Resource.Layout.PackagingSetContextTablet);
-
-
                 }
                 else
                 {
@@ -73,7 +71,7 @@ namespace WMS
                 _customToolbar.SetNavigationIcon(App.Settings.RootURL + "/Services/Logo");
                 SetSupportActionBar(_customToolbar._toolbar);
                 SupportActionBar.SetDisplayShowTitleEnabled(false);
-                cbWarehouse = FindViewById<Spinner>(Resource.Id.cbWarehouse);
+                cbWarehouse = FindViewById<CustomAutoCompleteTextView>(Resource.Id.cbWarehouse);
                 tbLocation = FindViewById<EditText>(Resource.Id.tbLocation);
                 tbSSCC = FindViewById<EditText>(Resource.Id.tbSSCC);
                 btConfirm = FindViewById<Button>(Resource.Id.btConfirm);
@@ -245,7 +243,7 @@ namespace WMS
         {
             try
             {
-                Spinner spinner = (Spinner)sender;
+                CustomAutoCompleteTextView spinner = (CustomAutoCompleteTextView)sender;
                 if (e.Position != 0)
                 {
                     temporaryPositionWarehouse = e.Position;

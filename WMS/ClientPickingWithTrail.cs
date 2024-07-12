@@ -14,7 +14,7 @@ using AlertDialog = Android.App.AlertDialog;
 
 namespace WMS
 {
-    [Activity(Label = "ClientPicking", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
+    [Activity(Label = "WMS")]
     public class ClientPickingWithTrail : CustomBaseActivity, IBarcodeResult
     {
         private NameValueObject moveHead = (NameValueObject)InUseObjects.Get("MoveHead");

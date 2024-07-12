@@ -95,5 +95,33 @@ namespace WMS.App
         }
 
 
+
+
+        public static void StartActivityWithAlias(Context context, Type activityClass, string aliasName)
+        {
+            bool useAlias = App.Settings.tablet;
+            Intent intent = new Intent();
+            intent.SetAction(Intent.ActionMain);
+            intent.AddCategory(Intent.CategoryLauncher);
+            intent.SetFlags(ActivityFlags.NewTask);
+
+            if (useAlias)
+            {
+                // Define the component name for the activity alias
+                ComponentName cn = new ComponentName(context.ApplicationContext, aliasName);
+                intent.SetComponent(cn);
+            }
+            else
+            {
+                // Use the main activity class directly
+                intent.SetClass(context, activityClass);
+            }
+
+            // Start the activity
+            context.StartActivity(intent);
+        }
+
+
+
     }
 }

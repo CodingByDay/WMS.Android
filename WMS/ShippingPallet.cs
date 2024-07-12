@@ -9,7 +9,7 @@ using WMS.ExceptionStore;
 using AlertDialog = Android.App.AlertDialog;
 namespace WMS
 {
-    [Activity(Label = "ShippingPallet", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
+    [Activity(Label = "WMS")]
     public class ShippingPallet : CustomBaseActivity, IBarcodeResult
     {
         private EditText pallet;

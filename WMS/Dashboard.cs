@@ -2,7 +2,7 @@
 
 namespace WMS
 {
-    [Activity(Label = "Dashboard")]
+    [Activity(Label = "WMS")]
     public class Dashboard : CustomBaseActivity
     {
         protected override void OnCreate(Bundle savedInstanceState)

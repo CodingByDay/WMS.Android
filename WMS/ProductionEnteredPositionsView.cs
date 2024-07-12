@@ -15,7 +15,7 @@ using WebApp = TrendNET.WMS.Device.Services.WebApp;
 
 namespace WMS
 {
-    [Activity(Label = "ProductionEnteredPositionsView", ScreenOrientation = ScreenOrientation.Portrait)]
+    [Activity(Label = "WMS")]
     public class ProductionEnteredPositionsView : CustomBaseActivity
     {
         private TextView lbInfo;

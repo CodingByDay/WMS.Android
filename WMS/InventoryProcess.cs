@@ -14,7 +14,7 @@ using Timer = System.Timers.Timer;
 using WebApp = TrendNET.WMS.Device.Services.WebApp;
 namespace WMS
 {
-    [Activity(Label = "InventoryProcess", ScreenOrientation = ScreenOrientation.Portrait)]
+    [Activity(Label = "WMS")]
     public class InventoryProcess : CustomBaseActivity, IBarcodeResult
     {
         private Spinner cbWarehouse;

@@ -14,7 +14,7 @@ using WebApp = TrendNET.WMS.Device.Services.WebApp;
 
 namespace WMS
 {
-    [Activity(Label = "UnfinishedProductionView", ScreenOrientation = ScreenOrientation.Portrait)]
+    [Activity(Label = "WMS")]
     public class UnfinishedProductionView : CustomBaseActivity, ISwipeListener
 
     {

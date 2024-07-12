@@ -5,7 +5,7 @@ using WMS.App;
 using WMS.ExceptionStore;
 namespace WMS
 {
-    [Activity(Label = "MenuPallets")]
+    [Activity(Label = "WMS")]
     public class MenuPallets : CustomBaseActivity
     {
         private Button shipped;

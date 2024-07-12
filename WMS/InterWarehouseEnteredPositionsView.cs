@@ -14,7 +14,7 @@ using AlertDialog = Android.App.AlertDialog;
 using WebApp = TrendNET.WMS.Device.Services.WebApp;
 namespace WMS
 {
-    [Activity(Label = "InterWarehouseEnteredPositionsView", ScreenOrientation = ScreenOrientation.Portrait)]
+    [Activity(Label = "WMS")]
     public class InterWarehouseEnteredPositionsView : CustomBaseActivity
     {
         private EditText tbIdent;

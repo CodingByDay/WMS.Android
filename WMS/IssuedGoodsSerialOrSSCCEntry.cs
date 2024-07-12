@@ -20,7 +20,7 @@ using WebApp = TrendNET.WMS.Device.Services.WebApp;
 
 namespace WMS
 {
-    [Activity(Label = "IssuedGoodsSerialOrSSCCEntry", ScreenOrientation = ScreenOrientation.Portrait)]
+    [Activity(Label = "WMS")]
     public class IssuedGoodsSerialOrSSCCEntry : CustomBaseActivity, IBarcodeResult
     {
         private static bool? checkIssuedOpenQty = null;

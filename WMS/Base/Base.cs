@@ -1,4 +1,5 @@
 ﻿using Android.Content;
+using Android.Content.PM;
 using BarCode2D_Receiver;
 using System.Reflection;
 using WMS.App;
@@ -34,6 +35,7 @@ namespace WMS
 
         public CustomAutoCompleteTextView CurrentAutoCompleteInstance { get; set; }
         public bool OnlyOneSuggestion { get; set; } = false;
+        public ScreenOrientation Orientation { get; internal set; }
 
         // Reset method using reflection
         public void ResetValues()

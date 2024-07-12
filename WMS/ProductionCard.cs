@@ -14,7 +14,7 @@ using static Android.App.ActionBar;
 using AlertDialog = Android.App.AlertDialog;
 namespace WMS
 {
-    [Activity(Label = "ProductionCard", ScreenOrientation = ScreenOrientation.Portrait)]
+    [Activity(Label = "WMS")]
     public class ProductionCard : CustomBaseActivity
     {
         private EditText tbWorkOrder;

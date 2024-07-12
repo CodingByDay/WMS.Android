@@ -14,7 +14,7 @@ using WebApp = TrendNET.WMS.Device.Services.WebApp;
 
 namespace WMS
 {
-    [Activity(Label = "UnfinishedTakeoversView", ScreenOrientation = ScreenOrientation.Portrait)]
+    [Activity(Label = "WMS")]
     public class UnfinishedTakeoversView : CustomBaseActivity, ISwipeListener
     {
         private EditText tbBusEvent;

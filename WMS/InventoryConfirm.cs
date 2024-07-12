@@ -10,7 +10,7 @@ using WMS.ExceptionStore;
 using WebApp = TrendNET.WMS.Device.Services.WebApp;
 namespace WMS
 {
-    [Activity(Label = "InventoryConfirm", ScreenOrientation = ScreenOrientation.Portrait)]
+    [Activity(Label = "WMS")]
     public class InventoryConfirm : CustomBaseActivity
     {
         private TextView lbInfo;

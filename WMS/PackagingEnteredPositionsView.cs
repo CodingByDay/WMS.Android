@@ -15,7 +15,7 @@ using WebApp = TrendNET.WMS.Device.Services.WebApp;
 
 namespace WMS
 {
-    [Activity(Label = "PackagingEnteredPositionsView", ScreenOrientation = ScreenOrientation.Portrait)]
+    [Activity(Label = "WMS")]
     public class PackagingEnteredPositionsView : CustomBaseActivity
 
     {

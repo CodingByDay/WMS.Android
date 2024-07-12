@@ -19,7 +19,7 @@ using static Android.App.ActionBar;
 
 namespace WMS
 {
-    [Activity(Label = "CheckStock", ScreenOrientation = ScreenOrientation.Portrait, NoHistory = true)]
+    [Activity(Label = "WMS")]
     public class CheckStock : CustomBaseActivity, IBarcodeResult
     {
         private CustomAutoCompleteTextView cbWarehouses;

@@ -8,7 +8,7 @@ using WMS.ExceptionStore;
 using WMS.Printing;
 namespace WMS
 {
-    [Activity(Label = "PrintingSSCCCodes", ScreenOrientation = ScreenOrientation.Portrait)]
+    [Activity(Label = "WMS")]
     public class PrintingSSCCCodes : CustomBaseActivity
     {
         private EditText tbNum;

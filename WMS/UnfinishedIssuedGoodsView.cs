@@ -13,7 +13,7 @@ using static Android.App.ActionBar;
 using WebApp = TrendNET.WMS.Device.Services.WebApp;
 namespace WMS
 {
-    [Activity(Label = "UnfinishedIssuedGoodsView", ScreenOrientation = ScreenOrientation.Portrait)]
+    [Activity(Label = "WMS")]
     public class UnfinishedIssuedGoodsView : CustomBaseActivity, ISwipeListener
     {
 

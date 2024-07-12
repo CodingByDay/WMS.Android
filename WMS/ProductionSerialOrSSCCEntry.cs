@@ -17,7 +17,7 @@ using AlertDialog = Android.App.AlertDialog;
 using WebApp = TrendNET.WMS.Device.Services.WebApp;
 namespace WMS
 {
-    [Activity(Label = "ProductionSerialOrSSCCEntry", ScreenOrientation = ScreenOrientation.Portrait)]
+    [Activity(Label = "WMS")]
     public class ProductionSerialOrSSCCEntry : CustomBaseActivity, IBarcodeResult
     {
         private NameValueObject moveHead = (NameValueObject)InUseObjects.Get("MoveHead");

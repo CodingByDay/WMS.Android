@@ -1,5 +1,6 @@
 ﻿using Android.Content;
 using Android.Content.PM;
+using Android.Content.Res;
 using Android.Graphics;
 using Android.Graphics.Drawables;
 using Android.Net;
@@ -15,7 +16,7 @@ using static Android.App.ActionBar;
 using static Xamarin.ANRWatchDog.ANRWatchDog;
 namespace WMS
 {
-    [Activity(Label = "MainMenu", ScreenOrientation = ScreenOrientation.Portrait)]
+    [Activity(Label = "WMS")]
     public class MainMenu : CustomBaseActivity
     {
         private List<Button> buttons = new List<Button>();
@@ -46,6 +47,7 @@ namespace WMS
         {
             try
             {
+
                 base.OnCreate(savedInstanceState);
                 SetTheme(Resource.Style.AppTheme_NoActionBar);
 
@@ -177,9 +179,14 @@ namespace WMS
             }
         }
 
-    
 
 
+        public override void OnConfigurationChanged(Configuration newConfig)
+        {
+            base.OnConfigurationChanged(newConfig);
+            // Handle configuration changes manually if needed
+            // Example: Adjust layout or UI components based on new configuration
+        }
 
         private void InstallApk(string apkFilePath)
         {
@@ -248,7 +255,7 @@ namespace WMS
         {
             try
             {
-                StartActivity(typeof(RapidTakeoverPhone));
+                StartActivity(typeof(RapidTakeover));
             }
             catch (Exception ex)
             {

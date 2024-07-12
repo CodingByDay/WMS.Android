@@ -19,7 +19,7 @@ namespace WMS
 {
 
 
-    [Activity(Label = "IssuedGoodsIdentEntryWithTrail")]
+    [Activity(Label = "WMS")]
     public class IssuedGoodsIdentEntryWithTrail : CustomBaseActivity, IBarcodeResult
     {
 

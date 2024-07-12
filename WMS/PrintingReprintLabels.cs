@@ -12,7 +12,7 @@ using WMS.ExceptionStore;
 using WMS.Printing;
 namespace WMS
 {
-    [Activity(Label = "PrintingReprintLabels", ScreenOrientation = ScreenOrientation.Portrait)]
+    [Activity(Label = "WMS")]
     public class PrintingReprintLabels : CustomBaseActivity, IBarcodeResult
     {
         private EditText tbIdent;

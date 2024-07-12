@@ -6,7 +6,7 @@ using WMS.App;
 using WMS.ExceptionStore;
 namespace WMS
 {
-    [Activity(Label = "InventoryMenu")]
+    [Activity(Label = "WMS")]
     public class InventoryMenu : CustomBaseActivity
     {
 

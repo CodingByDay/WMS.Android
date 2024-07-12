@@ -10,7 +10,7 @@ using WMS.ExceptionStore;
 using static Android.Widget.AdapterView;
 namespace WMS
 {
-    [Activity(Label = "InterWarehouseBusinessEventSetup", ScreenOrientation = ScreenOrientation.Portrait)]
+    [Activity(Label = "WMS")]
     public class InterWarehouseBusinessEventSetup : CustomBaseActivity
     {
         private CustomAutoCompleteTextView cbDocType;
