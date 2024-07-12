@@ -111,6 +111,7 @@ namespace WMS
                 tbIssueLocation = FindViewById<EditText>(Resource.Id.tbIssueLocation);
                 tbLocation = FindViewById<EditText>(Resource.Id.tbLocation);
                 tbPacking = FindViewById<EditText>(Resource.Id.tbPacking);
+                tbPacking.SetSelectAllOnFocus(true);
                 tbSSCC.InputType = Android.Text.InputTypes.ClassNumber;
                 lbQty = FindViewById<TextView>(Resource.Id.lbQty);
                 imagePNG = FindViewById<ImageView>(Resource.Id.imagePNG);
@@ -137,7 +138,6 @@ namespace WMS
                 ColorFields();
 
                 SetUpProcessDependentButtons();
-
                 // Main logic for the entry
                 SetUpForm();
             }
@@ -263,11 +263,14 @@ namespace WMS
         {
             try
             {
+
                 if (e.KeyCode == Keycode.Enter && e.Event.Action == KeyEventActions.Down)
                 {
+                    e.Handled = true;
+
                     await FillDataBySSCC(tbSSCC.Text);
                 }
-                e.Handled = false;
+              
             }
             catch (Exception ex)
             {

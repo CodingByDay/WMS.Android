@@ -6,6 +6,7 @@ using Android.Media;
 using Android.Net;
 using Android.Views;
 using BarCode2D_Receiver;
+using Com.Jsibbold.Zoomage;
 using TrendNET.WMS.Core.Data;
 using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
@@ -60,6 +61,10 @@ namespace WMS
         private List<TakeoverDocument> data = new List<TakeoverDocument>();
         private double packaging;
         private double quantity;
+        private ZoomageView warehouseImage;
+        private Dialog popupDialog;
+        private ZoomageView? image;
+
         protected async override void OnCreate(Bundle savedInstanceState)
         {
             try
@@ -71,9 +76,12 @@ namespace WMS
                 {
                     base.RequestedOrientation = ScreenOrientation.Landscape;
                     base.SetContentView(Resource.Layout.TakeOverSerialOrSSCCEntryTablet);
+                    warehouseImage = FindViewById<ZoomageView>(Resource.Id.warehousePNG);
+                    warehouseImage.Visibility = ViewStates.Invisible;
                     listData = FindViewById<ListView>(Resource.Id.listData);
                     dataAdapter = UniversalAdapterHelper.GetTakeoverSerialOrSSCCEntry(this, data);
                     listData.Adapter = dataAdapter;
+                    ShowPictureIdent(openIdent.GetString("Code"));
                 }
                 else
                 {
@@ -91,6 +99,7 @@ namespace WMS
                 tbSerialNum = FindViewById<EditText>(Resource.Id.tbSerialNum);
                 tbLocation = FindViewById<EditText>(Resource.Id.tbLocation);
                 tbPacking = FindViewById<EditText>(Resource.Id.tbPacking);
+                tbPacking.SetSelectAllOnFocus(true);
                 tbIdent.InputType = Android.Text.InputTypes.ClassNumber;
                 tbSSCC.InputType = Android.Text.InputTypes.ClassNumber;
                 tbLocation.InputType = Android.Text.InputTypes.ClassNumber;
@@ -137,6 +146,62 @@ namespace WMS
             }
         }
 
+
+        private void ShowPictureIdent(string ident)
+        {
+            try
+            {
+                Android.Graphics.Bitmap show = Services.GetImageFromServerIdent(moveHead.GetString("Wharehouse"), ident);
+                Drawable d = new BitmapDrawable(Resources, show);
+                warehouseImage.SetImageDrawable(d);
+                warehouseImage.Visibility = ViewStates.Visible;
+                warehouseImage.Click += (e, ev) => { ImageClick(d); };
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
+
+        }
+        private void PopupDialog_KeyPress(object sender, DialogKeyEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keycode.Back)
+                {
+                    popupDialog.Dismiss();
+                    popupDialog.Hide();
+
+                }
+            } catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
+        }
+
+
+
+        private void ImageClick(Drawable d)
+        {
+            try
+            {
+                popupDialog = new Dialog(this);
+                popupDialog.SetContentView(Resource.Layout.WarehousePicture);
+                popupDialog.Window.SetSoftInputMode(SoftInput.AdjustResize);
+                popupDialog.Show();
+                popupDialog.KeyPress += PopupDialog_KeyPress;
+                popupDialog.Window.SetLayout(LayoutParams.MatchParent, LayoutParams.WrapContent);
+                popupDialog.Window.SetBackgroundDrawableResource(Android.Resource.Color.HoloBlueBright);
+                image = popupDialog.FindViewById<ZoomageView>(Resource.Id.image);
+                image.SetMinimumHeight(500);
+                image.SetMinimumWidth(800);
+                image.SetImageDrawable(d);
+                // Access Pop up layout fields like below
+            } catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
+        }
         private async Task fillListAdapter()
         {
             try
@@ -264,7 +329,6 @@ namespace WMS
             }
         }
 
-
         private void ColorFields()
         {
             try
@@ -328,6 +392,7 @@ namespace WMS
                     quantity = order.Quantity ?? 0;
                     if (order != null)
                     {
+
                         if (packaging != -1 && packaging <= quantity)
                         {
                             lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + quantity.ToString(await CommonData.GetQtyPictureAsync(this)) + " )";
