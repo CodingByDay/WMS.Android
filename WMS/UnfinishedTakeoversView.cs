@@ -42,6 +42,7 @@ namespace WMS
         private string finalString;
         private int selected = 0;
         private int selectedItem;
+        private SearchableSpinner searchableSpinner;
 
         protected async override void OnCreate(Bundle savedInstanceState)
         {
@@ -90,6 +91,17 @@ namespace WMS
                 btDelete.Click += BtDelete_Click;
                 btNew.Click += BtNew_Click;
                 btLogout.Click += BtLogout_Click;
+
+
+                searchableSpinner = FindViewById<SearchableSpinner>(Resource.Id.searchableSpinner);
+
+                var items = new List<string>
+                {
+                    "Apple", "Banana", "Cherry", "Date", "Elderberry", "Fig", "Grape", "Honeydew"
+                };
+
+                searchableSpinner.SetItems(items);
+
 
                 InUseObjects.Clear();
 

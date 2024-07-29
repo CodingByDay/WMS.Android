@@ -50,6 +50,12 @@
             android:layout_marginRight="2dp"
             android:id="@+id/tbBusEvent" />
 
+        <WMS.SearchableSpinner
+            android:id="@+id/searchableSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" 
+        />
+
     </LinearLayout>
 
     <LinearLayout
