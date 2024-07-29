@@ -5,12 +5,14 @@ using Android.Views;
 using Android.Widget;
 using Android.App;
 using System.Collections.Generic;
+using Org.Apache.Commons.Logging;
 
 namespace WMS
 {
     public class SearchableSpinner : LinearLayout
     {
-        private EditText editText;
+        public EditText spinnerTextValueField { get; set; }
+
         private ImageView icon;
         private List<string> items;
         private Context context;
@@ -47,7 +49,7 @@ namespace WMS
             // Inflate your custom layout
             Inflate(context, Resource.Layout.SearchableSpinnerRepresentation, this);
 
-            editText = FindViewById<EditText>(Resource.Id.editText);
+            spinnerTextValueField = FindViewById<EditText>(Resource.Id.editText);
             icon = FindViewById<ImageView>(Resource.Id.icon);
 
             icon.Click += (s, e) =>
@@ -65,12 +67,13 @@ namespace WMS
             var searchViewInDialog = view.FindViewById<SearchView>(Resource.Id.searchView);
             var listViewInDialog = view.FindViewById<ListView>(Resource.Id.listView);
 
+            // Create an ArrayAdapter with the list of items
             var popupAdapter = new ArrayAdapter<string>(context, Android.Resource.Layout.SimpleListItem1, items);
             listViewInDialog.Adapter = popupAdapter;
 
+            // Filter items based on search query
             searchViewInDialog.QueryTextChange += (s, e) =>
             {
-                // Filter list based on search query
                 var filteredItems = string.IsNullOrEmpty(e.NewText)
                     ? items
                     : items.FindAll(item => item.ToLower().Contains(e.NewText.ToLower()));
@@ -79,27 +82,39 @@ namespace WMS
                 popupAdapter.NotifyDataSetChanged();
             };
 
+            // Create the dialog
+            var dialog = builder.SetView(view)
+                                .SetNegativeButton("Cancel", (s, e) => {
+                                    // The dialog will be dismissed automatically
+                                })
+                                .Create();
+
+            // Handle item selection
             listViewInDialog.ItemClick += (s, e) =>
             {
-                // Handle item selection
                 selectedItem = popupAdapter.GetItem(e.Position);
-                editText.Text = selectedItem; // Update EditText with the selected item
+                spinnerTextValueField.Text = selectedItem; // Update EditText with the selected item
+                dialog.Dismiss(); // Close the dialog
             };
 
-            builder.SetView(view);
-            builder.SetPositiveButton("OK", (s, e) =>
-            {
-                // Handle OK button if necessary
-            });
-
-            builder.SetNegativeButton("Cancel", (s, e) => { });
-
-            builder.Create().Show();
+            // Show the dialog
+            dialog.Show();
         }
+
 
         public void SetItems(List<string> items)
         {
             this.items = items;
+        }
+
+        public void ColorTheRepresentation(int colorChoice)
+        {
+           switch(colorChoice)
+            {
+                case 1:
+                    spinnerTextValueField.SetBackgroundColor(Android.Graphics.Color.Aqua);
+                    break;
+            }
         }
     }
 }

@@ -121,18 +121,13 @@
             android:paddingLeft="4dp"
             android:paddingTop="4dp"
             android:text="@string/s50"
-/>
+        />
 
-        <EditText
-            android:textStyle="bold"
-            android:singleLine="true"
+        <WMS.SearchableSpinner
+            android:id="@+id/searchableSpinnerLocation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0.50"
-            android:paddingTop="5dp"
-            android:background="@drawable/editText_bg_grey"
-            android:layout_marginRight="2dp"
-            android:id="@+id/tbLocation" />
+        />
 
     </LinearLayout>
 

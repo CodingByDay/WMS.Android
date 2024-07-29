@@ -24,6 +24,9 @@
         android:textColor="@color/rikoMain"
         android:text="@string/s12"
         android:id="@+id/lbInfo" />
+
+
+
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -50,11 +53,7 @@
             android:layout_marginRight="2dp"
             android:id="@+id/tbBusEvent" />
 
-        <WMS.SearchableSpinner
-            android:id="@+id/searchableSpinner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" 
-        />
+    
 
     </LinearLayout>
 

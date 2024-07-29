@@ -30,7 +30,6 @@ namespace WMS
         private EditText tbIdent;
         private EditText tbSSCC;
         private EditText tbSerialNum;
-        private EditText tbLocation;
         private EditText tbPacking;
         private Button btSaveOrUpdate;
         private Button btCreate;
@@ -64,6 +63,7 @@ namespace WMS
         private ZoomageView warehouseImage;
         private Dialog popupDialog;
         private ZoomageView? image;
+        private SearchableSpinner searchableSpinnerLocation;
 
         protected async override void OnCreate(Bundle savedInstanceState)
         {
@@ -97,12 +97,10 @@ namespace WMS
                 tbIdent = FindViewById<EditText>(Resource.Id.tbIdent);
                 tbSSCC = FindViewById<EditText>(Resource.Id.tbSSCC);
                 tbSerialNum = FindViewById<EditText>(Resource.Id.tbSerialNum);
-                tbLocation = FindViewById<EditText>(Resource.Id.tbLocation);
                 tbPacking = FindViewById<EditText>(Resource.Id.tbPacking);
                 tbPacking.SetSelectAllOnFocus(true);
                 tbIdent.InputType = Android.Text.InputTypes.ClassNumber;
                 tbSSCC.InputType = Android.Text.InputTypes.ClassNumber;
-                tbLocation.InputType = Android.Text.InputTypes.ClassNumber;
                 btSaveOrUpdate = FindViewById<Button>(Resource.Id.btSaveOrUpdate);
                 btCreate = FindViewById<Button>(Resource.Id.btCreate);
                 btFinish = FindViewById<Button>(Resource.Id.btFinish);
@@ -119,6 +117,14 @@ namespace WMS
                 btFinish.Click += BtFinish_Click;
                 btOverview.Click += BtOverview_Click;
                 btBack.Click += BtBack_Click;
+
+
+                searchableSpinnerLocation = FindViewById<SearchableSpinner>(Resource.Id.searchableSpinnerLocation);
+
+                var locations = await HelperMethods.GetLocationsForGivenWarehouse(moveHead.GetString("Wharehouse"));
+
+                searchableSpinnerLocation.SetItems(locations);
+                searchableSpinnerLocation.ColorTheRepresentation(1);
 
                 // Method calls
 
@@ -338,7 +344,6 @@ namespace WMS
                 {
                     tbSSCC.SetBackgroundColor(Android.Graphics.Color.Aqua);
                     tbSerialNum.SetBackgroundColor(Android.Graphics.Color.Aqua);
-                    tbLocation.SetBackgroundColor(Android.Graphics.Color.Aqua);
                 });
             }
             catch (Exception ex)
@@ -372,7 +377,7 @@ namespace WMS
                     tbIdent.Text = moveItem.GetString("IdentName");
                     tbSerialNum.Text = moveItem.GetString("SerialNo");
                     tbSSCC.Text = moveItem.GetString("SSCC");
-                    tbLocation.Text = moveItem.GetString("Location");
+                    searchableSpinnerLocation.spinnerTextValueField.Text = moveItem.GetString("Location");
                     tbPacking.Text = moveItem.GetDouble("Qty").ToString();
                     lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + moveItem.GetDouble("Qty").ToString() + " )";
                     btCreate.Text = $"{Resources.GetString(Resource.String.s290)}";
@@ -380,7 +385,7 @@ namespace WMS
                     tbIdent.Enabled = false;
                     tbSerialNum.Enabled = false;
                     tbSSCC.Enabled = false;
-                    tbLocation.Enabled = false;
+                    searchableSpinnerLocation.spinnerTextValueField.Enabled = false;
                 }
                 else
                 {
@@ -408,7 +413,7 @@ namespace WMS
                         }
 
                         await GetConnectedPositions(order.Order, order.Position ?? -1, order.Ident);
-                        tbLocation.Text = await CommonData.GetSettingAsync("DefaultPaletteLocation", this);
+                        searchableSpinnerLocation.spinnerTextValueField.Text = await CommonData.GetSettingAsync("DefaultPaletteLocation", this);
 
                         tbPacking.RequestFocus();
                         tbPacking.SelectAll();
@@ -433,7 +438,7 @@ namespace WMS
 
                         await GetConnectedPositions(code2d.__helper__convertedOrder, code2d.__helper__position, code2d.ident);
 
-                        tbLocation.Text = await CommonData.GetSettingAsync("DefaultPaletteLocation", this);
+                        searchableSpinnerLocation.spinnerTextValueField.Text = await CommonData.GetSettingAsync("DefaultPaletteLocation", this);
                         // Reset the 2d code to nothing
                         Base.Store.code2D = null;
 
@@ -444,7 +449,7 @@ namespace WMS
                     {
                         // This is the orderless process.
                         qtyCheck = 10000000;
-                        tbLocation.Text = await CommonData.GetSettingAsync("DefaultPaletteLocation", this);
+                        searchableSpinnerLocation.spinnerTextValueField.Text = await CommonData.GetSettingAsync("DefaultPaletteLocation", this);
                         lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + Resources.GetString(Resource.String.s335) + " )";
                         stock = qtyCheck;
                         tbPacking.RequestFocus();
@@ -895,7 +900,7 @@ namespace WMS
                 RunOnUiThread(() =>
                 {
                     // TODO: Add a way to check serial numbers
-                    location = tbLocation.Text;
+                    location = searchableSpinnerLocation.spinnerTextValueField.Text;
 
                 });
 
@@ -949,7 +954,7 @@ namespace WMS
                         moveItem.SetDouble("Factor", 1);
                         moveItem.SetDouble("Qty", Convert.ToDouble(tbPacking.Text.Trim()));
                         moveItem.SetInt("Clerk", Services.UserID());
-                        moveItem.SetString("Location", tbLocation.Text.Trim());
+                        moveItem.SetString("Location", searchableSpinnerLocation.spinnerTextValueField.Text.Trim());
                         moveItem.SetString("Palette", "1");
 
 
@@ -1160,7 +1165,7 @@ namespace WMS
                         moveItem.SetDouble("Factor", 1);
                         moveItem.SetDouble("Qty", Convert.ToDouble(tbPacking.Text.Trim()));
                         moveItem.SetInt("Clerk", Services.UserID());
-                        moveItem.SetString("Location", tbLocation.Text.Trim());
+                        moveItem.SetString("Location", searchableSpinnerLocation.spinnerTextValueField.Text.Trim());
                         moveItem.SetString("Palette", "1");
 
 
@@ -1331,12 +1336,12 @@ namespace WMS
 
                         }
                     }
-                    else if (tbLocation.HasFocus)
+                    else if (searchableSpinnerLocation.spinnerTextValueField.HasFocus)
                     {
                         if (barcode != "Scan fail")
                         {
 
-                            tbLocation.Text = barcode;
+                            searchableSpinnerLocation.spinnerTextValueField.Text = barcode;
 
                         }
                     }

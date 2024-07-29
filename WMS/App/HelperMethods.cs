@@ -2,6 +2,7 @@
 using Android.Views;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
+using TrendNET.WMS.Device.Services;
 
 namespace WMS.App
 {
@@ -121,7 +122,27 @@ namespace WMS.App
             context.StartActivity(intent);
         }
 
+        public static async Task<List<String>> GetLocationsForGivenWarehouse(string warehouse)
+        {
+            List<string> result = new List<string>();
 
+            await Task.Run(() =>
+            {
+                string error;
+                var locations = Services.GetObjectList("lo", out error, warehouse);
+                if (locations != null)
+                {
+                    locations.Items.ForEach(x =>
+                    {
+                        var location = x.GetString("LocationID");
+                        result.Add(location);
+                        // Notify the adapter state change!
+                    });
+                }
+
+            });
+            return result;
+        }
 
     }
 }

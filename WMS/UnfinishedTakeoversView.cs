@@ -42,7 +42,6 @@ namespace WMS
         private string finalString;
         private int selected = 0;
         private int selectedItem;
-        private SearchableSpinner searchableSpinner;
 
         protected async override void OnCreate(Bundle savedInstanceState)
         {
@@ -68,7 +67,6 @@ namespace WMS
 
                 LoaderManifest.LoaderManifestLoopResources(this);
 
-
                 AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
                 var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
                 _customToolbar.SetNavigationIcon(App.Settings.RootURL + "/Services/Logo");
@@ -91,17 +89,6 @@ namespace WMS
                 btDelete.Click += BtDelete_Click;
                 btNew.Click += BtNew_Click;
                 btLogout.Click += BtLogout_Click;
-
-
-                searchableSpinner = FindViewById<SearchableSpinner>(Resource.Id.searchableSpinner);
-
-                var items = new List<string>
-                {
-                    "Apple", "Banana", "Cherry", "Date", "Elderberry", "Fig", "Grape", "Honeydew"
-                };
-
-                searchableSpinner.SetItems(items);
-
 
                 InUseObjects.Clear();
 
@@ -127,7 +114,6 @@ namespace WMS
                 _broadcastReceiver.ConnectionStatusChanged += OnNetworkStatusChanged;
                 Application.Context.RegisterReceiver(_broadcastReceiver,
                 new IntentFilter(ConnectivityManager.ConnectivityAction), ReceiverFlags.NotExported);
-
 
                 LoaderManifest.LoaderManifestLoopStop(this);
             }
