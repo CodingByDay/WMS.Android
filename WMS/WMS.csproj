@@ -142,6 +142,7 @@
     <None Remove="Resources\layout\RecalculateInventory.xml" />
     <None Remove="Resources\layout\RecalculateInventoryTablet.xml" />
     <None Remove="Resources\layout\restart.xml" />
+    <None Remove="Resources\layout\SearchableSpinner.xml" />
     <None Remove="Resources\layout\SelectSubjectBeforeFinish.xml" />
     <None Remove="Resources\layout\SelectSubjectBeforeFinishTablet.xml" />
     <None Remove="Resources\layout\Settings.xml" />
