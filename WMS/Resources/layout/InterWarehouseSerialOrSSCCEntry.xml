@@ -140,18 +140,11 @@
             android:paddingLeft="10dp"
             android:layout_marginRight="0dp" />
 
-        <EditText
-            android:textStyle="bold"
-            android:singleLine="true"
-            android:layout_width="wrap_content"
+        <WMS.SearchableSpinner
+            android:id="@+id/searchableSpinnerIssueLocation"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginLeft="0dp"
-            android:layout_weight="0.50"
-            android:paddingTop="4dp"
-            android:id="@+id/tbIssueLocation"
-            android:background="@drawable/editText_bg_grey"
-            />
+        />
 
     </LinearLayout>
     <LinearLayout
@@ -170,17 +163,11 @@
             android:text="@string/s82"
             android:layout_marginRight="0dp" />
 
-        <EditText
-            android:textStyle="bold"
-            android:singleLine="true"
-            android:layout_width="wrap_content"
+        <WMS.SearchableSpinner
+            android:id="@+id/searchableSpinnerReceiveLocation"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0.50"
-            android:layout_marginLeft="0dp"
-            android:paddingTop="4dp"
-            android:id="@+id/tbLocation"
-            android:background="@drawable/editText_bg_grey"
-            />
+        />
 
     </LinearLayout>
 

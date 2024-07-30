@@ -109,7 +109,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:paddingTop="5dp"
-                                     >
+     >
 
         <TextView
             android:textStyle="bold"
@@ -118,18 +118,13 @@
             android:text="@string/s140"
             android:paddingTop="5dp"
             android:paddingLeft="4dp"
-    />
+        />
 
-        <EditText
-            android:textStyle="bold"
-            android:singleLine="true"
+        <WMS.SearchableSpinner
+            android:id="@+id/searchableSpinnerIssueLocation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0.50"
-            android:paddingTop="5dp"
-            android:background="@drawable/editText_bg_grey"
-            android:layout_marginRight="2dp"
-            android:id="@+id/tbLocation" />
+        />
 
         <Spinner
             android:layout_width="50dp"

@@ -27,7 +27,6 @@ namespace WMS
         private EditText tbIdent;
         private EditText tbSSCC;
         private EditText tbSerialNum;
-        private EditText tbLocation;
         private EditText tbPacking;
         private TextView lbQty;
         private Button btSaveOrUpdate;
@@ -61,7 +60,7 @@ namespace WMS
                         }
                         break;
 
-                    case Keycode.F4://
+                    case Keycode.F4:
                         if (button4.Enabled == true)
                         {
                             Button4_Click(this, null);
@@ -95,7 +94,7 @@ namespace WMS
                         tbSSCC.Text = "";
                         tbSerialNum.Text = "";
                         tbPacking.Text = "";
-                        tbLocation.Text = "";
+                        searchableSpinnerLocation.spinnerTextValueField.Text = "";
                         tbIdent.Text = "";
 
                         tbSSCC.Text = barcode;
@@ -110,13 +109,13 @@ namespace WMS
 
                         tbSerialNum.Text = barcode;
                         ProcessSerialNum();
-                        tbLocation.RequestFocus();
+                        searchableSpinnerLocation.spinnerTextValueField.RequestFocus();
                     }
                 }
-                else if (tbLocation.HasFocus)
+                else if (searchableSpinnerLocation.spinnerTextValueField.HasFocus)
                 {
 
-                    tbLocation.Text = barcode;
+                    searchableSpinnerLocation.spinnerTextValueField.Text = barcode;
                 }
             }
             catch (Exception ex)
@@ -172,6 +171,7 @@ namespace WMS
         private Dialog popupDialog;
         private ZoomageView? image;
         private Barcode2D barcode2D;
+        private SearchableSpinner? searchableSpinnerLocation;
 
         private async Task GetWorkOrderDefaultQty()
         {
@@ -271,13 +271,13 @@ namespace WMS
                     }
                 }
 
-                if (!await CommonData.IsValidLocationAsync(moveHead.GetString("Wharehouse"), tbLocation.Text.Trim(), this))
+                if (!await CommonData.IsValidLocationAsync(moveHead.GetString("Wharehouse"), searchableSpinnerLocation.spinnerTextValueField.Text.Trim(), this))
                 {
                     RunOnUiThread(() =>
                     {
-                        string SuccessMessage = string.Format($"{Resources.GetString(Resource.String.s258)} '" + tbLocation.Text.Trim() + $"' {Resources.GetString(Resource.String.s272)} '" + moveHead.GetString("Wharehouse") + "'!");
+                        string SuccessMessage = string.Format($"{Resources.GetString(Resource.String.s258)} '" + searchableSpinnerLocation.spinnerTextValueField.Text.Trim() + $"' {Resources.GetString(Resource.String.s272)} '" + moveHead.GetString("Wharehouse") + "'!");
                         DialogHelper.ShowDialogError(this, this, SuccessMessage);
-                        tbLocation.RequestFocus();
+                        searchableSpinnerLocation.spinnerTextValueField.RequestFocus();
                     });
 
                     return false;
@@ -387,7 +387,7 @@ namespace WMS
                     moveItem.SetDouble("Packing", Convert.ToDouble(tbPacking.Text.Trim()));
                     moveItem.SetDouble("Factor", 1);
                     moveItem.SetDouble("Qty", Convert.ToDouble(tbPacking.Text.Trim()) * 1);
-                    moveItem.SetString("Location", tbLocation.Text.Trim());
+                    moveItem.SetString("Location", searchableSpinnerLocation.spinnerTextValueField.Text.Trim());
                     moveItem.SetInt("Clerk", Services.UserID());
 
                     moveItem = Services.SetObject("mi", moveItem, out error);
@@ -428,7 +428,7 @@ namespace WMS
             try
             {
                 var location = await CommonData.GetSettingAsync("DefaultProductionLocation", this);
-                tbLocation.Text = location;
+                searchableSpinnerLocation.spinnerTextValueField.Text = location;
             }
             catch (Exception ex)
             {
@@ -522,19 +522,7 @@ namespace WMS
             }
         }
 
-        private void ListData_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
-        {
-            try
-            {
-                var selected = e.Position;
-                var item = data.ElementAt(selected);
-                tbLocation.Text = item.Location;
-            }
-            catch (Exception ex)
-            {
-                GlobalExceptions.ReportGlobalException(ex);
-            }
-        }
+      
         protected override async void OnCreate(Bundle savedInstanceState)
         {
             try
@@ -564,7 +552,6 @@ namespace WMS
                 tbIdent = FindViewById<EditText>(Resource.Id.tbIdent);
                 tbSSCC = FindViewById<EditText>(Resource.Id.tbSSCC);
                 tbSerialNum = FindViewById<EditText>(Resource.Id.tbSerialNum);
-                tbLocation = FindViewById<EditText>(Resource.Id.tbLocation);
                 tbPacking = FindViewById<EditText>(Resource.Id.tbPacking);
                 lbQty = FindViewById<TextView>(Resource.Id.lbQty);
                 btSaveOrUpdate = FindViewById<Button>(Resource.Id.btSaveOrUpdate);
@@ -574,7 +561,12 @@ namespace WMS
                 tbIdent.InputType = Android.Text.InputTypes.ClassNumber;
                 tbSSCC.InputType = Android.Text.InputTypes.ClassNumber;
                 tbSerialNum.InputType = Android.Text.InputTypes.ClassNumber;
-                tbLocation.InputType = Android.Text.InputTypes.ClassNumber;
+
+                searchableSpinnerLocation = FindViewById<SearchableSpinner>(Resource.Id.searchableSpinnerLocation);
+                var locations = await HelperMethods.GetLocationsForGivenWarehouse(moveHead.GetString("Wharehouse"));
+                searchableSpinnerLocation.SetItems(locations);
+                searchableSpinnerLocation.ColorTheRepresentation(1);
+
                 color();
                 tbSSCC.RequestFocus();
                 btSaveOrUpdate.Click += BtSaveOrUpdate_Click;
@@ -785,7 +777,6 @@ namespace WMS
             {
                 tbSSCC.SetBackgroundColor(Android.Graphics.Color.Aqua);
                 tbSerialNum.SetBackgroundColor(Android.Graphics.Color.Aqua);
-                tbLocation.SetBackgroundColor(Android.Graphics.Color.Aqua);
             }
             catch (Exception ex)
             {

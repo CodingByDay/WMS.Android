@@ -13,7 +13,7 @@ namespace WMS
     {
         public EditText spinnerTextValueField { get; set; }
 
-        private ImageView icon;
+        public ImageView icon { get; set; }
         private List<string> items;
         private Context context;
         private string selectedItem;

@@ -25,8 +25,6 @@ namespace WMS
         private EditText? tbIdent;
         private EditText? tbSSCC;
         private EditText? tbSerialNum;
-        private EditText? tbIssueLocation;
-        private EditText? tbLocation;
         private EditText? tbPacking;
         private TextView? lbQty;
         private ImageView? imagePNG;
@@ -58,8 +56,10 @@ namespace WMS
         private int selected;
         private Dialog popupDialog;
         private ZoomageView image;
+        private SearchableSpinner? searchableSpinnerIssueLocation;
+        private SearchableSpinner? searchableSpinnerReceiveLocation;
 
-        protected override void OnCreate(Bundle savedInstanceState)
+        protected async override void OnCreate(Bundle savedInstanceState)
         {
             try
             {
@@ -108,8 +108,7 @@ namespace WMS
                 tbIdent = FindViewById<EditText>(Resource.Id.tbIdent);
                 tbSSCC = FindViewById<EditText>(Resource.Id.tbSSCC);
                 tbSerialNum = FindViewById<EditText>(Resource.Id.tbSerialNum);
-                tbIssueLocation = FindViewById<EditText>(Resource.Id.tbIssueLocation);
-                tbLocation = FindViewById<EditText>(Resource.Id.tbLocation);
+
                 tbPacking = FindViewById<EditText>(Resource.Id.tbPacking);
                 tbPacking.SetSelectAllOnFocus(true);
                 tbSSCC.InputType = Android.Text.InputTypes.ClassNumber;
@@ -127,8 +126,17 @@ namespace WMS
                 tbIdent.KeyPress += TbIdent_KeyPress;
                 tbSSCC.KeyPress += TbSSCC_KeyPress;
                 tbSerialNum.KeyPress += TbSerialNum_KeyPress;
-                tbIssueLocation.KeyPress += TbIssueLocation_KeyPress;
-                tbLocation.KeyPress += TbLocation_KeyPress;
+
+                searchableSpinnerIssueLocation = FindViewById<SearchableSpinner>(Resource.Id.searchableSpinnerLocation);
+                var locationsIssuer = await HelperMethods.GetLocationsForGivenWarehouse(moveHead.GetString("Issuer"));
+                searchableSpinnerIssueLocation.SetItems(locationsIssuer);
+                searchableSpinnerIssueLocation.ColorTheRepresentation(1);
+
+                searchableSpinnerReceiveLocation = FindViewById<SearchableSpinner>(Resource.Id.searchableSpinnerLocation);
+                var locationsReceiver = await HelperMethods.GetLocationsForGivenWarehouse(moveHead.GetString("Receiver"));
+                searchableSpinnerReceiveLocation.SetItems(locationsReceiver);
+                searchableSpinnerReceiveLocation.ColorTheRepresentation(1);
+
                 tbPacking.FocusChange += TbPacking_FocusChange;
                 // Method calls
 
@@ -153,7 +161,7 @@ namespace WMS
             {
                 if (e.HasFocus)
                 {
-                    await LoadStock(tbIssueLocation.Text, tbIdent.Text, moveHead.GetString("Issuer"), tbSSCC.Text, tbSerialNum.Text);
+                    await LoadStock(searchableSpinnerIssueLocation.spinnerTextValueField.Text, tbIdent.Text, moveHead.GetString("Issuer"), tbSSCC.Text, tbSerialNum.Text);
                 }
             }
             catch (Exception ex)
@@ -222,29 +230,7 @@ namespace WMS
             }
         }
 
-        private async void TbLocation_KeyPress(object? sender, View.KeyEventArgs e)
-        {
-            try
-            {
-                e.Handled = false;
-            }
-            catch (Exception ex)
-            {
-                GlobalExceptions.ReportGlobalException(ex);
-            }
-        }
-
-        private void TbIssueLocation_KeyPress(object? sender, View.KeyEventArgs e)
-        {
-            try
-            {
-                e.Handled = false;
-            }
-            catch (Exception ex)
-            {
-                GlobalExceptions.ReportGlobalException(ex);
-            }
-        }
+    
 
         private void TbSerialNum_KeyPress(object? sender, View.KeyEventArgs e)
         {
@@ -593,8 +579,8 @@ namespace WMS
         {
             try
             {
-                string locationIssuer = tbIssueLocation.Text;
-                string locationReceiver = tbLocation.Text;
+                string locationIssuer = searchableSpinnerIssueLocation.spinnerTextValueField.Text;
+                string locationReceiver = searchableSpinnerReceiveLocation.spinnerTextValueField.Text;
 
                 if (await CommonData.IsValidLocationAsync(moveHead.GetString("Issuer"), locationIssuer, this) && await CommonData.IsValidLocationAsync(moveHead.GetString("Receiver"), locationReceiver, this))
                 {
@@ -687,8 +673,8 @@ namespace WMS
                     moveItem.SetDouble("Factor", 1);
                     moveItem.SetDouble("Qty", Convert.ToDouble(tbPacking.Text.Trim()));
                     moveItem.SetInt("Clerk", Services.UserID());
-                    moveItem.SetString("Location", tbLocation.Text.Trim());
-                    moveItem.SetString("IssueLocation", tbIssueLocation.Text.Trim());
+                    moveItem.SetString("Location", searchableSpinnerReceiveLocation.spinnerTextValueField.Text.Trim());
+                    moveItem.SetString("IssueLocation", searchableSpinnerIssueLocation.spinnerTextValueField.Text.Trim());
                     moveItem.SetString("Palette", "1");
 
 
@@ -730,14 +716,14 @@ namespace WMS
                     tbSerialNum.Text = moveItem.GetString("SerialNo");
                     tbPacking.Text = moveItem.GetDouble("Qty").ToString();
                     tbSSCC.Text = moveItem.GetString("SSCC");
-                    tbIssueLocation.Text = moveItem.GetString("IssueLocation");
-                    tbLocation.Text = moveItem.GetString("Location");
+                    searchableSpinnerIssueLocation.spinnerTextValueField.Text = moveItem.GetString("IssueLocation");
+                    searchableSpinnerReceiveLocation.spinnerTextValueField.Text = moveItem.GetString("Location");
                     lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + moveItem.GetDouble("Qty").ToString() + " )";
                     tbIdent.Enabled = false;
                     tbSerialNum.Enabled = false;
                     tbSSCC.Enabled = false;
-                    tbIssueLocation.Enabled = false;
-                    tbLocation.Enabled = false;
+                    searchableSpinnerIssueLocation.spinnerTextValueField.Enabled = false;
+                    searchableSpinnerReceiveLocation.spinnerTextValueField.Enabled = false;
                     stock = moveItem.GetDouble("Qty");
                     tbPacking.RequestFocus();
                     tbPacking.SelectAll();
@@ -774,19 +760,19 @@ namespace WMS
                     {
 
                         tbSerialNum.Text = barcode;
-                        tbIssueLocation.RequestFocus();
+                        searchableSpinnerIssueLocation.spinnerTextValueField.RequestFocus();
                     }
-                    else if (tbIssueLocation.HasFocus)
+                    else if (searchableSpinnerIssueLocation.spinnerTextValueField.HasFocus)
                     {
 
-                        tbIssueLocation.Text = barcode;
-                        await LoadStock(tbIssueLocation.Text, tbIdent.Text, moveHead.GetString("Issuer"), tbSSCC.Text, tbSerialNum.Text);
-                        tbLocation.RequestFocus();
+                        searchableSpinnerIssueLocation.spinnerTextValueField.Text = barcode;
+                        await LoadStock(searchableSpinnerIssueLocation.spinnerTextValueField.Text, tbIdent.Text, moveHead.GetString("Issuer"), tbSSCC.Text, tbSerialNum.Text);
+                        searchableSpinnerReceiveLocation.spinnerTextValueField.RequestFocus();
                     }
-                    else if (tbLocation.HasFocus)
+                    else if (searchableSpinnerReceiveLocation.spinnerTextValueField.HasFocus)
                     {
 
-                        tbLocation.Text = barcode;
+                        searchableSpinnerReceiveLocation.spinnerTextValueField.Text = barcode;
                         tbPacking.RequestFocus();
                     }
                 }
@@ -814,19 +800,19 @@ namespace WMS
                         tbIdent.Text = ssccResult.Rows[0].StringValue("acIdent");
                         // Process ident, recommended location is processed as well. 23.04.2024 Janko Jovičić
                         Task.Run(async () => await ProcessIdent(false)).Wait();
-                        tbIssueLocation.Text = ssccResult.Rows[0].StringValue("aclocation");
+                        searchableSpinnerIssueLocation.spinnerTextValueField.Text = ssccResult.Rows[0].StringValue("aclocation");
                         tbSerialNum.Text = ssccResult.Rows[0].StringValue("acSerialNo");
                         tbSSCC.Text = ssccResult.Rows[0].StringValue("acSSCC").ToString();
                         lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + ssccResult.Rows[0].DoubleValue("anQty").ToString() + " )";
                         tbPacking.Text = ssccResult.Rows[0].DoubleValue("anQty").ToString();
                         stock = ssccResult.Rows[0].DoubleValue("anQty");
 
-                        tbLocation.RequestFocus();
+                        searchableSpinnerReceiveLocation.spinnerTextValueField.RequestFocus();
 
                         // Post a runnable to select text after the focus is set
-                        tbLocation.Post(() =>
+                        searchableSpinnerReceiveLocation.spinnerTextValueField.Post(() =>
                         {
-                            tbLocation.SetSelection(0, tbLocation.Text.Length); // Select all text
+                            searchableSpinnerReceiveLocation.spinnerTextValueField.SetSelection(0, searchableSpinnerReceiveLocation.spinnerTextValueField.Text.Length); // Select all text
                         });
                     }
                     else
@@ -890,7 +876,7 @@ namespace WMS
 
                                 RunOnUiThread(() =>
                                 {
-                                    tbLocation.Text = recommededLocation.GetString("Location");
+                                    searchableSpinnerReceiveLocation.spinnerTextValueField.Text = recommededLocation.GetString("Location");
                                 });
                               
                             }
@@ -943,8 +929,8 @@ namespace WMS
                 tbIdent.SetBackgroundColor(Android.Graphics.Color.Aqua);
                 tbSSCC.SetBackgroundColor(Android.Graphics.Color.Aqua);
                 tbSerialNum.SetBackgroundColor(Android.Graphics.Color.Aqua);
-                tbLocation.SetBackgroundColor(Android.Graphics.Color.Aqua);
-                tbIssueLocation.SetBackgroundColor(Android.Graphics.Color.Aqua);
+                searchableSpinnerReceiveLocation.spinnerTextValueField.SetBackgroundColor(Android.Graphics.Color.Aqua);
+                searchableSpinnerIssueLocation.spinnerTextValueField.SetBackgroundColor(Android.Graphics.Color.Aqua);
             }
             catch (Exception ex)
             {
