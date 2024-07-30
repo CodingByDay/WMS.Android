@@ -23,6 +23,7 @@
         android:layout_height="wrap_content"
         android:src="@drawable/material_ic_menu_arrow_down_black_24dp"
         android:clickable="true"
+        android:visibility="gone"
         android:focusable="false"
         android:contentDescription="@string/abc_search_hint" />
 

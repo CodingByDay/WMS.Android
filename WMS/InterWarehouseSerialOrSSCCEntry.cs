@@ -127,12 +127,12 @@ namespace WMS
                 tbSSCC.KeyPress += TbSSCC_KeyPress;
                 tbSerialNum.KeyPress += TbSerialNum_KeyPress;
 
-                searchableSpinnerIssueLocation = FindViewById<SearchableSpinner>(Resource.Id.searchableSpinnerLocation);
+                searchableSpinnerIssueLocation = FindViewById<SearchableSpinner>(Resource.Id.searchableSpinnerIssueLocation);
                 var locationsIssuer = await HelperMethods.GetLocationsForGivenWarehouse(moveHead.GetString("Issuer"));
                 searchableSpinnerIssueLocation.SetItems(locationsIssuer);
                 searchableSpinnerIssueLocation.ColorTheRepresentation(1);
 
-                searchableSpinnerReceiveLocation = FindViewById<SearchableSpinner>(Resource.Id.searchableSpinnerLocation);
+                searchableSpinnerReceiveLocation = FindViewById<SearchableSpinner>(Resource.Id.searchableSpinnerReceiveLocation);
                 var locationsReceiver = await HelperMethods.GetLocationsForGivenWarehouse(moveHead.GetString("Receiver"));
                 searchableSpinnerReceiveLocation.SetItems(locationsReceiver);
                 searchableSpinnerReceiveLocation.ColorTheRepresentation(1);
@@ -255,6 +255,9 @@ namespace WMS
                     e.Handled = true;
 
                     await FillDataBySSCC(tbSSCC.Text);
+                } else
+                {
+                    e.Handled = false;
                 }
               
             }

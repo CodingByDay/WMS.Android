@@ -311,6 +311,10 @@ namespace WMS
                     base.RequestedOrientation = ScreenOrientation.Portrait;
                     base.SetContentView(Resource.Layout.IssuedGoodsSerialOrSSCCEntry);
                 }
+
+                // Loader
+                LoaderManifest.LoaderManifestLoopResources(this);
+
                 // Definitions
                 AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
                 var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
@@ -345,8 +349,11 @@ namespace WMS
                 {
                     // If the company opted for this.
                     cbMultipleLocations.ItemSelected += CbMultipleLocations_ItemSelected;
-                    searchableSpinnerIssueLocation.icon.Visibility = ViewStates.Gone;
-                    
+                    searchableSpinnerIssueLocation.icon.Visibility = ViewStates.Gone;                    
+                } else
+                {
+                    searchableSpinnerIssueLocation.ShowDropDown();
+                    cbMultipleLocations.Visibility = ViewStates.Gone;
                 }
 
                 searchableSpinnerIssueLocation.spinnerTextValueField.KeyPress += TbLocation_KeyPress;
@@ -383,6 +390,8 @@ namespace WMS
                 }
 
                 // Stop the loader
+                LoaderManifest.LoaderManifestLoopStop(this);
+
             }
             catch (Exception ex)
             {

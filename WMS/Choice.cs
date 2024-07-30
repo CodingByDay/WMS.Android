@@ -1,4 +1,6 @@
 ﻿using Android.Views;
+using TrendNET.WMS.Core.Data;
+using TrendNET.WMS.Device.App;
 using WMS.App;
 using WMS.ExceptionStore;
 
@@ -38,6 +40,9 @@ namespace WMS
         {
             try
             {
+                NameValueObject moveHead = new NameValueObject("MoveHead");
+                moveHead.SetBool("Saved", false);
+                InUseObjects.Set("MoveHead", moveHead);
                 StartActivity(typeof(TakeOver2Main));
                 Finish();
             }

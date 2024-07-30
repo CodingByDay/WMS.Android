@@ -946,12 +946,18 @@ namespace WMS
         {
             try
             {
+                LoaderManifest.LoaderManifestLoopResources(this);
+
                 await FinishMethod();
             }
             catch (Exception ex)
             {
                 GlobalExceptions.ReportGlobalException(ex);
+            } finally
+            {
+                LoaderManifest.LoaderManifestLoopStop(this);
             }
+
         }
 
         private void Button3_Click(object sender, EventArgs e)

@@ -6,6 +6,7 @@ using Android.Widget;
 using Android.App;
 using System.Collections.Generic;
 using Org.Apache.Commons.Logging;
+using WMS.ExceptionStore;
 
 namespace WMS
 {
@@ -42,63 +43,89 @@ namespace WMS
             Initialize(context);
         }
 
+
+
+        public void HideDropDown()
+        {
+            icon.Visibility = ViewStates.Gone;
+        }
+
+        public void ShowDropDown()
+        {
+            icon.Visibility = ViewStates.Visible;
+        }
+
         private void Initialize(Context context)
         {
-            Orientation = Orientation.Horizontal;
-
-            // Inflate your custom layout
-            Inflate(context, Resource.Layout.SearchableSpinnerRepresentation, this);
-
-            spinnerTextValueField = FindViewById<EditText>(Resource.Id.editText);
-            icon = FindViewById<ImageView>(Resource.Id.icon);
-
-            icon.Click += (s, e) =>
+            try
             {
-                ShowPopupDialog();
-            };
+                Orientation = Orientation.Horizontal;
 
+                // Inflate your custom layout
+                Inflate(context, Resource.Layout.SearchableSpinnerRepresentation, this);
+
+                spinnerTextValueField = FindViewById<EditText>(Resource.Id.editText);
+                icon = FindViewById<ImageView>(Resource.Id.icon);
+
+                icon.Click += (s, e) =>
+                {
+                    ShowPopupDialog();
+                };
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
         }
 
         private void ShowPopupDialog()
         {
-            var builder = new AlertDialog.Builder(context);
-            var view = LayoutInflater.From(context).Inflate(Resource.Layout.SearchableSpinner, null);
-
-            var searchViewInDialog = view.FindViewById<SearchView>(Resource.Id.searchView);
-            var listViewInDialog = view.FindViewById<ListView>(Resource.Id.listView);
-
-            // Create an ArrayAdapter with the list of items
-            var popupAdapter = new ArrayAdapter<string>(context, Android.Resource.Layout.SimpleListItem1, items);
-            listViewInDialog.Adapter = popupAdapter;
-
-            // Filter items based on search query
-            searchViewInDialog.QueryTextChange += (s, e) =>
+            try
             {
-                var filteredItems = string.IsNullOrEmpty(e.NewText)
-                    ? items
-                    : items.FindAll(item => item.ToLower().Contains(e.NewText.ToLower()));
-                popupAdapter.Clear();
-                popupAdapter.AddAll(filteredItems);
-                popupAdapter.NotifyDataSetChanged();
-            };
+                var builder = new AlertDialog.Builder(context);
+                var view = LayoutInflater.From(context).Inflate(Resource.Layout.SearchableSpinner, null);
 
-            // Create the dialog
-            var dialog = builder.SetView(view)
-                                .SetNegativeButton("Cancel", (s, e) => {
-                                    // The dialog will be dismissed automatically
-                                })
-                                .Create();
+                var searchViewInDialog = view.FindViewById<SearchView>(Resource.Id.searchView);
+                var listViewInDialog = view.FindViewById<ListView>(Resource.Id.listView);
 
-            // Handle item selection
-            listViewInDialog.ItemClick += (s, e) =>
+                // Create an ArrayAdapter with the list of items
+                var popupAdapter = new ArrayAdapter<string>(context, Android.Resource.Layout.SimpleListItem1, items);
+                listViewInDialog.Adapter = popupAdapter;
+
+                // Filter items based on search query
+                searchViewInDialog.QueryTextChange += (s, e) =>
+                {
+                    var filteredItems = string.IsNullOrEmpty(e.NewText)
+                        ? items
+                        : items.FindAll(item => item.ToLower().Contains(e.NewText.ToLower()));
+                    popupAdapter.Clear();
+                    popupAdapter.AddAll(filteredItems);
+                    popupAdapter.NotifyDataSetChanged();
+                };
+
+                // Create the dialog
+                var dialog = builder.SetView(view)
+                                    .SetNegativeButton("Cancel", (s, e) =>
+                                    {
+                                        // The dialog will be dismissed automatically
+                                    })
+                                    .Create();
+
+                // Handle item selection
+                listViewInDialog.ItemClick += (s, e) =>
+                {
+                    selectedItem = popupAdapter.GetItem(e.Position);
+                    spinnerTextValueField.Text = selectedItem; // Update EditText with the selected item
+                    dialog.Dismiss(); // Close the dialog
+                };
+
+                // Show the dialog
+                dialog.Show();
+            }
+            catch (Exception ex)
             {
-                selectedItem = popupAdapter.GetItem(e.Position);
-                spinnerTextValueField.Text = selectedItem; // Update EditText with the selected item
-                dialog.Dismiss(); // Close the dialog
-            };
-
-            // Show the dialog
-            dialog.Show();
+                GlobalExceptions.ReportGlobalException(ex);
+            }
         }
 
 

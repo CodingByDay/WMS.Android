@@ -116,10 +116,9 @@ namespace WMS
                 {
                     base.RequestedOrientation = ScreenOrientation.Portrait;
                     base.SetContentView(Resource.Layout.IssuedGoodsSerialOrSSCCEntryClientPicking);
-
-
                 }
 
+                LoaderManifest.LoaderManifestLoopResources(this);
 
                 // Definitions
                 AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
@@ -134,10 +133,21 @@ namespace WMS
                 tbPacking = FindViewById<EditText>(Resource.Id.tbPacking);
                 cbMultipleLocations = FindViewById<Spinner>(Resource.Id.cbMultipleLocations);
 
+                searchableSpinnerIssueLocation = FindViewById<SearchableSpinner>(Resource.Id.searchableSpinnerIssueLocation);
+                var locations = await HelperMethods.GetLocationsForGivenWarehouse(moveHead.GetString("Wharehouse"));
+                searchableSpinnerIssueLocation.SetItems(locations);
+                searchableSpinnerIssueLocation.ColorTheRepresentation(1);
+
                 if (await CommonData.GetSettingAsync("IssueSummaryView", this) == "1")
                 {
                     // If the company opted for this.
+                    searchableSpinnerIssueLocation.icon.Visibility = ViewStates.Gone;
                     cbMultipleLocations.ItemSelected += CbMultipleLocations_ItemSelected;
+                }
+                else
+                {
+                    searchableSpinnerIssueLocation.ShowDropDown();
+                    cbMultipleLocations.Visibility = ViewStates.Gone;
                 }
 
                 tbIdent.InputType = Android.Text.InputTypes.ClassNumber;
@@ -146,11 +156,7 @@ namespace WMS
 
                 barcode2D = new Barcode2D(this, this);
 
-                searchableSpinnerIssueLocation = FindViewById<SearchableSpinner>(Resource.Id.searchableSpinnerIssueLocation);
-                var locations = await HelperMethods.GetLocationsForGivenWarehouse(moveHead.GetString("Wharehouse"));
-                searchableSpinnerIssueLocation.SetItems(locations);
-                searchableSpinnerIssueLocation.ColorTheRepresentation(1);
-
+             
                 btCreateSame = FindViewById<Button>(Resource.Id.btCreateSame);
                 btCreate = FindViewById<Button>(Resource.Id.btCreate);
                 btFinish = FindViewById<Button>(Resource.Id.btFinish);
@@ -197,6 +203,10 @@ namespace WMS
                     tbPacking.RequestFocus();
                     tbPacking.SelectAll();
                 }
+
+
+                LoaderManifest.LoaderManifestLoopStop(this);
+
             }
             catch (Exception ex)
             {
