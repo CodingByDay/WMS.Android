@@ -566,6 +566,7 @@ namespace WMS
                 var locations = await HelperMethods.GetLocationsForGivenWarehouse(moveHead.GetString("Wharehouse"));
                 searchableSpinnerLocation.SetItems(locations);
                 searchableSpinnerLocation.ColorTheRepresentation(1);
+                searchableSpinnerLocation.ShowDropDown();
 
                 color();
                 tbSSCC.RequestFocus();

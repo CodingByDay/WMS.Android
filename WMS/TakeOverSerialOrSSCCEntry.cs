@@ -125,7 +125,7 @@ namespace WMS
 
                 searchableSpinnerLocation.SetItems(locations);
                 searchableSpinnerLocation.ColorTheRepresentation(1);
-
+                searchableSpinnerLocation.ShowDropDown();
                 // Method calls
 
                 CheckIfApplicationStopingException();

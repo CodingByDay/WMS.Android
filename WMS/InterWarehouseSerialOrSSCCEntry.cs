@@ -131,11 +131,13 @@ namespace WMS
                 var locationsIssuer = await HelperMethods.GetLocationsForGivenWarehouse(moveHead.GetString("Issuer"));
                 searchableSpinnerIssueLocation.SetItems(locationsIssuer);
                 searchableSpinnerIssueLocation.ColorTheRepresentation(1);
+                searchableSpinnerIssueLocation.ShowDropDown();
 
                 searchableSpinnerReceiveLocation = FindViewById<SearchableSpinner>(Resource.Id.searchableSpinnerReceiveLocation);
                 var locationsReceiver = await HelperMethods.GetLocationsForGivenWarehouse(moveHead.GetString("Receiver"));
                 searchableSpinnerReceiveLocation.SetItems(locationsReceiver);
                 searchableSpinnerReceiveLocation.ColorTheRepresentation(1);
+                searchableSpinnerReceiveLocation.ShowDropDown();
 
                 tbPacking.FocusChange += TbPacking_FocusChange;
                 // Method calls
