@@ -1196,6 +1196,8 @@ namespace WMS
 
                                     }
 
+
+
                                     // Succesfull position creation
                                     if (ssccRow.Visibility == ViewStates.Visible)
                                     {
@@ -1211,6 +1213,18 @@ namespace WMS
                                             tbSerialNum.RequestFocus();
                                         }
                                     }
+
+                                    if (ssccRow.Visibility == ViewStates.Visible && (CommonData.GetSetting("AutoCreateSSCC") == "1"))
+                                    {
+                                        tbSSCC.Text = CommonData.GetNextSSCC();
+                                        if (serialRow.Visibility == ViewStates.Visible)
+                                        {
+                                            tbSerialNum.RequestFocus();
+                                        }
+                                        // If the process stays on the same activity this is needed. 8.13.2024 Janko Jovičić
+                                    }
+
+
                                     // tbPacking.Text = string.Empty; This seems to be more logical if commented out. User wants to just scan serial codes. 5.15.2024 Janko Jovičić
 
                                 });
