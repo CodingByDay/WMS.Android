@@ -746,7 +746,7 @@ namespace WMS
 
                             if (Base.Store.byOrder)
                             {
-                                var isDuplicatedSerial = IsDuplicatedSerialOrAndSSCC(tbSerialNum.Text ?? string.Empty, tbSSCC.Text ?? string.Empty);
+                                var isDuplicatedSerial = await IsDuplicatedSerialOrAndSSCC(tbSerialNum.Text ?? string.Empty, tbSSCC.Text ?? string.Empty);
                                 var fieldsExist = ssccRow.Visibility == ViewStates.Visible || serialRow.Visibility == ViewStates.Visible;
 
                                 if (isDuplicatedSerial && fieldsExist)
@@ -845,7 +845,7 @@ namespace WMS
             }
         }
 
-        private bool IsDuplicatedSerialOrAndSSCC(string? serial = null, string? sscc = null)
+        private async Task<bool> IsDuplicatedSerialOrAndSSCC(string? serial = null, string? sscc = null)
         {
             try
             {
@@ -857,31 +857,45 @@ namespace WMS
 
                 var parameters = new List<Services.Parameter>();
                 parameters.Add(new Services.Parameter { Name = "acIdent", Type = "String", Value = ident });
+                string serialDuplication = await CommonData.GetSettingAsync("NoSerialnoDupOut", this);
+                string identType = openIdent.GetString("SerialNo");
 
-                string sql = "SELECT COUNT(*) AS anResult FROM uWMSMoveItemInClick WHERE acIdent = @acIdent";
-                if (serial != null && serial != string.Empty)
+                if (serialDuplication == "1")
                 {
-                    parameters.Add(new Services.Parameter { Name = "acSerialno", Type = "String", Value = serial });
-                    sql += " AND acSerialNo = @acSerialno";
-                }
-                if (sscc != null && sscc != string.Empty)
-                {
-                    parameters.Add(new Services.Parameter { Name = "acSSCC", Type = "String", Value = sscc });
-                    sql += " AND acSSCC = @acSSCC;";
-                }
-
-                var duplicates = Services.GetObjectListBySql(sql, parameters);
-
-                if (duplicates.Success)
-                {
-                    int numberRows = (int)(duplicates.Rows[0].IntValue("anResult") ?? 0);
-                    if (numberRows > 0)
+                    if (identType == "O")
                     {
-                        result = true;
-                    }
-                }
 
-                return result;
+                        string sql = "SELECT COUNT(*) AS anResult FROM uWMSMoveItemInClick WHERE acIdent = @acIdent";
+                        if (serial != null && serial != string.Empty)
+                        {
+                            parameters.Add(new Services.Parameter { Name = "acSerialno", Type = "String", Value = serial });
+                            sql += " AND acSerialNo = @acSerialno";
+                        }
+                        if (sscc != null && sscc != string.Empty)
+                        {
+                            parameters.Add(new Services.Parameter { Name = "acSSCC", Type = "String", Value = sscc });
+                            sql += " AND acSSCC = @acSSCC;";
+                        }
+
+                        var duplicates = Services.GetObjectListBySql(sql, parameters);
+
+                        if (duplicates.Success)
+                        {
+                            int numberRows = (int)(duplicates.Rows[0].IntValue("anResult") ?? 0);
+                            if (numberRows > 0)
+                            {
+                                result = true;
+                            }
+                        }
+                        return result;
+                    } else
+                    {
+                        return false;
+                    }
+                } else
+                {
+                    return false;
+                }
             }
             catch (Exception ex)
             {
@@ -1008,7 +1022,7 @@ namespace WMS
                         }
                         if (Base.Store.byOrder)
                         {
-                            var isDuplicatedSerial = IsDuplicatedSerialOrAndSSCC(tbSerialNum.Text ?? string.Empty, tbSSCC.Text ?? string.Empty);
+                            var isDuplicatedSerial = await IsDuplicatedSerialOrAndSSCC(tbSerialNum.Text ?? string.Empty, tbSSCC.Text ?? string.Empty);
                             var fieldsExist = ssccRow.Visibility == ViewStates.Visible || serialRow.Visibility == ViewStates.Visible;
                             if (isDuplicatedSerial && fieldsExist)
                             {

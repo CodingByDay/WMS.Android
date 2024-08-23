@@ -812,13 +812,16 @@ namespace WMS
                         tbPacking.Text = ssccResult.Rows[0].DoubleValue("anQty").ToString();
                         stock = ssccResult.Rows[0].DoubleValue("anQty");
 
+
                         searchableSpinnerReceiveLocation.spinnerTextValueField.RequestFocus();
 
-                        // Post a runnable to select text after the focus is set
-                        searchableSpinnerReceiveLocation.spinnerTextValueField.Post(() =>
+                        // Post a runnable to select text after the focus is set removed. 22.08.2024 Janko Jovičić
+                                                  
+                        /* searchableSpinnerReceiveLocation.spinnerTextValueField.Post(() =>
                         {
                             searchableSpinnerReceiveLocation.spinnerTextValueField.SetSelection(0, searchableSpinnerReceiveLocation.spinnerTextValueField.Text.Length); // Select all text
                         });
+                        */
                     }
                     else
                     {

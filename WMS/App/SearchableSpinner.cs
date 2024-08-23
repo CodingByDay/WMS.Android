@@ -65,6 +65,9 @@ namespace WMS
                 Inflate(context, Resource.Layout.SearchableSpinnerRepresentation, this);
 
                 spinnerTextValueField = FindViewById<EditText>(Resource.Id.editText);
+                spinnerTextValueField.Focusable = true;
+                spinnerTextValueField.FocusableInTouchMode = true;
+                spinnerTextValueField.InputType = Android.Text.InputTypes.ClassText;
                 icon = FindViewById<ImageView>(Resource.Id.icon);
 
                 icon.Click += (s, e) =>
@@ -77,6 +80,8 @@ namespace WMS
                 GlobalExceptions.ReportGlobalException(ex);
             }
         }
+
+
 
         private void ShowPopupDialog()
         {
