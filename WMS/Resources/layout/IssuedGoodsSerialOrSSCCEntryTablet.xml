@@ -208,41 +208,31 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="fill_parent"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingTop="5dp">
+
+    <TextView
+        android:textStyle="bold"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:text="@string/s140"
         android:paddingTop="5dp"
-                                     >
+        android:paddingLeft="4dp"/>
 
-        <TextView
-            android:textStyle="bold"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:text="@string/s140"
-            android:paddingTop="5dp"
-            android:paddingLeft="4dp"
-    />
+    <WMS.SearchableSpinner
+        android:id="@+id/searchableSpinnerIssueLocation"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"/>
 
-        <EditText
-            android:textStyle="bold"
-            android:singleLine="true"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.50"
-            android:paddingTop="5dp"
-            android:background="@drawable/editText_bg_grey"
-            android:layout_marginRight="2dp"
-            android:id="@+id/tbLocation" />
-
-        <Spinner
-            android:layout_width="50dp"
-            android:layout_height="match_parent"
-            android:visibility="gone"
-            android:spinnerMode="dialog"
-            android:id="@+id/cbMultipleLocations"
-        />
-
-    </LinearLayout>
+    <Spinner
+        android:id="@+id/cbMultipleLocations"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:spinnerMode="dialog"/>
+   </LinearLayout>
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="100dp"
