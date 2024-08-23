@@ -312,8 +312,7 @@ namespace WMS
                     base.SetContentView(Resource.Layout.IssuedGoodsSerialOrSSCCEntry);
                 }
 
-                // Loader
-                LoaderManifest.LoaderManifestLoopResources(this);
+
 
                 // Definitions
                 AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
@@ -389,8 +388,6 @@ namespace WMS
                     await fillItems();
                 }
 
-                // Stop the loader
-                LoaderManifest.LoaderManifestLoopStop(this);
 
             }
             catch (Exception ex)
