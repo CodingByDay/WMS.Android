@@ -440,7 +440,7 @@ namespace WMS.App
                 Serial.SetTextColor(Android.Graphics.Color.Black);
 
                 TextView SSCC = view.FindViewById<TextView>(Resource.Id.fifth);
-                SSCC.Text = item.sscc;
+                SSCC.Text = "..." + item.sscc.Substring(item.sscc.Length - 5);
                 SSCC.SetTextColor(Android.Graphics.Color.Black);
 
             });

@@ -196,8 +196,7 @@ namespace WMS
             {
                 foreach (var obj in list)
                 {
-                    items.Add(new LocationClass { ident = obj.ident, location = obj.location, quantity = obj.quantity });
-
+                    items.Add(new LocationClass { ident = obj.ident, location = obj.location, quantity = obj.quantity, serial = obj.serial, sscc = obj.sscc });
                 }
             }
             catch (Exception ex)
