@@ -99,18 +99,7 @@ namespace WMS
                 confirm = FindViewById<Button>(Resource.Id.btnConfirm);
                 confirm.Click += Confirm_Click;
 
-
-                for (int i = 0; i < objectDocType.Count; i++)
-                {
-                    var current = objectDocType[i];
-
-                    if (current.ID == documentCode)
-                    {
-                        temporaryPositionDoc = cbDocType.SetItemByString(documentCode);
-                    }
-                }
-
-
+              
                 var _broadcastReceiver = new NetworkStatusBroadcastReceiver();
                 _broadcastReceiver.ConnectionStatusChanged += OnNetworkStatusChanged;
                 Application.Context.RegisterReceiver(_broadcastReceiver,
@@ -120,6 +109,20 @@ namespace WMS
                 cbIssueWH.ItemClick += CbIssueWH_ItemClick;
                 cbReceiveWH.ItemClick += CbReceiveWH_ItemClick;
                 InitializeAutocompleteControls();
+
+
+                for (int i = 0; i < objectDocType.Count; i++)
+                {
+                    var current = objectDocType[i];
+
+                    if (current.ID == documentCode)
+                    {
+                        temporaryPositionDoc = cbDocType.SetItemByString(documentCode);
+                        var id = objectDocType.ElementAt(temporaryPositionDoc).ID;
+                        PrefillWarehouses(id);
+                        // Petpak changes 27.08.2024
+                    }
+                }
             }
             catch (Exception ex)
             {

@@ -379,7 +379,7 @@ namespace WMS
                     tbSSCC.Text = moveItem.GetString("SSCC");
                     searchableSpinnerLocation.spinnerTextValueField.Text = moveItem.GetString("Location");
                     tbPacking.Text = moveItem.GetDouble("Qty").ToString();
-                    lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + moveItem.GetDouble("Qty").ToString() + " )";
+                    lbQty.Text = $"{Resources.GetString(Resource.String.s83)} \n ( " + moveItem.GetDouble("Qty").ToString() + " )";
                     btCreate.Text = $"{Resources.GetString(Resource.String.s290)}";
                     // Lock down all other fields
                     tbIdent.Enabled = false;
@@ -400,14 +400,14 @@ namespace WMS
 
                         if (packaging != -1 && packaging <= quantity)
                         {
-                            lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + quantity.ToString(await CommonData.GetQtyPictureAsync(this)) + " )";
+                            lbQty.Text = $"{Resources.GetString(Resource.String.s83)} \n ( " + quantity.ToString(await CommonData.GetQtyPictureAsync(this)) + " )";
                             tbPacking.Text = packaging.ToString();
                             stock = quantity;
                         }
                         else
                         {
                             quantity = order.Quantity ?? 0;
-                            lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + quantity.ToString(await CommonData.GetQtyPictureAsync(this)) + " )";
+                            lbQty.Text = $"{Resources.GetString(Resource.String.s83)} \n ( " + quantity.ToString(await CommonData.GetQtyPictureAsync(this)) + " )";
                             tbPacking.Text = quantity.ToString();
                             stock = quantity;
                         }
@@ -430,7 +430,7 @@ namespace WMS
                         if (Double.TryParse(code2d.netoWeight, out result))
                         {
                             qtyCheck = result;
-                            lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + qtyCheck.ToString(await CommonData.GetQtyPictureAsync(this)) + " )";
+                            lbQty.Text = $"{Resources.GetString(Resource.String.s83)} \n ( " + qtyCheck.ToString(await CommonData.GetQtyPictureAsync(this)) + " )";
                             tbPacking.Text = qtyCheck.ToString();
                             stock = qtyCheck;
 
@@ -450,7 +450,7 @@ namespace WMS
                         // This is the orderless process.
                         qtyCheck = 10000000;
                         searchableSpinnerLocation.spinnerTextValueField.Text = await CommonData.GetSettingAsync("DefaultPaletteLocation", this);
-                        lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + Resources.GetString(Resource.String.s335) + " )";
+                        lbQty.Text = $"{Resources.GetString(Resource.String.s83)} \n ( " + Resources.GetString(Resource.String.s335) + " )";
                         stock = qtyCheck;
                         tbPacking.RequestFocus();
                         tbPacking.SelectAll();
@@ -1198,7 +1198,7 @@ namespace WMS
 
                                     var currentQty = Convert.ToDouble(tbPacking.Text.Trim());
                                     stock -= currentQty;
-                                    lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + stock.ToString(picture) + " )";
+                                    lbQty.Text = $"{Resources.GetString(Resource.String.s83)} \n ( " + stock.ToString(picture) + " )";
 
 
                                     if (stock <= 0)

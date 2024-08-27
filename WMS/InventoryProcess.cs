@@ -830,13 +830,13 @@ namespace WMS
                     double q = dataObject.DoubleValue("anQty") ?? 0;
                     if (dataObject != null)
                     {
-                        lbPacking.Text = $"{Resources.GetString(Resource.String.s83)} ({q.ToString(await CommonData.GetQtyPictureAsync(this))})";
+                        lbPacking.Text = $"{Resources.GetString(Resource.String.s83)} \n ({q.ToString(await CommonData.GetQtyPictureAsync(this))})";
                         tbPacking.Text = q.ToString(await CommonData.GetQtyPictureAsync(this));
 
                     }
                     else if (result != null)
                     {
-                        lbPacking.Text = $"{Resources.GetString(Resource.String.s83)} ({result})";
+                        lbPacking.Text = $"{Resources.GetString(Resource.String.s83)} \n ({result})";
                         tbPacking.Text = result;
                     }
 

@@ -704,7 +704,7 @@ namespace WMS
                                 serialOverflowQuantity = Convert.ToDouble(tbPacking.Text.Trim());
                                 stock -= serialOverflowQuantity;
 
-                                lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + stock.ToString(picture) + " )";
+                                lbQty.Text = $"{Resources.GetString(Resource.String.s83)} \n ( " + stock.ToString(picture) + " )";
 
                                 // Check to see if the maximum is already reached.
                                 if (stock <= 0)
@@ -895,7 +895,7 @@ namespace WMS
                     searchableSpinnerIssueLocation.spinnerTextValueField.Text = moveItem.GetString("Location");
                     tbPacking.Text = moveItem.GetDouble("Packing").ToString();
                     btCreateSame.Text = $"{Resources.GetString(Resource.String.s293)}";
-                    lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + moveItem.GetDouble("Qty").ToString() + " )";
+                    lbQty.Text = $"{Resources.GetString(Resource.String.s83)} \n ( " + moveItem.GetDouble("Qty").ToString() + " )";
                     // Lock down all other fields
                     tbIdent.Enabled = false;
                     tbSerialNum.Enabled = false;
@@ -928,7 +928,7 @@ namespace WMS
                         searchableSpinnerIssueLocation.spinnerTextValueField.Text = receivedTrail.Location;
 
                         qtyCheck = Double.Parse(receivedTrail.Quantity);
-                        lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + qtyCheck.ToString(await CommonData.GetQtyPictureAsync(this)) + " )";
+                        lbQty.Text = $"{Resources.GetString(Resource.String.s83)} \n ( " + qtyCheck.ToString(await CommonData.GetQtyPictureAsync(this)) + " )";
                         stock = qtyCheck;
                         tbPacking.Text = qtyCheck.ToString();
                         await GetConnectedPositions(receivedTrail.Order, receivedTrail.No, receivedTrail.Ident);

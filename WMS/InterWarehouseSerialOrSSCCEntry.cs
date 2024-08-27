@@ -223,7 +223,7 @@ namespace WMS
             try
             {
                 var wh = moveHead.GetString("Receiver");
-                var list = await AdapterStore.getStockForWarehouseAndIdent(wh, ident);
+                var list = await AdapterStore.getStockForWarehouseAndIdent(ident, wh);
                 Fill(list);
             }
             catch (Exception ex)
@@ -556,7 +556,7 @@ namespace WMS
                     {
                         double result = (double?)qty.Rows[0].DoubleValue("anQty") ?? 0;
                         qtyCheck = result;
-                        lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + qtyCheck.ToString(await CommonData.GetQtyPictureAsync(this)) + " )";
+                        lbQty.Text = $"{Resources.GetString(Resource.String.s83)} \n( " + qtyCheck.ToString(await CommonData.GetQtyPictureAsync(this)) + " )";
                         tbPacking.Text = qtyCheck.ToString();
                         stock = qtyCheck;
                     }
@@ -564,7 +564,7 @@ namespace WMS
                     {
                         double result = 0;
                         qtyCheck = result;
-                        lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + qtyCheck.ToString(await CommonData.GetQtyPictureAsync(this)) + " )";
+                        lbQty.Text = $"{Resources.GetString(Resource.String.s83)} \n( " + qtyCheck.ToString(await CommonData.GetQtyPictureAsync(this)) + " )";
                         tbPacking.Text = qtyCheck.ToString();
                         stock = qtyCheck;
                     }
@@ -723,7 +723,7 @@ namespace WMS
                     tbSSCC.Text = moveItem.GetString("SSCC");
                     searchableSpinnerIssueLocation.spinnerTextValueField.Text = moveItem.GetString("IssueLocation");
                     searchableSpinnerReceiveLocation.spinnerTextValueField.Text = moveItem.GetString("Location");
-                    lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + moveItem.GetDouble("Qty").ToString() + " )";
+                    lbQty.Text = $"{Resources.GetString(Resource.String.s83)} \n ( " + moveItem.GetDouble("Qty").ToString() + " )";
                     tbIdent.Enabled = false;
                     tbSerialNum.Enabled = false;
                     tbSSCC.Enabled = false;
@@ -808,7 +808,7 @@ namespace WMS
                         searchableSpinnerIssueLocation.spinnerTextValueField.Text = ssccResult.Rows[0].StringValue("aclocation");
                         tbSerialNum.Text = ssccResult.Rows[0].StringValue("acSerialNo");
                         tbSSCC.Text = ssccResult.Rows[0].StringValue("acSSCC").ToString();
-                        lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + ssccResult.Rows[0].DoubleValue("anQty").ToString() + " )";
+                        lbQty.Text = $"{Resources.GetString(Resource.String.s83)} \n ( " + ssccResult.Rows[0].DoubleValue("anQty").ToString() + " )";
                         tbPacking.Text = ssccResult.Rows[0].DoubleValue("anQty").ToString();
                         stock = ssccResult.Rows[0].DoubleValue("anQty");
 
