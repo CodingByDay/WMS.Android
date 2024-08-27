@@ -1545,7 +1545,7 @@ namespace WMS
                 parameters.Add(new Services.Parameter { Name = "acWarehouse", Type = "String", Value = moveHead.GetString("Wharehouse") });
                 parameters.Add(new Services.Parameter { Name = "acIdent", Type = "String", Value = ident });
 
-                var stocks = await AsyncServices.AsyncServices.GetObjectListBySqlAsync(sql, parameters, this);
+                var stocks = await AsyncServices.AsyncServices.GetObjectListBySqlAsync(sql, parameters, this).ConfigureAwait(false);
 
                 if (stocks.Success && stocks.Rows.Count > 0)
                 {

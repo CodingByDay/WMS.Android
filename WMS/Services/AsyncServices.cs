@@ -124,7 +124,7 @@ namespace WMS.AsyncServices
 
                     StringContent content = new StringContent(requestBody, Encoding.UTF8, "application/json");
 
-                    HttpResponseMessage response = await client.PostAsync(url, content);
+                    HttpResponseMessage response = await client.PostAsync(url, content).ConfigureAwait(false); 
 
                     if (response.IsSuccessStatusCode)
                     {
@@ -163,7 +163,7 @@ namespace WMS.AsyncServices
             string requestBody = JsonConvert.SerializeObject(requestObject);
             try
             {
-                PostResult getResult = await PostAsync("mode=sql&type=sel", requestBody);
+                PostResult getResult = await PostAsync("mode=sql&type=sel", requestBody).ConfigureAwait(false); 
                 return JsonConvert.DeserializeObject<ApiResultSet>(getResult.Result);
             }
             catch (Exception err)
