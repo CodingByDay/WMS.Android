@@ -385,7 +385,8 @@ namespace WMS
 
                 if (App.Settings.tablet)
                 {
-                    await fillItems();
+                    await FillItems();
+                    dataAdapter.NotifyDataSetChanged();
                 }
 
 
@@ -490,13 +491,17 @@ namespace WMS
         }
 
 
-        private async Task fillItems()
+        private async Task FillItems()
         {
             try
             {
                 var code = openIdent.GetString("Code");
                 var wh = moveHead.GetString("Wharehouse");
-                items = await AdapterStore.getStockForWarehouseAndIdent(code, wh);
+                var itemsWorker = await AdapterStore.GetStockForWarehouseAndIdent(code, wh);
+                foreach (var worker in  itemsWorker)
+                {
+                    items.Add(worker);
+                }
             }
             catch (Exception ex)
             {

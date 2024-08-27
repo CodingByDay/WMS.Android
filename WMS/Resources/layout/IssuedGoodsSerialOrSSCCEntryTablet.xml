@@ -55,41 +55,7 @@
             android:layout_marginRight="28.0dp"
             android:layout_width="match_parent"
             android:text="@string/s47" 
-            />
-        <TextView
-            android:textSize="18dp"
-            android:textStyle="bold"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:paddingLeft="10dp"
-            android:paddingTop="5dp"
-            android:layout_marginRight="28.0dp"
-            android:layout_width="match_parent"
-            android:text="@string/s49" 
-            />
-        <TextView
-            android:textSize="18dp"
-            android:textStyle="bold"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:paddingLeft="10dp"
-            android:paddingTop="5dp"
-            android:layout_marginRight="28.0dp"
-            android:layout_width="match_parent"
-            android:text="@string/s192" 
-            />
-
-        <TextView
-            android:text="@string/s40"
-            android:textSize="18dp"
-            android:textStyle="bold"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:paddingLeft="10dp"
-            android:paddingTop="5dp"
-            android:layout_width="match_parent"
-            android:layout_marginRight="28.0dp"
-            />
+        />
 
         <TextView
             android:text="@string/s50"
@@ -101,7 +67,43 @@
             android:paddingTop="5dp"
             android:layout_width="match_parent"
             android:layout_marginRight="28.0dp"
-            />
+        />
+
+        <TextView
+            android:text="@string/s40"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:layout_width="match_parent"
+            android:layout_marginRight="28.0dp"
+        />
+
+        <TextView
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:layout_marginRight="28.0dp"
+            android:layout_width="match_parent"
+            android:text="@string/s49" 
+        />
+
+        <TextView
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:layout_marginRight="28.0dp"
+            android:layout_width="match_parent"
+            android:text="@string/s192" 
+        />
 
     </LinearLayout>
     <LinearLayout

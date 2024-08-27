@@ -260,7 +260,7 @@ namespace WMS
             {
                 var code = openIdent.GetString("Code");
                 var wh = moveHead.GetString("Wharehouse");
-                items = await AdapterStore.getStockForWarehouseAndIdent(code, wh);
+                items = await AdapterStore.GetStockForWarehouseAndIdent(code, wh);
             }
             catch (Exception ex)
             {

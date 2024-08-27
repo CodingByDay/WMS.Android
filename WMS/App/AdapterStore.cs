@@ -27,7 +27,7 @@ namespace WMS.App
              return result;
          }
         */
-        public static async Task<List<LocationClass>> getStockForWarehouseAndIdent(string ident, string warehouse)
+        public static async Task<List<LocationClass>> GetStockForWarehouseAndIdent(string ident, string warehouse)
         {
             List<LocationClass> result = new List<LocationClass>();
             var parameters = new List<Services.Parameter>();

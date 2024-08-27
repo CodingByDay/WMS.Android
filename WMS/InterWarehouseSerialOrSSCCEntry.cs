@@ -222,7 +222,7 @@ namespace WMS
             try
             {
                 var wh = moveHead.GetString("Receiver");
-                var list = await AdapterStore.getStockForWarehouseAndIdent(ident, wh);
+                var list = await AdapterStore.GetStockForWarehouseAndIdent(ident, wh);
                 Fill(list);
             }
             catch (Exception ex)

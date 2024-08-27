@@ -392,20 +392,23 @@ namespace WMS.App
                 Ident.Text = item.ident;
                 Ident.SetTextColor(Android.Graphics.Color.Black);
 
-                TextView Quantity = view.FindViewById<TextView>(Resource.Id.second);
-                Quantity.Text = item.quantity;
-                Quantity.SetTextColor(Android.Graphics.Color.Black);
 
-                TextView Location = view.FindViewById<TextView>(Resource.Id.third);
+                TextView Location = view.FindViewById<TextView>(Resource.Id.second);
                 Location.Text = item.location;
                 Location.SetTextColor(Android.Graphics.Color.Black);
 
+
+                TextView Quantity = view.FindViewById<TextView>(Resource.Id.third);
+                Quantity.Text = item.quantity;
+                Quantity.SetTextColor(Android.Graphics.Color.Black);
+
+               
                 TextView Serial = view.FindViewById<TextView>(Resource.Id.fourth);
                 Serial.Text = item.serial;
                 Serial.SetTextColor(Android.Graphics.Color.Black);
 
                 TextView SSCC = view.FindViewById<TextView>(Resource.Id.fifth);
-                SSCC.Text = item.sscc;
+                SSCC.Text = "..." + item.sscc.Substring(item.sscc.Length - 5);
                 SSCC.SetTextColor(Android.Graphics.Color.Black);
 
             });
@@ -493,33 +496,27 @@ namespace WMS.App
         {
 
             var adapter = new UniversalAdapter<OpenOrder>(context, data,
-            Resource.Layout.SixElements,
+            Resource.Layout.FourElements,
             (view, item) =>
             {
                 TextView Ident = view.FindViewById<TextView>(Resource.Id.first);
                 Ident.Text = item.Ident;
                 Ident.SetTextColor(Android.Graphics.Color.Black);
 
-                TextView Order = view.FindViewById<TextView>(Resource.Id.second);
-                Order.Text = item.Order;
-                Order.SetTextColor(Android.Graphics.Color.Black);
+
+                TextView Client = view.FindViewById<TextView>(Resource.Id.second);
+                Client.Text = item.Client;
+                Client.SetTextColor(Android.Graphics.Color.Black);
+
 
                 TextView Position = view.FindViewById<TextView>(Resource.Id.third);
                 Position.Text = item.Position.ToString();
                 Position.SetTextColor(Android.Graphics.Color.Black);
 
-                TextView Client = view.FindViewById<TextView>(Resource.Id.fourth);
-                Client.Text = item.Client;
-                Client.SetTextColor(Android.Graphics.Color.Black);
 
-                TextView Date = view.FindViewById<TextView>(Resource.Id.fifth);
-                Date.Text = item.Date.ToString();
-                Date.SetTextColor(Android.Graphics.Color.Black);
-
-                TextView Quantity = view.FindViewById<TextView>(Resource.Id.sixth);
+                TextView Quantity = view.FindViewById<TextView>(Resource.Id.fourth);
                 Quantity.Text = item.Quantity.ToString();
                 Quantity.SetTextColor(Android.Graphics.Color.Black);
-
             });
 
 
