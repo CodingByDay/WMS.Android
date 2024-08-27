@@ -38,7 +38,7 @@ namespace WMS
         SoundPool soundPool;
         int soundPoolId;
         private Barcode2D barcode2D;
-        private List<Trail> trails;
+        private List<Trail> trails = new List<Trail>();
         private TrailAdapter adapterObj;
         public int selected;
         private string password;

@@ -383,13 +383,7 @@ namespace WMS
                 // Main logic for the entry
                 await SetUpForm();
 
-                if (App.Settings.tablet)
-                {
-                    await FillItems();
-                    dataAdapter.NotifyDataSetChanged();
-                }
-
-
+              
             }
             catch (Exception ex)
             {
@@ -1097,6 +1091,25 @@ namespace WMS
             try
             {
                 data = FilterIssuedGoods(connectedPositions, tbSSCC.Text, tbSerialNum.Text, searchableSpinnerIssueLocation.spinnerTextValueField.Text);
+
+                // 27.08.2024 Janko Jovičić Tablet UI improvments
+                if (App.Settings.tablet)
+                {
+                    items.Clear();
+                    foreach (var connected in data)
+                    {
+                        items.Add(new LocationClass
+                        {
+                            ident = connected.acIdent,
+                            location = connected.aclocation,
+                            serial = connected.acSerialNo,
+                            sscc = connected.acSSCC,
+                            quantity = connected.anQty.ToString()
+                        });
+                    }
+                    dataAdapter.NotifyDataSetChanged();
+                }
+
                 if (data.Count == 1)
                 {
                     var element = data.ElementAt(0);
@@ -1286,6 +1299,23 @@ namespace WMS
                             });
                         }
                     }
+
+                    if (App.Settings.tablet)
+                    {
+                        items.Clear();
+                        foreach(var connected in connectedPositions)
+                        {
+                            items.Add(new LocationClass {
+                                ident = connected.acIdent, 
+                                location = connected.aclocation,
+                                serial = connected.acSerialNo,
+                                sscc = connected.acSSCC,
+                                quantity = connected.anQty.ToString()
+                            });
+                        }
+                        dataAdapter.NotifyDataSetChanged();
+                    }
+
                 }
             }
             catch (Exception ex)
