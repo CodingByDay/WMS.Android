@@ -163,8 +163,11 @@ namespace WMS.AsyncServices
             string requestBody = JsonConvert.SerializeObject(requestObject);
             try
             {
-                PostResult getResult = await PostAsync("mode=sql&type=sel", requestBody).ConfigureAwait(false); 
-                return JsonConvert.DeserializeObject<ApiResultSet>(getResult.Result);
+                PostResult getResult = await PostAsync("mode=sql&type=sel", requestBody).ConfigureAwait(false);
+
+                ApiResultSet resultSet = await Task.Run(() => JsonConvert.DeserializeObject<ApiResultSet>(getResult.Result)).ConfigureAwait(false);
+
+                return resultSet;
             }
             catch (Exception err)
             {

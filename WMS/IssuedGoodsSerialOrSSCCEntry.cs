@@ -1424,11 +1424,15 @@ namespace WMS
                             if (await CommonData.GetSettingAsync("IssueSummaryView", this) == "1")
                             {
                                 cbMultipleLocations.Visibility = ViewStates.Visible;
-                                adapterLocations = await GetStockState(receivedTrail.Ident);
+                                adapterLocations = await GetStockState(receivedTrail.Ident).ConfigureAwait(false);
                                 adapterLocation = new ArrayAdapter<MultipleStock>(this,
                                 Android.Resource.Layout.SimpleSpinnerItem, adapterLocations);
-                                adapterLocation.SetDropDownViewResource(Android.Resource.Layout.SimpleSpinnerDropDownItem);
-                                cbMultipleLocations.Adapter = adapterLocation;
+                                RunOnUiThread(() =>
+                                {
+                                    adapterLocation.SetDropDownViewResource(Android.Resource.Layout.SimpleSpinnerDropDownItem);
+                                    cbMultipleLocations.Adapter = adapterLocation;
+                                });
+                             
                             }
 
 
