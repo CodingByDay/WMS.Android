@@ -348,8 +348,9 @@ namespace WMS
                 {
                     // If the company opted for this.
                     cbMultipleLocations.ItemSelected += CbMultipleLocations_ItemSelected;
-                    searchableSpinnerIssueLocation.icon.Visibility = ViewStates.Gone;                    
-                } else
+                    searchableSpinnerIssueLocation.icon.Visibility = ViewStates.Gone;
+                }
+                else
                 {
                     searchableSpinnerIssueLocation.ShowDropDown();
                     cbMultipleLocations.Visibility = ViewStates.Gone;
@@ -383,7 +384,7 @@ namespace WMS
                 // Main logic for the entry
                 await SetUpForm();
 
-              
+
             }
             catch (Exception ex)
             {
@@ -492,7 +493,7 @@ namespace WMS
                 var code = openIdent.GetString("Code");
                 var wh = moveHead.GetString("Wharehouse");
                 var itemsWorker = await AdapterStore.GetStockForWarehouseAndIdent(code, wh);
-                foreach (var worker in  itemsWorker)
+                foreach (var worker in itemsWorker)
                 {
                     items.Add(worker);
                 }
@@ -1303,10 +1304,11 @@ namespace WMS
                     if (App.Settings.tablet)
                     {
                         items.Clear();
-                        foreach(var connected in connectedPositions)
+                        foreach (var connected in connectedPositions)
                         {
-                            items.Add(new LocationClass {
-                                ident = connected.acIdent, 
+                            items.Add(new LocationClass
+                            {
+                                ident = connected.acIdent,
                                 location = connected.aclocation,
                                 serial = connected.acSerialNo,
                                 sscc = connected.acSSCC,
@@ -1424,15 +1426,11 @@ namespace WMS
                             if (await CommonData.GetSettingAsync("IssueSummaryView", this) == "1")
                             {
                                 cbMultipleLocations.Visibility = ViewStates.Visible;
-                                adapterLocations = await GetStockState(receivedTrail.Ident).ConfigureAwait(false);
+                                adapterLocations = await GetStockState(receivedTrail.Ident);
                                 adapterLocation = new ArrayAdapter<MultipleStock>(this,
                                 Android.Resource.Layout.SimpleSpinnerItem, adapterLocations);
-                                RunOnUiThread(() =>
-                                {
-                                    adapterLocation.SetDropDownViewResource(Android.Resource.Layout.SimpleSpinnerDropDownItem);
-                                    cbMultipleLocations.Adapter = adapterLocation;
-                                });
-                             
+                                adapterLocation.SetDropDownViewResource(Android.Resource.Layout.SimpleSpinnerDropDownItem);
+                                cbMultipleLocations.Adapter = adapterLocation;
                             }
 
 
@@ -1549,7 +1547,7 @@ namespace WMS
                 parameters.Add(new Services.Parameter { Name = "acWarehouse", Type = "String", Value = moveHead.GetString("Wharehouse") });
                 parameters.Add(new Services.Parameter { Name = "acIdent", Type = "String", Value = ident });
 
-                var stocks = await AsyncServices.AsyncServices.GetObjectListBySqlAsync(sql, parameters, this).ConfigureAwait(false);
+                var stocks = await AsyncServices.AsyncServices.GetObjectListBySqlAsync(sql, parameters, this);
 
                 if (stocks.Success && stocks.Rows.Count > 0)
                 {
@@ -1597,7 +1595,7 @@ namespace WMS
                 return new List<MultipleStock>();
             }
         }
-
+        s
 
         private async void TbSerialNum_KeyPress(object? sender, View.KeyEventArgs e)
         {

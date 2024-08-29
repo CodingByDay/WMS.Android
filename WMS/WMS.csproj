@@ -209,6 +209,7 @@
   <ItemGroup>
     <PackageReference Include="Aspose.Words" Version="24.1.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="RestSharp" Version="111.4.1" />
     <PackageReference Include="Sentry" Version="4.6.2" />
     <PackageReference Include="Sentry.Xamarin" Version="2.1.0" />
     <PackageReference Include="Square.Picasso" Version="2.71828.0" />
