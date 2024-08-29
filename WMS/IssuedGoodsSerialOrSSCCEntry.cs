@@ -303,8 +303,8 @@ namespace WMS
                     listData = FindViewById<ListView>(Resource.Id.listData);
                     dataAdapter = UniversalAdapterHelper.GetIssuedGoodsSerialOrSSCCEntry(this, items);
                     listData.Adapter = dataAdapter;
-                    imagePNG = FindViewById<ZoomageView>(Resource.Id.imagePNG);
-                    imagePNG.Visibility = ViewStates.Invisible;
+                    //imagePNG = FindViewById<ZoomageView>(Resource.Id.imagePNG);
+                    //imagePNG.Visibility = ViewStates.Invisible;
                 }
                 else
                 {
@@ -342,7 +342,7 @@ namespace WMS
                 searchableSpinnerIssueLocation.SetItems(locations);
                 searchableSpinnerIssueLocation.ColorTheRepresentation(1);
 
-
+                
 
                 if (await CommonData.GetSettingAsync("IssueSummaryView", this) == "1")
                 {
@@ -1094,22 +1094,22 @@ namespace WMS
                 data = FilterIssuedGoods(connectedPositions, tbSSCC.Text, tbSerialNum.Text, searchableSpinnerIssueLocation.spinnerTextValueField.Text);
 
                 // 27.08.2024 Janko Jovičić Tablet UI improvments
-                if (App.Settings.tablet)
-                {
-                    items.Clear();
-                    foreach (var connected in data)
-                    {
-                        items.Add(new LocationClass
-                        {
-                            ident = connected.acIdent,
-                            location = connected.aclocation,
-                            serial = connected.acSerialNo,
-                            sscc = connected.acSSCC,
-                            quantity = connected.anQty.ToString()
-                        });
-                    }
-                    dataAdapter.NotifyDataSetChanged();
-                }
+                //if (App.Settings.tablet)
+                //{
+                //    items.Clear();
+                //    foreach (var connected in data)
+                //    {
+                //        items.Add(new LocationClass
+                //        {
+                //            ident = connected.acIdent,
+                //            location = connected.aclocation,
+                //            serial = connected.acSerialNo,
+                //            sscc = connected.acSSCC,
+                //            quantity = connected.anQty.ToString()
+                //        });
+                //    }
+                //    dataAdapter.NotifyDataSetChanged();
+                //}
 
                 if (data.Count == 1)
                 {
@@ -1301,22 +1301,22 @@ namespace WMS
                         }
                     }
 
-                    if (App.Settings.tablet)
-                    {
-                        items.Clear();
-                        foreach (var connected in connectedPositions)
-                        {
-                            items.Add(new LocationClass
-                            {
-                                ident = connected.acIdent,
-                                location = connected.aclocation,
-                                serial = connected.acSerialNo,
-                                sscc = connected.acSSCC,
-                                quantity = connected.anQty.ToString()
-                            });
-                        }
-                        dataAdapter.NotifyDataSetChanged();
-                    }
+                    //if (App.Settings.tablet) THIS IS THE PROBLEM SOLVE THIS.
+                    //{
+                    //    items.Clear();
+                    //    foreach (var connected in connectedPositions)
+                    //    {
+                    //        items.Add(new LocationClass
+                    //        {
+                    //            ident = connected.acIdent,
+                    //            location = connected.aclocation,
+                    //            serial = connected.acSerialNo,
+                    //            sscc = connected.acSSCC,
+                    //            quantity = connected.anQty.ToString()
+                    //        });
+                    //    }
+                    //    dataAdapter.NotifyDataSetChanged();
+                    //}
 
                 }
             }
@@ -1356,10 +1356,10 @@ namespace WMS
         {
             try
             {
-                if (App.Settings.tablet)
-                {
-                    showPictureIdent(openIdent.GetString("Code"));
-                }
+                //if (App.Settings.tablet)
+                //{
+                //    showPictureIdent(openIdent.GetString("Code"));
+                //}
                 // This is the default focus of the view.
                 tbSSCC.RequestFocus();
 
@@ -1595,7 +1595,7 @@ namespace WMS
                 return new List<MultipleStock>();
             }
         }
-        s
+
 
         private async void TbSerialNum_KeyPress(object? sender, View.KeyEventArgs e)
         {

@@ -10,6 +10,9 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System;
+using Android.Views;
+using static WMS.App.MultipleStock;
+using WMS.ExceptionStore;
 
 namespace WMS.AsyncServices
 {
@@ -165,7 +168,6 @@ namespace WMS.AsyncServices
 
                 // Read the response content as a string
                 string result = await response.Content.ReadAsStringAsync();
-
                 // Deserialize the response content to ApiResultSet
                 ApiResultSet resultSet = JsonConvert.DeserializeObject<ApiResultSet>(result);
 
@@ -184,6 +186,11 @@ namespace WMS.AsyncServices
                 };
             }
         }
+
+
+
+
+
 
         public static async Task<(NameValueObject? nvo, string? error)> GetObjectAsync(string? table, string? id, Context? context)
         {
