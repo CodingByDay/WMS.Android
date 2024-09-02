@@ -408,8 +408,16 @@ namespace WMS.App
                 Serial.SetTextColor(Android.Graphics.Color.Black);
 
                 TextView SSCC = view.FindViewById<TextView>(Resource.Id.fifth);
-                SSCC.Text = "..." + item.sscc.Substring(item.sscc.Length - 5);
-                SSCC.SetTextColor(Android.Graphics.Color.Black);
+                // Check if item.sscc is not null and has at least 5 characters
+                if (!string.IsNullOrEmpty(item.sscc) && item.sscc.Length >= 5)
+                {
+                    SSCC.Text = "..." + item.sscc.Substring(item.sscc.Length - 5);
+                }
+                else
+                {
+                    // Fallback text if item.sscc is null or too short
+                    SSCC.Text = item.sscc ?? string.Empty;
+                }
 
             });
 
@@ -443,8 +451,16 @@ namespace WMS.App
                 Serial.SetTextColor(Android.Graphics.Color.Black);
 
                 TextView SSCC = view.FindViewById<TextView>(Resource.Id.fifth);
-                SSCC.Text = "..." + item.sscc.Substring(item.sscc.Length - 5);
-                SSCC.SetTextColor(Android.Graphics.Color.Black);
+                // Check if item.sscc is not null and has at least 5 characters
+                if (!string.IsNullOrEmpty(item.sscc) && item.sscc.Length >= 5)
+                {
+                    SSCC.Text = "..." + item.sscc.Substring(item.sscc.Length - 5);
+                }
+                else
+                {
+                    // Fallback text if item.sscc is null or too short
+                    SSCC.Text = item.sscc ?? string.Empty;
+                }
 
             });
 
