@@ -312,8 +312,6 @@ namespace WMS
                     base.SetContentView(Resource.Layout.IssuedGoodsSerialOrSSCCEntry);
                 }
 
-
-
                 // Definitions
                 AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
                 var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
@@ -486,23 +484,6 @@ namespace WMS
         }
 
 
-        private async Task FillItems()
-        {
-            try
-            {
-                var code = openIdent.GetString("Code");
-                var wh = moveHead.GetString("Wharehouse");
-                var itemsWorker = await AdapterStore.GetStockForWarehouseAndIdent(code, wh);
-                foreach (var worker in itemsWorker)
-                {
-                    items.Add(worker);
-                }
-            }
-            catch (Exception ex)
-            {
-                GlobalExceptions.ReportGlobalException(ex);
-            }
-        }
 
 
         private void SetUpProcessDependentButtons()
@@ -547,7 +528,7 @@ namespace WMS
 
                         if (double.TryParse(tbPacking.Text, out parsed) && createPositionAllowed) {
                             var element = data.ElementAt(0);
-                            result = HelperMethods.IsOverTheLimitTransactionAllowed(element.anStock ?? 0 , element.anStock ?? 0, parsed);
+                            result = HelperMethods.IsOverTheLimitTransactionAllowed(element.anStock ?? 0 , element.anMaxQty ?? 0, parsed);
                         } else
                         {
                             result = QuantityProcessing.OtherError;
@@ -601,6 +582,15 @@ namespace WMS
                             }
                         } else
                         {
+                            var isCorrectLocation = await IsLocationCorrect();
+
+                            if (!isCorrectLocation)
+                            {
+                                // Nepravilna lokacija za izbrano skladišče
+                                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s333)}", ToastLength.Long).Show();
+                                return;
+                            }
+
                             await CreateMethodFromStart();
                         }
                     }
@@ -699,7 +689,20 @@ namespace WMS
 
                         await CreateMethodSame();
                     }
-                    else if (createPositionAllowed && double.TryParse(tbPacking.Text, out parsed) && stock == 0)
+
+                    QuantityProcessing result = QuantityProcessing.OtherError;
+
+                    if (double.TryParse(tbPacking.Text, out parsed) && createPositionAllowed)
+                    {
+                        var element = data.ElementAt(0);
+                        result = HelperMethods.IsOverTheLimitTransactionAllowed(element.anStock ?? 0, element.anMaxQty ?? 0, parsed);
+                    }
+                    else
+                    {
+                        result = QuantityProcessing.OtherError;
+                    }
+
+                    if (createPositionAllowed && double.TryParse(tbPacking.Text, out parsed) && stock == 0)
                     {
                         if (Base.Store.modeIssuing == 2)
                         {
@@ -712,7 +715,25 @@ namespace WMS
                             Finish();
                         }
                     }
-                    else if (createPositionAllowed && double.TryParse(tbPacking.Text, out parsed) && stock >= parsed)
+                    else if (result != QuantityProcessing.GoodToGo)
+                    {
+                        if (result == QuantityProcessing.OverTheStock)
+                        {
+                            Toast.MakeText(this, $"{Resources.GetString(Resource.String.s353)}", ToastLength.Long).Show();
+                            return;
+                        }
+                        else if (result == QuantityProcessing.OverTheOrdered)
+                        {
+                            Toast.MakeText(this, $"{Resources.GetString(Resource.String.s354)}", ToastLength.Long).Show();
+                            return;
+                        }
+                        else if (result == QuantityProcessing.OtherError)
+                        {
+                            Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
+                            return;
+                        }
+                    }
+                    else
                     {
                         var isCorrectLocation = await IsLocationCorrect();
 
@@ -725,10 +746,7 @@ namespace WMS
 
                         await CreateMethodSame();
                     }
-                    else
-                    {
-                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
-                    }
+
                 }
                 catch (Exception ex)
                 {
@@ -1138,16 +1156,18 @@ namespace WMS
                 {
                     var element = data.ElementAt(0);
 
+                    tbSSCC.Text = element.acSSCC;
+
                     // This is perhaps not needed due to the quantity checking requirments. lbQty.Text = $"{Resources.GetString(Resource.String.s83)} ( " + element.anQty.ToString() + " )";
                     if (element.anPackQty != -1 && element.anPackQty <= element.anQty && await CommonData.GetSettingAsync("UsePackagingQuantity") == "1")
                     {
                         tbPacking.Text = element.anPackQty.ToString();
-                        lbQty.Text = $"{Resources.GetString(Resource.String.s83)} \n ( " + quantity.ToString(await CommonData.GetQtyPictureAsync(this)) + " )";
+                        lbQty.Text = $"{Resources.GetString(Resource.String.s83)} \n ( " + element.anQty + " )";
                     }
                     else
                     {
                         tbPacking.Text = element.anQty.ToString();
-                        lbQty.Text = $"{Resources.GetString(Resource.String.s83)} \n ( " + quantity.ToString(await CommonData.GetQtyPictureAsync(this)) + " )";
+                        lbQty.Text = $"{Resources.GetString(Resource.String.s83)} \n ( " + element.anQty + " )";
                     }
                     if (serialRow.Visibility == ViewStates.Visible)
                     {
@@ -1276,7 +1296,7 @@ namespace WMS
             try
             {
                 connectedPositions.Clear();
-                var sql = "SELECT acName, acSubject, acSerialNo, acSSCC, anQty, aclocation, anNo, acKey, acIdent, anPackQty from uWMSOrderItemByKeyOut WHERE acKey = @acKey AND anNo = @anNo AND acIdent = @acIdent";
+                var sql = "SELECT acName, acSubject, acSerialNo, acSSCC, anQty, aclocation, anNo, acKey, acIdent, anPackQty, anMaxQty, anStock from uWMSOrderItemByKeyOut WHERE acKey = @acKey AND anNo = @anNo AND acIdent = @acIdent";
                 var parameters = new List<Services.Parameter>();
                 parameters.Add(new Services.Parameter { Name = "acKey", Type = "String", Value = acKey });
                 parameters.Add(new Services.Parameter { Name = "anNo", Type = "Int32", Value = anNo });
