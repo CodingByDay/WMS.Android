@@ -144,5 +144,25 @@ namespace WMS.App
             return result;
         }
 
+        /// <summary>
+        /// Additional method for allowing companies to go over the ordered quantity.
+        /// </summary>
+        /// <param name="Stock">Stock value</param>
+        /// <param name="Max">Maximum allowed transaction</param>
+        /// <param name="WantedQty">The inputed value</param>
+        /// <returns></returns>
+        public static QuantityProcessing IsOverTheLimitTransactionAllowed(double Stock, double Max, double WantedQty)
+        {
+            if (WantedQty<=Stock)
+            {
+                if(WantedQty <= Max)
+                {
+                    return QuantityProcessing.GoodToGo;
+                }
+                return QuantityProcessing.OverTheOrdered;
+            }
+            return QuantityProcessing.OverTheStock;
+        }
+
     }
 }

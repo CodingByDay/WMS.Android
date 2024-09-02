@@ -609,7 +609,6 @@ namespace WMS
                 {
                     case Resource.Id.setting:
                         {
-                            Finish();
                             StartActivity(typeof(Settings));
                             Finish();
                             return true;

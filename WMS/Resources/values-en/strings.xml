@@ -423,5 +423,7 @@
 	<string name="s351">Versions</string>
 
 	<string name="s352">Search</string>
+	<string name="s353">You cannot issue more than what is in stock!</string>
+	<string name="s354">You cannot issue more than what is ordered!</string>
 
 </resources>

@@ -543,6 +543,16 @@ namespace WMS
                     {
                         double parsed;
 
+                        QuantityProcessing result = QuantityProcessing.OtherError;
+
+                        if (double.TryParse(tbPacking.Text, out parsed) && createPositionAllowed) {
+                            var element = data.ElementAt(0);
+                            result = HelperMethods.IsOverTheLimitTransactionAllowed(element.anStock ?? 0 , element.anStock ?? 0, parsed);
+                        } else
+                        {
+                            result = QuantityProcessing.OtherError;
+                        }
+
                         if (isProccessOrderless && double.TryParse(tbPacking.Text, out parsed) && stock >= parsed)
                         {
                             var isCorrectLocation = await IsLocationCorrect();
@@ -556,7 +566,8 @@ namespace WMS
 
                             await CreateMethodFromStart();
                         }
-                        else if (createPositionAllowed && double.TryParse(tbPacking.Text, out parsed) && stock == 0)
+
+                        if (createPositionAllowed && double.TryParse(tbPacking.Text, out parsed) && stock == 0)
                         {
 
                             if (Base.Store.modeIssuing == 2)
@@ -571,14 +582,26 @@ namespace WMS
                             }
 
                         }
-                        else if (createPositionAllowed && double.TryParse(tbPacking.Text, out parsed) && stock >= parsed)
+                        else if (result != QuantityProcessing.GoodToGo)
+                        {
+                            if (result == QuantityProcessing.OverTheStock)
+                            {
+                                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s353)}", ToastLength.Long).Show();
+                                return;
+                            }
+                            else if (result == QuantityProcessing.OverTheOrdered)
+                            {
+                                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s354)}", ToastLength.Long).Show();
+                                return;
+                            }
+                            else if (result == QuantityProcessing.OtherError)
+                            {
+                                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
+                                return;
+                            }
+                        } else
                         {
                             await CreateMethodFromStart();
-                        }
-
-                        else
-                        {
-                            Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
                         }
                     }
                     else
@@ -1296,7 +1319,9 @@ namespace WMS
                                 anNo = (int)(row.IntValue("anNo") ?? -1),
                                 acKey = row.StringValue("acKey"),
                                 acIdent = row.StringValue("acIdent"),
-                                anPackQty = row.DoubleValue("anPackQty") ?? -1
+                                anPackQty = row.DoubleValue("anPackQty") ?? -1,
+                                anMaxQty = row.DoubleValue("anMaxQty"),
+                                anStock = row.DoubleValue("anStock")
                             });
                         }
                     }

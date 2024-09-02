@@ -548,7 +548,8 @@
 	<string name="s351">Različice</string>
 
 	<string name="s352">Iskanje</string>
-
+	<string name="s353">Ne morete izdati več kot je na zalogi!</string>
+	<string name="s354">Ne morete izdati več kot je naročeno!</string>
 
 
 </resources>

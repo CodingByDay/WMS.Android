@@ -21,5 +21,8 @@
 
         public double anPackQty { get; set; }
 
+        public double? anMaxQty { get; set; }
+        public double? anStock { get; set; }
+
     }
 }
