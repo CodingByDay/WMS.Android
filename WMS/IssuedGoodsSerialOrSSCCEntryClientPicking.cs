@@ -327,11 +327,43 @@ namespace WMS
             {
                 double parsed;
 
+
+            
                 CheckData();
+
+                QuantityProcessing result = QuantityProcessing.OtherError;
+
+                if (double.TryParse(tbPacking.Text, out parsed) && createPositionAllowed && stock >= parsed)
+                {
+                    var element = data.ElementAt(0);
+                    result = HelperMethods.IsOverTheLimitTransactionAllowed(element.anStock ?? 0, element.anMaxQty ?? 0, parsed);
+                }
+                else
+                {
+                    result = QuantityProcessing.OtherError;
+                }
 
                 if (!Base.Store.isUpdate)
                 {
-                    if (createPositionAllowed && double.TryParse(tbPacking.Text, out parsed) && stock >= parsed)
+                    if (result != QuantityProcessing.GoodToGo)
+                    {
+                        if (result == QuantityProcessing.OverTheStock)
+                        {
+                            Toast.MakeText(this, $"{Resources.GetString(Resource.String.s353)}", ToastLength.Long).Show();
+                            return;
+                        }
+                        else if (result == QuantityProcessing.OverTheOrdered)
+                        {
+                            Toast.MakeText(this, $"{Resources.GetString(Resource.String.s354)}", ToastLength.Long).Show();
+                            return;
+                        }
+                        else if (result == QuantityProcessing.OtherError)
+                        {
+                            Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
+                            return;
+                        }
+                    }
+                    else
                     {
                         var isCorrectLocation = await IsLocationCorrect();
 
@@ -341,15 +373,8 @@ namespace WMS
                             Toast.MakeText(this, $"{Resources.GetString(Resource.String.s333)}", ToastLength.Long).Show();
                             return;
                         }
-                        else
-                        {
-                            await CreateMethodFromStart();
 
-                        }
-                    }
-                    else
-                    {
-                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
+                        await CreateMethodFromStart();
                     }
                 }
                 else
@@ -420,7 +445,38 @@ namespace WMS
                 CheckData();
 
                 double parsed;
-                if (createPositionAllowed && double.TryParse(tbPacking.Text, out parsed) && stock >= parsed)
+
+                QuantityProcessing result = QuantityProcessing.OtherError;
+
+                if (double.TryParse(tbPacking.Text, out parsed) && createPositionAllowed && stock >= parsed)
+                {
+                    var element = data.ElementAt(0);
+                    result = HelperMethods.IsOverTheLimitTransactionAllowed(element.anStock ?? 0, element.anMaxQty ?? 0, parsed);
+                }
+                else
+                {
+                    result = QuantityProcessing.OtherError;
+                }
+
+                if (result != QuantityProcessing.GoodToGo)
+                {
+                    if (result == QuantityProcessing.OverTheStock)
+                    {
+                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s353)}", ToastLength.Long).Show();
+                        return;
+                    }
+                    else if (result == QuantityProcessing.OverTheOrdered)
+                    {
+                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s354)}", ToastLength.Long).Show();
+                        return;
+                    }
+                    else if (result == QuantityProcessing.OtherError)
+                    {
+                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
+                        return;
+                    }
+                }
+                else
                 {
                     var isCorrectLocation = await IsLocationCorrect();
 
@@ -430,14 +486,8 @@ namespace WMS
                         Toast.MakeText(this, $"{Resources.GetString(Resource.String.s333)}", ToastLength.Long).Show();
                         return;
                     }
-                    else
-                    {
-                        await CreateMethodSame();
-                    }
-                }
-                else
-                {
-                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
+
+                    await CreateMethodSame();
                 }
             }
             catch (Exception ex)
@@ -1082,8 +1132,9 @@ namespace WMS
                                 acKey = row.StringValue("acKey"),
                                 acIdent = row.StringValue("acIdent"),
                                 anNo = (int)(row.IntValue("anNo") ?? -1),
-                                anPackQty = row.DoubleValue("anPackQty") ?? 0
-
+                                anPackQty = row.DoubleValue("anPackQty") ?? 0,
+                                anMaxQty = row.DoubleValue("anMaxQty"),
+                                anStock = row.DoubleValue("anStock")
                             });
                         }
                     }
@@ -1228,6 +1279,7 @@ namespace WMS
                     // Do stuff and allow creating the position
                     createPositionAllowed = true;
                     tbPacking.Text = dist.ElementAt(0).anQty.ToString();
+                    tbSSCC.Text = dist.ElementAt(0).acSSCC;
                 }
             }
             catch (Exception ex)
