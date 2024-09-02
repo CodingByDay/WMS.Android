@@ -298,7 +298,6 @@
         android:id="@+id/ivTrail"
         android:layout_height="0dip"
         android:layout_weight="1"
-        android:listSelector="@android:drawable/screen_background_dark_transparent"
         />
 
     <LinearLayout
