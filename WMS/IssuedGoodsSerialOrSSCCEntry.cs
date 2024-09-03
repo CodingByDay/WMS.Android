@@ -1135,7 +1135,7 @@ namespace WMS
                 data = FilterIssuedGoods(connectedPositions, tbSSCC.Text, tbSerialNum.Text, searchableSpinnerIssueLocation.spinnerTextValueField.Text);
 
                 // 27.08.2024 Janko Jovičić Tablet UI improvments
-                if (App.Settings.tablet)
+                /* if (App.Settings.tablet)
                 {
                     items.Clear();
                     foreach (var connected in data)
@@ -1151,6 +1151,7 @@ namespace WMS
                     }
                     dataAdapter.NotifyDataSetChanged();
                 }
+                */
 
                 if (data.Count == 1)
                 {

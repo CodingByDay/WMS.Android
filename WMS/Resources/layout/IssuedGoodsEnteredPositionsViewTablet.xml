@@ -105,7 +105,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
-            android:text="@string/s120"
+            android:text="@string/s49"
             android:layout_marginRight="28.0dp"
             android:id="@+id/serial" />
 
@@ -118,7 +118,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
-            android:text="@string/s79"
+            android:text="@string/s192"
             android:layout_marginRight="28.0dp"
             android:id="@+id/sscc" />
 
