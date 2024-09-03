@@ -426,4 +426,6 @@
 	<string name="s353">You cannot issue more than what is in stock!</string>
 	<string name="s354">You cannot issue more than what is ordered!</string>
 
+	<string name="s355">Without an order</string>
+
 </resources>

@@ -312,6 +312,7 @@ namespace WMS
                         });
 
                         var date = created == null ? "" : ((DateTime)created).ToString("dd.MM.yyyy");
+
                         if (item.GetString("DocumentTypeName") == "")
                         {
                             var headID = item.GetString("HeadID");
@@ -319,14 +320,20 @@ namespace WMS
                         }
                         else
                             finalString = item.GetString("LinkKey");
-                        dataSource.Add(new UnfinishedTakeoverList
-                        {
-                            Document = finalString,
-                            Issuer = item.GetString("Receiver"),
-                            Date = date,
-                            NumberOfPositions = item.GetInt("ItemCount").ToString(),
-                            // tbItemCount.Text = item.GetInt("ItemCount").ToString();
-                        });
+
+                            if(!item.GetBool("ByOrder"))
+                            {
+                                 finalString = Resources.GetString(Resource.String.s355);
+                            }
+
+                            dataSource.Add(new UnfinishedTakeoverList
+                            {
+                                Document = finalString,
+                                Issuer = item.GetString("Receiver"),
+                                Date = date,
+                                NumberOfPositions = item.GetInt("ItemCount").ToString(),
+                                // tbItemCount.Text = item.GetInt("ItemCount").ToString();
+                            });
                     }
                     else
                     {
@@ -683,7 +690,11 @@ namespace WMS
                             var item = positions.Items[displayedPosition];
                             tbBusEvent.Text = item.GetString("DocumentTypeName");
                             tbOrder.Text = item.GetString("LinkKey");
-                            tbSupplier.Text = item.GetString("Issuer");
+                            if (!item.GetBool("ByOrder"))
+                            {
+                                tbOrder.Text = Resources.GetString(Resource.String.s355);
+                            }
+                            tbSupplier.Text = item.GetString("Receiver");
                             tbItemCount.Text = item.GetInt("ItemCount").ToString();
                             tbCreatedBy.Text = item.GetString("ClerkName");
                             var created = item.GetDateTime("DateInserted");

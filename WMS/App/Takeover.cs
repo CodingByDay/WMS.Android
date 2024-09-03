@@ -18,6 +18,7 @@
         public string acKey { get; set; }
 
         public string acIdent { get; set; }
+        public double? anMaxQty { get; set; }
 
     }
 }

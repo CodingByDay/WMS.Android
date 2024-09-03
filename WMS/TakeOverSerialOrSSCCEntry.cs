@@ -393,8 +393,11 @@ namespace WMS
                     // This flow is for idents.
                     var order = Base.Store.OpenOrder;
                     var code2d = Base.Store.code2D;
-                    packaging = order.Packaging ?? 0;
-                    quantity = order.Quantity ?? 0;
+                    if (order != null)
+                    {
+                        packaging = order.Packaging ?? 0;
+                        quantity = order.Quantity ?? 0;
+                    }
                     if (order != null)
                     {
 
@@ -481,7 +484,7 @@ namespace WMS
             }
         }
 
-        /// </summary>
+        /// </summary> CONTINUE HERE
         /// <param name="acKey">Številka naročila</param>
         /// <param name="anNo">Pozicija znotraj naročila</param>
         /// <param name="acIdent">Ident</param>
@@ -490,7 +493,7 @@ namespace WMS
             try
             {
                 connectedPositions.Clear();
-                var sql = "SELECT acName, acSubject, anQty, anNo, acKey from uWMSOrderItemByKeyIn WHERE acKey = @acKey AND anNo = @anNo AND acIdent = @acIdent";
+                var sql = "SELECT acName, acSubject, anQty, anNo, acKey, anMaxQty from uWMSOrderItemByKeyIn WHERE acKey = @acKey AND anNo = @anNo AND acIdent = @acIdent";
                 var parameters = new List<Services.Parameter>();
                 parameters.Add(new Services.Parameter { Name = "acKey", Type = "String", Value = acKey });
                 parameters.Add(new Services.Parameter { Name = "anNo", Type = "Int32", Value = anNo });
@@ -528,7 +531,8 @@ namespace WMS
                                 anQty = row.DoubleValue("anQty"),
                                 anNo = (int)(row.IntValue("anNo") ?? -1),
                                 acKey = row.StringValue("acKey"),
-                                acIdent = row.StringValue("acIdent")
+                                acIdent = row.StringValue("acIdent"),
+                                anMaxQty = row.DoubleValue("anMaxQty")
                             });
                         }
                     }
@@ -733,7 +737,7 @@ namespace WMS
                     {
 
                         double parsed;
-                        if (double.TryParse(tbPacking.Text, out parsed) && stock >= parsed)
+                        if (double.TryParse(tbPacking.Text, out parsed))
                         {
 
                             var isCorrectLocation = await IsLocationCorrect();
@@ -946,6 +950,17 @@ namespace WMS
                         if (Base.Store.byOrder)
                         {
                             element = connectedPositions.ElementAt(0);
+                            double parsed = Convert.ToDouble(tbPacking.Text.Trim());
+                            double maxQty = element.anMaxQty ?? 0;
+                            if (parsed >= maxQty)
+                            {
+                                RunOnUiThread(() =>
+                                {
+                                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s354)}", ToastLength.Long).Show();
+                                });
+                                return;
+                            }
+
                         }
                         moveItem = new NameValueObject("MoveItem");
                         moveItem.SetInt("HeadID", moveHead.GetInt("HeadID"));
@@ -1011,7 +1026,7 @@ namespace WMS
                     LoaderManifest.LoaderManifestLoopResources(this);
 
                     double parsed;
-                    if (double.TryParse(tbPacking.Text, out parsed) && stock >= parsed)
+                    if (double.TryParse(tbPacking.Text, out parsed))
                     {
                         var isCorrectLocation = await IsLocationCorrect();
                         if (!isCorrectLocation)
@@ -1030,6 +1045,9 @@ namespace WMS
                                 Toast.MakeText(this, $"{Resources.GetString(Resource.String.s334)}", ToastLength.Long).Show();
                                 return;
                             }
+
+
+
                         }
                         else
                         {
@@ -1149,11 +1167,23 @@ namespace WMS
                 {
                     if (connectedPositions.Count == 1 || !Base.Store.byOrder)
                     {
+
+
                         var element = new Takeover { };
 
                         if (Base.Store.byOrder)
                         {
                             element = connectedPositions.ElementAt(0);
+                            double parsed = Convert.ToDouble(tbPacking.Text.Trim());
+                            double maxQty = element.anMaxQty ?? 0;
+                            if (parsed >= maxQty)
+                            {
+                                RunOnUiThread(() =>
+                                {
+                                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s354)}", ToastLength.Long).Show();
+                                });
+                                return;
+                            }                          
                         }
 
                         // This solves the problem of updating the item. The problem occurs because of the old way of passing data.
