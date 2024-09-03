@@ -693,6 +693,10 @@ namespace WMS
                             if (!item.GetBool("ByOrder"))
                             {
                                 tbOrder.Text = Resources.GetString(Resource.String.s355);
+                                Base.Store.byOrder = false;
+                            } else
+                            {
+                                Base.Store.byOrder = true;
                             }
                             tbSupplier.Text = item.GetString("Receiver");
                             tbItemCount.Text = item.GetInt("ItemCount").ToString();

@@ -695,9 +695,17 @@ namespace WMS
                     {
                         lbInfo.Text = $"{Resources.GetString(Resource.String.s205)} (" + (displayedPosition + 1).ToString() + "/" + positions.Items.Count + ")";
                         var item = positions.Items[displayedPosition];
-
                         tbBusEvent.Text = item.GetString("DocumentTypeName");
                         tbOrder.Text = item.GetString("LinkKey");
+                        if (!item.GetBool("ByOrder"))
+                        {
+                            tbOrder.Text = Resources.GetString(Resource.String.s355);
+                            Base.Store.byOrder = false;
+                        }
+                        else
+                        {
+                            Base.Store.byOrder = true;
+                        }
                         tbClient.Text = item.GetString("Receiver");
                         tbItemCount.Text = item.GetInt("ItemCount").ToString();
                         tbCreatedBy.Text = item.GetString("ClerkName");

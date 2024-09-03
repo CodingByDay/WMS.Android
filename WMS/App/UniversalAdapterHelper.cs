@@ -623,30 +623,26 @@ namespace WMS.App
         {
 
             var adapter = new UniversalAdapter<ClientPickingPosition>(context, data,
-            Resource.Layout.SixElements,
+            Resource.Layout.FiveElements,
             (view, item) =>
             {
                 TextView Ident = view.FindViewById<TextView>(Resource.Id.first);
                 Ident.Text = item.Ident;
                 Ident.SetTextColor(Android.Graphics.Color.Black);
 
-                TextView Name = view.FindViewById<TextView>(Resource.Id.second);
-                Name.Text = item.Name;
-                Name.SetTextColor(Android.Graphics.Color.Black);
-
-                TextView Location = view.FindViewById<TextView>(Resource.Id.third);
+                TextView Location = view.FindViewById<TextView>(Resource.Id.second);
                 Location.Text = item.Location;
                 Location.SetTextColor(Android.Graphics.Color.Black);
 
-                TextView Quantity = view.FindViewById<TextView>(Resource.Id.fourth);
+                TextView Quantity = view.FindViewById<TextView>(Resource.Id.third);
                 Quantity.Text = item.Quantity;
                 Quantity.SetTextColor(Android.Graphics.Color.Black);
 
-                TextView Order = view.FindViewById<TextView>(Resource.Id.fifth);
+                TextView Order = view.FindViewById<TextView>(Resource.Id.fourth);
                 Order.Text = item.Order;
                 Order.SetTextColor(Android.Graphics.Color.Black);
 
-                TextView No = view.FindViewById<TextView>(Resource.Id.sixth);
+                TextView No = view.FindViewById<TextView>(Resource.Id.fifth);
                 No.Text = item.No.ToString();
                 No.SetTextColor(Android.Graphics.Color.Black);
 

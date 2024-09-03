@@ -58,7 +58,6 @@
             android:text="@string/s257"
             android:layout_marginRight="28.0dp"
             android:layout_width="match_parent" />
-
            <TextView
             android:textStyle="bold"
             android:textSize="18dp"
@@ -66,7 +65,29 @@
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
-            android:text="@string/s160"
+            android:text="@string/s102"
+            android:layout_width="match_parent"
+            android:layout_marginRight="28.0dp"
+ />
+            <TextView
+            android:textStyle="bold"
+            android:textSize="18dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:text="@string/s103"
+            android:layout_width="match_parent"
+            android:layout_marginRight="28.0dp"
+ />
+           <TextView
+            android:textStyle="bold"
+            android:textSize="18dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:text="@string/s14"
             android:layout_width="match_parent"
             android:layout_marginRight="28.0dp"
  />
@@ -81,29 +102,9 @@
             android:layout_width="match_parent"
             android:layout_marginRight="28.0dp"
  />
-        <TextView
-            android:textStyle="bold"
-            android:textSize="18dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:paddingLeft="10dp"
-            android:paddingTop="5dp"
-            android:text="@string/s102"
-            android:layout_width="match_parent"
-            android:layout_marginRight="28.0dp"
- />
+     
 
-        <TextView
-            android:textStyle="bold"
-            android:textSize="18dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:paddingLeft="10dp"
-            android:paddingTop="5dp"
-            android:text="@string/s103"
-            android:layout_width="match_parent"
-            android:layout_marginRight="28.0dp"
- />
+    
 
 
  

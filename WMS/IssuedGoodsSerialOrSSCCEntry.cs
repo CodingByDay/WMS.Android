@@ -526,7 +526,7 @@ namespace WMS
 
                         QuantityProcessing result = QuantityProcessing.OtherError;
 
-                        if (double.TryParse(tbPacking.Text, out parsed) && createPositionAllowed && stock >= parsed) {
+                        if (double.TryParse(tbPacking.Text, out parsed) && createPositionAllowed) {
                             var element = data.ElementAt(0);
                             result = HelperMethods.IsOverTheLimitTransactionAllowed(element.anStock ?? 0 , element.anMaxQty ?? 0, parsed);
                         } else
@@ -692,7 +692,7 @@ namespace WMS
 
                     QuantityProcessing result = QuantityProcessing.OtherError;
 
-                    if (double.TryParse(tbPacking.Text, out parsed) && createPositionAllowed && stock >= parsed)
+                    if (double.TryParse(tbPacking.Text, out parsed) && createPositionAllowed)
                     {
                         var element = data.ElementAt(0);
                         result = HelperMethods.IsOverTheLimitTransactionAllowed(element.anStock ?? 0, element.anMaxQty ?? 0, parsed);
