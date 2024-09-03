@@ -333,7 +333,7 @@ namespace WMS
 
                 QuantityProcessing result = QuantityProcessing.OtherError;
 
-                if (double.TryParse(tbPacking.Text, out parsed) && createPositionAllowed && stock >= parsed)
+                if (double.TryParse(tbPacking.Text, out parsed) && createPositionAllowed)
                 {
                     var element = data.ElementAt(0);
                     result = HelperMethods.IsOverTheLimitTransactionAllowed(element.anStock ?? 0, element.anMaxQty ?? 0, parsed);
@@ -1279,7 +1279,21 @@ namespace WMS
                     // Do stuff and allow creating the position
                     createPositionAllowed = true;
                     tbPacking.Text = dist.ElementAt(0).anQty.ToString();
-                    tbSSCC.Text = dist.ElementAt(0).acSSCC;
+
+                    if (ssccRow.Visibility == ViewStates.Visible)
+                    {
+                        tbSSCC.Text = dist.ElementAt(0).acSSCC;
+                    }
+                    if (serialRow.Visibility == ViewStates.Visible)
+                    {
+                        tbSerialNum.Text = dist.ElementAt(0).acSerialNo;
+                    }
+
+                    tbPacking.PostDelayed(() =>
+                    {
+                        tbPacking.RequestFocus();
+                        tbPacking.SetSelection(0, tbPacking.Text.Length);
+                    }, 100); // Delay in milliseconds
                 }
             }
             catch (Exception ex)
