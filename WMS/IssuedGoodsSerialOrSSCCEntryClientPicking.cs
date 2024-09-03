@@ -192,12 +192,6 @@ namespace WMS
                 SetUpProcessDependentButtons();
 
 
-
-                if (App.Settings.tablet)
-                {
-                    await fillItems();
-                }
-
                 if (ssccRow.Visibility != ViewStates.Visible && serialRow.Visibility != ViewStates.Visible)
                 {
                     tbPacking.RequestFocus();
@@ -214,6 +208,7 @@ namespace WMS
             }
         }
 
+        private bool initialLocation = true;
 
         private void CbMultipleLocations_ItemSelected(object? sender, AdapterView.ItemSelectedEventArgs e)
         {
@@ -226,6 +221,7 @@ namespace WMS
                 {
 
                     searchableSpinnerIssueLocation.spinnerTextValueField.Text = selected.Location;
+          
 
                     if (selected.Quantity > stock)
                     {
@@ -236,13 +232,16 @@ namespace WMS
                         tbPacking.Text = selected.Quantity.ToString();
                     }
 
-                    /* This is maybe a good idea.
-                    if(!selected.excludeSSCCSerial)
+                    // This is maybe a good idea.
+                    if(ssccRow.Visibility == ViewStates.Visible && !String.IsNullOrEmpty(selected.SSCC))
                     {
-                        tbSerialNum.Text = selected.Serial;
                         tbSSCC.Text = selected.SSCC;
                     }
-                    */
+
+                    if (serialRow.Visibility == ViewStates.Visible && !String.IsNullOrEmpty(selected.Serial))
+                    {
+                        tbSerialNum.Text = selected.Serial;
+                    }
 
                     tbPacking.SelectAll();
                 }
@@ -254,19 +253,6 @@ namespace WMS
         }
 
 
-        private async Task fillItems()
-        {
-            try
-            {
-                var code = openIdent.GetString("Code");
-                var wh = moveHead.GetString("Wharehouse");
-                items = await AdapterStore.GetStockForWarehouseAndIdent(code, wh);
-            }
-            catch (Exception ex)
-            {
-                GlobalExceptions.ReportGlobalException(ex);
-            }
-        }
 
         private void BtOverview_Click(object? sender, EventArgs e)
         {
@@ -326,9 +312,7 @@ namespace WMS
             try
             {
                 double parsed;
-
-
-            
+           
                 CheckData();
 
                 QuantityProcessing result = QuantityProcessing.OtherError;
@@ -448,7 +432,7 @@ namespace WMS
 
                 QuantityProcessing result = QuantityProcessing.OtherError;
 
-                if (double.TryParse(tbPacking.Text, out parsed) && createPositionAllowed && stock >= parsed)
+                if (double.TryParse(tbPacking.Text, out parsed) && createPositionAllowed)
                 {
                     var element = data.ElementAt(0);
                     result = HelperMethods.IsOverTheLimitTransactionAllowed(element.anStock ?? 0, element.anMaxQty ?? 0, parsed);
@@ -1138,6 +1122,25 @@ namespace WMS
                             });
                         }
                     }
+
+                    if (App.Settings.tablet)
+                    {
+                        items.Clear();
+                        foreach (var connected in connectedPositions)
+                        {
+                            items.Add(new LocationClass
+                            {
+                                ident = connected.acIdent,
+                                location = connected.aclocation,
+                                serial = connected.acSerialNo,
+                                sscc = connected.acSSCC,
+                                quantity = connected.anQty.ToString()
+                            });
+                        }
+                        dataAdapter.NotifyDataSetChanged();
+
+                       
+                    }
                 }
             }
             catch (Exception ex)
@@ -1267,6 +1270,7 @@ namespace WMS
             try
             {
                 data = FilterIssuedGoods(connectedPositions, tbSSCC.Text, tbSerialNum.Text, searchableSpinnerIssueLocation.spinnerTextValueField.Text);
+
 
                 // Temporary solution because of the SQL error.
                 dist = data
