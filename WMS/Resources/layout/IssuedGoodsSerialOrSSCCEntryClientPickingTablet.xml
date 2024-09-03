@@ -237,7 +237,7 @@
         <TextView
             android:textStyle="bold"
             android:layout_width="100dp"
-            android:layout_height="wrap_content"
+            android:layout_height="100dp"
             android:paddingLeft="4dp"
             android:paddingTop="5dp"
             android:text="@string/s40"

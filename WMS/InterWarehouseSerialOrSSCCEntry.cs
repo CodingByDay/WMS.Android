@@ -63,6 +63,8 @@ namespace WMS
         {
             try
             {
+                // Continue here add the stock related items to the right part of the screen.
+
                 base.OnCreate(savedInstanceState);
 
                 SetTheme(Resource.Style.AppTheme_NoActionBar);
