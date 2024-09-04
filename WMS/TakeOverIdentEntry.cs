@@ -614,7 +614,6 @@ namespace WMS
         {
             try
             {
-                // Disable unwanted crashes because of not waiting for the result. 6.6.2024 Janko Jovičić
                 var ident = tbIdent.Text;
 
                 if(cleanUp)

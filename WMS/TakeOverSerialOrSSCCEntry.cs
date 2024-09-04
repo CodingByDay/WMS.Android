@@ -208,7 +208,9 @@ namespace WMS
                 GlobalExceptions.ReportGlobalException(ex);
             }
         }
-        private async Task fillListAdapter()
+
+
+        private async Task FillListAdapter()
         {
             try
             {
@@ -233,13 +235,11 @@ namespace WMS
                         if (setting)
                         {
                             tempUnit = item.GetDouble("Qty").ToString();
-
                         }
                         else
                         {
                             tempUnit = item.GetDouble("Factor").ToString();
                         }
-
                         string error;
                         var ident = item.GetString("Ident").Trim();
                         var openIdent = Services.GetObject("id", ident, out error);
@@ -255,6 +255,7 @@ namespace WMS
                             quantity = tempUnit,
                         });
 
+                                             
                     }
                     else
                     {
@@ -264,16 +265,21 @@ namespace WMS
                             string errorWebApp = string.Format($"{Resources.GetString(Resource.String.s247)}");
                             Toast.MakeText(this, errorWebApp, ToastLength.Long).Show();
                         });
-
                     }
-
                 }
+
+                RunOnUiThread(() =>
+                {
+                    dataAdapter.NotifyDataSetChanged();
+                });
             }
             catch (Exception ex)
             {
                 GlobalExceptions.ReportGlobalException(ex);
             }
         }
+
+
         private async Task FillTheList()
         {
             try
@@ -290,7 +296,6 @@ namespace WMS
                         RunOnUiThread(() =>
                         {
                             Toast.MakeText(this, $"{Resources.GetString(Resource.String.s213)}", ToastLength.Long).Show();
-
                         });
 
                         return;
@@ -299,7 +304,7 @@ namespace WMS
                 }
                 finally
                 {
-                    await fillListAdapter();
+                    await FillListAdapter();
                 }
             }
             catch (Exception ex)

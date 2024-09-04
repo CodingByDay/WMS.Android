@@ -135,8 +135,6 @@ namespace WMS
 
                                 var parameters = new List<Services.Parameter>();
 
-                                // string debug = $"SELECT * from uWMSOrderItemByItemTypeWarehouseOut WHERE acIdent = {ident} AND acDocType = {moveHead.GetString("DocumentType")} AND acWarehouse = {moveHead.GetString("Wharehouse")};";
-
                                 string sql = $"SELECT acSubject, acKey, anNo, anQty, DeliveryDeadline, acIdent, anPackQty from uWMSOrderItemByItemTypeWarehouseOut WHERE acIdent = @acIdent AND acDocType = @acDocType AND acWarehouse = @acWarehouse";
 
                                 if (moveHead != null)
