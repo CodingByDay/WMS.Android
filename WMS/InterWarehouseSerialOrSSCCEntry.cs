@@ -696,13 +696,62 @@ namespace WMS
             }
         }
 
+        private void ImageClick(Drawable d)
+        {
+            try
+            {
+                popupDialog = new Dialog(this);
+                popupDialog.SetContentView(Resource.Layout.WarehousePicture);
+                popupDialog.Window.SetSoftInputMode(SoftInput.AdjustResize);
+                popupDialog.Show();
 
+                popupDialog.Window.SetLayout(LayoutParams.MatchParent, LayoutParams.WrapContent);
+                popupDialog.Window.SetBackgroundDrawableResource(Android.Resource.Color.HoloBlueBright);
+                image = popupDialog.FindViewById<ZoomageView>(Resource.Id.image);
+                image.SetMinimumHeight(500);
+                image.SetMinimumWidth(800);
+                image.SetImageDrawable(d);
+                // Access Popup layout fields like below
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
+        }
+
+        private void showPictureIdent(string ident)
+        {
+            try
+            {
+                try
+                {
+                    RunOnUiThread(() =>
+                    {
+                        Android.Graphics.Bitmap show = Services.GetImageFromServerIdent(moveHead.GetString("Receiver"), ident);
+                        Drawable d = new BitmapDrawable(Resources, show);
+                        imagePNG.SetImageDrawable(d);
+                        imagePNG.Visibility = ViewStates.Visible;
+                        imagePNG.Click += (e, ev) => { ImageClick(d); };
+                    });
+
+                }
+                catch (Exception)
+                {
+                    return;
+                }
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
+        }
 
 
         private async void SetUpForm()
         {
             try
             {
+             
                 // This is the default focus of the view.
                 tbSSCC.RequestFocus();
 
@@ -912,6 +961,10 @@ namespace WMS
 
                     await FillAdapterForTablet(activityIdent.GetString("Code"));
 
+                    if (App.Settings.tablet)
+                    {
+                        showPictureIdent(activityIdent.GetString("Code"));
+                    }
 
                 }
             }

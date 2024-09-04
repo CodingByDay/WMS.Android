@@ -287,6 +287,7 @@
             android:paddingTop="5dp">
 
             <TextView
+                android:maxLines="2"
                 android:textStyle="bold"
                 android:textSize="18dp"
                 android:layout_width="100dp"
@@ -326,7 +327,7 @@
             <com.jsibbold.zoomage.ZoomageView
                 android:src="@android:drawable/ic_menu_gallery"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="100dp"
                 android:id="@+id/imagePNG" />
 
         </LinearLayout>

@@ -268,55 +268,43 @@
    
 
 
-    <TextView
-        android:layout_height="0dip"
-        android:layout_width="fill_parent"
-        android:layout_weight="1" />
+
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:weightSum="3"
         android:paddingTop="5dp">
-    <LinearLayout
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:weightSum="2"
-    android:paddingTop="5dp">
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:weightSum="2"
+            android:paddingTop="20dp">
 
             <com.jsibbold.zoomage.ZoomageView
                 android:src="@android:drawable/ic_menu_gallery"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="100dp"
                 android:id="@+id/imagePNG" />
-        </LinearLayout>
 
+        </LinearLayout>
+        </LinearLayout>
+        <TextView
+            android:layout_height="0dip"
+            android:layout_width="fill_parent"
+            android:layout_weight="1" />
         <LinearLayout
             android:layout_width="fill_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:weightSum="2"
-            android:layout_weight="1"
-            android:paddingTop="5dp"
-            android:layout_marginBottom="4dp">
+            android:paddingTop="5dp">
 
             <Button
-                android:layout_weight="1"
-                android:textSize="20dp"
-                android:paddingLeft="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/rikoMain"
-                android:textColor="@color/white"
-                android:layout_marginLeft="4dp"
-                android:layout_marginRight="2dp"
-                android:text="@string/s52"
+                android:text="@string/s120"
                 android:drawableLeft="@drawable/newitem_white"
                 android:id="@+id/btCreateSame"
-                 />
-
-            <Button
                 android:layout_weight="1"
                 android:textSize="20dp"
                 android:paddingLeft="10dp"
@@ -325,24 +313,12 @@
                 android:background="@color/rikoMain"
                 android:textColor="@color/white"
                 android:layout_marginLeft="2dp"
-                android:layout_marginRight="4dp"
-                android:text="@string/s86"
-                android:drawableLeft="@drawable/newitem_white"
-                android:id="@+id/btCreate"
-                />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="match_parent"
-            android:weightSum="2"
-            android:layout_weight="1"
-            android:orientation="horizontal"
-            android:paddingTop="0dp"
-            android:layout_marginBottom="4dp">
+                android:layout_marginRight="2dp" />
 
             <Button
+                android:text="@string/s116"
+                android:drawableLeft="@drawable/newitem_white"
+                android:id="@+id/btCreate"
                 android:layout_weight="1"
                 android:textSize="20dp"
                 android:paddingLeft="10dp"
@@ -350,13 +326,36 @@
                 android:layout_height="match_parent"
                 android:background="@color/rikoMain"
                 android:textColor="@color/white"
-                android:layout_marginLeft="4dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="2"
+            android:paddingTop="4dp">
+
+            <Button
+                android:text="@string/s117"
+                android:layout_weight="1"
+                android:textSize="20dp"
+                android:paddingLeft="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/rikoMain"
+                android:textColor="@color/white"
+                android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
-                android:text="@string/s87"
                 android:drawableLeft="@drawable/shipped_white"
                 android:id="@+id/btFinish" />
 
             <Button
+                android:text="@string/s121"
+                android:drawableLeft="@drawable/focus_white"
+                android:id="@+id/btOverview"
                 android:layout_weight="1"
                 android:textSize="20dp"
                 android:paddingLeft="10dp"
@@ -365,29 +364,24 @@
                 android:background="@color/rikoMain"
                 android:textColor="@color/white"
                 android:layout_marginLeft="2dp"
-                android:layout_marginRight="4dp"
-                android:text="@string/s55"
-                android:drawableLeft="@drawable/focus_white"
-                android:id="@+id/btOverview"
-                />
+                android:layout_marginRight="2dp" />
 
         </LinearLayout>
-            <Button
-                android:layout_weight="1"
-                android:textSize="20dp"
-                android:paddingLeft="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/rikoMain"
-                android:textColor="@color/white"
-                android:layout_marginLeft="4dp"
-                android:layout_marginRight="4dp"
-                android:layout_marginBottom="4dp"
-                android:text="@string/s77"
-                android:drawableLeft="@drawable/logout_white"
-                android:id="@+id/btExit"
-       />
-    </LinearLayout>
+        <Button
+            android:text="@string/s119"
+            android:layout_marginTop="4dp"
+            android:textSize="20dp"
+            android:paddingLeft="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:background="@color/rikoMain"
+            android:textColor="@color/white"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:drawableLeft="@drawable/logout_white"
+            android:id="@+id/btExit"
+            android:layout_marginBottom="4dp"
+            />
 
     </LinearLayout>
 

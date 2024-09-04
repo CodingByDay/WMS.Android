@@ -202,12 +202,12 @@
                                      >
 
         <TextView
+            android:textSize="18dp"
             android:textStyle="bold"
             android:layout_width="100dp"
-            android:layout_height="match_parent"
-            android:gravity="bottom"
-            android:paddingLeft="4dp"
-            android:paddingTop="4dp"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
             android:text="@string/s50"
           />
 
@@ -221,7 +221,7 @@
 
         <LinearLayout
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="100dp"
             android:orientation="horizontal"
             android:paddingTop="5dp">
 
@@ -229,7 +229,7 @@
                 android:textSize="18dp"
                 android:textStyle="bold"
                 android:layout_width="100dp"
-                android:layout_height="wrap_content"
+                android:layout_height="100dp"
                 android:paddingLeft="10dp"
                 android:paddingTop="5dp"
                 android:text="@string/s40"
@@ -260,8 +260,9 @@
         <ImageView
             android:src="@android:drawable/ic_menu_gallery"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:id="@+id/imagePNG" />
+            android:layout_height="100dp"
+            android:id="@+id/imagePNG"
+            android:contentDescription="description" />
         <TextView
             android:layout_height="0dip"
             android:layout_width="fill_parent"

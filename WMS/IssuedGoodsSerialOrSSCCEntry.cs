@@ -439,7 +439,6 @@ namespace WMS
                 try
                 {
                     Android.Graphics.Bitmap show = Services.GetImageFromServerIdent(moveHead.GetString("Wharehouse"), ident);
-                    var debug = moveHead.GetString("Wharehouse");
                     Drawable d = new BitmapDrawable(Resources, show);
                     imagePNG.SetImageDrawable(d);
                     imagePNG.Visibility = ViewStates.Visible;
@@ -1134,24 +1133,6 @@ namespace WMS
             {
                 data = FilterIssuedGoods(connectedPositions, tbSSCC.Text, tbSerialNum.Text, searchableSpinnerIssueLocation.spinnerTextValueField.Text);
 
-                // 27.08.2024 Janko Jovičić Tablet UI improvments
-                /* if (App.Settings.tablet)
-                {
-                    items.Clear();
-                    foreach (var connected in data)
-                    {
-                        items.Add(new LocationClass
-                        {
-                            ident = connected.acIdent,
-                            location = connected.aclocation,
-                            serial = connected.acSerialNo,
-                            sscc = connected.acSSCC,
-                            quantity = connected.anQty.ToString()
-                        });
-                    }
-                    dataAdapter.NotifyDataSetChanged();
-                }
-                */
 
                 if (data.Count == 1)
                 {
