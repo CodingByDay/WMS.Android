@@ -3,6 +3,7 @@ using Android.Views;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using TrendNET.WMS.Device.Services;
+using WMS.ExceptionStore;
 
 namespace WMS.App
 {
@@ -100,48 +101,61 @@ namespace WMS.App
 
         public static void StartActivityWithAlias(Context context, Type activityClass, string aliasName)
         {
-            bool useAlias = App.Settings.tablet;
-            Intent intent = new Intent();
-            intent.SetAction(Intent.ActionMain);
-            intent.AddCategory(Intent.CategoryLauncher);
-            intent.SetFlags(ActivityFlags.NewTask);
-
-            if (useAlias)
+            try
             {
-                // Define the component name for the activity alias
-                ComponentName cn = new ComponentName(context.ApplicationContext, aliasName);
-                intent.SetComponent(cn);
-            }
-            else
-            {
-                // Use the main activity class directly
-                intent.SetClass(context, activityClass);
-            }
+                bool useAlias = App.Settings.tablet;
+                Intent intent = new Intent();
+                intent.SetAction(Intent.ActionMain);
+                intent.AddCategory(Intent.CategoryLauncher);
+                intent.SetFlags(ActivityFlags.NewTask);
 
-            // Start the activity
-            context.StartActivity(intent);
+                if (useAlias)
+                {
+                    // Define the component name for the activity alias
+                    ComponentName cn = new ComponentName(context.ApplicationContext, aliasName);
+                    intent.SetComponent(cn);
+                }
+                else
+                {
+                    // Use the main activity class directly
+                    intent.SetClass(context, activityClass);
+                }
+
+                // Start the activity
+                context.StartActivity(intent);
+            } catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
         }
 
         public static async Task<List<String>> GetLocationsForGivenWarehouse(string warehouse)
         {
-            List<string> result = new List<string>();
-
-            await Task.Run(() =>
+            try
             {
-                string error;
-                var locations = Services.GetObjectList("lo", out error, warehouse);
-                if (locations != null)
-                {
-                    locations.Items.ForEach(x =>
-                    {
-                        var location = x.GetString("LocationID");
-                        result.Add(location);
-                        // Notify the adapter state change!
-                    });
-                }
+                List<string> result = new List<string>();
 
-            });
-            return result;
+                await Task.Run(() =>
+                {
+                    string error;
+                    var locations = Services.GetObjectList("lo", out error, warehouse);
+                    if (locations != null)
+                    {
+                        locations.Items.ForEach(x =>
+                        {
+                            var location = x.GetString("LocationID");
+                            result.Add(location);
+                            // Notify the adapter state change!
+                        });
+                    }
+
+                });
+                return result;
+            } catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+                return new List<string>();
+            }
         }
 
         /// <summary>
@@ -153,15 +167,22 @@ namespace WMS.App
         /// <returns></returns>
         public static QuantityProcessing IsOverTheLimitTransactionAllowed(double Stock, double Max, double WantedQty)
         {
-            if (WantedQty<=Stock)
+            try
             {
-                if(WantedQty <= Max)
+                if (WantedQty <= Stock)
                 {
-                    return QuantityProcessing.GoodToGo;
+                    if (WantedQty <= Max)
+                    {
+                        return QuantityProcessing.GoodToGo;
+                    }
+                    return QuantityProcessing.OverTheOrdered;
                 }
-                return QuantityProcessing.OverTheOrdered;
+                return QuantityProcessing.OverTheStock;
+            } catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+                return QuantityProcessing.OtherError;
             }
-            return QuantityProcessing.OverTheStock;
         }
 
     }

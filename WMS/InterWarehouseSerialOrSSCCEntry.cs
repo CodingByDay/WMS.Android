@@ -13,7 +13,6 @@ using TrendNET.WMS.Device.Services;
 using WMS.App;
 using WMS.ExceptionStore;
 using static Android.App.ActionBar;
-using static Android.Views.ViewTreeObserver;
 using AlertDialog = Android.App.AlertDialog;
 using WebApp = TrendNET.WMS.Device.Services.WebApp;
 
@@ -63,7 +62,7 @@ namespace WMS
         {
             try
             {
-                // Continue here add the stock related items to the right part of the screen.
+                // Continue here add the stock related items to the right part of the screen. When SSCC is scanned or Ident.
 
                 base.OnCreate(savedInstanceState);
 
@@ -174,32 +173,24 @@ namespace WMS
             }
         }
 
-     
-        private void PopupDialog_KeyPress(object sender, DialogKeyEventArgs e)
+       
+        /// <summary>
+        /// Addition for the tablet right side view. 04.09.2024
+        /// </summary>
+        /// <param name="list"></param>
+        private void FillTabletAdapterData(List<LocationClass> list)
         {
             try
             {
-                if (e.KeyCode == Keycode.Back)
-                {
-                    popupDialog.Dismiss();
-                    popupDialog.Hide();
-                    popupDialog.Window.Dispose();
-                }
-            }
-            catch (Exception ex)
-            {
-                GlobalExceptions.ReportGlobalException(ex);
-            }
-        }
-
-        private void Fill(List<LocationClass> list)
-        {
-            try
-            {
+                items.Clear();
                 foreach (var obj in list)
                 {
                     items.Add(new LocationClass { ident = obj.ident, location = obj.location, quantity = obj.quantity, serial = obj.serial, sscc = obj.sscc });
                 }
+                RunOnUiThread(() =>
+                {
+                    dataAdapter.NotifyDataSetChanged();
+                });
             }
             catch (Exception ex)
             {
@@ -219,13 +210,13 @@ namespace WMS
                 GlobalExceptions.ReportGlobalException(ex);
             }
         }
-        private async Task FillTheIdentLocationList(string ident)
+        private async Task FillAdapterForTablet(string ident)
         {
             try
             {
                 var wh = moveHead.GetString("Receiver");
                 var list = await AdapterStore.GetStockForWarehouseAndIdent(ident, wh);
-                Fill(list);
+                FillTabletAdapterData(list);
             }
             catch (Exception ex)
             {
@@ -276,7 +267,7 @@ namespace WMS
             {
                 if (e.KeyCode == Keycode.Enter && e.Event.Action == KeyEventActions.Down)
                 {
-                    await ProcessIdent(false);
+                    await ProcessIdent();
                 }
                 e.Handled = false;
             }
@@ -718,7 +709,7 @@ namespace WMS
                 if (Base.Store.isUpdate && moveItem != null)
                 {
                     tbIdent.Text = moveItem.GetString("Ident");
-                    await ProcessIdent(true);
+                    await ProcessIdent();
                     tbSerialNum.Text = moveItem.GetString("SerialNo");
                     tbPacking.Text = moveItem.GetDouble("Qty").ToString();
                     tbSSCC.Text = moveItem.GetString("SSCC");
@@ -753,7 +744,7 @@ namespace WMS
                     {
 
                         tbIdent.Text = barcode;
-                        await ProcessIdent(false);
+                        await ProcessIdent();
                         tbSSCC.RequestFocus();
                     }
                     else if (tbSSCC.HasFocus)
@@ -805,7 +796,7 @@ namespace WMS
                     {
                         tbIdent.Text = ssccResult.Rows[0].StringValue("acIdent");
                         // Process ident, recommended location is processed as well. 23.04.2024 Janko Jovičić
-                        Task.Run(async () => await ProcessIdent(false)).Wait();
+                        Task.Run(async () => await ProcessIdent()).Wait();
                         searchableSpinnerIssueLocation.spinnerTextValueField.Text = ssccResult.Rows[0].StringValue("aclocation");
                         tbSerialNum.Text = ssccResult.Rows[0].StringValue("acSerialNo");
                         tbSSCC.Text = ssccResult.Rows[0].StringValue("acSSCC").ToString();
@@ -837,7 +828,7 @@ namespace WMS
         }
 
 
-        private async Task ProcessIdent(bool update)
+        private async Task ProcessIdent()
         {
             try
             {
@@ -874,7 +865,7 @@ namespace WMS
                         return;
                     }
 
-                    if (await CommonData.GetSettingAsync("IgnoreStockHistory", this) != "1" && !update)
+                    if (await CommonData.GetSettingAsync("IgnoreStockHistory", this) != "1" && !Base.Store.isUpdate)
                     {
                         try
                         {
@@ -901,7 +892,7 @@ namespace WMS
 
                     lbIdentName.Text = activityIdent.GetString("Name");
 
-                    if (!update)
+                    if (!Base.Store.isUpdate)
                     {
                         RunOnUiThread(() =>
                         {
@@ -919,7 +910,7 @@ namespace WMS
 
                     }
 
-                    await FillTheIdentLocationList(activityIdent.GetString("Code"));
+                    await FillAdapterForTablet(activityIdent.GetString("Code"));
 
 
                 }
