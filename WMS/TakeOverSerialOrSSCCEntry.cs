@@ -828,6 +828,7 @@ namespace WMS
 
                             if (moveItem != null && error == string.Empty)
                             {
+                                InUseObjects.Invalidate("MoveItem");
                                 return true;
                             } else
                             {
@@ -868,6 +869,7 @@ namespace WMS
                             var subjects = Services.Update($"UPDATE uWMSMoveItem SET anQty = @anQty WHERE anIDItem = @anItemID;", parameters);
                             if (!subjects.Success)
                             {
+                                InUseObjects.Invalidate("MoveItem");
                                 return true;
                             }
                             else

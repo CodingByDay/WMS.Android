@@ -210,6 +210,157 @@ namespace WMS
 
         private bool initialLocation = true;
 
+
+
+
+
+        private async Task<bool> SaveMoveItem()
+        {
+            try
+            {
+                try
+                {
+                    double parsed;
+
+                    CheckData();
+
+                    QuantityProcessing result = QuantityProcessing.OtherError;
+
+                    if (double.TryParse(tbPacking.Text, out parsed) && createPositionAllowed)
+                    {
+                        var element = data.ElementAt(0);
+                        result = HelperMethods.IsOverTheLimitTransactionAllowed(element.anStock ?? 0, element.anMaxQty ?? 0, parsed);
+                    }
+                    else
+                    {
+                        result = QuantityProcessing.OtherError;
+                    }
+
+                    if (!Base.Store.isUpdate)
+                    {
+                        if (result != QuantityProcessing.GoodToGo)
+                        {
+                            if (result == QuantityProcessing.OverTheStock)
+                            {
+                                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s353)}", ToastLength.Long).Show();
+                                return false;
+                            }
+                            else if (result == QuantityProcessing.OverTheOrdered)
+                            {
+                                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s354)}", ToastLength.Long).Show();
+                                return false;
+                            }
+                            else if (result == QuantityProcessing.OtherError)
+                            {
+                                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
+                                return false;
+                            }
+                            return false;
+                        }
+                        else
+                        {
+                            var isCorrectLocation = await IsLocationCorrect();
+
+                            if (!isCorrectLocation)
+                            {
+                                // Nepravilna lokacija za izbrano skladišče
+                                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s333)}", ToastLength.Long).Show();
+                                return false;
+                            }
+
+              
+                            
+                            if (dist.Count == 1)
+                            {
+                                var element = dist.ElementAt(0);
+                                moveItem = new NameValueObject("MoveItem");
+                                moveItem.SetInt("HeadID", moveHead.GetInt("HeadID"));
+                                moveItem.SetString("LinkKey", element.acKey);
+                                moveItem.SetInt("LinkNo", element.anNo);
+                                moveItem.SetInt("LinkNo", receivedTrail.No);
+                                moveItem.SetString("Ident", openIdent.GetString("Code"));
+                                moveItem.SetString("SSCC", tbSSCC.Text.Trim());
+                                moveItem.SetString("SerialNo", tbSerialNum.Text.Trim());
+                                moveItem.SetDouble("Packing", Convert.ToDouble(tbPacking.Text.Trim()));
+                                moveItem.SetDouble("Factor", 1);
+                                moveItem.SetDouble("Qty", Convert.ToDouble(tbPacking.Text.Trim()));
+                                moveItem.SetInt("Clerk", Services.UserID());
+                                moveItem.SetString("Location", searchableSpinnerIssueLocation.spinnerTextValueField.Text.Trim());
+                                moveItem.SetString("Palette", "1");
+
+                                string error;
+                                moveItem = Services.SetObject("mi", moveItem, out error);
+
+                                if (moveItem != null && error == string.Empty)
+                                {
+                                    return true;
+                                }
+                                else
+                                {
+                                    return false;
+                                }
+                            }
+                            else
+                            {
+                               return false; 
+                            }
+                       
+                        }
+                    }
+                    else
+                    {
+
+                        // Update flow.
+                        double newQty;
+                        if (Double.TryParse(tbPacking.Text, out newQty))
+                        {
+                            if (newQty > moveItem.GetDouble("Qty"))
+                            {
+                                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s291)}", ToastLength.Long).Show();
+                                return false;
+                            }
+                            else
+                            {
+                                var parameters = new List<Services.Parameter>();
+                                var tt = moveItem.GetInt("ItemID");
+                                parameters.Add(new Services.Parameter { Name = "anQty", Type = "Decimal", Value = newQty });
+                                parameters.Add(new Services.Parameter { Name = "anItemID", Type = "Int32", Value = moveItem.GetInt("ItemID") });
+                                string debugString = $"UPDATE uWMSMoveItem SET anQty = {newQty} WHERE anIDItem = {moveItem.GetInt("ItemID")}";
+                                var subjects = Services.Update($"UPDATE uWMSMoveItem SET anQty = @anQty WHERE anIDItem = @anItemID;", parameters);
+                                if (!subjects.Success)
+                                {
+                                    return false;
+                                }
+                                else
+                                {
+                                    return true;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
+                            return false;
+                        }
+
+                    }
+                }
+                catch (Exception ex)
+                {
+                    GlobalExceptions.ReportGlobalException(ex);
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+                return false;
+            }
+        }
+
+
+
+
         private void CbMultipleLocations_ItemSelected(object? sender, AdapterView.ItemSelectedEventArgs e)
         {
             try
@@ -813,6 +964,13 @@ namespace WMS
         {
             try
             {
+
+                // Adding the position creation to the finish button. 9.9.2024 Janko Jovičić
+                if (!await SaveMoveItem())
+                {
+                    return;
+                }
+
                 await Task.Run(async () =>
                 {
 
