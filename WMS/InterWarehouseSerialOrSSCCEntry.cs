@@ -288,7 +288,7 @@ namespace WMS
                 items.Clear();
                 foreach (var obj in list)
                 {
-                    items.Add(new LocationClass { ident = obj.ident, location = obj.location, quantity = obj.quantity, serial = obj.serial, sscc = obj.sscc });
+                    items.Add(new LocationClass { ident = obj.ident, location = obj.location, quantity = obj.quantity});
                 }
                 RunOnUiThread(() =>
                 {
@@ -472,6 +472,14 @@ namespace WMS
         {
             try
             {
+
+                // Adding the position creation to the finish button. 9.9.2024 Janko Jovičić
+                if (!await SaveMoveItem())
+                {
+                    return;
+                }
+
+
                 await Task.Run(async () =>
                 {
 
@@ -990,11 +998,11 @@ namespace WMS
                 {
                     if (!activityIdent.GetBool("isSSCC"))
                     {
+
                         RunOnUiThread(() =>
                         {
                             ssccRow.Visibility = ViewStates.Gone;
-                        });
-                      
+                        });                     
                     }
 
                     if (!activityIdent.GetBool("HasSerialNumber"))
@@ -1014,6 +1022,7 @@ namespace WMS
                             tbIdent.Text = "";
                             lbIdentName.Text = "";
                         });
+
                         return;
                     }
 

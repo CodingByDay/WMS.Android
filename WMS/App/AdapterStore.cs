@@ -18,7 +18,7 @@ namespace WMS.App
                 var parameters = new List<Services.Parameter>();
                 parameters.Add(new Services.Parameter { Name = "acIdent", Type = "String", Value = ident });
                 parameters.Add(new Services.Parameter { Name = "acWarehouse", Type = "String", Value = warehouse });
-                string sql = "SELECT acIdent, aclocation, anQty, acSerialNo, acSSCC FROM uWMSStockByWarehouse WHERE acIdent = @acIdent AND acWarehouse = @acWarehouse;";
+                string sql = "SELECT acName, anQty, acLocation WHERE acIdent = @acIdent AND acWarehouse = @acWarehouse;";
                 var sqlResult = await AsyncServices.AsyncServices.GetObjectListBySqlAsync(sql, parameters);
                 if (sqlResult != null && sqlResult.Success)
                 {
@@ -26,19 +26,13 @@ namespace WMS.App
                     {
                         sqlResult.Rows.ForEach(x =>
                         {
-
                             result.Add(new LocationClass
-                            {
+                            {                   
                                 ident = x.StringValue("acIdent"),
-                                location = x.StringValue("aclocation"),
+                                location = x.StringValue("acLocation"),
                                 quantity = x.DoubleValue("anQty").ToString(),
-                                serial = x.StringValue("acSerialNo"),
-                                sscc = x.StringValue("acSSCC")
                             });
-
-
                         });
-
                     }
                 }
 

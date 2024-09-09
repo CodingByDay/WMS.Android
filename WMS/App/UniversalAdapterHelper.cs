@@ -425,40 +425,21 @@ namespace WMS.App
         {
 
             var adapter = new UniversalAdapter<LocationClass>(context, data,
-            Resource.Layout.FiveElements,
+            Resource.Layout.ThreeElements,
             (view, item) =>
             {
                 TextView Ident = view.FindViewById<TextView>(Resource.Id.first);
                 Ident.Text = item.ident;
                 Ident.SetTextColor(Android.Graphics.Color.Black);
-
-                TextView Quantity = view.FindViewById<TextView>(Resource.Id.second);
-                Quantity.Text = item.quantity;
-                Quantity.SetTextColor(Android.Graphics.Color.Black);
-
-                TextView Location = view.FindViewById<TextView>(Resource.Id.third);
+             
+                TextView Location = view.FindViewById<TextView>(Resource.Id.second);
                 Location.Text = item.location;
                 Location.SetTextColor(Android.Graphics.Color.Black);
 
-                TextView Serial = view.FindViewById<TextView>(Resource.Id.fourth);
-                Serial.Text = item.serial;
-                Serial.SetTextColor(Android.Graphics.Color.Black);
-
-                TextView SSCC = view.FindViewById<TextView>(Resource.Id.fifth);
-                // Check if item.sscc is not null and has at least 5 characters
-                if (!string.IsNullOrEmpty(item.sscc) && item.sscc.Length >= 5)
-                {
-                    SSCC.Text = "..." + item.sscc.Substring(item.sscc.Length - 5);
-                }
-                else
-                {
-                    // Fallback text if item.sscc is null or too short
-                    SSCC.Text = item.sscc ?? string.Empty;
-                }
-
+                TextView Quantity = view.FindViewById<TextView>(Resource.Id.third);
+                Quantity.Text = item.quantity;
+                Quantity.SetTextColor(Android.Graphics.Color.Black);
             });
-
-
 
             return adapter;
         }
