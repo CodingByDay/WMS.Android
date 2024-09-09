@@ -91,7 +91,7 @@ namespace WMS.App
             return row;
         }
 
-        public void Filter(List<Trail> data, bool byIdent, string val, bool restart)
+        public void Filter(List<Trail> data, bool byIdent, string val, bool restart, ListView control)
         {
             selected = null;
             selectedIndex = -1;
@@ -112,12 +112,17 @@ namespace WMS.App
             {
                 sList = data.Where(data => data.Location.Contains(val)).ToList();
             }
-            if(sList.Count == 1)
-            {
+
+
+            base.NotifyDataSetChanged();
+
+
+            if (sList.Count == 1)
+            {           
                 selected = sList.ElementAt(0);
                 selectedIndex = 0;
+                HelperMethods.SelectPositionProgramaticaly(control, 0);
             }
-            base.NotifyDataSetChanged();
         }
 
         public List<Trail> returnData()

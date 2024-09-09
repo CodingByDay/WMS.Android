@@ -114,7 +114,7 @@ namespace WMS
                             {
                                 var ident = barcode.Substring(0, barcode.Length - 16);
                                 tbIdentFilter.Text = ident;
-                                adapterObj.Filter(trails, true, tbIdentFilter.Text, false);
+                                RunOnUiThread(() => { adapterObj.Filter(trails, true, tbIdentFilter.Text, false, ivTrail); });
                                 if (adapterObj.returnNumberOfItems() == 0)
                                 {
                                     tbIdentFilter.Text = string.Empty;
@@ -124,7 +124,7 @@ namespace WMS
                             else
                             {
                                 tbIdentFilter.Text = barcode;
-                                adapterObj.Filter(trails, true, tbIdentFilter.Text, false);
+                                RunOnUiThread(() => { adapterObj.Filter(trails, true, tbIdentFilter.Text, false, ivTrail); });
                                 if (adapterObj.returnNumberOfItems() == 0)
                                 {
                                     tbIdentFilter.Text = string.Empty;
@@ -136,7 +136,7 @@ namespace WMS
                         {
 
                             tbLocationFilter.Text = barcode;
-                            adapterObj.Filter(trails, false, tbLocationFilter.Text, false);
+                            RunOnUiThread(() => { adapterObj.Filter(trails, false, tbLocationFilter.Text, false, ivTrail); });
                             if (adapterObj.returnNumberOfItems() == 0)
                             {
                                 tbIdentFilter.Text = string.Empty;
@@ -212,12 +212,12 @@ namespace WMS
                     return;
                 }
 
-                adapterObj.Filter(trails, true, ident, false);
+                RunOnUiThread(() => { adapterObj.Filter(trails, true, ident, false, ivTrail); });
                 int numberOfHits = adapterObj.returnNumberOfItems();
                 if (numberOfHits == 0)
                 {
 
-                    adapterObj.Filter(trails, true, string.Empty, false);
+                    RunOnUiThread(() => { adapterObj.Filter(trails, true, string.Empty, false, ivTrail); });
                     return;
 
                 }
@@ -264,7 +264,7 @@ namespace WMS
                 int numberOfHits = adapterObj.returnNumberOfItems();
                 if (numberOfHits == 0)
                 {
-                    adapterObj.Filter(trails, true, string.Empty, false);
+                    RunOnUiThread(() => { adapterObj.Filter(trails, true, string.Empty, false, ivTrail); });
                     return;
                 }
                 else if (numberOfHits == 1)
@@ -416,7 +416,7 @@ namespace WMS
                             {
                                 trails = unfiltered;
                                 adapterObj.NotifyDataSetChanged();
-                                adapterObj.Filter(trails, true, string.Empty, false);
+                                RunOnUiThread(() => { adapterObj.Filter(trails, true, string.Empty, false, ivTrail); });
                                 listener = new MyOnItemLongClickListener(this, adapterObj.returnData(), adapterObj);
                                 ivTrail.OnItemLongClickListener = listener;
                               
@@ -575,7 +575,7 @@ namespace WMS
                             {
                                 trails = unfiltered;
                                 adapterObj.NotifyDataSetChanged();
-                                adapterObj.Filter(trails, true, string.Empty, false);
+                                RunOnUiThread(() => { adapterObj.Filter(trails, true, string.Empty, false, ivTrail); });
                                 listener = new MyOnItemLongClickListener(this, adapterObj.returnData(), adapterObj);
                                 ivTrail.OnItemLongClickListener = listener;
 
@@ -791,7 +791,7 @@ namespace WMS
             {
                 try
                 {
-                    adapterObj.Filter(trails, false, tbLocationFilter.Text, false);
+                    RunOnUiThread(() => { adapterObj.Filter(trails, false, tbLocationFilter.Text, false, ivTrail); });
                     listener.updateData(adapterObj.returnData());
                 }
                 catch
@@ -811,7 +811,7 @@ namespace WMS
             {
                 try
                 {
-                    adapterObj.Filter(trails, true, tbIdentFilter.Text, false);
+                    RunOnUiThread(() => { adapterObj.Filter(trails, true, tbIdentFilter.Text, false, ivTrail); });
                     listener.updateData(adapterObj.returnData());
                 }
                 catch

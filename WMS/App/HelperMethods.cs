@@ -189,12 +189,14 @@ namespace WMS.App
 
         public static void SelectPositionProgramaticaly(ListView control, int index)
         {
-            if (control != null)
-            {
-                control.RequestFocusFromTouch();
-                control.SetSelection(index);
-                control.SetItemChecked(index, true);
-            }
+      
+                if (control != null)
+                {
+                    control.RequestFocusFromTouch();
+                    control.SetSelection(index);
+                    control.SetItemChecked(index, true);
+                }
+  
         }
 
 

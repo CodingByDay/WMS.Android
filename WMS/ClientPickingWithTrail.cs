@@ -382,7 +382,8 @@ namespace WMS
                         RunOnUiThread(() =>
                         {
                             adapter.NotifyDataSetChanged();
-                            adapter.Filter(positions, true, string.Empty, false);
+
+                            RunOnUiThread(() => { adapter.Filter(positions, true, string.Empty, false, ivTrail); });
                             listener = new MyOnItemLongClickListener(this, adapter.returnData(), adapter);
                             ivTrail.OnItemLongClickListener = listener;
                             if (App.Settings.tablet)
@@ -484,7 +485,7 @@ namespace WMS
                         RunOnUiThread(() =>
                         {
                             adapter.NotifyDataSetChanged();
-                            adapter.Filter(positions, true, string.Empty, false);
+                            RunOnUiThread(() => { adapter.Filter(positions, true, string.Empty, false, ivTrail); });
                             listener = new MyOnItemLongClickListener(this, adapter.returnData(), adapter);
                             ivTrail.OnItemLongClickListener = listener;
                             if (App.Settings.tablet)
@@ -524,7 +525,7 @@ namespace WMS
             {
                 try
                 {
-                    adapter.Filter(positions, false, tbLocationFilter.Text, false);
+                    RunOnUiThread(() => { adapter.Filter(positions, false, tbLocationFilter.Text, false, ivTrail); });
                     listener.updateData(adapter.returnData());
                 }
                 catch (Exception ex)
@@ -544,7 +545,8 @@ namespace WMS
             {
                 try
                 {
-                    adapter.Filter(positions, true, tbIdentFilter.Text, true);
+
+                    RunOnUiThread(() => { adapter.Filter(positions, true, tbIdentFilter.Text, true, ivTrail); });
                     listener.updateData(adapter.returnData());
                 }
                 catch (Exception ex)
@@ -571,7 +573,7 @@ namespace WMS
 
 
                             tbIdentFilter.Text = barcode;
-                            adapter.Filter(positions, true, tbIdentFilter.Text, true);
+                            RunOnUiThread(() => { adapter.Filter(positions, true, tbIdentFilter.Text, true, ivTrail); });
                             if (adapter.returnNumberOfItems() == 0)
                             {
                                 tbIdentFilter.Text = string.Empty;
@@ -580,7 +582,9 @@ namespace WMS
                         else if (tbLocationFilter.HasFocus)
                         {
                             tbLocationFilter.Text = barcode;
-                            adapter.Filter(positions, false, tbLocationFilter.Text, false);
+
+                            RunOnUiThread(() => { adapter.Filter(positions, false, tbLocationFilter.Text, false, ivTrail); });
+
                             if (adapter.returnNumberOfItems() == 0)
                             {
                                 tbIdentFilter.Text = string.Empty;

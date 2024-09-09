@@ -20,8 +20,9 @@ namespace WMS.App
             return selected;
         }
 
-        public void Filter(List<ClientPickingPosition> data, bool byIdent, string val, bool restart)
+        public void Filter(List<ClientPickingPosition> data, bool byIdent, string val, bool restart, ListView control)
         {
+
             if (restart)
             {
                 sList = data;
@@ -39,12 +40,18 @@ namespace WMS.App
             {
                 sList = data.Where(data => data.Location.Contains(val)).ToList();
             }
+
+
+            base.NotifyDataSetChanged();
+
+
             if (sList.Count == 1)
             {
                 selected = sList.ElementAt(0);
                 selectedIndex = 0;
+                HelperMethods.SelectPositionProgramaticaly(control, 0);
             }
-            base.NotifyDataSetChanged();
+            
         }
 
         public List<ClientPickingPosition> returnData()
