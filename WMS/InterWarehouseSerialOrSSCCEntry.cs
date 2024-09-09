@@ -959,10 +959,10 @@ namespace WMS
 
                     }
 
-                    await FillAdapterForTablet(activityIdent.GetString("Code"));
 
                     if (App.Settings.tablet)
                     {
+                        await FillAdapterForTablet(activityIdent.GetString("Code"));
                         showPictureIdent(activityIdent.GetString("Code"));
                     }
 
