@@ -8,7 +8,7 @@ namespace WMS.App
         public List<ClientPickingPosition> sList;
         private Context sContext;
         private ClientPickingPosition selected;
-
+        private int selectedIndex = -1;
         public ClientPickingAdapter(Context context, List<ClientPickingPosition> list)
         {
             sList = list;
@@ -39,6 +39,11 @@ namespace WMS.App
             {
                 sList = data.Where(data => data.Location.Contains(val)).ToList();
             }
+            if (sList.Count == 1)
+            {
+                selected = sList.ElementAt(0);
+                selectedIndex = 0;
+            }
             base.NotifyDataSetChanged();
         }
 
@@ -52,9 +57,10 @@ namespace WMS.App
             return sList.Count;
         }
 
-        public void setSelected(int position)
+        public void SetSelected(int position)
         {
             selected = sList[position];
+            selectedIndex = position;
         }
 
         public override int Count

@@ -19,14 +19,14 @@ namespace WMS.App
             sContext = context;
         }
 
-        public Trail returnSelected()
+        public Trail ReturnSelected()
         {
             return selected;
         }
 
 
 
-        public void setSelected(int position)
+        public void SetSelected(int position)
         {
             selected = sList[position];
             selectedIndex = position;
@@ -34,7 +34,7 @@ namespace WMS.App
         }
 
   
-        public int getIdFromAdapter(Trail trail)
+        public int GetIdFromAdapter(Trail trail)
         {
             int result = -1;
             int counter = 0;

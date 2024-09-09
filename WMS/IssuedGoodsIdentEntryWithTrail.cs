@@ -275,7 +275,7 @@ namespace WMS
                         Toast.MakeText(this, $"{Resources.GetString(Resource.String.s230)}", ToastLength.Long).Show();
                         return;
                     }
-                    InUseObjects.Set("OpenOrder", trails.ElementAt(adapterObj.returnSelected().originalIndex));
+                    InUseObjects.Set("OpenOrder", trails.ElementAt(adapterObj.ReturnSelected().originalIndex));
 
                     if (SaveMoveHeadObjectMode(trail))
                     {
@@ -419,7 +419,7 @@ namespace WMS
                                 adapterObj.Filter(trails, true, string.Empty, false);
                                 listener = new MyOnItemLongClickListener(this, adapterObj.returnData(), adapterObj);
                                 ivTrail.OnItemLongClickListener = listener;
-
+                              
                                 // Bluetooth
 
                                 /* try
@@ -698,14 +698,23 @@ namespace WMS
                 tbLocationFilter.AfterTextChanged += TbLocationFilter_AfterTextChanged;
 
                 // Parameter
-                if (true)
+                /*
+                 * if (true)
                 {
                     // Binding to a service
                     serviceConnection = new MyServiceConnection(this);
                     Intent serviceIntent = new Intent(this, typeof(BluetoothService));
                     BindService(serviceIntent, serviceConnection, Bind.AutoCreate);
                 }
+                */
                 tbIdentFilter.RequestFocus();
+
+                if (adapterObj.sList.Count > 0)
+                {
+                    HelperMethods.SelectPositionProgramaticaly(ivTrail, 0);
+                    adapterObj.SetSelected(0);
+                    chosen = adapterObj.ReturnSelected();
+                }
 
                 LoaderManifest.LoaderManifestLoopStop(this);
             }
@@ -753,7 +762,7 @@ namespace WMS
             {
                 try
                 {
-                    adapter_.setSelected(position);
+                    adapter_.SetSelected(position);
                     Trail selected = data_.ElementAt(position);
                     AlertDialog.Builder builder = new AlertDialog.Builder(context_);
                     builder.SetTitle($"{context_.Resources.GetString(Resource.String.s256)}");
@@ -966,9 +975,9 @@ namespace WMS
             {
                 try
                 {
-                    if (adapterObj.returnSelected() != null)
+                    if (adapterObj.ReturnSelected() != null)
                     {
-                        if (string.IsNullOrEmpty(adapterObj.returnSelected().Location))
+                        if (string.IsNullOrEmpty(adapterObj.ReturnSelected().Location))
                         {
                             RunOnUiThread(() =>
                             {
@@ -979,7 +988,7 @@ namespace WMS
                         else
                         {
                             string error;
-                            var toSave = Services.GetObject("oobl", adapterObj.returnSelected().Key + "|" + adapterObj.returnSelected().No, out error);
+                            var toSave = Services.GetObject("oobl", adapterObj.ReturnSelected().Key + "|" + adapterObj.ReturnSelected().No, out error);
                             openOrder = toSave;
                             InUseObjects.Set("OpenOrder", toSave);
                             var openIdent = Services.GetObject("id", openOrder.GetString("Ident"), out error);
@@ -1006,7 +1015,7 @@ namespace WMS
                             var lastItem = new NameValueObject("LastItem");
                             lastItem.SetBool("IsLastItem", true);
                             InUseObjects.Set("LastItem", lastItem);
-                            var obj = adapterObj.returnSelected();
+                            var obj = adapterObj.ReturnSelected();
                             var ident = obj.Ident;
                             var qty = obj.Qty;
                             Intent i = new Intent(Application.Context, typeof(IssuedGoodsSerialOrSSCCEntry));
@@ -1019,7 +1028,7 @@ namespace WMS
                         }
                         else
                         {
-                            var obj = adapterObj.returnSelected();
+                            var obj = adapterObj.ReturnSelected();
                             var ident = obj.Ident;
                             var qty = obj.Qty;
                             Intent i = new Intent(Application.Context, typeof(IssuedGoodsSerialOrSSCCEntry));
@@ -1050,8 +1059,8 @@ namespace WMS
         {
             try
             {
-                adapterObj.setSelected(e.Position);
-                chosen = adapterObj.returnSelected();
+                adapterObj.SetSelected(e.Position);
+                chosen = adapterObj.ReturnSelected();
 
                 // Save this to the global state variable // 16.04.2024
                 // Base.Store.OpenOrder = new OpenOrder { Order = chosen.Key, Position = chosen.No, Client = chosen.}
@@ -1146,7 +1155,7 @@ namespace WMS
         {
             try
             {
-                var obj = adapterObj.returnSelected();
+                var obj = adapterObj.ReturnSelected();
                 var ident = obj.Ident;
                 var location = obj.Location;
                 var qty = Convert.ToDouble(obj.Qty);

@@ -108,6 +108,14 @@ namespace WMS
                     await initializeView();
                 }
 
+
+                if (adapter.sList.Count > 0)
+                {
+                    HelperMethods.SelectPositionProgramaticaly(ivTrail, 0);
+                    adapter.SetSelected(0);
+                }
+
+
                 LoaderManifest.LoaderManifestLoopStop(this);
             }
             catch (Exception ex)
@@ -283,7 +291,7 @@ namespace WMS
         {
             try
             {
-                adapter.setSelected(e.Position);
+                adapter.SetSelected(e.Position);
                 orderCurrent = adapter.returnSelected();
             }
             catch (Exception ex)
@@ -631,7 +639,7 @@ namespace WMS
             {
                 try
                 {
-                    adapter_.setSelected(position);
+                    adapter_.SetSelected(position);
                     ClientPickingPosition selected = data_.ElementAt(position);
                     AlertDialog.Builder builder = new AlertDialog.Builder(context_);
                     builder.SetTitle($"{context_.Resources.GetString(Resource.String.s256)}");
