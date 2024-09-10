@@ -619,6 +619,9 @@ namespace WMS
             {
                 try
                 {
+                    popupDialogConfirm.Dismiss();
+                    popupDialogConfirm.Hide();
+
                     LoaderManifest.LoaderManifestLoopResources(this);
                     await FinishMethod();
                 }
@@ -867,7 +870,7 @@ namespace WMS
                             parameters.Add(new Services.Parameter { Name = "anItemID", Type = "Int32", Value = moveItem.GetInt("ItemID") });
                             string debugString = $"UPDATE uWMSMoveItem SET anQty = {newQty} WHERE anIDItem = {moveItem.GetInt("ItemID")}";
                             var subjects = Services.Update($"UPDATE uWMSMoveItem SET anQty = @anQty WHERE anIDItem = @anItemID;", parameters);
-                            if (!subjects.Success)
+                            if (subjects.Success)
                             {
                                 InUseObjects.Invalidate("MoveItem");
                                 return true;
@@ -1101,13 +1104,17 @@ namespace WMS
             try
             {
                 string location = string.Empty;
+                var tsc = new TaskCompletionSource<bool>();
                 // UI changes.
                 RunOnUiThread(() =>
                 {
                     // TODO: Add a way to check serial numbers
                     location = searchableSpinnerLocation.spinnerTextValueField.Text;
-
+                    tsc.SetResult(true);
                 });
+
+
+                await tsc.Task;
 
                 if (!await CommonData.IsValidLocationAsync(moveHead.GetString("Wharehouse"), location, this))
                 {

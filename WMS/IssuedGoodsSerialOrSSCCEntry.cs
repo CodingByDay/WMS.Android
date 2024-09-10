@@ -307,6 +307,7 @@ namespace WMS
                             }
                             else
                             {
+                                InUseObjects.Invalidate("MoveItem");
                                 return true;
                             }
                         }
@@ -1000,6 +1001,8 @@ namespace WMS
             {
                 try
                 {
+                    popupDialogConfirm.Dismiss();
+                    popupDialogConfirm.Hide();
                     LoaderManifest.LoaderManifestLoopResources(this);
                     await FinishMethod();
                 }

@@ -448,6 +448,8 @@ namespace WMS
             {
                 try
                 {
+                    popupDialogConfirm.Dismiss();
+                    popupDialogConfirm.Hide();
                     LoaderManifest.LoaderManifestLoopResources(this);
                     await FinishMethod();
                 }

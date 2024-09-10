@@ -950,6 +950,8 @@ namespace WMS
         {
             try
             {
+                popupDialogConfirm.Dismiss();
+                popupDialogConfirm.Hide();
                 await FinishMethod();
             }
             catch (Exception ex)
