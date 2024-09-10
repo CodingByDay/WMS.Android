@@ -176,13 +176,15 @@ namespace WMS
                         var isCorrectLocation = await IsLocationCorrect();
                         if (!isCorrectLocation)
                         {
-                            // Nepravilna lokacija za izbrano skladišče
-                            Toast.MakeText(this, $"{Resources.GetString(Resource.String.s333)}", ToastLength.Long).Show();
+                            RunOnUiThread(() =>
+                            {
+                                // Nepravilna lokacija za izbrano skladišče
+                                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s333)}", ToastLength.Long).Show();
+                            });
                             return false;
                         }
 
                         moveItem = new NameValueObject("MoveItem");
-
 
                         moveItem.SetInt("HeadID", moveHead.GetInt("HeadID"));
                         moveItem.SetString("LinkKey", string.Empty);
@@ -197,8 +199,6 @@ namespace WMS
                         moveItem.SetString("Location", searchableSpinnerReceiveLocation.spinnerTextValueField.Text.Trim());
                         moveItem.SetString("IssueLocation", searchableSpinnerIssueLocation.spinnerTextValueField.Text.Trim());
                         moveItem.SetString("Palette", "1");
-
-
 
                         string error;
 
@@ -224,7 +224,11 @@ namespace WMS
                     {
                         if (newQty > moveItem.GetDouble("Qty"))
                         {
-                            Toast.MakeText(this, $"{Resources.GetString(Resource.String.s291)}", ToastLength.Long).Show();
+                            RunOnUiThread(() =>
+                            {
+                                // Nepravilna lokacija za izbrano skladišče
+                                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s291)}", ToastLength.Long).Show();
+                            });
                             return false;
                         }
                         else
@@ -248,7 +252,11 @@ namespace WMS
                     }
                     else
                     {
-                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
+                        RunOnUiThread(() =>
+                        {
+                            // Nepravilna lokacija za izbrano skladišče
+                            Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
+                        });
                         return false;
                     }
                 }

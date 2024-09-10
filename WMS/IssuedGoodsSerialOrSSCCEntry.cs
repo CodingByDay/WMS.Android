@@ -234,8 +234,12 @@ namespace WMS
 
                         if (!isCorrectLocation)
                         {
+                            RunOnUiThread(() =>
+                            {
+                                // Nepravilna lokacija za izbrano skladišče
+                                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s333)}", ToastLength.Long).Show();
+                            });
                             // Nepravilna lokacija za izbrano skladišče
-                            Toast.MakeText(this, $"{Resources.GetString(Resource.String.s333)}", ToastLength.Long).Show();
                             return false;
                         }
 
@@ -252,17 +256,29 @@ namespace WMS
                     {
                         if (result == QuantityProcessing.OverTheStock)
                         {
-                            Toast.MakeText(this, $"{Resources.GetString(Resource.String.s353)}", ToastLength.Long).Show();
+                            RunOnUiThread(() =>
+                            {
+                                // Nepravilna lokacija za izbrano skladišče
+                                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s353)}", ToastLength.Long).Show();
+                            });
                             return false;
                         }
                         else if (result == QuantityProcessing.OverTheOrdered)
                         {
-                            Toast.MakeText(this, $"{Resources.GetString(Resource.String.s354)}", ToastLength.Long).Show();
+                            RunOnUiThread(() =>
+                            {
+                                // Nepravilna lokacija za izbrano skladišče
+                                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s354)}", ToastLength.Long).Show();
+                            });                            
                             return false;
                         }
                         else if (result == QuantityProcessing.OtherError)
                         {
-                            Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
+                            RunOnUiThread(() =>
+                            {
+                                // Nepravilna lokacija za izbrano skladišče
+                                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
+                            });                           
                             return false;
                         }
                         return false;
@@ -273,8 +289,12 @@ namespace WMS
 
                         if (!isCorrectLocation)
                         {
-                            // Nepravilna lokacija za izbrano skladišče
-                            Toast.MakeText(this, $"{Resources.GetString(Resource.String.s333)}", ToastLength.Long).Show();
+                            RunOnUiThread(() =>
+                            {
+                                // Nepravilna lokacija za izbrano skladišče
+                                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s333)}", ToastLength.Long).Show();
+                            });
+
                             return false;
                         }
 
@@ -290,7 +310,12 @@ namespace WMS
                     {
                         if (newQty > moveItem.GetDouble("Qty"))
                         {
-                            Toast.MakeText(this, $"{Resources.GetString(Resource.String.s291)}", ToastLength.Long).Show();
+                            RunOnUiThread(() =>
+                            {
+                                // Nepravilna lokacija za izbrano skladišče
+                                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s291)}", ToastLength.Long).Show();
+                            });
+                            
                             return false;
                         }
                         else
@@ -314,7 +339,11 @@ namespace WMS
                     }
                     else
                     {
-                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
+                        RunOnUiThread(() =>
+                        {
+                            // Nepravilna lokacija za izbrano skladišče
+                            Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
+                        });                       
                         return false;
                     }
                 }
@@ -1452,7 +1481,11 @@ namespace WMS
                         }
                         else
                         {
-                            Toast.MakeText(this, $"{Resources.GetString(Resource.String.s216)}" + result, ToastLength.Long).Show();
+                            RunOnUiThread(() =>
+                            {
+                                // Nepravilna lokacija za izbrano skladišče
+                                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s216)}" + result, ToastLength.Long).Show();
+                            });                          
                         }
                     }
                     catch (Exception ex)

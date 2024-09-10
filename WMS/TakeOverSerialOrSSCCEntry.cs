@@ -845,7 +845,10 @@ namespace WMS
                     }
                     else
                     {
-                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
+                        RunOnUiThread(() =>
+                        {
+                            Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
+                        });
                         return false;
                     }
 
@@ -858,7 +861,10 @@ namespace WMS
                     {
                         if (newQty > moveItem.GetDouble("Qty"))
                         {
-                            Toast.MakeText(this, $"{Resources.GetString(Resource.String.s291)}", ToastLength.Long).Show();
+                            RunOnUiThread(() =>
+                            {
+                                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s291)}", ToastLength.Long).Show();
+                            });
                             return false;
                         }
 
@@ -883,7 +889,10 @@ namespace WMS
                     }
                     else
                     {
-                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
+                        RunOnUiThread(() =>
+                        {
+                            Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
+                        });
                         return false;
                     }
                 }
