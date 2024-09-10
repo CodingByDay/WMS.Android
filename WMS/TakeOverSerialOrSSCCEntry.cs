@@ -1104,17 +1104,11 @@ namespace WMS
             try
             {
                 string location = string.Empty;
-                var tsc = new TaskCompletionSource<bool>();
-                // UI changes.
-                RunOnUiThread(() =>
-                {
-                    // TODO: Add a way to check serial numbers
-                    location = searchableSpinnerLocation.spinnerTextValueField.Text;
-                    tsc.SetResult(true);
-                });
 
 
-                await tsc.Task;
+                // TODO: Add a way to check serial numbers
+                location = searchableSpinnerLocation.spinnerTextValueField.Text;
+
 
                 if (!await CommonData.IsValidLocationAsync(moveHead.GetString("Wharehouse"), location, this))
                 {

@@ -721,6 +721,14 @@ namespace WMS
                     {
                         if (activityIdent.GetBool("isSSCC") && tbSSCC.Text != string.Empty)
                         {
+                            var isCorrectLocation = await IsLocationCorrect();
+                            if (!isCorrectLocation)
+                            {
+                                // Nepravilna lokacija za izbrano skladišče
+                                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s333)}", ToastLength.Long).Show();
+                                return;
+                            } 
+
                             await CreateMethodFromStart();
                         }
                         else

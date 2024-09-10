@@ -710,7 +710,7 @@ namespace WMS
                     {
                         tbQty.Text = item.GetDouble("Qty").ToString();
                     }
-                    tbLocation.Text = item.GetString("LocationName");
+                    tbLocation.Text = item.GetString("Location");
 
                     var created = item.GetDateTime("DateInserted");
                     tbCreatedBy.Text = created == null ? "" : ((DateTime)created).ToString("dd.MM.") + " " + item.GetString("ClerkName");
