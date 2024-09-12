@@ -391,6 +391,7 @@ namespace WMS
                     tbSerialNum.Enabled = false;
                     tbSSCC.Enabled = false;
                     searchableSpinnerLocation.spinnerTextValueField.Enabled = false;
+                    tbPacking.RequestFocus();
                 }
                 else
                 {
@@ -468,31 +469,34 @@ namespace WMS
                     serialRow.Visibility = ViewStates.Gone;
                 }
 
-                if (ssccRow.Visibility == ViewStates.Visible && (CommonData.GetSetting("AutoCreateSSCC") == "1"))
+                if (!Base.Store.isUpdate)
                 {
-                    tbSSCC.Text = CommonData.GetNextSSCC();
-                    if(serialRow.Visibility == ViewStates.Visible)
+                    if (ssccRow.Visibility == ViewStates.Visible && (CommonData.GetSetting("AutoCreateSSCC") == "1"))
                     {
-                        tbSerialNum.RequestFocus();
+                        tbSSCC.Text = CommonData.GetNextSSCC();
+                        if (serialRow.Visibility == ViewStates.Visible)
+                        {
+                            tbSerialNum.RequestFocus();
+                        }
                     }
-                }
-                else if (ssccRow.Visibility == ViewStates.Visible)
-                {
-                    if (tbSSCC.Text == string.Empty)
+                    else if (ssccRow.Visibility == ViewStates.Visible)
                     {
-                        tbSSCC.RequestFocus();
+                        if (tbSSCC.Text == string.Empty)
+                        {
+                            tbSSCC.RequestFocus();
+                        }
                     }
-                }
-                else if (serialRow.Visibility == ViewStates.Visible)
-                {
-                    if (tbSerialNum.Text == string.Empty)
+                    else if (serialRow.Visibility == ViewStates.Visible)
                     {
-                        tbSerialNum.RequestFocus();
+                        if (tbSerialNum.Text == string.Empty)
+                        {
+                            tbSerialNum.RequestFocus();
+                        }
                     }
-                }
-                else if (serialRow.Visibility != ViewStates.Visible && ssccRow.Visibility != ViewStates.Visible)
-                {
-                    searchableSpinnerLocation.spinnerTextValueField.RequestFocus();
+                    else if (serialRow.Visibility != ViewStates.Visible && ssccRow.Visibility != ViewStates.Visible)
+                    {
+                        searchableSpinnerLocation.spinnerTextValueField.RequestFocus();
+                    }
                 }
             }
             catch (Exception ex)

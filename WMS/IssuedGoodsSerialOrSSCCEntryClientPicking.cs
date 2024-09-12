@@ -1160,6 +1160,29 @@ namespace WMS
                     serialRow.Visibility = ViewStates.Gone;
                 }
 
+                if (!Base.Store.isUpdate)
+                {
+
+                    if (ssccRow.Visibility == ViewStates.Visible)
+                    {
+                        if (tbSSCC.Text == string.Empty)
+                        {
+                            tbSSCC.RequestFocus();
+                        }
+                    }
+                    else if (serialRow.Visibility == ViewStates.Visible)
+                    {
+                        if (tbSerialNum.Text == string.Empty)
+                        {
+                            tbSerialNum.RequestFocus();
+                        }
+                    }
+                    else if (serialRow.Visibility != ViewStates.Visible && ssccRow.Visibility != ViewStates.Visible)
+                    {
+                        searchableSpinnerIssueLocation.spinnerTextValueField.RequestFocus();
+                    }
+                }
+
                 if (ssccRow.Visibility != ViewStates.Visible && serialRow.Visibility != ViewStates.Visible)
                 {
                     FilterData();

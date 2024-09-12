@@ -903,6 +903,31 @@ namespace WMS
                     tbPacking.RequestFocus();
                     tbPacking.SelectAll();
                 }
+
+
+                if (!Base.Store.isUpdate)
+                {
+
+                    if (ssccRow.Visibility == ViewStates.Visible)
+                    {
+                        if (tbSSCC.Text == string.Empty)
+                        {
+                            tbSSCC.RequestFocus();
+                        }
+                    }
+                    else if (serialRow.Visibility == ViewStates.Visible)
+                    {
+                        if (tbSerialNum.Text == string.Empty)
+                        {
+                            tbSerialNum.RequestFocus();
+                        }
+                    }
+                    else if (serialRow.Visibility != ViewStates.Visible && ssccRow.Visibility != ViewStates.Visible)
+                    {
+                        tbIdent.RequestFocus();
+                    }
+                }
+
             }
             catch (Exception ex)
             {
