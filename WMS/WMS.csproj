@@ -38,6 +38,7 @@
     <None Remove="Resources\anim\fade_in.xml" />
     <None Remove="Resources\anim\fade_out.xml" />
     <None Remove="Resources\drawable\check_mark.png" />
+    <None Remove="Resources\drawable\croatia.png" />
     <None Remove="Resources\drawable\ic_arrow_down.xml" />
     <None Remove="Resources\drawable\logo.jpg" />
     <None Remove="Resources\drawable\slovenia.png" />
@@ -229,6 +230,9 @@
     <Reference Include="DeviceAPI">
       <HintPath>..\..\WMS stabile\WMS.Android.Production\ScannerQR\bin\Debug\DeviceAPI.dll</HintPath>
     </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\values-hr\" />
   </ItemGroup>
 
 	

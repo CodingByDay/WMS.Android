@@ -104,7 +104,9 @@
                 android:id="@+id/txtVersion"
                 android:textColor="@color/black"
                 android:layout_marginLeft="10dp"
-                android:layout_marginRight="20dp"    
+                android:layout_marginRight="5dp"  
+                    android:layout_marginBottom="3dp"
+                android:foregroundGravity="center_vertical"
 />
 
                  <LinearLayout
@@ -118,7 +120,7 @@
                 <LinearLayout
 
                     android:orientation="horizontal"
-                    android:layout_width="50dp"
+                    android:layout_width="35dp"
                     android:id="@+id/chSlovenian"
                     android:layout_height="wrap_content"
 
@@ -127,17 +129,35 @@
                     <ImageView
                         android:layout_gravity="center"
                         android:foregroundGravity="center"
-                        android:layout_width="50dp"
+                        android:layout_width="30dp"
                         android:layout_height="30dp"
                         android:src="@drawable/slovenia"
                         android:id="@+id/imgSlovenian"
                         android:contentDescription="Slovenian" 
                         />
                  </LinearLayout>
+                  <LinearLayout
+
+                    android:orientation="horizontal"
+                    android:layout_width="35dp"
+                    android:id="@+id/chCroatian"
+                    android:layout_height="wrap_content"
+
+
+                    >
+                    <ImageView
+
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/croatia"
+                        android:id="@+id/imgCroatian"
+                        android:contentDescription="description" 
+                        />
+                   </LinearLayout>
                  <LinearLayout
 
                     android:orientation="horizontal"
-                    android:layout_width="50dp"
+                    android:layout_width="35dp"
                     android:id="@+id/chEnglish"
                     android:layout_height="wrap_content"
 
@@ -145,13 +165,14 @@
                     >
                     <ImageView
 
-                        android:layout_width="50dp"
+                        android:layout_width="30dp"
                         android:layout_height="30dp"
                         android:src="@drawable/united_kingdom"
                         android:id="@+id/imgEnglish"
                         android:contentDescription="description" 
                         />
                    </LinearLayout>
+                 
                 </LinearLayout>
         </LinearLayout>
       

@@ -35,8 +35,10 @@ namespace WMS
         private TextView? txtVersion;
         private LinearLayout? chSlovenian;
         private LinearLayout? chEnglish;
+        private LinearLayout? chCroatian;
         private ImageView? imgSlovenian;
         private ImageView? imgEnglish;
+        private ImageView? imgCroatian;
         private TextView deviceURL;
         private bool tablet = App.Settings.tablet;
         private Button btnOkRestart;
@@ -300,8 +302,10 @@ namespace WMS
                 txtVersion = FindViewById<TextView>(Resource.Id.txtVersion);
                 chSlovenian = FindViewById<LinearLayout>(Resource.Id.chSlovenian);
                 chEnglish = FindViewById<LinearLayout>(Resource.Id.chSlovenian);
+                chCroatian = FindViewById<LinearLayout>(Resource.Id.chCroatian);
                 imgSlovenian = FindViewById<ImageView>(Resource.Id.imgSlovenian);
                 imgEnglish = FindViewById<ImageView>(Resource.Id.imgEnglish);
+                imgCroatian = FindViewById<ImageView>(Resource.Id.imgCroatian);
                 SetUpLanguages();
                 GetLogo();
                 var _broadcastReceiver = new NetworkStatusBroadcastReceiver();
@@ -519,6 +523,11 @@ namespace WMS
                 {
                     imgEnglish.SetColorFilter(highlightFilter);
                     Base.Store.language = "en";
+                } 
+                else if (language == "HR")
+                {
+                    imgCroatian.SetColorFilter(highlightFilter);
+                    Base.Store.language = "hr";
                 }
             }
             catch (Exception ex)
