@@ -1416,13 +1416,14 @@ namespace WMS
         {
             try
             {
+                // Adding the position creation to the finish button. 9.9.2024 Janko Jovičić
+                if (!await SaveMoveItem())
+                {
+                    return;
+                }
+
                 await Task.Run(async () =>
                 {
-                    // Adding the position creation to the finish button. 9.9.2024 Janko Jovičić
-                    if (!await SaveMoveItem())
-                    {
-                        return;
-                    }
 
                     try
                     {

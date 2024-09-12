@@ -422,10 +422,7 @@ namespace WMS
 
                         await GetConnectedPositions(order.Order, order.Position ?? -1, order.Ident);
                         searchableSpinnerLocation.spinnerTextValueField.Text = await CommonData.GetSettingAsync("DefaultPaletteLocation", this);
-
-                        tbPacking.RequestFocus();
-                        tbPacking.SelectAll();
-
+        
                     }
                     else if (code2d != null)
                     {
@@ -450,8 +447,6 @@ namespace WMS
                         // Reset the 2d code to nothing
                         Base.Store.code2D = null;
 
-                        tbPacking.RequestFocus();
-                        tbPacking.SelectAll();
                     }
                     else
                     {
@@ -460,10 +455,9 @@ namespace WMS
                         searchableSpinnerLocation.spinnerTextValueField.Text = await CommonData.GetSettingAsync("DefaultPaletteLocation", this);
                         lbQty.Text = $"{Resources.GetString(Resource.String.s83)} \n ( " + Resources.GetString(Resource.String.s335) + " )";
                         stock = qtyCheck;
-                        tbPacking.RequestFocus();
-                        tbPacking.SelectAll();
-                    }
 
+                    }
+                 
                 }
 
                 isPackaging = openIdent.GetBool("IsPackaging");
@@ -481,6 +475,24 @@ namespace WMS
                     {
                         tbSerialNum.RequestFocus();
                     }
+                }
+                else if (ssccRow.Visibility == ViewStates.Visible)
+                {
+                    if (tbSSCC.Text == string.Empty)
+                    {
+                        tbSSCC.RequestFocus();
+                    }
+                }
+                else if (serialRow.Visibility == ViewStates.Visible)
+                {
+                    if (tbSerialNum.Text == string.Empty)
+                    {
+                        tbSerialNum.RequestFocus();
+                    }
+                }
+                else if (serialRow.Visibility != ViewStates.Visible && ssccRow.Visibility != ViewStates.Visible)
+                {
+                    searchableSpinnerLocation.spinnerTextValueField.RequestFocus();
                 }
             }
             catch (Exception ex)
@@ -644,13 +656,15 @@ namespace WMS
         {
             try
             {
+                // Adding the position creation to the finish button. 9.9.2024 Janko Jovičić
+                if (!await SaveMoveItem())
+                {
+                    return;
+                }
+
                 await Task.Run(async () =>
                 {
-                    // Adding the position creation to the finish button. 9.9.2024 Janko Jovičić
-                    if(!await SaveMoveItem())
-                    {
-                        return;
-                    }
+
 
                     try
                     {
