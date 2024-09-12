@@ -904,25 +904,20 @@ namespace WMS
                     tbPacking.SelectAll();
                 }
 
-
                 if (!Base.Store.isUpdate)
                 {
-
-                    if (ssccRow.Visibility == ViewStates.Visible)
+                    // DefaultInterFocus value 2 - serial; 1 - sscc; blank / 0 - item Default focus
+                    // for interwarehouse 12.09.2024 Janko Jovičić
+                    string defaultFocus = await CommonData.GetSettingAsync("DefaultInterFocus", this);
+                    if(String.IsNullOrEmpty(defaultFocus) || defaultFocus == "0")
                     {
-                        if (tbSSCC.Text == string.Empty)
-                        {
-                            tbSSCC.RequestFocus();
-                        }
-                    }
-                    else if (serialRow.Visibility == ViewStates.Visible)
+                        tbIdent.RequestFocus();
+                    } else if (defaultFocus == "1") {                     
+                        tbSSCC.RequestFocus();
+                    } else if (defaultFocus == "2")
                     {
-                        if (tbSerialNum.Text == string.Empty)
-                        {
-                            tbSerialNum.RequestFocus();
-                        }
-                    }
-                    else if (serialRow.Visibility != ViewStates.Visible && ssccRow.Visibility != ViewStates.Visible)
+                        tbSerialNum.RequestFocus();
+                    } else
                     {
                         tbIdent.RequestFocus();
                     }
@@ -945,10 +940,8 @@ namespace WMS
                 {
                     if (tbIdent.HasFocus)
                     {
-
                         tbIdent.Text = barcode;
                         await ProcessIdent();
-                        tbSSCC.RequestFocus();
                     }
                     else if (tbSSCC.HasFocus)
                     {
@@ -1039,23 +1032,7 @@ namespace WMS
 
                 if (activityIdent != null)
                 {
-                    if (!activityIdent.GetBool("isSSCC"))
-                    {
-
-                        RunOnUiThread(() =>
-                        {
-                            ssccRow.Visibility = ViewStates.Gone;
-                        });                     
-                    }
-
-                    if (!activityIdent.GetBool("HasSerialNumber"))
-                    {
-                       
-                        RunOnUiThread(() =>
-                        {
-                            serialRow.Visibility = ViewStates.Gone;
-                        });
-                    }
+          
 
                     if (activityIdent == null)
                     {
@@ -1100,16 +1077,47 @@ namespace WMS
                     {
                         RunOnUiThread(() =>
                         {
-                            tbSSCC.Enabled = activityIdent.GetBool("isSSCC");
-                            tbSerialNum.Enabled = activityIdent.GetBool("HasSerialNumber");
-                        });
-                      
+                            ssccRow.Visibility = VisibilityByBoolean(activityIdent.GetBool("isSSCC"));
+                            serialRow.Visibility = VisibilityByBoolean(activityIdent.GetBool("HasSerialNumber"));
+
+                            bool ssccVisible = activityIdent.GetBool("isSSCC");
+                            bool serialVisible = activityIdent.GetBool("HasSerialNumber");
+
+                            if (ssccVisible && String.IsNullOrEmpty(tbSSCC.Text))
+                            {
+                                tbSSCC.RequestFocus();
+                            } else if (ssccVisible && !String.IsNullOrEmpty(tbSSCC.Text))
+                            {
+                                if(serialVisible && String.IsNullOrEmpty(tbSerialNum.Text))
+                                {
+                                    tbSerialNum.RequestFocus();
+                                }
+                            } else if (!ssccVisible)
+                            {
+                                if (serialVisible && String.IsNullOrEmpty(tbSerialNum.Text))
+                                {
+                                    tbSerialNum.RequestFocus();
+                                } else if (!serialVisible)
+                                {
+                                    searchableSpinnerIssueLocation.spinnerTextValueField.RequestFocus();
+                                }
+                            }
+                        });                     
                     }
                     else
                     {
                         RunOnUiThread(() =>
                         {
+
+                            ssccRow.Visibility = VisibilityByBoolean(activityIdent.GetBool("isSSCC"));
+                            serialRow.Visibility = VisibilityByBoolean(activityIdent.GetBool("HasSerialNumber"));
+
                             lbIdentName.Enabled = false;
+                            tbSSCC.Enabled = false;
+                            tbSerialNum.Enabled = false;
+                            tbIdent.Enabled = false;
+                            searchableSpinnerIssueLocation.spinnerTextValueField.Enabled = false;
+                            searchableSpinnerReceiveLocation.spinnerTextValueField.Enabled = false;
                         });
 
                     }
@@ -1129,7 +1137,16 @@ namespace WMS
             }
         }
 
-
+        private ViewStates VisibilityByBoolean(bool visible)
+        {
+            if (visible)
+            {
+                return ViewStates.Visible;
+            } else
+            {
+                return ViewStates.Gone;
+            }
+        }
         private void ColorFields()
         {
             try
