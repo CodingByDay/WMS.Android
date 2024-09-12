@@ -363,14 +363,14 @@ namespace WMS
                                             }
 
                                         });
+
                                         RunOnUiThread(() =>
                                         {
                                             adapterExtra = new CustomAutoCompleteAdapter<ComboBoxItem>(this, Android.Resource.Layout.SimpleSpinnerItem, objectExtra);
                                             cbExtra.Adapter = null;
                                             cbExtra.Adapter = adapterExtra;
-                                            cbExtra.Threshold = 1;
+                                            cbExtra.Threshold = 0;
                                             adapterExtra.NotifyDataSetChanged();
-
                                         });
                                     }
                                 }

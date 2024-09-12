@@ -38,13 +38,13 @@ public class CustomAutoCompleteTextView : AutoCompleteTextView
 
     private void Initialize()
     {
+        this.Threshold = 0;
         this.KeyPress += CustomAutoCompleteTextView_KeyPress;
         // Attach a touch event handler
         Touch += (sender, e) =>
         {
             if (e.Event.Action == Android.Views.MotionEventActions.Up)
             {
-                ShowDropDownSafely();
                 ShowKeyboardSafely();
                 RequestFocus();
                 Handler handler = new Handler();
@@ -54,7 +54,10 @@ public class CustomAutoCompleteTextView : AutoCompleteTextView
                     SetSelection(Text.Length); // Set the cursor at the end
                 }, 100);
             }
+            ShowDropDownSafely();
+
         };
+
     }
 
 
@@ -162,7 +165,18 @@ public class CustomAutoCompleteTextView : AutoCompleteTextView
         {
             if (Context is Activity activity && !activity.IsFinishing && WindowToken != null && Adapter.Count > 0)
             {
-                activity.RunOnUiThread(() => ShowDropDown());
+                activity.RunOnUiThread(() => {
+
+                    // Get screen dimensions
+                    var rect = new Rect();
+                    activity.Window.DecorView.GetWindowVisibleDisplayFrame(rect);
+                    int screenHeight = Resources.DisplayMetrics.HeightPixels;
+                    int keyboardHeight = screenHeight - rect.Bottom;
+                    // Calculate available height above the keyboard
+                    int availableHeightAboveKeyboard = rect.Bottom - this.Height;
+                    DropDownHeight = availableHeightAboveKeyboard;
+                    ShowDropDown();
+                });
             }
         }
         catch (Exception ex)

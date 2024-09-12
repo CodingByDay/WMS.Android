@@ -32,7 +32,7 @@ public class CustomFilter<T> : Filter
 
                 Parallel.ForEach(originalItems, item =>
                 {
-                    if (item.ToString().ToLower().StartsWith(filterString))
+                    if (item.ToString().ToLower().Contains(filterString))
                     {
                         filteredItems.Add(item);
                     }
@@ -45,9 +45,15 @@ public class CustomFilter<T> : Filter
             }
             else
             {
-                // If originalItems is null or empty, provide empty results
-                result.Count = 0;
-                result.Values = null;
+                // Return the original list. Bug fix 12.09.2024 Janko Jovičić
+                var filteredItems = new ConcurrentBag<T>();
+                Parallel.ForEach(originalItems, item =>
+                {
+                    filteredItems.Add(item);
+                });
+                var resultList = filteredItems.Take(100).ToList();
+                result.Values = FromArray(resultList.Select(item => item.ToJavaObject()).ToArray());
+                result.Count = resultList.Count;
             }
 
             return result;
@@ -87,7 +93,7 @@ public class CustomFilter<T> : Filter
                 adapter.NotifyDataSetInvalidated();
             }
 
-            var ignore = constraint != null && lastRaisedString.StartsWith(constraint.ToString()) && constraint.ToString().Count() < lastRaisedString.Count();
+            var ignore = constraint != null && lastRaisedString.Contains(constraint.ToString()) && constraint.ToString().Count() < lastRaisedString.Count();
             // Check if only one item is left after filtering
             if (adapter.Count == 1 && !ignore)
             {
