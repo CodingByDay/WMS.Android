@@ -459,6 +459,7 @@ namespace WMS
                     popupDialogConfirm.Dismiss();
                     popupDialogConfirm.Hide();
                     LoaderManifest.LoaderManifestLoopResources(this);
+
                     await FinishMethod();
                 }
                 catch (Exception ex)

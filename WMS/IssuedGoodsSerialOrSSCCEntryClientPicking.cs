@@ -973,10 +973,7 @@ namespace WMS
             {
                 popupDialogConfirm.Dismiss();
                 popupDialogConfirm.Hide();
-                RunOnUiThread(() =>
-                {
-                    LoaderManifest.LoaderManifestLoopResources(this);
-                });
+                LoaderManifest.LoaderManifestLoopResources(this);
                 await FinishMethod();
             }
             catch (Exception ex)
@@ -984,10 +981,7 @@ namespace WMS
                 GlobalExceptions.ReportGlobalException(ex);
             } finally
             {
-                RunOnUiThread(() =>
-                {
-                    LoaderManifest.LoaderManifestLoopStop(this);
-                });
+                LoaderManifest.LoaderManifestLoopStop(this);
             }
         }
 

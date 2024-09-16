@@ -473,6 +473,7 @@ namespace WMS
                     base.SetContentView(Resource.Layout.IssuedGoodsSerialOrSSCCEntry);
                 }
 
+
                 // Definitions
                 AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
                 var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
@@ -537,20 +538,11 @@ namespace WMS
                 // Color the fields that can be scanned
                 ColorFields();
 
-
-
                 SetUpProcessDependentButtons();
                 // Main logic for the entry
                 await SetUpForm();
 
-
-                if (App.Settings.tablet)
-                {
-                    var ident = openIdent.GetString("Code");
-                    await FillAdapterForTablet(ident);
-                    showPictureIdent(ident);
-                }
-
+              
             }
             catch (Exception ex)
             {
@@ -586,7 +578,7 @@ namespace WMS
         {
             try
             {
-                var wh = moveHead.GetString("Receiver");
+                var wh = moveHead.GetString("Wharehouse");
                 var list = await AdapterStore.GetStockForWarehouseAndIdent(ident, wh);
                 FillTabletAdapterData(list);
             }
@@ -1079,7 +1071,9 @@ namespace WMS
                 {
                     popupDialogConfirm.Dismiss();
                     popupDialogConfirm.Hide();
+
                     LoaderManifest.LoaderManifestLoopResources(this);
+
                     await FinishMethod();
                 }
                 catch (Exception ex)
@@ -1617,23 +1611,7 @@ namespace WMS
                         }
                     }
 
-                    if (App.Settings.tablet)
-                    {
-                        items.Clear();
-                        foreach (var connected in connectedPositions)
-                        {
-                            items.Add(new LocationClass
-                            {
-                                ident = connected.acIdent,
-                                location = connected.aclocation,
-                                serial = connected.acSerialNo,
-                                sscc = connected.acSSCC,
-                                quantity = connected.anQty.ToString()
-                            });
-                        }
-                        dataAdapter.NotifyDataSetChanged();
-                    }
-
+                
                 }
             }
             catch (Exception ex)
@@ -1672,7 +1650,14 @@ namespace WMS
         {
             try
             {
-     
+
+                if (App.Settings.tablet)
+                {
+                    var ident = openIdent.GetString("Code");
+                    await FillAdapterForTablet(ident);
+                    showPictureIdent(ident);
+                }
+
                 // This is the default focus of the view.
                 tbSSCC.RequestFocus();
 
