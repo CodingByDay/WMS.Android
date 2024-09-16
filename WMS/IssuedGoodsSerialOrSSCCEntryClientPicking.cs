@@ -973,11 +973,21 @@ namespace WMS
             {
                 popupDialogConfirm.Dismiss();
                 popupDialogConfirm.Hide();
+                RunOnUiThread(() =>
+                {
+                    LoaderManifest.LoaderManifestLoopResources(this);
+                });
                 await FinishMethod();
             }
             catch (Exception ex)
             {
                 GlobalExceptions.ReportGlobalException(ex);
+            } finally
+            {
+                RunOnUiThread(() =>
+                {
+                    LoaderManifest.LoaderManifestLoopStop(this);
+                });
             }
         }
 

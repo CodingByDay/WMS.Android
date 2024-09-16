@@ -8,6 +8,7 @@ using Android.Views;
 using BarCode2D_Receiver;
 using Com.Jsibbold.Zoomage;
 using Newtonsoft.Json;
+using System.Diagnostics;
 using TrendNET.WMS.Core.Data;
 using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
@@ -543,12 +544,58 @@ namespace WMS
                 await SetUpForm();
 
 
+                if (App.Settings.tablet)
+                {
+                    var ident = openIdent.GetString("Code");
+                    await FillAdapterForTablet(ident);
+                    showPictureIdent(ident);
+                }
+
             }
             catch (Exception ex)
             {
                 GlobalExceptions.ReportGlobalException(ex);
             }
         }
+
+        /// <summary>
+        /// Addition for the tablet right side view. 04.09.2024
+        /// </summary>
+        /// <param name="list"></param>
+        private void FillTabletAdapterData(List<LocationClass> list)
+        {
+            try
+            {
+                items.Clear();
+                foreach (var obj in list)
+                {
+                    items.Add(new LocationClass { ident = obj.ident, location = obj.location, quantity = obj.quantity });
+                }
+                RunOnUiThread(() =>
+                {
+                    dataAdapter.NotifyDataSetChanged();
+                });
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
+        }
+
+        private async Task FillAdapterForTablet(string ident)
+        {
+            try
+            {
+                var wh = moveHead.GetString("Receiver");
+                var list = await AdapterStore.GetStockForWarehouseAndIdent(ident, wh);
+                FillTabletAdapterData(list);
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
+        }
+
         private bool initialDropdownEvent = true;
 
         private async void CbMultipleLocations_ItemSelected(object? sender, AdapterView.ItemSelectedEventArgs e)
@@ -1625,10 +1672,7 @@ namespace WMS
         {
             try
             {
-                if (App.Settings.tablet)
-                {
-                    showPictureIdent(openIdent.GetString("Code"));
-                }
+     
                 // This is the default focus of the view.
                 tbSSCC.RequestFocus();
 
