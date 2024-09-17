@@ -4,6 +4,8 @@ using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using TrendNET.WMS.Device.Services;
 using WMS.ExceptionStore;
+using TrendNET.WMS.Core.Data;
+using WMS.External;
 
 namespace WMS.App
 {
@@ -78,7 +80,7 @@ namespace WMS.App
             }
         }
 
-        public static  List<string> DeserializeJsonStream(string json)
+        public static List<string> DeserializeJsonStream(string json)
         {
             List<string> items = new List<string>();
 
@@ -96,6 +98,18 @@ namespace WMS.App
             return items;
         }
 
+        public static async Task<bool> CanCreateProductionPosition(int headId)
+        {
+            var positions = await AsyncServices.AsyncServices.GetObjectListAsync("mh", "W");
+            foreach(var position in positions.Items)
+            {
+                if(position.GetInt("HeadID") == headId && position.GetInt("ItemCount") == 0)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
 
 
 

@@ -702,7 +702,7 @@ namespace WMS
             {
                 var item = positions.Items[displayedPosition];
                 InUseObjects.Set("MoveItem", item);
-
+                Base.Store.isUpdate = true;
                 StartActivity(typeof(ProductionSerialOrSSCCEntry));
                 Finish();
             }

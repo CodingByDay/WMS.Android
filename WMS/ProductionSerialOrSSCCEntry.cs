@@ -246,6 +246,12 @@ namespace WMS
             {
                 if (!Base.Store.isUpdate)
                 {
+                    if (!await HelperMethods.CanCreateProductionPosition(moveHead.GetInt("HeadID")))
+                    {
+                        // Create the new document and save it to internal storage 17.09.2024
+                        CreateNewDocument();
+                    }
+
                     string error;
 
                     if(tbSSCC.Enabled && string.IsNullOrEmpty(tbSSCC.Text.Trim()))
@@ -635,8 +641,7 @@ namespace WMS
                 {
                     await FillTheList();
                 }
-
-
+            
             }
             catch (Exception ex)
             {
@@ -696,7 +701,11 @@ namespace WMS
                     tbSerialNum.Text = moveItem.GetString("SerialNo");
 
                     tbPacking.Text = moveItem.GetDouble("Packing").ToString(await CommonData.GetQtyPictureAsync(this));
+                    searchableSpinnerLocation.spinnerTextValueField.Text = moveItem.GetString("Location");
 
+
+
+                    searchableSpinnerLocation.spinnerTextValueField.Enabled = false;
                     tbSSCC.Enabled = false;
                     tbSerialNum.Enabled = false;
                     tbIdent.Enabled = false;
@@ -950,6 +959,7 @@ namespace WMS
 
                                         alert.SetPositiveButton("Ok", (senderAlert, args) =>
                                         {
+                                            Base.Store.isUpdate = false;
                                             alert.Dispose();
                                             StartActivity(typeof(MainMenu));
                                             Finish();
@@ -971,6 +981,7 @@ namespace WMS
 
                                         alert.SetPositiveButton("Ok", (senderAlert, args) =>
                                         {
+                                            Base.Store.isUpdate = false;
                                             alert.Dispose();
                                             StartActivity(typeof(MainMenu));
                                             Finish();
@@ -993,7 +1004,10 @@ namespace WMS
 
                                     alert.SetPositiveButton("Ok", (senderAlert, args) =>
                                     {
+                                        Base.Store.isUpdate = false;
                                         alert.Dispose();
+                                        StartActivity(typeof(MainMenu));
+                                        Finish();
 
                                     });
 
@@ -1128,18 +1142,18 @@ namespace WMS
                     try
                     {
                         LoaderManifest.LoaderManifestLoopResources(this);
+
                         if (await SaveMoveItem())
                         {
+                            Base.Store.isUpdate = false;
+
                             if (editMode)
                             {
                                 StartActivity(typeof(ProductionEnteredPositionsView));
                                 Finish();
                             }
                             else
-                            {
-                                // Create the new document and save it to internal storage 17.09.2024
-                                CreateNewDocument();
-
+                            {                            
                                 StartActivity(typeof(ProductionSerialOrSSCCEntry));
                                 Finish();
                             }
@@ -1183,16 +1197,18 @@ namespace WMS
                 moveHeadCreate.SetString("Wharehouse", moveHead.GetString("Wharehouse"));
                 moveHeadCreate.SetString("DocumentType", moveHead.GetString("DocumentType"));
 
-                var savedMoveHead = Services.SetObject("mh", moveHead, out error);
+                var savedMoveHead = Services.SetObject("mh", moveHeadCreate, out error);
                 if (savedMoveHead == null)
                 {
                     StartActivity(typeof(ProductionWorkOrderSetup));
                     Finish();
                 } else
                 {
-                    moveHead.SetInt("HeadID", savedMoveHead.GetInt("HeadID"));
-                    moveHead.SetBool("Saved", true);
-                    InUseObjects.Set("MoveHead", moveHead);
+                    moveHeadCreate.SetInt("HeadID", savedMoveHead.GetInt("HeadID"));
+                    moveHeadCreate.SetBool("Saved", true);
+                    InUseObjects.Set("MoveHead", moveHeadCreate);
+                    moveHead = (NameValueObject)InUseObjects.Get("MoveHead");
+                    // Refresh the object
                 }
 
             }
