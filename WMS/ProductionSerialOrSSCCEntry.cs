@@ -174,6 +174,7 @@ namespace WMS
         private NameValueObject? ident;
         private LinearLayout? ssccRow;
         private LinearLayout? serialRow;
+        private double stock;
 
         private async Task GetWorkOrderDefaultQty()
         {
@@ -243,7 +244,133 @@ namespace WMS
         {
             try
             {
+                if (!Base.Store.isUpdate)
+                {
                     string error;
+
+                    if(tbSSCC.Enabled && string.IsNullOrEmpty(tbSSCC.Text.Trim()))
+                    {
+                        RunOnUiThread(() =>
+                        {
+                            string Message = string.Format($"{Resources.GetString(Resource.String.s254)}");
+                            DialogHelper.ShowDialogError(this, this, Message);
+
+                            tbSSCC.RequestFocus();
+                        });
+
+                        return false;
+                    }
+
+                    if (tbSerialNum.Enabled && string.IsNullOrEmpty(tbSerialNum.Text.Trim()))
+                    {
+                        tbSerialNum.Text = GetNextSerialNum();
+                        if (string.IsNullOrEmpty(tbSerialNum.Text.Trim()))
+                        {
+                            RunOnUiThread(() =>
+                            {
+                                string Message = string.Format($"{Resources.GetString(Resource.String.s314)}");
+                                DialogHelper.ShowDialogError(this, this, Message);
+                                tbSerialNum.RequestFocus();
+                            });
+
+                            return false;
+                        }
+                    }
+
+                    if (!await CommonData.IsValidLocationAsync(moveHead.GetString("Wharehouse"), searchableSpinnerLocation.spinnerTextValueField.Text.Trim(), this))
+                    {
+                        RunOnUiThread(() =>
+                        {
+                            string Message = string.Format($"{Resources.GetString(Resource.String.s258)} '" + searchableSpinnerLocation.spinnerTextValueField.Text.Trim() + $"' {Resources.GetString(Resource.String.s272)} '" + moveHead.GetString("Wharehouse") + "'!");
+                            DialogHelper.ShowDialogError(this, this, Message);
+                            searchableSpinnerLocation.spinnerTextValueField.RequestFocus();
+                        });
+
+                        return false;
+                    }
+
+                    if (tbSSCC.Enabled)
+                    {
+                        var stock = Services.GetObject("sts", tbSSCC.Text.Trim(), out error);
+                        if (stock == null)
+                        {
+                            RunOnUiThread(() =>
+                            {
+                                string SuccessMessage = string.Format($"{Resources.GetString(Resource.String.s213)}" + error);
+                                DialogHelper.ShowDialogError(this, this, SuccessMessage);
+                            });
+
+
+                            return false;
+                        }
+
+                        if (stock.GetBool("ExistsSSCC"))
+                        {
+                            RunOnUiThread(() =>
+                            {
+                                string SuccessMessage = string.Format($"{Resources.GetString(Resource.String.s315)}");
+                                DialogHelper.ShowDialogError(this, this, SuccessMessage);
+                            });
+
+
+                            return false;
+                        }
+                    }
+                    if (string.IsNullOrEmpty(tbPacking.Text.Trim()))
+                    {
+                        RunOnUiThread(() =>
+                        {
+                            string SuccessMessage = string.Format($"{Resources.GetString(Resource.String.s270)}");
+                            DialogHelper.ShowDialogError(this, this, SuccessMessage);
+                        });
+
+                        return false;
+                    }
+                    else
+                    {
+                        try
+                        {
+                            var qty = Convert.ToDouble(tbPacking.Text.Trim());
+
+                            if (qty == 0.0)
+                            {
+                                RunOnUiThread(() =>
+                                {
+                                    string SuccessMessage = string.Format($"{Resources.GetString(Resource.String.s298)}");
+                                    DialogHelper.ShowDialogError(this, this, SuccessMessage);
+                                });
+
+
+                                return false;
+                            }
+
+                
+                            var max = Math.Abs(openWorkOrder.GetDouble("OpenQty"));
+                            if (Math.Abs(qty) > max)
+                            {
+                                RunOnUiThread(() =>
+                                {
+                                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s354)}", ToastLength.Long).Show();
+                                });
+                                return false;
+
+                            }
+                            
+                        }
+                        catch (Exception e)
+                        {
+                            RunOnUiThread(() =>
+                            {
+                                string SuccessMessage = string.Format($"{Resources.GetString(Resource.String.s220)}");
+                                DialogHelper.ShowDialogError(this, this, SuccessMessage);
+
+                                tbPacking.RequestFocus();
+                            });
+
+                            return false;
+                        }
+                    }
+
 
                     if (moveItem == null) { moveItem = new NameValueObject("MoveItem"); }
                     moveItem.SetInt("HeadID", moveHead.GetInt("HeadID"));
@@ -275,7 +402,50 @@ namespace WMS
                         InUseObjects.Invalidate("MoveItem");
                         return true;
                     }
+                } else
+                {
+                    // Update flow.
+                    double newQty;
+                    if (Double.TryParse(tbPacking.Text, out newQty))
+                    {
+                        if (newQty > moveItem.GetDouble("Qty"))
+                        {
+                            RunOnUiThread(() =>
+                            {
+                                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s291)}", ToastLength.Long).Show();
+                            });
+                            return false;
+                        }
+
+                        else
+                        {
+                            var parameters = new List<Services.Parameter>();
+                            var tt = moveItem.GetInt("ItemID");
+                            parameters.Add(new Services.Parameter { Name = "anQty", Type = "Decimal", Value = newQty });
+                            parameters.Add(new Services.Parameter { Name = "anItemID", Type = "Int32", Value = moveItem.GetInt("ItemID") });
+                            string debugString = $"UPDATE uWMSMoveItem SET anQty = {newQty} WHERE anIDItem = {moveItem.GetInt("ItemID")}";
+                            var subjects = Services.Update($"UPDATE uWMSMoveItem SET anQty = @anQty WHERE anIDItem = @anItemID;", parameters);
+                            if (subjects.Success)
+                            {
+                                InUseObjects.Invalidate("MoveItem");
+                                return true;
+                            }
+                            else
+                            {
+                                return false;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        RunOnUiThread(() =>
+                        {
+                            Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
+                        });
+                        return false;
+                    }
                 }
+            }
                 catch (Exception err)
                 {
 
@@ -492,7 +662,7 @@ namespace WMS
                 }
 
                 lbQty.Text = $"{Resources.GetString(Resource.String.s40)} (" + openWorkOrder.GetDouble("OpenQty").ToString(await CommonData.GetQtyPictureAsync(this)) + ")";
-
+                stock = openWorkOrder.GetDouble("OpenQty");
                 ident = await CommonData.LoadIdentAsync(openWorkOrder.GetString("Ident"), this);
 
                 if (ident != null)
@@ -755,12 +925,10 @@ namespace WMS
             {
                 await Task.Run(async () =>
                 {
-                    bool resultAsync = false;
-
+                    bool resultAsync;
 
                     resultAsync = await SaveMoveItem();
                     
-
                     if (resultAsync)
                     {
                         var headID = moveHead.GetInt("HeadID");
@@ -812,7 +980,6 @@ namespace WMS
                                         dialog.Show();
                                     });
 
-
                                 }
                             }
                             else
@@ -834,8 +1001,6 @@ namespace WMS
                                     dialog.Show();
                                 });
 
-
-
                             }
                         }
                         catch (Exception ex)
@@ -850,6 +1015,8 @@ namespace WMS
                 GlobalExceptions.ReportGlobalException(ex);
             }
         }
+
+
         private void btFinishClick(object sender, EventArgs e)
         {
             try
@@ -922,25 +1089,145 @@ namespace WMS
             }
         }
 
-        private void BtSaveOrUpdate_Click(object sender, EventArgs e)
+
+        private async Task<bool> IsLocationCorrect()
+        {
+            try
+            {
+                string location = string.Empty;
+
+
+                // TODO: Add a way to check serial numbers
+                location = searchableSpinnerLocation.spinnerTextValueField.Text;
+
+
+                if (!await CommonData.IsValidLocationAsync(moveHead.GetString("Wharehouse"), location, this))
+                {
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+                return false;
+            }
+        }
+
+
+
+        private async Task CreateMethodSame()
+        {
+            try
+            {
+                if (!Base.Store.isUpdate)
+                {
+                    try
+                    {
+                        LoaderManifest.LoaderManifestLoopResources(this);
+                        if (await SaveMoveItem())
+                        {
+                            if (editMode)
+                            {
+                                StartActivity(typeof(ProductionEnteredPositionsView));
+                                Finish();
+                            }
+                            else
+                            {
+                                // Create the new document and save it to internal storage 17.09.2024
+                                CreateNewDocument();
+
+                                StartActivity(typeof(ProductionSerialOrSSCCEntry));
+                                Finish();
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        SentrySdk.CaptureException(ex);
+                    }
+                    finally
+                    {
+                        LoaderManifest.LoaderManifestLoopStop(this);
+                    }
+                }
+                else
+                {
+                    return;
+                }
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
+        }
+
+        private void CreateNewDocument()
+        {
+            try
+            {
+                string error;
+                var moveHeadCreate = new NameValueObject("MoveHead");
+                moveHeadCreate.SetInt("Clerk", Services.UserID());
+                moveHeadCreate.SetString("Type", "W");
+                moveHeadCreate.SetString("LinkKey", moveHead.GetString("LinkKey"));
+                moveHeadCreate.SetString("LinkNo", moveHead.GetString("LinkNo"));
+                moveHeadCreate.SetString("Document1", "");
+                moveHeadCreate.SetDateTime("Document1Date", null);
+                moveHeadCreate.SetString("Note", "");
+                moveHeadCreate.SetString("Issuer", "");
+                moveHeadCreate.SetString("Receiver", "");
+                moveHeadCreate.SetString("Wharehouse", moveHead.GetString("Wharehouse"));
+                moveHeadCreate.SetString("DocumentType", moveHead.GetString("DocumentType"));
+
+                var savedMoveHead = Services.SetObject("mh", moveHead, out error);
+                if (savedMoveHead == null)
+                {
+                    StartActivity(typeof(ProductionWorkOrderSetup));
+                    Finish();
+                } else
+                {
+                    moveHead.SetInt("HeadID", savedMoveHead.GetInt("HeadID"));
+                    moveHead.SetBool("Saved", true);
+                    InUseObjects.Set("MoveHead", moveHead);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
+        }
+
+        private async void BtSaveOrUpdate_Click(object sender, EventArgs e)
         {
             try
             {
                 try
                 {
                     LoaderManifest.LoaderManifestLoopResources(this);
-                    if (SaveMoveItem().Result)
+
+                    double parsed;
+                    if (double.TryParse(tbPacking.Text, out parsed))
                     {
-                        if (editMode)
+                        var isCorrectLocation = await IsLocationCorrect();
+                        if (!isCorrectLocation)
                         {
-                            StartActivity(typeof(ProductionEnteredPositionsView));
-                            Finish();
+                            // Nepravilna lokacija za izbrano skladišče
+                            Toast.MakeText(this, $"{Resources.GetString(Resource.String.s333)}", ToastLength.Long).Show();
+                            return;
                         }
-                        else
-                        {
-                            StartActivity(typeof(ProductionSerialOrSSCCEntry));
-                            Finish();
-                        }
+
+                          
+                        await CreateMethodSame();
+                    }
+                    else
+                    {
+                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}", ToastLength.Long).Show();
+                        return;
                     }
                 }
                 catch (Exception ex)
