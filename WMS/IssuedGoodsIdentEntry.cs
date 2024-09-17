@@ -403,7 +403,7 @@ namespace WMS
 
                 tbIdent.RequestFocus();
                 tbIdent.TextChanged += TbIdent_TextChanged;
-
+                tbIdent.ProcessIdentEvent += TbIdent_ProcessIdentEvent;
                 // These are read only. 6.6.2024 JJ
                 tbOrder.Enabled = false;
                 tbConsignee.Enabled = false;
@@ -418,6 +418,11 @@ namespace WMS
             {
                 GlobalExceptions.ReportGlobalException(ex);
             }
+        }
+
+        private async void TbIdent_ProcessIdentEvent()
+        {
+           await ProcessIdent(false);
         }
 
         private async void LoadIdentDataAsync()
@@ -442,6 +447,8 @@ namespace WMS
                 GlobalExceptions.ReportGlobalException(ex);
             }
         }
+
+   
 
         private void LoadData()
         {

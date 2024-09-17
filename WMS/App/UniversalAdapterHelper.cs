@@ -243,30 +243,21 @@ namespace WMS.App
 
         public static UniversalAdapter<ProductionSerialOrSSCCList> GetProductionSerialOrSSCCEntry(Context context, List<ProductionSerialOrSSCCList> data)
         {
-
             var adapter = new UniversalAdapter<ProductionSerialOrSSCCList>(context, data,
-            Resource.Layout.FiveElements,
+            Resource.Layout.ThreeElements,
             (view, item) =>
             {
                 TextView Ident = view.FindViewById<TextView>(Resource.Id.first);
                 Ident.Text = item.Ident;
                 Ident.SetTextColor(Android.Graphics.Color.Black);
 
-                TextView SerialNumber = view.FindViewById<TextView>(Resource.Id.second);
-                SerialNumber.Text = item.SerialNumber;
-                SerialNumber.SetTextColor(Android.Graphics.Color.Black);
-
-                TextView Location = view.FindViewById<TextView>(Resource.Id.third);
+                TextView Location = view.FindViewById<TextView>(Resource.Id.second);
                 Location.Text = item.Location;
                 Location.SetTextColor(Android.Graphics.Color.Black);
 
-                TextView Qty = view.FindViewById<TextView>(Resource.Id.fourth);
+                TextView Qty = view.FindViewById<TextView>(Resource.Id.third);
                 Qty.Text = item.Qty;
                 Qty.SetTextColor(Android.Graphics.Color.Black);
-
-                TextView Filled = view.FindViewById<TextView>(Resource.Id.fifth);
-                Filled.Text = item.Filled;
-                Filled.SetTextColor(Android.Graphics.Color.Black);
 
             });
 

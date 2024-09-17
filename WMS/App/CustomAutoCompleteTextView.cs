@@ -9,8 +9,17 @@ using TrendNET.WMS.Device.App;
 using WMS.ExceptionStore;
 using Keycode = Android.Views.Keycode;
 
+
+
+
+public delegate void ProcessIdentHandler();
+
 public class CustomAutoCompleteTextView : AutoCompleteTextView
 {
+
+
+    public event ProcessIdentHandler ProcessIdentEvent;
+
     public int Count()
     {
         return Adapter.Count;
@@ -72,7 +81,7 @@ public class CustomAutoCompleteTextView : AutoCompleteTextView
     {
         if (e.KeyCode == Keycode.Enter && e.Event.Action == KeyEventActions.Down)
         {
-            // The Enter key was pressed
+  
 
             View nextFocus = FocusSearch(FocusSearchDirection.Forward);
             if (nextFocus != null)

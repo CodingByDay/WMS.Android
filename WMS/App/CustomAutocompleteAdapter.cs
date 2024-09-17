@@ -7,12 +7,14 @@ using TrendNET.WMS.Device.App;
 
 
 public delegate void SingleItemEventHandler(string barcode);
+public delegate void DuplicateItemEventHandler(string barcode);
 
 public class CustomAutoCompleteAdapter<T> : ArrayAdapter<T>
 {
     private LayoutInflater inflater;
     public List<T> originalItems;
     public event SingleItemEventHandler SingleItemEvent;
+    public event DuplicateItemEventHandler DuplicateItemEvent;
 
     public CustomAutoCompleteAdapter(Context context, int textViewResourceId, List<T> objects)
        : base(context, textViewResourceId, new List<T>(objects.Take(100))) // Initialize with the first 1000 items
@@ -63,6 +65,7 @@ public class CustomAutoCompleteAdapter<T> : ArrayAdapter<T>
     {
        SingleItemEvent?.Invoke(singleItemString);
     }
+
 
 
 

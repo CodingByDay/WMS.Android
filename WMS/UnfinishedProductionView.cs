@@ -489,6 +489,7 @@ namespace WMS
                     popupDialog.SetContentView(Resource.Layout.YesNoPopUp);
                     popupDialog.Window.SetSoftInputMode(SoftInput.AdjustResize);
                     popupDialog.Show();
+                    popupDialog.Window.SetLayout(LayoutParams.MatchParent, LayoutParams.WrapContent);
                     popupDialog.Window.SetBackgroundDrawable(new ColorDrawable(Color.ParseColor("#081a45")));
                     // Access Popup layout fields like below
                     btnYes = popupDialog.FindViewById<Button>(Resource.Id.btnYes);
@@ -528,7 +529,7 @@ namespace WMS
                     var id = item.GetInt("HeadID");
 
                     LoaderManifest.LoaderManifestLoopResources(this);
-                    var (success, result) = await WebApp.GetAsync("mode=delMoveHead&head=" + id.ToString() + "&deleter=" + Services.UserID().ToString() + Services.UserID().ToString(), this);
+                    var (success, result) = await WebApp.GetAsync("mode=delMoveHead&head=" + id.ToString() + "&deleter=" + Services.UserID().ToString(), this);
 
                     if (success)
                     {

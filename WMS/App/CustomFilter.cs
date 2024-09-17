@@ -5,16 +5,23 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using WMS.ExceptionStore;
+using System.Timers;
+using Timer = System.Timers.Timer; // Include this for the timer
 
 public class CustomFilter<T> : Filter
 {
     private readonly CustomAutoCompleteAdapter<T> adapter;
     private readonly List<T> originalItems;
     private string lastRaisedString = string.Empty;
+    private Timer filterTimer;
+
     public CustomFilter(CustomAutoCompleteAdapter<T> adapter, List<T> originalItems)
     {
         this.adapter = adapter;
         this.originalItems = new List<T>(originalItems);
+        // Initialize the timer
+        filterTimer = new Timer(2000); // Set the interval to 2 seconds
+        filterTimer.AutoReset = false; // Ensure it only fires once
     }
 
     protected override FilterResults PerformFiltering(ICharSequence constraint)
@@ -68,23 +75,29 @@ public class CustomFilter<T> : Filter
         }
     }
 
-
+    // Timer elapsed event handler
+ 
 
     protected override void PublishResults(ICharSequence constraint, FilterResults results)
     {
         try
         {
+            List<string> resultsProcessing = new List<string>();
             adapter.Clear();
 
             if (results != null && results.Count > 0 && results.Values != null)
             {
                 var resultValues = results.Values.ToArray<Java.Lang.Object>();
 
-                foreach (var item in resultValues)
+
+                Parallel.ForEach(resultValues, item =>
                 {
                     T typedItem = item.ToNetObject<T>();
                     adapter.Add(typedItem);
-                }
+                    resultsProcessing.Add(typedItem.ToString());
+
+                });
+
 
                 adapter.NotifyDataSetChanged();
             }
@@ -103,6 +116,7 @@ public class CustomFilter<T> : Filter
                 lastRaisedString = singleItemString;
 
             }
+
         }
         catch (System.Exception ex)
         {

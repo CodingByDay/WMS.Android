@@ -539,7 +539,6 @@ namespace WMS
                 await Task.Run(async () =>
                 {
                     var headID = moveHead.GetInt("HeadID");
-                    await SelectSubjectBeforeFinish.ShowIfNeeded(headID);
 
                     try
                     {
