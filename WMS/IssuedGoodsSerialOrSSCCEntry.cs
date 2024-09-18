@@ -1388,6 +1388,16 @@ namespace WMS
                             createPositionAllowed = false;
                             await GetConnectedPositions(element.acKey, element.anNo, element.acIdent);
                         }
+
+                        // The table on the right should also update. 18.09.2024 Janko Jovičić
+                        if (App.Settings.tablet)
+                        {
+                            var ident = openIdent.GetString("Code");
+                            await FillAdapterForTablet(ident);
+                            showPictureIdent(ident);
+                        }
+                       
+
                     }
                 }
                 else

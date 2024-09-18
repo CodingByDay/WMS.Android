@@ -53,7 +53,6 @@ namespace WMS
         private ListView listData;
         private UniversalAdapter<TakeOverIdentList> dataAdapter;
         private List<TakeOverIdentList> data = new List<TakeOverIdentList>();
-        private const int ScannerInputDelay = 500; // Adjust this delay as needed
 
         protected async override void OnCreate(Bundle savedInstanceState)
         {
@@ -114,7 +113,7 @@ namespace WMS
 
                 tbIdent.RequestFocus();
                 tbIdent.TextChanged += TbIdent_TextChanged;
-
+                tbIdent.ItemClick += TbIdent_ItemClick;
                 // These are read only. 6.6.2024 JJ
                 tbOrder.Enabled = false;
                 tbConsignee.Enabled = false;
@@ -130,6 +129,10 @@ namespace WMS
             }
         }
 
+        private async void TbIdent_ItemClick(object? sender, AdapterView.ItemClickEventArgs e)
+        {
+            await ProcessIdent(false);
+        }
 
         private async void LoadIdentDataAsync()
         {
@@ -205,12 +208,7 @@ namespace WMS
                 GlobalExceptions.ReportGlobalException(ex);
             }
         }
-
-
-
-
-     
-
+   
         private void ListData_ItemLongClick(object? sender, AdapterView.ItemLongClickEventArgs e)
         {
             try

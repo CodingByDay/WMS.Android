@@ -20,8 +20,7 @@ public class CustomFilter<T> : Filter
         this.adapter = adapter;
         this.originalItems = new List<T>(originalItems);
         // Initialize the timer
-        filterTimer = new Timer(2000); // Set the interval to 2 seconds
-        filterTimer.AutoReset = false; // Ensure it only fires once
+
     }
 
     protected override FilterResults PerformFiltering(ICharSequence constraint)
@@ -89,15 +88,11 @@ public class CustomFilter<T> : Filter
             {
                 var resultValues = results.Values.ToArray<Java.Lang.Object>();
 
-
-                Parallel.ForEach(resultValues, item =>
+                foreach (var item in resultValues)
                 {
                     T typedItem = item.ToNetObject<T>();
                     adapter.Add(typedItem);
-                    resultsProcessing.Add(typedItem.ToString());
-
-                });
-
+                }
 
                 adapter.NotifyDataSetChanged();
             }

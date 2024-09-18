@@ -400,10 +400,9 @@ namespace WMS
                 _broadcastReceiver.ConnectionStatusChanged += OnNetworkStatusChanged;
                 Application.Context.RegisterReceiver(_broadcastReceiver,
                 new IntentFilter(ConnectivityManager.ConnectivityAction), ReceiverFlags.NotExported);
-
+                tbIdent.ItemClick += TbIdent_ItemClick;
                 tbIdent.RequestFocus();
                 tbIdent.TextChanged += TbIdent_TextChanged;
-                tbIdent.ProcessIdentEvent += TbIdent_ProcessIdentEvent;
                 // These are read only. 6.6.2024 JJ
                 tbOrder.Enabled = false;
                 tbConsignee.Enabled = false;
@@ -420,10 +419,12 @@ namespace WMS
             }
         }
 
-        private async void TbIdent_ProcessIdentEvent()
+        private async void TbIdent_ItemClick(object? sender, AdapterView.ItemClickEventArgs e)
         {
-           await ProcessIdent(false);
+            await ProcessIdent(false);
         }
+
+
 
         private async void LoadIdentDataAsync()
         {
