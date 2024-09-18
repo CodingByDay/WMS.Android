@@ -111,9 +111,11 @@ namespace TrendNET.WMS.Device.Services
 
         private static async Task InstallAPK(string apkFilePath)
         {
+            Java.IO.File apkFile = null;
+
             try
             {
-                Java.IO.File apkFile = new Java.IO.File(apkFilePath);
+                apkFile = new Java.IO.File(apkFilePath);
 
                 if (apkFile.Exists())
                 {
@@ -142,12 +144,11 @@ namespace TrendNET.WMS.Device.Services
                         }
                         catch (Exception ex)
                         {
-                            // Log the exception
                             SentrySdk.CaptureException(ex);
-                            // Optionally, show a toast or dialog indicating installation failure
                         }
                     });
 
+                    // Wait a bit to allow the APK installation to start
                     await Task.Delay(5000);
                 }
             }
@@ -155,7 +156,24 @@ namespace TrendNET.WMS.Device.Services
             {
                 SentrySdk.CaptureException(ex);
             }
+            finally
+            {
+                // Delete the APK file after the process is done, if it exists
+                try
+                {
+                    if (apkFile != null && apkFile.Exists())
+                    {
+                        apkFile.Delete();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Log or handle the exception if the file deletion fails
+                    SentrySdk.CaptureException(ex);
+                }
+            }
         }
+
 
         private static async Task UpdateProgress(DownloadManager manager, long downloadId, ProgressBar progressBar, TextView textProgress, Context context)
         {
