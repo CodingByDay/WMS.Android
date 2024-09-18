@@ -245,7 +245,7 @@
                 android:layout_marginRight="4dp"
                 android:text="@string/s89"
                 android:drawableLeft="@drawable/logout_white"
-                android:id="@+id/button5"
+                android:id="@+id/btExit"
            />
 
         </LinearLayout>

@@ -596,9 +596,9 @@ namespace WMS
                 tbPacking.SetSelectAllOnFocus(true);
                 lbQty = FindViewById<TextView>(Resource.Id.lbQty);
                 btSaveOrUpdate = FindViewById<Button>(Resource.Id.btSaveOrUpdate);
-                btOverview = FindViewById<Button>(Resource.Id.button3);
-                btFinish = FindViewById<Button>(Resource.Id.button4);
-                btExit = FindViewById<Button>(Resource.Id.button5);
+                btOverview = FindViewById<Button>(Resource.Id.btOverview);
+                btFinish = FindViewById<Button>(Resource.Id.btFinish);
+                btExit = FindViewById<Button>(Resource.Id.btExit);
                 tbIdent.InputType = Android.Text.InputTypes.ClassNumber;
                 tbSSCC.InputType = Android.Text.InputTypes.ClassNumber;
                 tbSerialNum.InputType = Android.Text.InputTypes.ClassNumber;
