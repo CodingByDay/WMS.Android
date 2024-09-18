@@ -23,7 +23,6 @@ namespace WMS
         private NameValueObject moveHead = (NameValueObject)InUseObjects.Get("MoveHead");
         private NameValueObject moveItem = (NameValueObject)InUseObjects.Get("MoveItem");
         private NameValueObject openWorkOrder = null;
-        private bool editMode = false;
         private EditText tbIdent;
         private EditText tbSSCC;
         private EditText tbSerialNum;
@@ -697,9 +696,9 @@ namespace WMS
                 if (Base.Store.isUpdate)
                 {
                     tbSSCC.Text = moveItem.GetString("SSCC");
-
                     tbSerialNum.Text = moveItem.GetString("SerialNo");
-
+                    lbQty.Text = $"{Resources.GetString(Resource.String.s40)} (" + moveItem.GetDouble("Packing") + ")";
+                    stock = moveItem.GetDouble("Packing");
                     tbPacking.Text = moveItem.GetDouble("Packing").ToString(await CommonData.GetQtyPictureAsync(this));
                     searchableSpinnerLocation.spinnerTextValueField.Text = moveItem.GetString("Location");
 
@@ -1137,23 +1136,23 @@ namespace WMS
         {
             try
             {
-                if (!Base.Store.isUpdate)
-                {
+               
                     try
                     {
                         LoaderManifest.LoaderManifestLoopResources(this);
 
                         if (await SaveMoveItem())
                         {
-                            Base.Store.isUpdate = false;
-
-                            if (editMode)
+                          
+                            if (Base.Store.isUpdate)
                             {
+                                Base.Store.isUpdate = false;
                                 StartActivity(typeof(ProductionEnteredPositionsView));
                                 Finish();
                             }
                             else
-                            {                            
+                            {
+                                Base.Store.isUpdate = false;
                                 StartActivity(typeof(ProductionSerialOrSSCCEntry));
                                 Finish();
                             }
@@ -1167,11 +1166,7 @@ namespace WMS
                     {
                         LoaderManifest.LoaderManifestLoopStop(this);
                     }
-                }
-                else
-                {
-                    return;
-                }
+
             }
             catch (Exception ex)
             {
