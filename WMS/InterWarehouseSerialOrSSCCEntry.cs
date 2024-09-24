@@ -1071,8 +1071,11 @@ namespace WMS
 
                         }
                     }
-
-                    lbIdentName.Text = activityIdent.GetString("Name");
+                    RunOnUiThread(() =>
+                    {
+                        lbIdentName.Text = activityIdent.GetString("Name");
+                    });
+                   
 
                     if (!Base.Store.isUpdate)
                     {
