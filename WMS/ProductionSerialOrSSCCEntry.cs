@@ -129,6 +129,7 @@ namespace WMS
         {
             try
             {
+                data.Clear();
                 var stock = await AsyncServices.AsyncServices.GetObjectListAsync("str", moveHead.GetString("Wharehouse") + "||" + identCode); 
                 var number = stock.Items.Count();
 

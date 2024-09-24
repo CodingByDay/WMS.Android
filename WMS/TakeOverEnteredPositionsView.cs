@@ -112,13 +112,6 @@ namespace WMS
 
                 await LoadPositions();
 
-                if (App.Settings.tablet)
-                {
-                    await fillList();
-                    UniversalAdapterHelper.SelectPositionProgramaticaly(listData, 0);
-
-                }
-
                 var _broadcastReceiver = new NetworkStatusBroadcastReceiver();
                 _broadcastReceiver.ConnectionStatusChanged += OnNetworkStatusChanged;
                 Application.Context.RegisterReceiver(_broadcastReceiver,
@@ -160,10 +153,11 @@ namespace WMS
         }
 
 
-        private async Task fillList()
+        private async Task FillList()
         {
             try
             {
+                data.Clear();
                 for (int i = 0; i < positions.Items.Count; i++)
                 {
                     if (i < positions.Items.Count && positions.Items.Count > 0)
@@ -358,7 +352,7 @@ namespace WMS
                             if (App.Settings.tablet)
                             {
                                 data.Clear();
-                                await fillList();
+                                await FillList();
                             }
                             popupDialog.Dismiss();
                             popupDialog.Hide();
@@ -645,6 +639,14 @@ namespace WMS
                     }
                     displayedPosition = 0;
                     await FillDisplayedItem();
+
+                    if (App.Settings.tablet)
+                    {
+                        await FillList();
+                        UniversalAdapterHelper.SelectPositionProgramaticaly(listData, 0);
+
+                    }
+
                 }
                 catch (Exception error)
                 {

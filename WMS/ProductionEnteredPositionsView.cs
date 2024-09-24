@@ -112,11 +112,6 @@ namespace WMS
                 Application.Context.RegisterReceiver(_broadcastReceiver,
                 new IntentFilter(ConnectivityManager.ConnectivityAction), ReceiverFlags.NotExported);
 
-                if (App.Settings.tablet)
-                {
-                    await fillList();
-                }
-
             }
             catch (Exception ex)
             {
@@ -158,10 +153,7 @@ namespace WMS
                             positions = null;
                             await LoadPositions();
                             data.Clear();
-                            if (App.Settings.tablet)
-                            {
-                                await fillList();
-                            }
+                          
                             popupDialog.Dismiss();
                             popupDialog.Hide();
                         }
@@ -250,7 +242,7 @@ namespace WMS
             }
         }
 
-        private async Task fillList()
+        private async Task FillList()
         {
             try
             {
@@ -772,6 +764,12 @@ namespace WMS
 
                     displayedPosition = 0;
                     await FillDisplayedItem();
+
+                    if (App.Settings.tablet)
+                    {
+                        await FillList();
+                    }
+
                 }
                 catch (Exception err)
                 {

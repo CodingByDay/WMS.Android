@@ -100,11 +100,7 @@ namespace WMS
 
                 LoadPositions();
 
-                if (App.Settings.tablet)
-                {
-                    await fillItems();
-                    UniversalAdapterHelper.SelectPositionProgramaticaly(listData, 0);
-                }
+
             }
             catch (Exception ex)
             {
@@ -158,10 +154,11 @@ namespace WMS
             }
         }
 
-        private async Task fillItems()
+        private async Task FillItems()
         {
             try
             {
+                data.Clear();
                 for (int i = 0; i < positions.Items.Count; i++)
                 {
                     if (i < positions.Items.Count && positions.Items.Count > 0)
@@ -397,12 +394,6 @@ namespace WMS
                             positions = null;
 
                             LoadPositions();
-
-                            if (App.Settings.tablet)
-                            {
-                                data.Clear();
-                                await fillItems();
-                            }
                             popupDialog.Dismiss();
                             popupDialog.Hide();
                         }
@@ -684,6 +675,13 @@ namespace WMS
                     }
                     displayedPosition = 0;
                     await FillDisplayedItem();
+
+
+                    if (App.Settings.tablet)
+                    {
+                        await FillItems();
+                        UniversalAdapterHelper.SelectPositionProgramaticaly(listData, 0);
+                    }
                 }
                 catch (Exception err)
                 {

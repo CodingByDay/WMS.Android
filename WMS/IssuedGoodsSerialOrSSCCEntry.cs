@@ -1382,7 +1382,7 @@ namespace WMS
                         }
 
                         tbPacking.Text = string.Empty;
-
+                        searchableSpinnerIssueLocation.spinnerTextValueField.Text = string.Empty;
                         if (!isProccessOrderless)
                         {
                             createPositionAllowed = false;
@@ -1415,12 +1415,18 @@ namespace WMS
         {
             try
             {
+                RunOnUiThread(() =>
+                {
+                    LoaderManifest.LoaderManifestLoopResources(this);
+
+                });
                 data = FilterIssuedGoods(connectedPositions, tbSSCC.Text, tbSerialNum.Text, searchableSpinnerIssueLocation.spinnerTextValueField.Text);
 
 
                 if (data.Count == 1)
                 {
                     var element = data.ElementAt(0);
+
 
                     tbSSCC.Text = element.acSSCC;
 
@@ -1460,6 +1466,12 @@ namespace WMS
             catch (Exception ex)
             {
                 GlobalExceptions.ReportGlobalException(ex);
+            } finally
+            {
+                RunOnUiThread(() =>
+                {
+                    LoaderManifest.LoaderManifestLoopStop(this);
+                });
             }
         }
 
@@ -1570,8 +1582,12 @@ namespace WMS
         {
             try
             {
+                RunOnUiThread(() =>
+                {
+                    LoaderManifest.LoaderManifestLoopResources(this);
+                });
                 connectedPositions.Clear();
-                var sql = "SELECT acName, acSubject, acSerialNo, acSSCC, anQty, aclocation, anNo, acKey, acIdent, anPackQty, anMaxQty, anStock from uWMSOrderItemByKeyOut WHERE acKey = @acKey AND anNo = @anNo AND acIdent = @acIdent";
+                var sql = "SELECT acName, acSubject, acSerialNo, acSSCC, anQty, aclocation, anNo, acKey, acIdent, anPackQty, anMaxQty, anStock FROM uWMSOrderItemByKeyOut WHERE acKey = @acKey AND anNo = @anNo AND acIdent = @acIdent";
                 var parameters = new List<Services.Parameter>();
                 parameters.Add(new Services.Parameter { Name = "acKey", Type = "String", Value = acKey });
                 parameters.Add(new Services.Parameter { Name = "anNo", Type = "Int32", Value = anNo });
@@ -1619,14 +1635,18 @@ namespace WMS
                                 anStock = row.DoubleValue("anStock")
                             });
                         }
-                    }
-
-                
+                    }                
                 }
             }
             catch (Exception ex)
             {
                 GlobalExceptions.ReportGlobalException(ex);
+            } finally
+            {
+                RunOnUiThread(() =>
+                {
+                    LoaderManifest.LoaderManifestLoopStop(this);
+                });
             }
         }
 

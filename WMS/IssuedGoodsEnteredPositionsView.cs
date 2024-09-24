@@ -112,12 +112,7 @@ namespace WMS
                 }
                 LoadPositions();
 
-                if (App.Settings.tablet)
-                {
-                    await fillList();
-                    listData.PerformItemClick(listData, 0, 0);
-                }
-
+            
                 var _broadcastReceiver = new NetworkStatusBroadcastReceiver();
                 _broadcastReceiver.ConnectionStatusChanged += OnNetworkStatusChanged;
                 Application.Context.RegisterReceiver(_broadcastReceiver,
@@ -182,12 +177,13 @@ namespace WMS
             }
         }
 
-        private async Task fillList()
+        private async Task FillList()
         {
             try
             {
                 await Task.Run(async () =>
                 {
+                    data.Clear();
                     for (int i = 0; i < positions.Items.Count; i++)
                     {
                         if (i < positions.Items.Count && positions.Items.Count > 0)
@@ -436,7 +432,6 @@ namespace WMS
                         else
                         {
                             Toast.MakeText(this, $"{Resources.GetString(Resource.String.s212)}" + result, ToastLength.Long).Show();
-
                             positions = null;
                             LoadPositions();
                             popupDialog.Dismiss();
@@ -775,7 +770,15 @@ namespace WMS
                     }
 
                     displayedPosition = 0;
+
                     await FillDisplayedItem();
+
+
+                    if (App.Settings.tablet)
+                    {
+                        await FillList();
+                        listData.PerformItemClick(listData, 0, 0);
+                    }
                 }
                 catch (Exception err)
                 {
