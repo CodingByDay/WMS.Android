@@ -183,7 +183,10 @@ public class CustomAutoCompleteTextView : AutoCompleteTextView
                     int keyboardHeight = screenHeight - rect.Bottom;
                     // Calculate available height above the keyboard
                     int availableHeightAboveKeyboard = rect.Bottom - this.Height;
-                    DropDownHeight = availableHeightAboveKeyboard;
+                    if (availableHeightAboveKeyboard >= 0)
+                    {
+                        DropDownHeight = availableHeightAboveKeyboard;
+                    }
                     ShowDropDown();
                 });
             }

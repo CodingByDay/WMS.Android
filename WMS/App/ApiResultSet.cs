@@ -94,7 +94,7 @@ public class Row
 
     public Dictionary<string, object> Items { get; set; }
 
-    public object GetProperty(string propertyName)
+    public object? GetProperty(string propertyName)
     {
         try
         {
@@ -125,11 +125,11 @@ public class Row
         var objectValue = GetProperty(propertyName);
         try
         {
-            return (string)objectValue;
+            return (string) objectValue;
         }
         catch
         {
-            return null;
+            return string.Empty;
         }
     }
 

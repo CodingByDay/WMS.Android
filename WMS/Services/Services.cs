@@ -124,7 +124,7 @@ namespace TrendNET.WMS.Device.Services
         }
 
         public static int UserID()
-        { return (int)UserInfo.First(x => x.Name == "UserID").IntValue; }
+        { return (int )UserInfo.First(x => x.Name == "UserID").IntValue; }
 
         public static string UserName()
         { return (string)UserInfo.First(x => x.Name == "FullName").StringValue; }

@@ -498,7 +498,8 @@ namespace WMS
                         searchableSpinnerLocation.spinnerTextValueField.RequestFocus();
                     }
                 }
-            }
+
+         
             catch (Exception ex)
             {
                 GlobalExceptions.ReportGlobalException(ex);

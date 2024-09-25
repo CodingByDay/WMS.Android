@@ -983,13 +983,17 @@ namespace WMS
             {
                 var parameters = new List<Services.Parameter>();
                 string warehouse = moveHead.GetString("Issuer");
+                if (warehouse == null)
+                {
+                    return;
+                }
                 parameters.Add(new Services.Parameter { Name = "acSSCC", Type = "String", Value = sscc });
                 parameters.Add(new Services.Parameter { Name = "acWarehouse", Type = "String", Value = warehouse });
                 string sql = $"SELECT acIdent, aclocation, acSerialNo, acSSCC, anQty FROM uWMSItemBySSCCWarehouse WHERE acSSCC = @acSSCC AND acWarehouse = @acWarehouse";
                 var ssccResult = await AsyncServices.AsyncServices.GetObjectListBySqlAsync(sql, parameters);
                 RunOnUiThread(() =>
                 {
-                    if (ssccResult.Success && ssccResult.Rows.Count > 0)
+                    if (ssccResult!=null && ssccResult.Success && ssccResult.Rows.Count > 0)
                     {
                         tbIdent.Text = ssccResult.Rows[0].StringValue("acIdent");
                         // Process ident, recommended location is processed as well. 23.04.2024 Janko Jovičić

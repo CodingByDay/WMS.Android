@@ -238,7 +238,7 @@ namespace WMS
                         SentrySdk.CaptureMessage("Error" + ex.Message);
                         return false;
                     }
-                    if (!moveHead.GetBool("Saved"))
+                    if (moveHead!=null && !moveHead.GetBool("Saved"))
                     {
                         try
                         {
@@ -247,7 +247,7 @@ namespace WMS
                             moveHead.SetString("CurrentFlow", Base.Store.modeIssuing.ToString());
                             moveHead.SetString("Type", "P");
                             moveHead.SetString("Receiver", moveHead.GetString("Receiver") ?? throw new NullReferenceException("Movehead is the reason for the null reference exception."));
-                            moveHead.SetString("LinkKey", orderCurrent.Order ?? throw new NullReferenceException("Order current is the reason for the null reference exception."));
+                            moveHead.SetString("LinkKey", orderCurrent?.Order ?? throw new NullReferenceException(orderCurrent == null ? "orderCurrent is null." : "Order property is null."));
 
                             var savedMoveHead = Services.SetObject("mh", moveHead, out error);
                             if (savedMoveHead == null)
