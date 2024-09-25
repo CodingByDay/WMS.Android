@@ -28,36 +28,23 @@ public class CustomFilter<T> : Filter
         try
         {
             FilterResults result = new FilterResults();
-            int repeating = adapter.Count;
-
             if (adapter.originalItems != null && adapter.originalItems.Count > 0 && constraint != null)
             {
-                string filterString = constraint.ToString().ToLower();
+                string filterString = constraint.ToString();
 
-                var filteredItems = new ConcurrentBag<T>();
-
-                Parallel.ForEach(originalItems, item =>
-                {
-                    if (item.ToString().ToLower().Contains(filterString))
-                    {
-                        filteredItems.Add(item);
-                    }
-                });
-
-                var resultList = filteredItems.Take(100).ToList();
+                // Use PLINQ with case-insensitive comparison for filtering
+                var resultList = originalItems.AsParallel()
+                                              .Where(item => item.ToString().IndexOf(filterString, StringComparison.OrdinalIgnoreCase) >= 0)
+                                              .Take(10)
+                                              .ToList();
 
                 result.Values = FromArray(resultList.Select(item => item.ToJavaObject()).ToArray());
                 result.Count = resultList.Count;
             }
             else
             {
-                // Return the original list. Bug fix 12.09.2024 Janko Jovičić
-                var filteredItems = new ConcurrentBag<T>();
-                Parallel.ForEach(originalItems, item =>
-                {
-                    filteredItems.Add(item);
-                });
-                var resultList = filteredItems.Take(100).ToList();
+                // Simply return the first 100 original items if no filtering is required
+                var resultList = originalItems.Take(10).ToList();
                 result.Values = FromArray(resultList.Select(item => item.ToJavaObject()).ToArray());
                 result.Count = resultList.Count;
             }
@@ -66,16 +53,18 @@ public class CustomFilter<T> : Filter
         }
         catch (System.Exception ex)
         {
-            FilterResults result = new FilterResults();
-            result.Count = 0;
-            result.Values = null;
+            FilterResults result = new FilterResults
+            {
+                Count = 0,
+                Values = null
+            };
             GlobalExceptions.ReportGlobalException(ex);
             return result;
         }
     }
 
     // Timer elapsed event handler
- 
+
 
     protected override void PublishResults(ICharSequence constraint, FilterResults results)
     {
@@ -101,6 +90,7 @@ public class CustomFilter<T> : Filter
                 adapter.NotifyDataSetInvalidated();
             }
 
+            
             var ignore = constraint != null && lastRaisedString.Contains(constraint.ToString()) && constraint.ToString().Count() < lastRaisedString.Count();
             // Check if only one item is left after filtering
             if (adapter.Count == 1 && !ignore)
@@ -111,6 +101,7 @@ public class CustomFilter<T> : Filter
                 lastRaisedString = singleItemString;
 
             }
+            
 
         }
         catch (System.Exception ex)

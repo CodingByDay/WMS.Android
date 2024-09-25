@@ -325,7 +325,6 @@ namespace WMS
                             var tt = moveItem.GetInt("ItemID");
                             parameters.Add(new Services.Parameter { Name = "anQty", Type = "Decimal", Value = newQty });
                             parameters.Add(new Services.Parameter { Name = "anItemID", Type = "Int32", Value = moveItem.GetInt("ItemID") });
-                            string debugString = $"UPDATE uWMSMoveItem SET anQty = {newQty} WHERE anIDItem = {moveItem.GetInt("ItemID")}";
                             var subjects = Services.Update($"UPDATE uWMSMoveItem SET anQty = @anQty WHERE anIDItem = @anItemID;", parameters);
                             if (!subjects.Success)
                             {
@@ -597,7 +596,7 @@ namespace WMS
 
                 var selected = adapterLocation.GetItem(e.Position);
 
-                if (selected != null)
+                if (selected != null && !initialDropdownEvent)
                 {
 
                     searchableSpinnerIssueLocation.spinnerTextValueField.Text = selected.Location;
@@ -1383,10 +1382,18 @@ namespace WMS
 
                         tbPacking.Text = string.Empty;
                         searchableSpinnerIssueLocation.spinnerTextValueField.Text = string.Empty;
+
                         if (!isProccessOrderless)
                         {
                             createPositionAllowed = false;
                             await GetConnectedPositions(element.acKey, element.anNo, element.acIdent);
+
+                            if (await CommonData.GetSettingAsync("IssueSummaryView", this) == "1")
+                            {
+                                cbMultipleLocations.Visibility = ViewStates.Visible;
+                                var refreshData = adapterLocations = await GetStockState(element.acIdent);
+                                RefreshAdapterData(refreshData);
+                            }
                         }
 
                         // The table on the right should also update. 18.09.2024 Janko Jovičić
@@ -1411,6 +1418,27 @@ namespace WMS
             }
         }
 
+        private void RefreshAdapterData(List<MultipleStock> data)
+        {
+            try
+            {
+                if(adapterLocation != null)
+                {
+                    adapterLocations.Clear();
+                    foreach(var location in data)
+                    {
+                        adapterLocations.Add(location);
+                    }
+                    RunOnUiThread(() =>
+                    {
+                        adapterLocation.NotifyDataSetChanged();
+                    });
+                }
+            } catch(Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
+        }
         private async Task FilterData()
         {
             try
@@ -1418,10 +1446,10 @@ namespace WMS
                 RunOnUiThread(() =>
                 {
                     LoaderManifest.LoaderManifestLoopResources(this);
-
                 });
-                data = FilterIssuedGoods(connectedPositions, tbSSCC.Text, tbSerialNum.Text, searchableSpinnerIssueLocation.spinnerTextValueField.Text);
 
+
+                data = FilterIssuedGoods(connectedPositions, tbSSCC.Text, tbSerialNum.Text, searchableSpinnerIssueLocation.spinnerTextValueField.Text);
 
                 if (data.Count == 1)
                 {

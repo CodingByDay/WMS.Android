@@ -423,7 +423,7 @@ namespace WMS
 
                         await GetConnectedPositions(order.Order, order.Position ?? -1, order.Ident);
                         searchableSpinnerLocation.spinnerTextValueField.Text = await CommonData.GetSettingAsync("DefaultPaletteLocation", this);
-        
+
                     }
                     else if (code2d != null)
                     {
@@ -458,7 +458,7 @@ namespace WMS
                         stock = qtyCheck;
 
                     }
-                 
+
                 }
 
                 isPackaging = openIdent.GetBool("IsPackaging");
@@ -499,7 +499,7 @@ namespace WMS
                     }
                 }
 
-         
+            }
             catch (Exception ex)
             {
                 GlobalExceptions.ReportGlobalException(ex);
