@@ -71,6 +71,7 @@ public class CustomFilter<T> : Filter
         try
         {
             List<string> resultsProcessing = new List<string>();
+
             adapter.Clear();
 
             if (results != null && results.Count > 0 && results.Values != null)
@@ -89,8 +90,7 @@ public class CustomFilter<T> : Filter
             {
                 adapter.NotifyDataSetInvalidated();
             }
-
-            
+           
             var ignore = constraint != null && lastRaisedString.Contains(constraint.ToString()) && constraint.ToString().Count() < lastRaisedString.Count();
             // Check if only one item is left after filtering
             if (adapter.Count == 1 && !ignore)
@@ -100,9 +100,7 @@ public class CustomFilter<T> : Filter
                 adapter.RaiseOneItemRemaining(singleItemString);
                 lastRaisedString = singleItemString;
 
-            }
-            
-
+            }           
         }
         catch (System.Exception ex)
         {

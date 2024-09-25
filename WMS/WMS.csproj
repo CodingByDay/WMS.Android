@@ -20,6 +20,7 @@
     <AndroidCreatePackagePerAbi>False</AndroidCreatePackagePerAbi>
     <AndroidEnableMultiDex>False</AndroidEnableMultiDex>
     <AndroidUseAapt2>True</AndroidUseAapt2>
+    <DebugType>none</DebugType>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <NoWarn>1701;1702;8765;8602;8601,8622,8600,8604,8618</NoWarn>
@@ -30,6 +31,7 @@
     <AndroidPackageFormat>apk</AndroidPackageFormat>
     <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
     <DebugSymbols>True</DebugSymbols>
+    <DebugType>none</DebugType>
   </PropertyGroup>
   <ItemGroup>
     <AndroidResource Remove="Resources\layout\ClientPickingAdapterView.xml" />
