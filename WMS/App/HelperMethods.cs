@@ -6,6 +6,9 @@ using TrendNET.WMS.Device.Services;
 using WMS.ExceptionStore;
 using TrendNET.WMS.Core.Data;
 using WMS.External;
+using Javax.Security.Auth;
+using WMS.AsyncServices;
+using WMS;
 
 namespace WMS.App
 {
@@ -143,27 +146,30 @@ namespace WMS.App
             }
         }
 
+
         public static async Task<List<String>> GetLocationsForGivenWarehouse(string warehouse)
         {
             try
             {
+
                 List<string> result = new List<string>();
 
-                await Task.Run(() =>
-                {
-                    string error;
-                    var locations = Services.GetObjectList("lo", out error, warehouse);
-                    if (locations != null)
-                    {
-                        locations.Items.ForEach(x =>
-                        {
-                            var location = x.GetString("LocationID");
-                            result.Add(location);
-                            // Notify the adapter state change!
-                        });
-                    }
+                var parameters = new List<Services.Parameter>();
 
-                });
+                string sql = $"SELECT acLocation FROM uWMSLocationAuth WHERE acWarehouse = @acWarehouse";
+
+                parameters.Add(new Services.Parameter { Name = "acWarehouse", Type = "String", Value = warehouse });
+
+                var locations = await AsyncServices.AsyncServices.GetObjectListBySqlAsync(sql, parameters);
+
+                if(locations.Success && locations.Rows.Count>0)
+                {
+                    foreach (var row in  locations.Rows)
+                    {
+                        result.Add(row.StringValue("acLocation"));
+                    }
+                }
+             
                 return result;
             } catch (Exception ex)
             {

@@ -134,9 +134,7 @@ namespace WMS
                 cbMultipleLocations = FindViewById<Spinner>(Resource.Id.cbMultipleLocations);
 
                 searchableSpinnerIssueLocation = FindViewById<SearchableSpinner>(Resource.Id.searchableSpinnerIssueLocation);
-                var locations = await HelperMethods.GetLocationsForGivenWarehouse(moveHead.GetString("Wharehouse"));
-                searchableSpinnerIssueLocation.SetItems(locations);
-                searchableSpinnerIssueLocation.ColorTheRepresentation(1);
+
 
                 if (await CommonData.GetSettingAsync("IssueSummaryView", this) == "1")
                 {
@@ -146,6 +144,9 @@ namespace WMS
                 }
                 else
                 {
+                    var locations = await HelperMethods.GetLocationsForGivenWarehouse(moveHead.GetString("Wharehouse"));
+                    searchableSpinnerIssueLocation.SetItems(locations);
+                    searchableSpinnerIssueLocation.ColorTheRepresentation(1);
                     searchableSpinnerIssueLocation.ShowDropDown();
                     cbMultipleLocations.Visibility = ViewStates.Gone;
                 }

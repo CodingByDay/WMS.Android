@@ -57,9 +57,9 @@
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
             android:layout_marginRight="28.0dp"
-            android:id="@+id/ident"
+            android:id="@+id/warehouse"
             android:layout_width="match_parent"
-            android:text="@string/s47" />
+            android:text="@string/s28" />
              <TextView
             android:text="@string/s50"
             android:textSize="18dp"

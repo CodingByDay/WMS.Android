@@ -397,9 +397,9 @@ namespace WMS.App
             Resource.Layout.ThreeElements,
             (view, item) =>
             {
-                TextView Ident = view.FindViewById<TextView>(Resource.Id.first);
-                Ident.Text = item.ident;
-                Ident.SetTextColor(Android.Graphics.Color.Black);
+                TextView Warehouse = view.FindViewById<TextView>(Resource.Id.first);
+                Warehouse.Text = item.ident;
+                Warehouse.SetTextColor(Android.Graphics.Color.Black);
              
                 TextView Location = view.FindViewById<TextView>(Resource.Id.second);
                 Location.Text = item.location;

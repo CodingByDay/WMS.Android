@@ -497,12 +497,9 @@ namespace WMS
                 btExit = FindViewById<Button>(Resource.Id.btExit);
 
                 searchableSpinnerIssueLocation = FindViewById<SearchableSpinner>(Resource.Id.searchableSpinnerIssueLocation);
-                var locations = await HelperMethods.GetLocationsForGivenWarehouse(moveHead.GetString("Wharehouse"));
-                searchableSpinnerIssueLocation.SetItems(locations);
-                searchableSpinnerIssueLocation.ColorTheRepresentation(1);
 
-                
 
+              
                 if (await CommonData.GetSettingAsync("IssueSummaryView", this) == "1")
                 {
                     // If the company opted for this.
@@ -511,6 +508,9 @@ namespace WMS
                 }
                 else
                 {
+                    var locations = await HelperMethods.GetLocationsForGivenWarehouse(moveHead.GetString("Wharehouse"));
+                    searchableSpinnerIssueLocation.SetItems(locations);
+                    searchableSpinnerIssueLocation.ColorTheRepresentation(1);
                     searchableSpinnerIssueLocation.ShowDropDown();
                     cbMultipleLocations.Visibility = ViewStates.Gone;
                 }

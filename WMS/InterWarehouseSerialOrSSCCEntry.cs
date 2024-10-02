@@ -326,7 +326,7 @@ namespace WMS
             try
             {
                 var wh = moveHead.GetString("Receiver");
-                var list = await AdapterStore.GetStockForWarehouseAndIdent(ident, wh);
+                var list = await AdapterStore.GetStockForIdent(ident);
                 FillTabletAdapterData(list);
             }
             catch (Exception ex)
