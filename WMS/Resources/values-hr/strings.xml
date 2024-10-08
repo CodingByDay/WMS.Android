@@ -366,4 +366,10 @@
 	<string name="s353">Ne možete izdati više od onoga što je na zalihi!</string>
 	<string name="s354">Ne možete izdati više od onoga što je naručeno!</string>
 	<string name="s355">Bez naloga</string>
+	<string name="s356">Želite preuzeti više nego što je naručeno, želite li nastaviti?</string>
+	<string name="s357">Obavijest</string>
+	<string name="s358">Da</string>
+	<string name="s359">Ne</string>
+	<string name="s360">Želite izdati više nego što je naručeno, želite li nastaviti?</string>
+
 </resources>

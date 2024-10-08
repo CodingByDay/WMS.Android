@@ -553,5 +553,10 @@
 
 	<string name="s355">Brez naročila</string>
 
+	<string name="s356">Prevzeti želite več kot je naročeno ali želite nadaljevati?</string>
+	<string name="s357">Obvestilo</string>
+	<string name="s358">Da</string>
+	<string name="s359">Ne</string>
+	<string name="s360">Izdati želite več kot je naročeno ali želite nadaljevati?</string>
 
 </resources>

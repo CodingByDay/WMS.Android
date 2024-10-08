@@ -1158,7 +1158,7 @@ namespace WMS
         {
             try
             {
-                await Task.Run(() =>
+                await Task.Run(async () =>
                 {
                     if (connectedPositions.Count == 1 || !Base.Store.byOrder)
                     {
@@ -1168,13 +1168,23 @@ namespace WMS
                             element = connectedPositions.ElementAt(0);
                             double parsed = Convert.ToDouble(tbPacking.Text.Trim());
                             double maxQty = element.anMaxQty ?? 0;
-                            if (parsed >= maxQty)
+                            if (parsed > maxQty)
                             {
-                                RunOnUiThread(() =>
+                                if (await CommonData.GetSettingAsync("CheckTakeOverOpenQty ", this) == "1")
                                 {
-                                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s354)}", ToastLength.Long).Show();
-                                });
-                                return;
+                                    RunOnUiThread(() =>
+                                    {
+                                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s354)}", ToastLength.Long).Show();
+                                    });
+                                    return;
+                                } else
+                                {
+                                    var result = await ShowConfirmationDialogAsync();
+                                    if (!result)
+                                    {
+                                        return; // User selected "No", so we exit here. 8.10.2024 Janko Jovičić
+                                    }
+                                }
                             }
 
                         }
@@ -1232,6 +1242,35 @@ namespace WMS
                 GlobalExceptions.ReportGlobalException(ex);
             }
         }
+
+
+
+        private Task<bool> ShowConfirmationDialogAsync()
+        {
+            var tcs = new TaskCompletionSource<bool>();
+
+            RunOnUiThread(() =>
+            {
+                AlertDialog.Builder alert = new AlertDialog.Builder(this);
+                alert.SetTitle(Resources.GetString(Resource.String.s357));
+                alert.SetMessage(Resources.GetString(Resource.String.s356));
+                alert.SetPositiveButton(Resources.GetString(Resource.String.s358), (senderAlert, args) =>
+                {
+                    tcs.SetResult(true); // User clicked "Yes"
+                });
+                alert.SetNegativeButton(Resources.GetString(Resource.String.s359), (senderAlert, args) =>
+                {
+                    tcs.SetResult(false); // User clicked "No"
+                });
+
+                Dialog dialog = alert.Create();
+                dialog.Show();
+            });
+
+            return tcs.Task; // Wait for the dialog to return a result
+        }
+
+
 
         private async void BtSaveOrUpdate_Click(object sender, EventArgs e)
         {
@@ -1379,7 +1418,7 @@ namespace WMS
             {
                 var picture = await CommonData.GetQtyPictureAsync(this);
 
-                await Task.Run(() =>
+                await Task.Run(async() =>
                 {
                     if (connectedPositions.Count == 1 || !Base.Store.byOrder)
                     {
@@ -1392,13 +1431,24 @@ namespace WMS
                             element = connectedPositions.ElementAt(0);
                             double parsed = Convert.ToDouble(tbPacking.Text.Trim());
                             double maxQty = element.anMaxQty ?? 0;
-                            if (parsed >= maxQty)
+                            if (parsed > maxQty)
                             {
-                                RunOnUiThread(() =>
+                                if (await CommonData.GetSettingAsync("CheckTakeOverOpenQty ", this) == "1")
                                 {
-                                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s354)}", ToastLength.Long).Show();
-                                });
-                                return;
+                                    RunOnUiThread(() =>
+                                    {
+                                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s354)}", ToastLength.Long).Show();
+                                    });
+                                    return;
+                                }
+                                else
+                                {
+                                    var result = await ShowConfirmationDialogAsync();
+                                    if (!result)
+                                    {
+                                        return; // User selected "No", so we exit here. 8.10.2024 Janko Jovičić
+                                    }
+                                }
                             }                          
                         }
 

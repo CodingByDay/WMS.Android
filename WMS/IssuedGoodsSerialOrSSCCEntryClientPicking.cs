@@ -251,11 +251,73 @@ namespace WMS
                             }
                             else if (result == QuantityProcessing.OverTheOrdered)
                             {
-                                RunOnUiThread(() =>
+                                if (await CommonData.GetSettingAsync("CheckIssuedOpenQty ", this) == "1")
                                 {
-                                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s354)}", ToastLength.Long).Show();
-                                });                               
-                                return false;
+                                    RunOnUiThread(() =>
+                                    {
+                                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s354)}", ToastLength.Long).Show();
+                                    });
+                                    return false;
+                                }
+                                else
+                                {
+                                    var resultPopup = await ShowConfirmationDialogAsync();
+                                    if (!resultPopup)
+                                    {
+                                        return false; // User selected "No", so we exit here. 8.10.2024 Janko Jovičić
+                                    }
+                                    else
+                                    {
+                                        var isCorrectLocation = await IsLocationCorrect();
+
+                                        if (!isCorrectLocation)
+                                        {
+                                            RunOnUiThread(() =>
+                                            {
+                                                // Nepravilna lokacija za izbrano skladišče
+                                                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s333)}", ToastLength.Long).Show();
+                                            });
+                                            return false;
+                                        }
+
+
+
+                                        if (dist.Count == 1)
+                                        {
+                                            var element = dist.ElementAt(0);
+                                            moveItem = new NameValueObject("MoveItem");
+                                            moveItem.SetInt("HeadID", moveHead.GetInt("HeadID"));
+                                            moveItem.SetString("LinkKey", element.acKey);
+                                            moveItem.SetInt("LinkNo", element.anNo);
+                                            moveItem.SetInt("LinkNo", receivedTrail.No);
+                                            moveItem.SetString("Ident", openIdent.GetString("Code"));
+                                            moveItem.SetString("SSCC", tbSSCC.Text.Trim());
+                                            moveItem.SetString("SerialNo", tbSerialNum.Text.Trim());
+                                            moveItem.SetDouble("Packing", Convert.ToDouble(tbPacking.Text.Trim()));
+                                            moveItem.SetDouble("Factor", 1);
+                                            moveItem.SetDouble("Qty", Convert.ToDouble(tbPacking.Text.Trim()));
+                                            moveItem.SetInt("Clerk", Services.UserID());
+                                            moveItem.SetString("Location", searchableSpinnerIssueLocation.spinnerTextValueField.Text.Trim());
+                                            moveItem.SetString("Palette", "1");
+
+                                            string error;
+                                            moveItem = Services.SetObject("mi", moveItem, out error);
+
+                                            if (moveItem != null && error == string.Empty)
+                                            {
+                                                return true;
+                                            }
+                                            else
+                                            {
+                                                return false;
+                                            }
+                                        }
+                                        else
+                                        {
+                                            return false;
+                                        }
+                                    }
+                                }
                             }
                             else if (result == QuantityProcessing.OtherError)
                             {
@@ -380,7 +442,30 @@ namespace WMS
             }
         }
 
+        private Task<bool> ShowConfirmationDialogAsync()
+        {
+            var tcs = new TaskCompletionSource<bool>();
 
+            RunOnUiThread(() =>
+            {
+                AlertDialog.Builder alert = new AlertDialog.Builder(this);
+                alert.SetTitle(Resources.GetString(Resource.String.s357));
+                alert.SetMessage(Resources.GetString(Resource.String.s360));
+                alert.SetPositiveButton(Resources.GetString(Resource.String.s358), (senderAlert, args) =>
+                {
+                    tcs.SetResult(true); // User clicked "Yes"
+                });
+                alert.SetNegativeButton(Resources.GetString(Resource.String.s359), (senderAlert, args) =>
+                {
+                    tcs.SetResult(false); // User clicked "No"
+                });
+
+                Dialog dialog = alert.Create();
+                dialog.Show();
+            });
+
+            return tcs.Task; // Wait for the dialog to return a result
+        }
 
 
         private void CbMultipleLocations_ItemSelected(object? sender, AdapterView.ItemSelectedEventArgs e)
@@ -511,8 +596,35 @@ namespace WMS
                         }
                         else if (result == QuantityProcessing.OverTheOrdered)
                         {
-                            Toast.MakeText(this, $"{Resources.GetString(Resource.String.s354)}", ToastLength.Long).Show();
-                            return;
+                            if (await CommonData.GetSettingAsync("CheckIssuedOpenQty ", this) == "1")
+                            {
+                                RunOnUiThread(() =>
+                                {
+                                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s354)}", ToastLength.Long).Show();
+                                });
+                                return;
+                            }
+                            else
+                            {
+                                var resultPopup = await ShowConfirmationDialogAsync();
+                                if (!resultPopup)
+                                {
+                                    return; // User selected "No", so we exit here. 8.10.2024 Janko Jovičić
+                                }
+                                else
+                                {
+                                    var isCorrectLocation = await IsLocationCorrect();
+
+                                    if (!isCorrectLocation)
+                                    {
+                                        // Nepravilna lokacija za izbrano skladišče
+                                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s333)}", ToastLength.Long).Show();
+                                        return;
+                                    }
+
+                                    await CreateMethodFromStart();
+                                }
+                            }
                         }
                         else if (result == QuantityProcessing.OtherError)
                         {
@@ -624,8 +736,35 @@ namespace WMS
                     }
                     else if (result == QuantityProcessing.OverTheOrdered)
                     {
-                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s354)}", ToastLength.Long).Show();
-                        return;
+                        if (await CommonData.GetSettingAsync("CheckIssuedOpenQty ", this) == "1")
+                        {
+                            RunOnUiThread(() =>
+                            {
+                                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s354)}", ToastLength.Long).Show();
+                            });
+                            return;
+                        }
+                        else
+                        {
+                            var resultPopup = await ShowConfirmationDialogAsync();
+                            if (!resultPopup)
+                            {
+                                return; // User selected "No", so we exit here. 8.10.2024 Janko Jovičić
+                            }
+                            else
+                            {
+                                var isCorrectLocation = await IsLocationCorrect();
+
+                                if (!isCorrectLocation)
+                                {
+                                    // Nepravilna lokacija za izbrano skladišče
+                                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s333)}", ToastLength.Long).Show();
+                                    return;
+                                }
+
+                                await CreateMethodSame();
+                            }
+                        }
                     }
                     else if (result == QuantityProcessing.OtherError)
                     {

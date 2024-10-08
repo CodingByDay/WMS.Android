@@ -266,12 +266,39 @@ namespace WMS
                         }
                         else if (result == QuantityProcessing.OverTheOrdered)
                         {
-                            RunOnUiThread(() =>
+                            if (await CommonData.GetSettingAsync("CheckIssuedOpenQty ", this) == "1")
                             {
-                                // Nepravilna lokacija za izbrano skladišče
-                                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s354)}", ToastLength.Long).Show();
-                            });                            
-                            return false;
+                                RunOnUiThread(() =>
+                                {
+                                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s354)}", ToastLength.Long).Show();
+                                });
+                                return false;
+                            }
+                            else
+                            {
+                                var resultPopup = await ShowConfirmationDialogAsync();
+                                if (!resultPopup)
+                                {
+                                    return false; // User selected "No", so we exit here. 8.10.2024 Janko Jovičić
+                                }
+                                else
+                                {
+                                    var isCorrectLocation = await IsLocationCorrect();
+
+                                    if (!isCorrectLocation)
+                                    {
+                                        RunOnUiThread(() =>
+                                        {
+                                            // Nepravilna lokacija za izbrano skladišče
+                                            Toast.MakeText(this, $"{Resources.GetString(Resource.String.s333)}", ToastLength.Long).Show();
+                                        });
+
+                                        return false;
+                                    }
+
+                                    return await CreatePosition();
+                                }
+                            }
                         }
                         else if (result == QuantityProcessing.OtherError)
                         {
@@ -472,7 +499,6 @@ namespace WMS
                     base.SetContentView(Resource.Layout.IssuedGoodsSerialOrSSCCEntry);
                 }
 
-
                 // Definitions
                 AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
                 var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
@@ -497,8 +523,6 @@ namespace WMS
                 btExit = FindViewById<Button>(Resource.Id.btExit);
 
                 searchableSpinnerIssueLocation = FindViewById<SearchableSpinner>(Resource.Id.searchableSpinnerIssueLocation);
-
-
               
                 if (await CommonData.GetSettingAsync("IssueSummaryView", this) == "1")
                 {
@@ -770,8 +794,35 @@ namespace WMS
                             }
                             else if (result == QuantityProcessing.OverTheOrdered)
                             {
-                                Toast.MakeText(this, $"{Resources.GetString(Resource.String.s354)}", ToastLength.Long).Show();
-                                return;
+                                if (await CommonData.GetSettingAsync("CheckIssuedOpenQty ", this) == "1")
+                                {
+                                    RunOnUiThread(() =>
+                                    {
+                                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s354)}", ToastLength.Long).Show();
+                                    });
+                                    return;
+                                }
+                                else
+                                {
+                                    var resultPopup = await ShowConfirmationDialogAsync();
+                                    if (!resultPopup)
+                                    {
+                                        return; // User selected "No", so we exit here. 8.10.2024 Janko Jovičić
+                                    }
+                                    else
+                                    {
+                                        var isCorrectLocation = await IsLocationCorrect();
+
+                                        if (!isCorrectLocation)
+                                        {
+                                            // Nepravilna lokacija za izbrano skladišče
+                                            Toast.MakeText(this, $"{Resources.GetString(Resource.String.s333)}", ToastLength.Long).Show();
+                                            return;
+                                        }
+
+                                        await CreateMethodFromStart();
+                                    }
+                                }
                             }
                             else if (result == QuantityProcessing.OtherError)
                             {
@@ -922,8 +973,34 @@ namespace WMS
                         }
                         else if (result == QuantityProcessing.OverTheOrdered)
                         {
-                            Toast.MakeText(this, $"{Resources.GetString(Resource.String.s354)}", ToastLength.Long).Show();
-                            return;
+                            if (await CommonData.GetSettingAsync("CheckIssuedOpenQty ", this) == "1")
+                            {
+                                RunOnUiThread(() =>
+                                {
+                                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s354)}", ToastLength.Long).Show();
+                                });
+                                return;
+                            }
+                            else
+                            {
+                                var resultPopup = await ShowConfirmationDialogAsync();
+                                if (!resultPopup)
+                                {
+                                    return; // User selected "No", so we exit here. 8.10.2024 Janko Jovičić
+                                } else
+                                {
+                                    var isCorrectLocation = await IsLocationCorrect();
+
+                                    if (!isCorrectLocation)
+                                    {
+                                        // Nepravilna lokacija za izbrano skladišče
+                                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s333)}", ToastLength.Long).Show();
+                                        return;
+                                    }
+
+                                    await CreateMethodSame();
+                                }
+                            }
                         }
                         else if (result == QuantityProcessing.OtherError)
                         {
@@ -960,6 +1037,37 @@ namespace WMS
                 GlobalExceptions.ReportGlobalException(ex);
             }
         }
+
+
+
+        private Task<bool> ShowConfirmationDialogAsync()
+        {
+            var tcs = new TaskCompletionSource<bool>();
+
+            RunOnUiThread(() =>
+            {
+                AlertDialog.Builder alert = new AlertDialog.Builder(this);
+                alert.SetTitle(Resources.GetString(Resource.String.s357));
+                alert.SetMessage(Resources.GetString(Resource.String.s360));
+                alert.SetPositiveButton(Resources.GetString(Resource.String.s358), (senderAlert, args) =>
+                {
+                    tcs.SetResult(true); // User clicked "Yes"
+                });
+                alert.SetNegativeButton(Resources.GetString(Resource.String.s359), (senderAlert, args) =>
+                {
+                    tcs.SetResult(false); // User clicked "No"
+                });
+
+                Dialog dialog = alert.Create();
+                dialog.Show();
+            });
+
+            return tcs.Task; // Wait for the dialog to return a result
+        }
+
+
+
+
         private async Task<bool> IsLocationCorrect()
         {
             try
