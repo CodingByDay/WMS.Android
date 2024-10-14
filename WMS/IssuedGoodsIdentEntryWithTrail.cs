@@ -12,6 +12,7 @@ using TrendNET.WMS.Device.Services;
 using WMS.App;
 using WMS.ExceptionStore;
 using static BluetoothService;
+using static EventBluetooth;
 using AlertDialog = Android.App.AlertDialog;
 using Exception = System.Exception;
 
@@ -47,7 +48,7 @@ namespace WMS
         private NameValueObject openIdent;
         public MyBinder binder;
         public bool isBound = false;
-        public MyServiceConnection serviceConnection;
+        public IssuedGoodsServiceConnection serviceConnection;
         private BluetoothService activityBluetoothService;
         private EventBluetooth send;
         private MyOnItemLongClickListener listener;
@@ -422,10 +423,11 @@ namespace WMS
                               
                                 // Bluetooth
 
-                                /* try
-                                 * 
+                                try                                
                                 {
-                                    sendDataToDevice();
+
+                                    SendDataToDevice();
+
                                 } catch (Exception ex)
                                 {
                                     SentrySdk.CaptureException(ex);
@@ -433,7 +435,7 @@ namespace WMS
 
                                 // Bluetooth
 
-                               */
+                               
 
                             });
                         }
@@ -455,7 +457,28 @@ namespace WMS
             }
         }
 
-
+        private void SendDataToDevice()
+        {
+            if (activityBluetoothService != null)
+            {
+                send = new EventBluetooth();
+                List<Position> positions = new List<Position>();
+                foreach (Trail trail in trails)
+                {
+                    positions.Add(new Position { Ident = trail.Ident, Key = trail.Key, Location = trail.Location, Name = trail.Name, Qty = trail.Qty });
+                }
+                send.Positions = positions;
+                send.EventTypeValue = EventBluetooth.EventType.IssuedList;
+                send.IsRefreshCallback = true;
+                send.ChosenPosition = null;
+                send.OrderNumber = tbOrder.Text;
+                activityBluetoothService.SendObject(JsonConvert.SerializeObject(send));
+            }
+            else
+            {
+                return;
+            }
+        }
         private async Task FillDisplayedOrderInfoMultipleLocations()
         {
             try
@@ -579,20 +602,16 @@ namespace WMS
                                 listener = new MyOnItemLongClickListener(this, adapterObj.returnData(), adapterObj);
                                 ivTrail.OnItemLongClickListener = listener;
 
-                                // Bluetooth
-
-                                /* try
-                                 * 
+                                try
                                 {
-                                    sendDataToDevice();
-                                } catch (Exception ex)
+
+                                    SendDataToDevice();
+
+                                }
+                                catch (Exception ex)
                                 {
                                     SentrySdk.CaptureException(ex);
                                 }
-
-                                // Bluetooth
-
-                               */
 
                             });
                         }
@@ -637,7 +656,13 @@ namespace WMS
                     base.SetContentView(Resource.Layout.IssuedGoodsIdentEntryWithTrail);
                 }
                 LoaderManifest.LoaderManifestLoopResources(this);
-
+                if (CommonData.GetSetting("Bluetooth") == "1")
+                {
+                    // Binding to a service
+                    serviceConnection = new IssuedGoodsServiceConnection(this);
+                    Intent serviceIntent = new Intent(this, typeof(BluetoothService));
+                    BindService(serviceIntent, serviceConnection, Bind.AutoCreate);
+                }
                 AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
                 var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
                 _customToolbar.SetNavigationIcon(App.Settings.RootURL + "/Services/Logo");
@@ -697,16 +722,9 @@ namespace WMS
                 tbIdentFilter.AfterTextChanged += TbIdentFilter_AfterTextChanged;
                 tbLocationFilter.AfterTextChanged += TbLocationFilter_AfterTextChanged;
 
-                // Parameter
-                /*
-                 * if (true)
-                {
-                    // Binding to a service
-                    serviceConnection = new MyServiceConnection(this);
-                    Intent serviceIntent = new Intent(this, typeof(BluetoothService));
-                    BindService(serviceIntent, serviceConnection, Bind.AutoCreate);
-                }
-                */
+
+                
+                
                 tbIdentFilter.RequestFocus();
 
                 if (adapterObj.sList.Count > 0)
@@ -843,31 +861,7 @@ namespace WMS
             }
         }
 
-        /*
-
-        private void sendDataToDevice()
-        {
-            if (activityBluetoothService != null)
-            {
-                send = new EventBluetooth();
-                List<Position> positions = new List<Position>();    
-                foreach (Trail trail in trails)
-                {
-                    positions.Add(new Position { Ident = trail.Ident, Key = trail.Key, Location = trail.Location, Name = trail.Name, Qty = trail.Qty });
-                }
-                send.positions = positions;
-                send.eventType = EventBluetooth.EventType.IssuedList;
-                send.isRefreshCallback = true;
-                send.chosenPosition = null;
-                send.orderNumber = tbOrder.Text;
-                activityBluetoothService.sendObject(JsonConvert.SerializeObject(send));
-            } else
-            {
-                return;
-            }
-        }
-       
-        */
+     
 
         private void BtBack_Click(object sender, EventArgs e)
         {

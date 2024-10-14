@@ -97,7 +97,7 @@ public class BluetoothService : Service
         }
     }
 
-    public void sendObject(String data)
+    public void SendObject(String data)
     {
         if (socket != null)
         {

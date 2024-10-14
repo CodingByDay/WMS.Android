@@ -3,17 +3,17 @@ using Android.Content;
 using Android.OS;
 using WMS;
 
-public class MyServiceConnection : Java.Lang.Object, IServiceConnection
+public class IssuedGoodsServiceConnection : Java.Lang.Object, IServiceConnection
 {
     private IssuedGoodsIdentEntryWithTrail activityIssuedGoods;
     private Settings activitySettings;
 
-    public MyServiceConnection(IssuedGoodsIdentEntryWithTrail activity)
+    public IssuedGoodsServiceConnection(IssuedGoodsIdentEntryWithTrail activity)
     {
         this.activityIssuedGoods = activity;
     }
 
-    public MyServiceConnection(Settings activity)
+    public IssuedGoodsServiceConnection(Settings activity)
     {
         this.activitySettings = activity;
     }

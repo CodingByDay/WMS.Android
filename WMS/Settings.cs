@@ -30,7 +30,7 @@ namespace WMS
         public static bool flag;
         public MyBinder binder;
         public bool isBound = false;
-        public MyServiceConnection serviceConnection;
+        public IssuedGoodsServiceConnection serviceConnection;
         private EventBluetooth send;
         private Button bluetooth;
 
@@ -70,22 +70,12 @@ namespace WMS
                 Application.Context.RegisterReceiver(_broadcastReceiver,
                 new IntentFilter(ConnectivityManager.ConnectivityAction), ReceiverFlags.NotExported);
 
-                /*                 
-                 try
-                  {
-                      if (CommonData.GetSetting("Bluetooth") != "1")
-                      {
-                          bluetooth.Visibility = ViewStates.Invisible;
-                      }
 
-                  } catch {
+                if (CommonData.GetSetting("Bluetooth") != "1")
+                {
+                    bluetooth.Visibility = ViewStates.Invisible;
+                }
 
-                      bluetooth.Visibility = ViewStates.Invisible;
-
-
-                  } * // For now hide it  */
-
-                bluetooth.Visibility = ViewStates.Invisible;
             }
             catch (Exception ex)
             {
