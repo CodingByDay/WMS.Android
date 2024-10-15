@@ -22,7 +22,7 @@ public class EventBluetooth
     public string OrderNumber { get; set; }
     public string ClientName { get; set; }
 
-    public Trail ChosenPosition { get; set; } // Pozicije naročila, če je event = IssuedPosition || TakeOverPosition
+    public int ChosenPosition { get; set; } // Pozicije naročila, če je event = IssuedPosition || TakeOverPosition
 
     public List<Position> Positions { get; set; } // Pozicije naročila, če je event = IssuedList || TakeOverList
     public EventType EventTypeValue { get; set; } // switch (eventType)

@@ -11,6 +11,7 @@ using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
 using WMS.App;
 using WMS.ExceptionStore;
+using WMS.External;
 using static BluetoothService;
 using static EventBluetooth;
 using AlertDialog = Android.App.AlertDialog;
@@ -48,7 +49,7 @@ namespace WMS
         private NameValueObject openIdent;
         public MyBinder binder;
         public bool isBound = false;
-        public IssuedGoodsServiceConnection serviceConnection;
+        public GeneralServiceConnection serviceConnection;
         private BluetoothService activityBluetoothService;
         private EventBluetooth send;
         private MyOnItemLongClickListener listener;
@@ -470,7 +471,7 @@ namespace WMS
                 send.Positions = positions;
                 send.EventTypeValue = EventBluetooth.EventType.IssuedList;
                 send.IsRefreshCallback = true;
-                send.ChosenPosition = null;
+                send.ChosenPosition = -1;
                 send.OrderNumber = tbOrder.Text;
                 activityBluetoothService.SendObject(JsonConvert.SerializeObject(send));
             }
@@ -659,7 +660,7 @@ namespace WMS
                 if (CommonData.GetSetting("Bluetooth") == "1")
                 {
                     // Binding to a service
-                    serviceConnection = new IssuedGoodsServiceConnection(this);
+                    serviceConnection = new GeneralServiceConnection(this);
                     Intent serviceIntent = new Intent(this, typeof(BluetoothService));
                     BindService(serviceIntent, serviceConnection, Bind.AutoCreate);
                 }
@@ -1058,6 +1059,16 @@ namespace WMS
 
                 // Save this to the global state variable // 16.04.2024
                 // Base.Store.OpenOrder = new OpenOrder { Order = chosen.Key, Position = chosen.No, Client = chosen.}
+
+                if (CommonData.GetSetting("Bluetooth") == "1")
+                {
+                    send.Positions = new List<Position>();
+                    send.EventTypeValue = EventBluetooth.EventType.IssuedList;
+                    send.IsRefreshCallback = false;
+                    send.ChosenPosition = e.Position;
+                    send.OrderNumber = tbOrder.Text;
+                    activityBluetoothService.SendObject(JsonConvert.SerializeObject(send));
+                }
             }
             catch (Exception ex)
             {

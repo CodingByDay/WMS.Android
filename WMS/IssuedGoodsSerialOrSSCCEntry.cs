@@ -4,7 +4,9 @@ using Android.Graphics;
 using Android.Graphics.Drawables;
 using Android.Media;
 using Android.Net;
+using Android.Text.Util;
 using Android.Views;
+using Aspose.Words;
 using BarCode2D_Receiver;
 using Com.Jsibbold.Zoomage;
 using Newtonsoft.Json;
@@ -15,6 +17,7 @@ using TrendNET.WMS.Device.Services;
 using WMS.App;
 using WMS.ExceptionStore;
 using static Android.App.ActionBar;
+using static EventBluetooth;
 using static WMS.App.MultipleStock;
 using AlertDialog = Android.App.AlertDialog;
 using WebApp = TrendNET.WMS.Device.Services.WebApp;
@@ -99,6 +102,8 @@ namespace WMS
         private Spinner cbMultipleLocations;
         private List<MultipleStock> adapterLocations = new List<MultipleStock>();
         private ArrayAdapter<MultipleStock> adapterLocation;
+        private BluetoothService activityBluetoothService;
+        private EventBluetooth send;
 
         public static List<IssuedGoods> FilterIssuedGoods(List<IssuedGoods> issuedGoodsList, string acSSCC = null, string acSerialNo = null, string acLocation = null)
         {
@@ -498,7 +503,13 @@ namespace WMS
                     base.RequestedOrientation = ScreenOrientation.Portrait;
                     base.SetContentView(Resource.Layout.IssuedGoodsSerialOrSSCCEntry);
                 }
-
+                if (CommonData.GetSetting("Bluetooth") == "1")
+                {
+                    // Binding to a service
+                    serviceConnection = new GeneralServiceConnection(this);
+                    Intent serviceIntent = new Intent(this, typeof(BluetoothService));
+                    BindService(serviceIntent, serviceConnection, Bind.AutoCreate);
+                }
                 // Definitions
                 AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
                 var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
@@ -612,6 +623,7 @@ namespace WMS
         }
 
         private bool initialDropdownEvent = true;
+        private GeneralServiceConnection serviceConnection;
 
         private async void CbMultipleLocations_ItemSelected(object? sender, AdapterView.ItemSelectedEventArgs e)
         {
@@ -1822,6 +1834,29 @@ namespace WMS
                     var ident = openIdent.GetString("Code");
                     await FillAdapterForTablet(ident);
                     showPictureIdent(ident);
+                }
+
+                if (CommonData.GetSetting("Bluetooth") == "1")
+                {
+                    var wh = moveHead.GetString("Wharehouse");
+                    List<Position> data = new List<Position>();
+                    foreach(var current in await AdapterStore.GetStockForWarehouseAndIdent(ident, wh))
+                    {
+                        data.Add(new Position
+                        {
+                            Ident = current.ident,
+                            Key = string.Empty,
+                            Location = current.location,
+                            Name = current.ident,
+                            Qty = current.quantity
+                        });
+                    }
+                    send.Positions = data;                    
+                    send.EventTypeValue = EventBluetooth.EventType.IssuedList;
+                    send.IsRefreshCallback = true;
+                    send.ChosenPosition = -1;
+                    send.OrderNumber = moveHead.GetString("LinkKey");
+                    activityBluetoothService.SendObject(JsonConvert.SerializeObject(send));
                 }
 
                 // This is the default focus of the view.

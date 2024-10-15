@@ -88,7 +88,7 @@ public class BluetoothService : Service
                 running = true;
                 // Now you have a connected socket for communication
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 ShowToast("Failed connection");
                 return;
@@ -105,10 +105,26 @@ public class BluetoothService : Service
             System.IO.Stream outputStream = socket.OutputStream;
             try
             {
-                // Convert your data to bytes (replace "Hello, Bluetooth!" with your actual data)
+                // Convert your data to bytes
                 byte[] dataToSend = System.Text.Encoding.UTF8.GetBytes(data);
-                // Write the data to the output stream
-                outputStream.Write(dataToSend, 0, dataToSend.Length);
+                int bufferSize = 4096; // Define a larger buffer size
+                int totalBytesSent = 0;
+
+                // Send data in chunks
+                while (totalBytesSent < dataToSend.Length)
+                {
+                    // Calculate the remaining bytes to send
+                    int bytesToSend = Math.Min(bufferSize, dataToSend.Length - totalBytesSent);
+                    // Write a chunk of data
+                    outputStream.Write(dataToSend, totalBytesSent, bytesToSend);
+                    totalBytesSent += bytesToSend;
+                }
+
+                // Send the <END> string to indicate the end of the message
+                string endMessage = "<END>";
+                byte[] endMessageBytes = System.Text.Encoding.UTF8.GetBytes(endMessage);
+                outputStream.Write(endMessageBytes, 0, endMessageBytes.Length);
+
                 // Flush the output stream to ensure the data is sent immediately
                 outputStream.Flush();
                 // Data sent successfully
@@ -116,6 +132,7 @@ public class BluetoothService : Service
             catch (Exception ex)
             {
                 string error = ex.ToString();
+                // Handle the exception (you might want to log it or take other action)
             }
         }
     }

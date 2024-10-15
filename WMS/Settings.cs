@@ -30,7 +30,7 @@ namespace WMS
         public static bool flag;
         public MyBinder binder;
         public bool isBound = false;
-        public IssuedGoodsServiceConnection serviceConnection;
+        public GeneralServiceConnection serviceConnection;
         private EventBluetooth send;
         private Button bluetooth;
 

@@ -3,20 +3,27 @@ using Android.Content;
 using Android.OS;
 using WMS;
 
-public class IssuedGoodsServiceConnection : Java.Lang.Object, IServiceConnection
+public class GeneralServiceConnection : Java.Lang.Object, IServiceConnection
 {
     private IssuedGoodsIdentEntryWithTrail activityIssuedGoods;
     private Settings activitySettings;
+    private IssuedGoodsSerialOrSSCCEntry issuedGoodsSerialOrSSCCEntry;
 
-    public IssuedGoodsServiceConnection(IssuedGoodsIdentEntryWithTrail activity)
+    public GeneralServiceConnection(IssuedGoodsIdentEntryWithTrail activity)
     {
         this.activityIssuedGoods = activity;
     }
 
-    public IssuedGoodsServiceConnection(Settings activity)
+    public GeneralServiceConnection(Settings activity)
     {
         this.activitySettings = activity;
     }
+
+    public GeneralServiceConnection(IssuedGoodsSerialOrSSCCEntry activity)
+    {
+        this.issuedGoodsSerialOrSSCCEntry = activity;
+    }
+
 
     public void OnServiceConnected(ComponentName name, IBinder service)
     {
