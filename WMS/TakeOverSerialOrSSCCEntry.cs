@@ -7,12 +7,15 @@ using Android.Net;
 using Android.Views;
 using BarCode2D_Receiver;
 using Com.Jsibbold.Zoomage;
+using Newtonsoft.Json;
 using TrendNET.WMS.Core.Data;
 using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
 using WMS.App;
 using WMS.ExceptionStore;
 using static Android.App.ActionBar;
+using static BluetoothService;
+using static EventBluetooth;
 using AlertDialog = Android.App.AlertDialog;
 using WebApp = TrendNET.WMS.Device.Services.WebApp;
 namespace WMS
@@ -64,6 +67,11 @@ namespace WMS
         private Dialog popupDialog;
         private ZoomageView? image;
         private SearchableSpinner searchableSpinnerLocation;
+        private EventBluetooth send;
+        private BluetoothService activityBluetoothService;
+        public MyBinder binder;
+        public bool isBound = false;
+        private GeneralServiceConnection serviceConnection;
 
         protected async override void OnCreate(Bundle savedInstanceState)
         {
@@ -87,6 +95,14 @@ namespace WMS
                 {
                     base.RequestedOrientation = ScreenOrientation.Portrait;
                     base.SetContentView(Resource.Layout.TakeOverSerialOrSSCCEntry);
+                }
+
+                if (CommonData.GetSetting("Bluetooth") == "1")
+                {
+                    // Binding to a service
+                    serviceConnection = new GeneralServiceConnection(this);
+                    Intent serviceIntent = new Intent(this, typeof(BluetoothService));
+                    BindService(serviceIntent, serviceConnection, Bind.AutoCreate);
                 }
 
                 AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
@@ -152,6 +168,25 @@ namespace WMS
             }
         }
 
+
+        public void OnServiceBindingComplete(BluetoothService service)
+        {
+            try
+            {
+                try
+                {
+                    activityBluetoothService = service;
+                }
+                catch
+                {
+                    return;
+                }
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
+        }
 
         private void ShowPictureIdent(string ident)
         {
@@ -361,6 +396,32 @@ namespace WMS
         {
             try
             {
+
+                if (CommonData.GetSetting("Bluetooth") == "1")
+                {
+                    send = new EventBluetooth();
+                    var ident = openIdent.GetString("Code");
+                    var wh = moveHead.GetString("Wharehouse");
+                    List<Position> data = new List<Position>();
+                    var response = await AdapterStore.GetStockForWarehouseAndIdent(ident, wh);
+                    foreach (var current in response)
+                    {
+                        data.Add(new Position
+                        {
+                            Ident = current.ident,
+                            Key = string.Empty,
+                            Location = current.location,
+                            Name = current.ident,
+                            Qty = current.quantity
+                        });
+                    }
+                    send.Positions = data;
+                    send.EventTypeValue = EventBluetooth.EventType.TakeOverPosition;
+                    send.IsRefreshCallback = true;
+                    send.ChosenPosition = -1;
+                    send.OrderNumber = moveHead.GetString("LinkKey");
+                    activityBluetoothService.SendObject(JsonConvert.SerializeObject(send));
+                }
                 // This is the default focus of the view.
                 tbSSCC.RequestFocus();
 

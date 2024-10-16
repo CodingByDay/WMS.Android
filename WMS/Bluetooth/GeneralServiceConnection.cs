@@ -5,46 +5,82 @@ using WMS;
 
 public class GeneralServiceConnection : Java.Lang.Object, IServiceConnection
 {
-    private IssuedGoodsIdentEntryWithTrail activityIssuedGoods;
-    private Settings activitySettings;
-    private IssuedGoodsSerialOrSSCCEntry issuedGoodsSerialOrSSCCEntry;
+    private IssuedGoodsIdentEntryWithTrail ActivityIssuedGoodsTrail;
+    private Settings ActivitySettings;
+    private IssuedGoodsSerialOrSSCCEntry ActivityIssuedGoodsSerialOrSSCCEntry;
+    private MainMenu ActivityMainMenu;
+    private TakeOverIdentEntry ActivityTakeoverIdentEntry;
+    private TakeOverSerialOrSSCCEntry ActivityTakeOverSerialOrSSCCEntry;
 
     public GeneralServiceConnection(IssuedGoodsIdentEntryWithTrail activity)
     {
-        this.activityIssuedGoods = activity;
+        this.ActivityIssuedGoodsTrail = activity;
     }
 
     public GeneralServiceConnection(Settings activity)
     {
-        this.activitySettings = activity;
+        this.ActivitySettings = activity;
     }
 
     public GeneralServiceConnection(IssuedGoodsSerialOrSSCCEntry activity)
     {
-        this.issuedGoodsSerialOrSSCCEntry = activity;
+        this.ActivityIssuedGoodsSerialOrSSCCEntry = activity;
+    }
+    public GeneralServiceConnection(MainMenu activity)
+    {
+        this.ActivityMainMenu = activity;
     }
 
+    public GeneralServiceConnection(TakeOverIdentEntry activity)
+    {
+        this.ActivityTakeoverIdentEntry = activity;
+    }
+
+    public GeneralServiceConnection(TakeOverSerialOrSSCCEntry activity)
+    {
+        this.ActivityTakeOverSerialOrSSCCEntry = activity;
+    }
 
     public void OnServiceConnected(ComponentName name, IBinder service)
     {
         BluetoothService.MyBinder binder = (BluetoothService.MyBinder)service;
 
-        if (activityIssuedGoods != null)
+        if (ActivityIssuedGoodsTrail != null)
         {
-            activityIssuedGoods.OnServiceBindingComplete(binder.GetService());
-            activityIssuedGoods.binder = binder;
-            activityIssuedGoods.isBound = true;
+            ActivityIssuedGoodsTrail.OnServiceBindingComplete(binder.GetService());
+            ActivityIssuedGoodsTrail.binder = binder;
+            ActivityIssuedGoodsTrail.isBound = true;
         }
-        else if (activitySettings != null)
+        else if (ActivitySettings != null)
         {
-            activitySettings.OnServiceBindingComplete(binder.GetService());
-            activitySettings.binder = binder;
-            activitySettings.isBound = true;
+            ActivitySettings.OnServiceBindingComplete(binder.GetService());
+            ActivitySettings.binder = binder;
+            ActivitySettings.isBound = true;
+        } else if(ActivityIssuedGoodsSerialOrSSCCEntry != null)
+        {
+            ActivityIssuedGoodsSerialOrSSCCEntry.OnServiceBindingComplete(binder.GetService());
+            ActivityIssuedGoodsSerialOrSSCCEntry.binder = binder;
+            ActivityIssuedGoodsSerialOrSSCCEntry.isBound = true;
+        } else if(ActivityMainMenu != null)
+        {
+            ActivityMainMenu.OnServiceBindingComplete(binder.GetService());
+            ActivityMainMenu.binder = binder;
+            ActivityMainMenu.isBound = true;
+        } else if (ActivityTakeoverIdentEntry != null)
+        {
+            ActivityTakeoverIdentEntry.OnServiceBindingComplete(binder.GetService());
+            ActivityTakeoverIdentEntry.binder = binder;
+            ActivityTakeoverIdentEntry.isBound = true;
+        } else if (ActivityTakeOverSerialOrSSCCEntry != null)
+        {
+            ActivityTakeOverSerialOrSSCCEntry.OnServiceBindingComplete(binder.GetService());
+            ActivityTakeOverSerialOrSSCCEntry.binder = binder;
+            ActivityTakeOverSerialOrSSCCEntry.isBound = true;
         }
     }
 
     public void OnServiceDisconnected(ComponentName name)
     {
-        activityIssuedGoods.isBound = false;
+        ActivityIssuedGoodsTrail.isBound = false;
     }
 }

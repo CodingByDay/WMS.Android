@@ -18,6 +18,8 @@ using TrendNET.WMS.Device.Services;
 using WMS.App;
 using WMS.ExceptionStore;
 using static Android.Renderscripts.Sampler;
+using static BluetoothService;
+using static EventBluetooth;
 using AlertDialog = Android.App.AlertDialog;
 namespace WMS
 {
@@ -53,6 +55,11 @@ namespace WMS
         private ListView listData;
         private UniversalAdapter<TakeOverIdentList> dataAdapter;
         private List<TakeOverIdentList> data = new List<TakeOverIdentList>();
+        private BluetoothService activityBluetoothService;
+        private EventBluetooth send;
+        public MyBinder binder;
+        public bool isBound = false;
+        private GeneralServiceConnection serviceConnection;
 
         protected async override void OnCreate(Bundle savedInstanceState)
         {
@@ -75,6 +82,15 @@ namespace WMS
                     base.RequestedOrientation = ScreenOrientation.Portrait;
                     base.SetContentView(Resource.Layout.TakeOverIdentEntry);
                 }
+
+                if (CommonData.GetSetting("Bluetooth") == "1")
+                {
+                    // Binding to a service
+                    serviceConnection = new GeneralServiceConnection(this);
+                    Intent serviceIntent = new Intent(this, typeof(BluetoothService));
+                    BindService(serviceIntent, serviceConnection, Bind.AutoCreate);
+                }
+
                 AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
                 var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
                 _customToolbar.SetNavigationIcon(App.Settings.RootURL + "/Services/Logo");
@@ -122,6 +138,26 @@ namespace WMS
                 tbNaziv.Enabled = false;
 
                 LoadIdentDataAsync();
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
+        }
+
+
+        public void OnServiceBindingComplete(BluetoothService service)
+        {
+            try
+            {
+                try
+                {
+                    activityBluetoothService = service;
+                }
+                catch
+                {
+                    return;
+                }
             }
             catch (Exception ex)
             {
@@ -736,6 +772,28 @@ namespace WMS
                                             Packaging = row.DoubleValue("anPackQty")
                                         });
 
+
+                                        send = new EventBluetooth();
+                                        List<Position> data = new List<Position>();
+                                        foreach (var current in orders)
+                                        {
+                                            data.Add(new Position
+                                            {
+                                                Ident = current.Ident,
+                                                Key = string.Empty,
+                                                Location = string.Empty,
+                                                Order = current.Order,
+                                                Qty = current.Quantity.ToString(),
+                                                Date = current.Date?.ToString("yyyy-MM-dd") ?? string.Empty
+                                            });
+                                        }
+                                        send.Positions = data;
+                                        send.EventTypeValue = EventBluetooth.EventType.TakeoverList;
+                                        send.IsRefreshCallback = true;
+                                        send.ChosenPosition = -1;
+                                        send.OrderNumber = string.Empty;
+                                        activityBluetoothService.SendObject(JsonConvert.SerializeObject(send));
+
                                     }
                                     displayedOrder = 0;
                                 }
@@ -794,6 +852,8 @@ namespace WMS
                         tbQty.Enabled = false;
                         tbDeliveryDeadline.Enabled = false;
                     });
+
+                   
 
                 }
                 else

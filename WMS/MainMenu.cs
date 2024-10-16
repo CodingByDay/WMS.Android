@@ -5,7 +5,9 @@ using Android.Graphics;
 using Android.Graphics.Drawables;
 using Android.Net;
 using Android.Views;
+using Aspose.Words;
 using Java.Nio.FileNio.Attributes;
+using Newtonsoft.Json;
 using TrendNET.WMS.Device.Services;
 using WMS.App;
 using WMS.Caching;
@@ -13,6 +15,8 @@ using WMS.ExceptionStore;
 using Xamarin.ANRWatchDog;
 using Xamarin.Essentials;
 using static Android.App.ActionBar;
+using static BluetoothService;
+using static EventBluetooth;
 using static Xamarin.ANRWatchDog.ANRWatchDog;
 namespace WMS
 {
@@ -42,7 +46,11 @@ namespace WMS
         private ListView rapidListview;
         private List<CleanupLocation> dataCleanup;
         private UniversalAdapter<CleanupLocation> dataAdapter;
-
+        private GeneralServiceConnection serviceConnection;
+        private BluetoothService activityBluetoothService;
+        private EventBluetooth send;
+        public MyBinder binder;
+        public bool isBound = false;
         protected override async void OnCreate(Bundle savedInstanceState)
         {
             try
@@ -68,6 +76,15 @@ namespace WMS
                     base.RequestedOrientation = ScreenOrientation.Portrait;
                     base.SetContentView(Resource.Layout.MainMenu);
                 }
+
+                if (CommonData.GetSetting("Bluetooth") == "1")
+                {
+                    // Binding to a service
+                    serviceConnection = new GeneralServiceConnection(this);
+                    Intent serviceIntent = new Intent(this, typeof(BluetoothService));
+                    BindService(serviceIntent, serviceConnection, Bind.AutoCreate);
+                }
+
 
                 AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
                 var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
@@ -179,7 +196,34 @@ namespace WMS
             }
         }
 
+        public void OnServiceBindingComplete(BluetoothService service)
+        {
+            try
+            {
+                try
+                {
+                    activityBluetoothService = service;
 
+                    // Needed to clean to glasses screen. 16.10.2024 Janko Jovičić
+                    send = new EventBluetooth();
+                    List<Position> positions = new List<Position>();
+                    send.Positions = positions;
+                    send.EventTypeValue = EventBluetooth.EventType.CleanUp;
+                    send.IsRefreshCallback = true;
+                    send.ChosenPosition = -1;
+                    send.OrderNumber = string.Empty;
+                    activityBluetoothService.SendObject(JsonConvert.SerializeObject(send));
+                }
+                catch
+                {
+                    return;
+                }
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
+        }
 
         public override void OnConfigurationChanged(Configuration newConfig)
         {

@@ -16,7 +16,8 @@ public class EventBluetooth
         TakeoverList, // Prevzem blaga seznam
         TakeOverPosition, // Prevzem pozicij
         IssuedList, // Izdaja seznam
-        IssuedPosition // Izdaja pozicij
+        IssuedPosition, // Izdaja pozicij
+        CleanUp // When action is closed.
     }
 
     public string OrderNumber { get; set; }
@@ -35,5 +36,7 @@ public class EventBluetooth
         public string Qty { get; set; }
         public string Name { get; set; }
         public string Key { get; set; }
+        public string Date { get; set; }
+        public string Order { get; set; }
     }
 }

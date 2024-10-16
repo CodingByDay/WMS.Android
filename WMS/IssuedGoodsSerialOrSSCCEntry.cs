@@ -17,6 +17,7 @@ using TrendNET.WMS.Device.Services;
 using WMS.App;
 using WMS.ExceptionStore;
 using static Android.App.ActionBar;
+using static BluetoothService;
 using static EventBluetooth;
 using static WMS.App.MultipleStock;
 using AlertDialog = Android.App.AlertDialog;
@@ -104,6 +105,8 @@ namespace WMS
         private ArrayAdapter<MultipleStock> adapterLocation;
         private BluetoothService activityBluetoothService;
         private EventBluetooth send;
+        public MyBinder binder;
+        public bool isBound = false;
 
         public static List<IssuedGoods> FilterIssuedGoods(List<IssuedGoods> issuedGoodsList, string acSSCC = null, string acSerialNo = null, string acLocation = null)
         {
@@ -1838,9 +1841,12 @@ namespace WMS
 
                 if (CommonData.GetSetting("Bluetooth") == "1")
                 {
+                    send = new EventBluetooth();
+                    var ident = openIdent.GetString("Code");
                     var wh = moveHead.GetString("Wharehouse");
                     List<Position> data = new List<Position>();
-                    foreach(var current in await AdapterStore.GetStockForWarehouseAndIdent(ident, wh))
+                    var response = await AdapterStore.GetStockForWarehouseAndIdent(ident, wh);
+                    foreach (var current in response)
                     {
                         data.Add(new Position
                         {
@@ -1852,7 +1858,7 @@ namespace WMS
                         });
                     }
                     send.Positions = data;                    
-                    send.EventTypeValue = EventBluetooth.EventType.IssuedList;
+                    send.EventTypeValue = EventBluetooth.EventType.IssuedPosition;
                     send.IsRefreshCallback = true;
                     send.ChosenPosition = -1;
                     send.OrderNumber = moveHead.GetString("LinkKey");
@@ -2055,6 +2061,26 @@ namespace WMS
                 GlobalExceptions.ReportGlobalException(ex);
             }
         }
+
+        public void OnServiceBindingComplete(BluetoothService service)
+        {
+            try
+            {
+                try
+                {
+                    activityBluetoothService = service;
+                }
+                catch
+                {
+                    return;
+                }
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
+        }
+
 
         private async Task<List<MultipleStock>> GetStockState(String ident)
         {
