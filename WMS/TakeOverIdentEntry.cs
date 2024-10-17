@@ -772,28 +772,29 @@ namespace WMS
                                             Packaging = row.DoubleValue("anPackQty")
                                         });
 
-
-                                        send = new EventBluetooth();
-                                        List<Position> data = new List<Position>();
-                                        foreach (var current in orders)
+                                        if (CommonData.GetSetting("Bluetooth") == "1")
                                         {
-                                            data.Add(new Position
+                                            send = new EventBluetooth();
+                                            List<Position> data = new List<Position>();
+                                            foreach (var current in orders)
                                             {
-                                                Ident = current.Ident,
-                                                Key = string.Empty,
-                                                Location = string.Empty,
-                                                Order = current.Order,
-                                                Qty = current.Quantity.ToString(),
-                                                Date = current.Date?.ToString("yyyy-MM-dd") ?? string.Empty
-                                            });
+                                                data.Add(new Position
+                                                {
+                                                    Ident = current.Ident,
+                                                    Key = string.Empty,
+                                                    Location = string.Empty,
+                                                    Order = current.Order,
+                                                    Qty = current.Quantity.ToString(),
+                                                    Date = current.Date?.ToString("yyyy-MM-dd") ?? string.Empty
+                                                });
+                                            }
+                                            send.Positions = data;
+                                            send.EventTypeValue = EventBluetooth.EventType.TakeoverList;
+                                            send.IsRefreshCallback = true;
+                                            send.ChosenPosition = -1;
+                                            send.OrderNumber = string.Empty;
+                                            activityBluetoothService.SendObject(JsonConvert.SerializeObject(send));
                                         }
-                                        send.Positions = data;
-                                        send.EventTypeValue = EventBluetooth.EventType.TakeoverList;
-                                        send.IsRefreshCallback = true;
-                                        send.ChosenPosition = -1;
-                                        send.OrderNumber = string.Empty;
-                                        activityBluetoothService.SendObject(JsonConvert.SerializeObject(send));
-
                                     }
                                     displayedOrder = 0;
                                 }
@@ -853,7 +854,17 @@ namespace WMS
                         tbDeliveryDeadline.Enabled = false;
                     });
 
-                   
+                    if (CommonData.GetSetting("Bluetooth") == "1")
+                    {
+                        send = new EventBluetooth();
+                        List<Position> data = new List<Position>();
+                        send.Positions = data;
+                        send.EventTypeValue = EventBluetooth.EventType.TakeoverList;
+                        send.IsRefreshCallback = false;
+                        send.ChosenPosition = displayedOrder;
+                        send.OrderNumber = string.Empty;
+                        activityBluetoothService.SendObject(JsonConvert.SerializeObject(send));
+                    }
 
                 }
                 else

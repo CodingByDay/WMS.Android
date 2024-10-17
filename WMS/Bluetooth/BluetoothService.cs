@@ -67,34 +67,33 @@ public class BluetoothService : Service
     }
     void ConnectToDevice()
     {
-        if (!running)
+
+        try
         {
-            try
-            {
-                BluetoothAdapter adapter = BluetoothAdapter.DefaultAdapter;
-                if (adapter == null)
-                    return;
-
-                if (!adapter.IsEnabled)
-                    return;
-
-                BluetoothDevice device = (from bd in adapter.BondedDevices
-                                          where bd.Name == "AMS"
-                                          select bd).FirstOrDefault();
-
-                socket = device.CreateRfcommSocketToServiceRecord(UUID.FromString("f8edf739-676c-464e-9337-0d46feaa61d6"));
-                socket.Connect();
-                ShowToast("Connection successful");
-                running = true;
-                // Now you have a connected socket for communication
-            }
-            catch (Exception ex)
-            {
-                ShowToast("Failed connection");
+            BluetoothAdapter adapter = BluetoothAdapter.DefaultAdapter;
+            if (adapter == null)
                 return;
-                // Handle connection errors
-            }
+
+            if (!adapter.IsEnabled)
+                return;
+
+            BluetoothDevice device = (from bd in adapter.BondedDevices
+                                        where bd.Name == "AMS"
+                                        select bd).FirstOrDefault();
+
+            socket = device.CreateRfcommSocketToServiceRecord(UUID.FromString("f8edf739-676c-464e-9337-0d46feaa61d6"));
+            socket.Connect();
+            ShowToast("Connection successful");
+            running = true;
+            // Now you have a connected socket for communication
         }
+        catch (Exception ex)
+        {
+            ShowToast("Failed connection");
+            return;
+            // Handle connection errors
+        }
+
     }
 
     public void SendObject(String data)
