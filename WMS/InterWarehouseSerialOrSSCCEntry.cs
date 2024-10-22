@@ -56,7 +56,9 @@ namespace WMS
         private Dialog popupDialog;
         private ZoomageView image;
         private SearchableSpinner? searchableSpinnerIssueLocation;
+        private List<string> locationsIssuer = new List<string>();
         private SearchableSpinner? searchableSpinnerReceiveLocation;
+        private List<string> locationsReceiver = new List<string>();
 
         protected async override void OnCreate(Bundle savedInstanceState)
         {
@@ -129,18 +131,25 @@ namespace WMS
                 tbSerialNum.KeyPress += TbSerialNum_KeyPress;
 
                 searchableSpinnerIssueLocation = FindViewById<SearchableSpinner>(Resource.Id.searchableSpinnerIssueLocation);
-                var locationsIssuer = await HelperMethods.GetLocationsForGivenWarehouse(moveHead.GetString("Issuer"));
+                locationsIssuer = await HelperMethods.GetLocationsForGivenWarehouse(moveHead.GetString("Issuer"));
                 searchableSpinnerIssueLocation.SetItems(locationsIssuer);
                 searchableSpinnerIssueLocation.ColorTheRepresentation(1);
                 searchableSpinnerIssueLocation.ShowDropDown();
 
                 searchableSpinnerReceiveLocation = FindViewById<SearchableSpinner>(Resource.Id.searchableSpinnerReceiveLocation);
-                var locationsReceiver = await HelperMethods.GetLocationsForGivenWarehouse(moveHead.GetString("Receiver"));
+                locationsReceiver = await HelperMethods.GetLocationsForGivenWarehouse(moveHead.GetString("Receiver"));
                 searchableSpinnerReceiveLocation.SetItems(locationsReceiver);
                 searchableSpinnerReceiveLocation.ColorTheRepresentation(1);
                 searchableSpinnerReceiveLocation.ShowDropDown();
 
-                tbPacking.FocusChange += TbPacking_FocusChange;
+                if (App.Settings.tablet)
+                {
+                    searchableSpinnerReceiveLocation.spinnerTextValueField.KeyPress += SpinnerTextValueField_KeyPress;
+                }
+                else
+                {
+                    tbPacking.FocusChange += TbPacking_FocusChange;
+                }
                 // Method calls
 
                 CheckIfApplicationStopingException();
@@ -153,6 +162,33 @@ namespace WMS
                 SetUpForm();
             }
             catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
+        }
+
+        private async void SpinnerTextValueField_KeyPress(object? sender, View.KeyEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keycode.Enter && e.Event.Action == KeyEventActions.Down)
+                {
+                    e.Handled = true;
+
+                    await Task.Delay(1000); // Adjust the delay time if necessary
+
+                    // Now load stock after delay
+                    await LoadStock(
+                        searchableSpinnerIssueLocation.spinnerTextValueField.Text,
+                        tbIdent.Text,
+                        moveHead.GetString("Issuer"),
+                        tbSSCC.Text,
+                        tbSerialNum.Text
+                    );
+
+                    tbPacking.RequestFocus();
+                }
+            } catch (Exception ex)
             {
                 GlobalExceptions.ReportGlobalException(ex);
             }
@@ -273,9 +309,16 @@ namespace WMS
         {
             try
             {
-                if (e.HasFocus)
+                if (e.HasFocus &&)
                 {
-                    await LoadStock(searchableSpinnerIssueLocation.spinnerTextValueField.Text, tbIdent.Text, moveHead.GetString("Issuer"), tbSSCC.Text, tbSerialNum.Text);
+                    // Now load stock after delay
+                    await LoadStock(
+                        searchableSpinnerIssueLocation.spinnerTextValueField.Text,
+                        tbIdent.Text,
+                        moveHead.GetString("Issuer"),
+                        tbSSCC.Text,
+                        tbSerialNum.Text
+                    );
                 }
             }
             catch (Exception ex)
@@ -284,7 +327,7 @@ namespace WMS
             }
         }
 
-       
+
         /// <summary>
         /// Addition for the tablet right side view. 04.09.2024
         /// </summary>
