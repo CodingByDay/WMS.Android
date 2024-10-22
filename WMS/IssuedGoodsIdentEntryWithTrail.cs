@@ -11,7 +11,6 @@ using TrendNET.WMS.Device.App;
 using TrendNET.WMS.Device.Services;
 using WMS.App;
 using WMS.ExceptionStore;
-using static BluetoothService;
 using static EventBluetooth;
 using AlertDialog = Android.App.AlertDialog;
 using Exception = System.Exception;
@@ -46,10 +45,9 @@ namespace WMS
         private Trail chosen;
         private IEnumerable<NameValueObject> openOrderLocal;
         private NameValueObject openIdent;
-        public MyBinder binder;
+
         public bool isBound = false;
-        public IssuedGoodsServiceConnection serviceConnection;
-        private BluetoothService activityBluetoothService;
+
         private EventBluetooth send;
         private MyOnItemLongClickListener listener;
         private ApiResultSet result;
@@ -421,7 +419,7 @@ namespace WMS
                                 listener = new MyOnItemLongClickListener(this, adapterObj.returnData(), adapterObj);
                                 ivTrail.OnItemLongClickListener = listener;
                               
-                                // Bluetooth
+                                /*
 
                                 try                                
                                 {
@@ -433,7 +431,7 @@ namespace WMS
                                     SentrySdk.CaptureException(ex);
                                 }
 
-                                // Bluetooth
+                                */
 
                                
 
@@ -457,28 +455,7 @@ namespace WMS
             }
         }
 
-        private void SendDataToDevice()
-        {
-            if (activityBluetoothService != null)
-            {
-                send = new EventBluetooth();
-                List<Position> positions = new List<Position>();
-                foreach (Trail trail in trails)
-                {
-                    positions.Add(new Position { Ident = trail.Ident, Key = trail.Key, Location = trail.Location, Name = trail.Name, Qty = trail.Qty });
-                }
-                send.Positions = positions;
-                send.EventTypeValue = EventBluetooth.EventType.IssuedList;
-                send.IsRefreshCallback = true;
-                send.ChosenPosition = null;
-                send.OrderNumber = tbOrder.Text;
-                activityBluetoothService.SendObject(JsonConvert.SerializeObject(send));
-            }
-            else
-            {
-                return;
-            }
-        }
+    
         private async Task FillDisplayedOrderInfoMultipleLocations()
         {
             try
@@ -602,7 +579,7 @@ namespace WMS
                                 listener = new MyOnItemLongClickListener(this, adapterObj.returnData(), adapterObj);
                                 ivTrail.OnItemLongClickListener = listener;
 
-                                try
+                                /*try
                                 {
 
                                     SendDataToDevice();
@@ -611,7 +588,7 @@ namespace WMS
                                 catch (Exception ex)
                                 {
                                     SentrySdk.CaptureException(ex);
-                                }
+                                }*/
 
                             });
                         }
@@ -656,13 +633,7 @@ namespace WMS
                     base.SetContentView(Resource.Layout.IssuedGoodsIdentEntryWithTrail);
                 }
                 LoaderManifest.LoaderManifestLoopResources(this);
-                if (CommonData.GetSetting("Bluetooth") == "1")
-                {
-                    // Binding to a service
-                    serviceConnection = new IssuedGoodsServiceConnection(this);
-                    Intent serviceIntent = new Intent(this, typeof(BluetoothService));
-                    BindService(serviceIntent, serviceConnection, Bind.AutoCreate);
-                }
+   
                 AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
                 var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
                 _customToolbar.SetNavigationIcon(App.Settings.RootURL + "/Services/Logo");
@@ -842,24 +813,7 @@ namespace WMS
                 GlobalExceptions.ReportGlobalException(ex);
             }
         }
-        public void OnServiceBindingComplete(BluetoothService service)
-        {
-            try
-            {
-                try
-                {
-                    activityBluetoothService = service;
-                }
-                catch
-                {
-                    return;
-                }
-            }
-            catch (Exception ex)
-            {
-                GlobalExceptions.ReportGlobalException(ex);
-            }
-        }
+      
 
      
 

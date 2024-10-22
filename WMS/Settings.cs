@@ -5,7 +5,6 @@ using TrendNET.WMS.Device.Services;
 using WMS.App;
 using WMS.ExceptionStore;
 using Xamarin.Essentials;
-using static BluetoothService;
 using AlertDialog = Android.App.AlertDialog;
 
 
@@ -28,11 +27,8 @@ namespace WMS
         private int position;
         private string dev;
         public static bool flag;
-        public MyBinder binder;
         public bool isBound = false;
-        public IssuedGoodsServiceConnection serviceConnection;
         private EventBluetooth send;
-        private Button bluetooth;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -44,8 +40,6 @@ namespace WMS
                 arrayData.Add($"{Resources.GetString(Resource.String.s319)}");
                 arrayData.Add($"{Resources.GetString(Resource.String.s320)}");
                 arrayData.Add($"{Resources.GetString(Resource.String.s321)}");
-                bluetooth = FindViewById<Button>(Resource.Id.bluetooth);
-                bluetooth.Click += Bluetooth_Click;
                 ID = FindViewById<EditText>(Resource.Id.IDdevice);
                 rootURL = FindViewById<EditText>(Resource.Id.rootURL);
                 versionApi = FindViewById<EditText>(Resource.Id.versionManagmentUrl);
@@ -71,10 +65,12 @@ namespace WMS
                 new IntentFilter(ConnectivityManager.ConnectivityAction), ReceiverFlags.NotExported);
 
 
-                if (CommonData.GetSetting("Bluetooth") != "1")
+                /*
+                 * if (CommonData.GetSetting("Bluetooth") != "1")
                 {
                     bluetooth.Visibility = ViewStates.Invisible;
                 }
+                */
 
             }
             catch (Exception ex)
@@ -83,19 +79,7 @@ namespace WMS
             }
         }
 
-        private void Bluetooth_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                // Start the BluetoothService with the selected device
-                Intent serviceIntent = new Intent(this, typeof(BluetoothService));
-                StartService(serviceIntent);
-            }
-            catch (Exception ex)
-            {
-                GlobalExceptions.ReportGlobalException(ex);
-            }
-        }
+       
 
         private void Bin_Click(object sender, EventArgs e)
         {
@@ -227,16 +211,6 @@ namespace WMS
             }
         }
 
-        internal void OnServiceBindingComplete(BluetoothService bluetoothService)
-        {
-            try { 
-
-            }
-            catch (Exception ex)
-            {
-                GlobalExceptions.ReportGlobalException(ex);
-            }
-            // Toast.MakeText(this, "Povezava z napravo je bila uspešna", ToastLength.Long);
-        }
+      
     }
 }

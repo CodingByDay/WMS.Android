@@ -309,7 +309,7 @@ namespace WMS
         {
             try
             {
-                if (e.HasFocus &&)
+                if (e.HasFocus)
                 {
                     // Now load stock after delay
                     await LoadStock(

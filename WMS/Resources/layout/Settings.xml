@@ -33,18 +33,7 @@
             android:paddingTop="5dp"
             android:layout_marginTop="0.0dp"
             android:textStyle="bold|italic" />
-        
-        <Button
-            android:layout_gravity="center"
-            android:padding="10dp"
-            android:text="@string/s185"
-            android:gravity="center"
-            android:drawableEnd="@drawable/glasses"
-            android:background="@color/rikoMain"
-            android:textColor="@color/white"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/bluetooth" />
+       
         
         <TextView
             android:layout_height="0dip"
