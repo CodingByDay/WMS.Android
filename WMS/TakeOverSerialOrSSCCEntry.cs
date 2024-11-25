@@ -404,7 +404,7 @@ namespace WMS
                         packaging = order.Packaging ?? 0;
                         quantity = order.Quantity ?? 0;
                     }
-                    if (order != null)
+                    if (order != null && code2d == null)
                     {
 
                         if (packaging != -1 && packaging <= quantity)
@@ -441,6 +441,8 @@ namespace WMS
                             stock = qtyCheck;
 
                         }
+
+                        tbPacking.RequestFocus();
 
                         await GetConnectedPositions(code2d.__helper__convertedOrder, code2d.__helper__position, code2d.ident);
 

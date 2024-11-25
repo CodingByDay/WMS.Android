@@ -462,6 +462,7 @@ namespace WMS
         {
             try
             {
+                Base.Store.byOrder = true;
                 NameValueObject moveHead = new NameValueObject("MoveHead");
                 moveHead.SetBool("Saved", false);
                 InUseObjects.Set("MoveHead", moveHead);
