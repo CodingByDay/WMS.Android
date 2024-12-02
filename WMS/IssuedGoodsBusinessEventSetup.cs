@@ -437,7 +437,8 @@ namespace WMS
                 {
                     if (rlExtra.Visibility == ViewStates.Visible && cbExtra.Text == string.Empty)
                     {
-                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s286)}", ToastLength.Long).Show();
+                        string toast = string.Format($"{Resources.GetString(Resource.String.s270)}");
+                        Toast.MakeText(this, toast, ToastLength.Long).Show();
                         return;
                     }
                     else
@@ -448,7 +449,8 @@ namespace WMS
                 {
                     if (cbExtra.Visibility == ViewStates.Visible && cbExtra.Text == string.Empty)
                     {
-                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s286)}", ToastLength.Long).Show();
+                        string toast = string.Format($"{Resources.GetString(Resource.String.s270)}");
+                        Toast.MakeText(this, toast, ToastLength.Long).Show();
                         return;
                     }
                     else

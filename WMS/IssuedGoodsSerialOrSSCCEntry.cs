@@ -1859,10 +1859,7 @@ namespace WMS
                 }
                 else
                 {
-
-                    var mh = moveHead;
-
-                    IsProccessOrderless = moveHead == null || moveHead.GetBool("ByOrder");
+                    IsProccessOrderless = moveHead != null && !moveHead.GetBool("ByOrder");
 
                     if (IsProccessOrderless)
                     {

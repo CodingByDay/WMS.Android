@@ -51,7 +51,7 @@
 
         <TextView
 
-            android:text="@string/s34"
+            android:text="@string/s47"
             android:textStyle="bold"
             android:layout_width="115dp"
             android:layout_height="match_parent"
