@@ -88,7 +88,7 @@ namespace WMS
         private string warehouse;
         private List<IssuedGoods> data = new List<IssuedGoods>();
         private double serialOverflowQuantity = 0;
-        private bool isProccessOrderless = false;
+        private bool IsProccessOrderless = false;
         private ListView listData;
         private UniversalAdapter<LocationClass> dataAdapter;
         private ZoomageView? imagePNG;
@@ -179,7 +179,7 @@ namespace WMS
 
                             await FilterData();
 
-                            if (isProccessOrderless)
+                            if (IsProccessOrderless)
                             {
                                 GetQuantityOrderLess();
                             }
@@ -208,7 +208,7 @@ namespace WMS
         {
             try
             {
-                if (!isProccessOrderless)
+                if (!IsProccessOrderless)
                 {
                     CheckData();
                 }
@@ -229,7 +229,7 @@ namespace WMS
                         result = QuantityProcessing.OtherError;
                     }
 
-                    if (isProccessOrderless && double.TryParse(tbPacking.Text, out parsed) && stock >= parsed)
+                    if (IsProccessOrderless && double.TryParse(tbPacking.Text, out parsed) && stock >= parsed)
                     {
                         var isCorrectLocation = await IsLocationCorrect();
 
@@ -737,7 +737,7 @@ namespace WMS
                 {
                     LoaderManifest.LoaderManifestLoopResources(this);
 
-                    if (!isProccessOrderless)
+                    if (!IsProccessOrderless)
                     {
                         CheckData();
                     }
@@ -756,7 +756,7 @@ namespace WMS
                             result = QuantityProcessing.OtherError;
                         }
 
-                        if (isProccessOrderless && double.TryParse(tbPacking.Text, out parsed) && stock >= parsed)
+                        if (IsProccessOrderless && double.TryParse(tbPacking.Text, out parsed) && stock >= parsed)
                         {
                             var isCorrectLocation = await IsLocationCorrect();
 
@@ -919,13 +919,13 @@ namespace WMS
                 try
                 {
                     LoaderManifest.LoaderManifestLoopResources(this);
-                    if (!isProccessOrderless)
+                    if (!IsProccessOrderless)
                     {
                         CheckData();
                     }
 
                     double parsed;
-                    if (isProccessOrderless && double.TryParse(tbPacking.Text, out parsed) && stock >= parsed)
+                    if (IsProccessOrderless && double.TryParse(tbPacking.Text, out parsed) && stock >= parsed)
                     {
                         var isCorrectLocation = await IsLocationCorrect();
 
@@ -1255,11 +1255,11 @@ namespace WMS
             {
                 return await Task.Run(() =>
                 {
-                    if (data.Count == 1 || isProccessOrderless)
+                    if (data.Count == 1 || IsProccessOrderless)
                     {
                         var element = new IssuedGoods { };
 
-                        if (!isProccessOrderless)
+                        if (!IsProccessOrderless)
                         {
                             element = data.ElementAt(0);
                         }
@@ -1267,7 +1267,7 @@ namespace WMS
                         moveItem = new NameValueObject("MoveItem");
                         moveItem.SetInt("HeadID", moveHead.GetInt("HeadID"));
 
-                        if (!isProccessOrderless)
+                        if (!IsProccessOrderless)
                         {
                             moveItem.SetString("LinkKey", element.acKey);
                             moveItem.SetInt("LinkNo", element.anNo);
@@ -1323,11 +1323,11 @@ namespace WMS
             {
                 await Task.Run(() =>
                 {
-                    if (data.Count == 1 || isProccessOrderless)
+                    if (data.Count == 1 || IsProccessOrderless)
                     {
                         var element = new IssuedGoods { };
 
-                        if (!isProccessOrderless)
+                        if (!IsProccessOrderless)
                         {
                             element = data.ElementAt(0);
                         }
@@ -1335,7 +1335,7 @@ namespace WMS
                         moveItem = new NameValueObject("MoveItem");
                         moveItem.SetInt("HeadID", moveHead.GetInt("HeadID"));
 
-                        if (!isProccessOrderless)
+                        if (!IsProccessOrderless)
                         {
                             moveItem.SetString("LinkKey", element.acKey);
                             moveItem.SetInt("LinkNo", element.anNo);
@@ -1364,7 +1364,7 @@ namespace WMS
                         {
                             RunOnUiThread(() =>
                             {
-                                if (isProccessOrderless)
+                                if (IsProccessOrderless)
                                 {
                                     StartActivity(typeof(IssuedGoodsIdentEntry));
                                     Finish();
@@ -1403,18 +1403,18 @@ namespace WMS
         {
             try
             {
-                if (data.Count == 1 || isProccessOrderless)
+                if (data.Count == 1 || IsProccessOrderless)
                 {
                     var element = new IssuedGoods();
 
-                    if (!isProccessOrderless)
+                    if (!IsProccessOrderless)
                     {
                         element = data.ElementAt(0);
                     }
                     // This solves the problem of updating the item. The problem occurs because of the old way of passing data.
                     moveItem = new NameValueObject("MoveItem");
                     moveItem.SetInt("HeadID", moveHead.GetInt("HeadID"));
-                    if (!isProccessOrderless)
+                    if (!IsProccessOrderless)
                     {
                         moveItem.SetString("LinkKey", element.acKey);
                         moveItem.SetInt("LinkNo", element.anNo);
@@ -1450,7 +1450,7 @@ namespace WMS
                         // Check to see if the maximum is already reached.
                         if (stock <= 0)
                         {
-                            if (!isProccessOrderless)
+                            if (!IsProccessOrderless)
                             {
                                 if (Base.Store.modeIssuing == 2)
                                 {
@@ -1491,7 +1491,7 @@ namespace WMS
                         tbPacking.Text = string.Empty;
                         searchableSpinnerIssueLocation.spinnerTextValueField.Text = string.Empty;
 
-                        if (!isProccessOrderless)
+                        if (!IsProccessOrderless)
                         {
                             createPositionAllowed = false;
                             await GetConnectedPositions(element.acKey, element.anNo, element.acIdent);
@@ -1860,11 +1860,11 @@ namespace WMS
                 else
                 {
 
-                    isProccessOrderless =
-                     (Base.Store.OpenOrder == null && Intent.Extras == null) &&
-                     (Intent.Extras == null || String.IsNullOrEmpty(Intent.Extras.GetString("selected")));
+                    var mh = moveHead;
 
-                    if (isProccessOrderless)
+                    IsProccessOrderless = moveHead == null || moveHead.GetBool("ByOrder");
+
+                    if (IsProccessOrderless)
                     {
                         tbIdent.Text = openIdent.GetString("Code") + " " + openIdent.GetString("Name");
                         qtyCheck = 10000000;
@@ -1876,7 +1876,8 @@ namespace WMS
                     {
                         // Not the update ?? it seems to be true
                         tbIdent.Text = openIdent.GetString("Code") + " " + openIdent.GetString("Name");
-                        if (Intent.Extras != null && !String.IsNullOrEmpty(Intent.Extras.GetString("selected")) && Base.Store.modeIssuing == 2)
+                        if (Intent.Extras != null && !String.IsNullOrEmpty(Intent.Extras.GetString("selected")) && Base.Store.modeIssuing == 2
+                            && Base.Store.code2D == null)
                         {
                             // This flow is for orders.
                             string trailBytes = Intent.Extras.GetString("selected");
@@ -2128,7 +2129,7 @@ namespace WMS
             {
                 if (e.KeyCode == Keycode.Enter && e.Event.Action == KeyEventActions.Down)
                 {
-                    if (isProccessOrderless)
+                    if (IsProccessOrderless)
                     {
                         var isCorrectLocation = await IsLocationCorrect();
 

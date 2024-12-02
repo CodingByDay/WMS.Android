@@ -558,65 +558,8 @@ namespace WMS
             }
         }
 
-        private void UpdateSuggestions(string userInput)
-        {
-            try
-            {
-                if (userInput.Length < 3)
-                {
-                    tbIdentAdapter.Clear();
-                    return;
-                }
-                else
-                {
-                    suggestions.Clear();
-                    // Provide custom suggestions based on user input
-                    suggestions = GetCustomSuggestions(userInput);
-                    // Clear the existing suggestions and add the new ones
-   
-                    tbIdentAdapter.Clear();
-                    tbIdentAdapter.AddAll(suggestions);
-                    tbIdentAdapter.NotifyDataSetChanged();
-                }
-            }
-            catch (Exception ex)
-            {
-                GlobalExceptions.ReportGlobalException(ex);
-            }
-        }
-
-        private List<string> GetCustomSuggestions(string userInput)
-        {
-            try
-            {
-                if (savedIdents != null)
-                {
-                    // In order to improve performance try to implement paralel processing. 23.05.2024 Janko Jovičić
-
-                    var lowerUserInput = userInput.ToLower();
-                    var result = new ConcurrentBag<string>();
-
-                    Parallel.ForEach(savedIdents, suggestion =>
-                    {
-                        if (suggestion.ToLower().Contains(lowerUserInput))
-                        {
-                            result.Add(suggestion);
-                        }
-                    });
-
-                    return result.Take(100).ToList();
-                }
-
-                // Service not yet loaded. 6.6.2024 J.J
-                return new List<string>();
-            }
-            catch (Exception ex)
-            {
-                GlobalExceptions.ReportGlobalException(ex);
-                return new List<string> ();
-            }
-        }
-
+      
+      
 
         private void OnNetworkStatusChanged(object sender, EventArgs e)
         {

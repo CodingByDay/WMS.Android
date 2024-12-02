@@ -30,13 +30,15 @@ public class CustomFilter<T> : Filter
             FilterResults result = new FilterResults();
             if (adapter.originalItems != null && adapter.originalItems.Count > 0 && constraint != null)
             {
-                string filterString = constraint.ToString();
+               string filterString = constraint.ToString();
 
                 // Use PLINQ with case-insensitive comparison for filtering
                 var resultList = originalItems.AsParallel()
-                                              .Where(item => item.ToString().IndexOf(filterString, StringComparison.OrdinalIgnoreCase) >= 0)
-                                              .Take(10)
-                                              .ToList();
+                    .Where(item => item.ToString().IndexOf(filterString, StringComparison.OrdinalIgnoreCase) >= 0)
+                    .OrderBy(item => !string.Equals(item.ToString(), filterString, StringComparison.OrdinalIgnoreCase)) // Exact match first
+                    .ThenBy(item => item.ToString()) // Optional: sort others alphabetically
+                    .Take(10)
+                    .ToList();
 
                 result.Values = FromArray(resultList.Select(item => item.ToJavaObject()).ToArray());
                 result.Count = resultList.Count;
