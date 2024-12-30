@@ -20,6 +20,8 @@ namespace WMS
         private List<ComboBoxItem> warehousesAdapter = new List<ComboBoxItem>();
         private int temporaryPositionWarehouse;
         private DateTime datex;
+        private NameValueObjectList warehouses;
+        private TextView labelWarehouse;
 
         protected override async void OnCreate(Bundle savedInstanceState)
         {
@@ -47,16 +49,19 @@ namespace WMS
                 select = FindViewById<Button>(Resource.Id.select);
                 confirm = FindViewById<Button>(Resource.Id.confirm);
                 logout = FindViewById<Button>(Resource.Id.logout);
+                labelWarehouse = FindViewById<TextView>(Resource.Id.labelWarehouse);
                 select.Click += Select_Click;
                 confirm.Click += Confirm_Click;
                 logout.Click += Logout_Click;
                 cbWarehouse.ItemSelected += CbWarehouse_ItemSelected;
                 dtDate.Text = DateTime.Now.ToShortDateString();
-                var warehouses = await CommonData.ListWarehousesAsync();
+
+                warehouses = await CommonData.ListWarehousesAsync();
                 warehouses.Items.ForEach(wh =>
                 {
                     warehousesAdapter.Add(new ComboBoxItem { ID = wh.GetString("Subject"), Text = wh.GetString("Name") });
                 });
+
                 var adapter = new CustomAutoCompleteAdapter<ComboBoxItem>(this,
                  Android.Resource.Layout.SimpleSpinnerItem, warehousesAdapter);
                 adapter.SetDropDownViewResource(Android.Resource.Layout.SimpleSpinnerDropDownItem);
@@ -199,7 +204,7 @@ namespace WMS
                 }, today.Year, today.Month - 1, today.Day);
                 DatePicker datePicker = dialog.DatePicker;
                 DateTime tomorrow = today.AddDays(0);
-                long minDate = (long)(tomorrow - new DateTime(1970, 1, 1)).TotalMilliseconds;
+                long minDate = (long) (tomorrow - new DateTime(1970, 1, 1)).TotalMilliseconds;
                 datePicker.MinDate = minDate;
                 dialog.Show();
             }
@@ -215,6 +220,18 @@ namespace WMS
             {
                 Spinner spinner = (Spinner)sender;
                 temporaryPositionWarehouse = e.Position;
+                string warehouse = warehouses.Items.ElementAt(temporaryPositionWarehouse).GetString("Name");
+
+                // Improvment in the layout. 30.12.2024 Janko Jovičić
+                var splitted = labelWarehouse.Text.Split(":");
+                if (splitted.Length <= 0)
+                {
+                    labelWarehouse.Text = labelWarehouse.Text + ": " + warehouse;
+                } else
+                {
+                    labelWarehouse.Text = splitted[0] + ": " + warehouse;
+                }
+
             }
             catch (Exception ex)
             {

@@ -7,68 +7,76 @@
     <include
         android:id="@+id/toolbar"
         layout="@layout/toolbar" />
-    <LinearLayout
+<LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:gravity="center_vertical"
     android:paddingTop="5dp">
 
-      <TextView
-            android:textStyle="bold"
-            android:layout_width="120dp"
-            android:layout_height="wrap_content"
-            android:paddingLeft="10dp"
-            android:paddingTop="5dp"
-            android:layout_weight="1"
-            android:text="@string/s28"
-        />
-
-    <Spinner
-        android:spinnerMode="dialog"
+    <TextView
+        android:id="@+id/labelWarehouse"
+        android:textStyle="bold"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:id="@+id/cbWarehouse"
-        android:layout_weight="5" />
-</LinearLayout>
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:layout_weight="1"
+        android:paddingLeft="10dp"
         android:paddingTop="5dp"
-        android:layout_marginRight="2dp">
+        android:text="@string/s28"
+        android:ellipsize="end"
+        android:singleLine="true" />
 
-        <TextView
-            android:textStyle="bold"
-            android:layout_width="130.0dp"
-            android:layout_height="wrap_content"
-            android:paddingLeft="10dp"
-            android:paddingTop="5dp"
-            android:text="@string/s124"
-            android:layout_marginTop="15dp"/>
+    <Spinner
+        android:id="@+id/cbWarehouse"
+        android:spinnerMode="dialog"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content" />
+</LinearLayout>
+<LinearLayout
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingTop="5dp"
+    android:layout_marginRight="2dp"
+    android:gravity="center_vertical">
 
-        <EditText
-            android:textStyle="bold"
-            android:singleLine="true"
-            android:background="@drawable/edittextbottomline"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginLeft="10dp"
-            android:layout_weight="0.50"
-            android:paddingTop="5dp"
-            android:id="@+id/dtDate"
-            android:layout_marginRight="4dp"/>
+    <TextView
+        android:id="@+id/labelDate"
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:paddingTop="5dp"
+        android:layout_marginRight="50dp"
+        android:text="@string/s124"
+        android:ellipsize="none"
+        android:singleLine="false"
+        android:gravity="center_vertical" />
 
-        <Button
-            android:text="@string/s131"
-            android:layout_width="70dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/select"
-            android:background="@color/rikoMain"
-            android:textColor="@color/white"/>
+    <EditText
+        android:id="@+id/dtDate"
+        android:textStyle="bold"         
+        android:singleLine="true"
+        android:background="@drawable/editText_bg_grey"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginLeft="10dp"
+        android:padding="5dp" />
 
-    </LinearLayout>
+    <Button
+        android:id="@+id/select"
+        android:text="@string/s131"
+        android:layout_width="70dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:background="@color/rikoMain"
+        android:textColor="@color/white"
+        android:minHeight="0dp"
+        android:padding="5dp"
+        android:gravity="center" />
+</LinearLayout>
+
 
     <TextView
         android:layout_height="0dip"
