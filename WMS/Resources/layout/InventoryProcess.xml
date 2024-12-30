@@ -15,29 +15,27 @@
         layout="@layout/toolbar" />
 
     <LinearLayout
-        android:layout_width="fill_parent"
-
-        android:orientation="horizontal"
+        android:layout_width="match_parent"
         android:layout_height="30dp"
+        android:orientation="horizontal"
         android:paddingTop="5dp"
-        android:gravity="bottom">
+        android:gravity="center_vertical">
 
         <TextView
+            android:id="@+id/warehouseLabel"
             android:textStyle="bold"
             android:layout_width="0dp"
-            android:id="@+id/warehouseLabel"
             android:layout_height="match_parent"
             android:paddingLeft="4dp"
-            android:paddingTop="5dp"
             android:text="@string/s28"
-            android:layout_weight="5" />
+            android:layout_weight="1"
+            android:gravity="center_vertical" />
 
         <Spinner
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
             android:id="@+id/cbWarehouse"
-            android:layout_weight="1" />
-
+            android:spinnerMode="dialog"
+            android:layout_width="50dp"
+            android:layout_height="match_parent" />
     </LinearLayout>
 
     <LinearLayout
@@ -212,34 +210,7 @@
             android:id="@+id/tbPackingQty" />
 
     </LinearLayout>
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingTop="2dp">
-
-        <TextView
-            android:textStyle="bold"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:paddingLeft="4dp"
-            android:paddingTop="5dp"
-            android:text="@string/s51"
-            android:id="@+id/lbUnits" />
-
-        <EditText
-            android:textStyle="bold"
-            android:focusable="true"
-            android:singleLine="true"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.50"
-            android:paddingTop="5dp"
-            android:background="@drawable/editText_bg_grey"
-            android:layout_marginRight="2dp"
-            android:id="@+id/tbUnits" />
-
-    </LinearLayout>
+   
     <TextView
         android:textStyle="bold"
         android:layout_width="wrap_content"
@@ -284,7 +255,7 @@
             <Button
                 android:text="@string/s76"
                 android:drawableLeft="@drawable/confirmation_white"
-                android:id="@+id/button1"
+                android:id="@id/btConfirm"
                 android:layout_weight="1"
                 android:textSize="20dp"
                 android:paddingLeft="10dp"
@@ -331,7 +302,7 @@
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="4dp"
                 android:text="@string/s77"
-                android:id="@+id/button2"
+                android:id="@id/btLogout"
                  />
 
         </LinearLayout>

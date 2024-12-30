@@ -37,7 +37,7 @@ namespace WMS
         private Button btOverview;
         private Button btBack;
         private TextView lbQty;
-        private TextView lbUnits;
+      
         private List<string> locations = new List<string>();
         SoundPool soundPool;
         int soundPoolId;
@@ -107,7 +107,6 @@ namespace WMS
                 btOverview = FindViewById<Button>(Resource.Id.btOverview);
                 btBack = FindViewById<Button>(Resource.Id.btBack);
                 lbQty = FindViewById<TextView>(Resource.Id.lbQty);
-                lbUnits = FindViewById<TextView>(Resource.Id.lbUnits);
                 Window.SetSoftInputMode(Android.Views.SoftInput.AdjustResize);
                 barcode2D = new Barcode2D(this, this);
                 ssccRow = FindViewById<LinearLayout>(Resource.Id.sscc_row);

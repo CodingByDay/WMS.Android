@@ -24,15 +24,13 @@ namespace WMS
         private EditText tbSSCC;
         private EditText tbSerialNum;
         private EditText tbPacking;
-        private EditText tbUnits;
-        private List<ComboBoxItem> warehouseAdapter = new List<ComboBoxItem>();
+        private List<ComboBoxItem> warehouseItems = new List<ComboBoxItem>();
         private Button btPrint;
-        private Button button1;
+        private Button btConfirm;
         private Button btDelete;
-        private Button button2;
+        private Button btLogout;
         private static string selectedWarehouse = "";
         private NameValueObject moveItem = null;
-        private TextView lbUnits;
         private TextView lbPacking;
         SoundPool soundPool;
         int soundPoolId;
@@ -87,42 +85,37 @@ namespace WMS
                 tbSerialNum = FindViewById<EditText>(Resource.Id.tbSerialNum);
                 tbPacking = FindViewById<EditText>(Resource.Id.tbPackingQty);
                 tbPacking.Focusable = true;
-                tbUnits = FindViewById<EditText>(Resource.Id.tbUnits);
                 btPrint = FindViewById<Button>(Resource.Id.btPrint);
-                button1 = FindViewById<Button>(Resource.Id.button1);
+                btConfirm = FindViewById<Button>(Resource.Id.btConfirm);
                 btDelete = FindViewById<Button>(Resource.Id.btDelete);
-                button2 = FindViewById<Button>(Resource.Id.button2);
-                lbUnits = FindViewById<TextView>(Resource.Id.lbUnits);
+                btLogout = FindViewById<Button>(Resource.Id.btLogout);
                 lbPacking = FindViewById<TextView>(Resource.Id.lbPacking);
                 tbTitle.Focusable = false;
                 cbWarehouse.ItemSelected += CbWarehouse_ItemSelected;
                 btPrint.Click += BtPrint_Click;
-                button1.Click += Button1_Click;
+                btConfirm.Click += ButtonConfirm_Click;
                 btDelete.Click += BtDelete_Click;
-                button2.Click += Button2_Click;
+                btLogout.Click += ButtonLogout_Click;
                 tbPacking.SetSelectAllOnFocus(true);
                 tbIdent.FocusChange += TbIdent_FocusChange;
                 tbSSCC.KeyPress += TbSSCC_KeyPress;
                 tbIdent.KeyPress += TbIdent_KeyPress;
                 barcode2D = new Barcode2D(this, this);
-                await FillWarehouses();
                 warehouseLabel = FindViewById<TextView>(Resource.Id.warehouseLabel);
-                if (string.IsNullOrEmpty(tbUnits.Text.Trim())) { tbUnits.Text = "1"; }
-                if (await CommonData.GetSettingAsync("ShowNumberOfUnitsField", this) == "1")
-                {
-                    lbUnits.Visibility = ViewStates.Visible;
-                    tbUnits.Visibility = ViewStates.Visible;
-                }
+
                 adapterIssue = new CustomAutoCompleteAdapter<ComboBoxItem>(this,
-                Android.Resource.Layout.SimpleSpinnerItem, warehouseAdapter);
+                           Android.Resource.Layout.SimpleSpinnerItem, warehouseItems);
                 adapterIssue.SetDropDownViewResource(Android.Resource.Layout.SimpleSpinnerDropDownItem);
                 cbWarehouse.Adapter = adapterIssue;
+
                 color();
 
                 var _broadcastReceiver = new NetworkStatusBroadcastReceiver();
                 _broadcastReceiver.ConnectionStatusChanged += OnNetworkStatusChanged;
                 Application.Context.RegisterReceiver(_broadcastReceiver,
                 new IntentFilter(ConnectivityManager.ConnectivityAction), ReceiverFlags.NotExported);
+
+                await FillWarehouses();
 
                 if (await CommonData.GetSettingAsync("AutoCreateSSCC", this) == "1")
                 {
@@ -131,8 +124,9 @@ namespace WMS
                 else
                 {
                     tbLocation.RequestFocus();
-                    await LastTransaction();
                 }
+                await LastTransaction();
+
             }
             catch (Exception ex)
             {
@@ -166,8 +160,8 @@ namespace WMS
                             var serial = dataObject.StringValue("acSerialNo");
                             var location = dataObject.StringValue("aclocation");
                             var warehouse = dataObject.StringValue("acWarehouse");
-                            var tt = warehouseAdapter;
-                            cbWarehouse.SetSelection(warehouseAdapter.IndexOf(warehouseAdapter.Where(x => x.ID == warehouse).FirstOrDefault()), true);
+                            var tt = warehouseItems;
+                            cbWarehouse.SetSelection(warehouseItems.IndexOf(warehouseItems.Where(x => x.ID == warehouse).FirstOrDefault()), true);
                             tbIdent.Text = ident;
                             tbLocation.Text = location;
                             tbSerialNum.Text = serial;
@@ -225,10 +219,10 @@ namespace WMS
                         {
                             RunOnUiThread(() =>
                             {
-                                var element = warehouseAdapter.Where(x => x.ID == App.Settings.lastWarehouse).FirstOrDefault();
+                                var element = warehouseItems.Where(x => x.ID == App.Settings.lastWarehouse).FirstOrDefault();
                                 if (element != null)
                                 {
-                                    cbWarehouse.SetSelection(warehouseAdapter.IndexOf(element), true);
+                                    cbWarehouse.SetSelection(warehouseItems.IndexOf(element), true);
                                 }
                                 tbLocation.Text = App.Settings.lastLocation;
                             });
@@ -245,41 +239,54 @@ namespace WMS
                 GlobalExceptions.ReportGlobalException(ex);
             }
         }
-
         private async Task FillWarehouses()
         {
             try
             {
-                await Task.Run(async () =>
+                warehouseItems.Clear();
+                var warehouses = await CommonData.ListWarehousesAsync();
+                if (warehouses != null)
                 {
-                    var warehouses = await CommonData.ListWarehousesAsync();
-
-                    if (warehouses != null)
+                    List<ComboBoxItem> items = new List<ComboBoxItem>();
+                    foreach (var wh in warehouses.Items)
                     {
-                        warehouses.Items.ForEach(async wh =>
+                        if (await checkDocument(wh.GetString("Subject")))
                         {
-                            if (await checkDocument(wh.GetString("Subject")))
-                            {
-                                warehouseAdapter.Add(new ComboBoxItem { ID = wh.GetString("Subject"), Text = wh.GetString("Name") });
-                            }
-                        });
-                        if (!string.IsNullOrEmpty(selectedWarehouse))
-                        {
+                            // Add the item to the adapter
                             RunOnUiThread(() =>
                             {
-                                ComboBoxItem.Select(cbWarehouse, warehouseAdapter, selectedWarehouse);
-                                tbLocation.RequestFocus();
-                            });
+                                warehouseItems.Add(new ComboBoxItem
+                                {
+                                    ID = wh.GetString("Subject"),
+                                    Text = wh.GetString("Name")
+                                });
 
+                                adapterIssue.Add(new ComboBoxItem
+                                {
+                                    ID = wh.GetString("Subject"),
+                                    Text = wh.GetString("Name")
+                                });
+                                adapterIssue.NotifyDataSetChanged();
+                            });
                         }
                     }
-                });
+
+                    if (!string.IsNullOrEmpty(selectedWarehouse))
+                    {
+                        RunOnUiThread(() =>
+                        {
+                            ComboBoxItem.Select(cbWarehouse, warehouseItems, selectedWarehouse);
+                            tbLocation.RequestFocus();
+                        });
+                    }
+                }
             }
             catch (Exception ex)
             {
                 GlobalExceptions.ReportGlobalException(ex);
             }
         }
+
 
 
 
@@ -405,7 +412,7 @@ namespace WMS
             }
         }
 
-        private void Button2_Click(object sender, EventArgs e)
+        private void ButtonLogout_Click(object sender, EventArgs e)
         {
             try
             {
@@ -515,7 +522,7 @@ namespace WMS
                             headID = Convert.ToInt32(result);
 
                         }
-                        catch (Exception ex)
+                        catch (Exception)
                         {
 
                             return false;
@@ -543,10 +550,12 @@ namespace WMS
         }
 
 
-        private async void Button1_Click(object sender, EventArgs e)
+        private async void ButtonConfirm_Click(object sender, EventArgs e)
         {
             try
             {
+                LoaderManifest.LoaderManifestLoopResources(this);
+
                 double packing, units, qty;
                 ComboBoxItem warehouse;
                 string location;
@@ -632,6 +641,9 @@ namespace WMS
             catch (Exception ex)
             {
                 GlobalExceptions.ReportGlobalException(ex);
+            } finally
+            {
+                LoaderManifest.LoaderManifestLoopStop(this);
             }
         }
 
@@ -674,12 +686,12 @@ namespace WMS
         }
 
 
-        private async void CbWarehouse_ItemSelected(object sender, AdapterView.ItemSelectedEventArgs e)
+        private void CbWarehouse_ItemSelected(object sender, AdapterView.ItemSelectedEventArgs e)
         {
             try
             {
                 temporaryPosWarehouse = e.Position;
-                warehouseLabel.Text = $"{Resources.GetString(Resource.String.s28)}: " + warehouseAdapter.ElementAt(temporaryPosWarehouse);
+                warehouseLabel.Text = $"{Resources.GetString(Resource.String.s28)}: " + warehouseItems.ElementAt(temporaryPosWarehouse);
             }
             catch (Exception ex)
             {
@@ -744,7 +756,7 @@ namespace WMS
         {
             try
             {
-                var warehouse = warehouseAdapter.ElementAt(temporaryPosWarehouse);
+                var warehouse = warehouseItems.ElementAt(temporaryPosWarehouse);
                 if (warehouse == null)
                 {
                     Toast.MakeText(this, $"{Resources.GetString(Resource.String.s245)}", ToastLength.Long).Show();
@@ -860,7 +872,6 @@ namespace WMS
             {
                 if (tbSSCC.HasFocus)
                 {
-
                     tbSSCC.Text = barcode;
                     string error;
                     dataObject = GetSSCCData(tbSSCC.Text);
@@ -960,9 +971,9 @@ namespace WMS
                         break;
 
                     case Keycode.F3:
-                        if (button1.Enabled == true)
+                        if (btConfirm.Enabled == true)
                         {
-                            Button1_Click(this, null);
+                            ButtonConfirm_Click(this, null);
                         }
                         break;
 
@@ -975,7 +986,7 @@ namespace WMS
                         break;
 
                     case Keycode.F8:
-                        Button2_Click(this, null);
+                        ButtonLogout_Click(this, null);
                         break;
 
                 }
@@ -1001,7 +1012,7 @@ namespace WMS
                 warehouse = null;
                 location = null;
 
-                warehouse = warehouseAdapter.ElementAt(temporaryPosWarehouse);
+                warehouse = warehouseItems.ElementAt(temporaryPosWarehouse);
                 if (warehouse == null)
                 {
                     Toast.MakeText(this, $"{Resources.GetString(Resource.String.s245)}", ToastLength.Long).Show();
@@ -1051,15 +1062,7 @@ namespace WMS
                 }
 
 
-                try
-                {
-                    units = Convert.ToDouble(tbUnits.Text);
-                }
-                catch (Exception ex)
-                {
-                    Toast.MakeText(this, $"{Resources.GetString(Resource.String.s270)}" + ex.Message, ToastLength.Long).Show();
-                    return false;
-                }
+                units = 1;
 
                 qty = units * packing;
 
@@ -1084,7 +1087,7 @@ namespace WMS
         {
             try
             {
-                var warehouse = warehouseAdapter.ElementAt(temporaryPosWarehouse);
+                var warehouse = warehouseItems.ElementAt(temporaryPosWarehouse);
                 if (warehouse == null)
                 {
                     Toast.MakeText(this, $"{Resources.GetString(Resource.String.s245)}", ToastLength.Long).Show();
