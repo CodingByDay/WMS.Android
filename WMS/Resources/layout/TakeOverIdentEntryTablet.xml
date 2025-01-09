@@ -373,12 +373,12 @@
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
                 android:drawableLeft="@drawable/focus_white"
-                android:id="@+id/button4" />
+                android:id="@id/btOverview" />
 
             <Button
                 android:text="@string/s119"
                 android:drawableLeft="@drawable/logout_white"
-                android:id="@+id/button5"
+                android:id="@+id/btLogout"
                 android:layout_weight="1"
                 android:textSize="20dp"
                 android:paddingLeft="10dp"

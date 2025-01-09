@@ -39,8 +39,8 @@ namespace WMS
         private TextView lbOrderInfo;
         private Button btNext;
         private Button btConfirm;
-        private Button button4;
-        private Button button5;
+        private Button btOverview;
+        private Button btLogout;
         SoundPool soundPool;
         int soundPoolId;
         private Barcode2D barcode2D;
@@ -89,17 +89,18 @@ namespace WMS
                 lbOrderInfo = FindViewById<TextView>(Resource.Id.lbOrderInfo);
                 btNext = FindViewById<Button>(Resource.Id.btNext);
                 btConfirm = FindViewById<Button>(Resource.Id.btConfirm);
-                button4 = FindViewById<Button>(Resource.Id.button4);
-                button5 = FindViewById<Button>(Resource.Id.button5);
+                btOverview = FindViewById<Button>(Resource.Id.btOverview);
+                btLogout = FindViewById<Button>(Resource.Id.btLogout);
                 color();
                 barcode2D = new Barcode2D(this, this);
                 if (moveHead == null) { throw new ApplicationException("moveHead not known at this point!?"); }
                 displayedOrder = 0;
                 FillDisplayedOrderInfo();
+
                 btNext.Click += BtNext_Click;
                 btConfirm.Click += BtConfirm_Click;
-                button4.Click += Button4_Click;
-                button5.Click += Button5_Click;
+                btOverview.Click += BtOverview_Click;
+                btLogout.Click += BtLogout_Click;
      
 
                 var _broadcastReceiver = new NetworkStatusBroadcastReceiver();
@@ -390,7 +391,7 @@ namespace WMS
 
 
 
-        private void Button5_Click(object sender, EventArgs e)
+        private void BtLogout_Click(object sender, EventArgs e)
         {
             try
             {
@@ -403,7 +404,7 @@ namespace WMS
             }
         }
 
-        private void Button4_Click(object sender, EventArgs e)
+        private void BtOverview_Click(object sender, EventArgs e)
         {
             try
             {
@@ -1003,16 +1004,16 @@ namespace WMS
                         }
                         break;
                     case Keycode.F4:
-                        if (button4.Enabled == true)
+                        if (btOverview.Enabled == true)
                         {
-                            Button4_Click(this, null);
+                            BtOverview_Click(this, null);
 
                         }
                         break;
                     case Keycode.F8:
-                        if (button5.Enabled == true)
+                        if (btLogout.Enabled == true)
                         {
-                            Button5_Click(this, null);
+                            BtLogout_Click(this, null);
                         }
                         break;
                 }

@@ -63,7 +63,6 @@ namespace WMS
                 // Declarations
                 cbDocType = FindViewById<CustomAutoCompleteTextView>(Resource.Id.cbDocType);
 
-
                 cbWarehouse = FindViewById<CustomAutoCompleteTextView>(Resource.Id.cbWarehouse);
                 cbSubject = FindViewById<CustomAutoCompleteTextView>(Resource.Id.cbSubject);
                 btnOrder = FindViewById<Button>(Resource.Id.btnOrder);

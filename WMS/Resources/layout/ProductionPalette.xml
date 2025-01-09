@@ -12,7 +12,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:paddingTop="15dp">
+        android:paddingTop="5dp">
 
         <TextView
             android:textStyle="bold"

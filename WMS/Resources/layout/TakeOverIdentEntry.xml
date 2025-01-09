@@ -268,7 +268,7 @@
                 android:layout_marginRight="2dp"
                 android:text="@string/s43"
                 android:drawableLeft="@drawable/focus_white"
-                android:id="@+id/button4" />
+                android:id="@id/btOverview" />
 
             <Button
                 android:layout_weight="1"
@@ -282,7 +282,7 @@
                 android:layout_marginRight="4dp"
                 android:text="@string/s44"
                 android:drawableLeft="@drawable/logout_white"
-                android:id="@+id/button5"
+                android:id="@id/btLogout"
            />
 
         </LinearLayout>
