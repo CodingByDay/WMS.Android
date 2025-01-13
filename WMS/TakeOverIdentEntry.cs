@@ -670,7 +670,6 @@ namespace WMS
 
                             var parameters = new List<Services.Parameter>();
 
-
                             string sql = $"SELECT acSubject, acKey, anNo, anQty, adDeliveryDeadline, acIdent, anPackQty FROM uWMSOrderItemByWarehouseTypeIn WHERE acIdent = @acIdent AND acDocType = @acDocType AND acWarehouse = @acWarehouse";
 
                             if (moveHead != null)

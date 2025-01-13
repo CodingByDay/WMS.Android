@@ -432,5 +432,7 @@
 	<string name="s358">Yes</string>
 	<string name="s359">No</string>
 	<string name="s360">You want to issue more than ordered, do you want to continue?</string>
+	<string name="s361">Serial date</string>
+	<string name="s362">Choose</string>
 
 </resources>
