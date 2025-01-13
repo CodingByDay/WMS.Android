@@ -371,7 +371,7 @@
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
                 android:drawableLeft="@drawable/newitem_white"
-                android:id="@+id/button4" />
+                android:id="@id/btCreate" />
 
             <Button
                 android:text="@string/s117"
@@ -424,7 +424,7 @@
                 android:textColor="@color/white"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
-                android:id="@+id/button5" />
+                android:id="@id/btLogout" />
 
         </LinearLayout>
 

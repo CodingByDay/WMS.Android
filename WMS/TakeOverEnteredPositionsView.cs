@@ -26,10 +26,10 @@ namespace WMS
         private EditText tbCreatedBy;
         private Button btNext;
         private Button btUpdate;
-        private Button button4;
+        private Button btCreate;
         private Button btFinish;
         private Button btDelete;
-        private Button button5;
+        private Button btLogout;
         private int displayedPosition = 0;
         private NameValueObject moveHead = (NameValueObject)InUseObjects.Get("MoveHead");
         private NameValueObjectList positions = null;
@@ -82,10 +82,10 @@ namespace WMS
                 tbCreatedBy = FindViewById<EditText>(Resource.Id.tbCreatedBy);
                 btNext = FindViewById<Button>(Resource.Id.btNext);
                 btUpdate = FindViewById<Button>(Resource.Id.btUpdate);
-                button4 = FindViewById<Button>(Resource.Id.button4);
+                btCreate = FindViewById<Button>(Resource.Id.btCreate);
                 btFinish = FindViewById<Button>(Resource.Id.btFinish);
                 btDelete = FindViewById<Button>(Resource.Id.btDelete);
-                button5 = FindViewById<Button>(Resource.Id.button5);
+                btLogout = FindViewById<Button>(Resource.Id.btLogout);
 
                 tbIdent.Text = string.Empty + " ";
                 tbSSCC.Text = string.Empty + " ";
@@ -95,10 +95,11 @@ namespace WMS
 
                 btNext.Click += BtNext_Click;
                 btUpdate.Click += BtUpdate_Click;
-                button4.Click += Button4_Click;
+                btCreate.Click += BtCreate_Click;
                 btFinish.Click += BtFinish_Click;
                 btDelete.Click += BtDelete_Click;
-                button5.Click += Button5_Click;
+                btLogout.Click += BtLogout_Click;
+
                 InUseObjects.ClearExcept(new string[] { "MoveHead" });
 
                 if (moveHead == null)
@@ -283,7 +284,7 @@ namespace WMS
             }
         }
 
-        private void Button5_Click(object sender, EventArgs e)
+        private void BtLogout_Click(object sender, EventArgs e)
         {
             try
             {
@@ -514,7 +515,7 @@ namespace WMS
             }
         }
 
-        private async void Button4_Click(object sender, EventArgs e)
+        private async void BtCreate_Click(object sender, EventArgs e)
         {
             try
             {
@@ -680,9 +681,9 @@ namespace WMS
                         break;
 
                     case Keycode.F3://
-                        if (button4.Enabled == true)
+                        if (btCreate.Enabled == true)
                         {
-                            Button4_Click(this, null);
+                            BtCreate_Click(this, null);
                         }
                         break;
 
@@ -701,9 +702,9 @@ namespace WMS
                         break;
 
                     case Keycode.F6:
-                        if (button5.Enabled == true)
+                        if (btLogout.Enabled == true)
                         {
-                            Button5_Click(this, null);
+                            BtLogout_Click(this, null);
                         }
                         break;
 
