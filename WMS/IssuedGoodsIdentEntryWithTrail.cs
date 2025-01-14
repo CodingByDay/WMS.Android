@@ -383,6 +383,8 @@ namespace WMS
                             {
                                 trails.Clear();
                                 int counter = 0;
+
+
                                 foreach (var row in result.Rows)
                                 {
                                     var ident = row.StringValue("acIdent");
@@ -462,6 +464,7 @@ namespace WMS
             {
                 await Task.Run(async () =>
                 {
+
                     try
                     {
                         List<Trail> unfiltered = new List<Trail>();
