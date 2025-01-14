@@ -142,7 +142,7 @@
             android:textColor="@color/white"
             android:text="@string/s362"
             android:layout_marginTop="5dp"
-            android:id="@+id/btChooser"
+            android:id="@+id/btSerialDate"
          />
 
     </LinearLayout>
