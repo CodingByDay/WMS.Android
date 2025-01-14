@@ -110,6 +110,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/serial-date-row"
         android:orientation="horizontal"
+        android:gravity="center"
         android:paddingTop="5dp">
 
         <TextView
@@ -141,7 +142,7 @@
             android:layout_marginRight="4dp"
             android:textColor="@color/white"
             android:text="@string/s362"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="0dp"
             android:id="@+id/btSerialDate"
          />
 
@@ -175,7 +176,7 @@
 
     <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="100dp"
+        android:layout_height="70dp"
         android:orientation="horizontal"
         android:paddingTop="5dp">
 

@@ -373,5 +373,6 @@
 	<string name="s360">Želite izdati više nego što je naručeno, želite li nastaviti?</string>
 	<string name="s361">Dat. ser.</string>
 	<string name="s362">Izberi</string>
+	<string name="s363">Datum nije u pravom obliku.</string>
 
 </resources>

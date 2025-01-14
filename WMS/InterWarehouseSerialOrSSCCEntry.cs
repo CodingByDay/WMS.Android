@@ -59,7 +59,10 @@ namespace WMS
         private List<string> locationsIssuer = new List<string>();
         private SearchableSpinner? searchableSpinnerReceiveLocation;
         private List<string> locationsReceiver = new List<string>();
-
+        private Button btSerialDate;
+        private LinearLayout serialDateRow;
+        private EditText tbSerialNumDate;
+        private DateTime currentDate;
         protected async override void OnCreate(Bundle savedInstanceState)
         {
             try
@@ -101,13 +104,16 @@ namespace WMS
                 btFinish = FindViewById<Button>(Resource.Id.btFinish);
                 btOverview = FindViewById<Button>(Resource.Id.btOverview);
                 btExit = FindViewById<Button>(Resource.Id.btExit);
+                btSerialDate = FindViewById<Button>(Resource.Id.btSerialDate);
+                serialDateRow = FindViewById<LinearLayout>(Resource.Id.serial_date_row);
+                tbSerialNumDate = FindViewById<EditText>(Resource.Id.tbSerialNumDate);
 
                 btSaveOrUpdate.Click += BtSaveOrUpdate_Click;
                 btCreate.Click += BtCreate_Click;
                 btFinish.Click += BtFinish_Click;
                 btOverview.Click += BtOverview_Click;
                 btExit.Click += BtExit_Click;
-
+                btSerialDate.Click += BtSerialDate_Click;
                 tbIdent = FindViewById<EditText>(Resource.Id.tbIdent);
                 tbSSCC = FindViewById<EditText>(Resource.Id.tbSSCC);
                 tbSerialNum = FindViewById<EditText>(Resource.Id.tbSerialNum);
@@ -160,6 +166,37 @@ namespace WMS
                 SetUpProcessDependentButtons();
                 // Main logic for the entry
                 SetUpForm();
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
+            }
+        }
+
+        private void BtSerialDate_Click(object? sender, EventArgs e)
+        {
+            try
+            {
+                DateTime today = DateTime.Today;
+                DatePickerDialog dialog = new DatePickerDialog(this, (sender, args) =>
+                {
+                    DateTime selectedDate = args.Date;
+                    if (selectedDate >= today)
+                    {
+                        tbSerialNumDate.Text = selectedDate.ToShortDateString();
+                        currentDate = selectedDate;
+                    }
+                    else
+                    {
+                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s249)}", ToastLength.Short).Show();
+                    }
+                    searchableSpinnerIssueLocation.spinnerTextValueField.RequestFocus();
+                }, today.Year, today.Month - 1, today.Day);
+                DatePicker datePicker = dialog.DatePicker;
+                DateTime tomorrow = today.AddDays(0);
+                long minDate = (long)(tomorrow - new DateTime(1970, 1, 1)).TotalMilliseconds;
+                datePicker.MinDate = minDate;
+                dialog.Show();
             }
             catch (Exception ex)
             {
@@ -607,6 +644,20 @@ namespace WMS
                 try
                 {
                     LoaderManifest.LoaderManifestLoopResources(this);
+
+                    string dateValue = string.Empty;
+
+                    if (serialDateRow.Visibility == ViewStates.Visible)
+                    {
+                        dateValue = tbSerialNumDate.Text;
+                    }
+
+                    if (!DateTime.TryParse(dateValue, out DateTime parsedDate))
+                    {
+                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s363)}", ToastLength.Long).Show();
+                        return;
+                    }
+
                     if (!Base.Store.isUpdate)
                     {
                         double parsed;
@@ -769,6 +820,19 @@ namespace WMS
                 {
                     LoaderManifest.LoaderManifestLoopResources(this);
 
+                    string dateValue = string.Empty;
+
+                    if (serialDateRow.Visibility == ViewStates.Visible)
+                    {
+                        dateValue = tbSerialNumDate.Text;
+                    }
+
+                    if (!DateTime.TryParse(dateValue, out DateTime parsedDate))
+                    {
+                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s363)}", ToastLength.Long).Show();
+                        return;
+                    }
+
                     if (activityIdent != null)
                     {
                         if (activityIdent.GetBool("isSSCC") && tbSSCC.Text != string.Empty)
@@ -927,6 +991,18 @@ namespace WMS
              
                 // This is the default focus of the view.
                 tbSSCC.RequestFocus();
+
+                if (await CommonData.GetSettingAsync("SerialDateDue", this) != "1")
+                {
+                    serialDateRow.Visibility = ViewStates.Gone;
+                }
+                else
+                {
+                    // Default value 14.1.2025 Janko Jovičić
+                    DateTime today = DateTime.Today;
+                    tbSerialNumDate.Text = today.ToShortDateString();
+                    currentDate = today;
+                }
 
                 if (Base.Store.isUpdate && moveItem != null)
                 {

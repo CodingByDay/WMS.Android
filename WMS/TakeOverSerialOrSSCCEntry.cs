@@ -113,6 +113,7 @@ namespace WMS
                 btSerialDate = FindViewById<Button>(Resource.Id.btSerialDate);
                 serialDateRow = FindViewById<LinearLayout>(Resource.Id.serial_date_row);
                 tbSerialNumDate = FindViewById<EditText>(Resource.Id.tbSerialNumDate);
+
                 Window.SetSoftInputMode(Android.Views.SoftInput.AdjustResize);
                 barcode2D = new Barcode2D(this, this);
                 ssccRow = FindViewById<LinearLayout>(Resource.Id.sscc_row);
@@ -174,6 +175,7 @@ namespace WMS
                     {
                         Toast.MakeText(this, $"{Resources.GetString(Resource.String.s249)}", ToastLength.Short).Show();
                     }
+                    searchableSpinnerLocation.spinnerTextValueField.RequestFocus();
                 }, today.Year, today.Month - 1, today.Day);
                 DatePicker datePicker = dialog.DatePicker;
                 DateTime tomorrow = today.AddDays(0);
@@ -402,7 +404,13 @@ namespace WMS
                 {
                     serialDateRow.Visibility = ViewStates.Gone;
                 }
-
+                else
+                {
+                    // Default value 14.1.2025 Janko Jovičić
+                    DateTime today = DateTime.Today;
+                    tbSerialNumDate.Text = today.ToShortDateString();
+                    currentDate = today;
+                }
                 if (!openIdent.GetBool("isSSCC"))
                 {
                     ssccRow.Visibility = ViewStates.Gone;
@@ -991,7 +999,18 @@ namespace WMS
                 try
                 {
                     LoaderManifest.LoaderManifestLoopResources(this);
+                    string dateValue = string.Empty;
 
+                    if (serialDateRow.Visibility == ViewStates.Visible)
+                    {
+                        dateValue = tbSerialNumDate.Text;
+                    }
+
+                    if (!DateTime.TryParse(dateValue, out DateTime parsedDate))
+                    {
+                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s363)}", ToastLength.Long).Show();
+                        return;
+                    }
                     if (!Base.Store.isUpdate)
                     {
 
@@ -1320,6 +1339,20 @@ namespace WMS
                 try
                 {
                     LoaderManifest.LoaderManifestLoopResources(this);
+                    string dateValue = string.Empty;
+
+                    if(serialDateRow.Visibility == ViewStates.Visible)
+                    {
+                        dateValue = tbSerialNumDate.Text;
+                    }
+
+                    if (!DateTime.TryParse(dateValue, out DateTime parsedDate))
+                    {
+                        Toast.MakeText(this, $"{Resources.GetString(Resource.String.s363)}", ToastLength.Long).Show();
+                        return;
+                    }
+
+
 
                     double parsed;
                     if (double.TryParse(tbPacking.Text, out parsed))
