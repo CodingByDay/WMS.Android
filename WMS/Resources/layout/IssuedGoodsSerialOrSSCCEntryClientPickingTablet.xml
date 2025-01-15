@@ -199,7 +199,48 @@
             android:id="@+id/tbSerialNum" />
 
     </LinearLayout>
+         <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/serial-date-row"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:paddingTop="5dp">
 
+        <TextView
+            android:textStyle="bold"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:gravity="bottom"
+            android:paddingLeft="4dp"
+            android:paddingTop="4dp"
+            android:text="@string/s361"
+        />
+
+        <EditText
+            android:textStyle="bold"
+            android:singleLine="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.50"
+            android:paddingTop="5dp"
+            android:background="@drawable/editText_bg_grey"
+            android:layout_marginRight="2dp"
+            android:id="@+id/tbSerialNumDate" />
+
+        <Button
+            android:layout_width="70dp"
+            android:layout_height="match_parent"
+            android:background="@color/rikoMain"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="4dp"
+            android:textColor="@color/white"
+            android:text="@string/s362"
+            android:layout_marginTop="0dp"
+            android:id="@+id/btSerialDate"
+         />
+
+    </LinearLayout>
        <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
