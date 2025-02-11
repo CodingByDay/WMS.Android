@@ -416,66 +416,21 @@ namespace WMS
         {
             try
             {
-                tbOpenQty.Text = "";
-                tbClient.Text = "";
-                tbIdent.Text = "";
-                tbName.Text = "";
-
-
-                btConfirm.Visibility = ViewStates.Gone;
-                btCard.Visibility = ViewStates.Gone;
-                btPalette.Visibility = ViewStates.Gone;
-
-                try
+                string workorder = tbWorkOrder.Text.Trim();
+                if(String.IsNullOrWhiteSpace(workorder))
                 {
-                    string error;
-                    NameValueObject workOrder = Services.GetObject("wo", tbWorkOrder.Text.Trim(), out error);
-                    if (workOrder == null)
-                    {
-                        string SuccessMessage = string.Format($"{Resources.GetString(Resource.String.s216)}" + error);
-                        Toast.MakeText(this, SuccessMessage, ToastLength.Long).Show();
-
-                    }
-                    else
-                    {
-                        ident = Services.GetObject("id", workOrder.GetString("Ident"), out error);
-                        if (ident == null)
-                        {
-                            string SuccessMessage = string.Format($"{Resources.GetString(Resource.String.s216)}" + error);
-                            Toast.MakeText(this, SuccessMessage, ToastLength.Long).Show();
-                        }
-                        else
-                        {
-                            tbOpenQty.Text = workOrder.GetDouble("OpenQty").ToString(await CommonData.GetQtyPictureAsync(this));
-                            tbClient.Text = workOrder.GetString("Consignee");
-                            tbIdent.Text = workOrder.GetString("Ident");
-                            tbName.Text = workOrder.GetString("Name");
-
-                            if (await CommonData.GetSettingAsync("ProductionIgnoreIdentCardInfo", this) == "1")
-                            {
-                                btCard.Visibility = ViewStates.Visible;
-                                btPalette.Visibility = ViewStates.Visible;
-                                btConfirm.Visibility = ViewStates.Visible;
-                            }
-                            else
-                            {
-                                if (ident.GetString("ProcessingMode").ToLower().Contains("karton"))
-                                {
-                                    btCard.Visibility = ViewStates.Visible;
-                                    btPalette.Visibility = ViewStates.Visible;
-                                }
-                                else
-                                {
-                                    btConfirm.Visibility = ViewStates.Visible;
-                                }
-                            }
-                        }
-                    }
+                    return;
                 }
-                catch (Exception err)
-                {
-                    SentrySdk.CaptureException(err);
-                }
+                var parameters = new List<Services.Parameter>();
+
+                string sql = $"SELECT O.acKey AS ACKEY, W.acConsignee, W.acIdent, W.acName, O.anPlanQty - ISNULL(O.anProducedQty, 0) AS OPENQTY, W.acDocType, O.adSchedEndTime AS ADSCHEDENDTIME, O.acIdentOper, O.acNameOper, O.anWOExItemID FROM uWMSOpenWOOper O JOIN tHF_WOEx W ON O.acKey = W.acKey WHERE O.acKey = @acKey;";
+
+                parameters.Add(new Services.Parameter { Name = "acKey", Type = "String", Value = workorder });
+
+                var operations = await AsyncServices.AsyncServices.GetObjectListBySqlAsync(sql, parameters);
+
+                var debug = true;
+
             }
             catch (Exception ex)
             {
