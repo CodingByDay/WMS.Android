@@ -545,7 +545,10 @@
 	<string name="s357">Obvestilo</string>
 	<string name="s358">Da</string>
 	<string name="s359">Ne</string>
-	<string name="s360">Izdati želite več kot je naročeno ali želite nadaljevati?</string>
+	<string name="s360">Izdati želite več kot je naročeno ali želite nadaljevati?</string>	
+	<string name="s361">Dat. ser.</string>	
+	<string name="s362">Izberi</string>
+	<string name="s363">Datum ni v pravi obliki.</string>
 
 
 
