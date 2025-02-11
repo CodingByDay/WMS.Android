@@ -30,6 +30,11 @@ namespace WMS
         SoundPool soundPool;
         int soundPoolId;
         private Barcode2D barcode2D;
+        private ApiResultSet? operations;
+        private Button btNext;
+        private TextView lbInfo;
+        private EditText tbOperation;
+        private int currentOperationIndex = 0;
 
         public async void GetBarcode(string barcode)
         {
@@ -92,20 +97,21 @@ namespace WMS
                 btConfirm = FindViewById<Button>(Resource.Id.btConfirm);
                 btPalette = FindViewById<Button>(Resource.Id.btPalette);
                 button2 = FindViewById<Button>(Resource.Id.button2);
+                btNext = FindViewById<Button>(Resource.Id.btNext);
+                lbInfo = FindViewById<TextView>(Resource.Id.lbInfo);
+                tbOperation = FindViewById<EditText>(Resource.Id.tbOperation);
                 color();
                 tbOpenQty.FocusChange += TbOpenQty_FocusChange;
                 btCard.Click += BtCard_Click;
                 btConfirm.Click += BtConfirm_Click;
                 btPalette.Click += BtPalette_Click;
                 button2.Click += Button2_Click;
+                btNext.Click += BtNext_Click;
                 tbWorkOrder.RequestFocus();
                 tbOpenQty.Text = "";
                 tbClient.Text = "";
                 tbIdent.Text = "";
                 tbName.Text = "";
-                btConfirm.Visibility = ViewStates.Gone;
-                btCard.Visibility = ViewStates.Gone;
-                btPalette.Visibility = ViewStates.Gone;
                 barcode2D = new Barcode2D(this, this);
                 tbOpenQty.Enabled = false;
                 tbClient.Enabled = false;
@@ -140,7 +146,11 @@ namespace WMS
 
         }
 
-
+        private void BtNext_Click(object? sender, EventArgs e)
+        {
+            currentOperationIndex += 1;
+            ShowOperationAtIndex(currentOperationIndex);
+        }
 
         public bool IsOnline()
         {
@@ -427,9 +437,9 @@ namespace WMS
 
                 parameters.Add(new Services.Parameter { Name = "acKey", Type = "String", Value = workorder });
 
-                var operations = await AsyncServices.AsyncServices.GetObjectListBySqlAsync(sql, parameters);
+                operations = await AsyncServices.AsyncServices.GetObjectListBySqlAsync(sql, parameters);
 
-                var debug = true;
+                ShowOperationAtIndex(0);
 
             }
             catch (Exception ex)
@@ -438,7 +448,35 @@ namespace WMS
             }
         }
 
-
-
+        private void ShowOperationAtIndex(int index)
+        {
+            var operation = operations.Rows.ElementAt(index);
+            if(operation != null && operation.Items.Count > 0)
+            {
+                lbInfo.Text = $"Operation: {currentOperationIndex}/{operations.Rows.Count}";
+                tbOpenQty.Text = operation.DoubleValue("openqty").ToString();
+                tbClient.Text = operation.StringValue("acConsignee");
+                tbIdent.Text = operation.StringValue("acIdent");
+                tbName.Text = operation.StringValue("acName");
+                string identOperation = operation.StringValue("acIdentOper");
+                string operationName = string.Empty;
+                if (!String.IsNullOrEmpty(identOperation))
+                {
+                    operationName += identOperation;
+                    if (!String.IsNullOrEmpty(tbName.Text))
+                    {
+                        operationName += "-" + tbName.Text;
+                    }
+                } else
+                {
+                    operationName += "X";
+                    if (!String.IsNullOrEmpty(tbName.Text))
+                    {
+                        operationName += "-" + tbName.Text;
+                    }
+                }
+                tbOperation.Text = operationName;
+            }
+        }
     }
 }
