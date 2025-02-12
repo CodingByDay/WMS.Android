@@ -175,6 +175,8 @@ namespace WMS
         private LinearLayout? ssccRow;
         private LinearLayout? serialRow;
         private double stock;
+        private string operationQty;
+        private int operationId;
 
         private async Task GetWorkOrderDefaultQty()
         {
@@ -382,6 +384,7 @@ namespace WMS
                     moveItem.SetInt("HeadID", moveHead.GetInt("HeadID"));
                     moveItem.SetString("LinkKey", openWorkOrder.GetString("Key"));
                     moveItem.SetInt("LinkNo", 0);
+                    moveItem.SetInt("anOperation", operationId);
                     moveItem.SetString("Ident", openWorkOrder.GetString("Ident"));
                     moveItem.SetString("SSCC", tbSSCC.Text.Trim());
                     moveItem.SetString("SerialNo", tbSerialNum.Text.Trim());
@@ -633,9 +636,11 @@ namespace WMS
 
                 SetUpProcessDependentButtons();
 
+                SetUpOperationData();
                 // Main logic for the entry
                 await SetUpForm();
 
+              
 
                 if (App.Settings.tablet)
                 {
@@ -649,7 +654,15 @@ namespace WMS
             }
         }
 
-
+        private void SetUpOperationData()
+        {
+            operationQty = Intent.GetStringExtra("Qty") ?? "0";  // Default to "0" if null
+            string operationIdString = Intent.GetStringExtra("OperationId") ?? "0"; // Default to "0" if null
+            if (!int.TryParse(operationIdString, out operationId))
+            {
+                operationId = 0; // Default to 0 if parsing fails
+            }
+        }
 
         private async Task SetUpForm()
         {
@@ -666,7 +679,7 @@ namespace WMS
                     StartActivity(typeof(MainMenu));
                 }
 
-                lbQty.Text = $"{Resources.GetString(Resource.String.s40)} (" + openWorkOrder.GetDouble("OpenQty").ToString(await CommonData.GetQtyPictureAsync(this)) + ")";
+                lbQty.Text = $"{Resources.GetString(Resource.String.s40)} (" + operationQty.ToString() + ")";
                 stock = openWorkOrder.GetDouble("OpenQty");
                 ident = await CommonData.LoadIdentAsync(openWorkOrder.GetString("Ident"), this);
 
@@ -1192,7 +1205,7 @@ namespace WMS
                 moveHeadCreate.SetString("Receiver", "");
                 moveHeadCreate.SetString("Wharehouse", moveHead.GetString("Wharehouse"));
                 moveHeadCreate.SetString("DocumentType", moveHead.GetString("DocumentType"));
-
+                
                 var savedMoveHead = Services.SetObject("mh", moveHeadCreate, out error);
                 if (savedMoveHead == null)
                 {

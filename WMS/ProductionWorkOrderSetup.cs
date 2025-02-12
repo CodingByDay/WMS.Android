@@ -37,6 +37,7 @@ namespace WMS
         private int currentOperationIndex = 1;
         private long? operationId;
         private LinearLayout entireExtraButtonRow;
+        private Row operation;
 
         public async void GetBarcode(string barcode)
         {
@@ -269,7 +270,8 @@ namespace WMS
                 if (await SaveMoveHead())
                 {
                     var intent = new Intent(this, typeof(ProductionSerialOrSSCCEntry));
-                    intent.PutExtra("OperationId", operationId.ToString()); // Pass your parameter
+                    intent.PutExtra("Qty", operation.DoubleValue("OPENQTY").ToString());
+                    intent.PutExtra("OperationId", operationId.ToString()); 
                     StartActivity(intent);
                     Finish();
                 }
@@ -469,7 +471,7 @@ namespace WMS
             {
                 LoaderManifest.LoaderManifestLoopResources(this);
 
-                var operation = operations.Rows.ElementAt(currentOperationIndex - 1);
+                operation = operations.Rows.ElementAt(currentOperationIndex - 1);
                 if (operation != null && operation.Items.Count > 0)
                 {
                     operationId = operation.IntValue("anWOExItemID");
