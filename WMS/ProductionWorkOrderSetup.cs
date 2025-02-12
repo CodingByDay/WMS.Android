@@ -34,7 +34,8 @@ namespace WMS
         private Button btNext;
         private TextView lbInfo;
         private EditText tbOperation;
-        private int currentOperationIndex = 0;
+        private int currentOperationIndex = 1;
+        private long? operationId;
 
         public async void GetBarcode(string barcode)
         {
@@ -100,6 +101,8 @@ namespace WMS
                 btNext = FindViewById<Button>(Resource.Id.btNext);
                 lbInfo = FindViewById<TextView>(Resource.Id.lbInfo);
                 tbOperation = FindViewById<EditText>(Resource.Id.tbOperation);
+                btPalette.Visibility = ViewStates.Gone;
+                btCard.Visibility = ViewStates.Gone;
                 color();
                 tbOpenQty.FocusChange += TbOpenQty_FocusChange;
                 btCard.Click += BtCard_Click;
@@ -148,8 +151,14 @@ namespace WMS
 
         private void BtNext_Click(object? sender, EventArgs e)
         {
-            currentOperationIndex += 1;
-            ShowOperationAtIndex(currentOperationIndex);
+            if (currentOperationIndex < operations.Rows.Count)
+            {
+                currentOperationIndex += 1;
+            } else
+            {
+                currentOperationIndex = 1;
+            }
+            ShowOperationAtIndex();
         }
 
         public bool IsOnline()
@@ -257,7 +266,9 @@ namespace WMS
             {
                 if (await SaveMoveHead())
                 {
-                    StartActivity(typeof(ProductionSerialOrSSCCEntry));
+                    var intent = new Intent(this, typeof(ProductionSerialOrSSCCEntry));
+                    intent.PutExtra("OperationId", operationId.ToString()); // Pass your parameter
+                    StartActivity(intent);
                     Finish();
                 }
             }
@@ -427,10 +438,12 @@ namespace WMS
             try
             {
                 string workorder = tbWorkOrder.Text.Trim();
+
                 if(String.IsNullOrWhiteSpace(workorder))
                 {
                     return;
                 }
+
                 var parameters = new List<Services.Parameter>();
 
                 string sql = $"SELECT O.acKey AS ACKEY, W.acConsignee, W.acIdent, W.acName, O.anPlanQty - ISNULL(O.anProducedQty, 0) AS OPENQTY, W.acDocType, O.adSchedEndTime AS ADSCHEDENDTIME, O.acIdentOper, O.acNameOper, O.anWOExItemID FROM uWMSOpenWOOper O JOIN tHF_WOEx W ON O.acKey = W.acKey WHERE O.acKey = @acKey;";
@@ -439,7 +452,7 @@ namespace WMS
 
                 operations = await AsyncServices.AsyncServices.GetObjectListBySqlAsync(sql, parameters);
 
-                ShowOperationAtIndex(0);
+                ShowOperationAtIndex();
 
             }
             catch (Exception ex)
@@ -448,34 +461,42 @@ namespace WMS
             }
         }
 
-        private void ShowOperationAtIndex(int index)
+        private void ShowOperationAtIndex()
         {
-            var operation = operations.Rows.ElementAt(index);
-            if(operation != null && operation.Items.Count > 0)
+            try
             {
-                lbInfo.Text = $"Operation: {currentOperationIndex}/{operations.Rows.Count}";
-                tbOpenQty.Text = operation.DoubleValue("openqty").ToString();
-                tbClient.Text = operation.StringValue("acConsignee");
-                tbIdent.Text = operation.StringValue("acIdent");
-                tbName.Text = operation.StringValue("acName");
-                string identOperation = operation.StringValue("acIdentOper");
-                string operationName = string.Empty;
-                if (!String.IsNullOrEmpty(identOperation))
+                var operation = operations.Rows.ElementAt(currentOperationIndex - 1);
+                if (operation != null && operation.Items.Count > 0)
                 {
-                    operationName += identOperation;
-                    if (!String.IsNullOrEmpty(tbName.Text))
+                    operationId = operation.IntValue("anWOExItemID");
+                    lbInfo.Text = $"{Resources.GetString(Resource.String.s364)}: {currentOperationIndex}/{operations.Rows.Count}";
+                    tbOpenQty.Text = operation.DoubleValue("OPENQTY").ToString();
+                    tbClient.Text = operation.StringValue("acConsignee");
+                    tbIdent.Text = operation.StringValue("acIdent");
+                    tbName.Text = operation.StringValue("acName");
+                    string identOperation = operation.StringValue("acIdentOper");
+                    string operationName = string.Empty;
+                    if (!String.IsNullOrEmpty(identOperation))
                     {
-                        operationName += "-" + tbName.Text;
+                        operationName += identOperation;
+                        if (!String.IsNullOrEmpty(tbName.Text))
+                        {
+                            operationName += "-" + tbName.Text;
+                        }
                     }
-                } else
-                {
-                    operationName += "X";
-                    if (!String.IsNullOrEmpty(tbName.Text))
+                    else
                     {
-                        operationName += "-" + tbName.Text;
+                        operationName += "X";
+                        if (!String.IsNullOrEmpty(tbName.Text))
+                        {
+                            operationName += "-" + tbName.Text;
+                        }
                     }
+                    tbOperation.Text = operationName;
                 }
-                tbOperation.Text = operationName;
+            } catch (Exception ex)
+            {
+                GlobalExceptions.ReportGlobalException(ex);
             }
         }
     }
