@@ -36,6 +36,7 @@ namespace WMS
         private EditText tbOperation;
         private int currentOperationIndex = 1;
         private long? operationId;
+        private LinearLayout entireExtraButtonRow;
 
         public async void GetBarcode(string barcode)
         {
@@ -88,7 +89,7 @@ namespace WMS
                 _customToolbar.SetNavigationIcon(App.Settings.RootURL + "/Services/Logo");
                 SetSupportActionBar(_customToolbar._toolbar);
                 SupportActionBar.SetDisplayShowTitleEnabled(false);
-                // button next
+                // Button next
                 tbWorkOrder = FindViewById<EditText>(Resource.Id.tbWorkOrder);
                 tbOpenQty = FindViewById<EditText>(Resource.Id.tbOpenQty);
                 tbClient = FindViewById<EditText>(Resource.Id.tbClient);
@@ -101,8 +102,9 @@ namespace WMS
                 btNext = FindViewById<Button>(Resource.Id.btNext);
                 lbInfo = FindViewById<TextView>(Resource.Id.lbInfo);
                 tbOperation = FindViewById<EditText>(Resource.Id.tbOperation);
-                btPalette.Visibility = ViewStates.Gone;
-                btCard.Visibility = ViewStates.Gone;
+                entireExtraButtonRow = FindViewById<LinearLayout>(Resource.Id.entireExtraButtonRow);
+                entireExtraButtonRow.Visibility = ViewStates.Gone;
+                btConfirm.Visibility = ViewStates.Gone;
                 color();
                 tbOpenQty.FocusChange += TbOpenQty_FocusChange;
                 btCard.Click += BtCard_Click;
@@ -452,7 +454,7 @@ namespace WMS
 
                 operations = await AsyncServices.AsyncServices.GetObjectListBySqlAsync(sql, parameters);
 
-                ShowOperationAtIndex();
+                await ShowOperationAtIndex();
 
             }
             catch (Exception ex)
@@ -461,10 +463,12 @@ namespace WMS
             }
         }
 
-        private void ShowOperationAtIndex()
+        private async Task ShowOperationAtIndex()
         {
             try
             {
+                LoaderManifest.LoaderManifestLoopResources(this);
+
                 var operation = operations.Rows.ElementAt(currentOperationIndex - 1);
                 if (operation != null && operation.Items.Count > 0)
                 {
@@ -492,11 +496,39 @@ namespace WMS
                             operationName += "-" + tbName.Text;
                         }
                     }
+
                     tbOperation.Text = operationName;
+
+                    if (await CommonData.GetSettingAsync("ProductionIgnoreIdentCardInfo", this) == "1")
+                    {
+                        entireExtraButtonRow.Visibility = ViewStates.Visible;
+                        btConfirm.Visibility = ViewStates.Visible;
+                    }
+                    else
+                    {
+                        string error;
+                        ident = Services.GetObject("id", operation.StringValue("acIdent"), out error);
+                        if (ident == null)
+                        {
+                            string SuccessMessage = string.Format($"{Resources.GetString(Resource.String.s216)}" + error);
+                            Toast.MakeText(this, SuccessMessage, ToastLength.Long).Show();
+                        }
+                        if (ident.GetString("ProcessingMode").ToLower().Contains("karton"))
+                        {
+                            entireExtraButtonRow.Visibility = ViewStates.Visible;
+                        }
+                        else
+                        {
+                            btConfirm.Visibility = ViewStates.Visible;
+                        }
+                    }
                 }
             } catch (Exception ex)
             {
                 GlobalExceptions.ReportGlobalException(ex);
+            } finally
+            {
+                LoaderManifest.LoaderManifestLoopStop(this);
             }
         }
     }

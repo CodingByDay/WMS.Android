@@ -143,6 +143,7 @@ namespace WMS
         private async Task FinishMethod()
         {
             try { 
+
             await Task.Run(async () =>
             {
                 string TextPallet = string.Empty;
@@ -152,9 +153,7 @@ namespace WMS
                     TextPallet = pallet.Text;
 
                 });
-
-                
-
+               
                 var (success, result) = await WebApp.GetAsync("mode=palPck&pal=" + TextPallet, this);
 
                 if (success)
