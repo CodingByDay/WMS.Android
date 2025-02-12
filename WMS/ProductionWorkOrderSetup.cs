@@ -152,7 +152,7 @@ namespace WMS
 
         }
 
-        private void BtNext_Click(object? sender, EventArgs e)
+        private async void BtNext_Click(object? sender, EventArgs e)
         {
             if (currentOperationIndex < operations.Rows.Count)
             {
@@ -161,7 +161,7 @@ namespace WMS
             {
                 currentOperationIndex = 1;
             }
-            ShowOperationAtIndex();
+            await ShowOperationAtIndex();
         }
 
         public bool IsOnline()
