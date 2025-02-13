@@ -523,6 +523,7 @@ namespace WMS
                         {
                             btConfirm.Visibility = ViewStates.Visible;
                         }
+
                     }
                 }
             } catch (Exception ex)

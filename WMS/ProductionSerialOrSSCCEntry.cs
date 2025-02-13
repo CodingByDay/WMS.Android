@@ -178,69 +178,7 @@ namespace WMS
         private string operationQty;
         private int operationId;
 
-        private async Task GetWorkOrderDefaultQty()
-        {
-            try
-            {
-                if (getWorkOrderDefaultQty == null)
-                {
-
-                    try
-                    {
-                        string error;
-                        var useObj = Services.GetObject("wodqUse", "", out error);
-                        getWorkOrderDefaultQty = useObj == null ? false : useObj.GetBool("Use");
-                    }
-                    catch (Exception err)
-                    {
-
-                        SentrySdk.CaptureException(err);
-                        return;
-
-                    }
-                }
-
-                if ((bool)getWorkOrderDefaultQty)
-                {
-
-                    try
-                    {
-                        string error;
-                        var qtyObj = Services.GetObject("wodq", openWorkOrder.GetString("Key") + "|" + openWorkOrder.GetString("Ident"), out error);
-                        if (qtyObj != null)
-                        {
-                            var qty = qtyObj.GetDouble("DefaultQty");
-                            if (qty < 0)
-                            {
-                                getWorkOrderDefaultQty = false;
-                            }
-                            else
-                            {
-                                tbPacking.Text = qty.ToString(await CommonData.GetQtyPictureAsync(this));
-                            }
-
-                            tbPacking.PostDelayed(() =>
-                            {
-                                tbPacking.RequestFocus();
-                                tbPacking.SetSelection(0, tbPacking.Text.Length);
-                            }, 100); // Delay in milliseconds
-
-                        }
-                    }
-                    catch (Exception err)
-                    {
-
-                        SentrySdk.CaptureException(err);
-                        return;
-
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                GlobalExceptions.ReportGlobalException(ex);
-            }
-        }
+       
 
         private async Task<bool> SaveMoveItem()
         {
@@ -384,7 +322,7 @@ namespace WMS
                     moveItem.SetInt("HeadID", moveHead.GetInt("HeadID"));
                     moveItem.SetString("LinkKey", openWorkOrder.GetString("Key"));
                     moveItem.SetInt("LinkNo", 0);
-                    moveItem.SetInt("anOperation", operationId);
+                    moveItem.SetInt("Operation", operationId);
                     moveItem.SetString("Ident", openWorkOrder.GetString("Ident"));
                     moveItem.SetString("SSCC", tbSSCC.Text.Trim());
                     moveItem.SetString("SerialNo", tbSerialNum.Text.Trim());
@@ -465,7 +403,7 @@ namespace WMS
                    
         }
 
-        private async Task fillSugestedLocation(string warehouse)
+        private async Task FillSugestedLocation()
         {
             try
             {
@@ -492,41 +430,14 @@ namespace WMS
                         return;
                     }
                 }
-                await GetWorkOrderDefaultQty();
+                
             }
             catch (Exception ex)
             {
                 GlobalExceptions.ReportGlobalException(ex);
             }
         }
-        private bool CheckWorkOrderOpenQty()
-        {
-            try
-            {
-                if (checkWorkOrderOpenQty == null)
-                {
-                    try
-                    {
-                        string error;
-                        var useObj = Services.GetObject("cwooqUse", "", out error);
-                        checkWorkOrderOpenQty = useObj == null ? false : useObj.GetBool("Use");
-                    }
-                    catch (Exception err)
-                    {
 
-                        SentrySdk.CaptureException(err);
-                        return false;
-
-                    }
-                }
-                return (bool)checkWorkOrderOpenQty;
-            }
-            catch (Exception ex)
-            {
-                GlobalExceptions.ReportGlobalException(ex);
-                return false;
-            }
-        }
         private string GetNextSerialNum()
         {
             try
@@ -579,14 +490,12 @@ namespace WMS
                     dataAdapter = UniversalAdapterHelper.GetProductionSerialOrSSCCEntry(this, data);
                     listData.Adapter = dataAdapter;
                     imagePNG = FindViewById<ImageView>(Resource.Id.imagePNG);
-
                 }
                 else
                 {
                     base.RequestedOrientation = ScreenOrientation.Portrait;
                     base.SetContentView(Resource.Layout.ProductionSerialOrSSCCEntry);
                 }
-
 
                 AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
                 var _customToolbar = new CustomToolbar(this, toolbar, Resource.Id.navIcon);
@@ -626,7 +535,6 @@ namespace WMS
                 searchableSpinnerLocation.ColorTheRepresentation(1);
                 searchableSpinnerLocation.ShowDropDown();
 
-
                 CheckIfApplicationStopingException();
 
                 // Color the fields that can be scanned
@@ -640,7 +548,7 @@ namespace WMS
                 // Main logic for the entry
                 await SetUpForm();
 
-              
+                await FillSugestedLocation();
 
                 if (App.Settings.tablet)
                 {
@@ -680,6 +588,7 @@ namespace WMS
                 }
 
                 lbQty.Text = $"{Resources.GetString(Resource.String.s40)} (" + operationQty.ToString() + ")";
+
                 stock = openWorkOrder.GetDouble("OpenQty");
                 ident = await CommonData.LoadIdentAsync(openWorkOrder.GetString("Ident"), this);
 
@@ -716,14 +625,11 @@ namespace WMS
                     tbPacking.Text = moveItem.GetDouble("Packing").ToString(await CommonData.GetQtyPictureAsync(this));
                     searchableSpinnerLocation.spinnerTextValueField.Text = moveItem.GetString("Location");
 
-
-
                     searchableSpinnerLocation.spinnerTextValueField.Enabled = false;
                     tbSSCC.Enabled = false;
                     tbSerialNum.Enabled = false;
                     tbIdent.Enabled = false;
                     
-
                     tbPacking.RequestFocus();
                 }
                 else
@@ -902,9 +808,7 @@ namespace WMS
         {
             try
             {
-                var warehouse = moveHead.GetString("Wharehouse");
-
-                await fillSugestedLocation(warehouse);
+                await FillSugestedLocation();
             }
             catch (Exception ex)
             {
