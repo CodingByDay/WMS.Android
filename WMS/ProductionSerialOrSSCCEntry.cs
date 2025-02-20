@@ -554,8 +554,7 @@ namespace WMS
                 searchableSpinnerLocation.ColorTheRepresentation(1);
                 searchableSpinnerLocation.ShowDropDown();
 
-<<<<<<< HEAD
-=======
+
                 var isPalletCodeHidden = await CommonData.GetSettingAsync("Pi.HideLegCode", this);
 
                 if (isPalletCodeHidden != null)
@@ -566,7 +565,7 @@ namespace WMS
                     }              
                 }
 
->>>>>>> pallet
+
                 CheckIfApplicationStopingException();
 
                 // Color the fields that can be scanned
@@ -656,19 +655,17 @@ namespace WMS
                     stock = moveItem.GetDouble("Packing");
                     tbPacking.Text = moveItem.GetDouble("Packing").ToString(await CommonData.GetQtyPictureAsync(this));
                     searchableSpinnerLocation.spinnerTextValueField.Text = moveItem.GetString("Location");
-<<<<<<< HEAD
+
 
                     searchableSpinnerLocation.spinnerTextValueField.Enabled = false;
                     tbSSCC.Enabled = false;
                     tbSerialNum.Enabled = false;
                     tbIdent.Enabled = false;
                     
-=======
                     searchableSpinnerLocation.spinnerTextValueField.Enabled = false;
                     tbSSCC.Enabled = false;
                     tbSerialNum.Enabled = false;
                     tbIdent.Enabled = false;                   
->>>>>>> pallet
                     tbPacking.RequestFocus();
                 }
                 else
