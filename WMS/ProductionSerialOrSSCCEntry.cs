@@ -37,6 +37,8 @@ namespace WMS
         private ListView listData;
         private UniversalAdapter<ProductionSerialOrSSCCList> dataAdapter;
         private ImageView imagePNG;
+        private LinearLayout rowPallet;
+        private EditText tbPalletCode;
 
         public override bool OnKeyDown(Keycode keyCode, KeyEvent e)
         {
@@ -193,6 +195,21 @@ namespace WMS
                     }
 
                     string error;
+
+                    if(rowPallet.Visibility == ViewStates.Visible && String.IsNullOrEmpty(tbPalletCode.Text))
+                    {
+                        RunOnUiThread(() =>
+                        {
+                            string Message = string.Format($"{Resources.GetString(Resource.String.s365)}");
+                            DialogHelper.ShowDialogError(this, this, Message);
+
+                            tbPalletCode.RequestFocus();
+                        });
+
+                        return false;
+                    }
+
+
 
                     if(tbSSCC.Enabled && string.IsNullOrEmpty(tbSSCC.Text.Trim()))
                     {
@@ -521,6 +538,8 @@ namespace WMS
                 new IntentFilter(ConnectivityManager.ConnectivityAction), ReceiverFlags.NotExported);
                 ssccRow = FindViewById<LinearLayout>(Resource.Id.sscc_row);
                 serialRow = FindViewById<LinearLayout>(Resource.Id.serial_row);
+                rowPallet = FindViewById<LinearLayout>(Resource.Id.pallet_row);
+                tbPalletCode = FindViewById<EditText>(Resource.Id.tbPalletCode);
 
                 btSaveOrUpdate.Click += BtSaveOrUpdate_Click;
                 btOverview.Click += btOverview_Click;
@@ -535,13 +554,25 @@ namespace WMS
                 searchableSpinnerLocation.ColorTheRepresentation(1);
                 searchableSpinnerLocation.ShowDropDown();
 
+<<<<<<< HEAD
+=======
+                var isPalletCodeHidden = await CommonData.GetSettingAsync("Pi.HideLegCode", this);
+
+                if (isPalletCodeHidden != null)
+                {
+                    if (isPalletCodeHidden == "1")
+                    {
+                        rowPallet.Visibility = ViewStates.Gone;
+                    }              
+                }
+
+>>>>>>> pallet
                 CheckIfApplicationStopingException();
 
                 // Color the fields that can be scanned
                 ColorFields();
 
                 // Stop the loader
-
                 SetUpProcessDependentButtons();
 
                 SetUpOperationData();
@@ -618,18 +649,26 @@ namespace WMS
 
                 if (Base.Store.isUpdate)
                 {
+
                     tbSSCC.Text = moveItem.GetString("SSCC");
                     tbSerialNum.Text = moveItem.GetString("SerialNo");
                     lbQty.Text = $"{Resources.GetString(Resource.String.s40)} (" + moveItem.GetDouble("Packing") + ")";
                     stock = moveItem.GetDouble("Packing");
                     tbPacking.Text = moveItem.GetDouble("Packing").ToString(await CommonData.GetQtyPictureAsync(this));
                     searchableSpinnerLocation.spinnerTextValueField.Text = moveItem.GetString("Location");
+<<<<<<< HEAD
 
                     searchableSpinnerLocation.spinnerTextValueField.Enabled = false;
                     tbSSCC.Enabled = false;
                     tbSerialNum.Enabled = false;
                     tbIdent.Enabled = false;
                     
+=======
+                    searchableSpinnerLocation.spinnerTextValueField.Enabled = false;
+                    tbSSCC.Enabled = false;
+                    tbSerialNum.Enabled = false;
+                    tbIdent.Enabled = false;                   
+>>>>>>> pallet
                     tbPacking.RequestFocus();
                 }
                 else
@@ -822,6 +861,7 @@ namespace WMS
             {
                 tbSSCC.SetBackgroundColor(Android.Graphics.Color.Aqua);
                 tbSerialNum.SetBackgroundColor(Android.Graphics.Color.Aqua);
+                tbPalletCode.SetBackgroundColor(Android.Graphics.Color.Aqua);
             }
             catch (Exception ex)
             {
@@ -862,7 +902,18 @@ namespace WMS
                         try
                         {
 
-                            var (success, result) = await WebApp.GetAsync("mode=finish&stock=add&print=" + Services.DeviceUser() + "&id=" + headID.ToString(), this);
+                            bool success;
+                            string? result;
+
+                            // Changes for the pallet process. 20.02.2025 Janko Jovičić
+                            if (rowPallet.Visibility == ViewStates.Visible)
+                            {
+                                (success, result) = await WebApp.GetAsync($"mode=finish&stock=add&paletteCode={tbPalletCode.Text}&print=" + Services.DeviceUser() + "&id=" + headID.ToString(), this);
+                            } else
+                            {
+                                (success, result) = await WebApp.GetAsync("mode=finish&stock=add&print=" + Services.DeviceUser() + "&id=" + headID.ToString(), this);
+                            }
+
                             if (success)
                             {
                                 if (result.StartsWith("OK!"))

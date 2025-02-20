@@ -301,7 +301,7 @@
 	<string name="s287">Morate odabrati skladište</string>
 	<string name="s288">Morate odabrati subjekat</string>
 	<string name="s289">Narudžba (nema)</string>
-	<string name="s290">Ažurirajte F3</string>
+	<string name="s290">Ažur. F3</string>
 	<string name="s291">Količina je veća od dopuštene</string>
 	<string name="s292">Nema zaliha</string>
 	<string name="s293">Serijska F2</string>
@@ -374,6 +374,8 @@
 	<string name="s361">Dat. ser.</string>
 	<string name="s362">Izberi</string>
 	<string name="s363">Datum nije u pravom obliku.</string>
-	<string name="s364">Operacija</string>
+	<string name="s364">Peletni broj</string>
+	<string name="s365">Upišite paletni broj.</string>
+	<string name="s366">Operacija</string>
 
 </resources>
