@@ -432,7 +432,7 @@
 
 	<string name="s289">Naročilo (ni)</string>
 
-	<string name="s290">Posodobi F3</string>
+	<string name="s290">Posod. F3</string>
 	<string name="s291">Količina je večja od dovoljene</string>
 
 
@@ -549,6 +549,8 @@
 	<string name="s361">Dat. ser.</string>	
 	<string name="s362">Izberi</string>
 	<string name="s363">Datum ni v pravi obliki.</string>
+	<string name="s364">Peletna koda</string>
+	<string name="s365">Peletna koda manjka.</string>
 
 
 

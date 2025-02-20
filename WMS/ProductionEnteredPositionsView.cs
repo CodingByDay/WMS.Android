@@ -107,6 +107,21 @@ namespace WMS
                     StartActivity(typeof(MainMenu));
                 }
                 await LoadPositions();
+
+
+
+
+                var isPalletCodeHidden = await CommonData.GetSettingAsync("Pi.HideLegCode", this);
+
+                if (isPalletCodeHidden != null)
+                {
+                    if (isPalletCodeHidden != "1")
+                    {
+                        btFinish.Visibility = ViewStates.Gone;
+                    }
+                }
+
+
                 var _broadcastReceiver = new NetworkStatusBroadcastReceiver();
                 _broadcastReceiver.ConnectionStatusChanged += OnNetworkStatusChanged;
                 Application.Context.RegisterReceiver(_broadcastReceiver,
